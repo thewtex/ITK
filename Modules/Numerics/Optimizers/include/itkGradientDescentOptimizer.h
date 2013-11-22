@@ -48,7 +48,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class GradientDescentOptimizer:
+class GradientDescentOptimizer :
   public SingleValuedNonLinearOptimizer
 {
 public:
@@ -74,14 +74,29 @@ public:
   itkGetConstReferenceMacro(Maximize, bool);
   itkSetMacro(Maximize, bool);
   itkBooleanMacro(Maximize);
-  bool GetMinimize() const
-  { return !m_Maximize; }
-  void SetMinimize(bool v)
-  { this->SetMaximize(!v); }
-  void MinimizeOn()
-  { this->MaximizeOff(); }
-  void MinimizeOff()
-  { this->MaximizeOn(); }
+  bool
+  GetMinimize() const
+  {
+    return !m_Maximize;
+  }
+
+  void
+  SetMinimize(bool v)
+  {
+    this->SetMaximize(!v);
+  }
+
+  void
+  MinimizeOn()
+  {
+    this->MaximizeOff();
+  }
+
+  void
+  MinimizeOff()
+  {
+    this->MaximizeOn();
+  }
 
   /** Advance one step following the gradient direction. */
   virtual void AdvanceOneStep(void);
@@ -124,7 +139,10 @@ public:
 
 protected:
   GradientDescentOptimizer();
-  virtual ~GradientDescentOptimizer() {}
+  virtual
+  ~GradientDescentOptimizer() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   // made protected so subclass can access

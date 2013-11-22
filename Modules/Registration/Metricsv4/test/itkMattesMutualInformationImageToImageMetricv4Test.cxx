@@ -46,7 +46,8 @@
  *
  */
 template< typename TImage, typename TInterpolator>
-int TestMattesMetricWithAffineTransform(
+int
+TestMattesMetricWithAffineTransform(
   TInterpolator * interpolator, bool useSampling )
 {
 
@@ -55,8 +56,8 @@ int TestMattesMetricWithAffineTransform(
 //------------------------------------------------------------
 
   //Allocate Images
-  typedef TImage           MovingImageType;
-  typedef TImage           FixedImageType;
+  typedef TImage MovingImageType;
+  typedef TImage FixedImageType;
   enum { ImageDimension = MovingImageType::ImageDimension };
 
   typename MovingImageType::SizeType size = {{100,100}};
@@ -110,9 +111,9 @@ int TestMattesMetricWithAffineTransform(
   displacement[1] = 5;
 
   ReferenceIteratorType ri(imgMoving,region);
-  TargetIteratorType ti(imgFixed,region);
+  TargetIteratorType    ti(imgFixed,region);
   ri.GoToBegin();
-  while(!ri.IsAtEnd())
+  while(!ri.IsAtEnd() )
     {
     p[0] = ri.GetIndex()[0];
     p[1] = ri.GetIndex()[1];
@@ -120,19 +121,19 @@ int TestMattesMetricWithAffineTransform(
     d += displacement;
     const double x = d[0];
     const double y = d[1];
-    ri.Set( (unsigned char) ( 200.0 * vcl_exp( - ( x*x + y*y )/(s*s) ) ) );
+    ri.Set( (unsigned char) ( 200.0 * vcl_exp( -( x*x + y*y )/(s*s) ) ) );
     ++ri;
     }
 
   ti.GoToBegin();
-  while(!ti.IsAtEnd())
+  while(!ti.IsAtEnd() )
     {
     p[0] = ti.GetIndex()[0];
     p[1] = ti.GetIndex()[1];
     d = p-center;
     const double x = d[0];
     const double y = d[1];
-    ti.Set( (unsigned char) ( 200.0 * vcl_exp( - ( x*x + y*y )/(s*s) ) ) );
+    ti.Set( (unsigned char) ( 200.0 * vcl_exp( -( x*x + y*y )/(s*s) ) ) );
     ++ti;
     }
 
@@ -149,12 +150,13 @@ int TestMattesMetricWithAffineTransform(
   imgFixedMask->FillBuffer(0);
 
   int NumberFixedImageMaskVoxels=0;
-    {//Set up a mask that only has every 10th voxel listed is used in fixed image region
-    //This should result in only about 588 samples
+    { //Set up a mask that only has every 10th voxel listed is used in fixed
+      // image region
+      //This should result in only about 588 samples
       {
       ReferenceIteratorType ri1(imgMovingMask,region);
       ri1.GoToBegin();
-      while(!ri1.IsAtEnd()) //Set all moving mask voxels to 1
+      while(!ri1.IsAtEnd() ) //Set all moving mask voxels to 1
         {
         ri1.Set(1);
         ++ri1;
@@ -162,10 +164,12 @@ int TestMattesMetricWithAffineTransform(
       }
 
       {
-      int count=0;
+      int                count=0;
       TargetIteratorType ti1(imgFixedMask,region);
       ti1.GoToBegin();
-      while(!ti1.IsAtEnd())//Set a subset of fixed mask voxels to 1, so that requested number can be made more than possible number
+      while(!ti1.IsAtEnd() ) //Set a subset of fixed mask voxels to 1, so that
+                             // requested number can be made more than possible
+                             // number
         {
         if(count%17 == 0)
           {
@@ -190,7 +194,7 @@ int TestMattesMetricWithAffineTransform(
 // Set up the metric
 //------------------------------------------------------------
   typedef itk::MattesMutualInformationImageToImageMetricv4<
-    FixedImageType, MovingImageType > MetricType;
+      FixedImageType, MovingImageType > MetricType;
 
   typename MetricType::Pointer metric = MetricType::New();
 
@@ -230,8 +234,8 @@ int TestMattesMetricWithAffineTransform(
     {
     typedef typename MetricType::FixedSampledPointSetType PointSetType;
     typedef typename PointSetType::PointType              PointType;
-    typename PointSetType::Pointer                        pset(PointSetType::New());
-    unsigned int ind=0,ct=0;
+    typename PointSetType::Pointer                    pset(PointSetType::New() );
+    unsigned int                                      ind=0,ct=0;
     itk::ImageRegionIteratorWithIndex<FixedImageType> It(imgFixed, imgFixed->GetLargestPossibleRegion() );
     for( It.GoToBegin(); !It.IsAtEnd(); ++It )
       {
@@ -243,9 +247,10 @@ int TestMattesMetricWithAffineTransform(
         pset->SetPoint(ind, pt);
         ind++;
         }
-        ct++;
+      ct++;
       }
-    std::cout << "Setting point set with " << ind << " points of " << imgFixed->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
+    std::cout << "Setting point set with " << ind << " points of " <<
+      imgFixed->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
     metric->SetFixedSampledPointSet( pset );
     metric->SetUseFixedSampledPointSet( true );
     }
@@ -256,13 +261,13 @@ int TestMattesMetricWithAffineTransform(
 //------------------------------------------------------------
 // Set up a affine transform parameters
 //------------------------------------------------------------
-  unsigned int numberOfParameters = transformer->GetNumberOfParameters();
+  unsigned int   numberOfParameters = transformer->GetNumberOfParameters();
   ParametersType parameters( numberOfParameters );
 
   // set the parameters to the identity
   unsigned long count = 0;
 
-     // initialize the linear/matrix part
+  // initialize the linear/matrix part
   for( unsigned int row = 0; row < ImageDimension; row++ )
     {
     for( unsigned int col = 0; col < ImageDimension; col++ )
@@ -276,7 +281,7 @@ int TestMattesMetricWithAffineTransform(
       }
     }
 
-     // initialize the offset/vector part
+  // initialize the offset/vector part
   for( unsigned int k = 0; k < ImageDimension; k++ )
     {
     parameters[count] = 0;
@@ -317,7 +322,8 @@ int TestMattesMetricWithAffineTransform(
       }
     }
 
-  std::cout << "NumberOfValidPoints: " << metric->GetNumberOfValidPoints() << " of " << metric->GetVirtualRegion().GetNumberOfPixels() << std::endl;
+  std::cout << "NumberOfValidPoints: " << metric->GetNumberOfValidPoints() << " of " <<
+    metric->GetVirtualRegion().GetNumberOfPixels() << std::endl;
 
 //---------------------------------------------------------
 // Check output gradients for numerical accuracy
@@ -341,7 +347,7 @@ int TestMattesMetricWithAffineTransform(
       {
       if( j == i )
         {
-        parametersPlus[j] = parameters[i] + delta;    //positive perturbation
+        parametersPlus[j] = parameters[i] + delta;   //positive perturbation
         parametersMinus[j] = parameters[i] - delta;  //negative perturbation
         }
       else
@@ -413,7 +419,8 @@ int TestMattesMetricWithAffineTransform(
 /**
  * Test entry point.
  */
-int itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
+int
+itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
 {
   int failed;
 
@@ -422,7 +429,7 @@ int itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
 
   bool useSampling = false;
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   // Test metric with a linear interpolator
   typedef itk::LinearInterpolateImageFunction< ImageType, double >

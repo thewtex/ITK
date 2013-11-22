@@ -87,7 +87,8 @@ void
 GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::AllocateUpdateBuffer()
 {
-  //CPUSuperclass will call Image::Allocate() which will call GPUImage::Allocate() .
+  //CPUSuperclass will call Image::Allocate() which will call
+  // GPUImage::Allocate() .
   CPUSuperclass::AllocateUpdateBuffer();
 }
 
@@ -111,6 +112,8 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 
   typename GPUBufferImage::Pointer  bfPtr =  dynamic_cast< GPUBufferImage * >( GetUpdateBuffer() );
   typename GPUOutputImage::Pointer  otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() ); //this->ProcessObject::GetOutput(0)
+                                                                                                    //
+                                                                                                    //
                                                                                                     // );
   typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
 
@@ -131,9 +134,17 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   for(int i=0; i<ImageDim; i++)
     {
     globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             //
+                                                                                             //
                                                                                              // total
+                                                                                             //
+                                                                                             //
                                                                                              // #
+                                                                                             //
+                                                                                             //
                                                                                              // of
+                                                                                             //
+                                                                                             //
                                                                                              // threads
     }
 

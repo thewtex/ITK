@@ -22,9 +22,12 @@ namespace itk
 {
 TimeProbesCollectorBase
 ::TimeProbesCollectorBase()
-{}
+{
+}
 
 TimeProbesCollectorBase
 ::~TimeProbesCollectorBase()
-{}
+{
+}
+
 } // end namespace itk

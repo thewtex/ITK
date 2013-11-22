@@ -33,21 +33,19 @@ LevelSetDomainMapImageFilter< TInputImage, TOutputImage >
   this->m_OutputImage = 0;
 }
 
-
 template < typename TInputImage, typename TOutputImage >
 LevelSetDomainMapImageFilter< TInputImage, TOutputImage >
 ::~LevelSetDomainMapImageFilter()
 {
 }
 
-
 template < typename TInputImage, typename TOutputImage >
 const typename LevelSetDomainMapImageFilter< TInputImage, TOutputImage >::DomainMapType &
 LevelSetDomainMapImageFilter< TInputImage, TOutputImage >
 ::GetDomainMap() const
-{
+  {
   return this->m_DomainMap;
-}
+  }
 
 template < typename TInputImage, typename TOutputImage >
 typename LevelSetDomainMapImageFilter< TInputImage, TOutputImage >::InputImageRegionType
@@ -68,19 +66,19 @@ LevelSetDomainMapImageFilter< TInputImage, TOutputImage >
     iIt.GoToBegin();
     oIt.GoToBegin();
 
-    const InputImagePixelType firstCornerPixelValue = iIt.Get();
+    const InputImagePixelType   firstCornerPixelValue = iIt.Get();
     const InputImageIndexType & firstCornerIndex = iIt.GetIndex();
 
     while( !iIt.IsAtEnd() )
       {
       const OutputImagePixelType segmentPixel = oIt.Get();
-      const InputImagePixelType nextPixel = iIt.Get();
+      const InputImagePixelType  nextPixel = iIt.Get();
 
       if ( ( nextPixel != firstCornerPixelValue ) ||
            ( segmentPixel != NumericTraits< OutputImagePixelType >::Zero ) )
         {
         const InputImageIndexType & stopIdx = iIt.GetIndex();
-        InputImageSizeType sizeOfRegion;
+        InputImageSizeType          sizeOfRegion;
         for( unsigned int i = 0; i < ImageDimension; i++ )
           {
           sizeOfRegion[i] = stopIdx[i] - firstCornerIndex[i] + 1;
@@ -100,7 +98,6 @@ LevelSetDomainMapImageFilter< TInputImage, TOutputImage >
   return subRegion;
 }
 
-
 template < typename TInputImage, typename TOutputImage >
 void
 LevelSetDomainMapImageFilter< TInputImage, TOutputImage >::
@@ -111,7 +108,7 @@ GenerateData()
 
   this->m_InputImage =  this->GetInput();
   const InputImageRegionType & region = this->m_InputImage->GetLargestPossibleRegion();
-  const InputImageSizeType size = region.GetSize();
+  const InputImageSizeType     size = region.GetSize();
 
   this->m_OutputImage = this->GetOutput();
   this->m_OutputImage->SetBufferedRegion( region );
@@ -127,7 +124,7 @@ GenerateData()
 
   IdentifierType segmentId = NumericTraits<IdentifierType>::One;
 
-  InputConstIteratorType iIt( this->m_InputImage, region );
+  InputConstIteratorType  iIt( this->m_InputImage, region );
   OutputIndexIteratorType oIt( this->m_OutputImage, region );
 
   iIt.GoToBegin();
@@ -135,9 +132,9 @@ GenerateData()
 
   while( !iIt.IsAtEnd() )
     {
-    const InputImageIndexType & startIdx     = iIt.GetIndex();
-    InputImageIndexType stopIdx              = startIdx;
-    const InputImagePixelType & inputPixel   = iIt.Get();
+    const InputImageIndexType &  startIdx     = iIt.GetIndex();
+    InputImageIndexType          stopIdx              = startIdx;
+    const InputImagePixelType &  inputPixel   = iIt.Get();
     const OutputImagePixelType & outputPixel = oIt.Get();
 
     // outputPixel is null when it has not been processed yet,
@@ -145,7 +142,7 @@ GenerateData()
     if ( ( !inputPixel.empty() ) && ( outputPixel == NumericTraits<OutputImagePixelType>::Zero ) )
       {
       InputImageRegionType subRegion;
-      InputImageSizeType sizeOfRegion;
+      InputImageSizeType   sizeOfRegion;
 
       for( unsigned int i = 0; i < ImageDimension; i++ )
         {
@@ -153,7 +150,7 @@ GenerateData()
         stopIdx = startIdx;
         while ( ( sameOverlappingLevelSetIds ) && ( stopIdx[i] <= end[i] ) )
           {
-          const InputImagePixelType & nextPixel = this->m_InputImage->GetPixel( stopIdx );
+          const InputImagePixelType &  nextPixel = this->m_InputImage->GetPixel( stopIdx );
           const OutputImagePixelType & currentOutputPixel = this->m_OutputImage->GetPixel( stopIdx );
 
           // Check if the input list pixels are different, or
@@ -197,9 +194,10 @@ GenerateData()
 template < typename TInputImage, typename TOutputImage >
 void
 LevelSetDomainMapImageFilter< TInputImage, TOutputImage >::
-PrintSelf ( std::ostream& os, Indent indent ) const
+PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf ( os,indent );
+
   os << indent << "DomainMap size: " << this->m_DomainMap.size() << std::endl;
 }
 

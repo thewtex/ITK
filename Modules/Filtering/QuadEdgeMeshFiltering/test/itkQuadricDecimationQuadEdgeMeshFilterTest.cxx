@@ -19,11 +19,11 @@
 #include "itkMeshFileReader.h"
 #include "itkMeshFileWriter.h"
 
-
 #include "itkQuadEdgeMeshDecimationCriteria.h"
 #include "itkQuadricDecimationQuadEdgeMeshFilter.h"
 
-int itkQuadricDecimationQuadEdgeMeshFilterTest( int argc, char* argv[] )
+int
+itkQuadricDecimationQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
   // ** ERROR MESSAGE AND HELP ** //
   if( argc < 3 )
@@ -36,19 +36,19 @@ int itkQuadricDecimationQuadEdgeMeshFilterTest( int argc, char* argv[] )
     }
 
 // ** TYPEDEF **
-  typedef double        CoordType;
-  const unsigned int    Dimension = 3;
+  typedef double CoordType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::QuadEdgeMesh< CoordType, Dimension >      MeshType;
-  typedef itk::MeshFileReader< MeshType >                ReaderType;
-  typedef itk::MeshFileWriter< MeshType >                WriterType;
+  typedef itk::QuadEdgeMesh< CoordType, Dimension > MeshType;
+  typedef itk::MeshFileReader< MeshType >           ReaderType;
+  typedef itk::MeshFileWriter< MeshType >           WriterType;
 
   // ** READ THE FILE IN **
-  ReaderType::Pointer reader = ReaderType::New( );
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
-    reader->Update( );
+    reader->Update();
     }
   catch( itk::ExceptionObject & excp )
     {
@@ -57,13 +57,13 @@ int itkQuadricDecimationQuadEdgeMeshFilterTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  MeshType::Pointer mesh = reader->GetOutput( );
+  MeshType::Pointer mesh = reader->GetOutput();
 
   typedef itk::NumberOfFacesCriterion< MeshType > CriterionType;
   typedef itk::QuadricDecimationQuadEdgeMeshFilter<
-    MeshType, MeshType, CriterionType > DecimationType;
+      MeshType, MeshType, CriterionType > DecimationType;
 
-  long N;
+  long              N;
   std::stringstream ssout( argv[2] );
   ssout >>N;
 
@@ -77,10 +77,10 @@ int itkQuadricDecimationQuadEdgeMeshFilterTest( int argc, char* argv[] )
   decimate->Update();
 
   // ** WRITE OUTPUT **
-  WriterType::Pointer writer = WriterType::New( );
-  writer->SetInput( decimate->GetOutput( ) );
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( decimate->GetOutput() );
   writer->SetFileName( argv[3] );
-  writer->Update( );
+  writer->Update();
 
   // ** PRINT **
   std::cout << "DecimateFilter:\n" << decimate;

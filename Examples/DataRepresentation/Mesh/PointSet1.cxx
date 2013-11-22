@@ -46,7 +46,8 @@
 #include "itkPointSet.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -64,7 +65,6 @@ int main(int, char *[])
   // Software Guide : BeginCodeSnippet
   typedef itk::PointSet< unsigned short, 3 > PointSetType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -84,19 +84,21 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointSetType::Pointer  pointsSet = PointSetType::New();
+  PointSetType::Pointer pointsSet = PointSetType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
-  //  Following the principles of Generic Programming, the \code{PointSet} class has a
+  //  Following the principles of Generic Programming, the \code{PointSet} class
+  // has a
   //  set of associated defined types to ensure that interacting objects can be
   //  declared with compatible types. This set of type definitions is
   //  commonly known as a set of \emph{traits}.  Among them we can find the
-  //  \code{PointType} type, for example.  This is the type used by the point set to
+  //  \code{PointType} type, for example.  This is the type used by the point
+  // set to
   //  represent points in space.  The following declaration takes the point
-  //  type as defined in the \code{PointSet} traits and renames it to be conveniently
+  //  type as defined in the \code{PointSet} traits and renames it to be
+  // conveniently
   //  used in the global namespace.
   //
   //  \index{itk::PointSet!PointType}
@@ -104,9 +106,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef PointSetType::PointType     PointType;
+  typedef PointSetType::PointType PointType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -116,7 +117,8 @@ int main(int, char *[])
   //  pointers. They are simply instantiated as typical C++ classes. The Point
   //  class inherits the \code{[]} operator from the \code{itk::Array} class.
   //  This makes it possible to access its components using index notation. For
-  //  efficiency's sake no bounds checking is performed during index access. It is
+  //  efficiency's sake no bounds checking is performed during index access. It
+  // is
   //  the user's responsibility to ensure that the index used is in the range
   //  $\{0,Dimension-1\}$. Each of the components in the point is associated
   //  with space coordinates. The following code illustrates how to instantiate
@@ -131,13 +133,11 @@ int main(int, char *[])
   p0[2] =  0.0;     //  z coordinate
   // Software Guide : EndCodeSnippet
 
-
   PointType p1;
 
   p1[0] =  1.0; // Point 1 = { 1,-1,0 }
   p1[1] = -1.0;
   p1[2] =  0.0;
-
 
   PointType p2; // Point 2 = { 1,1,0 }
   p2[0] =  1.0;
@@ -162,11 +162,11 @@ int main(int, char *[])
   pointsSet->SetPoint( 2, p2 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // It is possible to query the PointSet in order to determine how many points
-  // have been inserted into it. This is done with the \code{GetNumberOfPoints()}
+  // have been inserted into it. This is done with the
+  // \code{GetNumberOfPoints()}
   // method as illustrated below.
   //
   //  \index{itk::PointSet!GetNumberOfPoints()}
@@ -177,7 +177,6 @@ int main(int, char *[])
   const unsigned int numberOfPoints = pointsSet->GetNumberOfPoints();
   std::cout << numberOfPoints << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -194,14 +193,13 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   PointType pp;
-  bool pointExists =  pointsSet->GetPoint( 1, & pp );
+  bool      pointExists =  pointsSet->GetPoint( 1, &pp );
 
   if( pointExists )
     {
     std::cout << "Point is = " << pp << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

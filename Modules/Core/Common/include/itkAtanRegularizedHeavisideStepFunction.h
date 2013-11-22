@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInput = float, typename TOutput = double >
-class AtanRegularizedHeavisideStepFunction:
+class AtanRegularizedHeavisideStepFunction :
   public RegularizedHeavisideStepFunction< TInput, TOutput >
 {
 public:
@@ -76,12 +76,14 @@ public:
 protected:
 
   AtanRegularizedHeavisideStepFunction();
-  virtual ~AtanRegularizedHeavisideStepFunction();
+  virtual
+  ~AtanRegularizedHeavisideStepFunction();
 
 private:
   /** purposely not implemented */
   AtanRegularizedHeavisideStepFunction(const Self &);
   void operator=(const Self &);
+
 };
 }
 

@@ -74,7 +74,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class ScalarToRGBColormapImageFilter:
+class ScalarToRGBColormapImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -101,7 +101,7 @@ public:
   typedef typename OutputImageType::PixelType   OutputImagePixelType;
 
   typedef Function::ColormapFunction< InputImagePixelType,
-                                    OutputImagePixelType >                                ColormapType;
+                                      OutputImagePixelType >                                ColormapType;
 
   /**
    * Set/Get the colormap object.
@@ -128,11 +128,14 @@ public:
 
 protected:
   ScalarToRGBColormapImageFilter();
-  virtual ~ScalarToRGBColormapImageFilter() {}
+  virtual
+  ~ScalarToRGBColormapImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  virtual void GenerateOutputInformation()
+  virtual void
+  GenerateOutputInformation()
   {
     // this methods is overloaded so that if the output image is a
     // VectorImage then the correct number of components are set.

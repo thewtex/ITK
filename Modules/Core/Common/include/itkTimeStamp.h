@@ -68,15 +68,23 @@ public:
   /** Constructor must remain public because classes instantiate
    * TimeStamps implicitly in their construction.  */
   TimeStamp()
-  { m_ModifiedTime = 0; }
+  {
+    m_ModifiedTime = 0;
+  }
 
   /** Destoy this instance. */
-  void Delete()
-  { delete this; }
+  void
+  Delete()
+  {
+    delete this;
+  }
 
   /** The class name as a string.  */
-  static const char * GetNameOfClass()
-  { return "TimeStamp"; }
+  static const char *
+  GetNameOfClass()
+  {
+    return "TimeStamp";
+  }
 
   /** Set this objects time to the current time. The current time is just a
    * monotonically increasing unsigned long integer. It is possible for this
@@ -88,18 +96,28 @@ public:
   void Modified();
 
   /** Return this object's Modified time.  */
-  ModifiedTimeType GetMTime() const
-  { return m_ModifiedTime; }
+  ModifiedTimeType
+  GetMTime() const
+  {
+    return m_ModifiedTime;
+  }
 
   /** Support comparisons of time stamp objects directly.  */
-  bool operator>(TimeStamp & ts)
-  { return ( m_ModifiedTime > ts.m_ModifiedTime ); }
-  bool operator<(TimeStamp & ts)
-  { return ( m_ModifiedTime < ts.m_ModifiedTime ); }
+  bool
+  operator>(TimeStamp & ts)
+  {
+    return ( m_ModifiedTime > ts.m_ModifiedTime );
+  }
+
+  bool
+  operator<(TimeStamp & ts)
+  {
+    return ( m_ModifiedTime < ts.m_ModifiedTime );
+  }
 
   /** Allow for typcasting to unsigned long.  */
   operator ModifiedTimeType() const
-        { return m_ModifiedTime; }
+                { return m_ModifiedTime; }
 
   /** Assignment operator, allows to initialize one time stamp by copying from
    * another. */

@@ -28,13 +28,25 @@ template< typename TInput, typename TOutput >
 class MatrixIndexSelection
 {
 public:
-  MatrixIndexSelection() { m_I = m_J = 0; }
-  ~MatrixIndexSelection() {}
+  MatrixIndexSelection() {
+    m_I = m_J = 0;
+  }
 
-  void GetIndices(unsigned int & i, unsigned int & j) const { i = m_I; j = m_J; }
-  void SetIndices(unsigned int i, unsigned int j) { m_I = i; m_J = j; }
+  ~MatrixIndexSelection() {
+  }
 
-  bool operator!=(const MatrixIndexSelection & other) const
+  void
+  GetIndices(unsigned int & i, unsigned int & j) const {
+    i = m_I; j = m_J;
+  }
+
+  void
+  SetIndices(unsigned int i, unsigned int j) {
+    m_I = i; m_J = j;
+  }
+
+  bool
+  operator!=(const MatrixIndexSelection & other) const
   {
     if ( m_I != other.m_I
          || m_J != other.m_J  )
@@ -44,12 +56,14 @@ public:
     return false;
   }
 
-  bool operator==(const MatrixIndexSelection & other) const
+  bool
+  operator==(const MatrixIndexSelection & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( A[m_I][m_J] );
   }
@@ -78,7 +92,7 @@ private:
  */
 
 template< typename TInputImage, typename TOutputImage >
-class MatrixIndexSelectionImageFilter:
+class MatrixIndexSelectionImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::MatrixIndexSelection< typename TInputImage::PixelType,
@@ -87,14 +101,14 @@ class MatrixIndexSelectionImageFilter:
 public:
   /** Standard class typedefs. */
   typedef MatrixIndexSelectionImageFilter
-  Self;
+    Self;
   typedef UnaryFunctorImageFilter< TInputImage, TOutputImage,
                                    Functor::MatrixIndexSelection< typename TInputImage::PixelType,
                                                                   typename TOutputImage::PixelType > > Superclass;
   typedef SmartPointer< Self >
-  Pointer;
+    Pointer;
   typedef SmartPointer< const Self >
-  ConstPointer;
+    ConstPointer;
 
   /** Run-time type information (and related methods).   */
   itkTypeMacro(MatrixIndexSelectionImageFilter, UnaryFunctorImageFilter);
@@ -103,14 +117,18 @@ public:
   itkNewMacro(Self);
 
   /** Get/Set methods for the index */
-  void SetIndices(unsigned int i, unsigned int j)
+  void
+  SetIndices(unsigned int i, unsigned int j)
   {
     this->GetFunctor().SetIndices(i, j);
     this->Modified();
   }
 
-  void GetIndices(unsigned int & i, unsigned int & j) const
-  { return this->GetFunctor().GetIndices(i, j); }
+  void
+  GetIndices(unsigned int & i, unsigned int & j) const
+  {
+    return this->GetFunctor().GetIndices(i, j);
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -120,12 +138,17 @@ public:
 #endif
 
 protected:
-  MatrixIndexSelectionImageFilter() {}
-  virtual ~MatrixIndexSelectionImageFilter() {}
+  MatrixIndexSelectionImageFilter() {
+  }
+
+  virtual
+  ~MatrixIndexSelectionImageFilter() {
+  }
 
 private:
   MatrixIndexSelectionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };
 } // end namespace itk
 

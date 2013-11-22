@@ -40,7 +40,7 @@ namespace itk
  */
 template <
   typename TScalar = float, // Type for cordinate representation type (float or
-                             // double)
+                            // double)
   unsigned int NDimensions = 3>
 // Number of dimensions
 // class ScaleTransform:public Transform< TScalar,
@@ -115,7 +115,8 @@ public:
   /** Set the fixed parameters and update internal
    * transformation. This transform has no fixed paramaters
    */
-  virtual void SetFixedParameters(const ParametersType &)
+  virtual void
+  SetFixedParameters(const ParametersType &)
   {
   }
 
@@ -139,7 +140,8 @@ public:
    * to be applied to each one of the coordinaates. For example, in 3D,
    * scale[0] corresponds to X, scale[1] corresponds to Y and scale[2]
    * corresponds to Z. */
-  void SetScale(const ScaleType & scale)
+  void
+  SetScale(const ScaleType & scale)
   {
     m_Scale = scale; this->ComputeMatrix(); this->Modified();
   }
@@ -192,7 +194,8 @@ public:
   /** Set the transformation to an Identity
    *
    * This sets all the scales to 1.0 */
-  void SetIdentity(void)
+  void
+  SetIdentity(void)
   {
     m_Scale.Fill(1.0);
   }
@@ -209,7 +212,8 @@ public:
    *
    *           T( a*P + b*Q ) = a * T(P) + b * T(Q)
    */
-  virtual bool IsLinear() const
+  virtual bool
+  IsLinear() const
   {
     return true;
   }

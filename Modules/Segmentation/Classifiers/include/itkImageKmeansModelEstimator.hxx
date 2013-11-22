@@ -44,7 +44,8 @@ template< typename TInputImage,
           typename TMembershipFunction >
 ImageKmeansModelEstimator< TInputImage, TMembershipFunction >
 ::~ImageKmeansModelEstimator(void)
-{}
+{
+}
 
 /**
  * PrintSelf
@@ -717,6 +718,7 @@ ImageKmeansModelEstimator< TInputImage, TMembershipFunction >
 
   return LBG_COMPLETED;
 } // End WithoutCodebookUseLBG()
+
 } // namespace itk
 
 #endif

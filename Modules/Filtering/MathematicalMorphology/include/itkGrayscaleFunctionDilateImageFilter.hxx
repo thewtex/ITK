@@ -63,5 +63,6 @@ GrayscaleFunctionDilateImageFilter< TInputImage, TOutputImage, TKernel >
 
   return max;
 }
+
 } // end namespace itk
 #endif

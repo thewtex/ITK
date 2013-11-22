@@ -43,7 +43,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class BlobSpatialObject:
+class BlobSpatialObject :
   public PointBasedSpatialObject<  TDimension >
 {
 public:
@@ -78,16 +78,23 @@ public:
   void SetPoints(PointListType & newPoints);
 
   /** Return a point in the list given the index */
-  const SpatialObjectPointType * GetPoint(IdentifierType id) const
+  const SpatialObjectPointType *
+  GetPoint(IdentifierType id) const
   {
     return &( m_Points[id] );
   }
 
   /** Return a point in the list given the index */
-  SpatialObjectPointType * GetPoint(IdentifierType id) { return &( m_Points[id] ); }
+  SpatialObjectPointType *
+  GetPoint(IdentifierType id) {
+    return &( m_Points[id] );
+  }
 
   /** Return the number of points in the list */
-  SizeValueType GetNumberOfPoints(void) const { return m_Points.size(); }
+  SizeValueType
+  GetNumberOfPoints(void) const {
+    return m_Points.size();
+  }
 
   /** Returns true if the Blob is evaluable at the requested point,
    *  false otherwise. */
@@ -120,10 +127,12 @@ protected:
   PointListType m_Points;
 
   BlobSpatialObject();
-  virtual ~BlobSpatialObject();
+  virtual
+  ~BlobSpatialObject();
 
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

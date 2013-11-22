@@ -42,7 +42,7 @@ QuickPropLearningRule <LayerType,TTargetVector>
 template<typename LayerType, typename TTargetVector>
 void
 QuickPropLearningRule<LayerType,TTargetVector>
-::Learn(LayerType* layer, ValueType itkNotUsed(lr))
+::Learn(LayerType* layer, ValueType itkNotUsed(lr) )
 {
   typename LayerType::WeightSetType::Pointer inputweightset = layer->GetModifiableInputWeightSet();
 
@@ -64,29 +64,29 @@ QuickPropLearningRule<LayerType,TTargetVector>
   Del_m_1.copy_in(Delvalues_m_1);
 
   vnl_matrix<ValueType> DW_temp(inputweightset->GetNumberOfOutputNodes(),
-                                           inputweightset->GetNumberOfInputNodes());
+                                inputweightset->GetNumberOfInputNodes() );
   vnl_matrix<ValueType> weights(inputweightset->GetNumberOfOutputNodes(),
-                                           inputweightset->GetNumberOfInputNodes());
+                                inputweightset->GetNumberOfInputNodes() );
   DW_temp.copy_in(Delvalues);
   weights.copy_in(weightvalues);
 
   vnl_matrix<ValueType> temp(inputweightset->GetNumberOfOutputNodes(),
-                                        inputweightset->GetNumberOfInputNodes());
+                             inputweightset->GetNumberOfInputNodes() );
   temp.fill(0);
 
   //get bias
   vnl_vector<ValueType> delb;
-  delb.set_size(inputweightset->GetNumberOfOutputNodes());
+  delb.set_size(inputweightset->GetNumberOfOutputNodes() );
   delb.fill(0);
   vnl_vector<ValueType> delb_m_1;
-  delb_m_1.set_size(inputweightset->GetNumberOfOutputNodes());
+  delb_m_1.set_size(inputweightset->GetNumberOfOutputNodes() );
   delb_m_1.fill(0);
   vnl_vector<ValueType> DB_m_1;
-  DB_m_1.set_size(inputweightset->GetNumberOfOutputNodes());
+  DB_m_1.set_size(inputweightset->GetNumberOfOutputNodes() );
   DB_m_1.fill(0);
 
   vnl_vector<ValueType> DB;
-  DB.set_size(inputweightset->GetNumberOfOutputNodes());
+  DB.set_size(inputweightset->GetNumberOfOutputNodes() );
   DB.fill(0);
 
   typename LayerType::ValuePointer deltaBValues = inputweightset->GetTotalDeltaBValues();
@@ -96,13 +96,12 @@ QuickPropLearningRule<LayerType,TTargetVector>
   typename LayerType::ValuePointer prevDBValues = inputweightset->GetPrevDBValues();
   DB_m_1.copy_in(prevDBValues);
 
-
   DW_temp.set_column(input_cols-1,delb);
   Del_m_1.set_column(input_cols-1,delb_m_1);
   DW_m_1.set_column(input_cols-1,DB_m_1);
 
   ValueType step_val;
-  float shrink_factor =(float)m_Max_Growth_Factor/(1.0+ m_Max_Growth_Factor);
+  float     shrink_factor =(float)m_Max_Growth_Factor/(1.0+ m_Max_Growth_Factor);
 
   for(unsigned int i=0; i<input_rows; i++)
     {
@@ -114,48 +113,48 @@ QuickPropLearningRule<LayerType,TTargetVector>
         {
         if(DW_temp(i,j)>0.0)
           {
-          step_val += (m_Epsilon *DW_temp(i,j));
+          step_val += (m_Epsilon *DW_temp(i,j) );
           }
-        if(DW_temp(i,j) >(shrink_factor*Del_m_1(i,j)))
+        if(DW_temp(i,j) >(shrink_factor*Del_m_1(i,j) ) )
           {
-          step_val += (m_Max_Growth_Factor*DW_m_1(i,j));
+          step_val += (m_Max_Growth_Factor*DW_m_1(i,j) );
           }
         else
           {
-          step_val += ((DW_temp(i,j)/(Del_m_1(i,j)-DW_temp(i,j)))*DW_m_1(i,j));
+          step_val += ( (DW_temp(i,j)/(Del_m_1(i,j)-DW_temp(i,j) ) )*DW_m_1(i,j) );
           }
         }
       else if(DW_m_1(i,j)< -m_Threshold)
         {
         if(DW_temp(i,j)<0.0)
           {
-          step_val += (m_Epsilon *DW_temp(i,j));
+          step_val += (m_Epsilon *DW_temp(i,j) );
           }
-        if(DW_temp(i,j) <(shrink_factor *Del_m_1(i,j)))
+        if(DW_temp(i,j) <(shrink_factor *Del_m_1(i,j) ) )
           {
-          step_val += (m_Max_Growth_Factor *DW_m_1(i,j));
+          step_val += (m_Max_Growth_Factor *DW_m_1(i,j) );
           }
         else
           {
-          step_val += ((DW_temp(i,j)/(Del_m_1(i,j)-DW_temp(i,j)))*DW_m_1(i,j));
+          step_val += ( (DW_temp(i,j)/(Del_m_1(i,j)-DW_temp(i,j) ) )*DW_m_1(i,j) );
           }
         }
       else
         {
-        step_val += (m_Epsilon*DW_temp(i,j))+(m_Momentum *DW_m_1(i,j));
+        step_val += (m_Epsilon*DW_temp(i,j) )+(m_Momentum *DW_m_1(i,j) );
         }
       temp(i,j)=step_val;
-      }// inner for
-   }//outer for
+      } // inner for
+    }   //outer for
   DB=temp.get_column(input_cols-1);
-  inputweightset->SetDBValues(DB.data_block());
-  inputweightset->SetDWValues(temp.data_block());
+  inputweightset->SetDBValues(DB.data_block() );
+  inputweightset->SetDWValues(temp.data_block() );
 }
 
 template<typename LayerType, typename TTargetVector>
 void
 QuickPropLearningRule<LayerType,TTargetVector>
-::Learn(LayerType* itkNotUsed(layer), TTargetVector itkNotUsed(errors),ValueType itkNotUsed(lr))
+::Learn(LayerType* itkNotUsed(layer), TTargetVector itkNotUsed(errors),ValueType itkNotUsed(lr) )
 {
 }
 

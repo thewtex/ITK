@@ -39,7 +39,8 @@ public:
   }
 
   // destructor
-  virtual ~GPUFunctorBase() {
+  virtual
+  ~GPUFunctorBase() {
   }
 
   /** Setup GPU kernel arguments for this functor.

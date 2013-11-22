@@ -44,6 +44,7 @@ BinaryImageToShapeLabelMapFilter< TInputImage, TOutputImage >
 
   // We need all the inputs.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -108,5 +109,6 @@ BinaryImageToShapeLabelMapFilter< TInputImage, TOutputImage >
   os << indent << "ComputeFeretDiameter: " << m_ComputeFeretDiameter << std::endl;
   os << indent << "ComputePerimeter: " << m_ComputePerimeter << std::endl;
 }
+
 } // end namespace itk
 #endif

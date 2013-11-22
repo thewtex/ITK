@@ -61,6 +61,7 @@ SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "MaxRefitIteration: " << m_MaxRefitIteration << std::endl;
   os << indent << "MaxNormalIteration: " << m_MaxNormalIteration << std::endl;
   os << indent << "CurvatureBandWidth: " << m_CurvatureBandWidth << std::endl;
@@ -81,7 +82,8 @@ SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
+void
+SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
 ::SetLevelSetFunction(LevelSetFunctionType *lsf)
 {
   m_LevelSetFunction = lsf;
@@ -165,8 +167,8 @@ SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
     radius[j] = 1;
     }
   SparseImageIteratorType
-  sparseImageIterator ( radius, sparseImage,
-                        sparseImage->GetRequestedRegion() );
+    sparseImageIterator ( radius, sparseImage,
+                          sparseImage->GetRequestedRegion() );
 
   ValueType distance;
   NodeType *node;
@@ -264,6 +266,7 @@ SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
   this->ComputeCurvatureTarget(tmp, SparseNormalImage);
   m_LevelSetFunction->SetSparseTargetImage(SparseNormalImage);
 }
+
 } // end namespace itk
 
 #endif

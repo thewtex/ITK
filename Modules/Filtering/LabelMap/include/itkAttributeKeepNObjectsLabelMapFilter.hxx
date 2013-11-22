@@ -21,7 +21,6 @@
 #include "itkAttributeKeepNObjectsLabelMapFilter.h"
 #include "itkProgressReporter.h"
 
-
 namespace itk {
 
 template <typename TImage, typename TAttributeAccessor>
@@ -32,9 +31,8 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
   m_NumberOfObjects = 1;
   // create the output image for the removed objects
   this->SetNumberOfRequiredOutputs(2);
-  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer()));
+  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer() ) );
 }
-
 
 template <typename TImage, typename TAttributeAccessor>
 void
@@ -47,7 +45,8 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
   ImageType * output = this->GetOutput();
   ImageType * output2 = this->GetOutput( 1 );
 
-  // set the background value for the second output - this is not done in the superclasses
+  // set the background value for the second output - this is not done in the
+  // superclasses
   output2->SetBackgroundValue( output->GetBackgroundValue() );
 
   ProgressReporter progress( this, 0, 2 * output->GetNumberOfLabelObjects() );
@@ -57,8 +56,8 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
   VectorType labelObjects;
   labelObjects.reserve( output->GetNumberOfLabelObjects() );
   for( typename ImageType::Iterator it( output );
-    ! it.IsAtEnd();
-    ++it )
+       !it.IsAtEnd();
+       ++it )
     {
     labelObjects.push_back( it.GetLabelObject() );
     progress.CompletedPixel();
@@ -82,8 +81,8 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
 
     // and move the last objects to the second output
     for( typename VectorType::const_iterator it = end;
-      it != labelObjects.end();
-      it++ )
+         it != labelObjects.end();
+         it++ )
       {
       output->RemoveLabelObject( *it );
       output2->AddLabelObject( *it );
@@ -91,7 +90,6 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
       }
     }
 }
-
 
 template <typename TImage, typename TAttributeAccessor>
 void
@@ -104,5 +102,5 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
   os << indent << "NumberOfObjects: "  << m_NumberOfObjects << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

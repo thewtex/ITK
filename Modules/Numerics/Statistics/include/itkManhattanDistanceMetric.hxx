@@ -70,6 +70,7 @@ ManhattanDistanceMetric< TVector >
     }
   return distance;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

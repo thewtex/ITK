@@ -40,7 +40,7 @@ namespace itk
  * \endwiki
  */
 template< typename TPixel, unsigned int VImageDimension = 2 >
-class ImportImageFilter:
+class ImportImageFilter :
   public ImageSource< Image< TPixel, VImageDimension > >
 {
 public:
@@ -92,15 +92,21 @@ public:
    * for the imported image. This will serve as the LargestPossibleRegion,
    * the BufferedRegion, and the RequestedRegion.
    * \sa ImageRegion */
-  void SetRegion(const RegionType & region)
-  { if ( m_Region != region ) { m_Region = region; this->Modified(); } }
+  void
+  SetRegion(const RegionType & region)
+  {
+    if ( m_Region != region ) { m_Region = region; this->Modified(); }
+  }
 
   /** Get the region object that defines the size and starting index
    * for the imported image. This will serve as the LargestPossibleRegion,
    * the BufferedRegion, and the RequestedRegion.
    * \sa ImageRegion */
-  const RegionType & GetRegion() const
-  { return m_Region; }
+  const RegionType &
+  GetRegion() const
+  {
+    return m_Region;
+  }
 
   /** Set the spacing (size of a pixel) of the image.
    * \sa GetSpacing() */

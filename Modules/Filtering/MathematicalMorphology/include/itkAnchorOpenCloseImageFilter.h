@@ -48,16 +48,16 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TImage, typename TKernel, typename TCompare1, typename TCompare2 >
-class AnchorOpenCloseImageFilter:
+class AnchorOpenCloseImageFilter :
   public KernelImageFilter< TImage, TImage, TKernel >
 {
 public:
   /** Standard class typedefs. */
-  typedef AnchorOpenCloseImageFilter           Self;
+  typedef AnchorOpenCloseImageFilter Self;
   typedef KernelImageFilter< TImage, TImage, TKernel >
-                                               Superclass;
-  typedef SmartPointer< Self >                 Pointer;
-  typedef SmartPointer< const Self >           ConstPointer;
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Some convenient typedefs. */
   /** Kernel typedef. */
@@ -85,7 +85,9 @@ public:
 
 protected:
   AnchorOpenCloseImageFilter();
-  ~AnchorOpenCloseImageFilter() {}
+  ~AnchorOpenCloseImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Multi-thread version GenerateData. */
@@ -124,6 +126,7 @@ private:
                   std::vector<InputImagePixelType> & outbuffer,
                   const InputImageRegionType AllImage,
                   const InputImageRegionType face);
+
 }; // end of class
 } // end namespace itk
 

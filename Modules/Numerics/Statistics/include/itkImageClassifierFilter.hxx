@@ -45,6 +45,7 @@ ImageClassifierFilter< TSample, TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number of classes: "
      << this->GetNumberOfClasses()
      << std::endl;
@@ -171,7 +172,7 @@ ImageClassifierFilter< TSample, TInputImage, TOutputImage >
   discriminantScores.resize(this->m_NumberOfClasses);
 
   OutputImageType *outputImage = dynamic_cast< OutputImageType * >(
-    this->ProcessObject::GetOutput(0) );
+      this->ProcessObject::GetOutput(0) );
 
   outputImage->CopyInformation(inputImage);
   outputImage->SetRegions( inputImage->GetBufferedRegion() );
@@ -192,7 +193,7 @@ ImageClassifierFilter< TSample, TInputImage, TOutputImage >
     for ( unsigned int i = 0; i < this->m_NumberOfClasses; i++ )
       {
       discriminantScores[i] = membershipFunctionsWeightsArray[i]
-                              * membershipFunctions[i]->Evaluate(measurements);
+        * membershipFunctions[i]->Evaluate(measurements);
       }
 
     unsigned int classIndex;
@@ -205,6 +206,7 @@ ImageClassifierFilter< TSample, TInputImage, TOutputImage >
     ++outItr;
     }
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

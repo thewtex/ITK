@@ -58,18 +58,18 @@ namespace itk
  * \ingroup ITKPath
  */
 template< unsigned int VDimension >
-class ParametricPath:public
+class ParametricPath : public
   Path< double, ContinuousIndex< SpacePrecisionType, VDimension >, VDimension >
 {
 public:
   /** Standard class typedefs. */
-  typedef ParametricPath                                   Self;
+  typedef ParametricPath Self;
   /** All paths must be mapable to index space */
   typedef ContinuousIndex< SpacePrecisionType,VDimension > ContinuousIndexType;
   typedef Path< double, ContinuousIndexType, VDimension >  Superclass;
 
-  typedef SmartPointer< Self >                             Pointer;
-  typedef SmartPointer< const Self >                       ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ParametricPath, Path);
@@ -80,9 +80,9 @@ public:
   /** Output type */
   typedef typename Superclass::OutputType OutputType;
 
-  typedef Index<  VDimension >                  IndexType;
-  typedef Offset< VDimension >                  OffsetType;
-  typedef Vector< double, VDimension >          VectorType;
+  typedef Index<  VDimension >         IndexType;
+  typedef Offset< VDimension >         OffsetType;
+  typedef Vector< double, VDimension > VectorType;
 
   /** Return the nearest index to the parametric path at the specified location.
    * This is a wrapper to Evaluate(). */
@@ -118,7 +118,9 @@ public:
 
 protected:
   ParametricPath();
-  ~ParametricPath(){}
+  ~ParametricPath(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Default 1D input increment amount to trace along the path.  Also, the
@@ -136,6 +138,7 @@ protected:
 private:
   ParametricPath(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 } // namespace itk

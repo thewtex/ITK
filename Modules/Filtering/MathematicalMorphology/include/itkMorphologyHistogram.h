@@ -34,31 +34,37 @@ public:
 
   typedef typename std::map< TInputPixel, IdentifierType, TCompare > MapType;
 
-  MorphologyHistogram(){}
+  MorphologyHistogram(){
+  }
 
-  inline void AddBoundary()
+  inline void
+  AddBoundary()
   {
     m_Map[m_Boundary]++;
   }
 
-  inline void RemoveBoundary()
+  inline void
+  RemoveBoundary()
   {
     m_Map[m_Boundary]--;
   }
 
-  inline void AddPixel(const TInputPixel & p)
+  inline void
+  AddPixel(const TInputPixel & p)
   {
     m_Map[p]++;
   }
 
-  inline void RemovePixel(const TInputPixel & p)
+  inline void
+  RemovePixel(const TInputPixel & p)
   {
     m_Map[p]--;
   }
 
-  inline TInputPixel GetValue()
+  inline TInputPixel
+  GetValue()
   {
-    itkAssertInDebugAndIgnoreInReleaseMacro(!m_Map.empty());
+    itkAssertInDebugAndIgnoreInReleaseMacro(!m_Map.empty() );
     // clean the map
     typename MapType::iterator mapIt = m_Map.begin();
     while ( mapIt != m_Map.end() )
@@ -85,21 +91,24 @@ public:
       }
 
     // and return the value
-    itkAssertInDebugAndIgnoreInReleaseMacro(!m_Map.empty());
+    itkAssertInDebugAndIgnoreInReleaseMacro(!m_Map.empty() );
     return m_Map.begin()->first;
   }
 
-  inline TInputPixel GetValue(const TInputPixel &)
+  inline TInputPixel
+  GetValue(const TInputPixel &)
   {
     return GetValue();
   }
 
-  void SetBoundary(const TInputPixel & val)
+  void
+  SetBoundary(const TInputPixel & val)
   {
     m_Boundary = val;
   }
 
-  static bool UseVectorBasedAlgorithm()
+  static bool
+  UseVectorBasedAlgorithm()
   {
     return false;
   }
@@ -133,17 +142,20 @@ public:
     m_Boundary = 0;
   }
 
-  inline void AddBoundary()
+  inline void
+  AddBoundary()
   {
     AddPixel(m_Boundary);
   }
 
-  inline void RemoveBoundary()
+  inline void
+  RemoveBoundary()
   {
     RemovePixel(m_Boundary);
   }
 
-  inline void AddPixel(const TInputPixel & p)
+  inline void
+  AddPixel(const TInputPixel & p)
   {
     m_Vector[p - NumericTraits < TInputPixel > ::NonpositiveMin()]++;
     if ( m_Compare(p, m_CurrentValue) )
@@ -152,7 +164,8 @@ public:
       }
   }
 
-  inline void RemovePixel(const TInputPixel & p)
+  inline void
+  RemovePixel(const TInputPixel & p)
   {
     m_Vector[p - NumericTraits < TInputPixel > ::NonpositiveMin()]--;
     while ( m_Vector[m_CurrentValue - NumericTraits < TInputPixel > ::NonpositiveMin()] == 0
@@ -162,37 +175,42 @@ public:
       }
   }
 
-  inline TInputPixel GetValue()
+  inline TInputPixel
+  GetValue()
   {
     return m_CurrentValue;
   }
 
-  inline TInputPixel GetValue(const TInputPixel &)
+  inline TInputPixel
+  GetValue(const TInputPixel &)
   {
     return GetValue();
   }
 
-  void SetBoundary(const TInputPixel & val)
+  void
+  SetBoundary(const TInputPixel & val)
   {
     m_Boundary = val;
   }
 
-  static bool UseVectorBasedAlgorithm()
+  static bool
+  UseVectorBasedAlgorithm()
   {
     return true;
   }
 
-  std::vector< IdentifierType >   m_Vector;
-  TInputPixel                     m_InitValue;
-  TInputPixel                     m_CurrentValue;
-  TCompare                        m_Compare;
-  signed int                      m_Direction;
-  TInputPixel                     m_Boundary;
+  std::vector< IdentifierType > m_Vector;
+  TInputPixel                   m_InitValue;
+  TInputPixel                   m_CurrentValue;
+  TCompare                      m_Compare;
+  signed int                    m_Direction;
+  TInputPixel                   m_Boundary;
 };
 
 /** \cond HIDE_SPECIALIZATION_DOCUMENTATION */
 
-// now create MorphologyHistogram partial specilizations using the VectorMorphologyHistogram
+// now create MorphologyHistogram partial specilizations using the
+// VectorMorphologyHistogram
 // as base class
 
 template< typename TCompare >

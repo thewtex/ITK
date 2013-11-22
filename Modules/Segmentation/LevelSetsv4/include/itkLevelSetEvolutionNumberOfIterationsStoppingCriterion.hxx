@@ -25,12 +25,13 @@ namespace itk
 {
 template< typename TLevelSetContainer >
 LevelSetEvolutionNumberOfIterationsStoppingCriterion< TLevelSetContainer >::
-LevelSetEvolutionNumberOfIterationsStoppingCriterion() {}
+LevelSetEvolutionNumberOfIterationsStoppingCriterion() {
+}
 
 template< typename TLevelSetContainer >
 LevelSetEvolutionNumberOfIterationsStoppingCriterion< TLevelSetContainer >::
-~LevelSetEvolutionNumberOfIterationsStoppingCriterion() {}
-
+~LevelSetEvolutionNumberOfIterationsStoppingCriterion() {
+}
 
 template< typename TLevelSetContainer >
 bool
@@ -49,4 +50,4 @@ GetDescription() const
 }
 
 }
- #endif
+#endif

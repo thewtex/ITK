@@ -21,7 +21,8 @@
 #include "itkDICOMSeriesFileNames.h"
 #include "itkFilterWatcher.h"
 
-int itkDICOMImageSeriesTest2(int ac, char* av[])
+int
+itkDICOMImageSeriesTest2(int ac, char* av[])
 {
 
   if( ac < 2 )
@@ -41,7 +42,7 @@ int itkDICOMImageSeriesTest2(int ac, char* av[])
 
   ReaderType::Pointer reader = ReaderType::New();
 
-  typedef itk::DICOMSeriesFileNames::FileNamesArrayType  FileNamesArrayType;
+  typedef itk::DICOMSeriesFileNames::FileNamesArrayType FileNamesArrayType;
 
   FileNamesArrayType filenames = names->GetFileNames();
 
@@ -68,7 +69,6 @@ int itkDICOMImageSeriesTest2(int ac, char* av[])
     std::cout << ex;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

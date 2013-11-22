@@ -32,7 +32,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
@@ -50,8 +49,8 @@
 
 #include "itkRescaleIntensityImageFilter.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -67,16 +66,16 @@ int main( int argc, char * argv[] )
 
   const unsigned int Dimension = 2;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
-  typedef itk::Image< CharPixelType, Dimension >     CharImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::Image< CharPixelType, Dimension >   CharImageType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< CharImageType >    WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< CharImageType >   WriterType;
 
   typedef itk::RescaleIntensityImageFilter< OutputImageType, CharImageType>
-                                                            RescaleFilterType;
+    RescaleFilterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -86,9 +85,8 @@ int main( int argc, char * argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-  typedef itk::ZeroCrossingBasedEdgeDetectionImageFilter< InputImageType, OutputImageType>  FilterType;
+  typedef itk::ZeroCrossingBasedEdgeDetectionImageFilter< InputImageType, OutputImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
-
 
   //  Software Guide : BeginLatex
   //
@@ -109,7 +107,6 @@ int main( int argc, char * argv[] )
   filter->SetVariance( atof( argv[3] ) );
   filter->SetMaximumError( atof( argv[4] ) );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -132,14 +129,13 @@ int main( int argc, char * argv[] )
   rescaler->SetOutputMaximum( 255 );
 
   try
-  {
-  writer->Update();
-  }
+    {
+    writer->Update();
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
-  }
-
+    }
 
   return EXIT_SUCCESS;
 }

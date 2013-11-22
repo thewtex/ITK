@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKSignedDistanceFunction
  */
 template< typename TCoordRep, unsigned int VSpaceDimension >
-class SphereSignedDistanceFunction:
+class SphereSignedDistanceFunction :
   public ShapeSignedDistanceFunction< TCoordRep, VSpaceDimension >
 {
 public:
@@ -79,17 +79,25 @@ public:
    * is the radius and the next SpaceDimension parameters represent the center. */
   virtual void SetParameters(const ParametersType &);
 
-  virtual unsigned int GetNumberOfShapeParameters(void) const
-  { return 1; }
-  virtual unsigned int GetNumberOfPoseParameters(void) const
-  { return SpaceDimension; }
+  virtual unsigned int
+  GetNumberOfShapeParameters(void) const
+  {
+    return 1;
+  }
+
+  virtual unsigned int
+  GetNumberOfPoseParameters(void) const
+  {
+    return SpaceDimension;
+  }
 
   /** Evaluate the signed distance from a shape at a given position. */
   virtual OutputType Evaluate(const PointType & point) const;
 
 protected:
   SphereSignedDistanceFunction();
-  ~SphereSignedDistanceFunction(){}
+  ~SphereSignedDistanceFunction(){
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

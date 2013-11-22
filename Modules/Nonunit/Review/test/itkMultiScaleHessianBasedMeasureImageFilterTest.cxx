@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
+int
+itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
 {
   if ( argc < 4 )
     {
@@ -30,21 +31,22 @@ int itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
               << argv[0]
               << " InputImage"
               << " EnhancedOutputImage ScalesOutputImage "
-              << " [SigmaMin SigmaMax NumberOfScales ObjectDimension Bright/Dark EnhancedOutputImage2 ScalesOutputImage3]" << std::endl;
+              <<
+      " [SigmaMin SigmaMax NumberOfScales ObjectDimension Bright/Dark EnhancedOutputImage2 ScalesOutputImage3]" <<
+      std::endl;
     return EXIT_FAILURE;
     }
 
   // Define the dimension of the images
   const unsigned int Dimension = 2;
 
-  typedef float                                 InputPixelType;
-  typedef itk::Image<InputPixelType,Dimension>  InputImageType;
-
+  typedef float                                InputPixelType;
+  typedef itk::Image<InputPixelType,Dimension> InputImageType;
 
   typedef float                                 OutputPixelType;
   typedef itk::Image<OutputPixelType,Dimension> OutputImageType;
 
-  typedef itk::ImageFileReader<InputImageType>  FileReaderType;
+  typedef itk::ImageFileReader<InputImageType> FileReaderType;
 
   typedef itk::ImageFileWriter<OutputImageType> FileWriterType;
 
@@ -57,7 +59,8 @@ int itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
   typedef itk::HessianToObjectnessMeasureImageFilter< HessianImageType,OutputImageType > ObjectnessFilterType;
 
   // Declare the type of multiscale enhancement filter
-  typedef itk::MultiScaleHessianBasedMeasureImageFilter< InputImageType,HessianImageType, OutputImageType > MultiScaleEnhancementFilterType;
+  typedef itk::MultiScaleHessianBasedMeasureImageFilter< InputImageType,HessianImageType,
+                                                         OutputImageType > MultiScaleEnhancementFilterType;
 
   FileReaderType::Pointer imageReader = FileReaderType::New();
   imageReader->SetFileName(argv[1]);
@@ -78,9 +81,8 @@ int itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
   objectnessFilter->SetBeta(0.5);
   objectnessFilter->SetGamma(5.0);
 
-
   MultiScaleEnhancementFilterType::Pointer multiScaleEnhancementFilter = MultiScaleEnhancementFilterType::New();
-  multiScaleEnhancementFilter->SetInput(imageReader->GetOutput());
+  multiScaleEnhancementFilter->SetInput(imageReader->GetOutput() );
   multiScaleEnhancementFilter->SetHessianToMeasureFilter( objectnessFilter );
   multiScaleEnhancementFilter->SetSigmaStepMethodToLogarithmic();
 
@@ -88,7 +90,7 @@ int itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
 
   const double tolerance = 0.01;
 
-   if ( argc > 4 )
+  if ( argc > 4 )
     {
     double sigmaMinimum = atof( argv[4] );
     multiScaleEnhancementFilter->SetSigmaMinimum( sigmaMinimum );
@@ -212,7 +214,7 @@ int itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
     {
     //Change sigma step to equispaced type and regnerate vesselness image
     multiScaleEnhancementFilter->SetSigmaStepMethod(
-          MultiScaleEnhancementFilterType::EquispacedSigmaSteps);
+      MultiScaleEnhancementFilterType::EquispacedSigmaSteps);
 
     try
       {
@@ -240,7 +242,8 @@ int itkMultiScaleHessianBasedMeasureImageFilterTest( int argc, char *argv[] )
 
   if ( argc > 10 )
     {
-    //Change NonNegativeHessianBasedMeasure to Off and regnerate vesselness image
+    //Change NonNegativeHessianBasedMeasure to Off and regnerate vesselness
+    // image
     multiScaleEnhancementFilter->NonNegativeHessianBasedMeasureOff();
 
     multiScaleEnhancementFilter->Print( std::cout );

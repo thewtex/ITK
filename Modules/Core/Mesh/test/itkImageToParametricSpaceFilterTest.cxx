@@ -20,48 +20,47 @@
 #include "itkImageToParametricSpaceFilter.h"
 #include "itkMesh.h"
 
-int itkImageToParametricSpaceFilterTest(int, char* [] )
+int
+itkImageToParametricSpaceFilterTest(int, char* [] )
 {
 
-  typedef float  ImagePixelType;
+  typedef float ImagePixelType;
 
   // Declare the type for the images
-  typedef itk::Image<ImagePixelType,2>        ImageType;
-  typedef ImageType::Pointer                  ImagePointer;
-  typedef ImageType::IndexType                IndexType;
+  typedef itk::Image<ImagePixelType,2> ImageType;
+  typedef ImageType::Pointer           ImagePointer;
+  typedef ImageType::IndexType         IndexType;
 
   // Make the Mesh PointData type be an Image Index.
-  typedef itk::Point<float,2>                 MeshPixelType;
+  typedef itk::Point<float,2> MeshPixelType;
 
   // Declare the types of the Mesh
-  typedef itk::Mesh<MeshPixelType>  MeshType;
+  typedef itk::Mesh<MeshPixelType> MeshType;
 
   // Declare the type for PointsContainer
-  typedef MeshType::PointsContainer     PointsContainerType;
+  typedef MeshType::PointsContainer PointsContainerType;
 
   // Declare the type for PointsContainerPointer
   typedef MeshType::PointsContainerPointer
-                                        PointsContainerPointer;
+    PointsContainerPointer;
   // Declare the type for Points
-  typedef MeshType::PointType           PointType;
+  typedef MeshType::PointType PointType;
 
   // Create an input Mesh
   MeshType::Pointer inputMesh  = MeshType::New();
 
   // Insert data on the Mesh
-  PointsContainerPointer  points = inputMesh->GetPoints();
-
+  PointsContainerPointer points = inputMesh->GetPoints();
 
   // Declare the type for the images
   typedef itk::ImageRegionIteratorWithIndex<ImageType> ImageIteratorType;
 
   // Declare the type for the filter
   typedef itk::ImageToParametricSpaceFilter<
-                                       ImageType,
-                                       MeshType   > FilterType;
+      ImageType,
+      MeshType   > FilterType;
 
-  typedef FilterType::Pointer                     FilterPointer;
-
+  typedef FilterType::Pointer FilterPointer;
 
   ImagePointer imageX = ImageType::New();
   ImagePointer imageY = ImageType::New();
@@ -94,33 +93,31 @@ int itkImageToParametricSpaceFilterTest(int, char* [] )
   imageY->Allocate();
   imageZ->Allocate();
 
-  ImageIteratorType   ix( imageX, region );
-  ImageIteratorType   iy( imageY, region );
-  ImageIteratorType   iz( imageZ, region );
+  ImageIteratorType ix( imageX, region );
+  ImageIteratorType iy( imageY, region );
+  ImageIteratorType iz( imageZ, region );
 
   ix.GoToBegin();
   iy.GoToBegin();
   iz.GoToBegin();
 
-
-  while( ! ix.IsAtEnd() )
+  while( !ix.IsAtEnd() )
     {
-      ix.Set( rand() );
-      ++ix;
+    ix.Set( rand() );
+    ++ix;
     }
 
-  while( ! iy.IsAtEnd() )
+  while( !iy.IsAtEnd() )
     {
-      iy.Set( rand() );
-      ++iy;
+    iy.Set( rand() );
+    ++iy;
     }
 
-  while( ! iz.IsAtEnd() )
+  while( !iz.IsAtEnd() )
     {
-      iz.Set( rand() );
-      ++iz;
+    iz.Set( rand() );
+    ++iz;
     }
-
 
   FilterPointer filter = FilterType::New();
 
@@ -137,10 +134,10 @@ int itkImageToParametricSpaceFilterTest(int, char* [] )
 
   // Get the the point container
   MeshType::PointsContainer::Iterator beginPoint =
-                           outputMesh->GetPoints()->Begin();
+    outputMesh->GetPoints()->Begin();
 
   MeshType::PointsContainer::Iterator endPoint =
-                           outputMesh->GetPoints()->End();
+    outputMesh->GetPoints()->End();
 
   MeshType::PointsContainer::Iterator pointIt = beginPoint;
 

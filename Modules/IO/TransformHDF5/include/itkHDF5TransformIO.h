@@ -35,7 +35,6 @@ class H5File;
 namespace itk
 {
 
-
 /** \class HDF5CommonPathNames
  * \brief Secondary bass class of HDF5CommonPathNames common between templates
  *
@@ -65,7 +64,6 @@ struct HDF5CommonPathNames
   static const std::string OSVersion;
   };
 
-
 /** \class HDF5TransformIOTemplate
  *  \brief Read&Write transforms in HDF5 Format
  *
@@ -76,8 +74,8 @@ struct HDF5CommonPathNames
  * \ingroup ITKIOTransformHDF5
  */
 template< typename TInternalComputationValueType >
-class HDF5TransformIOTemplate:public TransformIOBaseTemplate< TInternalComputationValueType >,
-private HDF5CommonPathNames
+class HDF5TransformIOTemplate : public TransformIOBaseTemplate< TInternalComputationValueType >,
+  private HDF5CommonPathNames
 {
 public:
   typedef HDF5TransformIOTemplate                                  Self;
@@ -89,8 +87,8 @@ public:
   typedef typename TransformType::ParametersType                   ParametersType;
 
   typedef typename TransformIOBaseTemplate
-                      <TInternalComputationValueType>::ConstTransformListType
-                                                                ConstTransformListType;
+    <TInternalComputationValueType>::ConstTransformListType
+    ConstTransformListType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( HDF5TransformIOTemplate, TransformIOBaseTemplate );
@@ -114,7 +112,8 @@ public:
 
 protected:
   HDF5TransformIOTemplate();
-  virtual ~HDF5TransformIOTemplate();
+  virtual
+  ~HDF5TransformIOTemplate();
 
 private:
   /** Read a parameter array from the file location name */
@@ -126,7 +125,9 @@ private:
 
   /** write a string variable */
   void WriteString(const std::string &path, const std::string &value);
+
   void WriteString(const std::string &path, const char *value);
+
   void WriteOneTransform(const int transformIndex,
                          const TransformType *transform);
 

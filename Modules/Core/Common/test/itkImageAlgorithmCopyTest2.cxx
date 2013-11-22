@@ -29,7 +29,8 @@
 namespace {
 
 template < typename TImageType >
-bool CheckBuffer( const TImageType* image, typename TImageType::PixelType p )
+bool
+CheckBuffer( const TImageType* image, typename TImageType::PixelType p )
 {
   typedef itk::ImageRegionConstIterator<TImageType> ImageIterator;
 
@@ -47,7 +48,8 @@ bool CheckBuffer( const TImageType* image, typename TImageType::PixelType p )
 
 }
 
-int itkImageAlgorithmCopyTest2( int, char *[] )
+int
+itkImageAlgorithmCopyTest2( int, char *[] )
 {
 
   typedef itk::Image<float, 3> Float3DImageType;
@@ -58,7 +60,6 @@ int itkImageAlgorithmCopyTest2( int, char *[] )
 
   typedef itk::ImageRegion<3> RegionType;
 
-
   RegionType::IndexType index;
   index.Fill(0);
   RegionType::SizeType size;
@@ -67,7 +68,6 @@ int itkImageAlgorithmCopyTest2( int, char *[] )
   RegionType region;
   region.SetSize(size);
   region.SetIndex(index);
-
 
   Short3DImageType::Pointer image1 = Short3DImageType::New();
   image1->SetRegions( region );
@@ -78,7 +78,6 @@ int itkImageAlgorithmCopyTest2( int, char *[] )
   image2->SetRegions( region );
   image2->Allocate();
   image2->FillBuffer( 0 );
-
 
   Float3DImageType::Pointer image3 = Float3DImageType::New();
   image3->SetRegions( region );
@@ -101,7 +100,6 @@ int itkImageAlgorithmCopyTest2( int, char *[] )
 
   TEST_EXPECT_TRUE( CheckBuffer( image1.GetPointer(), 13 ) );
 
-
   AbsImageType::Pointer absimage = AbsImageType::New();
   absimage->SetImage( image3 );
   image2->FillBuffer( 0 );
@@ -110,7 +108,6 @@ int itkImageAlgorithmCopyTest2( int, char *[] )
   itk::ImageAlgorithm::Copy( absimage.GetPointer(), image2.GetPointer(), region, region );
 
   TEST_EXPECT_TRUE( CheckBuffer( image2.GetPointer(), 13 ) );
-
 
   STDVectorImageType::Pointer image4 = STDVectorImageType::New();
   image4->SetRegions( region );

@@ -24,16 +24,15 @@
 * unsigned int, or itk::Vector<...>.
 */
 
-
 #include "itkImageRegionIterator.h"
 
 #include "itkImageSpatialObject.h"
 #include "itkLinearInterpolateImageFunction.h"
 
-
-int itkImageSpatialObjectTest(int, char* [])
+int
+itkImageSpatialObjectTest(int, char* [])
 {
-  #define NDimensions 3
+#define NDimensions 3
 
   typedef double                                     ScalarType;
   typedef unsigned short                             Pixel;
@@ -43,11 +42,11 @@ int itkImageSpatialObjectTest(int, char* [])
   typedef itk::ImageRegionIterator<ImageType>        Iterator;
   typedef itk::Point<ScalarType,NDimensions>         Point;
 
-  ImageType::Pointer image = ImageType::New();
-  ImageType::SizeType size = {{ 10, 10, 10 }};
-  ImageType::IndexType index = {{ 0, 0, 0 }};
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size = {{ 10, 10, 10 }};
+  ImageType::IndexType  index = {{ 0, 0, 0 }};
   ImageType::RegionType region;
-  ImageType::PointType origin;
+  ImageType::PointType  origin;
   origin.Fill(5);
 
   region.SetSize(size);
@@ -59,7 +58,7 @@ int itkImageSpatialObjectTest(int, char* [])
   image->Allocate();
 
   Iterator it(image,region);
-  Pixel p =0;
+  Pixel    p =0;
 
   for(; !it.IsAtEnd(); ++it, ++p)
     {
@@ -77,7 +76,7 @@ int itkImageSpatialObjectTest(int, char* [])
   imageSO->GetObjectToParentTransform()->SetOffset(offset);
   imageSO->ComputeObjectToWorldTransform();
 
-  Point q,r;
+  Point  q,r;
   double returnedValue,expectedValue;
 
   r.Fill(9);
@@ -121,7 +120,7 @@ int itkImageSpatialObjectTest(int, char* [])
     }
 
   ImageSpatialObject::OutputVectorType derivative,expectedDerivative;
-  Pixel expectedPixel;
+  Pixel                                expectedPixel;
 
   imageSO->DerivativeAt(q,1,derivative);
   expectedPixel = 1;
@@ -167,16 +166,15 @@ int itkImageSpatialObjectTest(int, char* [])
     std::cout<<"[PASSED]"<<std::endl;
     }
 
-
   imageSO->DerivativeAt(q,1,derivative);
   expectedDerivative[0]=1;
   expectedDerivative[1]=10;
   expectedDerivative[2]=100;
   std::cout<<"DerivativeAt() with interpolator ...";
   if(  vcl_fabs(derivative[0]-expectedDerivative[0])>0.00001
-    || vcl_fabs(derivative[1]-expectedDerivative[1])>0.00001
-    || vcl_fabs(derivative[2]-expectedDerivative[2])>0.00001
-    )
+       || vcl_fabs(derivative[1]-expectedDerivative[1])>0.00001
+       || vcl_fabs(derivative[2]-expectedDerivative[2])>0.00001
+       )
     {
     std::cout << "Expected: " << derivative << " returned: " << expectedDerivative << std::endl;
     std::cout<<"[FAILED]"<<std::endl;

@@ -235,8 +235,8 @@ MatrixOffsetTransformBase<TScalar, NInputDimensions, NOutputDimensions>
       }
     }
 
-  vnl_vector<TScalar> tvect = vnl_mat * vnl_vect;
-  OutputVectorPixelType   outVect;
+  vnl_vector<TScalar>   tvect = vnl_mat * vnl_vect;
+  OutputVectorPixelType outVect;
   outVect.SetSize( vectorDim );
   for( unsigned int i = 0; i < vectorDim; i++ )
     {
@@ -299,8 +299,8 @@ MatrixOffsetTransformBase<TScalar, NInputDimensions, NOutputDimensions>
       }
     }
 
-  vnl_vector<TScalar> tvect = vnl_mat * vnl_vect;
-  OutputVectorPixelType   outVect;
+  vnl_vector<TScalar>   tvect = vnl_mat * vnl_vect;
+  OutputVectorPixelType outVect;
   outVect.SetSize( vectorDim );
   for( unsigned int i = 0; i < vectorDim; i++ )
     {
@@ -321,12 +321,13 @@ MatrixOffsetTransformBase<TScalar, NInputDimensions, NOutputDimensions>
 {
 
   JacobianType jacobian;
+
   jacobian.SetSize( InverseMatrixType::RowDimensions, InverseMatrixType::ColumnDimensions );
   for (unsigned int i=0; i<InverseMatrixType::RowDimensions; i++)
     {
     for (unsigned int j=0; j<InverseMatrixType::ColumnDimensions; j++)
       {
-      jacobian(i,j) = this->GetInverseMatrix()(i,j);
+      jacobian(i,j) = this->GetInverseMatrix() (i,j);
       }
     }
 
@@ -345,7 +346,10 @@ typename MatrixOffsetTransformBase<TScalar,
 MatrixOffsetTransformBase<TScalar, NInputDimensions, NOutputDimensions>
 ::TransformDiffusionTensor3D(const InputVectorPixelType & tensor) const
 {
-  OutputVectorPixelType result( InputDiffusionTensor3DType::InternalDimension );     // Converted tensor
+  OutputVectorPixelType result( InputDiffusionTensor3DType::InternalDimension );     //
+
+  // Converted
+  // tensor
 
   result.Fill( 0.0 );
 
@@ -377,6 +381,7 @@ MatrixOffsetTransformBase<TScalar,NInputDimensions,NOutputDimensions>
 {
 
   JacobianType jacobian;
+
   jacobian.SetSize( NOutputDimensions, NInputDimensions );
   JacobianType invJacobian;
   invJacobian.SetSize( NInputDimensions, NOutputDimensions );
@@ -395,12 +400,12 @@ MatrixOffsetTransformBase<TScalar,NInputDimensions,NOutputDimensions>
     {
     for( unsigned int j = 0; j < NOutputDimensions; j++ )
       {
-      jacobian( j, i ) = this->GetMatrix()( j, i );
-      invJacobian( i, j ) = this->GetInverseMatrix()( i, j );
+      jacobian( j, i ) = this->GetMatrix() ( j, i );
+      invJacobian( i, j ) = this->GetInverseMatrix() ( i, j );
       }
     }
 
-  JacobianType outTensor = jacobian * tensor * invJacobian;
+  JacobianType                        outTensor = jacobian * tensor * invJacobian;
   OutputSymmetricSecondRankTensorType outputTensor;
 
   for( unsigned int i = 0; i < NOutputDimensions; i++ )
@@ -426,6 +431,7 @@ MatrixOffsetTransformBase<TScalar, NInputDimensions, NOutputDimensions>
 {
 
   JacobianType jacobian;
+
   jacobian.SetSize( NOutputDimensions, NInputDimensions );
   JacobianType invJacobian;
   invJacobian.SetSize( NInputDimensions, NOutputDimensions );
@@ -444,8 +450,8 @@ MatrixOffsetTransformBase<TScalar, NInputDimensions, NOutputDimensions>
     {
     for( unsigned int j = 0; j < NOutputDimensions; j++ )
       {
-      jacobian( j, i ) = this->GetMatrix()( j, i );
-      invJacobian( i, j ) = this->GetInverseMatrix()( i, j );
+      jacobian( j, i ) = this->GetMatrix() ( j, i );
+      invJacobian( i, j ) = this->GetInverseMatrix() ( i, j );
       }
     }
 
@@ -704,7 +710,7 @@ template <typename TScalar, unsigned int NInputDimensions,
 void
 MatrixOffsetTransformBase<TScalar, NInputDimensions, NOutputDimensions>
 ::ComputeInverseJacobianWithRespectToPosition(const InputPointType  &,
-                                       JacobianType & jac) const
+                                              JacobianType & jac) const
 {
   jac.SetSize( MatrixType::ColumnDimensions, MatrixType::RowDimensions );
   for( unsigned int i = 0; i < MatrixType::ColumnDimensions; i++ )

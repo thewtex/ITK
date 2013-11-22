@@ -18,11 +18,11 @@
 
 #include <iostream>
 
-
 #include "itkIntensityWindowingImageFilter.h"
 #include "itkRandomImageSource.h"
 
-int itkIntensityWindowingImageFilterTest(int, char* [] )
+int
+itkIntensityWindowingImageFilterTest(int, char* [] )
 {
   std::cout << "itkIntensityWindowingImageFilterTest Start" << std::endl;
 
@@ -36,16 +36,14 @@ int itkIntensityWindowingImageFilterTest(int, char* [] )
   region.SetIndex (index);
   region.SetSize (size);
 
-
   typedef itk::IntensityWindowingImageFilter<TestInputImage,TestOutputImage> FilterType;
   FilterType::Pointer filter = FilterType::New();
 
   // Now generate a real image
 
   typedef itk::RandomImageSource<TestInputImage> SourceType;
-  SourceType::Pointer source = SourceType::New();
+  SourceType::Pointer           source = SourceType::New();
   TestInputImage::SizeValueType randomSize[3] = {17, 8, 20};
-
 
   // Set up source
   source->SetSize(randomSize);
@@ -55,25 +53,26 @@ int itkIntensityWindowingImageFilterTest(int, char* [] )
   source->SetMin( static_cast< TestInputImage::PixelType >( minValue ) );
   source->SetMax( static_cast< TestInputImage::PixelType >( maxValue ) );
 
-  filter->SetInput(source->GetOutput());
+  filter->SetInput(source->GetOutput() );
 
   const double desiredMinimum = -1.0;
   const double desiredMaximum =  1.0;
 
-  const float  windowMinimum = -50.0f;
-  const float  windowMaximum =  50.0f;
+  const float windowMinimum = -50.0f;
+  const float windowMaximum =  50.0f;
 
   filter->SetOutputMinimum( desiredMinimum );
   filter->SetOutputMaximum( desiredMaximum );
   filter->SetWindowMinimum( windowMinimum  );
   filter->SetWindowMaximum( windowMaximum  );
 
-  std::cout << "Window minimum:maximum = " << windowMinimum << ":" << windowMaximum << ", equivalent window:level = " << filter->GetWindow() << ":" << filter->GetLevel() << std::endl;
+  std::cout << "Window minimum:maximum = " << windowMinimum << ":" << windowMaximum << ", equivalent window:level = " <<
+    filter->GetWindow() << ":" << filter->GetLevel() << std::endl;
 
   try
     {
     filter->UpdateLargestPossibleRegion();
-    filter->SetFunctor(filter->GetFunctor());
+    filter->SetFunctor(filter->GetFunctor() );
     }
   catch (itk::ExceptionObject& e)
     {
@@ -109,8 +108,8 @@ int itkIntensityWindowingImageFilterTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  const float  window = 50.0f;
-  const float  level =  50.0f;
+  const float window = 50.0f;
+  const float level =  50.0f;
 
   filter->SetWindowLevel( window, level  );
 

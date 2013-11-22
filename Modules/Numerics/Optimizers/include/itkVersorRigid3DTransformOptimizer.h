@@ -47,7 +47,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class VersorRigid3DTransformOptimizer:
+class VersorRigid3DTransformOptimizer :
   public RegularStepGradientDescentBaseOptimizer
 {
 public:
@@ -76,12 +76,17 @@ public:
                                  const DerivativeType & transformedGradient);
 
 protected:
-  VersorRigid3DTransformOptimizer() {}
-  virtual ~VersorRigid3DTransformOptimizer() {}
+  VersorRigid3DTransformOptimizer() {
+  }
+
+  virtual
+  ~VersorRigid3DTransformOptimizer() {
+  }
 
 private:
   VersorRigid3DTransformOptimizer(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };
 } // end namespace itk
 

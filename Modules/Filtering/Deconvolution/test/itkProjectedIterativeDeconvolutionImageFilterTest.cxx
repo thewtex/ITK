@@ -21,7 +21,8 @@
 #include "itkProjectedIterativeDeconvolutionImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkProjectedIterativeDeconvolutionImageFilterTest(int, char* [])
+int
+itkProjectedIterativeDeconvolutionImageFilterTest(int, char* [])
 {
   // Declare the image type
   typedef itk::Image<float, 2> ImageType;

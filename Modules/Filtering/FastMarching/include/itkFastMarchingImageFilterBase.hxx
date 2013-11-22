@@ -31,29 +31,32 @@ namespace itk
 template< typename TInput, typename TOutput >
 class
 FastMarchingImageFilterBase< TInput, TOutput >::
-    InternalNodeStructure
-  {
+InternalNodeStructure
+{
 public:
-    InternalNodeStructure( ) :
-      m_Value( NumericTraits< OutputPixelType >::max() ), m_Axis( 0 ) {}
+  InternalNodeStructure() :
+    m_Value( NumericTraits< OutputPixelType >::max() ), m_Axis( 0 ) {
+    }
 
-    NodeType        m_Node;
-    OutputPixelType m_Value;
-    unsigned int    m_Axis;
+  NodeType        m_Node;
+  OutputPixelType m_Value;
+  unsigned int    m_Axis;
 
-    bool operator< ( const InternalNodeStructure& iRight ) const
-      {
-      return m_Value < iRight.m_Value;
-      }
-  };
+  bool
+  operator<( const InternalNodeStructure& iRight ) const
+  {
+    return m_Value < iRight.m_Value;
+  }
 
+};
 
 // -----------------------------------------------------------------------------
 template< typename TInput, typename TOutput >
 FastMarchingImageFilterBase< TInput, TOutput >::
 FastMarchingImageFilterBase()
-  {
+{
   OutputSizeType outputSize;
+
   outputSize.Fill(16);
 
   NodeType outputIndex;
@@ -69,15 +72,17 @@ FastMarchingImageFilterBase()
 
   m_InputCache = NULL;
   m_LabelImage = LabelImageType::New();
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 template< typename TInput, typename TOutput >
 FastMarchingImageFilterBase< TInput, TOutput >::
 ~FastMarchingImageFilterBase()
-  {
-  }
+{
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -99,6 +104,7 @@ GenerateOutputInformation()
     output->SetDirection(m_OutputDirection);
     }
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -111,6 +117,7 @@ EnlargeOutputRequestedRegion(
   // enlarge the requested region of the output
   // to the whole data set
   OutputImageType *imgData = dynamic_cast< OutputImageType * >( output );
+
   if ( imgData )
     {
     imgData->SetRequestedRegionToLargestPossibleRegion();
@@ -124,6 +131,7 @@ EnlargeOutputRequestedRegion(
                      << typeid( OutputImageType * ).name() );
     }
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -131,9 +139,10 @@ template< typename TInput, typename TOutput >
 IdentifierType
 FastMarchingImageFilterBase< TInput, TOutput >::
 GetTotalNumberOfNodes() const
-  {
-    return this->m_BufferedRegion.GetNumberOfPixels();
-  }
+{
+  return this->m_BufferedRegion.GetNumberOfPixels();
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -141,11 +150,12 @@ template< typename TInput, typename TOutput >
 void
 FastMarchingImageFilterBase< TInput, TOutput >::
 SetOutputValue( OutputImageType* oImage,
-               const NodeType& iNode,
-               const OutputPixelType& iValue )
-  {
+                const NodeType& iNode,
+                const OutputPixelType& iValue )
+{
   return oImage->SetPixel( iNode, iValue );
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -156,9 +166,10 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 OutputPixelType
 FastMarchingImageFilterBase< TInput, TOutput >::
 GetOutputValue( OutputImageType* oImage, const NodeType& iNode ) const
-  {
+{
   return oImage->GetPixel( iNode );
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -166,20 +177,21 @@ template< typename TInput, typename TOutput >
 unsigned char
 FastMarchingImageFilterBase< TInput, TOutput >::
 GetLabelValueForGivenNode( const NodeType& iNode ) const
-  {
+{
   return m_LabelImage->GetPixel( iNode );
-  }
-// -----------------------------------------------------------------------------
+}
 
+// -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 template< typename TInput, typename TOutput >
 void
 FastMarchingImageFilterBase< TInput, TOutput >::
 SetLabelValueForGivenNode( const NodeType& iNode, const LabelType& iLabel )
-  {
+{
   m_LabelImage->SetPixel( iNode, iLabel );
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -187,7 +199,7 @@ template< typename TInput, typename TOutput >
 void
 FastMarchingImageFilterBase< TInput, TOutput >::
 UpdateNeighbors( OutputImageType* oImage, const NodeType& iNode )
-  {
+{
   NodeType neighIndex = iNode;
 
   unsigned char label;
@@ -221,7 +233,8 @@ UpdateNeighbors( OutputImageType* oImage, const NodeType& iNode )
     //reset neighIndex
     neighIndex[j] = v;
     }
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -229,13 +242,13 @@ template< typename TInput, typename TOutput >
 void
 FastMarchingImageFilterBase< TInput, TOutput >::
 UpdateValue( OutputImageType* oImage, const NodeType& iNode )
-  {
+{
   std::vector< InternalNodeStructure > NodesUsed( ImageDimension );
 
   GetInternalNodesUsed( oImage, iNode, NodesUsed );
 
   OutputPixelType outputPixel =
-      static_cast< OutputPixelType >( Solve( oImage, iNode, NodesUsed ) );
+    static_cast< OutputPixelType >( Solve( oImage, iNode, NodesUsed ) );
 
   if ( outputPixel < this->m_LargeValue )
     {
@@ -246,7 +259,8 @@ UpdateValue( OutputImageType* oImage, const NodeType& iNode )
     // insert point into trial heap
     this->m_Heap.push( NodePairType( iNode, outputPixel ) );
     }
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -256,13 +270,14 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 GetInternalNodesUsed( OutputImageType* oImage,
                       const NodeType& iNode,
                       std::vector< InternalNodeStructure >& ioNodesUsed )
-  {
+{
   NodeType neighbor_node = iNode;
 
   OutputPixelType neighValue;
 
   // just to make sure the index is initialized (really cautious)
   InternalNodeStructure temp_node;
+
   temp_node.m_Node = iNode;
 
   typename NodeType::IndexValueType v, start, last, temp;
@@ -312,7 +327,8 @@ GetInternalNodesUsed( OutputImageType* oImage,
     neighbor_node[j] = v;
 
     } // for ( unsigned int j = 0; j < SetDimension; j++ )
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -320,8 +336,8 @@ template< typename TInput, typename TOutput >
 double
 FastMarchingImageFilterBase< TInput, TOutput >::
 Solve( OutputImageType* oImage,
-      const NodeType& iNode,
-      std::vector< InternalNodeStructure >& iNeighbors ) const
+       const NodeType& iNode,
+       std::vector< InternalNodeStructure >& iNeighbors ) const
 {
   (void) oImage;
 
@@ -337,17 +353,17 @@ Solve( OutputImageType* oImage,
   if ( m_InputCache )
     {
     cc = static_cast< double >( m_InputCache->GetPixel(iNode) ) /
-        this->m_NormalizationFactor;
+      this->m_NormalizationFactor;
     cc = -1.0 * vnl_math_sqr(1.0 / cc);
     }
 
-  double discrim = 0.;
-  double value = 0.;
-  double spaceFactor = 0.;
+  double       discrim = 0.;
+  double       value = 0.;
+  double       spaceFactor = 0.;
   unsigned int axis = 0;
 
   typename std::vector< InternalNodeStructure >::iterator
-      n_it = iNeighbors.begin();
+  n_it = iNeighbors.begin();
 
   while( n_it != iNeighbors.end() )
     {
@@ -383,7 +399,8 @@ Solve( OutputImageType* oImage,
     }
 
   return oSolution;
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -391,7 +408,7 @@ template< typename TInput, typename TOutput >
 bool
 FastMarchingImageFilterBase< TInput, TOutput >::
 CheckTopology( OutputImageType* oImage, const NodeType& iNode )
-  {
+{
   if( this->m_TopologyCheck != Superclass::Nothing )
     {
     if( ( ImageDimension == 2 ) || ( ImageDimension == 3 ) )
@@ -400,7 +417,7 @@ CheckTopology( OutputImageType* oImage, const NodeType& iNode )
         = this->DoesVoxelChangeViolateWellComposedness( iNode );
 
       bool strictTopologyViolation
-         = this->DoesVoxelChangeViolateStrictTopology( iNode );
+        = this->DoesVoxelChangeViolateStrictTopology( iNode );
 
       if( ( this->m_TopologyCheck == Superclass::Strict ) &&
           ( wellComposednessViolation || strictTopologyViolation ) )
@@ -424,12 +441,12 @@ CheckTopology( OutputImageType* oImage, const NodeType& iNode )
           typename NeighborhoodIteratorType::RadiusType radius;
           radius.Fill( 1 );
           NeighborhoodIteratorType ItL( radius, this->m_LabelImage,
-            this->m_LabelImage->GetBufferedRegion() );
+                                        this->m_LabelImage->GetBufferedRegion() );
           ItL.SetLocation( iNode );
 
           NeighborhoodIterator<ConnectedComponentImageType>
-              ItC( radius, this->m_ConnectedComponentImage,
-                this->m_ConnectedComponentImage->GetBufferedRegion() );
+          ItC( radius, this->m_ConnectedComponentImage,
+               this->m_ConnectedComponentImage->GetBufferedRegion() );
           ItC.SetLocation( iNode );
 
           unsigned int minLabel = 0;
@@ -483,18 +500,20 @@ CheckTopology( OutputImageType* oImage, const NodeType& iNode )
     else
       {
       itkWarningMacro( << "CheckTopology has not be implemented for Dimension != 2 and != 3."
-                    << "m_TopologyCheck should be set to Nothing." );
+                       << "m_TopologyCheck should be set to Nothing." );
       }
     } // if( this->m_TopologyCheck != Superclass::Nothing )
   return true;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 template< typename TInput, typename TOutput >
-void FastMarchingImageFilterBase< TInput, TOutput >::
+void
+FastMarchingImageFilterBase< TInput, TOutput >::
 InitializeOutput( OutputImageType* oImage )
-  {
+{
   // allocate memory for the output buffer
   oImage->SetBufferedRegion( oImage->GetRequestedRegion() );
   oImage->Allocate();
@@ -532,7 +551,7 @@ InitializeOutput( OutputImageType* oImage )
   m_LabelImage->Allocate();
   m_LabelImage->FillBuffer( Traits::Far );
 
-  NodeType idx;
+  NodeType        idx;
   OutputPixelType outputPixel = this->m_LargeValue;
 
   if ( this->m_AlivePoints )
@@ -592,13 +611,13 @@ InitializeOutput( OutputImageType* oImage )
     // Now create the connected component image and relabel such that labels
     // are 1, 2, 3, ...
     typedef ConnectedComponentImageFilter<ConnectedComponentImageType,
-      ConnectedComponentImageType> ConnectedComponentFilterType;
+                                          ConnectedComponentImageType> ConnectedComponentFilterType;
     typename ConnectedComponentFilterType::Pointer connecter
-        = ConnectedComponentFilterType::New();
+      = ConnectedComponentFilterType::New();
     connecter->SetInput( m_ConnectedComponentImage );
 
     typedef RelabelComponentImageFilter<ConnectedComponentImageType,
-        ConnectedComponentImageType> RelabelerType;
+                                        ConnectedComponentImageType> RelabelerType;
     typename RelabelerType::Pointer relabeler = RelabelerType::New();
     relabeler->SetInput( connecter->GetOutput() );
 
@@ -634,7 +653,8 @@ InitializeOutput( OutputImageType* oImage )
         outputPixel = pointsIter->Value().GetValue();
         this->SetOutputValue( oImage, idx, outputPixel );
 
-        //this->m_Heap->Push( PriorityQueueElementType( idx, pointsIter->second ) );
+        //this->m_Heap->Push( PriorityQueueElementType( idx, pointsIter->second
+        // ) );
         this->m_Heap.push( pointsIter->Value() );
         }
       ++pointsIter;
@@ -656,7 +676,7 @@ InitializeOutput( OutputImageType* oImage )
       else
         {
         itkWarningMacro(
-              << "Topology checking is only valid for level set dimensions of 2 and 3" );
+          << "Topology checking is only valid for level set dimensions of 2 and 3" );
         }
       }
     }
@@ -664,7 +684,8 @@ InitializeOutput( OutputImageType* oImage )
   // cache the pointer to the input image
   m_InputCache = this->GetInput();
 
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -674,6 +695,7 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 DoesVoxelChangeViolateWellComposedness( const NodeType& idx ) const
 {
   bool isChangeWellComposed = false;
+
   if( ImageDimension == 2 )
     {
     isChangeWellComposed = this->IsChangeWellComposed2D( idx );
@@ -685,6 +707,7 @@ DoesVoxelChangeViolateWellComposedness( const NodeType& idx ) const
 
   return !isChangeWellComposed;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -697,7 +720,7 @@ DoesVoxelChangeViolateStrictTopology( const NodeType& idx ) const
   radius.Fill( 1 );
 
   NeighborhoodIteratorType It( radius, this->m_LabelImage,
-    this->m_LabelImage->GetBufferedRegion() );
+                               this->m_LabelImage->GetBufferedRegion() );
   It.SetLocation( idx );
 
   unsigned int numberOfCriticalC3Configurations = 0;
@@ -728,6 +751,7 @@ DoesVoxelChangeViolateStrictTopology( const NodeType& idx ) const
     }
   return false;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -737,10 +761,11 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 IsChangeWellComposed2D( const NodeType& idx ) const
 {
   NeighborhoodRadiusType radius;
+
   radius.Fill( 1 );
 
   NeighborhoodIteratorType It( radius, this->m_LabelImage,
-    this->m_LabelImage->GetBufferedRegion() );
+                               this->m_LabelImage->GetBufferedRegion() );
   It.SetLocation( idx );
 
   std::vector<bool> neighborhoodPixels( 9 );
@@ -760,9 +785,9 @@ IsChangeWellComposed2D( const NodeType& idx ) const
       }
 
     if( this->IsCriticalC1Configuration2D( neighborhoodPixels )
-      || this->IsCriticalC2Configuration2D( neighborhoodPixels )
-      || this->IsCriticalC3Configuration2D( neighborhoodPixels )
-      || this->IsCriticalC4Configuration2D( neighborhoodPixels ) )
+        || this->IsCriticalC2Configuration2D( neighborhoodPixels )
+        || this->IsCriticalC3Configuration2D( neighborhoodPixels )
+        || this->IsCriticalC4Configuration2D( neighborhoodPixels ) )
       {
       return false;
       }
@@ -791,13 +816,14 @@ IsChangeWellComposed2D( const NodeType& idx ) const
 //      return false;
 //      }
     if( this->IsCriticalC3Configuration2D( neighborhoodPixels )
-      || this->IsCriticalC4Configuration2D( neighborhoodPixels ) )
+        || this->IsCriticalC4Configuration2D( neighborhoodPixels ) )
       {
       return false;
       }
     }
   return true;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -807,9 +833,10 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 IsCriticalC1Configuration2D( const std::vector<bool>& neighborhood ) const
 {
   return ( !neighborhood[0] &&  neighborhood[1] &&
-            neighborhood[3] && !neighborhood[4] &&
+           neighborhood[3] && !neighborhood[4] &&
            !neighborhood[8] );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -819,10 +846,11 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 IsCriticalC2Configuration2D( const std::vector<bool>& neighborhood ) const
 {
   return ( !neighborhood[0] &&  neighborhood[1] &&
-            neighborhood[3] && !neighborhood[4] &&
-            neighborhood[8] &&
+           neighborhood[3] && !neighborhood[4] &&
+           neighborhood[8] &&
            ( neighborhood[5] || neighborhood[7] ) );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -832,10 +860,11 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 IsCriticalC3Configuration2D( const std::vector<bool>& neighborhood ) const
 {
   return ( !neighborhood[0] &&  neighborhood[1] &&
-            neighborhood[3] && !neighborhood[4] &&
+           neighborhood[3] && !neighborhood[4] &&
            !neighborhood[5] &&  neighborhood[6] &&
            !neighborhood[7] &&  neighborhood[8] );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -845,10 +874,11 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 IsCriticalC4Configuration2D( const std::vector<bool>& neighborhood ) const
 {
   return ( !neighborhood[0] &&  neighborhood[1] &&
-            neighborhood[3] && !neighborhood[4] &&
+           neighborhood[3] && !neighborhood[4] &&
            !neighborhood[5] && !neighborhood[6] &&
            !neighborhood[7] &&  neighborhood[8] );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -925,6 +955,7 @@ InitializeIndices2D()
   this->m_ReflectionIndices[1][7] = 7;
   this->m_ReflectionIndices[1][8] = 6;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -936,11 +967,12 @@ IsChangeWellComposed3D( const NodeType& idx ) const
   std::vector<bool> neighborhoodPixels( 8 );
 
   NeighborhoodRadiusType radius;
+
   radius.Fill( 1 );
 
   NeighborhoodIteratorType It( radius,
-                              this->m_LabelImage,
-                              this->m_LabelImage->GetRequestedRegion() );
+                               this->m_LabelImage,
+                               this->m_LabelImage->GetRequestedRegion() );
 
   It.SetLocation( idx );
 
@@ -982,6 +1014,7 @@ IsChangeWellComposed3D( const NodeType& idx ) const
 
   return true;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -991,10 +1024,11 @@ FastMarchingImageFilterBase< TInput, TOutput >::
 IsCriticalC1Configuration3D( const std::vector<bool>& neighborhood ) const
 {
   return ( (  neighborhood[0] &&  neighborhood[1] &&
-             !neighborhood[2] && !neighborhood[3] ) ||
+              !neighborhood[2] && !neighborhood[3] ) ||
            ( !neighborhood[0] && !neighborhood[1] &&
-              neighborhood[2] &&  neighborhood[3] ) );
+             neighborhood[2] &&  neighborhood[3] ) );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -1013,7 +1047,7 @@ IsCriticalC2Configuration3D( const std::vector<bool>& neighborhood ) const
       for ( unsigned int j = 0; j < 8; j++ )
         {
         if( neighborhood[j] == neighborhood[2*i] &&
-               j != 2*i && j != 2*i+1 )
+            j != 2*i && j != 2*i+1 )
           {
           isC2 = false;
           }
@@ -1034,6 +1068,7 @@ IsCriticalC2Configuration3D( const std::vector<bool>& neighborhood ) const
 
   return 0;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -1147,6 +1182,7 @@ InitializeIndices3D()
       }
     }
 }
+
 // -----------------------------------------------------------------------------
 }
 #endif // __itkFastMarchingImageFilterBase_hxx

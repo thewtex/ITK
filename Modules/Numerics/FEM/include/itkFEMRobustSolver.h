@@ -84,10 +84,10 @@ class RobustSolver : public Solver<VDimension>
 {
 public:
   /** Standard class typedefs. */
-  typedef RobustSolver              Self;
-  typedef Solver<VDimension>        Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef RobustSolver             Self;
+  typedef Solver<VDimension>       Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -96,26 +96,26 @@ public:
   itkTypeMacro(RobustSolver, Solver);
 
   /** Inherit some types from the superclass. */
-  typedef typename Superclass::VectorType                           VectorType;
-  typedef typename Superclass::Float                                Float;
-  typedef typename Superclass::InterpolationGridType                InterpolationGridType;
-  typedef typename Superclass::InterpolationGridPointerType         InterpolationGridPointerType;
-  typedef typename Superclass::InterpolationGridSizeType            InterpolationGridSizeType;
-  typedef typename Superclass::InterpolationGridRegionType          InterpolationGridRegionType;
-  typedef typename Superclass::InterpolationGridPointType           InterpolationGridPointType;
-  typedef typename Superclass::InterpolationGridSpacingType         InterpolationGridSpacingType;
-  typedef typename Superclass::InterpolationGridIndexType           InterpolationGridIndexType;
-  typedef typename InterpolationGridType::DirectionType             InterpolationGridDirectionType;
+  typedef typename Superclass::VectorType                   VectorType;
+  typedef typename Superclass::Float                        Float;
+  typedef typename Superclass::InterpolationGridType        InterpolationGridType;
+  typedef typename Superclass::InterpolationGridPointerType InterpolationGridPointerType;
+  typedef typename Superclass::InterpolationGridSizeType    InterpolationGridSizeType;
+  typedef typename Superclass::InterpolationGridRegionType  InterpolationGridRegionType;
+  typedef typename Superclass::InterpolationGridPointType   InterpolationGridPointType;
+  typedef typename Superclass::InterpolationGridSpacingType InterpolationGridSpacingType;
+  typedef typename Superclass::InterpolationGridIndexType   InterpolationGridIndexType;
+  typedef typename InterpolationGridType::DirectionType     InterpolationGridDirectionType;
 
   itkStaticConstMacro(FEMDimension, unsigned int, VDimension);
 
-  typedef typename Superclass::FEMObjectType    FEMObjectType;
+  typedef typename Superclass::FEMObjectType FEMObjectType;
 
   /** Some convenient types */
-  typedef typename Element::MatrixType                     MatrixType;
-  typedef typename FEMObjectType::LoadContainerType        LoadContainerType;
-  typedef typename FEMObjectType::NodeContainerType        NodeContainerType;
-  typedef typename FEMObjectType::LoadContainerIterator    LoadContainerIterator;
+  typedef typename Element::MatrixType                  MatrixType;
+  typedef typename FEMObjectType::LoadContainerType     LoadContainerType;
+  typedef typename FEMObjectType::NodeContainerType     NodeContainerType;
+  typedef typename FEMObjectType::LoadContainerIterator LoadContainerIterator;
 
   /**
    * Number of iterations used by the solver to compute approximations.
@@ -330,7 +330,6 @@ private:
    */
   unsigned int m_ApproximationSteps;
 
-
   /**
    * This type represents the index of the vector and matrix.
    */
@@ -344,11 +343,11 @@ private:
   FEMIndexType m_LandmarkStiffnessMatrixIndex;
   FEMIndexType m_StiffnessMatrixIndex;
 
-  double    m_TradeOffImageMeshEnergy;
+  double m_TradeOffImageMeshEnergy;
 
-  double    m_ToleranceToLargestDisplacement;
-  double    m_ConjugateGradientPrecision;
-  double    m_FractionErrorRejected;
+  double m_ToleranceToLargestDisplacement;
+  double m_ConjugateGradientPrecision;
+  double m_FractionErrorRejected;
 
   /**
    * Use interpolation grid to initialize the landmarks or not.  If use the
@@ -368,16 +367,18 @@ private:
  * \ingroup ITKFEM
 */
 class CompareLandmarkDisplacementError :
-    public std::binary_function<const Load::Pointer &, const Load::Pointer &, bool>
+  public std::binary_function<const Load::Pointer &, const Load::Pointer &, bool>
 {
 public:
-    bool operator()(const Load::Pointer & L1 , const Load::Pointer & L2)
-    {
-    LoadNoisyLandmark * l1 = dynamic_cast<LoadNoisyLandmark*>(L1.GetPointer());
-    LoadNoisyLandmark * l2 = dynamic_cast<LoadNoisyLandmark*>(L2.GetPointer());
+  bool
+  operator()(const Load::Pointer & L1 , const Load::Pointer & L2)
+  {
+    LoadNoisyLandmark * l1 = dynamic_cast<LoadNoisyLandmark*>(L1.GetPointer() );
+    LoadNoisyLandmark * l2 = dynamic_cast<LoadNoisyLandmark*>(L2.GetPointer() );
 
     return l1->GetErrorNorm() > l2->GetErrorNorm();
-    }
+  }
+
 };
 
 }

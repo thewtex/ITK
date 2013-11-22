@@ -109,6 +109,7 @@ SingleValuedNonLinearVnlOptimizer
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Maximize flag: "
      << ( m_Maximize ? "On" : "Off" ) << std::endl;
   os << indent << "Cached Value: " << m_CachedValue << std::endl;
@@ -118,6 +119,7 @@ SingleValuedNonLinearVnlOptimizer
   os << "Command observer " << m_Command.GetPointer() << std::endl;
   os << "Cost Function adaptor" << m_CostFunctionAdaptor << std::endl;
 }
+
 } // end namespace itk
 
 #endif

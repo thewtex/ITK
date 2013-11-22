@@ -45,7 +45,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class MeanSampleFilter:public ProcessObject
+class MeanSampleFilter : public ProcessObject
 {
 public:
   /**Standard class typedefs. */
@@ -60,11 +60,11 @@ public:
   itkNewMacro(Self);
 
   /** Length of a measurement vector */
-  typedef unsigned int                                                MeasurementVectorSizeType;
-  typedef typename TSample::MeasurementVectorType                     MeasurementVectorType;
-  typedef typename TSample::MeasurementType                           MeasurementType;
-  typedef typename NumericTraits< MeasurementType >::RealType         MeasurementRealType;
-  typedef typename NumericTraits< MeasurementVectorType >::RealType   MeasurementVectorRealType;
+  typedef unsigned int                                              MeasurementVectorSizeType;
+  typedef typename TSample::MeasurementVectorType                   MeasurementVectorType;
+  typedef typename TSample::MeasurementType                         MeasurementType;
+  typedef typename NumericTraits< MeasurementType >::RealType       MeasurementRealType;
+  typedef typename NumericTraits< MeasurementVectorType >::RealType MeasurementVectorRealType;
 
   /** Method to set/get the sample */
   using Superclass::SetInput;
@@ -87,7 +87,8 @@ public:
 
 protected:
   MeanSampleFilter();
-  virtual ~MeanSampleFilter();
+  virtual
+  ~MeanSampleFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DataObject pointer */
@@ -102,6 +103,7 @@ protected:
 private:
   MeanSampleFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };                                // end of class
 } // end of namespace Statistics
 } // end of namespace itk

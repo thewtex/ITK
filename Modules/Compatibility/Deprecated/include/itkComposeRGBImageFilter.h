@@ -31,27 +31,35 @@ class ComposeRGB
 {
 public:
   typedef RGBPixel< TInput > OutputType;
-  ComposeRGB() {}
-  ~ComposeRGB() {}
-  bool operator!=(const ComposeRGB &) const
+  ComposeRGB() {
+  }
+
+  ~ComposeRGB() {
+  }
+
+  bool
+  operator!=(const ComposeRGB &) const
   {
     return false;
   }
 
-  bool operator==(const ComposeRGB & other) const
+  bool
+  operator==(const ComposeRGB & other) const
   {
     return !( *this != other );
   }
 
-  inline OutputType operator()(const TInput & R,
-                               const TInput & G,
-                               const TInput & B) const
+  inline OutputType
+  operator()(const TInput & R,
+             const TInput & G,
+             const TInput & B) const
   {
     OutputType rgbPixel;
 
     rgbPixel.Set(R, G, B);
     return rgbPixel;
   }
+
 };
 }
 
@@ -71,7 +79,7 @@ template< typename TInputImage,
           typename TOutputImage =
             Image< RGBPixel< typename TInputImage::PixelType >,
                    TInputImage::ImageDimension > >
-class ComposeRGBImageFilter:
+class ComposeRGBImageFilter :
   public
   TernaryFunctorImageFilter< TInputImage, TInputImage,
                              TInputImage, TOutputImage,
@@ -79,12 +87,12 @@ class ComposeRGBImageFilter:
 {
 public:
   /** Standard class typedefs. */
-  typedef ComposeRGBImageFilter           Self;
+  typedef ComposeRGBImageFilter Self;
   typedef TernaryFunctorImageFilter<
-    TInputImage, TInputImage,
-    TInputImage, TOutputImage,
-    Functor::ComposeRGB<
-      typename TInputImage::PixelType > > Superclass;
+      TInputImage, TInputImage,
+      TInputImage, TOutputImage,
+      Functor::ComposeRGB<
+        typename TInputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -99,12 +107,17 @@ public:
                TernaryFunctorImageFilter);
 
 protected:
-  ComposeRGBImageFilter() {}
-  virtual ~ComposeRGBImageFilter() {}
+  ComposeRGBImageFilter() {
+  }
+
+  virtual
+  ~ComposeRGBImageFilter() {
+  }
 
 private:
   ComposeRGBImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

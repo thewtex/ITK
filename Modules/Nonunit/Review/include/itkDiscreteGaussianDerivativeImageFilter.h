@@ -137,7 +137,8 @@ public:
    *  to the same values.
    */
   /*@{*/
-  void SetOrder(const typename OrderArrayType::ValueType v)
+  void
+  SetOrder(const typename OrderArrayType::ValueType v)
   {
     OrderArrayType a;
 
@@ -145,7 +146,8 @@ public:
     this->SetOrder(a);
   }
 
-  void SetVariance(const typename ArrayType::ValueType v)
+  void
+  SetVariance(const typename ArrayType::ValueType v)
   {
     ArrayType a;
 
@@ -153,7 +155,8 @@ public:
     this->SetVariance(a);
   }
 
-  void SetMaximumError(const typename ArrayType::ValueType v)
+  void
+  SetMaximumError(const typename ArrayType::ValueType v)
   {
     ArrayType a;
 
@@ -196,7 +199,10 @@ protected:
     m_InternalNumberOfStreamDivisions = ImageDimension * ImageDimension;
   }
 
-  virtual ~DiscreteGaussianDerivativeImageFilter() {}
+  virtual
+  ~DiscreteGaussianDerivativeImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DiscreteGaussianDerivativeImageFilter needs a larger input requested region
@@ -220,7 +226,8 @@ private:
   DiscreteGaussianDerivativeImageFilter(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   /** The order of the derivatives in each dimensional direction. */
   OrderArrayType m_Order;

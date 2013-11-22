@@ -23,7 +23,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkShapeRelabelImageFilterTest1(int argc, char * argv[])
+int
+itkShapeRelabelImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 6 )

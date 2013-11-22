@@ -34,24 +34,30 @@ template <typename TInputPixel, typename TOutputPixel>
 class BinaryAccumulator
 {
 public:
-  BinaryAccumulator( unsigned long ) {}
-  ~BinaryAccumulator(){}
+  BinaryAccumulator( unsigned long ) {
+  }
 
-  inline void Initialize()
-    {
+  ~BinaryAccumulator(){
+  }
+
+  inline void
+  Initialize()
+  {
     m_IsForeground = false;
-    }
+  }
 
-  inline void operator()( const TInputPixel &input )
-    {
+  inline void
+  operator()( const TInputPixel &input )
+  {
     if( input == 100 )
       {
       m_IsForeground = true;
       }
-    }
+  }
 
-  inline TOutputPixel GetValue()
-    {
+  inline TOutputPixel
+  GetValue()
+  {
     if( m_IsForeground )
       {
       return 100;
@@ -60,16 +66,17 @@ public:
       {
       return 0;
       }
-    }
+  }
 
   bool m_IsForeground;
 };
-} // end namespace Function
+}   // end namespace Function
 
 } // end namespace ProjectionImageFilterNamespace
 } // end namespace itk
 
-int itkProjectionImageFilterTest(int argc, char * argv[])
+int
+itkProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 5 )
     {
@@ -105,10 +112,10 @@ int itkProjectionImageFilterTest(int argc, char * argv[])
   change->SetChange( 2, 200 );
 
   typedef itk::ProjectionImageFilterNamespace::Function::BinaryAccumulator<
-    PixelType, PixelType>  FunctionType;
+      PixelType, PixelType>  FunctionType;
 
   typedef itk::ProjectionImageFilter<
-    ImageType, ImageType, FunctionType > FilterType;
+      ImageType, ImageType, FunctionType > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( change->GetOutput() );

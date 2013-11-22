@@ -32,7 +32,8 @@
 //   Main code
 //
 // -------------------------
-int itkScaleSkewVersor3DTransformTest(int, char * [] )
+int
+itkScaleSkewVersor3DTransformTest(int, char * [] )
 {
 
   typedef   double ValueType;
@@ -78,7 +79,10 @@ int itkScaleSkewVersor3DTransformTest(int, char * [] )
     VersorType versor;
     versor.Set( axis, angle );
 
-    ParametersType parameters( transform->GetNumberOfParameters() ); // Number of parameters
+    ParametersType parameters( transform->GetNumberOfParameters() ); // Number
+                                                                     // of
+                                                                     //
+                                                                     // parameters
 
     parameters[0] = versor.GetX();
     parameters[1] = versor.GetY();
@@ -539,7 +543,7 @@ int itkScaleSkewVersor3DTransformTest(int, char * [] )
 #if 0 //TODO: Need to instrument inverse of ScaleVersor3DTransform
       {
       TransformType::Pointer tInverse = TransformType::New();
-      if(!transform->GetInverse(tInverse))
+      if(!transform->GetInverse(tInverse) )
         {
         std::cout << "Cannot create inverse transform" << std::endl;
         return EXIT_FAILURE;

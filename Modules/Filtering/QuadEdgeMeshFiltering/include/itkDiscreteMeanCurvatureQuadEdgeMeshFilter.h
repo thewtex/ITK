@@ -33,13 +33,13 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class DiscreteMeanCurvatureQuadEdgeMeshFilter:
+class DiscreteMeanCurvatureQuadEdgeMeshFilter :
   public DiscreteCurvatureQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   typedef DiscreteMeanCurvatureQuadEdgeMeshFilter                        Self;
-  typedef SmartPointer< Self >                                              Pointer;
-  typedef SmartPointer< const Self >                                        ConstPointer;
+  typedef SmartPointer< Self >                                           Pointer;
+  typedef SmartPointer< const Self >                                     ConstPointer;
   typedef DiscreteCurvatureQuadEdgeMeshFilter< TInputMesh, TOutputMesh > Superclass;
 
   typedef typename Superclass::InputMeshType    InputMeshType;
@@ -76,10 +76,14 @@ public:
 #endif
 
 protected:
-  DiscreteMeanCurvatureQuadEdgeMeshFilter() {}
-  ~DiscreteMeanCurvatureQuadEdgeMeshFilter() {}
+  DiscreteMeanCurvatureQuadEdgeMeshFilter() {
+  }
 
-  virtual OutputCurvatureType EstimateCurvature(const OutputPointType & iP)
+  ~DiscreteMeanCurvatureQuadEdgeMeshFilter() {
+  }
+
+  virtual OutputCurvatureType
+  EstimateCurvature(const OutputPointType & iP)
   {
     OutputMeshPointer output = this->GetOutput();
 
@@ -153,9 +157,10 @@ protected:
 
 private:
   DiscreteMeanCurvatureQuadEdgeMeshFilter(const Self &); // purposely not
-                                                            // implemented
-  void operator=(const Self &);                             // purposely not
-                                                            // implemented
+                                                         // implemented
+  void operator=(const Self &);                          // purposely not
+
+  // implemented
 };
 }
 #endif

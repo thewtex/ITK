@@ -171,7 +171,8 @@ CumulativeGaussianOptimizer
   delete extendedArrayCopy;
 }
 
-void CumulativeGaussianOptimizer
+void
+CumulativeGaussianOptimizer
 ::MeasureGaussianParameters(MeasureType *array)
 {
   // Assuming the input array is Gaussian, compute the mean, SD, amplitude, and
@@ -215,7 +216,8 @@ CumulativeGaussianOptimizer
   std::cerr << "Mean\t" << "SD\t" << "Amp\t" << "Transition" << std::endl;
 }
 
-void CumulativeGaussianOptimizer
+void
+CumulativeGaussianOptimizer
 ::PrintComputedParameters()
 {
   std::cerr << m_ComputedMean - m_OffsetForMean << "\t"  // Printed mean is
@@ -335,14 +337,16 @@ CumulativeGaussianOptimizer
     m_FinalSampledArray->put( i, sampledGaussianArray->get(i) );
     }
   // Calculate the least square error as a measure of goodness of fit.
-  m_FitError = static_cast< CostFunctionType * >( m_CostFunction.GetPointer() )->CalculateFitError(sampledGaussianArray);
+  m_FitError =
+    static_cast< CostFunctionType * >( m_CostFunction.GetPointer() )->CalculateFitError(sampledGaussianArray);
 
   delete sampledGaussianArray;
   delete cumGaussianArrayCopy;
   delete derivative;
 }
 
-void CumulativeGaussianOptimizer::PrintArray(MeasureType *array)
+void
+CumulativeGaussianOptimizer::PrintArray(MeasureType *array)
 {
   for ( int i = 0; i < (int)( array->GetNumberOfElements() ); i++ )
     {
@@ -420,6 +424,7 @@ CumulativeGaussianOptimizer
     os << indent << "Final Sampled Array = [not defined] " << std::endl;
     }
 }
+
 } // end namespace itk
 
 #endif

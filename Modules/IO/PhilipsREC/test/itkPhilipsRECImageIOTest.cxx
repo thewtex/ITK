@@ -21,7 +21,8 @@
 
 #include "itkPhilipsRECImageIOFactory.h"
 
-int itkPhilipsRECImageIOTest( int argc, char * argv [] )
+int
+itkPhilipsRECImageIOTest( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -30,11 +31,11 @@ int itkPhilipsRECImageIOTest( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef unsigned short                      PixelType;
-  typedef itk::Image< PixelType, 2 >          ImageType;
+  typedef unsigned short             PixelType;
+  typedef itk::Image< PixelType, 2 > ImageType;
 
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
-  typedef itk::ImageFileWriter< ImageType >   WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   itk::PhilipsRECImageIOFactory::RegisterOneFactory();
 

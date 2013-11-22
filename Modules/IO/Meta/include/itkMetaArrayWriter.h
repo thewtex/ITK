@@ -26,7 +26,7 @@
 
 namespace itk
 {
-class MetaArrayWriter:public LightProcessObject
+class MetaArrayWriter : public LightProcessObject
 {
 public:
 
@@ -65,8 +65,9 @@ public:
 
   /** Set the input itk Array to write */
   template< typename TValueType >
-  void SetInput(MET_ValueEnumType _metaElementType,
-                const Array< TValueType > *_array)
+  void
+  SetInput(MET_ValueEnumType _metaElementType,
+           const Array< TValueType > *_array)
   {
     m_Buffer = (const void *)( _array->data_block() );
     m_MetaArray.InitializeEssential(_array->Size(),
@@ -75,8 +76,9 @@ public:
 
   /** Set the input itk FixedArray to write */
   template< typename TValueType, unsigned int VLength >
-  void SetInput(MET_ValueEnumType _metaElementType,
-                const FixedArray< TValueType, VLength > *_array)
+  void
+  SetInput(MET_ValueEnumType _metaElementType,
+           const FixedArray< TValueType, VLength > *_array)
   {
     m_Buffer = (const void *)( _array->GetDataPointer() );
     m_MetaArray.InitializeEssential(VLength,
@@ -85,8 +87,9 @@ public:
 
   /** Set the input itk Vector to write */
   template< typename TValueType, unsigned int VLength >
-  void SetInput(MET_ValueEnumType _metaElementType,
-                const Vector< TValueType, VLength > *_vector)
+  void
+  SetInput(MET_ValueEnumType _metaElementType,
+           const Vector< TValueType, VLength > *_vector)
   {
     m_Buffer = (const void *)( _vector->GetDataPointer() );
     m_MetaArray.InitializeEssential(VLength,
@@ -95,8 +98,9 @@ public:
 
   /** Set the input itk CovariantVector to write */
   template< typename TValueType, unsigned int VLength >
-  void SetInput(MET_ValueEnumType _metaElementType,
-                const CovariantVector< TValueType, VLength > *_vector)
+  void
+  SetInput(MET_ValueEnumType _metaElementType,
+           const CovariantVector< TValueType, VLength > *_vector)
   {
     m_Buffer = (const void *)( _vector->GetDataPointer() );
     m_MetaArray.InitializeEssential(VLength,
@@ -105,8 +109,9 @@ public:
 
   /** Set the input itk VariableLengthVector to write */
   template< typename TValueType >
-  void SetInput(MET_ValueEnumType _metaElementType,
-                const VariableLengthVector< TValueType > *_vector)
+  void
+  SetInput(MET_ValueEnumType _metaElementType,
+           const VariableLengthVector< TValueType > *_vector)
   {
     m_Buffer = (const void *)( _vector->GetDataPointer() );
     m_MetaArray.InitializeEssential(_vector->Size(),
@@ -121,9 +126,10 @@ public:
    *    May work for other sub-array-types that define the [] operator and the
    *    GetSize() function.  */
   template< typename TValueType >
-  void SetMultiChannelInput(MET_ValueEnumType _metaElementType,
-                            int ,
-                            const Array< TValueType > *_array)
+  void
+  SetMultiChannelInput(MET_ValueEnumType _metaElementType,
+                       int ,
+                       const Array< TValueType > *_array)
   {
     int rows = _array->GetSize();
     int cols = ( *_array )[0].GetSize();
@@ -157,7 +163,8 @@ public:
 protected:
 
   MetaArrayWriter();
-  virtual ~MetaArrayWriter();
+  virtual
+  ~MetaArrayWriter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

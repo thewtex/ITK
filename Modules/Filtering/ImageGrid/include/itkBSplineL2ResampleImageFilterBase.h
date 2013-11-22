@@ -80,7 +80,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage, typename TOutputImage >
-class BSplineL2ResampleImageFilterBase:
+class BSplineL2ResampleImageFilterBase :
   public BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 {
 public:
@@ -98,12 +98,16 @@ protected:
   virtual void InitializePyramidSplineFilter(int SplineOrder);
 
   BSplineL2ResampleImageFilterBase();
-  virtual ~BSplineL2ResampleImageFilterBase() {}
+  virtual
+  ~BSplineL2ResampleImageFilterBase() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BSplineL2ResampleImageFilterBase(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 } // namespace itk
 

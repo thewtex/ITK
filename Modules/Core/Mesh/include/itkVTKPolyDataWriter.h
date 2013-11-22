@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh >
-class VTKPolyDataWriter:public Object
+class VTKPolyDataWriter : public Object
 {
 public:
   /** Standard "Self" typedef. */
@@ -87,7 +87,8 @@ public:
 
 protected:
   VTKPolyDataWriter();
-  virtual ~VTKPolyDataWriter();
+  virtual
+  ~VTKPolyDataWriter();
 
   virtual void GenerateData();
 
@@ -100,6 +101,7 @@ protected:
 private:
   VTKPolyDataWriter(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // namespace itk
 

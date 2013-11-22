@@ -28,15 +28,15 @@ itkMinimumMaximumImageFilterTest(int , char *[] )
 
   /* Define the image size and physical coordinates */
   SizeType size = {{20, 20, 20}};
-  double origin [3] = { 0.0, 0.0, 0.0};
-  double spacing[3] = { 1, 1 , 1};
+  double   origin [3] = { 0.0, 0.0, 0.0};
+  double   spacing[3] = { 1, 1 , 1};
 
   int flag = 0;           /* Did this test program work? */
 
   std::cout << "Testing Minimum and Maximum Image Calulator:\n";
 
   // Allocate a simple test image
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer    image = ImageType::New();
   ImageType::RegionType region;
   region.SetSize(size);
   image->SetLargestPossibleRegion(region);
@@ -50,7 +50,6 @@ itkMinimumMaximumImageFilterTest(int , char *[] )
 
   float minimum = -52;
   float maximum = -10;
-
 
   // Initialize the image contents with the minimum value
   itk::Index<3> index;
@@ -76,7 +75,7 @@ itkMinimumMaximumImageFilterTest(int , char *[] )
 
   // Create and initialize the filter
   MinMaxFilterType::Pointer filter = MinMaxFilterType::New();
-  FilterWatcher watcher(filter);
+  FilterWatcher             watcher(filter);
 
   filter->SetInput(image);
   filter->Update();

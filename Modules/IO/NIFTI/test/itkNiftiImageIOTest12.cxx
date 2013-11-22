@@ -20,7 +20,8 @@
 #include "itkTestingHashImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkNiftiImageIOTest12(int ac, char* av[])
+int
+itkNiftiImageIOTest12(int ac, char* av[])
 {
   //
   // first argument is passing in the writable directory to do all testing
@@ -28,10 +29,9 @@ int itkNiftiImageIOTest12(int ac, char* av[])
     char *testdir = *++av;
     --ac;
     itksys::SystemTools::ChangeDirectory(testdir);
-  }
+    }
   if(ac != 2)
     return EXIT_FAILURE;
-
 
   char *arg1 = av[1];
 
@@ -40,7 +40,7 @@ int itkNiftiImageIOTest12(int ac, char* av[])
   typedef itk::VectorImage<unsigned char, 3 > ImageType;
 
   ImageType::RegionType region;
-  ImageType::SizeType size = {{2024, 1024, 1024}};
+  ImageType::SizeType   size = {{2024, 1024, 1024}};
   region.SetSize( size );
 
   ImageType::Pointer image = ImageType::New();
@@ -48,24 +48,24 @@ int itkNiftiImageIOTest12(int ac, char* av[])
   image->SetNumberOfComponentsPerPixel(3);
   image->Allocate();
 
-  { //Fill in entire image
+    { //Fill in entire image
 
-  ImageType::PixelType value(3);
+    ImageType::PixelType value(3);
 
-  itk::ImageRegionIterator<ImageType> ri(image,region);
-  while(!ri.IsAtEnd())
-    {
-    ImageType::IndexType idx = ri.GetIndex();
+    itk::ImageRegionIterator<ImageType> ri(image,region);
+    while(!ri.IsAtEnd() )
+      {
+      ImageType::IndexType idx = ri.GetIndex();
 
-    value[0] = idx[0]%256;
-    value[1] = idx[1]%256;
-    value[2] = idx[2]%256;
+      value[0] = idx[0]%256;
+      value[1] = idx[1]%256;
+      value[2] = idx[2]%256;
 
-    ri.Set( value );
-    ++ri;
+      ri.Set( value );
+      ++ri;
+      }
+
     }
-
-  }
 
   typedef itk::Testing::HashImageFilter<ImageType> Hasher;
   Hasher::Pointer hasher = Hasher::New();

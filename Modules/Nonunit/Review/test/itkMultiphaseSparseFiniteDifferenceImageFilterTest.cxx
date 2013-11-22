@@ -23,58 +23,68 @@ namespace itk
 {
 
 template < typename TInputImage, typename TFeatureImage, typename TOutputImage,
-  typename TFiniteDifferenceFunction,typename TIdCell >
+           typename TFiniteDifferenceFunction,typename TIdCell >
 class MultiphaseSparseFiniteDifferenceImageFilterTestHelper
   : public MultiphaseSparseFiniteDifferenceImageFilter<
-      TInputImage, TFeatureImage, TOutputImage,
-      TFiniteDifferenceFunction, TIdCell >
+    TInputImage, TFeatureImage, TOutputImage,
+    TFiniteDifferenceFunction, TIdCell >
 {
 public:
   /** Standard class typedefs. */
-  typedef MultiphaseSparseFiniteDifferenceImageFilterTestHelper     Self;
+  typedef MultiphaseSparseFiniteDifferenceImageFilterTestHelper Self;
   typedef MultiphaseSparseFiniteDifferenceImageFilter< TInputImage,
-    TFeatureImage, TOutputImage,TFiniteDifferenceFunction >         Superclass;
-  typedef SmartPointer<Self>                                        Pointer;
-  typedef SmartPointer<const Self>                                  ConstPointer;
+                                                       TFeatureImage, TOutputImage,
+                                                       TFiniteDifferenceFunction >         Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro( MultiphaseSparseFiniteDifferenceImageFilterTestHelper, MultiphaseSparseFiniteDifferenceImageFilter );
 
   itkNewMacro( Self );
 
-  virtual void AllocateUpdateBuffer() {}
+  virtual void
+  AllocateUpdateBuffer() {
+  }
 
-  typedef typename Superclass::TimeStepType   TimeStepType;
+  typedef typename Superclass::TimeStepType TimeStepType;
 
-  virtual void ApplyUpdate(TimeStepType itkNotUsed(dt) ) {}
+  virtual void
+  ApplyUpdate(TimeStepType itkNotUsed(dt) ) {
+  }
 
-  virtual TimeStepType CalculateChange()
-    {
+  virtual TimeStepType
+  CalculateChange()
+  {
     return TimeStepType( 1.0 );
-    }
+  }
 
-  virtual void CopyInputToOutput() {}
+  virtual void
+  CopyInputToOutput() {
+  }
 
 };
 
-
 }
 
-int itkMultiphaseSparseFiniteDifferenceImageFilterTest( int, char* [] )
+int
+itkMultiphaseSparseFiniteDifferenceImageFilterTest( int, char* [] )
 {
   const unsigned int Dimension = 3;
 
-  typedef itk::Image< double,        Dimension >  LevelSetImageType;
-  typedef itk::Image< float,         Dimension >  FeatureImageType;
-  typedef itk::Image< unsigned char, Dimension >  OutputImageType;
+  typedef itk::Image< double,        Dimension > LevelSetImageType;
+  typedef itk::Image< float,         Dimension > FeatureImageType;
+  typedef itk::Image< unsigned char, Dimension > OutputImageType;
 
   typedef itk::ScalarChanAndVeseLevelSetFunctionData< LevelSetImageType, FeatureImageType >
     DataHelperType;
   typedef itk::ConstrainedRegionBasedLevelSetFunctionSharedData< LevelSetImageType,
-    FeatureImageType, DataHelperType >            SharedDataHelperType;
+                                                                 FeatureImageType,
+                                                                 DataHelperType >            SharedDataHelperType;
 
   typedef itk::ScalarChanAndVeseLevelSetFunction< LevelSetImageType, FeatureImageType,
-    SharedDataHelperType >                        RegionBasedLevelSetFunctionType;
+                                                  SharedDataHelperType >
+    RegionBasedLevelSetFunctionType;
 
   RegionBasedLevelSetFunctionType::Pointer function = RegionBasedLevelSetFunctionType::New();
   if( function.IsNull() )
@@ -85,14 +95,14 @@ int itkMultiphaseSparseFiniteDifferenceImageFilterTest( int, char* [] )
   typedef unsigned long IdCellType;
 
   typedef itk::MultiphaseSparseFiniteDifferenceImageFilterTestHelper< LevelSetImageType,
-    FeatureImageType, OutputImageType, RegionBasedLevelSetFunctionType,
-    IdCellType >  FilterType;
+                                                                      FeatureImageType, OutputImageType,
+                                                                      RegionBasedLevelSetFunctionType,
+                                                                      IdCellType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
   std::cout << "GetNameOfClass() = " << filter->GetNameOfClass() << std::endl;
   filter->Print( std::cout );
-
 
   return EXIT_SUCCESS;
 }

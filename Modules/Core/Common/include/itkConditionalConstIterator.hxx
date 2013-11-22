@@ -25,12 +25,15 @@ namespace itk
 template< typename TImageType >
 ConditionalConstIterator< TImageType >
 ::ConditionalConstIterator()
-{}
+{
+}
 
 template< typename TImageType >
 ConditionalConstIterator< TImageType >
 ::~ConditionalConstIterator()
-{}
+{
+}
+
 } // end namespace itk
 
 #endif

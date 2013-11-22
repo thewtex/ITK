@@ -91,7 +91,8 @@ public:
   VariableLengthVector();
 
   /** Constructor with size. Size can only be changed by assignment */
-  explicit VariableLengthVector(unsigned int dimension);
+  explicit
+  VariableLengthVector(unsigned int dimension);
 
   /** Constructor that initializes array with contents from a user supplied
    * buffer. The pointer to the buffer and the length is specified. By default,
@@ -141,7 +142,8 @@ public:
 
   /** Assignment operator  */
   template< typename T >
-  const VariableLengthVector< TValueType > & operator=
+  const VariableLengthVector< TValueType > &
+  operator=
     (const VariableLengthVector< T > & v)
   {
     if ( m_Data == static_cast< void * >( const_cast< T * >
@@ -163,19 +165,39 @@ public:
   const Self & operator=(TValueType const & v);
 
   /** Return the number of elements in the Array  */
-  inline unsigned int Size(void) const { return m_NumElements; }
-  inline unsigned int GetNumberOfElements(void) const { return m_NumElements; }
+  inline unsigned int
+  Size(void) const {
+    return m_NumElements;
+  }
+
+  inline unsigned int
+  GetNumberOfElements(void) const {
+    return m_NumElements;
+  }
 
   /** Return reference to the element at specified index. No range checking. */
-  TValueType       & operator[](unsigned int i) { return this->m_Data[i]; }
+  TValueType       &
+  operator[](unsigned int i) {
+    return this->m_Data[i];
+  }
+
   /** Return reference to the element at specified index. No range checking. */
-  TValueType const & operator[](unsigned int i) const { return this->m_Data[i]; }
+  TValueType const &
+  operator[](unsigned int i) const {
+    return this->m_Data[i];
+  }
 
   /** Get one element */
-  inline const TValueType & GetElement(unsigned int i) const { return m_Data[i]; }
+  inline const TValueType &
+  GetElement(unsigned int i) const {
+    return m_Data[i];
+  }
 
   /** Set one element */
-  void SetElement(unsigned int i, const TValueType & value) { m_Data[i] = value; }
+  void
+  SetElement(unsigned int i, const TValueType & value) {
+    m_Data[i] = value;
+  }
 
   /** Set the size to that given.
    *
@@ -193,7 +215,10 @@ public:
    * true. */
   void DestroyExistingData();
 
-  inline unsigned int GetSize(void) const { return m_NumElements; }
+  inline unsigned int
+  GetSize(void) const {
+    return m_NumElements;
+  }
 
   /** Set the pointer from which the data is imported.
    * If "LetArrayManageMemory" is false, then the application retains
@@ -228,7 +253,10 @@ public:
   /** Allocate memory of certain size and return it.  */
   TValueType * AllocateElements(ElementIdentifier size) const;
 
-  const TValueType * GetDataPointer() const { return m_Data; }
+  const TValueType *
+  GetDataPointer() const {
+    return m_Data;
+  }
 
   /** Element-wise vector addition. The vectors do not have to have
    * the same element type. The input vector elements are cast to the
@@ -237,7 +265,8 @@ public:
    * \note For efficiency, the length of the vectors is not checked;
    * they are assumed to have the same length. */
   template< typename T >
-  inline Self operator+(const VariableLengthVector< T > & v) const
+  inline Self
+  operator+(const VariableLengthVector< T > & v) const
   {
     // if( m_NumElements != v.GetSize() )
     //   {
@@ -263,7 +292,8 @@ public:
    * \note For efficiency, the length of the vectors is not checked;
    * they are assumed to have the same length. */
   template< typename T >
-  inline Self operator-(const VariableLengthVector< T > & v) const
+  inline Self
+  operator-(const VariableLengthVector< T > & v) const
   {
     // if( m_NumElements != v.GetSize() )
     //   {
@@ -286,7 +316,8 @@ public:
    * is cast to the output vector element type before the
    * multiplication is performed. */
   template< typename T >
-  inline Self operator*(T s) const
+  inline Self
+  operator*(T s) const
   {
     Self result(m_NumElements);
 
@@ -302,21 +333,23 @@ public:
    * scalar and vector elements are cast to the RealValueType prior to
    * division, and the result is cast to the ValueType. */
   template< typename T >
-  inline Self operator/(T s) const
+  inline Self
+  operator/(T s) const
   {
     Self result(m_NumElements);
 
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       result[i] = static_cast< ValueType >(
-        static_cast< RealValueType >( m_Data[i] )
-        / static_cast< RealValueType >( s ) );
+          static_cast< RealValueType >( m_Data[i] )
+          / static_cast< RealValueType >( s ) );
       }
     return result;
   }
 
   /** Add scalar 's' to each element of the vector.*/
-  inline Self operator+(TValueType s) const
+  inline Self
+  operator+(TValueType s) const
   {
     Self result(m_NumElements);
 
@@ -328,7 +361,8 @@ public:
   }
 
   /** Subtract scalar 's' from each element of the vector.*/
-  inline Self operator-(TValueType s) const
+  inline Self
+  operator-(TValueType s) const
   {
     Self result(m_NumElements);
 
@@ -341,7 +375,8 @@ public:
 
   /** Prefix operator that subtracts 1 from each element of the
    * vector. */
-  inline Self & operator--()
+  inline Self &
+  operator--()
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
@@ -351,7 +386,8 @@ public:
   }
 
   /** Prefix operator that adds 1 to each element of the vector. */
-  inline Self & operator++() // prefix operator ++v;
+  inline Self &
+  operator++()               // prefix operator ++v;
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
@@ -362,7 +398,8 @@ public:
 
   /** Postfix operator that subtracts 1 from each element of the
    * vector. */
-  inline Self operator--(int) // postfix operator v--;
+  inline Self
+  operator--(int)             // postfix operator v--;
   {
     Self tmp(*this);
 
@@ -371,7 +408,8 @@ public:
   }
 
   /** Postfix operator that adds 1 to each element of the vector. */
-  inline Self operator++(int) // postfix operator v++;
+  inline Self
+  operator++(int)             // postfix operator v++;
   {
     Self tmp(*this);
 
@@ -387,7 +425,8 @@ public:
    * \note For efficiency, the length of the vectors is not checked;
    * they are assumed to have the same length. */
   template< typename T >
-  inline Self & operator-=
+  inline Self &
+  operator-=
     (const VariableLengthVector< T > & v)
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
@@ -398,7 +437,8 @@ public:
   }
 
   /** Subtract scalar 's' from each element of the current vector. */
-  inline Self & operator-=(TValueType s)
+  inline Self &
+  operator-=(TValueType s)
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
@@ -415,7 +455,8 @@ public:
    * \note For efficiency, the length of the vectors is not checked;
    * they are assumed to have the same length. */
   template< typename T >
-  inline Self & operator+=
+  inline Self &
+  operator+=
     (const VariableLengthVector< T > & v)
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
@@ -426,7 +467,8 @@ public:
   }
 
   /** Add scalar 's' to each element of the vector. */
-  inline Self & operator+=(TValueType s)
+  inline Self &
+  operator+=(TValueType s)
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
@@ -439,7 +481,8 @@ public:
    * value is cast to the current vector element type prior to
    * multiplication. */
   template< typename T >
-  inline Self & operator*=(T s)
+  inline Self &
+  operator*=(T s)
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
@@ -453,13 +496,14 @@ public:
    * scalar and vector elements are cast to the RealValueType prior to
    * division, and the result is cast to the ValueType. */
   template< typename T >
-  inline Self & operator/=(T s)
+  inline Self &
+  operator/=(T s)
   {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       m_Data[i] = static_cast< ValueType >(
-        static_cast< RealValueType >( m_Data[i] )
-        / static_cast< RealValueType >( s ) );
+          static_cast< RealValueType >( m_Data[i] )
+          / static_cast< RealValueType >( s ) );
       }
     return *this;
   }
@@ -479,7 +523,7 @@ public:
 
 private:
 
-  bool              m_LetArrayManageMemory; // if true, the array is responsible
+  bool m_LetArrayManageMemory;              // if true, the array is responsible
                                             // for memory of data
   TValueType *      m_Data;                 // Array to hold data
   ElementIdentifier m_NumElements;
@@ -497,7 +541,8 @@ operator*(const T & scalar, const VariableLengthVector< TValueType > & v)
 }
 
 template< typename TValueType >
-std::ostream & operator<<(std::ostream & os, const VariableLengthVector< TValueType > & arr)
+std::ostream &
+operator<<(std::ostream & os, const VariableLengthVector< TValueType > & arr)
 {
   const unsigned int length = arr.Size();
   const signed int   last   = (unsigned int)length - 1;
@@ -514,6 +559,7 @@ std::ostream & operator<<(std::ostream & os, const VariableLengthVector< TValueT
   os << "]";
   return os;
 }
+
 } // namespace itk
 
 #include "itkNumericTraitsVariableLengthVectorPixel.h"

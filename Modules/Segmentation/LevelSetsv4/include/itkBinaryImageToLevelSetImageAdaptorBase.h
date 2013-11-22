@@ -39,19 +39,19 @@ public:
   /** Run-time type information */
   itkTypeMacro( BinaryImageToLevelSetImageAdaptorBase, Object );
 
-  typedef TInputImage                           InputImageType;
-  typedef typename InputImageType::PixelType    InputImagePixelType;
-  typedef typename InputImageType::IndexType    InputImageIndexType;
-  typedef typename InputImageType::Pointer      InputImagePointer;
-  typedef typename InputImageType::RegionType   InputImageRegionType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputImagePixelType;
+  typedef typename InputImageType::IndexType  InputImageIndexType;
+  typedef typename InputImageType::Pointer    InputImagePointer;
+  typedef typename InputImageType::RegionType InputImageRegionType;
   typedef typename NumericTraits< InputImagePixelType >::RealType
-                                                InputPixelRealType;
+    InputPixelRealType;
 
   itkStaticConstMacro ( ImageDimension, unsigned int,
-                       InputImageType::ImageDimension );
+                        InputImageType::ImageDimension );
 
-  typedef TLevelSet                       LevelSetType;
-  typedef typename LevelSetType::Pointer  LevelSetPointer;
+  typedef TLevelSet                      LevelSetType;
+  typedef typename LevelSetType::Pointer LevelSetPointer;
 
   /**
    * Input is a binary image m_InputImage
@@ -68,19 +68,24 @@ public:
 protected:
   /** Constructor */
   BinaryImageToLevelSetImageAdaptorBase()
-    {
+  {
     this->m_LevelSet = LevelSetType::New();
-    }
+  }
 
   /** Destructor */
-  virtual ~BinaryImageToLevelSetImageAdaptorBase() {}
+  virtual
+  ~BinaryImageToLevelSetImageAdaptorBase() {
+  }
 
-  InputImagePointer       m_InputImage;
-  LevelSetPointer         m_LevelSet;
+  InputImagePointer m_InputImage;
+  LevelSetPointer   m_LevelSet;
 
 private:
-  BinaryImageToLevelSetImageAdaptorBase( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  BinaryImageToLevelSetImageAdaptorBase( const Self& ); // purposely not
+                                                        // implemented
+  void operator =( const Self& );                       // purposely not
+
+  // implemented
 
 };
 }

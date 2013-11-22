@@ -33,20 +33,30 @@ template< typename TInput1, typename TInput2 = TInput1, typename TOutput = TInpu
 class Minimum
 {
 public:
-  Minimum() {}
-  ~Minimum() {}
-  bool operator!=(const Minimum &) const
+  Minimum() {
+  }
+
+  ~Minimum() {
+  }
+
+  bool
+  operator!=(const Minimum &) const
   {
     return false;
   }
 
-  bool operator==(const Minimum & other) const
+  bool
+  operator==(const Minimum & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
-  { return static_cast< TOutput >( ( A < B ) ? A : B ); }
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
+  {
+    return static_cast< TOutput >( ( A < B ) ? A : B );
+  }
+
 };
 }
 /** \class MinimumImageFilter
@@ -68,7 +78,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class MinimumImageFilter:
+class MinimumImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Minimum<
@@ -80,12 +90,12 @@ public:
   /** Standard class typedefs. */
   typedef MinimumImageFilter Self;
   typedef BinaryFunctorImageFilter<
-    TInputImage1, TInputImage2, TOutputImage,
-    Functor::Minimum<
-      typename TInputImage1::PixelType,
-      typename TInputImage2::PixelType,
-      typename TOutputImage::PixelType >
-    >                               Superclass;
+      TInputImage1, TInputImage2, TOutputImage,
+      Functor::Minimum<
+        typename TInputImage1::PixelType,
+        typename TInputImage2::PixelType,
+        typename TOutputImage::PixelType >
+      >                               Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -112,12 +122,17 @@ public:
 #endif
 
 protected:
-  MinimumImageFilter() {}
-  virtual ~MinimumImageFilter() {}
+  MinimumImageFilter() {
+  }
+
+  virtual
+  ~MinimumImageFilter() {
+  }
 
 private:
   MinimumImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

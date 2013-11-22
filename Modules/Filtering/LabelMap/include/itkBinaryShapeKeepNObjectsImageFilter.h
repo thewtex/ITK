@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class BinaryShapeKeepNObjectsImageFilter:
+class BinaryShapeKeepNObjectsImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -76,11 +76,11 @@ public:
 
   typedef SizeValueType LabelType;
 
-  typedef ShapeLabelObject< LabelType, itkGetStaticConstMacro(ImageDimension) >     LabelObjectType;
-  typedef LabelMap< LabelObjectType >                                               LabelMapType;
-  typedef BinaryImageToLabelMapFilter< InputImageType, LabelMapType >               LabelizerType;
+  typedef ShapeLabelObject< LabelType, itkGetStaticConstMacro(ImageDimension) > LabelObjectType;
+  typedef LabelMap< LabelObjectType >                                           LabelMapType;
+  typedef BinaryImageToLabelMapFilter< InputImageType, LabelMapType >           LabelizerType;
   typedef Image< typename OutputImageType::PixelType, itkGetStaticConstMacro(OutputImageDimension) >
-  ShapeLabelFilterOutput;
+    ShapeLabelFilterOutput;
   typedef ShapeLabelMapFilter< LabelMapType, ShapeLabelFilterOutput >  LabelObjectValuatorType;
   typedef typename LabelObjectType::AttributeType                      AttributeType;
   typedef ShapeKeepNObjectsLabelMapFilter< LabelMapType >              KeepNObjectsType;
@@ -149,14 +149,17 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
 
 protected:
   BinaryShapeKeepNObjectsImageFilter();
-  ~BinaryShapeKeepNObjectsImageFilter() {}
+  ~BinaryShapeKeepNObjectsImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** BinaryShapeKeepNObjectsImageFilter needs the entire input be

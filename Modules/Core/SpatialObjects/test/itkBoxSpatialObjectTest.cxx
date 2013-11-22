@@ -24,24 +24,25 @@
 #include "itkSpatialObjectToImageFilter.h"
 #include "itkBoxSpatialObject.h"
 
-int itkBoxSpatialObjectTest( int argc, char *argv[] )
+int
+itkBoxSpatialObjectTest( int argc, char *argv[] )
 {
   if (argc < 2)
     {
     std::cerr << "Missing Parameters: Usage " << argv[0] << "OutputImageFile"
-                                        << std::endl;
+              << std::endl;
     }
 
   const unsigned int Dimension = 2;
-  typedef itk::GroupSpatialObject< Dimension >       SceneType;
-  typedef itk::BoxSpatialObject< Dimension >         BoxType;
-  typedef itk::Image< unsigned char, Dimension >     OutputImageType;
-  typedef itk::ImageFileWriter< OutputImageType >    WriterType;
+  typedef itk::GroupSpatialObject< Dimension >    SceneType;
+  typedef itk::BoxSpatialObject< Dimension >      BoxType;
+  typedef itk::Image< unsigned char, Dimension >  OutputImageType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   typedef itk::SpatialObjectToImageFilter< SceneType, OutputImageType >
-                                      SpatialObjectToImageFilterType;
+    SpatialObjectToImageFilterType;
 
   SceneType::Pointer scene =  SceneType::New();
-  BoxType::Pointer box1 =     BoxType::New();
+  BoxType::Pointer   box1 =     BoxType::New();
   box1->Print(std::cout);
   BoxType::Pointer box2 =     BoxType::New();
   box1->SetId(1);
@@ -54,8 +55,8 @@ int itkBoxSpatialObjectTest( int argc, char *argv[] )
   scene->AddSpatialObject(box1);
   scene->AddSpatialObject(box2);
 
-  BoxType::SizeType  boxsize1;
-  BoxType::SizeType  boxsize2;
+  BoxType::SizeType boxsize1;
+  BoxType::SizeType boxsize2;
 
   boxsize1[0] = 30;
   boxsize1[1] = 30;
@@ -86,9 +87,9 @@ int itkBoxSpatialObjectTest( int argc, char *argv[] )
   BoxType::BoundingBoxType * boundingBox = box1->GetBoundingBox();
 
   if(     (boundingBox->GetBounds()[0] != 29)
-      ||  (boundingBox->GetBounds()[1] != 59)
-      ||  (boundingBox->GetBounds()[2] != 29)
-      ||  (boundingBox->GetBounds()[3] != 59) )
+          ||  (boundingBox->GetBounds()[1] != 59)
+          ||  (boundingBox->GetBounds()[2] != 29)
+          ||  (boundingBox->GetBounds()[3] != 59) )
     {
     std::cout << "[FAILED] Test returned" << std::endl;
     std::cout << box1->GetBoundingBox()->GetBounds() << std::endl;
@@ -104,16 +105,16 @@ int itkBoxSpatialObjectTest( int argc, char *argv[] )
   itk::Point<double,2> out;
   out[0]=0;out[1]=4;
 
-  if(!box1->IsInside(in))
-  {
+  if(!box1->IsInside(in) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
-  if(box1->IsInside(out))
-  {
+    }
+  if(box1->IsInside(out) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::cout << "[PASSED]" << std::endl;
 
   std::cout << "Test ObjectToWorldTransform " << std::endl;
@@ -129,7 +130,7 @@ int itkBoxSpatialObjectTest( int argc, char *argv[] )
   box2->ComputeObjectToWorldTransform();
 
   SpatialObjectToImageFilterType::Pointer imageFilter =
-                            SpatialObjectToImageFilterType::New();
+    SpatialObjectToImageFilterType::New();
   imageFilter->SetInput(  scene  );
 
   OutputImageType::SizeType size;
@@ -146,7 +147,7 @@ int itkBoxSpatialObjectTest( int argc, char *argv[] )
   imageFilter->SetOutsideValue( 0 );
   imageFilter->Update();
 
-  const char * outputFilename = argv[1];
+  const char *        outputFilename = argv[1];
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( outputFilename );
   writer->SetInput( imageFilter->GetOutput() );

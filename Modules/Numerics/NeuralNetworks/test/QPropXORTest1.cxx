@@ -21,9 +21,9 @@
 #include "itkListSample.h"
 #include <fstream>
 
-#define ROUND(x) (floor(x+0.5))
+#define ROUND(x) (floor(x+0.5) )
 
-  int
+int
 QPropXORTest1(int argc, char* argv[])
 {
   if (argc < 2)
@@ -39,7 +39,7 @@ QPropXORTest1(int argc, char* argv[])
   int num_hidden_nodes = 2;
   int num_output_nodes = 1;
 
-  srand(time(0));
+  srand(time(0) );
 
   typedef itk::Array<double>                                 MeasurementVectorType;
   typedef itk::Array<double>                                 TargetVectorType;
@@ -49,15 +49,15 @@ QPropXORTest1(int argc, char* argv[])
   typedef itk::Statistics::BatchSupervisedTrainingFunction<SampleType, TargetType, double> TrainingFcnType;
 
   MeasurementVectorType mv(num_input_nodes);
-  TargetVectorType tv(num_output_nodes);
-  SampleType::Pointer sample = SampleType::New();
-  TargetType::Pointer targets = TargetType::New();
+  TargetVectorType      tv(num_output_nodes);
+  SampleType::Pointer   sample = SampleType::New();
+  TargetType::Pointer   targets = TargetType::New();
   sample->SetMeasurementVectorSize( num_input_nodes);
   targets->SetMeasurementVectorSize( num_output_nodes);
 
   std::ifstream infile1;
   infile1.open(dataFileName, std::ios::in);
-  if (infile1.fail())
+  if (infile1.fail() )
     {
     std::cout << argv[0] << " Cannot open file for reading: "
               << dataFileName << std::endl;
@@ -66,7 +66,7 @@ QPropXORTest1(int argc, char* argv[])
 
   infile1 >> mv[0] >> mv[1] >> tv[0];
 
-  while (!infile1.eof())
+  while (!infile1.eof() )
     {
     std::cout << "Input =" << mv << std::endl;
     std::cout << "target =" << tv << std::endl;
@@ -91,7 +91,8 @@ QPropXORTest1(int argc, char* argv[])
   net1->SetFirstHiddenTransferFunction(transferfunction1);
   net1->SetOutputTransferFunction(transferfunction1);
 
-  typedef itk::Statistics::QuickPropLearningRule<NetworkType::LayerInterfaceType, TargetVectorType> QuickPropLearningRuleType;
+  typedef itk::Statistics::QuickPropLearningRule<NetworkType::LayerInterfaceType,
+                                                 TargetVectorType> QuickPropLearningRuleType;
   QuickPropLearningRuleType::Pointer learningfunction=QuickPropLearningRuleType::New();
 
   net1->SetLearningFunction(learningfunction);
@@ -109,21 +110,20 @@ QPropXORTest1(int argc, char* argv[])
   //Network Simulation
   std::cout << sample->Size() << std::endl;
   std::cout << "Network Simulation" << std::endl;
-  TargetVectorType ov(num_output_nodes);
+  TargetVectorType          ov(num_output_nodes);
   SampleType::ConstIterator iter1 = sample->Begin();
   TargetType::ConstIterator iter2 = targets->Begin();
 
-
   unsigned int error1 = 0;
   unsigned int error2 = 0;
-  int flag;
-  int train_flag=1;
-  long num_iterations =0;
-  long max_iterations=1000;
+  int          flag;
+  int          train_flag=1;
+  long         num_iterations =0;
+  long         max_iterations=1000;
 
   std::ofstream outfile;
   outfile.open("out1.txt",std::ios::out);
-  if (outfile.fail())
+  if (outfile.fail() )
     {
     std::cout << argv[0] << " Cannot open file for wriing: "
               << "out1.txt" << std::endl;
@@ -141,7 +141,7 @@ QPropXORTest1(int argc, char* argv[])
     error1=0;
     error2=0;
     //Simulate the network
-    while (iter1 != sample->End())
+    while (iter1 != sample->End() )
       {
       mv = iter1.GetMeasurementVector();
       tv = iter2.GetMeasurementVector();
@@ -168,20 +168,20 @@ QPropXORTest1(int argc, char* argv[])
       ++iter2;
       }
     //check for convergence
-    if((error1+error2) == 0 || num_iterations > max_iterations)
-      {//Done training
+    if( (error1+error2) == 0 || num_iterations > max_iterations)
+      { //Done training
       train_flag=0;
       }
-    }//outer while
+    } //outer while
 
   std::cout<<"Number of Epochs = "<<num_iterations<<std::endl;
   std::cout << "Among 4 measurement vectors, " << error1 + error2
-    << " vectors are misclassified." << std::endl;
+            << " vectors are misclassified." << std::endl;
   std::cout<<"Network Weights and Biases after Training= "<<std::endl;
 
   std::cout << net1 << std::endl;
 
-  if ((error1 + error2) > 2)
+  if ( (error1 + error2) > 2)
     {
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;

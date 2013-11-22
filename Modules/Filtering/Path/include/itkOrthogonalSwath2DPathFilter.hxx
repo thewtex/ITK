@@ -146,7 +146,7 @@ OrthogonalSwath2DPathFilter< TParametricPath, TSwathMeritImage >
         index[0] = x + 1;
         index[1] = L;
         MeritValue(F, L, x + 1) = MeritValue(F, bestL, x)
-                                  + double( swathMeritImage->GetPixel(index) );
+          + double( swathMeritImage->GetPixel(index) );
         }
       }
     }
@@ -200,6 +200,7 @@ OrthogonalSwath2DPathFilter< TParametricPath, TSwathMeritImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "StepValues:  " << m_StepValues << std::endl;
   os << indent << "MeritValues:  " << m_MeritValues << std::endl;
   os << indent << "OptimumStepsValues:  " << m_OptimumStepsValues << std::endl;
@@ -258,6 +259,7 @@ OrthogonalSwath2DPathFilter< TParametricPath, TSwathMeritImage >
   StepValue(F, L, x) = bestL;
   return bestL;
 }
+
 } // end namespace itk
 
 #endif

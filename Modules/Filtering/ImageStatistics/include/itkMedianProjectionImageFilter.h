@@ -57,19 +57,23 @@ public:
     m_Values.reserve(size);
   }
 
-  ~MedianAccumulator(){}
+  ~MedianAccumulator(){
+  }
 
-  inline void Initialize()
+  inline void
+  Initialize()
   {
     m_Values.clear();
   }
 
-  inline void operator()(const TInputPixel & input)
+  inline void
+  operator()(const TInputPixel & input)
   {
     m_Values.push_back(input);
   }
 
-  inline TInputPixel GetValue()
+  inline TInputPixel
+  GetValue()
   {
     typedef typename std::vector< TInputPixel >::iterator ContainerIterator;
     ContainerIterator medianIterator = m_Values.begin() +  m_Values.size() / 2;
@@ -82,7 +86,7 @@ public:
 } // end namespace Function
 
 template< typename TInputImage, typename TOutputImage >
-class MedianProjectionImageFilter:public
+class MedianProjectionImageFilter : public
   ProjectionImageFilter< TInputImage, TOutputImage,
                          Functor::MedianAccumulator< typename TInputImage::PixelType > >
 {
@@ -107,12 +111,17 @@ public:
 #endif
 
 protected:
-  MedianProjectionImageFilter() {}
-  virtual ~MedianProjectionImageFilter() {}
+  MedianProjectionImageFilter() {
+  }
+
+  virtual
+  ~MedianProjectionImageFilter() {
+  }
 
 private:
   MedianProjectionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);              //purposely not implemented
+
 };                                           // end MedianProjectionImageFilter
 } //end namespace itk
 

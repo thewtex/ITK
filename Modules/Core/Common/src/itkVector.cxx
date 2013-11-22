@@ -28,7 +28,8 @@ namespace itk
  */
 
 Vector< double, 3 >
-ITKCommon_EXPORT CrossProduct(const Vector< double, 3 > & a, const Vector< double, 3 > & b)
+ITKCommon_EXPORT
+CrossProduct(const Vector< double, 3 > & a, const Vector< double, 3 > & b)
 {
   Vector< double, 3 > c;
   c[0] = a[1] * b[2] - a[2] * b[1];
@@ -38,7 +39,8 @@ ITKCommon_EXPORT CrossProduct(const Vector< double, 3 > & a, const Vector< doubl
 }
 
 Vector< float, 3 >
-ITKCommon_EXPORT CrossProduct(const Vector< float, 3 > & a, const Vector< float, 3 > & b)
+ITKCommon_EXPORT
+CrossProduct(const Vector< float, 3 > & a, const Vector< float, 3 > & b)
 {
   Vector< float, 3 > c;
   c[0] = a[1] * b[2] - a[2] * b[1];
@@ -48,7 +50,8 @@ ITKCommon_EXPORT CrossProduct(const Vector< float, 3 > & a, const Vector< float,
 }
 
 Vector< int, 3 >
-ITKCommon_EXPORT CrossProduct(const Vector< int, 3 > & a, const Vector< int, 3 > & b)
+ITKCommon_EXPORT
+CrossProduct(const Vector< int, 3 > & a, const Vector< int, 3 > & b)
 {
   Vector< int, 3 > c;
   c[0] = a[1] * b[2] - a[2] * b[1];
@@ -56,4 +59,5 @@ ITKCommon_EXPORT CrossProduct(const Vector< int, 3 > & a, const Vector< int, 3 >
   c[2] = a[0] * b[1] - a[1] * b[0];
   return c;
 }
+
 } // end namespace itk

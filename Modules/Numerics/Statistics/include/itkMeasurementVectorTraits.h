@@ -48,7 +48,7 @@ public:
       precision). Using double type will also ultimately fall into the same problem.
       Hence in the new statistics framework, InstanceIdentifier/FrequencyTypes are
       set to the the largest possible integer on the machine */
-  typedef IdentifierType  InstanceIdentifier;
+  typedef IdentifierType InstanceIdentifier;
 
   /** Type defined for representing the frequency of measurement vectors */
   typedef InstanceIdentifier                                     AbsoluteFrequencyType;
@@ -59,7 +59,8 @@ public:
   typedef unsigned int MeasurementVectorLength;
 
   template< typename TVectorType >
-  static bool IsResizable(const TVectorType &)
+  static bool
+  IsResizable(const TVectorType &)
   {
     // Test whether the vector type is resizable or not
     //
@@ -73,9 +74,10 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2, unsigned int VLength2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > &,
-                                        const FixedArray< TValueType2, VLength2 > &,
-                                        const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > &,
+         const FixedArray< TValueType2, VLength2 > &,
+         const char *errMsg = "Length Mismatch")
   {
     if ( VLength != VLength2 )
       {
@@ -85,9 +87,10 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2, unsigned int VLength2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > *,
-                                        const FixedArray< TValueType2, VLength2 > *,
-                                        const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > *,
+         const FixedArray< TValueType2, VLength2 > *,
+         const char *errMsg = "Length Mismatch")
   {
     if ( VLength != VLength2 )
       {
@@ -97,8 +100,9 @@ public:
   }
 
   template< typename TValueType1, typename TValueType2 >
-  static MeasurementVectorLength Assert(const Array< TValueType1 > & a,
-                                        const Array< TValueType2 > & b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const Array< TValueType1 > & a,
+         const Array< TValueType2 > & b, const char *errMsg = "Length Mismatch")
   {
     if ( b.Size() != a.Size() )
       {
@@ -108,8 +112,9 @@ public:
   }
 
   template< typename TValueType1, typename TValueType2 >
-  static MeasurementVectorLength Assert(const Array< TValueType1 > *a,
-                                        const Array< TValueType2 > *b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const Array< TValueType1 > *a,
+         const Array< TValueType2 > *b, const char *errMsg = "Length Mismatch")
   {
     if ( b->Size() != a->Size() )
       {
@@ -119,9 +124,10 @@ public:
   }
 
   template< typename TValueType1, typename TValueType2 >
-  static MeasurementVectorLength Assert(const VariableLengthVector< TValueType1 > & a,
-                                        const VariableLengthVector< TValueType2 > & b,
-                                        const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const VariableLengthVector< TValueType1 > & a,
+         const VariableLengthVector< TValueType2 > & b,
+         const char *errMsg = "Length Mismatch")
   {
     if ( b.Size() != a.Size() )
       {
@@ -131,9 +137,10 @@ public:
   }
 
   template< typename TValueType1, typename TValueType2 >
-  static MeasurementVectorLength Assert(const VariableLengthVector< TValueType1 > *a,
-                                        const VariableLengthVector< TValueType2 > *b,
-                                        const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const VariableLengthVector< TValueType1 > *a,
+         const VariableLengthVector< TValueType2 > *b,
+         const char *errMsg = "Length Mismatch")
   {
     if ( b->Size() != a->Size() )
       {
@@ -143,8 +150,9 @@ public:
   }
 
   template< typename TValueType1, typename TValueType2 >
-  static MeasurementVectorLength Assert(const std::vector< TValueType1 > & a,
-                                        const std::vector< TValueType2 > & b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const std::vector< TValueType1 > & a,
+         const std::vector< TValueType2 > & b, const char *errMsg = "Length Mismatch")
   {
     if ( b.size() != a.size() )
       {
@@ -154,8 +162,9 @@ public:
   }
 
   template< typename TValueType1, typename TValueType2 >
-  static MeasurementVectorLength Assert(const std::vector< TValueType1 > *a,
-                                        const std::vector< TValueType2 > *b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const std::vector< TValueType1 > *a,
+         const std::vector< TValueType2 > *b, const char *errMsg = "Length Mismatch")
   {
     if ( b->size() != a->size() )
       {
@@ -165,8 +174,9 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > &,
-                                        const Array< TValueType2 > & b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > &,
+         const Array< TValueType2 > & b, const char *errMsg = "Length Mismatch")
   {
     if ( b.Size() == 0 )
       {
@@ -183,8 +193,9 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > *,
-                                        const Array< TValueType2 > *b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > *,
+         const Array< TValueType2 > *b, const char *errMsg = "Length Mismatch")
   {
     if ( b->Size() == 0 )
       {
@@ -198,9 +209,10 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > &,
-                                        const VariableLengthVector< TValueType2 > & b,
-                                        const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > &,
+         const VariableLengthVector< TValueType2 > & b,
+         const char *errMsg = "Length Mismatch")
   {
     if ( b.Size() == 0 )
       {
@@ -217,9 +229,10 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > *,
-                                        const VariableLengthVector< TValueType2 > *b,
-                                        const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > *,
+         const VariableLengthVector< TValueType2 > *b,
+         const char *errMsg = "Length Mismatch")
   {
     if ( b->Size() == 0 )
       {
@@ -233,8 +246,9 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > &,
-                                        const std::vector< TValueType2 > & b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > &,
+         const std::vector< TValueType2 > & b, const char *errMsg = "Length Mismatch")
   {
     if ( b.size() == 0 )
       {
@@ -251,8 +265,9 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength, typename TValueType2 >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > *,
-                                        const std::vector< TValueType2 > *b, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > *,
+         const std::vector< TValueType2 > *b, const char *errMsg = "Length Mismatch")
   {
     if ( b->size() == 0 )
       {
@@ -266,8 +281,9 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > &,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > &,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( l == 0 )
       {
@@ -281,8 +297,9 @@ public:
   }
 
   template< typename TValueType1, unsigned int VLength >
-  static MeasurementVectorLength Assert(const FixedArray< TValueType1, VLength > *,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const FixedArray< TValueType1, VLength > *,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( l == 0 )
       {
@@ -296,8 +313,9 @@ public:
   }
 
   template< typename TValueType >
-  static MeasurementVectorLength Assert(const Array< TValueType > & a,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const Array< TValueType > & a,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( ( ( l != 0 ) && ( a.Size() != l ) ) || ( a.Size() == 0 ) )
       {
@@ -311,8 +329,9 @@ public:
   }
 
   template< typename TValueType >
-  static MeasurementVectorLength Assert(const Array< TValueType > *a,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const Array< TValueType > *a,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( ( ( l != 0 ) && ( a->Size() != l ) ) || ( a->Size() == 0 ) )
       {
@@ -326,8 +345,9 @@ public:
   }
 
   template< typename TValueType >
-  static MeasurementVectorLength Assert(const VariableLengthVector< TValueType > & a,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const VariableLengthVector< TValueType > & a,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( ( ( l != 0 ) && ( a.Size() != l ) ) || ( a.Size() == 0 ) )
       {
@@ -341,8 +361,9 @@ public:
   }
 
   template< typename TValueType >
-  static MeasurementVectorLength Assert(const VariableLengthVector< TValueType > *a,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const VariableLengthVector< TValueType > *a,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( ( ( l != 0 ) && ( a->Size() != l ) ) || ( a->Size() == 0 ) )
       {
@@ -356,8 +377,9 @@ public:
   }
 
   template< typename TValueType >
-  static MeasurementVectorLength Assert(const std::vector< TValueType > & a,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const std::vector< TValueType > & a,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( ( ( l != 0 ) && ( a.size() != l ) ) || ( a.size() == 0 ) )
       {
@@ -371,8 +393,9 @@ public:
   }
 
   template< typename TValueType >
-  static MeasurementVectorLength Assert(const std::vector< TValueType > *a,
-                                        const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
+  static MeasurementVectorLength
+  Assert(const std::vector< TValueType > *a,
+         const MeasurementVectorLength l, const char *errMsg = "Length Mismatch")
   {
     if ( ( ( l != 0 ) && ( a->size() != l ) ) || ( a->size() == 0 ) )
       {
@@ -386,16 +409,19 @@ public:
   }
 
   template< typename TArrayType >
-  static void  Assign(TArrayType & m, const TArrayType & v)
+  static void
+  Assign(TArrayType & m, const TArrayType & v)
   {
     m = v;
   }
 
   template< typename TValueType, unsigned int VLength >
-  static void  Assign(FixedArray< TValueType, VLength > & m, const TValueType & v)
+  static void
+  Assign(FixedArray< TValueType, VLength > & m, const TValueType & v)
   {
     m[0] = v;
   }
+
 };
 
 /** \class MeasurementVectorTraitsTypes

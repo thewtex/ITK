@@ -40,7 +40,7 @@ namespace itk
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage =
             LabelMap< StatisticsLabelObject< typename TInputImage::PixelType,
                                              TInputImage::ImageDimension > > >
-class LabelImageToStatisticsLabelMapFilter:
+class LabelImageToStatisticsLabelMapFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -122,26 +122,30 @@ public:
   itkBooleanMacro(ComputePerimeter);
 
   /** Set the feature image */
-  void SetFeatureImage(const TFeatureImage *input)
+  void
+  SetFeatureImage(const TFeatureImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TFeatureImage * >( input ) );
   }
 
   /** Get the feature image */
-  const FeatureImageType * GetFeatureImage()
+  const FeatureImageType *
+  GetFeatureImage()
   {
     return static_cast< FeatureImageType * >( this->ProcessObject::GetInput(1) );
   }
 
   /** Set the input image */
-  void SetInput1(const InputImageType *input)
+  void
+  SetInput1(const InputImageType *input)
   {
     this->SetInput(input);
   }
 
   /** Set the feature image */
-  void SetInput2(const FeatureImageType *input)
+  void
+  SetInput2(const FeatureImageType *input)
   {
     this->SetFeatureImage(input);
   }
@@ -166,7 +170,9 @@ public:
 
 protected:
   LabelImageToStatisticsLabelMapFilter();
-  ~LabelImageToStatisticsLabelMapFilter() {}
+  ~LabelImageToStatisticsLabelMapFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** LabelImageToStatisticsLabelMapFilter needs the entire input be
@@ -185,7 +191,8 @@ private:
   LabelImageToStatisticsLabelMapFilter(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 
   OutputImagePixelType m_BackgroundValue;
   bool                 m_ComputeFeretDiameter;

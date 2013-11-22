@@ -22,7 +22,8 @@
 namespace
 {
 
-bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pixelSpacing = 1.0 )
+bool
+NormalizeSineWave( double frequencyPerImage, unsigned int order, double pixelSpacing = 1.0 )
 {
   // for an image f(x) = sin ( w*x ), where w is a measure of
   // frequency, this method verifies that the normalized scale-scale
@@ -150,11 +151,13 @@ bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pix
 
 }
 
-int itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest(int, char* [] )
+int
+itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest(int, char* [] )
 {
   bool pass = true;
 
   std::cout << " Testing First Order Gaussian" << std::endl;
+
   pass  &= NormalizeSineWave( 16, 1 );
   pass  &= NormalizeSineWave( 32, 1 );
   pass  &= NormalizeSineWave( 64, 1 );

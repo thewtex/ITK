@@ -34,7 +34,7 @@ namespace itk
  */
 
 template< typename TInputHistogram >
-class HistogramAlgorithmBase:public Object
+class HistogramAlgorithmBase : public Object
 {
 public:
   /**Standard class typedefs. */
@@ -50,7 +50,8 @@ public:
   typedef TInputHistogram InputHistogramType;
 
   /** Stores the histogram pointer */
-  void SetInputHistogram(const TInputHistogram *histogram)
+  void
+  SetInputHistogram(const TInputHistogram *histogram)
   {
     if ( m_InputHistogram != histogram )
       {
@@ -60,24 +61,32 @@ public:
   }
 
   /** Returns the histogram const pointer */
-  const TInputHistogram * GetInputHistogram() const
-  { return m_InputHistogram.GetPointer(); }
+  const TInputHistogram *
+  GetInputHistogram() const
+  {
+    return m_InputHistogram.GetPointer();
+  }
 
   /** \deprecated
    * Update() is deprecated because classes that do not
    * derive from ProcessObject are not part of the pipeline and
    * should therefore not have an Update() method.
    * It is included for backwards compatibility. */
-#if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
-  void Update()
+#if !defined ( ITK_FUTURE_LEGACY_REMOVE )
+  void
+  Update()
   {
     this->Compute();
   }
+
 #endif
 
 protected:
   HistogramAlgorithmBase();
-  virtual ~HistogramAlgorithmBase() {}
+  virtual
+  ~HistogramAlgorithmBase() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void Compute() = 0;

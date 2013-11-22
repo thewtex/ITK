@@ -120,7 +120,7 @@ namespace itk
  *
  */
 template< typename TImage >
-class ImageRandomConstIteratorWithOnlyIndex:public ImageConstIteratorWithOnlyIndex< TImage >
+class ImageRandomConstIteratorWithOnlyIndex : public ImageConstIteratorWithOnlyIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -128,18 +128,19 @@ public:
   typedef ImageConstIteratorWithOnlyIndex< TImage > Superclass;
 
   /** Inherit types from the superclass */
-  typedef typename Superclass::IndexType             IndexType;
-  typedef typename Superclass::SizeType              SizeType;
-  typedef typename Superclass::OffsetType            OffsetType;
-  typedef typename Superclass::RegionType            RegionType;
-  typedef typename Superclass::ImageType             ImageType;
-  typedef typename Superclass::IndexValueType        IndexValueType;
-  typedef typename Superclass::OffsetValueType       OffsetValueType;
-  typedef typename Superclass::SizeValueType         SizeValueType;
+  typedef typename Superclass::IndexType       IndexType;
+  typedef typename Superclass::SizeType        SizeType;
+  typedef typename Superclass::OffsetType      OffsetType;
+  typedef typename Superclass::RegionType      RegionType;
+  typedef typename Superclass::ImageType       ImageType;
+  typedef typename Superclass::IndexValueType  IndexValueType;
+  typedef typename Superclass::OffsetValueType OffsetValueType;
+  typedef typename Superclass::SizeValueType   SizeValueType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageRandomConstIteratorWithOnlyIndex();
-  ~ImageRandomConstIteratorWithOnlyIndex() {}
+  ~ImageRandomConstIteratorWithOnlyIndex() {
+  }
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
@@ -154,37 +155,43 @@ public:
   ImageRandomConstIteratorWithOnlyIndex(const ImageConstIteratorWithOnlyIndex< TImage > & it)
   {
     this->ImageConstIteratorWithOnlyIndex< TImage >::operator=(it);
+
   }
 
   /** Move an iterator to the beginning of the region. */
-  void GoToBegin(void)
+  void
+  GoToBegin(void)
   {
     this->RandomJump();
     m_NumberOfSamplesDone = 0L;
   }
 
   /** Move an iterator to one position past the End of the region. */
-  void GoToEnd(void)
+  void
+  GoToEnd(void)
   {
     this->RandomJump();
     m_NumberOfSamplesDone = m_NumberOfSamplesRequested;
   }
 
   /** Is the iterator at the beginning of the region? */
-  bool IsAtBegin(void) const
+  bool
+  IsAtBegin(void) const
   {
     return ( m_NumberOfSamplesDone == 0L );
   }
 
   /** Is the iterator at the end of the region? */
-  bool IsAtEnd(void) const
+  bool
+  IsAtEnd(void) const
   {
     return ( m_NumberOfSamplesDone >= m_NumberOfSamplesRequested );
   }
 
   /** Increment (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator-- */
-  Self & operator++()
+  Self &
+  operator++()
   {
     this->RandomJump();
     m_NumberOfSamplesDone++;
@@ -193,7 +200,8 @@ public:
 
   /** Decrement (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator++ */
-  Self & operator--()
+  Self &
+  operator--()
   {
     this->RandomJump();
     m_NumberOfSamplesDone--;

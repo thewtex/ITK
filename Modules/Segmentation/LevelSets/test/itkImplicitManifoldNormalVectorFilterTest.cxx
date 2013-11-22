@@ -27,12 +27,12 @@ template <typename TImageType>
 class NormalBandNode
 {
 public:
-  typedef TImageType                              LevelSetImageType;
-  typedef typename LevelSetImageType::PixelType   NodeValueType;
-  typedef typename LevelSetImageType::IndexType   IndexType;
+  typedef TImageType                            LevelSetImageType;
+  typedef typename LevelSetImageType::PixelType NodeValueType;
+  typedef typename LevelSetImageType::IndexType IndexType;
   typedef Vector <NodeValueType,
                   TImageType::ImageDimension>
-                                                  NodeDataType;
+    NodeDataType;
 
   NodeDataType m_Data, m_InputData, m_Update;
   NodeDataType m_ManifoldNormal [TImageType::ImageDimension];
@@ -45,17 +45,18 @@ public:
 
 }
 
-int itkImplicitManifoldNormalVectorFilterTest(int, char* [] )
+int
+itkImplicitManifoldNormalVectorFilterTest(int, char* [] )
 {
   typedef itk::Image  <float, 2>               InputImageType;
   typedef itk::NormalBandNode <InputImageType> NodeType;
   typedef itk::SparseImage <NodeType, 2>       OutputImageType;
   typedef itk::ImplicitManifoldNormalVectorFilter<InputImageType,
-    OutputImageType>                           FilterType;
+                                                  OutputImageType>                           FilterType;
   typedef itk::NormalVectorDiffusionFunction<OutputImageType>
-                                               FunctionType;
+    FunctionType;
 
-  InputImageType::Pointer im_init = InputImageType::New();
+  InputImageType::Pointer    im_init = InputImageType::New();
   InputImageType::RegionType r;
   InputImageType::SizeType   sz = {{50, 50}};
   InputImageType::IndexType  idx = {{0,0}};
@@ -70,10 +71,10 @@ int itkImplicitManifoldNormalVectorFilterTest(int, char* [] )
   for ( index[0]=0; index[0] < 50; index[0]++ )
     for ( index[1]=0; index[1] < 50; index[1]++ )
       {
-      im_init->SetPixel (index, static_cast<float>(index[0]));
+      im_init->SetPixel (index, static_cast<float>(index[0]) );
       }
 
-  FilterType::Pointer filter = FilterType::New();
+  FilterType::Pointer   filter = FilterType::New();
   FunctionType::Pointer function = FunctionType::New();
   filter->SetInput(im_init);
   filter->SetNormalFunction(function);
@@ -82,23 +83,23 @@ int itkImplicitManifoldNormalVectorFilterTest(int, char* [] )
   filter->SetMaxIteration (100);
   filter->SetMinVectorNorm (0.001);
 
-  std::cout<<"Max iteration = "<<(filter->GetMaxIteration())<<"\n";
-  std::cout<<"IsoLevelLow = "<<(filter->GetIsoLevelLow())<<"\n";
-  std::cout<<"IsoLevelHigh = "<<(filter->GetIsoLevelHigh())<<"\n";
-  std::cout<<"MinVectorNorm = "<<(filter->GetMinVectorNorm())<<"\n";
-  std::cout<<"UnsharpMaskingFlag = "<<(filter->GetUnsharpMaskingFlag())<<"\n";
+  std::cout<<"Max iteration = "<<(filter->GetMaxIteration() )<<"\n";
+  std::cout<<"IsoLevelLow = "<<(filter->GetIsoLevelLow() )<<"\n";
+  std::cout<<"IsoLevelHigh = "<<(filter->GetIsoLevelHigh() )<<"\n";
+  std::cout<<"MinVectorNorm = "<<(filter->GetMinVectorNorm() )<<"\n";
+  std::cout<<"UnsharpMaskingFlag = "<<(filter->GetUnsharpMaskingFlag() )<<"\n";
   std::cout<<"UnsharpMaskingWeight = "
-           <<(filter->GetUnsharpMaskingWeight())<<"\n";
-  std::cout<<"Precomputeflag = "<<(filter->GetPrecomputeFlag())<<"\n";
+           <<(filter->GetUnsharpMaskingWeight() )<<"\n";
+  std::cout<<"Precomputeflag = "<<(filter->GetPrecomputeFlag() )<<"\n";
 
   filter->Print(std::cout);
   function->Print(std::cout);
   try {
-  filter->Update();
-  }
+    filter->Update();
+    }
   catch (itk::ExceptionObject &e)
     {
-      std::cerr << e << std::endl;
+    std::cerr << e << std::endl;
     }
 
   return EXIT_SUCCESS;

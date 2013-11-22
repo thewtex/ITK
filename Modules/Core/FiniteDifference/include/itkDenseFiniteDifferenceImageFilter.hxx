@@ -112,14 +112,14 @@ DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
   ThreadIdType threadCount = ( (MultiThreader::ThreadInfoStruct *)( arg ) )->NumberOfThreads;
 
   DenseFDThreadStruct* str = (DenseFDThreadStruct *)
-      ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
 
   // Execute the actual method with appropriate output region
   // first find out how many pieces extent can be split into.
   // Using the SplitRequestedRegion method from itk::ImageSource.
   ThreadRegionType splitRegion;
-  ThreadIdType total = str->Filter->SplitRequestedRegion(threadId, threadCount,
-                                            splitRegion);
+  ThreadIdType     total = str->Filter->SplitRequestedRegion(threadId, threadCount,
+                                                             splitRegion);
 
   if ( threadId < total )
     {
@@ -181,7 +181,7 @@ DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
   ThreadIdType threadCount = ( (MultiThreader::ThreadInfoStruct *)( arg ) )->NumberOfThreads;
 
   DenseFDThreadStruct * str = (DenseFDThreadStruct *)
-      ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
 
   // Execute the actual method with appropriate output region
   // first find out how many pieces extent can be split into.
@@ -189,8 +189,8 @@ DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
   ThreadRegionType splitRegion;
 
   ThreadIdType total = str->Filter->SplitRequestedRegion( threadId,
-                                                 threadCount,
-                                                 splitRegion );
+                                                          threadCount,
+                                                          splitRegion );
 
   if ( threadId < total )
     {
@@ -241,7 +241,7 @@ DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
 
   // Get the FiniteDifferenceFunction to use in calculations.
   const typename FiniteDifferenceFunctionType::Pointer
-      df = this->GetDifferenceFunction();
+  df = this->GetDifferenceFunction();
 
   const SizeType radius = df->GetRadius();
 
@@ -256,7 +256,7 @@ DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
   // of boundary conditions, the rest with boundary conditions.  We operate
   // on the output region because input has been copied to output.
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< OutputImageType >
-  FaceCalculatorType;
+    FaceCalculatorType;
 
   typedef typename FaceCalculatorType::FaceListType FaceListType;
 
@@ -281,7 +281,7 @@ DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
   for ( ++fIt; fIt != fEnd; ++fIt )
     {
     NeighborhoodIteratorType bD(radius, output, *fIt);
-    UpdateIteratorType bU(m_UpdateBuffer, *fIt);
+    UpdateIteratorType       bU(m_UpdateBuffer, *fIt);
 
     bD.GoToBegin();
     bU.GoToBegin();
@@ -309,6 +309,7 @@ DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

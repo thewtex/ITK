@@ -28,7 +28,7 @@ namespace
 // Analyze 7.5 header -- this describes the data below,
 // as an 6 x 6 x 8 image of float pixels
 const unsigned char LittleEndian_hdr[] =
-{
+  {
   0x5c, 0x01, 0x00, 0x00, 0x46, 0x4c, 0x4f, 0x41, 0x54, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -64,12 +64,12 @@ const unsigned char LittleEndian_hdr[] =
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-};
+  };
 //
 // float data, represented as a char stream, in little-endian
 // order
 const unsigned char LittleEndian_img[] =
-{
+  {
   0x00, 0x00, 0x10, 0x43, 0x00, 0x00, 0x10, 0x43, 0x00, 0x00,
   0x10, 0x43, 0x00, 0x00, 0x80, 0x41, 0x00, 0x00, 0x80, 0x41,
   0x00, 0x00, 0x80, 0x41, 0x00, 0x00, 0x10, 0x43, 0x00, 0x00,
@@ -186,15 +186,17 @@ const unsigned char LittleEndian_img[] =
   0x70, 0x43, 0x00, 0x00, 0x70, 0x43, 0x00, 0x00, 0x70, 0x43,
   0x00, 0x00, 0xe0, 0x42, 0x00, 0x00, 0xe0, 0x42, 0x00, 0x00,
   0xe0, 0x42,
-};
+  };
 
 /** WriteFile
  * Write out a char array as binary
  */
-int WriteFile(const std::string &name, const unsigned char *buf, size_t buflen)
+int
+WriteFile(const std::string &name, const unsigned char *buf, size_t buflen)
 {
   std::ofstream f(name.c_str(),std::ios::binary|std::ios::out);
-  if(!f.is_open())
+
+  if(!f.is_open() )
     {
     return EXIT_FAILURE;
     }
@@ -213,32 +215,33 @@ ReadImage( const std::string &fileName )
   typedef itk::ImageFileReader<TImage> ReaderType;
 
   typename ReaderType::Pointer reader = ReaderType::New();
-  {
-  reader->SetFileName( fileName.c_str() );
-  reader->SetImageIO(itk::NiftiImageIO::New());
-  try
     {
-    reader->Update();
+    reader->SetFileName( fileName.c_str() );
+    reader->SetImageIO(itk::NiftiImageIO::New() );
+    try
+      {
+      reader->Update();
+      }
+    catch( itk::ExceptionObject & err )
+      {
+      std::cout << "Caught an exception: " << std::endl;
+      std::cout << err << " " << __FILE__ << " " << __LINE__ << std::endl;
+      throw &err;
+      }
+    catch(...)
+      {
+      std::cout << "Error while reading in image  " << fileName << std::endl;
+      throw;
+      }
     }
-  catch( itk::ExceptionObject & err )
-    {
-    std::cout << "Caught an exception: " << std::endl;
-    std::cout << err << " " << __FILE__ << " " << __LINE__ << std::endl;
-    throw & err;
-    }
-  catch(...)
-    {
-    std::cout << "Error while reading in image  " << fileName << std::endl;
-    throw;
-    }
-  }
   typename TImage::Pointer image = reader->GetOutput();
   return image;
 }
 
 }
 
-int itkNiftiReadAnalyzeTest(int ac, char *av[])
+int
+itkNiftiReadAnalyzeTest(int ac, char *av[])
 {
   if(ac < 2)
     {
@@ -253,14 +256,14 @@ int itkNiftiReadAnalyzeTest(int ac, char *av[])
   hdrName += "/littleEndian.hdr";
   std::string imgName(av[1]);
   imgName += "/littleEndian.img";
-  if(WriteFile(hdrName,LittleEndian_hdr,sizeof(LittleEndian_hdr)) != EXIT_SUCCESS)
+  if(WriteFile(hdrName,LittleEndian_hdr,sizeof(LittleEndian_hdr) ) != EXIT_SUCCESS)
     {
     std::cerr << "itkNiftiReadAnalyzeTest: failed to write "
               << hdrName
               << std::endl;
     return EXIT_FAILURE;
     }
-  if(WriteFile(imgName,LittleEndian_img,sizeof(LittleEndian_img)) != EXIT_SUCCESS)
+  if(WriteFile(imgName,LittleEndian_img,sizeof(LittleEndian_img) ) != EXIT_SUCCESS)
     {
     std::cerr << "itkNiftiReadAnalyzeTest: failed to write "
               << imgName
@@ -281,8 +284,8 @@ int itkNiftiReadAnalyzeTest(int ac, char *av[])
     }
   //
   // compare read pixels with pixels in the array we wrote out.
-  const float *fPtr = reinterpret_cast<const float *>(LittleEndian_img);
-  itk::ImageRegionConstIterator<ImageType> it(img,img->GetLargestPossibleRegion());
+  const float *                            fPtr = reinterpret_cast<const float *>(LittleEndian_img);
+  itk::ImageRegionConstIterator<ImageType> it(img,img->GetLargestPossibleRegion() );
   it.GoToBegin();
   for(; !it.IsAtEnd(); ++it,++fPtr)
     {

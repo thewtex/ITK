@@ -18,12 +18,13 @@
 
 #include "itkTimeVaryingBSplineVelocityFieldTransform.h"
 
-int itkTimeVaryingBSplineVelocityFieldTransformTest( int, char* [] )
+int
+itkTimeVaryingBSplineVelocityFieldTransformTest( int, char* [] )
 {
-  typedef itk::Vector<double, 3>      VectorType;
-  typedef itk::Image<VectorType, 3>   DisplacementFieldType;
-  typedef itk::Image<VectorType, 4>   TimeVaryingVelocityFieldControlPointLatticeType;
-  typedef itk::Image<VectorType, 4>   TimeVaryingVelocityFieldType;
+  typedef itk::Vector<double, 3>    VectorType;
+  typedef itk::Image<VectorType, 3> DisplacementFieldType;
+  typedef itk::Image<VectorType, 4> TimeVaryingVelocityFieldControlPointLatticeType;
+  typedef itk::Image<VectorType, 4> TimeVaryingVelocityFieldType;
 
   const unsigned int splineOrder = 3;
 
@@ -96,9 +97,9 @@ int itkTimeVaryingBSplineVelocityFieldTransformTest( int, char* [] )
 
   // Now test the transform
 
-  TimeVaryingVelocityFieldType::PointType timeVaryingVelocityFieldOrigin;
-  TimeVaryingVelocityFieldType::SpacingType timeVaryingVelocityFieldSpacing;
-  TimeVaryingVelocityFieldType::SizeType timeVaryingVelocityFieldSize;
+  TimeVaryingVelocityFieldType::PointType     timeVaryingVelocityFieldOrigin;
+  TimeVaryingVelocityFieldType::SpacingType   timeVaryingVelocityFieldSpacing;
+  TimeVaryingVelocityFieldType::SizeType      timeVaryingVelocityFieldSize;
   TimeVaryingVelocityFieldType::DirectionType timeVaryingVelocityFieldDirection;
 
   timeVaryingVelocityFieldDirection.SetIdentity();
@@ -106,7 +107,8 @@ int itkTimeVaryingBSplineVelocityFieldTransformTest( int, char* [] )
   for( unsigned int d = 0; d < 4; d++ )
     {
     float physicalDimensions = ( size[d] - splineOrder ) * spacing[d];
-    timeVaryingVelocityFieldSize[d] = static_cast<unsigned int>( physicalDimensions / timeVaryingVelocityFieldSpacing[d] + 1 );
+    timeVaryingVelocityFieldSize[d] =
+      static_cast<unsigned int>( physicalDimensions / timeVaryingVelocityFieldSpacing[d] + 1 );
     timeVaryingVelocityFieldSpacing[d] = physicalDimensions / ( timeVaryingVelocityFieldSize[d] - 1 );
     timeVaryingVelocityFieldOrigin[d] = origin[d] + spacing[d] * ( splineOrder - 1 ) * 0.5;
     }

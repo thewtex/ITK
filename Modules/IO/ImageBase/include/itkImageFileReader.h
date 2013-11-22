@@ -33,7 +33,7 @@ namespace itk
  * \brief Base exception class for IO conflicts.
  * \ingroup ITKIOImageBase
  */
-class ITK_ABI_EXPORT ImageFileReaderException:public ExceptionObject
+class ITK_ABI_EXPORT ImageFileReaderException : public ExceptionObject
 {
 public:
   /** Run-time information. */
@@ -42,20 +42,25 @@ public:
   /** Constructor. */
   ImageFileReaderException(const char *file, unsigned int line,
                            const char *message = "Error in IO",
-                           const char *loc = "Unknown"):
+                           const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
-  {}
+  {
+  }
 
   /** Constructor. */
   ImageFileReaderException(const std::string & file, unsigned int line,
                            const char *message = "Error in IO",
-                           const char *loc = "Unknown"):
+                           const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
-  {}
+  {
+  }
 
   /** Has to have empty throw(). */
-  virtual ~ImageFileReaderException() throw( )
-  {}
+  virtual
+  ~ImageFileReaderException() throw( )
+  {
+  }
+
 };
 
 /** \brief Data source that reads image data from a single file.
@@ -99,8 +104,8 @@ public:
  */
 template< typename TOutputImage,
           typename ConvertPixelTraits = DefaultConvertPixelTraits<
-            typename TOutputImage::IOPixelType > >
-class ITKIOImageBase_HIDDEN ImageFileReader:public ImageSource< TOutputImage >
+              typename TOutputImage::IOPixelType > >
+class ITKIOImageBase_HIDDEN ImageFileReader : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -136,6 +141,7 @@ public:
    * to use to read a particular file in case the factory mechanism will
    * not work properly (e.g., unknown or unusual extension). */
   void  SetImageIO(ImageIOBase *imageIO);
+
   itkGetModifiableObjectMacro(ImageIO, ImageIOBase);
 
   /** Prepare the allocation of the output image during the first back

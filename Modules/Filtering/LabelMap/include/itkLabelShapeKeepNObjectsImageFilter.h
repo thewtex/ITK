@@ -48,7 +48,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage >
-class LabelShapeKeepNObjectsImageFilter:
+class LabelShapeKeepNObjectsImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -135,14 +135,17 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
 
 protected:
   LabelShapeKeepNObjectsImageFilter();
-  ~LabelShapeKeepNObjectsImageFilter() {}
+  ~LabelShapeKeepNObjectsImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** LabelShapeKeepNObjectsImageFilter needs the entire input be

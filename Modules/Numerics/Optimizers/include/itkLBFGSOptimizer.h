@@ -29,7 +29,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class LBFGSOptimizer:
+class LBFGSOptimizer :
   public SingleValuedNonLinearVnlOptimizer
 {
 public:
@@ -108,7 +108,8 @@ public:
 
 protected:
   LBFGSOptimizer();
-  virtual ~LBFGSOptimizer();
+  virtual
+  ~LBFGSOptimizer();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;

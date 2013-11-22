@@ -57,7 +57,7 @@ namespace itk
  * \ingroup ITKImageCompare
  */
 template< typename TInputImage1, typename TInputImage2 >
-class SimilarityIndexImageFilter:
+class SimilarityIndexImageFilter :
   public ImageToImageFilter< TInputImage1, TInputImage1 >
 {
 public:
@@ -96,15 +96,21 @@ public:
   typedef typename NumericTraits< InputImage1PixelType >::RealType RealType;
 
   /** Set the first input. */
-  void SetInput1(const InputImage1Type *image)
-  { this->SetInput(image); }
+  void
+  SetInput1(const InputImage1Type *image)
+  {
+    this->SetInput(image);
+  }
 
   /** Set the second input. */
   void SetInput2(const InputImage2Type *image);
 
   /** Get the first input. */
-  const InputImage1Type * GetInput1(void)
-  { return this->GetInput(); }
+  const InputImage1Type *
+  GetInput1(void)
+  {
+    return this->GetInput();
+  }
 
   /** Get the secong input. */
   const InputImage2Type * GetInput2(void);
@@ -123,7 +129,9 @@ public:
 
 protected:
   SimilarityIndexImageFilter();
-  ~SimilarityIndexImageFilter(){}
+  ~SimilarityIndexImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Pass the input through unmodified. Do this by Grafting in the

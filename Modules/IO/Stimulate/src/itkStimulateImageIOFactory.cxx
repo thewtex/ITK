@@ -41,7 +41,8 @@ StimulateImageIOFactory::StimulateImageIOFactory()
 }
 
 StimulateImageIOFactory::~StimulateImageIOFactory()
-{}
+{
+}
 
 const char *
 StimulateImageIOFactory::GetITKSourceVersion(void) const
@@ -60,9 +61,10 @@ StimulateImageIOFactory::GetDescription(void) const
 
 static bool StimulateImageIOFactoryHasBeenRegistered;
 
-void ITKIOStimulate_EXPORT StimulateImageIOFactoryRegister__Private(void)
+void ITKIOStimulate_EXPORT
+StimulateImageIOFactoryRegister__Private(void)
 {
-  if( ! StimulateImageIOFactoryHasBeenRegistered )
+  if( !StimulateImageIOFactoryHasBeenRegistered )
     {
     StimulateImageIOFactoryHasBeenRegistered = true;
     StimulateImageIOFactory::RegisterOneFactory();

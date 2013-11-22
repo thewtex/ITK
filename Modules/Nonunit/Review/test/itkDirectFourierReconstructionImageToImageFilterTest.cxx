@@ -30,14 +30,14 @@ typedef short int TestOutputPixelType;
 typedef itk::Image< TestOutputPixelType, 3 > OutputImageType;
 typedef itk::Image< InternalPixelType, 3 >   InternalImageType;
 
-typedef itk::DirectFourierReconstructionImageToImageFilter< InternalImageType, InternalImageType > ReconstructionFilterType;
+typedef itk::DirectFourierReconstructionImageToImageFilter< InternalImageType,
+                                                            InternalImageType > ReconstructionFilterType;
 
 typedef itk::RecursiveGaussianImageFilter< InternalImageType, InternalImageType > SmootherType;
 typedef itk::RescaleIntensityImageFilter< InternalImageType, OutputImageType >    RescalerType;
 typedef itk::RegionOfInterestImageFilter< OutputImageType, OutputImageType >      ROIFilterType;
 typedef itk::ImageFileReader< InternalImageType >                                 ReaderType;
 typedef itk::ImageFileWriter< OutputImageType >                                   WriterType;
-
 
 class CommandProgressUpdate : public itk::Command
 {
@@ -50,49 +50,52 @@ public:
   itkNewMacro( Self );
 
 protected:
-  CommandProgressUpdate() {}; // purposely not implemented
+  CommandProgressUpdate() {
+  }                           // purposely not implemented
 
   typedef const ReconstructionFilterType * ReconstructionFilterPointer;
 
-  void Execute(itk::Object * caller, const itk::EventObject & event )
-    {
+  void
+  Execute(itk::Object * caller, const itk::EventObject & event )
+  {
     Execute( ( const itk::Object * )caller, event);
-    }
+  }
 
-  void Execute( const itk::Object * caller, const itk::EventObject & event )
-    {
+  void
+  Execute( const itk::Object * caller, const itk::EventObject & event )
+  {
     ReconstructionFilterPointer reconstructor = dynamic_cast< ReconstructionFilterPointer >( caller );
 
-    if ( ! itk::ProgressEvent().CheckEvent( &event ) )
+    if ( !itk::ProgressEvent().CheckEvent( &event ) )
       {
       return;
       }
 
     std::cout << (int)( 100 * reconstructor->GetProgress() ) << "%" << std::endl;
-    }
+  }
+
 };
 
-
-int itkDirectFourierReconstructionImageToImageFilterTest (int argc, char * argv[] )
+int
+itkDirectFourierReconstructionImageToImageFilterTest(int argc, char * argv[] )
 {
 
   if ( argc != 18)
     {
     std::cerr << "Wrong number of input arguments" << std::endl;
     std::cerr << "Usage : " << std::endl << "\t";
-    std::cerr << argv[0] << " input output r_dir z_dir alpha_dir nz ng fc nb alpha_range x y z sx sy sz sigma" << std::endl;
+    std::cerr << argv[0] << " input output r_dir z_dir alpha_dir nz ng fc nb alpha_range x y z sx sy sz sigma" <<
+      std::endl;
     return 1;
     }
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
-
   SmootherType::Pointer smoother = SmootherType::New();
   smoother->SetInput( reader->GetOutput() );
   smoother->SetSigma( atof( argv[17] ) );
   smoother->SetDirection( atoi( argv[3] ) );
-
 
   ReconstructionFilterType::Pointer reconstruct = ReconstructionFilterType::New();
   if ( atof( argv[17] ) == 0 )
@@ -120,12 +123,11 @@ int itkDirectFourierReconstructionImageToImageFilterTest (int argc, char * argv[
   rescaler->SetOutputMinimum( itk::NumericTraits< TestOutputPixelType >::min() );
   rescaler->SetOutputMaximum( itk::NumericTraits< TestOutputPixelType >::max() );
 
-
   ROIFilterType::Pointer ROIFilter = ROIFilterType::New();
   ROIFilter->SetInput( rescaler->GetOutput() );
 
   ROIFilterType::IndexType start;
-  ROIFilterType::SizeType size;
+  ROIFilterType::SizeType  size;
 
   start[0] = atoi( argv[11] );
   start[1] = atoi( argv[12] );
@@ -141,12 +143,10 @@ int itkDirectFourierReconstructionImageToImageFilterTest (int argc, char * argv[
 
   ROIFilter->SetRegionOfInterest( requestedRegion );
 
-
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
-  writer->UseCompressionOn(  );
+  writer->UseCompressionOn();
   writer->SetInput( ROIFilter->GetOutput() );
-
 
   try
     {

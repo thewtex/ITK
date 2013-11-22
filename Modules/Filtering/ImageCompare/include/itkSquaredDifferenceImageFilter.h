@@ -56,20 +56,27 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class SquaredDifference2
 {
 public:
-  SquaredDifference2() {}
-  ~SquaredDifference2() {}
-  bool operator!=(const SquaredDifference2 &) const
+  SquaredDifference2() {
+  }
+
+  ~SquaredDifference2() {
+  }
+
+  bool
+  operator!=(const SquaredDifference2 &) const
   {
     return false;
   }
 
-  bool operator==(const SquaredDifference2 & other) const
+  bool
+  operator==(const SquaredDifference2 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A,
-                            const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A,
+             const TInput2 & B) const
   {
     const double dA = static_cast< double >( A );
     const double dB = static_cast< double >( B );
@@ -77,11 +84,12 @@ public:
 
     return static_cast< TOutput >( diff * diff );
   }
+
 };
 }
 
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class SquaredDifferenceImageFilter:
+class SquaredDifferenceImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::SquaredDifference2<
@@ -93,12 +101,12 @@ public:
   /** Standard class typedefs. */
   typedef SquaredDifferenceImageFilter Self;
   typedef BinaryFunctorImageFilter<
-    TInputImage1, TInputImage2, TOutputImage,
-    Functor::SquaredDifference2<
-      typename TInputImage1::PixelType,
-      typename TInputImage2::PixelType,
-      typename TOutputImage::PixelType >
-    >                                   Superclass;
+      TInputImage1, TInputImage2, TOutputImage,
+      Functor::SquaredDifference2<
+        typename TInputImage1::PixelType,
+        typename TInputImage2::PixelType,
+        typename TOutputImage::PixelType >
+      >                                   Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -122,12 +130,17 @@ public:
 #endif
 
 protected:
-  SquaredDifferenceImageFilter() {}
-  virtual ~SquaredDifferenceImageFilter() {}
+  SquaredDifferenceImageFilter() {
+  }
+
+  virtual
+  ~SquaredDifferenceImageFilter() {
+  }
 
 private:
   SquaredDifferenceImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace itk
 

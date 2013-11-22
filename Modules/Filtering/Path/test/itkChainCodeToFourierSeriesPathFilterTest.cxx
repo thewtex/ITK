@@ -23,30 +23,30 @@
 #include "itkPathToChainCodePathFilter.h"
 #include "itkChainCodeToFourierSeriesPathFilter.h"
 
-int itkChainCodeToFourierSeriesPathFilterTest(int, char*[])
+int
+itkChainCodeToFourierSeriesPathFilterTest(int, char*[])
 {
-  typedef itk::PolyLineParametricPath<2>       InPathType;
-  typedef itk::ChainCodePath<2>                ChainPathType;
-  typedef itk::FourierSeriesPath<2>            FSPathType;
+  typedef itk::PolyLineParametricPath<2> InPathType;
+  typedef itk::ChainCodePath<2>          ChainPathType;
+  typedef itk::FourierSeriesPath<2>      FSPathType;
 
-  typedef InPathType::VertexType               VertexType;
-  typedef InPathType::OffsetType               OffsetType;
-  typedef InPathType::InputType                InPathInputType;
+  typedef InPathType::VertexType VertexType;
+  typedef InPathType::OffsetType OffsetType;
+  typedef InPathType::InputType  InPathInputType;
 
-  typedef itk::PathToChainCodePathFilter<InPathType,ChainPathType>  Filter1Type;
+  typedef itk::PathToChainCodePathFilter<InPathType,ChainPathType> Filter1Type;
   typedef itk::ChainCodeToFourierSeriesPathFilter<ChainPathType,FSPathType>
-                                                                    Filter2Type;
+    Filter2Type;
 
   bool passed = true;
 
-
-  InPathType::Pointer             inPath;
-  ChainPathType::Pointer          chainPath;
-  FSPathType::Pointer             outPath;
+  InPathType::Pointer    inPath;
+  ChainPathType::Pointer chainPath;
+  FSPathType::Pointer    outPath;
 
   // Setup the path
   std::cout << "Making a triangle Path with v0 at (30,30) -> (30,33) -> (33,33)" << std::endl;
-  VertexType        v;
+  VertexType v;
   inPath = InPathType::New();
 
   v.Fill(30);
@@ -66,27 +66,27 @@ int itkChainCodeToFourierSeriesPathFilterTest(int, char*[])
 
   // Setup the second filter
   Filter2Type::Pointer filter2 = Filter2Type::New();
-  filter2->SetInput(filter1->GetOutput());
+  filter2->SetInput(filter1->GetOutput() );
   outPath=filter2->GetOutput();
 
   filter2->Update();
   std::cout << "PathToChainCodePathFilter:  open test path is "
-      << chainPath->NumberOfSteps() << " steps" << std::endl;
+            << chainPath->NumberOfSteps() << " steps" << std::endl;
   if( chainPath->NumberOfSteps() != 9 )
     {
     passed = false;
     }
   std::cout << "ChainCodeToFourierSeriesPathFilter:  smoothed path is from ["
-      << outPath->Evaluate(0.0) << "] to [" << outPath->Evaluate(1.0)
-      << "] with a center at [" << outPath->Evaluate(0.5) << "]." << std::endl;
+            << outPath->Evaluate(0.0) << "] to [" << outPath->Evaluate(1.0)
+            << "] with a center at [" << outPath->Evaluate(0.5) << "]." << std::endl;
   // Floating point can be inprecise, so convert to rounded int for comparison:
-  if( int(0.5+1000*(outPath->Evaluate(1.0))[0]) !=
-      int(0.5+1000*(outPath->Evaluate(0.0))[0]) ||
-      int(0.5+1000*(outPath->Evaluate(1.0))[1]) !=
-      int(0.5+1000*(outPath->Evaluate(0.0))[1]) ||
-      int(0.5+(outPath->Evaluate(0.5))[0]) < 31 ||
-      int(0.5+(outPath->Evaluate(0.5))[0]) > 32 ||
-      int(0.5+(outPath->Evaluate(0.5))[1]) != 33)
+  if( int(0.5+1000*(outPath->Evaluate(1.0) )[0]) !=
+      int(0.5+1000*(outPath->Evaluate(0.0) )[0]) ||
+      int(0.5+1000*(outPath->Evaluate(1.0) )[1]) !=
+      int(0.5+1000*(outPath->Evaluate(0.0) )[1]) ||
+      int(0.5+(outPath->Evaluate(0.5) )[0]) < 31 ||
+      int(0.5+(outPath->Evaluate(0.5) )[0]) > 32 ||
+      int(0.5+(outPath->Evaluate(0.5) )[1]) != 33)
     {
     passed = false;
     }

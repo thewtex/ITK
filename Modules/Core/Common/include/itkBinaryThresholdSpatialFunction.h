@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TFunction >
-class BinaryThresholdSpatialFunction:
+class BinaryThresholdSpatialFunction :
   public SpatialFunction< bool,
                           TFunction::ImageDimension,
                           typename TFunction::InputType >
@@ -101,6 +101,7 @@ protected:
 private:
   BinaryThresholdSpatialFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // end namespace itk
 

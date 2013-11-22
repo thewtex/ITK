@@ -19,7 +19,8 @@
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 
-int itkImageFileWriterTest2(int ac, char* av[])
+int
+itkImageFileWriterTest2(int ac, char* av[])
 {
 
   if (ac < 2)
@@ -32,11 +33,10 @@ int itkImageFileWriterTest2(int ac, char* av[])
   typedef itk::ImageFileWriter<ImageNDType> WriterType;
   typedef itk::ImageFileReader<ImageNDType> ReaderType;
 
-  ImageNDType::Pointer image = ImageNDType::New();
+  ImageNDType::Pointer    image = ImageNDType::New();
   ImageNDType::RegionType region;
-  ImageNDType::IndexType index;
-  ImageNDType::SizeType size;
-
+  ImageNDType::IndexType  index;
+  ImageNDType::SizeType   size;
 
   ImageNDType::PointType originalPoint;
   ImageNDType::PointType readPoint;
@@ -51,7 +51,6 @@ int itkImageFileWriterTest2(int ac, char* av[])
 
   image->FillBuffer(0);
 
-
   image->TransformIndexToPhysicalPoint(index, originalPoint);
   std::cout << "Original Starting Index: " << index << std::endl;
   std::cout << "Original Starting Point (physical cooridents) : " << originalPoint << std::endl;
@@ -64,7 +63,6 @@ int itkImageFileWriterTest2(int ac, char* av[])
     writer->SetInput(image);
     writer->SetFileName(av[1]);
     writer->Update();
-
 
     reader->SetFileName(av[1]);
     reader->Update();

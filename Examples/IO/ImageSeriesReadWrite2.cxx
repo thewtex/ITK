@@ -22,8 +22,10 @@
 //  files in order to compose a volume. The class \doxygen{ImageSeriesReader}
 //  is used for this purpose. This class works in combination with a generator
 //  of filenames that will provide a list of files to be read. In this
-//  particular example we use the \doxygen{RegularExpressionSeriesFileNames} class as
-//  filename generator. This generator uses a regular expression for generating a list
+//  particular example we use the \doxygen{RegularExpressionSeriesFileNames}
+// class as
+//  filename generator. This generator uses a regular expression for generating
+// a list
 //  of filenames. The filenames are then ordered according to sub expression.
 //
 // Regular expressions are a powerful,  compact mechanism for parsing strings.
@@ -75,8 +77,8 @@
 #include "itkPNGImageIO.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 5 )
@@ -87,7 +89,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
 
-
   // Software Guide : BeginLatex
   //
   // We start by defining the \code{PixelType} and \code{ImageType}.
@@ -96,12 +97,11 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char                       PixelType;
+  typedef unsigned char PixelType;
   const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -114,13 +114,12 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter<   ImageType >  WriterType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter<   ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
-
 
   std::string directory = argv[1];
   std::string regularExpression = argv[2];
@@ -129,19 +128,18 @@ int main( int argc, char ** argv )
 
   std::string outputFilename = argv[4];
 
-
   // Software Guide : BeginLatex
   //
-  // Then, we declare the filenames generator type and create one instance of it.
+  // Then, we declare the filenames generator type and create one instance of
+  // it.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RegularExpressionSeriesFileNames    NameGeneratorType;
+  typedef itk::RegularExpressionSeriesFileNames NameGeneratorType;
 
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -160,9 +158,12 @@ int main( int argc, char ** argv )
 
   //  Software Guide : BeginLatex
   //
-  //  The ImageIO object that actually performs the read process is now connected
-  //  to the ImageSeriesReader. This is the safest way of making sure that we use
-  //  an ImageIO object that is appropriate for the type of files that we want to
+  //  The ImageIO object that actually performs the read process is now
+  // connected
+  //  to the ImageSeriesReader. This is the safest way of making sure that we
+  // use
+  //  an ImageIO object that is appropriate for the type of files that we want
+  // to
   //  read.
   //
   //  Software Guide : EndLatex
@@ -194,7 +195,6 @@ int main( int argc, char ** argv )
   // Software Guide : BeginCodeSnippet
   writer->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

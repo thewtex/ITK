@@ -30,7 +30,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class MultipleValuedNonLinearOptimizer:
+class MultipleValuedNonLinearOptimizer :
   public NonLinearOptimizer
 {
 public:
@@ -69,7 +69,10 @@ public:
 
 protected:
   MultipleValuedNonLinearOptimizer();
-  virtual ~MultipleValuedNonLinearOptimizer() {}
+  virtual
+  ~MultipleValuedNonLinearOptimizer() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   CostFunctionPointer m_CostFunction;
@@ -77,6 +80,7 @@ protected:
 private:
   MultipleValuedNonLinearOptimizer(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 } // end namespace itk
 

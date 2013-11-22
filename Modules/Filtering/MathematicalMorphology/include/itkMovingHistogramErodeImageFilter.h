@@ -39,7 +39,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class MovingHistogramErodeImageFilter:
+class MovingHistogramErodeImageFilter :
   public MovingHistogramMorphologyImageFilter< TInputImage, TOutputImage, TKernel,
                                                typename Function::MorphologyHistogram< typename TInputImage::PixelType,
                                                                                        typename std::less< typename
@@ -53,7 +53,8 @@ public:
                                                 typename Function::MorphologyHistogram< typename TInputImage::PixelType,
                                                                                         typename std::less< typename
                                                                                                             TInputImage
-                                                                                                            ::PixelType > > >  Superclass;
+                                                                                                            ::PixelType > > >
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -85,11 +86,13 @@ protected:
     this->m_Boundary = NumericTraits< PixelType >::max();
   }
 
-  ~MovingHistogramErodeImageFilter() {}
+  ~MovingHistogramErodeImageFilter() {
+  }
 
 private:
   MovingHistogramErodeImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };                                               // end of class
 } // end namespace itk
 

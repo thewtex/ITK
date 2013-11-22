@@ -22,8 +22,10 @@
 
 namespace itk
 {
-void MatlabTransformIOFactory::PrintSelf(std::ostream &, Indent) const
-{}
+void
+MatlabTransformIOFactory::PrintSelf(std::ostream &, Indent) const
+{
+}
 
 MatlabTransformIOFactory::MatlabTransformIOFactory()
 {
@@ -40,7 +42,8 @@ MatlabTransformIOFactory::MatlabTransformIOFactory()
 }
 
 MatlabTransformIOFactory::~MatlabTransformIOFactory()
-{}
+{
+}
 
 const char *
 MatlabTransformIOFactory::GetITKSourceVersion(void) const
@@ -59,12 +62,14 @@ MatlabTransformIOFactory::GetDescription() const
 // DO NOT CALL DIRECTLY.
 static bool MatlabTransformIOFactoryHasBeenRegistered;
 
-void MatlabTransformIOFactoryRegister__Private(void)
+void
+MatlabTransformIOFactoryRegister__Private(void)
 {
-  if( ! MatlabTransformIOFactoryHasBeenRegistered )
+  if( !MatlabTransformIOFactoryHasBeenRegistered )
     {
     MatlabTransformIOFactoryHasBeenRegistered = true;
     MatlabTransformIOFactory::RegisterOneFactory();
     }
 }
+
 } // end namespace itk

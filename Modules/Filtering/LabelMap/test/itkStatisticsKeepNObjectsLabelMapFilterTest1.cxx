@@ -19,13 +19,13 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
 #include "itkStatisticsKeepNObjectsLabelMapFilter.h"
 #include "itkLabelImageToStatisticsLabelMapFilter.h"
 
 #include "itkTestingMacros.h"
 
-int itkStatisticsKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
+int
+itkStatisticsKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
 {
   if( argc != 7 )
     {
@@ -42,8 +42,8 @@ int itkStatisticsKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::StatisticsLabelObject< PixelType, dim >           StatisticsLabelObjectType;
-  typedef itk::LabelMap< StatisticsLabelObjectType >             LabelMapType;
+  typedef itk::StatisticsLabelObject< PixelType, dim > StatisticsLabelObjectType;
+  typedef itk::LabelMap< StatisticsLabelObjectType >   LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();

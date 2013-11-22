@@ -20,23 +20,24 @@
 #include "itkImageRegion.h"
 #include "itkFloatingPointExceptions.h"
 
-int itkImageRegionTest(int, char* [] )
+int
+itkImageRegionTest(int, char* [] )
 {
 
   const unsigned int dimension = 3;
 
-  typedef double                         TCoordRepType;
-  typedef itk::ImageRegion< dimension >  RegionType;
-  typedef RegionType::IndexType          IndexType;
-  typedef RegionType::SizeType           SizeType;
-  typedef RegionType::SliceRegion        SliceRegionType;
+  typedef double                        TCoordRepType;
+  typedef itk::ImageRegion< dimension > RegionType;
+  typedef RegionType::IndexType         IndexType;
+  typedef RegionType::SizeType          SizeType;
+  typedef RegionType::SliceRegion       SliceRegionType;
   typedef itk::ContinuousIndex< TCoordRepType, dimension >
-                                         ContinuousIndexType;
+    ContinuousIndexType;
 
   typedef itk::NumericTraits<IndexType::IndexValueType>
-                                         IndexNumericTraits;
+    IndexNumericTraits;
   typedef itk::NumericTraits<ContinuousIndexType::ValueType>
-                                         ContinuousIndexNumericTraits;
+    ContinuousIndexNumericTraits;
 
   bool passed = true;
 
@@ -191,7 +192,7 @@ int itkImageRegionTest(int, char* [] )
     }
   /* Some tests cause floating point exceptions, so
    * only run them when Floating Point Exceptions are not enabled. */
-  if( ! itk::FloatingPointExceptions::GetEnabled() )
+  if( !itk::FloatingPointExceptions::GetEnabled() )
     {
     std::cout << "Floating Point Exceptions's are disabled. " << std::endl;
     std::cout << "...Proceeding with tests that can generate Floating Point Exceptions's." << std::endl;
@@ -237,13 +238,13 @@ int itkImageRegionTest(int, char* [] )
       std::cout << "Error with IsInside 8C. Expected false." << std::endl;
       passed = false;
       }
-    }// ! FloatingPointExceptions::GetEnabled()
+    } // ! FloatingPointExceptions::GetEnabled()
   else
     {
     std::cout << "Not testing behavior that triggers Floating Point Exceptions." << std::endl;
     }
 
-  if( ! itk::FloatingPointExceptions::GetEnabled() &&
+  if( !itk::FloatingPointExceptions::GetEnabled() &&
       ContinuousIndexNumericTraits::has_quiet_NaN )
     {
     std::cout << "Floating Point Exceptions's are disabled. Test some more NaN-related behavior..."
@@ -276,11 +277,11 @@ int itkImageRegionTest(int, char* [] )
     std::cout
       << "RoundHalfIntegerUp< TCoordRepType >(NaN) < static_cast<TCoordRepType> (0): "
       << ( itk::Math::RoundHalfIntegerUp< TCoordRepType >(NaN) <
-      static_cast<TCoordRepType> (0) ) << std::endl;
+         static_cast<TCoordRepType> (0) ) << std::endl;
     std::cout
       << "RoundHalfIntegerUp< TCoordRepType >(NaN) > static_cast<TCoordRepType> (0): "
       << ( itk::Math::RoundHalfIntegerUp< TCoordRepType >(NaN) >
-      static_cast<TCoordRepType> (0) ) << std::endl;
+         static_cast<TCoordRepType> (0) ) << std::endl;
     TCoordRepType rf = itk::Math::RoundHalfIntegerUp< TCoordRepType >(NaN);
     std::cout << "TCoordRepType = RoundHalfIntegerUp(NaN): " << rf << std::endl;
     RegionType::IndexValueType rl =
@@ -299,7 +300,7 @@ int itkImageRegionTest(int, char* [] )
     }
 
   //Test IsInside( region )
-  if( ! regionA.IsInside( regionB ) )
+  if( !regionA.IsInside( regionB ) )
     {
     passed = false;
     }
@@ -314,7 +315,7 @@ int itkImageRegionTest(int, char* [] )
   shrinkIndex[0] = 22;
   shrinkIndex[1] = 343;
   shrinkIndex[2] = 5;
-  SizeType  shrinkSize;
+  SizeType shrinkSize;
   shrinkSize[0]  = 33;
   shrinkSize[1]  = 21;
   shrinkSize[2]  = 3;

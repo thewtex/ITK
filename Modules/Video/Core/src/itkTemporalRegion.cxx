@@ -26,9 +26,9 @@ namespace itk
 TemporalRegion
 ::TemporalRegion()
   : m_RealStart(),
-    m_RealDuration(0,0),
-    m_FrameStart(0),
-    m_FrameDuration(0)
+  m_RealDuration(0,0),
+  m_FrameStart(0),
+  m_FrameDuration(0)
 {
 }
 
@@ -117,7 +117,7 @@ TemporalRegion
 ::IsEqualInFrames(const Self & region) const
 {
   return m_FrameStart == region.m_FrameStart &&
-    m_FrameDuration == region.m_FrameDuration;
+         m_FrameDuration == region.m_FrameDuration;
 }
 
 // ---------------------------------------------------------------------------
@@ -126,7 +126,7 @@ TemporalRegion
 ::IsEqualInRealTime(const Self & region) const
 {
   return m_RealStart == region.m_RealStart &&
-    m_RealDuration == region.m_RealDuration;
+         m_RealDuration == region.m_RealDuration;
 }
 
 // ---------------------------------------------------------------------------
@@ -142,7 +142,7 @@ bool
 TemporalRegion
 ::operator!=(const Self & region) const
 {
-  return !(operator==(region));
+  return !(operator==(region) );
 }
 
 // ---------------------------------------------------------------------------
@@ -151,6 +151,7 @@ TemporalRegion
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "RealTime Start: " << m_RealStart << std::endl;
   os << indent << "RealTime Duration: " << m_RealDuration << std::endl;
   os << indent << "Frame Start: " << m_FrameStart << std::endl;
@@ -158,7 +159,8 @@ TemporalRegion
 }
 
 // ---------------------------------------------------------------------------
-std::ostream & operator<<(std::ostream & os, const TemporalRegion & region)
+std::ostream &
+operator<<(std::ostream & os, const TemporalRegion & region)
 {
   region.Print(os);
   return os;

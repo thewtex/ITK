@@ -19,9 +19,10 @@
 #include "itkMaximumRatioDecisionRule.h"
 #include "itkObjectFactory.h"
 
-int itkMaximumRatioDecisionRuleTest(int, char* [] )
+int
+itkMaximumRatioDecisionRuleTest(int, char* [] )
 {
-  typedef itk::Statistics::MaximumRatioDecisionRule      MaximumRatioDecisionRuleType;
+  typedef itk::Statistics::MaximumRatioDecisionRule MaximumRatioDecisionRuleType;
 
   typedef MaximumRatioDecisionRuleType::MembershipVectorType MembershipVectorType;
 
@@ -51,8 +52,7 @@ int itkMaximumRatioDecisionRuleTest(int, char* [] )
   membershipScore4 = 0.0;
   membershipScoreVector.push_back( membershipScore4 );
 
-
-  unsigned int  decisionValue;
+  unsigned int decisionValue;
   try
     {
     decisionRule->Evaluate( membershipScoreVector);

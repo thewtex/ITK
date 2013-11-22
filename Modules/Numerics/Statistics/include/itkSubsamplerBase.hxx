@@ -40,14 +40,14 @@ SubsamplerBase<TSample>
   typename LightObject::Pointer loPtr = Superclass::InternalClone();
 
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
                       << " failed.");
     }
-  rval->SetSample(this->GetSample());
+  rval->SetSample(this->GetSample() );
   rval->m_RequestMaximumNumberOfResults = this->m_RequestMaximumNumberOfResults;
   rval->m_CanSelectQuery = this->m_CanSelectQuery;
   rval->SetSeed(this->m_Seed);
@@ -67,18 +67,18 @@ SubsamplerBase<TSample>
   os << indent << "seed: " << m_Seed << std::endl;
 
   if (m_Sample)
-  {
+    {
     os << indent << "Sample: " << m_Sample << std::endl;
-  }
+    }
   else
-  {
+    {
     os << indent << "Sample is NULL" << std::endl;
-  }
+    }
 
   os << std::endl;
 }
 
-}// end namespace Statistics
-}// end namespace itk
+} // end namespace Statistics
+} // end namespace itk
 
 #endif

@@ -55,12 +55,15 @@ public:
   itkNewMacro( Self );
   itkSetMacro( NumberOfIterations, IdentifierType );
   typedef ShapePriorSegmentationLevelSetFunction<TImage,TImage> ShapePriorFunctionType;
-  ShapePriorFunctionType * GetShapePriorFunction()
-    { return m_ShapePriorFunction; }
+  ShapePriorFunctionType *
+  GetShapePriorFunction()
+  {
+    return m_ShapePriorFunction;
+  }
 
 protected:
   SimpleTestFilter()
-    {
+  {
     typename ShapePriorFunctionType::Pointer function = ShapePriorFunctionType::New();
     function->SetPropagationWeight( 0.0 );
     function->SetAdvectionWeight( 0.0 );
@@ -75,24 +78,26 @@ protected:
 
     m_NumberOfIterations = 0;
     m_ShapePriorFunction = function;
-    }
+  }
 
 private:
-  unsigned int                             m_NumberOfIterations;
+  unsigned int m_NumberOfIterations;
   typename ShapePriorFunctionType::Pointer m_ShapePriorFunction;
 
-  virtual bool Halt()
-    {
+  virtual bool
+  Halt()
+  {
     if ( this->GetElapsedIterations() == m_NumberOfIterations ) return true;
     else return false;
-    }
+  }
 
 };
 
 } // namespace SPSLSF
 } // namespace itk
 
-int itkShapePriorSegmentationLevelSetFunctionTest( int, char *[])
+int
+itkShapePriorSegmentationLevelSetFunctionTest( int, char *[])
 {
 
   typedef float PixelType;
@@ -125,7 +130,7 @@ int itkShapePriorSegmentationLevelSetFunctionTest( int, char *[])
 
   while ( !iter.IsAtEnd() )
     {
-    ImageType::IndexType index;
+    ImageType::IndexType         index;
     ShapeFunctionType::PointType point;
     index = iter.GetIndex();
     input->TransformIndexToPhysicalPoint( index, point );
@@ -143,7 +148,8 @@ int itkShapePriorSegmentationLevelSetFunctionTest( int, char *[])
     {
     filter->SetNumberOfIterations( 60 );
     filter->SetInput( input );
-    filter->GetShapePriorFunction()->SetFeatureImage( input ); //dummy feature image
+    filter->GetShapePriorFunction()->SetFeatureImage( input ); //dummy feature
+                                                               // image
 
     // perturb the parameters
     parameters[0] += 0.5;
@@ -185,7 +191,7 @@ int itkShapePriorSegmentationLevelSetFunctionTest( int, char *[])
 
   while( !citer.IsAtEnd() )
     {
-    CharImageType::IndexType index;
+    CharImageType::IndexType     index;
     ShapeFunctionType::PointType point;
     index = citer.GetIndex();
     input->TransformIndexToPhysicalPoint( index, point );
@@ -201,7 +207,6 @@ int itkShapePriorSegmentationLevelSetFunctionTest( int, char *[])
     ++citer;
     }
 
-
   /**
    * Compute overlap between the true shape and the segmented shape
    */
@@ -216,12 +221,12 @@ int itkShapePriorSegmentationLevelSetFunctionTest( int, char *[])
   if ( overlap->GetSimilarityIndex() > 0.90 )
     {
     std::cout << "Overlap of "
-      << overlap->GetSimilarityIndex() << " exceed threshold." << std::endl;
+              << overlap->GetSimilarityIndex() << " exceed threshold." << std::endl;
     }
   else
     {
     std::cout << "Overlap of "
-      << overlap->GetSimilarityIndex() << " is below threshold." << std::endl;
+              << overlap->GetSimilarityIndex() << " is below threshold." << std::endl;
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }

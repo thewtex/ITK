@@ -31,7 +31,6 @@ ShapePositionLabelMapFilter<TImage>
   m_Attribute = LabelObjectType::CENTROID;
 }
 
-
 template <typename TImage>
 void
 ShapePositionLabelMapFilter<TImage>
@@ -59,8 +58,9 @@ ShapePositionLabelMapFilter<TImage>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" << std::endl;
+  os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")" <<
+    std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

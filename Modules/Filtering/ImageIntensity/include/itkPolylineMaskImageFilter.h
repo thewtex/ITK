@@ -35,7 +35,7 @@ namespace itk
  */
 template< typename TInputImage, typename TPolyline, typename TVector,
           typename TOutputImage >
-class PolylineMaskImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+class PolylineMaskImageFilter : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -122,7 +122,10 @@ public:
 
 protected:
   PolylineMaskImageFilter();
-  virtual ~PolylineMaskImageFilter() {}
+  virtual
+  ~PolylineMaskImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

@@ -28,7 +28,8 @@
 // the histogram of the image.
 //
 // First, we need to include the headers for the
-// \subdoxygen{Statistics}{ImageToListSampleAdaptor} and the \doxygen{Image} classes.
+// \subdoxygen{Statistics}{ImageToListSampleAdaptor} and the \doxygen{Image}
+// classes.
 //
 // \index{itk::Statistics::Scalar\-Image\-To\-List\-Adaptor!header}
 // \index{Statistics!Images}
@@ -56,7 +57,8 @@
 #include "itkSampleToHistogramFilter.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -74,8 +76,8 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char       PixelType;
-  const unsigned int          Dimension = 2;
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image<PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
@@ -109,7 +111,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Statistics::ImageToListSampleAdaptor< ImageType >   AdaptorType;
+  typedef itk::Statistics::ImageToListSampleAdaptor< ImageType > AdaptorType;
 
   AdaptorType::Pointer adaptor = AdaptorType::New();
 
@@ -119,8 +121,10 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginLatex
   //
   // You must keep in mind that adaptors are not pipeline objects. This means
-  // that they do not propagate update calls. It is therefore your responsibility
-  // to make sure that you invoke the \code{Update()} method of the reader before
+  // that they do not propagate update calls. It is therefore your
+  // responsibility
+  // to make sure that you invoke the \code{Update()} method of the reader
+  // before
   // you attempt to use the output of the adaptor. As usual, this must be done
   // inside a try/catch block because the read operation can potentially throw
   // exceptions.
@@ -157,9 +161,9 @@ int main( int argc, char * argv [] )
   typedef itk::Statistics::Histogram< HistogramMeasurementType >
     HistogramType;
   typedef itk::Statistics::SampleToHistogramFilter<
-                                                AdaptorType,
-                                                HistogramType>
-                                                FilterType;
+      AdaptorType,
+      HistogramType>
+    FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
@@ -169,7 +173,8 @@ int main( int argc, char * argv [] )
   // We define now the characteristics of the Histogram that we want to compute.
   // This typically includes the size of each one of the component, but given
   // that in this simple example we are dealing with a scalar image, then our
-  // histogram will have a single component. For the sake of generality, however,
+  // histogram will have a single component. For the sake of generality,
+  // however,
   // we use the \code{HistogramType} as defined inside of the Generator type. We
   // define also the marginal scale factor that will control the precision used
   // when assigning values to histogram bins. Finally we invoke the
@@ -178,7 +183,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  const unsigned int numberOfComponents = 1;
+  const unsigned int      numberOfComponents = 1;
   HistogramType::SizeType size( numberOfComponents );
   size.Fill( 255 );
 

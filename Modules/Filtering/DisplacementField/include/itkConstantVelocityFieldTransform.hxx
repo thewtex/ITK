@@ -112,6 +112,7 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
 ::GetInverseTransform() const
 {
   Pointer inverseTransform = New();
+
   if( this->GetInverse( inverseTransform ) )
     {
     return inverseTransform.GetPointer();
@@ -123,7 +124,8 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
 }
 
 template <typename TScalar, unsigned int NDimensions>
-void ConstantVelocityFieldTransform<TScalar, NDimensions>
+void
+ConstantVelocityFieldTransform<TScalar, NDimensions>
 ::SetConstantVelocityField( ConstantVelocityFieldType* field )
 {
   itkDebugMacro( "setting VelocityField to " << field );
@@ -196,7 +198,8 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
     {
     for( unsigned int dj = 0; dj < ConstantVelocityFieldDimension; dj++ )
       {
-      direction[di][dj] = fixedParameters[3 * ConstantVelocityFieldDimension + ( di * ConstantVelocityFieldDimension + dj )];
+      direction[di][dj] =
+        fixedParameters[3 * ConstantVelocityFieldDimension + ( di * ConstantVelocityFieldDimension + dj )];
       }
     }
 
@@ -218,7 +221,7 @@ template <typename TScalar, unsigned int NDimensions>
 void
 ConstantVelocityFieldTransform<TScalar, NDimensions>
 ::SetFixedParametersFromConstantVelocityField() const
-  {
+{
   this->m_FixedParameters.SetSize( ConstantVelocityFieldDimension * ( ConstantVelocityFieldDimension + 3 ) );
 
   const typename ConstantVelocityFieldType::RegionType & fieldRegion =
@@ -242,7 +245,8 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
   SpacingType fieldSpacing = this->m_ConstantVelocityField->GetSpacing();
   for( unsigned int i = 0; i < ConstantVelocityFieldDimension; i++ )
     {
-    this->m_FixedParameters[2 * ConstantVelocityFieldDimension + i] = static_cast<ParametersValueType>( fieldSpacing[i] );
+    this->m_FixedParameters[2 * ConstantVelocityFieldDimension +
+                            i] = static_cast<ParametersValueType>( fieldSpacing[i] );
     }
 
   // Set the direction parameters
@@ -305,10 +309,14 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
   exponentiatorInv->SetComputeInverse( true );
   exponentiatorInv->Update();
 
-  // We use the lower and upper time bounds to keep track of which results should go in
-  // the forward and inverse displacement fields.  This is useful when calling and tracking
-  // the inverse transform where the velocity field is the same for both the forward and
-  // inverse transforms but the upper and lower time bounds are switched as well as the
+  // We use the lower and upper time bounds to keep track of which results
+  // should go in
+  // the forward and inverse displacement fields.  This is useful when calling
+  // and tracking
+  // the inverse transform where the velocity field is the same for both the
+  // forward and
+  // inverse transforms but the upper and lower time bounds are switched as well
+  // as the
   // forward and inverse displacement fields.
 
   if( this->GetLowerTimeBound() <= this->GetUpperTimeBound() )
@@ -336,9 +344,9 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
   rval->Allocate();
 
   ImageRegionConstIterator<DisplacementFieldType> dispIt( toCopy,toCopy->GetLargestPossibleRegion() );
-  ImageRegionIterator<DisplacementFieldType> cloneDispIt( rval,rval->GetLargestPossibleRegion() );
+  ImageRegionIterator<DisplacementFieldType>      cloneDispIt( rval,rval->GetLargestPossibleRegion() );
   for( dispIt.GoToBegin(), cloneDispIt.GoToBegin(); !dispIt.IsAtEnd() && !cloneDispIt.IsAtEnd();
-      ++dispIt, ++cloneDispIt )
+       ++dispIt, ++cloneDispIt )
     {
     cloneDispIt.Set( dispIt.Get() );
     }
@@ -352,9 +360,10 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
 {
   // create a new instance
   LightObject::Pointer loPtr = Superclass::InternalClone();
+
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -370,7 +379,7 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
   Self *nonConstThis = const_cast<Self *>(this);
   typename DisplacementFieldType::ConstPointer dispField = nonConstThis->GetDisplacementField();
   typename DisplacementFieldType::Pointer cloneDispField =
-    this->CopyDisplacementField(dispField.GetPointer());
+    this->CopyDisplacementField(dispField.GetPointer() );
   rval->GetModifiableInterpolator()->SetInputImage( cloneDispField );
   rval->SetDisplacementField( cloneDispField );
 
@@ -382,11 +391,12 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
   // copy the VelocityField
   // SetFixedParameters allocates the VelocityField
   ImageRegionConstIterator<ConstantVelocityFieldType>
-    thisIt( this->m_ConstantVelocityField, this->m_ConstantVelocityField->GetLargestPossibleRegion() );
+  thisIt( this->m_ConstantVelocityField,
+          this->m_ConstantVelocityField->GetLargestPossibleRegion() );
   ImageRegionIterator<ConstantVelocityFieldType> cloneIt( rval->m_ConstantVelocityField,
-    rval->m_ConstantVelocityField->GetLargestPossibleRegion() );
+                                                          rval->m_ConstantVelocityField->GetLargestPossibleRegion() );
   for( thisIt.GoToBegin(),cloneIt.GoToBegin(); !thisIt.IsAtEnd() && !cloneIt.IsAtEnd();
-      ++thisIt, ++cloneIt )
+       ++thisIt, ++cloneIt )
     {
     cloneIt.Set( thisIt.Get() );
     }
@@ -424,7 +434,7 @@ ConstantVelocityFieldTransform<TScalar, NDimensions>
   os << indent << "LowerTimeBound: " << this->m_LowerTimeBound << std::endl;
   os << indent << "UpperTimeBound: " << this->m_UpperTimeBound << std::endl;
   os << indent << "NumberOfIntegrationSteps: "
-    << this->m_NumberOfIntegrationSteps << std::endl;
+     << this->m_NumberOfIntegrationSteps << std::endl;
 }
 
 } // namespace itk

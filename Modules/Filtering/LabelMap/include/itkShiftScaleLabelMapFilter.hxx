@@ -81,5 +81,6 @@ ShiftScaleLabelMapFilter< TImage >
   os << indent << "Scale: "  << m_Scale << std::endl;
   os << indent << "ChangeBackgroundValue: "  << m_ChangeBackgroundValue << std::endl;
 }
+
 } // end namespace itk
 #endif

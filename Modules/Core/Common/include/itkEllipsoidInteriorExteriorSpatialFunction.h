@@ -37,7 +37,7 @@ namespace itk
  */
 template< unsigned int VDimension = 3,
           typename TInput = Point< double, VDimension > >
-class EllipsoidInteriorExteriorSpatialFunction:
+class EllipsoidInteriorExteriorSpatialFunction :
   public InteriorExteriorSpatialFunction< VDimension, TInput >
 {
 public:
@@ -79,7 +79,8 @@ public:
 
 protected:
   EllipsoidInteriorExteriorSpatialFunction();
-  virtual ~EllipsoidInteriorExteriorSpatialFunction();
+  virtual
+  ~EllipsoidInteriorExteriorSpatialFunction();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedPointSet, typename TMovingImage >
-class NormalizedCorrelationPointSetToImageMetric:
+class NormalizedCorrelationPointSetToImageMetric :
   public PointSetToImageMetric< TFixedPointSet, TMovingImage >
 {
 public:
@@ -100,14 +100,18 @@ public:
 
 protected:
   NormalizedCorrelationPointSetToImageMetric();
-  virtual ~NormalizedCorrelationPointSetToImageMetric() {}
+  virtual
+  ~NormalizedCorrelationPointSetToImageMetric() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   NormalizedCorrelationPointSetToImageMetric(const Self &); //purposely not
                                                             // implemented
   void operator=(const Self &);                             //purposely not
-                                                            // implemented
+
+  // implemented
 
   bool m_SubtractMean;
 };

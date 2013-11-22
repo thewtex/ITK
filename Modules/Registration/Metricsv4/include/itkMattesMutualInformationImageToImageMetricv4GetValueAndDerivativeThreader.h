@@ -35,17 +35,18 @@ class MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader
 {
 public:
   /** Standard class typedefs. */
-  typedef MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader                                      Self;
+  typedef MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader                     Self;
   typedef ImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric > Superclass;
   typedef SmartPointer< Self >                                                                         Pointer;
   typedef SmartPointer< const Self >                                                                   ConstPointer;
 
-  itkTypeMacro( MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreader );
+  itkTypeMacro( MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreader );
 
   itkNewMacro( Self );
 
-  typedef typename Superclass::DomainType               DomainType;
-  typedef typename Superclass::AssociateType            AssociateType;
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename Superclass::AssociateType AssociateType;
 
   typedef typename Superclass::ImageToImageMetricv4Type ImageToImageMetricv4Type;
   typedef typename Superclass::VirtualPointType         VirtualPointType;
@@ -62,27 +63,28 @@ public:
   typedef typename Superclass::DerivativeValueType      DerivativeValueType;
   typedef typename Superclass::NumberOfParametersType   NumberOfParametersType;
 
-  typedef typename ImageToImageMetricv4Type::MovingTransformType  MovingTransformType;
+  typedef typename ImageToImageMetricv4Type::MovingTransformType MovingTransformType;
 
-  typedef typename TMattesMutualInformationMetric::PDFValueType                   PDFValueType;
-  typedef typename TMattesMutualInformationMetric::JointPDFType                   JointPDFType;
-  typedef typename TMattesMutualInformationMetric::JointPDFRegionType             JointPDFRegionType;
-  typedef typename TMattesMutualInformationMetric::JointPDFIndexType              JointPDFIndexType;
-  typedef typename TMattesMutualInformationMetric::JointPDFValueType              JointPDFValueType;
-  typedef typename TMattesMutualInformationMetric::JointPDFSizeType               JointPDFSizeType;
-  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesType        JointPDFDerivativesType;
-  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesIndexType   JointPDFDerivativesIndexType;
-  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesValueType   JointPDFDerivativesValueType;
-  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesRegionType  JointPDFDerivativesRegionType;
-  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesSizeType    JointPDFDerivativesSizeType;
+  typedef typename TMattesMutualInformationMetric::PDFValueType                  PDFValueType;
+  typedef typename TMattesMutualInformationMetric::JointPDFType                  JointPDFType;
+  typedef typename TMattesMutualInformationMetric::JointPDFRegionType            JointPDFRegionType;
+  typedef typename TMattesMutualInformationMetric::JointPDFIndexType             JointPDFIndexType;
+  typedef typename TMattesMutualInformationMetric::JointPDFValueType             JointPDFValueType;
+  typedef typename TMattesMutualInformationMetric::JointPDFSizeType              JointPDFSizeType;
+  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesType       JointPDFDerivativesType;
+  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesIndexType  JointPDFDerivativesIndexType;
+  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesValueType  JointPDFDerivativesValueType;
+  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesRegionType JointPDFDerivativesRegionType;
+  typedef typename TMattesMutualInformationMetric::JointPDFDerivativesSizeType   JointPDFDerivativesSizeType;
 
-  typedef typename TMattesMutualInformationMetric::CubicBSplineFunctionType            CubicBSplineFunctionType;
-  typedef typename TMattesMutualInformationMetric::CubicBSplineDerivativeFunctionType  CubicBSplineDerivativeFunctionType;
+  typedef typename TMattesMutualInformationMetric::CubicBSplineFunctionType           CubicBSplineFunctionType;
+  typedef typename TMattesMutualInformationMetric::CubicBSplineDerivativeFunctionType CubicBSplineDerivativeFunctionType;
 
-  typedef typename TMattesMutualInformationMetric::JacobianType             JacobianType;
+  typedef typename TMattesMutualInformationMetric::JacobianType JacobianType;
 
 protected:
-  MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader() {}
+  MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader() {
+  }
 
   virtual void BeforeThreadedExecution();
 
@@ -92,30 +94,40 @@ protected:
    *  the metric to the global integral of the metric/derivative.
    */
   virtual bool ProcessPoint(
-        const VirtualIndexType &          virtualIndex,
-        const VirtualPointType &          virtualPoint,
-        const FixedImagePointType &       mappedFixedPoint,
-        const FixedImagePixelType &       mappedFixedPixelValue,
-        const FixedImageGradientType &    mappedFixedImageGradient,
-        const MovingImagePointType &      mappedMovingPoint,
-        const MovingImagePixelType &      mappedMovingPixelValue,
-        const MovingImageGradientType &   mappedMovingImageGradient,
-        MeasureType &                     metricValueReturn,
-        DerivativeType &                  localDerivativeReturn,
-        const ThreadIdType                threadID ) const;
+    const VirtualIndexType &          virtualIndex,
+    const VirtualPointType &          virtualPoint,
+    const FixedImagePointType &       mappedFixedPoint,
+    const FixedImagePixelType &       mappedFixedPixelValue,
+    const FixedImageGradientType &    mappedFixedImageGradient,
+    const MovingImagePointType &      mappedMovingPoint,
+    const MovingImagePixelType &      mappedMovingPixelValue,
+    const MovingImageGradientType &   mappedMovingImageGradient,
+    MeasureType &                     metricValueReturn,
+    DerivativeType &                  localDerivativeReturn,
+    const ThreadIdType                threadID ) const;
 
   /** Compute PDF derivative contribution for each parameter. */
   virtual void ComputePDFDerivatives(const ThreadIdType &    threadID,
-                             const OffsetValueType &         fixedImageParzenWindowIndex,
-                             const JacobianType &            jacobian,
-                             const OffsetValueType &         pdfMovingIndex,
-                             const MovingImageGradientType & movingGradient,
-                             const PDFValueType &            cubicBSplineDerivativeValue,
-                             DerivativeValueType *           localSupportDerivativeResultPtr) const;
+                                     const OffsetValueType &         fixedImageParzenWindowIndex,
+                                     const JacobianType &            jacobian,
+                                     const OffsetValueType &         pdfMovingIndex,
+                                     const MovingImageGradientType & movingGradient,
+                                     const PDFValueType &            cubicBSplineDerivativeValue,
+                                     DerivativeValueType *           localSupportDerivativeResultPtr) const;
 
 private:
-  MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); //
+                                                                                            //
+                                                                                            // purposely
+                                                                                            //
+                                                                                            // not
+                                                                                            //
+                                                                                            // implemented
+  void operator=( const Self & );                                                           //
+
+  // purposely
+  // not
+  // implemented
 
   /** Internal pointer to the Mattes metric object in use by this threader.
    *  This will avoid costly dynamic casting in tight loops. */

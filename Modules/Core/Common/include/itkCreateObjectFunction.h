@@ -28,7 +28,7 @@ namespace itk
  * \ingroup ITKSystemObjects
  * \ingroup ITKCommon
  */
-class CreateObjectFunctionBase:public Object
+class CreateObjectFunctionBase : public Object
 {
 public:
   /** Standard typedefs. */
@@ -42,12 +42,16 @@ public:
   virtual SmartPointer< LightObject > CreateObject() = 0;
 
 protected:
-  CreateObjectFunctionBase() {}
-  ~CreateObjectFunctionBase() {}
+  CreateObjectFunctionBase() {
+  }
+
+  ~CreateObjectFunctionBase() {
+  }
 
 private:
   CreateObjectFunctionBase(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 
 /** \class CreateObjectFunction
@@ -58,7 +62,7 @@ private:
  * \ingroup ITKCommon
  */
 template< typename T >
-class CreateObjectFunction:public CreateObjectFunctionBase
+class CreateObjectFunction : public CreateObjectFunctionBase
 {
 public:
   /** Standard class typedefs. */
@@ -67,15 +71,22 @@ public:
 
   /** Methods from itk:LightObject. */
   itkFactorylessNewMacro(Self);
-  LightObject::Pointer CreateObject() { return T::New().GetPointer(); }
+  LightObject::Pointer
+  CreateObject() {
+    return T::New().GetPointer();
+  }
 
 protected:
-  CreateObjectFunction() {}
-  ~CreateObjectFunction() {}
+  CreateObjectFunction() {
+  }
+
+  ~CreateObjectFunction() {
+  }
 
 private:
   CreateObjectFunction(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

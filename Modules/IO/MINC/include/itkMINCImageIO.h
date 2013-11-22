@@ -74,7 +74,8 @@ public:
   itkTypeMacro(MINCImageIO, Superclass);
 
   /** Right now MINC supports up to 3D with multiple components */
-  virtual bool SupportsDimension(unsigned long dim)
+  virtual bool
+  SupportsDimension(unsigned long dim)
   {
     return dim<4;
   }
@@ -117,14 +118,14 @@ protected:
 
   void WriteSlice(std::string & fileName, const void *buffer);
 
-  int  m_NDims; /*Number of dimensions*/
+  int m_NDims;  /*Number of dimensions*/
 
   // dimension size and start and step, in FILE ORDER!
 
-  char         **m_DimensionName;
-  misize_t      *m_DimensionSize;
-  double        *m_DimensionStart;
-  double        *m_DimensionStep;
+  char **        m_DimensionName;
+  misize_t *     m_DimensionSize;
+  double *       m_DimensionStart;
+  double *       m_DimensionStep;
   int            m_DimensionIndices[5];
   midimhandle_t *m_MincFileDims;
   midimhandle_t *m_MincApparentDims;
@@ -133,9 +134,9 @@ protected:
   int            m_CompressionLevel;
 
   // MINC2 volume handle , currently opened
-  mihandle_t     m_Volume;
+  mihandle_t m_Volume;
 
-  MatrixType     m_DirectionCosines;
+  MatrixType m_DirectionCosines;
   // complex type images, composed of complex numbers
   //int m_Complex;
 

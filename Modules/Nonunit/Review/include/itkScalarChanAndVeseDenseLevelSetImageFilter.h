@@ -62,7 +62,7 @@ namespace itk
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage,
           typename TFunction = ScalarChanAndVeseLevelSetFunction< TInputImage, TFeatureImage >,
           class TSharedData = typename TFunction::SharedDataType >
-class ScalarChanAndVeseDenseLevelSetImageFilter:
+class ScalarChanAndVeseDenseLevelSetImageFilter :
   public MultiphaseDenseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage,
                                                      TFunction >
 {
@@ -105,7 +105,7 @@ public:
 
   typedef typename Superclass::TimeStepType TimeStepType;
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   typedef TFunction                      FunctionType;
   typedef typename FunctionType::Pointer FunctionPointer;
@@ -125,7 +125,8 @@ public:
 
   /** Set/Get the feature image to be used for speed function of the level set
    *  equation.  Equivalent to calling Set/GetInput(1, ..) */
-  virtual void SetFeatureImage(const FeatureImagePointer f)
+  virtual void
+  SetFeatureImage(const FeatureImagePointer f)
   {
     this->SetInput(f);
   }
@@ -136,7 +137,8 @@ protected:
     this->m_SharedData = SharedDataType::New();
   }
 
-  ~ScalarChanAndVeseDenseLevelSetImageFilter(){}
+  ~ScalarChanAndVeseDenseLevelSetImageFilter(){
+  }
 
   SharedDataPointer m_SharedData;
 

@@ -33,38 +33,56 @@ class QuasiNewtonOptimizerv4Template;
  * */
 template<typename TInternalComputationValueType>
 class QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate
-  : public DomainThreader< ThreadedIndexedContainerPartitioner, QuasiNewtonOptimizerv4Template<TInternalComputationValueType> >
+  : public DomainThreader< ThreadedIndexedContainerPartitioner,
+                           QuasiNewtonOptimizerv4Template<TInternalComputationValueType> >
 {
 public:
   /** Standard class typedefs. */
-  typedef QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate                                  Self;
-  typedef DomainThreader< ThreadedIndexedContainerPartitioner, QuasiNewtonOptimizerv4Template<TInternalComputationValueType> >
-                                                                                                    Superclass;
-  typedef SmartPointer< Self >                                                                      Pointer;
-  typedef SmartPointer< const Self >                                                                ConstPointer;
+  typedef QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate Self;
+  typedef DomainThreader< ThreadedIndexedContainerPartitioner,
+                          QuasiNewtonOptimizerv4Template<TInternalComputationValueType> >
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   itkTypeMacro( QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate, DomainThreader );
 
   itkNewMacro( Self );
 
-  typedef typename Superclass::DomainType     DomainType;
-  typedef typename Superclass::AssociateType  AssociateType;
-  typedef DomainType                          IndexRangeType;
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename Superclass::AssociateType AssociateType;
+  typedef DomainType                         IndexRangeType;
 
 protected:
   virtual void ThreadedExecution( const IndexRangeType & subrange,
                                   const ThreadIdType threadId );
 
-  QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate() {}
-  virtual ~QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate() {}
+  QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate() {
+  }
+
+  virtual
+  ~QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate() {
+  }
 
 private:
-  QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate( const Self & ); //
+                                                                            //
+                                                                            // purposely
+                                                                            //
+                                                                            // not
+                                                                            //
+                                                                            // implemented
+  void operator=( const Self & );                                           //
+
+  // purposely
+  // not
+  // implemented
+
 };
 
 /** This helps to meet backward compatibility */
-typedef QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate<double> QuasiNewtonOptimizerv4EstimateNewtonStepThreader;
+typedef QuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate<double>
+  QuasiNewtonOptimizerv4EstimateNewtonStepThreader;
 
 } // end namespace itk
 

@@ -62,8 +62,8 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class ConstantBoundaryCondition:
-    public ImageBoundaryCondition< TInputImage, TOutputImage >
+class ConstantBoundaryCondition :
+  public ImageBoundaryCondition< TInputImage, TOutputImage >
 {
 public:
   /** Self & superclass typedefs */
@@ -81,7 +81,7 @@ public:
   typedef typename Superclass::NeighborhoodType NeighborhoodType;
 
   typedef typename Superclass::NeighborhoodAccessorFunctorType
-  NeighborhoodAccessorFunctorType;
+    NeighborhoodAccessorFunctorType;
 
   /** Save the image dimension. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
@@ -90,7 +90,8 @@ public:
   ConstantBoundaryCondition();
 
   /** Runtime information support. */
-  virtual const char * GetNameOfClass() const
+  virtual const char *
+  GetNameOfClass() const
   {
     return "itkConstantBoundaryCondition";
   }
@@ -126,7 +127,10 @@ public:
   /** Tell if the boundary condition can index to any location within
     * the associated iterator's neighborhood or if it has some limited
     * subset (such as none) that it relies upon. */
-  bool RequiresCompleteNeighborhood() { return false; }
+  bool
+  RequiresCompleteNeighborhood() {
+    return false;
+  }
 
   /** Determines the necessary input region for the output region.
    * For this boundary condition, only the intersection of the largest

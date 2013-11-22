@@ -27,7 +27,8 @@
 //This program tests the ImageClassifierFilter. The test uses the
 //ExpectationMaximizationMixtureModelEstimator to estimaete membership
 //function parameters.
-int itkImageClassifierFilterTest(int argc, char* argv[] )
+int
+itkImageClassifierFilterTest(int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -71,7 +72,7 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
   double standardDeviation = 5.0;
 
   InputImageType::IndexType index;
-  unsigned int halfSize = size[1]/2;
+  unsigned int              halfSize = size[1]/2;
 
   for(unsigned int y = 0; y < halfSize; y++ )
     {
@@ -120,7 +121,7 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
   /* Preparing the gaussian mixture components */
   typedef itk::Array < double > ParametersType;
   std::vector< ParametersType > initialParameters(numberOfClasses);
-  ParametersType params(2);
+  ParametersType                params(2);
   params[0] = 8.0;
   params[1] = 0.1;
   initialParameters[0] = params;
@@ -133,14 +134,14 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
   std::vector< ComponentPointer > components;
   for (unsigned int i = 0; i < numberOfClasses; i++ )
     {
-      components.push_back(ComponentType::New());
-      (components[i])->SetSample(sample.GetPointer());
-      (components[i])->SetParameters(initialParameters[i]);
+    components.push_back(ComponentType::New() );
+    (components[i])->SetSample(sample.GetPointer() );
+    (components[i])->SetParameters(initialParameters[i]);
     }
 
   /* Estimating */
   EstimatorType::Pointer estimator = EstimatorType::New();
-  estimator->SetSample(sample.GetPointer());
+  estimator->SetSample(sample.GetPointer() );
 
   int maximumIteration = 200;
   estimator->SetMaximumIteration(maximumIteration);
@@ -153,61 +154,60 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
 
   for (unsigned int i = 0; i < numberOfClasses; i++)
     {
-      estimator->AddComponent((ComponentType::Superclass*)
-                              (components[i]).GetPointer());
+    estimator->AddComponent( (ComponentType::Superclass*)
+                             (components[i]).GetPointer() );
     }
 
   estimator->Update();
 
   for (unsigned int i = 0; i < numberOfClasses; i++)
     {
-      std::cout << "Cluster[" << i << "]" << std::endl;
-      std::cout << "    Parameters:" << std::endl;
-      std::cout << "         " << (components[i])->GetFullParameters() << std::endl;
-      std::cout << "    Proportion: ";
-      std::cout << "         " << (estimator->GetProportions())[i] << std::endl;
+    std::cout << "Cluster[" << i << "]" << std::endl;
+    std::cout << "    Parameters:" << std::endl;
+    std::cout << "         " << (components[i])->GetFullParameters() << std::endl;
+    std::cout << "    Proportion: ";
+    std::cout << "         " << (estimator->GetProportions() )[i] << std::endl;
     }
 
-
   typedef itk::Statistics::ImageClassifierFilter< ImageToListSampleAdaptorType,
-  InputImageType,OutputImageType > ImageClassifierFilterType;
+                                                  InputImageType,OutputImageType > ImageClassifierFilterType;
   ImageClassifierFilterType::Pointer filter
-                              = ImageClassifierFilterType::New();
+    = ImageClassifierFilterType::New();
 
-  typedef ImageClassifierFilterType::ClassLabelVectorObjectType               ClassLabelVectorObjectType;
-  typedef ImageClassifierFilterType::ClassLabelVectorType                     ClassLabelVectorType;
+  typedef ImageClassifierFilterType::ClassLabelVectorObjectType ClassLabelVectorObjectType;
+  typedef ImageClassifierFilterType::ClassLabelVectorType       ClassLabelVectorType;
 
-  ClassLabelVectorObjectType::Pointer  classLabelsObject = ClassLabelVectorObjectType::New();
+  ClassLabelVectorObjectType::Pointer classLabelsObject = ClassLabelVectorObjectType::New();
 
   // Add class labels
   ClassLabelVectorType & classLabelVector  = classLabelsObject->Get();
 
-  typedef ImageClassifierFilterType::ClassLabelType        ClassLabelType;
+  typedef ImageClassifierFilterType::ClassLabelType ClassLabelType;
 
-  ClassLabelType  class1 = 0;
+  ClassLabelType class1 = 0;
   classLabelVector.push_back( class1 );
 
-  ClassLabelType  class2 = 255;
+  ClassLabelType class2 = 255;
   classLabelVector.push_back( class2 );
 
   //Set a decision rule type
-  typedef itk::Statistics::MaximumDecisionRule  DecisionRuleType;
+  typedef itk::Statistics::MaximumDecisionRule DecisionRuleType;
 
-  DecisionRuleType::Pointer    decisionRule = DecisionRuleType::New();
+  DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
 
   const ImageClassifierFilterType::MembershipFunctionVectorObjectType *
-                membershipFunctionsObject = estimator->GetOutput();
+  membershipFunctionsObject = estimator->GetOutput();
 
   /* Print out estimated parameters of the membership function */
 
   const ImageClassifierFilterType::MembershipFunctionVectorType
-            membershipFunctions = membershipFunctionsObject->Get();
+    membershipFunctions = membershipFunctionsObject->Get();
 
   ImageClassifierFilterType::MembershipFunctionVectorType::const_iterator
-                    begin = membershipFunctions.begin();
+    begin = membershipFunctions.begin();
 
   ImageClassifierFilterType::MembershipFunctionVectorType::const_iterator
-                    end = membershipFunctions.end();
+    end = membershipFunctions.end();
 
   ImageClassifierFilterType::MembershipFunctionVectorType::const_iterator functionIter;
 
@@ -219,8 +219,8 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
     {
     ImageClassifierFilterType::MembershipFunctionPointer membershipFunction = *functionIter;
     const EstimatorType::GaussianMembershipFunctionType *
-          gaussianMemberShpFunction =
-        dynamic_cast<const EstimatorType::GaussianMembershipFunctionType*>(membershipFunction.GetPointer());
+    gaussianMemberShpFunction =
+      dynamic_cast<const EstimatorType::GaussianMembershipFunctionType*>(membershipFunction.GetPointer() );
     std::cout << "\tMembership function:\t " << counter << std::endl;
     std::cout << "\t\tMean="<< gaussianMemberShpFunction->GetMean() << std::endl;
     std::cout << "\t\tCovariance matrix=" << gaussianMemberShpFunction->GetCovariance() << std::endl;
@@ -230,8 +230,9 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
 
   //Set membership functions weight array
   const ImageClassifierFilterType::MembershipFunctionsWeightsArrayObjectType *
-            weightArrayObjects = estimator->GetMembershipFunctionsWeightsArray();
-  const ImageClassifierFilterType::MembershipFunctionsWeightsArrayType  weightsArray = weightArrayObjects->Get();
+  weightArrayObjects =
+    estimator->GetMembershipFunctionsWeightsArray();
+  const ImageClassifierFilterType::MembershipFunctionsWeightsArrayType weightsArray = weightArrayObjects->Get();
 
   std::cout << "Estimator membership function Weight/proporation output: " << std::endl;
   for(unsigned int i=0; i < weightsArray.Size(); i++ )
@@ -266,7 +267,6 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
     {
     std::cerr << excp << std::endl;
     }
-
 
   filter->SetDecisionRule( decisionRule );
 

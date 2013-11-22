@@ -42,7 +42,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TVector >
-class DistanceToCentroidMembershipFunction:
+class DistanceToCentroidMembershipFunction :
   public MembershipFunctionBase< TVector >
 {
 public:
@@ -65,7 +65,7 @@ public:
 
   /** Typedef to represent the length of measurement vectors */
   typedef typename Superclass::MeasurementVectorSizeType
-  MeasurementVectorSizeType;
+    MeasurementVectorSizeType;
 
   /**  Set the length of each measurement vector. */
   virtual void SetMeasurementVectorSize(MeasurementVectorSizeType);
@@ -98,15 +98,21 @@ public:
 
 protected:
   DistanceToCentroidMembershipFunction(void);
-  virtual ~DistanceToCentroidMembershipFunction(void) {}
+  virtual
+  ~DistanceToCentroidMembershipFunction(void) {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Return a copy of the current membership function */
   virtual typename LightObject::Pointer InternalClone() const;
 
 private:
-  DistanceToCentroidMembershipFunction(const Self &);   //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  DistanceToCentroidMembershipFunction(const Self &); //purposely not
+                                                      // implemented
+  void operator=(const Self &);                       //purposely not
+
+  // implemented
 
   DistanceMetricPointer m_DistanceMetric;
 };

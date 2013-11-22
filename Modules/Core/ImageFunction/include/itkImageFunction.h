@@ -55,8 +55,8 @@ template<
   typename TOutput,
   typename TCoordRep = float
   >
-class ImageFunction:
-    public FunctionBase< Point< SpacePrecisionType, TInputImage::ImageDimension >, TOutput >
+class ImageFunction :
+  public FunctionBase< Point< SpacePrecisionType, TInputImage::ImageDimension >, TOutput >
 {
 public:
   /** Dimension underlying input image. */
@@ -67,9 +67,9 @@ public:
   typedef ImageFunction Self;
 
   typedef FunctionBase<
-    Point< SpacePrecisionType,
-           itkGetStaticConstMacro(ImageDimension) >, TOutput >
-                                     Superclass;
+      Point< SpacePrecisionType,
+             itkGetStaticConstMacro(ImageDimension) >, TOutput >
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -109,8 +109,11 @@ public:
   virtual void SetInputImage(const InputImageType *ptr);
 
   /** Get the input image. */
-  const InputImageType * GetInputImage() const
-  { return m_Image.GetPointer(); }
+  const InputImageType *
+  GetInputImage() const
+  {
+    return m_Image.GetPointer();
+  }
 
   /** Evaluate the function at specified Point position.
    * Subclasses must provide this method. */
@@ -131,7 +134,8 @@ public:
    * to the next integer coordinate.
    * \warning For efficiency, no validity checking of
    * the input image is done. */
-  virtual bool IsInsideBuffer(const IndexType & index) const
+  virtual bool
+  IsInsideBuffer(const IndexType & index) const
   {
     for ( unsigned int j = 0; j < ImageDimension; j++ )
       {
@@ -150,12 +154,13 @@ public:
   /** Check if a continuous index is inside the image buffer.
    * \warning For efficiency, no validity checking of
    * the input image is done. */
-  virtual bool IsInsideBuffer(const ContinuousIndexType & index) const
+  virtual bool
+  IsInsideBuffer(const ContinuousIndexType & index) const
   {
     for ( unsigned int j = 0; j < ImageDimension; j++ )
       {
       /* Test for negative of a positive so we can catch NaN's. */
-      if ( ! (index[j] >= m_StartContinuousIndex[j] &&
+      if ( !(index[j] >= m_StartContinuousIndex[j] &&
              index[j] < m_EndContinuousIndex[j] ) )
         {
         return false;
@@ -167,9 +172,11 @@ public:
   /** Check if a point is inside the image buffer.
    * \warning For efficiency, no validity checking of
    * the input image pointer is done. */
-  virtual bool IsInsideBuffer(const PointType & point) const
+  virtual bool
+  IsInsideBuffer(const PointType & point) const
   {
     ContinuousIndexType index;
+
     m_Image->TransformPhysicalPointToContinuousIndex(point, index);
     /* Call IsInsideBuffer to test against BufferedRegion bounds.
      * TransformPhysicalPointToContinuousIndex tests against
@@ -179,8 +186,9 @@ public:
   }
 
   /** Convert point to nearest index. */
-  void ConvertPointToNearestIndex(const PointType & point,
-                                  IndexType & index) const
+  void
+  ConvertPointToNearestIndex(const PointType & point,
+                             IndexType & index) const
   {
     ContinuousIndexType cindex;
 
@@ -189,16 +197,18 @@ public:
   }
 
   /** Convert point to continuous index */
-  void ConvertPointToContinuousIndex(const PointType & point,
-                                     ContinuousIndexType & cindex) const
+  void
+  ConvertPointToContinuousIndex(const PointType & point,
+                                ContinuousIndexType & cindex) const
   {
     m_Image->TransformPhysicalPointToContinuousIndex(point, cindex);
   }
 
   /** Convert continuous index to nearest index. */
-  inline void ConvertContinuousIndexToNearestIndex(
-                                  const ContinuousIndexType & cindex,
-                                  IndexType &                 index) const
+  inline void
+  ConvertContinuousIndexToNearestIndex(
+    const ContinuousIndexType & cindex,
+    IndexType &                 index) const
   {
     index.CopyWithRound(cindex);
   }
@@ -211,7 +221,9 @@ public:
 
 protected:
   ImageFunction();
-  ~ImageFunction() {}
+  ~ImageFunction() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Const pointer to the input image. */
@@ -227,6 +239,7 @@ protected:
 private:
   ImageFunction(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

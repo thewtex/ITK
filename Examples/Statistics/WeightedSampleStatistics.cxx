@@ -77,24 +77,30 @@ public:
   typedef double OutputType;
 
   /**Evaluate at the specified input position */
-  OutputType Evaluate( const InputType& input ) const
-    {
-      if ( input[0] < 3.0 )
-        {
-        return 0.5;
-        }
-      else
-        {
-        return 0.01;
-        }
-    }
+  OutputType
+  Evaluate( const InputType& input ) const
+  {
+    if ( input[0] < 3.0 )
+      {
+      return 0.5;
+      }
+    else
+      {
+      return 0.01;
+      }
+  }
 
 protected:
-  ExampleWeightFunction() {}
-  ~ExampleWeightFunction() {}
+  ExampleWeightFunction() {
+  }
+
+  ~ExampleWeightFunction() {
+  }
+
 }; // end of class
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -160,7 +166,7 @@ int main()
   weightArray[4] = 0.01;
 
   WeightedMeanAlgorithmType::Pointer weightedMeanAlgorithm =
-                                              WeightedMeanAlgorithmType::New();
+    WeightedMeanAlgorithmType::New();
 
   weightedMeanAlgorithm->SetInput( sample );
   weightedMeanAlgorithm->SetWeights( weightArray );
@@ -170,10 +176,10 @@ int main()
             << weightedMeanAlgorithm->GetMean() << std::endl;
 
   typedef itk::Statistics::WeightedCovarianceSampleFilter< SampleType >
-                                              WeightedCovarianceAlgorithmType;
+    WeightedCovarianceAlgorithmType;
 
   WeightedCovarianceAlgorithmType::Pointer weightedCovarianceAlgorithm =
-                                        WeightedCovarianceAlgorithmType::New();
+    WeightedCovarianceAlgorithmType::New();
 
   weightedCovarianceAlgorithm->SetInput( sample );
   weightedCovarianceAlgorithm->SetWeights( weightArray );

@@ -37,7 +37,7 @@ namespace itk
  */
 
 template< typename TPixel >
-class ColorTable:public Object
+class ColorTable : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -90,6 +90,7 @@ public:
     */
   bool    SetColor(unsigned int c, TPixel r, TPixel g, TPixel b,
                    const char *name = "UserDefined");
+
   bool    SetColor(unsigned int c, RGBPixel<TPixel> pixel,
                    const char *name = "UserDefined");
 
@@ -120,6 +121,7 @@ private:
   void operator=(const Self &); //purposely not implemented
 
   void DeleteColors();
+
 };
 } // namespace itk
 

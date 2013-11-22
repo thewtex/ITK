@@ -32,7 +32,7 @@ namespace itk
  */
 template< unsigned int NDimensions = 3 >
 class MetaGroupConverter :
-    public MetaConverterBase< NDimensions >
+  public MetaConverterBase< NDimensions >
 {
 public:
   /** Standard class typedefs */
@@ -61,14 +61,15 @@ public:
   virtual SpatialObjectPointer MetaObjectToSpatialObject(const MetaObjectType *mo);
 
   /** Convert the SpatialObject to MetaObject */
-  virtual MetaObjectType *SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
+  virtual MetaObjectType * SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
 
 protected:
   /** Create the specific MetaObject for this class */
-  virtual MetaObjectType *CreateMetaObject();
+  virtual MetaObjectType * CreateMetaObject();
 
   MetaGroupConverter();
-  ~MetaGroupConverter() {}
+  ~MetaGroupConverter() {
+  }
 
 private:
   MetaGroupConverter(const Self &);   //purposely not implemented
@@ -78,7 +79,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaGroupConverter.hxx"
+#include "itkMetaGroupConverter.hxx"
 #endif
 
 #endif

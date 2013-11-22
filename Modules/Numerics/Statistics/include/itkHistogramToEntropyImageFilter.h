@@ -62,33 +62,38 @@ public:
   // Returns pixels of float..
   typedef  TOutput OutputPixelType;
 
-  HistogramEntropyFunction():
-    m_TotalFrequency(1) {}
+  HistogramEntropyFunction() :
+    m_TotalFrequency(1) {
+  }
 
-  ~HistogramEntropyFunction() {}
+  ~HistogramEntropyFunction() {
+  }
 
-  inline OutputPixelType operator()(const TInput & A) const
+  inline OutputPixelType
+  operator()(const TInput & A) const
   {
     if ( A )
       {
       const double p = static_cast< OutputPixelType >( A )
-                       / static_cast< OutputPixelType >( m_TotalFrequency );
+        / static_cast< OutputPixelType >( m_TotalFrequency );
       return static_cast< OutputPixelType >( ( -1 ) * p * vcl_log(p) / vcl_log(2.0) );
       }
     else
       {
       const double p = static_cast< OutputPixelType >( A + 1 )
-                       / static_cast< OutputPixelType >( m_TotalFrequency );
+        / static_cast< OutputPixelType >( m_TotalFrequency );
       return static_cast< OutputPixelType >( ( -1 ) * p * vcl_log(p) / vcl_log(2.0) );
       }
   }
 
-  void SetTotalFrequency(const SizeValueType n)
+  void
+  SetTotalFrequency(const SizeValueType n)
   {
     m_TotalFrequency = n;
   }
 
-  SizeValueType GetTotalFrequency() const
+  SizeValueType
+  GetTotalFrequency() const
   {
     return m_TotalFrequency;
   }
@@ -99,7 +104,7 @@ private:
 }
 
 template< typename THistogram, typename TImage=Image< double, 3> >
-class HistogramToEntropyImageFilter:
+class HistogramToEntropyImageFilter :
   public HistogramToImageFilter< THistogram, TImage,
                                  Function::HistogramEntropyFunction< SizeValueType, typename TImage::PixelType > >
 {
@@ -110,8 +115,8 @@ public:
 
   /** Standard "Superclass" typedef. */
   typedef HistogramToImageFilter< THistogram, TImage,
-                                 Function::HistogramEntropyFunction< SizeValueType, typename TImage::PixelType > >
-  Superclass;
+                                  Function::HistogramEntropyFunction< SizeValueType, typename TImage::PixelType > >
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -123,12 +128,17 @@ public:
   itkNewMacro(Self);
 
 protected:
-  HistogramToEntropyImageFilter() {}
-  virtual ~HistogramToEntropyImageFilter() {}
+  HistogramToEntropyImageFilter() {
+  }
+
+  virtual
+  ~HistogramToEntropyImageFilter() {
+  }
 
 private:
   HistogramToEntropyImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
+
 };
 } // end namespace itk
 

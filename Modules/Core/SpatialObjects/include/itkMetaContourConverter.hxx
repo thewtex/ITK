@@ -27,15 +27,16 @@ namespace itk
 template< unsigned int NDimensions >
 MetaContourConverter< NDimensions >
 ::MetaContourConverter()
-{}
+{
+}
 
 template< unsigned int NDimensions >
 typename MetaContourConverter< NDimensions >::MetaObjectType *
 MetaContourConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new ContourMetaObjectType);
-}
+  }
 
 /** Convert a metaContour into an Contour SpatialObject  */
 template< unsigned int NDimensions >
@@ -44,6 +45,7 @@ MetaContourConverter< NDimensions >
 ::MetaObjectToSpatialObject(const MetaObjectType *mo)
 {
   const ContourMetaObjectType *contourMO = dynamic_cast<const MetaContour *>(mo);
+
   if(contourMO == 0)
     {
     itkExceptionMacro(<< "Can't downcast MetaObject to MetaContour");
@@ -118,9 +120,9 @@ MetaContourConverter< NDimensions >
     }
 
   // Then the interpolated points
-  typedef typename ContourSpatialObjectType::InterpolatedPointType  InterpolatedPointType;
+  typedef typename ContourSpatialObjectType::InterpolatedPointType InterpolatedPointType;
   typename ContourMetaObjectType::InterpolatedPointListType::const_iterator
-    itI = contourMO->GetInterpolatedPoints().begin();
+  itI = contourMO->GetInterpolatedPoints().begin();
 
   for ( unsigned int identifier = 0; identifier < contourMO->GetInterpolatedPoints().size(); identifier++ )
     {
@@ -156,15 +158,15 @@ template< unsigned int NDimensions >
 typename MetaContourConverter< NDimensions>::MetaObjectType *
 MetaContourConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   ContourSpatialObjectConstPointer contourSO =
     dynamic_cast<const ContourSpatialObjectType *>(so);
-  if(contourSO.IsNull())
+
+  if(contourSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to ContourSpatialObject");
     }
   MetaContour *contourMO = new MetaContour(NDimensions);
-
 
   // fill in the control points information
   typename ContourSpatialObjectType::ControlPointListType::const_iterator itCP;
@@ -275,11 +277,11 @@ MetaContourConverter< NDimensions >
   for ( unsigned int i = 0; i < NDimensions; i++ )
     {
     contourMO->ElementSpacing(i, contourSO->GetIndexToObjectTransform()
-                            ->GetScaleComponent()[i]);
+                              ->GetScaleComponent()[i]);
     }
   contourMO->BinaryData(true);
   return contourMO;
-}
+  }
 
 } // end namespace itk
 

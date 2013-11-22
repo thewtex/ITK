@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT ThreadLogger:public Logger
+class ITKCommon_EXPORT ThreadLogger : public Logger
 {
 public:
 
@@ -60,13 +60,13 @@ public:
 
   /** Definition of types of operations for ThreadLogger. */
   typedef enum
-  {
+    {
     SET_PRIORITY_LEVEL,
     SET_LEVEL_FOR_FLUSHING,
     ADD_LOG_OUTPUT,
     WRITE,
     FLUSH
-  }
+    }
   OperationType;
 
   /** Set the priority level for the current logger. Only messages that have
@@ -106,7 +106,8 @@ protected:
   ThreadLogger();
 
   /** Destructor */
-  virtual ~ThreadLogger();
+  virtual
+  ~ThreadLogger();
 
   /** Print contents of a ThreadLogger */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

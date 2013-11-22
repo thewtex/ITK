@@ -99,29 +99,29 @@ namespace itk
  * \ingroup ITKFastMarching
 */
 template< typename TInput, typename TOutput >
-class FastMarchingBase : public FastMarchingTraits<TInput, TOutput>::SuperclassType
-  {
+class FastMarchingBase : public FastMarchingTraits<TInput, TOutput >::SuperclassType
+{
 public:
-  typedef FastMarchingTraits<TInput, TOutput>   Traits;
-  typedef typename Traits::SuperclassType       SuperclassType;
+  typedef FastMarchingTraits<TInput, TOutput> Traits;
+  typedef typename Traits::SuperclassType     SuperclassType;
 
-  typedef FastMarchingBase            Self;
-  typedef SuperclassType              Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef FastMarchingBase           Self;
+  typedef SuperclassType             Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Input Domain related definitions */
-  typedef typename Traits::InputDomainType        InputDomainType;
-  typedef typename Traits::InputDomainPointer     InputDomainPointer;
-  typedef typename Traits::InputPixelType         InputPixelType;
+  typedef typename Traits::InputDomainType    InputDomainType;
+  typedef typename Traits::InputDomainPointer InputDomainPointer;
+  typedef typename Traits::InputPixelType     InputPixelType;
 
   /** Output Domain related definitions */
-  typedef typename Traits::OutputDomainType       OutputDomainType;
-  typedef typename Traits::OutputDomainPointer    OutputDomainPointer;
-  typedef typename Traits::OutputPixelType        OutputPixelType;
+  typedef typename Traits::OutputDomainType    OutputDomainType;
+  typedef typename Traits::OutputDomainPointer OutputDomainPointer;
+  typedef typename Traits::OutputPixelType     OutputPixelType;
 
   /** NodeType type of node */
-  typedef typename Traits::NodeType                 NodeType;
+  typedef typename Traits::NodeType NodeType;
 
   /** NodePairType pair of node and corresponding value */
   typedef typename Traits::NodePairType             NodePairType;
@@ -130,7 +130,7 @@ public:
   typedef typename Traits::NodePairContainerConstIterator
     NodePairContainerConstIterator;
 
-  typedef typename Traits::LabelType                LabelType;
+  typedef typename Traits::LabelType LabelType;
 
   /** StoppingCriterionType stopping criterion */
   typedef FastMarchingStoppingCriterionBase< TInput, TOutput > StoppingCriterionType;
@@ -157,7 +157,8 @@ public:
     /** \c NoHandles */
     NoHandles,
     /** \c Strict */
-    Strict };
+    Strict
+    };
 
   /** Set/Get the TopologyCheckType macro indicating whether the user
   wants to check topology (and which one). */
@@ -211,7 +212,8 @@ protected:
   FastMarchingBase();
 
   /** \brief Destructor */
-  virtual ~FastMarchingBase();
+  virtual
+  ~FastMarchingBase();
 
   StoppingCriterionPointer m_StoppingCriterion;
 
@@ -223,21 +225,21 @@ protected:
   OutputPixelType m_LargeValue;
   OutputPixelType m_TopologyValue;
 
-  NodePairContainerPointer  m_TrialPoints;
-  NodePairContainerPointer  m_AlivePoints;
-  NodePairContainerPointer  m_ProcessedPoints;
-  NodePairContainerPointer  m_ForbiddenPoints;
+  NodePairContainerPointer m_TrialPoints;
+  NodePairContainerPointer m_AlivePoints;
+  NodePairContainerPointer m_ProcessedPoints;
+  NodePairContainerPointer m_ForbiddenPoints;
 
   bool m_CollectPoints;
 
   //PriorityQueuePointer m_Heap;
-  typedef std::vector< NodePairType >   HeapContainerType;
-  typedef std::greater< NodePairType >  NodeComparerType;
+  typedef std::vector< NodePairType >  HeapContainerType;
+  typedef std::greater< NodePairType > NodeComparerType;
 
   typedef std::priority_queue<
-    NodeType,
-    HeapContainerType,
-    NodeComparerType >
+      NodeType,
+      HeapContainerType,
+      NodeComparerType >
     PriorityQueueType;
 
   PriorityQueueType m_Heap;
@@ -249,12 +251,12 @@ protected:
 
   /** \brief Get the ouput value (front value) for a given node */
   virtual const OutputPixelType GetOutputValue( OutputDomainType* oDomain,
-                                         const NodeType& iNode ) const = 0;
+                                                const NodeType& iNode ) const = 0;
 
   /** \brief Set the output value (front value) for a given node */
   virtual void SetOutputValue( OutputDomainType* oDomain,
-                              const NodeType& iNode,
-                              const OutputPixelType& iValue ) = 0;
+                               const NodeType& iNode,
+                               const OutputPixelType& iValue ) = 0;
 
   /** \brief Get the LabelType Value for a given node
     \param[in] iNode
@@ -266,28 +268,28 @@ protected:
     \param[in] iNode
     \param[in] iLabel */
   virtual void SetLabelValueForGivenNode( const NodeType& iNode,
-                                         const LabelType& iLabel ) = 0;
+                                          const LabelType& iLabel ) = 0;
 
   /** \brief Update neighbors to a given node
     \param[in] oDomain
     \param[in] iNode
   */
   virtual void UpdateNeighbors( OutputDomainType* oDomain,
-                               const NodeType& iNode ) = 0;
+                                const NodeType& iNode ) = 0;
 
   /** \brief Update value for a given node
     \param[in] oDomain
     \param[in] iNode
     */
   virtual void UpdateValue( OutputDomainType* oDomain,
-                           const NodeType& iNode ) = 0;
+                            const NodeType& iNode ) = 0;
 
   /** \brief Check if the current node violate topological criterion.
     \param[in] oDomain
     \param[in] iNode
    */
   virtual bool CheckTopology( OutputDomainType* oDomain,
-                             const NodeType& iNode ) = 0;
+                              const NodeType& iNode ) = 0;
 
   /** \brief   */
   void Initialize( OutputDomainType* oDomain );
@@ -303,8 +305,9 @@ protected:
 
 private:
   FastMarchingBase( const Self& );
-  void operator = ( const Self& );
-  };
+  void operator =( const Self& );
+
+};
 }
 
 #include "itkFastMarchingBase.hxx"

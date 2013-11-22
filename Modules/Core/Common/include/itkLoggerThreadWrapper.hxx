@@ -28,7 +28,8 @@ namespace itk
  * priorities equal or greater than the one set here will be posted to the
  * current outputs */
 template< typename SimpleLoggerType >
-void LoggerThreadWrapper< SimpleLoggerType >::SetPriorityLevel(PriorityLevelType level)
+void
+LoggerThreadWrapper< SimpleLoggerType >::SetPriorityLevel(PriorityLevelType level)
 {
   this->m_Mutex.Lock();
   this->m_OperationQ.push(SET_PRIORITY_LEVEL);
@@ -40,7 +41,8 @@ void LoggerThreadWrapper< SimpleLoggerType >::SetPriorityLevel(PriorityLevelType
  * priorities equal or greater than the one set here will be posted to the
  * current outputs */
 template< typename SimpleLoggerType >
-typename SimpleLoggerType::PriorityLevelType LoggerThreadWrapper< SimpleLoggerType >::GetPriorityLevel() const
+typename SimpleLoggerType::PriorityLevelType
+LoggerThreadWrapper< SimpleLoggerType >::GetPriorityLevel() const
 {
   this->m_Mutex.Lock();
   PriorityLevelType level = this->m_PriorityLevel;
@@ -49,7 +51,8 @@ typename SimpleLoggerType::PriorityLevelType LoggerThreadWrapper< SimpleLoggerTy
 }
 
 template< typename SimpleLoggerType >
-void LoggerThreadWrapper< SimpleLoggerType >::SetLevelForFlushing(PriorityLevelType level)
+void
+LoggerThreadWrapper< SimpleLoggerType >::SetLevelForFlushing(PriorityLevelType level)
 {
   this->m_Mutex.Lock();
   this->m_LevelForFlushing = level;
@@ -59,7 +62,8 @@ void LoggerThreadWrapper< SimpleLoggerType >::SetLevelForFlushing(PriorityLevelT
 }
 
 template< typename SimpleLoggerType >
-typename SimpleLoggerType::PriorityLevelType LoggerThreadWrapper< SimpleLoggerType >::GetLevelForFlushing() const
+typename SimpleLoggerType::PriorityLevelType
+LoggerThreadWrapper< SimpleLoggerType >::GetLevelForFlushing() const
 {
   this->m_Mutex.Lock();
   PriorityLevelType level = this->m_LevelForFlushing;
@@ -68,7 +72,8 @@ typename SimpleLoggerType::PriorityLevelType LoggerThreadWrapper< SimpleLoggerTy
 }
 
 template< typename SimpleLoggerType >
-void LoggerThreadWrapper< SimpleLoggerType >::SetDelay(DelayType delay)
+void
+LoggerThreadWrapper< SimpleLoggerType >::SetDelay(DelayType delay)
 {
   this->m_Mutex.Lock();
   this->m_Delay = delay;
@@ -76,7 +81,8 @@ void LoggerThreadWrapper< SimpleLoggerType >::SetDelay(DelayType delay)
 }
 
 template< typename SimpleLoggerType >
-typename LoggerThreadWrapper< SimpleLoggerType >::DelayType LoggerThreadWrapper< SimpleLoggerType >::GetDelay() const
+typename LoggerThreadWrapper< SimpleLoggerType >::DelayType
+LoggerThreadWrapper< SimpleLoggerType >::GetDelay() const
 {
   this->m_Mutex.Lock();
   DelayType delay = this->m_Delay;
@@ -86,7 +92,8 @@ typename LoggerThreadWrapper< SimpleLoggerType >::DelayType LoggerThreadWrapper<
 
 /** Adds an output stream to the MultipleLogOutput for writing. */
 template< typename SimpleLoggerType >
-void LoggerThreadWrapper< SimpleLoggerType >::AddLogOutput(OutputType *output)
+void
+LoggerThreadWrapper< SimpleLoggerType >::AddLogOutput(OutputType *output)
 {
   this->m_Mutex.Lock();
   this->m_OperationQ.push(ADD_LOG_OUTPUT);
@@ -95,7 +102,8 @@ void LoggerThreadWrapper< SimpleLoggerType >::AddLogOutput(OutputType *output)
 }
 
 template< typename SimpleLoggerType >
-void LoggerThreadWrapper< SimpleLoggerType >::Write(PriorityLevelType level, std::string const & content)
+void
+LoggerThreadWrapper< SimpleLoggerType >::Write(PriorityLevelType level, std::string const & content)
 {
   this->m_Mutex.Lock();
   if ( this->m_PriorityLevel >= level )
@@ -112,7 +120,8 @@ void LoggerThreadWrapper< SimpleLoggerType >::Write(PriorityLevelType level, std
 }
 
 template< typename SimpleLoggerType >
-void LoggerThreadWrapper< SimpleLoggerType >::Flush()
+void
+LoggerThreadWrapper< SimpleLoggerType >::Flush()
 {
   this->m_Mutex.Lock();
 
@@ -170,9 +179,10 @@ LoggerThreadWrapper< SimpleLoggerType >::~LoggerThreadWrapper()
 }
 
 template< typename SimpleLoggerType >
-ITK_THREAD_RETURN_TYPE LoggerThreadWrapper< SimpleLoggerType >::ThreadFunction(void *pInfoStruct)
+ITK_THREAD_RETURN_TYPE
+LoggerThreadWrapper< SimpleLoggerType >::ThreadFunction(void *pInfoStruct)
 {
-  struct MultiThreader:: ThreadInfoStruct *pInfo = (struct MultiThreader::ThreadInfoStruct *)pInfoStruct;
+  struct MultiThreader::ThreadInfoStruct *pInfo = (struct MultiThreader::ThreadInfoStruct *)pInfoStruct;
 
   if ( pInfo == NULL )
     {
@@ -229,14 +239,15 @@ ITK_THREAD_RETURN_TYPE LoggerThreadWrapper< SimpleLoggerType >::ThreadFunction(v
       pLogger->m_OperationQ.pop();
       }
     pLogger->m_Mutex.Unlock();
-    itksys::SystemTools::Delay(pLogger->GetDelay());
+    itksys::SystemTools::Delay(pLogger->GetDelay() );
     }
   return ITK_THREAD_RETURN_VALUE;
 }
 
 /** Print contents of a LoggerThreadWrapper */
 template< typename SimpleLoggerType >
-void LoggerThreadWrapper< SimpleLoggerType >::PrintSelf(std::ostream & os, Indent indent) const
+void
+LoggerThreadWrapper< SimpleLoggerType >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
@@ -247,6 +258,7 @@ void LoggerThreadWrapper< SimpleLoggerType >::PrintSelf(std::ostream & os, Inden
   os << indent << "Level Queue Size: " << this->m_LevelQ.size() << std::endl;
   os << indent << "Output Queue Size: " << this->m_OutputQ.size() << std::endl;
 }
+
 } // namespace itk
 
 #endif // __itkLoggerThreadWrapper_hxx

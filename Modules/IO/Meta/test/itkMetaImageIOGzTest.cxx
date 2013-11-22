@@ -20,10 +20,10 @@
 #include "itkImageFileReader.h"
 #include "itkMetaImageIO.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkMetaImageIOGzTest(int ac, char* av[])
+int
+itkMetaImageIOGzTest(int ac, char* av[])
 {
   if(ac < 2)
     {
@@ -37,7 +37,7 @@ int itkMetaImageIOGzTest(int ac, char* av[])
             << std::endl;
   std::string headerName(av[1]);
   headerName += "/GzTest.mhd";
-  std::ofstream hdr(headerName.c_str());
+  std::ofstream hdr(headerName.c_str() );
   hdr << "ObjectType = Image" << std::endl
       << "NDims = 2" << std::endl
       << "DimSize = 32 32" << std::endl
@@ -50,7 +50,7 @@ int itkMetaImageIOGzTest(int ac, char* av[])
   for(unsigned short i = 0; i < (32 * 32); i++)
     {
     unsigned short pixel = i & 0xff;
-    if( gzwrite(compressed,&pixel,sizeof(pixel)) != sizeof(pixel) )
+    if( gzwrite(compressed,&pixel,sizeof(pixel) ) != sizeof(pixel) )
       {
       std::cerr << "Write error for " << dataName << std::endl;
       break;
@@ -63,7 +63,7 @@ int itkMetaImageIOGzTest(int ac, char* av[])
 
   itk::ImageFileReader<myImage>::Pointer reader
     = itk::ImageFileReader<myImage>::New();
-  reader->SetFileName(headerName.c_str());
+  reader->SetFileName(headerName.c_str() );
 
   itk::MetaImageIO::Pointer io = itk::MetaImageIO::New();
   reader->SetImageIO(io);
@@ -82,7 +82,7 @@ int itkMetaImageIOGzTest(int ac, char* av[])
   // re-write header
   headerName = av[1];
   headerName += "/AbsPathTest.mhd";
-  std::ofstream hdr2(headerName.c_str());
+  std::ofstream hdr2(headerName.c_str() );
   hdr2 << "ObjectType = Image" << std::endl
        << "NDims = 2" << std::endl
        << "DimSize = 32 32" << std::endl
@@ -91,7 +91,7 @@ int itkMetaImageIOGzTest(int ac, char* av[])
        << "ElementDataFile = " << dataName
        << std::endl;
   hdr2.close();
-  reader->SetFileName(headerName.c_str());
+  reader->SetFileName(headerName.c_str() );
   try
     {
     reader->Update();

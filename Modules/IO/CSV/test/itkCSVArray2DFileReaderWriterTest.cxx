@@ -23,7 +23,8 @@ const double epsilon = 1e-20;
 
 // function for comparing matrices
 template <typename T>
-bool testArray(const itk::Array2D<T> & m1, const itk::Array2D<T> & m2)
+bool
+testArray(const itk::Array2D<T> & m1, const itk::Array2D<T> & m2)
 {
   bool pass = true;
 
@@ -40,15 +41,17 @@ bool testArray(const itk::Array2D<T> & m1, const itk::Array2D<T> & m2)
       // We need to test whether m1 is a NaN and/or m2 is a NaN.
       // If they are both NaN, then they are the same.
       // If only one is NaN, then the comparison should fail.
-      // Without such a test, the comparison of the difference being greater than epsilon will pass.
-      // The equality and inequality predicates are non-signaling so x = x returning false can be used to test if x is a quiet NaN.
+      // Without such a test, the comparison of the difference being greater
+      // than epsilon will pass.
+      // The equality and inequality predicates are non-signaling so x = x
+      // returning false can be used to test if x is a quiet NaN.
       bool m1_isNaN = (m1[i][j] == m1[i][j]);
       bool m2_isNaN = (m2[i][j] == m2[i][j]);
       if( (m1_isNaN && !m2_isNaN) || (!m1_isNaN && m2_isNaN) )
-      {
+        {
         pass = false;
         return pass;
-      }
+        }
       if (vcl_fabs(m1[i][j] - m2[i][j]) > epsilon)
         {
         pass = false;
@@ -59,14 +62,15 @@ bool testArray(const itk::Array2D<T> & m1, const itk::Array2D<T> & m2)
   return pass;
 }
 
-int itkCSVFileReaderWriterTest_Func(int argc, char *argv[], bool headers)
+int
+itkCSVFileReaderWriterTest_Func(int argc, char *argv[], bool headers)
 {
   double nan = vcl_numeric_limits<double>::quiet_NaN();
 
   typedef itk::Array2D<double> MatrixType;
   const unsigned int ARows = 3;
   const unsigned int ACols = 6;
-  MatrixType matrix(ARows,ACols);
+  MatrixType         matrix(ARows,ACols);
   matrix[0][0] = nan;
   matrix[0][1] = 1e+09;
   matrix[0][2] = 5;
@@ -153,7 +157,7 @@ int itkCSVFileReaderWriterTest_Func(int argc, char *argv[], bool headers)
 
   typedef itk::CSVArray2DDataObject<double> DataFrameObjectType;
   DataFrameObjectType::Pointer dfo = reader->GetOutput();
-  MatrixType test_matrix = dfo->GetMatrix();
+  MatrixType                   test_matrix = dfo->GetMatrix();
 
   std::cout << "Actual array: " << std::endl;
   std::cout << matrix << std::endl;
@@ -174,7 +178,8 @@ int itkCSVFileReaderWriterTest_Func(int argc, char *argv[], bool headers)
  * examples: one that writes and reades a file without row and column headers,
  * and one that does. */
 
-int itkCSVArray2DFileReaderWriterTest(int argc, char *argv[])
+int
+itkCSVArray2DFileReaderWriterTest(int argc, char *argv[])
 {
   if ( argc < 2 )
     {
@@ -196,5 +201,5 @@ int itkCSVArray2DFileReaderWriterTest(int argc, char *argv[])
     return EXIT_FAILURE;
     }
 
- return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

@@ -41,7 +41,8 @@ LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 }
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 ::Update()
 {
 }
@@ -56,15 +57,16 @@ LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 }
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 ::InitializeParameters()
 {
   this->SetUp();
 }
 
-
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 ::Initialize( const LevelSetInputIndexType& itkNotUsed( index ) )
 {
 }
@@ -75,6 +77,7 @@ LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 ::Value( const LevelSetInputIndexType& index )
 {
   LevelSetOutputRealType value = NumericTraits< LevelSetOutputRealType >::Zero;
+
   this->ComputeSumTerm( index, value );
   return -value;
 }
@@ -85,15 +88,18 @@ LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 ::Value( const LevelSetInputIndexType& index, const LevelSetDataType& itkNotUsed( data ) )
 {
   LevelSetOutputRealType value = NumericTraits< LevelSetOutputRealType >::Zero;
+
   this->ComputeSumTerm( index, value );
   return -value;
 }
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
 ::ComputeSumTerm( const LevelSetInputIndexType& index, LevelSetOutputRealType& sum )
 {
   CompensatedSummationType compensatedSummation;
+
   compensatedSummation.ResetToZero();
 
   if( this->m_LevelSetContainer->HasDomainMap() )
@@ -114,7 +120,7 @@ void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
       const IdListType * idList = levelSetMapItr->second.GetIdList();
 
       LevelSetIdentifierType kk;
-      LevelSetPointer levelSet;
+      LevelSetPointer        levelSet;
       LevelSetOutputRealType value;
 
       IdListConstIterator idListIt = idList->begin();
@@ -126,7 +132,7 @@ void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
           {
           levelSet = this->m_LevelSetContainer->GetLevelSet( kk );
           value = levelSet->Evaluate( index );
-          compensatedSummation += - this->m_Heaviside->Evaluate( -value );
+          compensatedSummation += -this->m_Heaviside->Evaluate( -value );
           }
         ++idListIt;
         }
@@ -135,7 +141,7 @@ void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
   else
     {
     LevelSetIdentifierType kk;
-    LevelSetPointer levelSet;
+    LevelSetPointer        levelSet;
     LevelSetOutputRealType value;
 
     typename LevelSetContainerType::Iterator lsIt = this->m_LevelSetContainer->Begin();
@@ -147,7 +153,7 @@ void LevelSetEquationOverlapPenaltyTerm< TInput, TLevelSetContainer >
         {
         levelSet = this->m_LevelSetContainer->GetLevelSet( kk );
         value = levelSet->Evaluate( index );
-        compensatedSummation += - this->m_Heaviside->Evaluate( -value );
+        compensatedSummation += -this->m_Heaviside->Evaluate( -value );
         }
       ++lsIt;
       }

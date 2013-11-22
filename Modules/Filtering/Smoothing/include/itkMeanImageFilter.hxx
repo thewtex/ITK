@@ -31,7 +31,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 MeanImageFilter< TInputImage, TOutputImage >
 ::MeanImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -90,6 +91,7 @@ MeanImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

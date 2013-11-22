@@ -36,13 +36,15 @@ LoggerBase::~LoggerBase()
 }
 
 /** Adds an output stream to the MultipleLogOutput for writing. */
-void LoggerBase::AddLogOutput(OutputType *output)
+void
+LoggerBase::AddLogOutput(OutputType *output)
 {
   // delegates to MultipleLogOutput
   this->m_Output->AddLogOutput(output);
 }
 
-void LoggerBase::Write(PriorityLevelType level, std::string const & content)
+void
+LoggerBase::Write(PriorityLevelType level, std::string const & content)
 {
   if ( this->m_PriorityLevel >= level )
     {
@@ -54,7 +56,8 @@ void LoggerBase::Write(PriorityLevelType level, std::string const & content)
     }
 }
 
-void LoggerBase::Flush()
+void
+LoggerBase::Flush()
 {
   this->m_Output->Flush();
 }
@@ -87,7 +90,8 @@ LoggerBase
 }
 
 /** Print contents of a LoggerBase */
-void LoggerBase::PrintSelf(std::ostream & os, Indent indent) const
+void
+LoggerBase::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
@@ -97,4 +101,5 @@ void LoggerBase::PrintSelf(std::ostream & os, Indent indent) const
   os << indent << "TimeStampFormat: " << this->GetTimeStampFormat() << std::endl;
   os << indent << "HumanReadableFormat: " << this->GetHumanReadableFormat() << std::endl;
 }
+
 } //namespace

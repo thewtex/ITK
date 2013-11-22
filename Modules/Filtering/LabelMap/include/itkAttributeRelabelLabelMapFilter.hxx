@@ -21,7 +21,6 @@
 #include "itkAttributeRelabelLabelMapFilter.h"
 #include "itkProgressReporter.h"
 
-
 namespace itk {
 
 template <typename TImage, typename TAttributeAccessor>
@@ -30,7 +29,6 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
 {
   m_ReverseOrdering = false;
 }
-
 
 template <typename TImage, typename TAttributeAccessor>
 void
@@ -50,8 +48,8 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
   VectorType labelObjects;
   labelObjects.reserve( output->GetNumberOfLabelObjects() );
   for( typename ImageType::Iterator it( output );
-    ! it.IsAtEnd();
-    ++it )
+       !it.IsAtEnd();
+       ++it )
     {
     labelObjects.push_back( it.GetLabelObject() );
     progress.CompletedPixel();
@@ -74,8 +72,8 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
   output->ClearLabels();
   unsigned int label = 0;
   for( typename VectorType::const_iterator it = labelObjects.begin();
-    it != labelObjects.end();
-    it++ )
+       it != labelObjects.end();
+       it++ )
     {
     // avoid the background label if it is used
     if( label == output->GetBackgroundValue() )
@@ -91,7 +89,6 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
     }
 }
 
-
 template <typename TImage, typename TAttributeAccessor>
 void
 AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
@@ -102,5 +99,5 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

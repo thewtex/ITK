@@ -18,18 +18,20 @@
 
 //  Software Guide : BeginLatex
 //
-//  The \doxygen{PointSet} class uses an internal container to manage the storage of
-//  \doxygen{Point}s. It is more efficient, in general, to manage points by using the
+//  The \doxygen{PointSet} class uses an internal container to manage the
+// storage of
+//  \doxygen{Point}s. It is more efficient, in general, to manage points by
+// using the
 //  access methods provided directly on the points container. The following
 //  example illustrates how to interact with the point container and how to use
 //  point iterators.
 //
 //  Software Guide : EndLatex
 
-
 #include "itkPointSet.h"
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   typedef itk::PointSet< unsigned short, 3 > PointSetType;
 
@@ -44,7 +46,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef PointSetType::PointsContainer      PointsContainer;
+  typedef PointSetType::PointsContainer PointsContainer;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -70,11 +72,9 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   PointsContainer::Pointer points = PointsContainer::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -84,13 +84,12 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef PointSetType::PointType   PointType;
+  typedef PointSetType::PointType PointType;
   PointType p0;
   PointType p1;
   p0[0] = -1.0; p0[1] = 0.0; p0[2] = 0.0; // Point 0 = {-1,0,0 }
   p1[0] =  1.0; p1[1] = 0.0; p1[2] = 0.0; // Point 1 = { 1,0,0 }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -111,8 +110,7 @@ int main(int, char *[])
   points->InsertElement( pointId++ , p1 );
   // Software Guide : EndCodeSnippet
 
-  PointSetType::Pointer  pointSet = PointSetType::New();
-
+  PointSetType::Pointer pointSet = PointSetType::New();
 
   //  Software Guide : BeginLatex
   //
@@ -128,7 +126,6 @@ int main(int, char *[])
   pointSet->SetPoints( points );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The PointsContainer object can be obtained from the PointSet using the
@@ -141,11 +138,9 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
-  PointsContainer::Pointer  points2 = pointSet->GetPoints();
+  PointsContainer::Pointer points2 = pointSet->GetPoints();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -162,9 +157,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef PointsContainer::Iterator     PointsIterator;
+  typedef PointsContainer::Iterator PointsIterator;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -177,9 +171,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointsIterator  pointIterator = points->Begin();
+  PointsIterator pointIterator = points->Begin();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -206,7 +199,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that as in STL, the iterator returned by the \code{End()} method is
@@ -224,7 +216,6 @@ int main(int, char *[])
   //  \index{PointsContainer!Size()}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   std::cout << pointSet->GetNumberOfPoints() << std::endl;

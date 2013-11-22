@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkNiftiImageIOTest.h"
 
 typedef itk::Image<unsigned char,3> Test4ImageType;
@@ -34,7 +33,8 @@ PrintDir(Test4ImageType::DirectionType &dir)
     }
 }
 
-int itkNiftiImageIOTest4(int ac, char* av[])
+int
+itkNiftiImageIOTest4(int ac, char* av[])
 {
   //
   // first argument is passing in the writable directory to do all testing
@@ -49,11 +49,11 @@ int itkNiftiImageIOTest4(int ac, char* av[])
     }
 
   //
-  Test4ImageType::RegionType imageRegion;
-  Test4ImageType::SizeType size;
-  Test4ImageType::IndexType index;
+  Test4ImageType::RegionType  imageRegion;
+  Test4ImageType::SizeType    size;
+  Test4ImageType::IndexType   index;
   Test4ImageType::SpacingType spacing;
-  const unsigned dimsize = 2;
+  const unsigned              dimsize = 2;
 
   for(unsigned i = 0; i < 3; i++)
     {
@@ -75,17 +75,17 @@ int itkNiftiImageIOTest4(int ac, char* av[])
   // cosines;
   vnl_random randgen(8775070);
 
-  typedef itk::AffineTransform<double,3>  TransformType;
-  typedef itk::Vector<double,3>           AxisType;
+  typedef itk::AffineTransform<double,3> TransformType;
+  typedef itk::Vector<double,3>          AxisType;
 
   TransformType::Pointer transform = TransformType::New();
-  AxisType axis;
+  AxisType               axis;
   axis[0] = 1.0; axis[1] = 0.0; axis[2] = 0.0;
-  transform->Rotate3D(axis,randgen.drand32(0,3.1415926*2.0));
+  transform->Rotate3D(axis,randgen.drand32(0,3.1415926*2.0) );
   axis[0] = 0.0; axis[1] = 1.0; axis[2] = 0.0;
-  transform->Rotate3D(axis,randgen.drand32(0,3.1415926*2.0));
+  transform->Rotate3D(axis,randgen.drand32(0,3.1415926*2.0) );
   axis[0] = 0.0; axis[1] = 0.0; axis[2] = 1.0;
-  transform->Rotate3D(axis,randgen.drand32(0,3.1415926*2.0));
+  transform->Rotate3D(axis,randgen.drand32(0,3.1415926*2.0) );
   TransformType::MatrixType mat = transform->GetMatrix();
   for(unsigned i = 0; i < 3; i++)
     {
@@ -112,7 +112,7 @@ int itkNiftiImageIOTest4(int ac, char* av[])
     message += fname; message += "\n";
     message += ex.GetLocation(); message += "\n";
     message += ex.GetDescription(); std::cout << message << std::endl;
-    itk::IOTestHelper::Remove(fname.c_str());
+    itk::IOTestHelper::Remove(fname.c_str() );
     return EXIT_FAILURE;
     }
   //
@@ -129,10 +129,10 @@ int itkNiftiImageIOTest4(int ac, char* av[])
     message += fname; message += "\n";
     message += ex.GetLocation(); message += "\n";
     message += ex.GetDescription(); std::cout << message << std::endl;
-    itk::IOTestHelper::Remove(fname.c_str());
+    itk::IOTestHelper::Remove(fname.c_str() );
     return EXIT_FAILURE;
     }
-  itk::IOTestHelper::Remove(fname.c_str());
+  itk::IOTestHelper::Remove(fname.c_str() );
   Test4ImageType::DirectionType dir2 = readback->GetDirection();
 
   std::cerr << "Original direction" << std::endl;
@@ -144,7 +144,7 @@ int itkNiftiImageIOTest4(int ac, char* av[])
     {
     for(unsigned int j = 0; j < 3; j++)
       {
-      if(!Equal(dir[i][j],dir2[i][j]))
+      if(!Equal(dir[i][j],dir2[i][j]) )
         {
         std::cerr << "difference = " << dir[i][j] - dir2[i][j] << std::endl;
         return EXIT_FAILURE;

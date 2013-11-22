@@ -54,7 +54,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class HMaximaImageFilter:
+class HMaximaImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -119,7 +119,9 @@ public:
 
 protected:
   HMaximaImageFilter();
-  ~HMaximaImageFilter() {}
+  ~HMaximaImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** HMaximaImageFilter needs the entire input be

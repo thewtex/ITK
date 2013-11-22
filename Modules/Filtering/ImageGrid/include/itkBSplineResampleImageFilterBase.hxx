@@ -57,6 +57,7 @@ BSplineResampleImageFilterBase< TInputImage, TOutputImage >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Spline Order: " << m_SplineOrder << std::endl;
 }
 
@@ -64,7 +65,8 @@ BSplineResampleImageFilterBase< TInputImage, TOutputImage >
  * Intializes the Pyramid Spline Filter parameters for an "l2" filter
  */
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::InitializePyramidSplineFilter(int SplineOrder)
 {
   switch ( SplineOrder )
@@ -173,7 +175,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::SetSplineOrder(int splineOrder)
 {
   if ( splineOrder == m_SplineOrder )
@@ -191,7 +194,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
  *     by the Iterator (out).  inTraverseSize is the size of the in vector.
  */
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::Reduce1DImage(const std::vector< double > & in,   OutputImageIterator & out,
                 unsigned int inTraverseSize, ProgressReporter & progress)
 {
@@ -269,7 +273,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
  *     by the Iterator (out).  inTraverseSize is the size of the in vector.
  */
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::Expand1DImage(const std::vector< double > & in, OutputImageIterator & out,
                 unsigned int inTraverseSize, ProgressReporter & progress)
 {
@@ -339,7 +344,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 /**  Reduce an Image by a factor of 2 in each dimension.
  */
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::ReduceNDImage(OutputImageIterator & outItr)
 {
   // Set up variables for waking the image regions.
@@ -456,7 +462,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 /**  Expand an Image by a factor of 2 in each dimension.
 */
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::ExpandNDImage(OutputImageIterator & outItr)
 {
   // Set up variables for waking the image regions.
@@ -571,7 +578,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 
 // Allocate scratch space
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::InitializeScratch(SizeType DataLength)
 {
   unsigned int maxLength = 0;
@@ -587,7 +595,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::CopyLineToScratch(ConstInputImageIterator & Iter)
 {
   unsigned int j = 0;
@@ -601,7 +610,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::CopyInputLineToScratch(ConstInputImageIterator & Iter)
 {
   unsigned int j = 0;
@@ -615,7 +625,8 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 ::CopyOutputLineToScratch(ConstOutputImageIterator & Iter)
 {
   unsigned int j = 0;
@@ -627,6 +638,7 @@ void BSplineResampleImageFilterBase< TInputImage, TOutputImage >
     ++j;
     }
 }
+
 } // namespace itk
 
 #endif

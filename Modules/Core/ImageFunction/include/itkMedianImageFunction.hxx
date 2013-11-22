@@ -35,7 +35,6 @@ MedianImageFunction< TInputImage, TCoordRep >
 {
 }
 
-
 /**
  *
  */
@@ -96,6 +95,7 @@ MedianImageFunction< TInputImage, TCoordRep >
 
   return ( *medianIterator );
 }
+
 } // namespace itk
 
 #endif

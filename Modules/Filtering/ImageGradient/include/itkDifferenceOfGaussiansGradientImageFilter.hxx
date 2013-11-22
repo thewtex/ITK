@@ -148,6 +148,7 @@ DifferenceOfGaussiansGradientImageFilter< TInputImage, TDataType >
 
   os << indent << "Width is " << m_Width << std::endl;
 }
+
 } // end namespace
 
 #endif

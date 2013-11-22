@@ -53,15 +53,22 @@ public:
 
   /** Constructor and destructor left public purposely. */
   SimpleMutexLock();
-  virtual ~SimpleMutexLock();
+  virtual
+  ~SimpleMutexLock();
 
   /** Methods for creation and destruction through the object factory. */
   static SimpleMutexLock * New();
 
-  void Delete() { delete this; }
+  void
+  Delete() {
+    delete this;
+  }
 
   /** Used for debugging and other run-time purposes. */
-  virtual const char * GetNameOfClass() { return "itkSimpleMutexLock"; }
+  virtual const char *
+  GetNameOfClass() {
+    return "itkSimpleMutexLock";
+  }
 
   /** Lock the MutexLock. */
   void Lock(void);
@@ -70,12 +77,14 @@ public:
   void Unlock(void);
 
   /** Access the MutexType member variable from outside this class */
-  MutexType & GetMutexLock()
+  MutexType &
+  GetMutexLock()
   {
     return m_MutexLock;
   }
 
-  MutexType GetMutexLock() const
+  MutexType
+  GetMutexLock() const
   {
     return *( const_cast< MutexType * >( &m_MutexLock ) );
   }
@@ -94,7 +103,7 @@ protected:
  * \ingroup OSSystemObjects
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT MutexLock:public Object
+class ITKCommon_EXPORT MutexLock : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -116,8 +125,11 @@ public:
   void Unlock(void);
 
 protected:
-  MutexLock() {}
-  ~MutexLock() {}
+  MutexLock() {
+  }
+
+  ~MutexLock() {
+  }
 
   SimpleMutexLock m_SimpleMutexLock;
   void PrintSelf(std::ostream & os, Indent indent) const;
@@ -125,16 +137,20 @@ protected:
 private:
   MutexLock(const Self &);      //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
-inline void MutexLock::Lock(void)
+inline void
+MutexLock::Lock(void)
 {
   m_SimpleMutexLock.Lock();
 }
 
-inline void MutexLock::Unlock(void)
+inline void
+MutexLock::Unlock(void)
 {
   m_SimpleMutexLock.Unlock();
 }
+
 } //end itk namespace
 #endif

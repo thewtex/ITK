@@ -23,7 +23,8 @@
 #include "itkMinimumDecisionRule2.h"       // 2007 refactored statistics library
 #include "itkMaximumRatioDecisionRule2.h"  // 2007 refactored statistics library
 
-int itkDecisionRuleBackwardCompatibilityTest(int, char* [] )
+int
+itkDecisionRuleBackwardCompatibilityTest(int, char* [] )
 {
   // Define a type from the old statistics library
   typdef itk::DecisionRuleBase DecisionRuleType;

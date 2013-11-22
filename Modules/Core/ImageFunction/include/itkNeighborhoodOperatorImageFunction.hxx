@@ -28,7 +28,8 @@ namespace itk
 template< typename TInputImage, typename TOutput >
 NeighborhoodOperatorImageFunction< TInputImage, TOutput >
 ::NeighborhoodOperatorImageFunction()
-{}
+{
+}
 
 /** Print self method */
 template< typename TInputImage, typename TOutput >
@@ -54,6 +55,7 @@ NeighborhoodOperatorImageFunction< TInputImage, TOutput >
 
   return smartInnerProduct(bit, m_Operator);
 }
+
 } // end namespace itk
 
 #endif

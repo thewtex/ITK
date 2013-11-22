@@ -59,13 +59,13 @@ OpeningByReconstructionImageFilter, ClosingByReconstructionImageFilter, Reconstr
  */
 
 template< typename TInputImage, typename TOutputImage >
-class ReconstructionByErosionImageFilter:
+class ReconstructionByErosionImageFilter :
   public ReconstructionImageFilter< TInputImage, TOutputImage, std::less< typename TOutputImage::PixelType > >
 {
 public:
   typedef ReconstructionByErosionImageFilter Self;
   typedef ReconstructionImageFilter<
-    TInputImage, TOutputImage, std::less< typename TOutputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage, std::less< typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -108,12 +108,17 @@ protected:
     this->m_MarkerValue = NumericTraits< typename TOutputImage::PixelType >::max();
   }
 
-  virtual ~ReconstructionByErosionImageFilter() {}
+  virtual
+  ~ReconstructionByErosionImageFilter() {
+  }
 
 private:
   ReconstructionByErosionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
+
 };                                                  // end
+                                                    //
+                                                    //
                                                     //
                                                     //
                                                     //

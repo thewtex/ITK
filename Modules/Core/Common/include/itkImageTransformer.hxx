@@ -79,15 +79,15 @@ template< typename TInputImage >
 const typename ImageTransformer< TInputImage >::InputImageType *
 ImageTransformer< TInputImage >
 ::GetInput(void) const
-{
+  {
   if ( this->GetNumberOfInputs() < 1 )
     {
     return 0;
     }
 
   return itkDynamicCastInDebugMode< const TInputImage * >
-         ( this->ProcessObject::GetInput(0) );
-}
+           ( this->ProcessObject::GetInput(0) );
+  }
 
 /**
  *
@@ -96,15 +96,15 @@ template< typename TInputImage >
 typename ImageTransformer< TInputImage >::InputImageType *
 ImageTransformer< TInputImage >
 ::GetInput(void)
-{
+  {
   if ( this->GetNumberOfInputs() < 1 )
     {
     return 0;
     }
 
   return itkDynamicCastInDebugMode< TInputImage * >
-         ( this->ProcessObject::GetInput(0) );
-}
+           ( this->ProcessObject::GetInput(0) );
+  }
 
 /**
  *
@@ -113,10 +113,10 @@ template< typename TInputImage >
 const typename ImageTransformer< TInputImage >::InputImageType *
 ImageTransformer< TInputImage >
 ::GetInput(unsigned int idx) const
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage * >
-         ( this->ProcessObject::GetInput(idx) );
-}
+           ( this->ProcessObject::GetInput(idx) );
+  }
 
 template< typename TInputImage >
 void
@@ -189,7 +189,7 @@ ImageTransformer< TInputImage >
         const_cast< TInputImage * >( this->GetInput(idx) );
 
       // transform is assumed to need the whole image
-      input->SetRequestedRegion(input->GetLargestPossibleRegion());
+      input->SetRequestedRegion(input->GetLargestPossibleRegion() );
       }
     }
 }
@@ -230,35 +230,35 @@ ImageTransformer< TInputImage >
   // determine the actual number of pieces that will be generated
   typename TInputImage::SizeType::SizeValueType range = requestedRegionSize[splitAxis];
   if ( num != 0 && range !=0 )
+    {
+    unsigned int valuesPerThread = Math::Ceil< unsigned int >(range / (double)num);
+    unsigned int maxThreadIdUsed = Math::Ceil< unsigned int >(range / (double)valuesPerThread) - 1;
+    // Split the region
+    if ( i < maxThreadIdUsed )
       {
-      unsigned int valuesPerThread = Math::Ceil< unsigned int >(range / (double)num);
-      unsigned int maxThreadIdUsed = Math::Ceil< unsigned int >(range / (double)valuesPerThread) - 1;
-      // Split the region
-      if ( i < maxThreadIdUsed )
-        {
-        splitIndex[splitAxis] += i * valuesPerThread;
-        splitSize[splitAxis] = valuesPerThread;
-        }
-      if ( i == maxThreadIdUsed )
-        {
-        splitIndex[splitAxis] += i * valuesPerThread;
-        // last thread needs to process the "rest" dimension being split
-        splitSize[splitAxis] = splitSize[splitAxis] - i * valuesPerThread;
-        }
-
-      // set the split region ivars
-      splitRegion.SetIndex(splitIndex);
-      splitRegion.SetSize(splitSize);
-
-      itkDebugMacro("  Split Piece: " << splitRegion);
-
-      return maxThreadIdUsed + 1;
+      splitIndex[splitAxis] += i * valuesPerThread;
+      splitSize[splitAxis] = valuesPerThread;
       }
+    if ( i == maxThreadIdUsed )
+      {
+      splitIndex[splitAxis] += i * valuesPerThread;
+      // last thread needs to process the "rest" dimension being split
+      splitSize[splitAxis] = splitSize[splitAxis] - i * valuesPerThread;
+      }
+
+    // set the split region ivars
+    splitRegion.SetIndex(splitIndex);
+    splitRegion.SetSize(splitSize);
+
+    itkDebugMacro("  Split Piece: " << splitRegion);
+
+    return maxThreadIdUsed + 1;
+    }
   else
-      {
-      itkDebugMacro( "Division by zero: num/range = 0." );
-      return 1;
-      }
+    {
+    itkDebugMacro( "Division by zero: num/range = 0." );
+    return 1;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -354,6 +354,7 @@ ImageTransformer< TInputImage >
 
   return ITK_THREAD_RETURN_VALUE;
 }
+
 } // end namespace itk
 
 #endif

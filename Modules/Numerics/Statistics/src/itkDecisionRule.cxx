@@ -23,11 +23,13 @@ namespace Statistics
 {
 DecisionRule
 ::DecisionRule()
-{}
+{
+}
 
 DecisionRule
 ::~DecisionRule()
-{}
+{
+}
 
 } // end of namespace Statistics
 } // end of namespace itk

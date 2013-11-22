@@ -18,9 +18,11 @@
 
 #include "itkShiSparseLevelSetImage.h"
 
-int itkShiSparseLevelSetImageTest( int , char* [] )
+int
+itkShiSparseLevelSetImageTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
+
   typedef itk::ShiSparseLevelSetImage< Dimension > SparseLevelSetType;
 
   typedef SparseLevelSetType::LabelMapType LabelMapType;

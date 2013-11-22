@@ -278,6 +278,7 @@ GPUPDEDeformableRegistrationFilter<TFixedImage, TMovingImage, TDisplacementField
   // request the largest possible region for the moving image
   MovingImagePointer movingPtr =
     const_cast<MovingImageType *>( this->GetMovingImage() );
+
   if( movingPtr )
     {
     movingPtr->SetRequestedRegionToLargestPossibleRegion();
@@ -288,7 +289,7 @@ GPUPDEDeformableRegistrationFilter<TFixedImage, TMovingImage, TDisplacementField
   DisplacementFieldPointer inputPtr =
     const_cast<DisplacementFieldType *>( this->GetInput() );
   DisplacementFieldPointer outputPtr = this->GetOutput();
-  FixedImagePointer       fixedPtr =
+  FixedImagePointer        fixedPtr =
     const_cast<FixedImageType *>( this->GetFixedImage() );
 
   if( inputPtr )
@@ -397,9 +398,9 @@ GPUPDEDeformableRegistrationFilter<TFixedImage, TMovingImage, TDisplacementField
     imgSize[i] = outSize[i];
     }
 
-  size_t       localSize[3], globalSize[3];
-  size_t       blockSize;
-  int          indir, outdir;                                 // direction for
+  size_t localSize[3], globalSize[3];
+  size_t blockSize;
+  int    indir, outdir;                                       // direction for
                                                               // smoothing
                                                               // and/or storage
   size_t kernelWorkGroupSize;
@@ -420,7 +421,7 @@ GPUPDEDeformableRegistrationFilter<TFixedImage, TMovingImage, TDisplacementField
     // If blockSize is too small, threads in a work group won't share much
     // memory loading.
     blockSize = kernelWorkGroupSize <= deviceWorkItemSizes[indir] ?
-                kernelWorkGroupSize : deviceWorkItemSizes[indir];
+      kernelWorkGroupSize : deviceWorkItemSizes[indir];
     blockSize = blockSize <= outSize[indir] ? blockSize : outSize[indir];
     blockSize = blockSize <= 64 ? blockSize : 64;
     //std::cout << "indir=" << indir << " blockSize=" << blockSize << std::endl;
@@ -435,11 +436,19 @@ GPUPDEDeformableRegistrationFilter<TFixedImage, TMovingImage, TDisplacementField
       {
       globalSize[i] = localSize[i] * (unsigned int)ceil( (float)outSize[i] / (float)localSize[i]); //
                                                                                                    //
+                                                                                                   //
+                                                                                                   //
                                                                                                    // total
+                                                                                                   //
+                                                                                                   //
                                                                                                    //
                                                                                                    // #
                                                                                                    //
+                                                                                                   //
+                                                                                                   //
                                                                                                    // of
+                                                                                                   //
+                                                                                                   //
                                                                                                    //
                                                                                                    // threads
       }
@@ -464,8 +473,10 @@ GPUPDEDeformableRegistrationFilter<TFixedImage, TMovingImage, TDisplacementField
       }
 
     // image size
-    this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDisplacementFieldGPUKernelHandle, argidx++, m_GPUImageSizes);
-    this->m_GPUKernelManager->SetKernelArg(m_SmoothDisplacementFieldGPUKernelHandle, argidx++, sizeof(int), &(ImageDim) );
+    this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDisplacementFieldGPUKernelHandle, argidx++,
+                                                    m_GPUImageSizes);
+    this->m_GPUKernelManager->SetKernelArg(m_SmoothDisplacementFieldGPUKernelHandle, argidx++, sizeof(int),
+                                           &(ImageDim) );
 
     // smoothing kernel
     this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDisplacementFieldGPUKernelHandle,

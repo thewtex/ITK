@@ -28,34 +28,38 @@ namespace itk
 template< typename TImage >
 ImageIteratorWithIndex< TImage >
 ::ImageIteratorWithIndex()
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //  Constructor
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIteratorWithIndex< TImage >
-::ImageIteratorWithIndex(const Self & it):
+::ImageIteratorWithIndex(const Self & it) :
   ImageConstIteratorWithIndex< TImage >(it)
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //  Constructor
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIteratorWithIndex< TImage >
-::ImageIteratorWithIndex(TImage *ptr, const RegionType & region):
+::ImageIteratorWithIndex(TImage *ptr, const RegionType & region) :
   ImageConstIteratorWithIndex< TImage >(ptr, region)
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //  Constructor
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIteratorWithIndex< TImage >
-::ImageIteratorWithIndex(const ImageConstIteratorWithIndex< TImage > & it):
+::ImageIteratorWithIndex(const ImageConstIteratorWithIndex< TImage > & it) :
   ImageConstIteratorWithIndex< TImage >(it)
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //    Assignment Operator

@@ -172,7 +172,7 @@ typename FastSymmetricForcesDemonsRegistrationFilter< TFixedImage, TMovingImage,
                                                       TDisplacementField >::DemonsRegistrationFunctionType *
 FastSymmetricForcesDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::DownCastDifferenceFunctionType()
-{
+  {
   DemonsRegistrationFunctionType *drfp =
     dynamic_cast< DemonsRegistrationFunctionType * >
     ( this->GetDifferenceFunction().GetPointer() );
@@ -184,7 +184,7 @@ FastSymmetricForcesDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplac
     }
 
   return drfp;
-}
+  }
 
 /**
  * Checks whether the DifferenceFunction is of type DemonsRegistrationFunction.
@@ -195,7 +195,7 @@ const typename FastSymmetricForcesDemonsRegistrationFilter< TFixedImage, TMoving
                                                             TDisplacementField >::DemonsRegistrationFunctionType *
 FastSymmetricForcesDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::DownCastDifferenceFunctionType() const
-{
+  {
   const DemonsRegistrationFunctionType *drfp =
     dynamic_cast< const DemonsRegistrationFunctionType * >
     ( this->GetDifferenceFunction().GetPointer() );
@@ -207,7 +207,7 @@ FastSymmetricForcesDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplac
     }
 
   return drfp;
-}
+  }
 
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
 void
@@ -283,9 +283,11 @@ FastSymmetricForcesDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplac
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Intensity difference threshold: "
      << this->GetIntensityDifferenceThreshold() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

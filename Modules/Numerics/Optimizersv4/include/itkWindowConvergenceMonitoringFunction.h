@@ -37,14 +37,14 @@ namespace Function
 
 template<typename TScalar = double>
 class WindowConvergenceMonitoringFunction
-: public ConvergenceMonitoringFunction<TScalar, TScalar>
+  : public ConvergenceMonitoringFunction<TScalar, TScalar>
 {
 public:
 
-  typedef WindowConvergenceMonitoringFunction                     Self;
-  typedef ConvergenceMonitoringFunction<TScalar, TScalar>         Superclass;
-  typedef SmartPointer<Self>                                      Pointer;
-  typedef SmartPointer<const Self>                                ConstPointer;
+  typedef WindowConvergenceMonitoringFunction             Self;
+  typedef ConvergenceMonitoringFunction<TScalar, TScalar> Superclass;
+  typedef SmartPointer<Self>                              Pointer;
+  typedef SmartPointer<const Self>                        ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -52,14 +52,14 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro( WindowConvergenceMonitoringFunction, ConvergenceMonitoringFunction );
 
-  typedef TScalar                                            ScalarType;
-  typedef typename NumericTraits<ScalarType>::RealType       RealType;
+  typedef TScalar                                      ScalarType;
+  typedef typename NumericTraits<ScalarType>::RealType RealType;
 
-  typedef typename Superclass::EnergyValueType               EnergyValueType;
-  typedef typename Superclass::EnergyValueContainerType      EnergyValueContainerType;
-  typedef typename Superclass::EnergyValueContainerSizeType  EnergyValueContainerSizeType;
-  typedef typename EnergyValueContainerType::iterator        EnergyValueIterator;
-  typedef typename EnergyValueContainerType::const_iterator  EnergyValueConstIterator;
+  typedef typename Superclass::EnergyValueType              EnergyValueType;
+  typedef typename Superclass::EnergyValueContainerType     EnergyValueContainerType;
+  typedef typename Superclass::EnergyValueContainerSizeType EnergyValueContainerSizeType;
+  typedef typename EnergyValueContainerType::iterator       EnergyValueIterator;
+  typedef typename EnergyValueContainerType::const_iterator EnergyValueConstIterator;
 
   /** Add energy value */
   virtual void AddEnergyValue( const EnergyValueType );
@@ -82,12 +82,15 @@ protected:
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
-  WindowConvergenceMonitoringFunction( const Self & ); //purposely not implemented
-  void operator=( const Self & );  //purposely not implemented
+  WindowConvergenceMonitoringFunction( const Self & ); //purposely not
+                                                       // implemented
+  void operator=( const Self & );                      //purposely not
 
-  EnergyValueContainerSizeType                   m_WindowSize;
+  // implemented
 
-  RealType                                       m_TotalEnergy;
+  EnergyValueContainerSizeType m_WindowSize;
+
+  RealType m_TotalEnergy;
 
 };
 } // end namespace function

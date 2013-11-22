@@ -40,9 +40,9 @@ namespace itk {
  * \ingroup ITKLabelMap
  */
 template<typename TImage, typename TAttributeAccessor=
-    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+           typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class AttributeRelabelLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -52,12 +52,12 @@ public:
   typedef SmartPointer<const Self>       ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage                                       ImageType;
-  typedef typename ImageType::Pointer                  ImagePointer;
-  typedef typename ImageType::ConstPointer             ImageConstPointer;
-  typedef typename ImageType::PixelType                PixelType;
-  typedef typename ImageType::IndexType                IndexType;
-  typedef typename ImageType::LabelObjectType          LabelObjectType;
+  typedef TImage                              ImageType;
+  typedef typename ImageType::Pointer         ImagePointer;
+  typedef typename ImageType::ConstPointer    ImageConstPointer;
+  typedef typename ImageType::PixelType       PixelType;
+  typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::LabelObjectType LabelObjectType;
 
   typedef TAttributeAccessor                                 AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
@@ -81,7 +81,7 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
   /**
@@ -95,39 +95,48 @@ public:
 
 protected:
   AttributeRelabelLabelMapFilter();
-  ~AttributeRelabelLabelMapFilter() {};
+  ~AttributeRelabelLabelMapFilter() {
+  }
 
   void GenerateData();
 
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   class ReverseComparator
+  {
+public:
+    bool
+    operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
     {
-    public:
-    bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
-      {
       return m_Accessor( a ) < m_Accessor( b );
-      }
-    ReverseComparator(): m_Accessor() {}
-    private:
-     AttributeAccessorType m_Accessor;
-    };
+    }
+
+    ReverseComparator() : m_Accessor() {
+    }
+
+private:
+    AttributeAccessorType m_Accessor;
+  };
 
   class Comparator
+  {
+public:
+    bool
+    operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
     {
-  public:
-    bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
-      {
       return m_Accessor( a ) > m_Accessor( b );
-      }
-    Comparator(): m_Accessor() {}
-  private:
+    }
+
+    Comparator() : m_Accessor() {
+    }
+
+private:
     AttributeAccessorType m_Accessor;
-    };
+  };
 
 private:
   AttributeRelabelLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                 //purposely not implemented
 
   bool m_ReverseOrdering;
 

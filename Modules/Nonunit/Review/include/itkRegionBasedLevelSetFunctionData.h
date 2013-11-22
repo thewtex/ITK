@@ -65,7 +65,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TFeatureImage >
-class RegionBasedLevelSetFunctionData:public LightObject
+class RegionBasedLevelSetFunctionData : public LightObject
 {
 public:
 
@@ -111,7 +111,8 @@ public:
   // Checks if the given index lies in the domain of the current
   // level-set function. The domain is defined by the start and end indices.
   template< typename TIndex >
-  bool VerifyInsideRegion(const TIndex & featureIndex)
+  bool
+  VerifyInsideRegion(const TIndex & featureIndex)
   {
     for ( unsigned int j = 0; j < ImageDimension; j++ )
       {
@@ -139,11 +140,14 @@ public:
 
 protected:
   RegionBasedLevelSetFunctionData();
-  virtual ~RegionBasedLevelSetFunctionData() {}
+  virtual
+  ~RegionBasedLevelSetFunctionData() {
+  }
 
 private:
   RegionBasedLevelSetFunctionData(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };
 } //end namespace itk
 

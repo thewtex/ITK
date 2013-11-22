@@ -59,9 +59,9 @@ template< typename TOutputMesh >
 typename MeshSource< TOutputMesh >::OutputMeshType *
 MeshSource< TOutputMesh >
 ::GetOutput(void)
-{
+  {
   return itkDynamicCastInDebugMode< TOutputMesh * >( this->GetPrimaryOutput() );
-}
+  }
 
 /**
  *
@@ -70,10 +70,10 @@ template< typename TOutputMesh >
 typename MeshSource< TOutputMesh >::OutputMeshType *
 MeshSource< TOutputMesh >
 ::GetOutput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< TOutputMesh * >
-         ( this->ProcessObject::GetOutput(idx) );
-}
+           ( this->ProcessObject::GetOutput(idx) );
+  }
 
 /**
  *
@@ -158,6 +158,7 @@ MeshSource< TOutputMesh >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

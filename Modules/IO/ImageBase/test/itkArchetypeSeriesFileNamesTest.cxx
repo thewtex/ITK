@@ -18,7 +18,8 @@
 
 #include "itkArchetypeSeriesFileNames.h"
 
-int itkArchetypeSeriesFileNamesTest(int argc, char* argv[])
+int
+itkArchetypeSeriesFileNamesTest(int argc, char* argv[])
 {
 
   if(argc < 2)
@@ -27,7 +28,6 @@ int itkArchetypeSeriesFileNamesTest(int argc, char* argv[])
               << "One or more filenames (with directory)";
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Number of arguments: " << argc << std::endl;
 
@@ -39,7 +39,7 @@ int itkArchetypeSeriesFileNamesTest(int argc, char* argv[])
     itk::ArchetypeSeriesFileNames::Pointer fit = itk::ArchetypeSeriesFileNames::New();
     fit->SetArchetype ( argv[i] );
 
-    std::vector<std::string> names = fit->GetFileNames();
+    std::vector<std::string>           names = fit->GetFileNames();
     std::vector<std::string>::iterator nit;
 
     std::cout << "List of returned filenames: " << std::endl;

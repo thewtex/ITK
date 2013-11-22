@@ -55,7 +55,9 @@ public:
   LinearSystemWrapperDenseVNL() : LinearSystemWrapper(), m_Matrices(0), m_Vectors(0), m_Solutions(0)
   {
   }
-  virtual ~LinearSystemWrapperDenseVNL();
+
+  virtual
+  ~LinearSystemWrapperDenseVNL();
 
   /* memory management routines */
   virtual void  InitializeMatrix(unsigned int matrixIndex);
@@ -76,53 +78,70 @@ public:
 
   virtual void  DestroySolution(unsigned int solutionIndex);
 
-  virtual void  SetMaximumNonZeroValuesInMatrix(unsigned int, unsigned int)
+  virtual void
+  SetMaximumNonZeroValuesInMatrix(unsigned int, unsigned int)
   {
   }
 
   /* assembly & solving routines */
-  virtual Float GetMatrixValue(unsigned int i, unsigned int j,
-                               unsigned int matrixIndex) const
+  virtual Float
+  GetMatrixValue(unsigned int i, unsigned int j,
+                 unsigned int matrixIndex) const
   {
     return ( *( ( *m_Matrices )[matrixIndex] ) )(i, j);
   }
-  virtual void  SetMatrixValue(unsigned int i, unsigned int j, Float value,
-                               unsigned int matrixIndex)
+
+  virtual void
+  SetMatrixValue(unsigned int i, unsigned int j, Float value,
+                 unsigned int matrixIndex)
   {
     ( *( ( *m_Matrices )[matrixIndex] ) )(i, j) =  value;
   }
-  virtual void  AddMatrixValue(unsigned int i, unsigned int j, Float value,
-                               unsigned int matrixIndex)
+
+  virtual void
+  AddMatrixValue(unsigned int i, unsigned int j, Float value,
+                 unsigned int matrixIndex)
   {
     ( *( ( *m_Matrices )[matrixIndex] ) )(i, j) += value;
   }
-  virtual Float GetVectorValue(unsigned int i,
-                               unsigned int vectorIndex) const
+
+  virtual Float
+  GetVectorValue(unsigned int i,
+                 unsigned int vectorIndex) const
   {
     return ( *( ( *m_Vectors )[vectorIndex] ) )[i];
   }
-  virtual void  SetVectorValue(unsigned int i, Float value,
-                               unsigned int vectorIndex)
+
+  virtual void
+  SetVectorValue(unsigned int i, Float value,
+                 unsigned int vectorIndex)
   {
     ( *( ( *m_Vectors )[vectorIndex] ) )(i) =  value;
   }
-  virtual void  AddVectorValue(unsigned int i, Float value,
-                               unsigned int vectorIndex)
+
+  virtual void
+  AddVectorValue(unsigned int i, Float value,
+                 unsigned int vectorIndex)
   {
     ( *( ( *m_Vectors )[vectorIndex] ) )(i) += value;
   }
+
   virtual Float GetSolutionValue(unsigned int i, unsigned int solutionIndex) const;
 
-  virtual void  SetSolutionValue(unsigned int i, Float value,
-                                 unsigned int solutionIndex)
+  virtual void
+  SetSolutionValue(unsigned int i, Float value,
+                   unsigned int solutionIndex)
   {
     ( *( ( *m_Solutions )[solutionIndex] ) )(i) =  value;
   }
-  virtual void  AddSolutionValue(unsigned int i, Float value,
-                                 unsigned int solutionIndex)
+
+  virtual void
+  AddSolutionValue(unsigned int i, Float value,
+                   unsigned int solutionIndex)
   {
     ( *( ( *m_Solutions )[solutionIndex] ) )(i) += value;
   }
+
   virtual void  Solve(void);
 
   /* matrix & vector manipulation routines */
@@ -145,7 +164,8 @@ public:
   virtual void  MultiplyMatrixMatrix(unsigned int resultMatrixIndex, unsigned int leftMatrixIndex,
                                      unsigned int rightMatrixIndex);
 
-  virtual void  MultiplyMatrixVector(unsigned int resultVectorIndex, unsigned int matrixIndex, unsigned int vectorIndex);
+  virtual void  MultiplyMatrixVector(unsigned int resultVectorIndex, unsigned int matrixIndex,
+                                     unsigned int vectorIndex);
 
 private:
 

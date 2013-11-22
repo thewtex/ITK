@@ -99,7 +99,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class ImageToImageFilter:public ImageSource< TOutputImage >
+class ImageToImageFilter : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -238,13 +238,13 @@ protected:
    * input region to an output region. */
   typedef ImageToImageFilterDetail::ImageRegionCopier< itkGetStaticConstMacro(OutputImageDimension),
                                                        itkGetStaticConstMacro(InputImageDimension) >
-  InputToOutputRegionCopierType;
+    InputToOutputRegionCopierType;
 
   /** Typedef for the region copier function object that converts an
    * output region to an input region. */
   typedef ImageToImageFilterDetail::ImageRegionCopier< itkGetStaticConstMacro(InputImageDimension),
                                                        itkGetStaticConstMacro(OutputImageDimension) >
-  OutputToInputRegionCopierType;
+    OutputToInputRegionCopierType;
 
   /** This function calls the actual region copier to do the mapping
    * from output image space to input image space.  It uses a Function
@@ -325,14 +325,22 @@ protected:
    * the versions from ProcessObject to avoid warnings about hiding
    * methods from the superclass.
    */
-  void PushBackInput(const DataObject *input)
-  { Superclass::PushBackInput(input); }
-  void PushFrontInput(const DataObject *input)
-  { Superclass::PushFrontInput(input); }
+  void
+  PushBackInput(const DataObject *input)
+  {
+    Superclass::PushBackInput(input);
+  }
+
+  void
+  PushFrontInput(const DataObject *input)
+  {
+    Superclass::PushFrontInput(input);
+  }
 
 private:
   ImageToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
   /**
    *  Tolerances for checking whether input images are defined to
    *  occupy the same physical space.

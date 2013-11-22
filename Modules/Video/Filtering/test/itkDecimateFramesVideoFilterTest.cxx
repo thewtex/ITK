@@ -42,15 +42,16 @@ namespace DecimateFramesVideoFilterTest
 /**
  * Compare two images pixel by pixel
  */
-bool FramesAreEqual(const FrameType* f1, const FrameType* f2)
+bool
+FramesAreEqual(const FrameType* f1, const FrameType* f2)
 {
   typedef ImageRegionConstIterator<FrameType> IterType;
-  IterType it1(f1, f1->GetLargestPossibleRegion());
-  IterType it2(f2, f2->GetLargestPossibleRegion());
+  IterType it1(f1, f1->GetLargestPossibleRegion() );
+  IterType it2(f2, f2->GetLargestPossibleRegion() );
 
-  while (!it1.IsAtEnd())
+  while (!it1.IsAtEnd() )
     {
-    if (it1.Get() != it2.Get())
+    if (it1.Get() != it2.Get() )
       {
       return false;
       }
@@ -64,11 +65,11 @@ bool FramesAreEqual(const FrameType* f1, const FrameType* f2)
 }
 }
 
-
 /**
  * Main test
  */
-int itkDecimateFramesVideoFilterTest( int argc, char* argv[] )
+int
+itkDecimateFramesVideoFilterTest( int argc, char* argv[] )
 {
 
   //////
@@ -90,8 +91,8 @@ int itkDecimateFramesVideoFilterTest( int argc, char* argv[] )
   FilterType::Pointer filter = FilterType::New();
 
   // Connect the pipeline
-  filter->SetInput(reader->GetOutput());
-  writer->SetInput(filter->GetOutput());
+  filter->SetInput(reader->GetOutput() );
+  writer->SetInput(filter->GetOutput() );
 
   // Set the filenames on the reader/writer
   reader->SetFileName(argv[1]);
@@ -100,12 +101,12 @@ int itkDecimateFramesVideoFilterTest( int argc, char* argv[] )
   // Keep every 3rd frame
   filter->SetPreservedFrameSpacing(3);
 
-
   //////
   // Run the pipeline
   //////
 
-  // Register FileListIO with the factory -- shouldn't have to do this. Needs fixing
+  // Register FileListIO with the factory -- shouldn't have to do this. Needs
+  // fixing
   itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
 
   // For the sake of debugging output, just use one thread
@@ -113,7 +114,6 @@ int itkDecimateFramesVideoFilterTest( int argc, char* argv[] )
 
   // Update the writer to run everything
   writer->Update();
-
 
   //////
   // Check the results
@@ -135,7 +135,7 @@ int itkDecimateFramesVideoFilterTest( int argc, char* argv[] )
   outputFrameReader->SetFileName(outputFiles[0]);
   outputFrameReader->Update();
   if (!itk::DecimateFramesVideoFilterTest::FramesAreEqual(
-        inputFrameReader->GetOutput(), outputFrameReader->GetOutput()))
+        inputFrameReader->GetOutput(), outputFrameReader->GetOutput() ) )
     {
     std::cerr << "Input frame 0 and output frame 0 don't match" << std::endl;
     return EXIT_FAILURE;
@@ -147,7 +147,7 @@ int itkDecimateFramesVideoFilterTest( int argc, char* argv[] )
   outputFrameReader->SetFileName(outputFiles[1]);
   outputFrameReader->Update();
   if (!itk::DecimateFramesVideoFilterTest::FramesAreEqual(
-        inputFrameReader->GetOutput(), outputFrameReader->GetOutput()))
+        inputFrameReader->GetOutput(), outputFrameReader->GetOutput() ) )
     {
     std::cerr << "Input frame 3 and output frame 1 don't match" << std::endl;
     return EXIT_FAILURE;

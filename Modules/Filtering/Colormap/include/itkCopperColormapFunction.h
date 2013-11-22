@@ -41,7 +41,7 @@ namespace Function
  * \ingroup ITKColormap
  */
 template< typename TScalar, typename TRGBPixel >
-class CopperColormapFunction:
+class CopperColormapFunction :
   public ColormapFunction< TScalar, TRGBPixel >
 {
 public:
@@ -61,12 +61,16 @@ public:
   virtual RGBPixelType operator()(const TScalar &) const;
 
 protected:
-  CopperColormapFunction() {}
-  ~CopperColormapFunction() {}
+  CopperColormapFunction() {
+  }
+
+  ~CopperColormapFunction() {
+  }
 
 private:
   CopperColormapFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);        //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace functor
 } // end namespace itk

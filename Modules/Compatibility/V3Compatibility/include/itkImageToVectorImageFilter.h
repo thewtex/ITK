@@ -23,7 +23,8 @@
 #include "itkVectorImage.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
 #endif
 
 namespace itk
@@ -55,7 +56,7 @@ namespace itk
  */
 
 template< typename TInputImage >
-class ImageToVectorImageFilter:
+class ImageToVectorImageFilter :
   public ImageToImageFilter< TInputImage,
                              VectorImage< typename TInputImage::InternalPixelType,
                                           TInputImage::ImageDimension > >
@@ -80,8 +81,11 @@ public:
 
   typedef typename Superclass::InputImageRegionType RegionType;
 
-  virtual void SetNthInput(unsigned int idx, const InputImageType *inputImage)
-  { this->SetInput(idx, inputImage); }
+  virtual void
+  SetNthInput(unsigned int idx, const InputImageType *inputImage)
+  {
+    this->SetInput(idx, inputImage);
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -96,9 +100,10 @@ protected:
 
   virtual void BeforeThreadedGenerateData();
 
-  virtual void ThreadedGenerateData(const RegionType & outputRegionForThread, ThreadIdType);
+  virtual void ThreadedGenerateData(const RegionType &outputRegionForThread, ThreadIdType);
 
-  virtual void SetNthInput(unsigned int num, DataObject *input)
+  virtual void
+  SetNthInput(unsigned int num, DataObject *input)
   {
     Superclass::SetNthInput(num, input);
   }
@@ -106,6 +111,7 @@ protected:
 private:
   ImageToVectorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 }
 

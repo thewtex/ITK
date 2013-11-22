@@ -1,4 +1,4 @@
-  /*=========================================================================
+/*=========================================================================
  *
  *  Copyright Insight Software Consortium
  *
@@ -81,8 +81,9 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, typename TVirtualImage = Image<double, TFixedDimension>, class TInternalComputationValueType=double>
-class ObjectToObjectMetric:
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, typename TVirtualImage =
+           Image<double, TFixedDimension>, class TInternalComputationValueType=double>
+class ObjectToObjectMetric :
   public ObjectToObjectMetricBaseTemplate< TInternalComputationValueType >
 {
 public:
@@ -96,26 +97,26 @@ public:
   itkTypeMacro(ObjectToObjectMetric, ObjectToObjectMetricBaseTemplate);
 
   /** Type used for representing object components  */
-  typedef TInternalComputationValueType            CoordinateRepresentationType;
+  typedef TInternalComputationValueType CoordinateRepresentationType;
 
   /** Type for internal computations */
-  typedef TInternalComputationValueType            InternalComputationValueType;
+  typedef TInternalComputationValueType InternalComputationValueType;
 
   /**  Type of the measure. */
-  typedef typename Superclass::MeasureType            MeasureType;
+  typedef typename Superclass::MeasureType MeasureType;
 
   /**  Type of the derivative. */
-  typedef typename Superclass::DerivativeType         DerivativeType;
-  typedef typename Superclass::DerivativeValueType    DerivativeValueType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::DerivativeValueType DerivativeValueType;
 
   /**  Type of the parameters. */
   typedef typename Superclass::ParametersType         ParametersType;
   typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
-  typedef typename Superclass::GradientSourceType     GradientSourceType;
+  typedef typename Superclass::GradientSourceType GradientSourceType;
 
   /** Dimension type */
-  typedef SizeValueType                               DimensionType;
+  typedef SizeValueType DimensionType;
 
   /** Object dimension accessors */
   itkStaticConstMacro(FixedDimension, DimensionType, TFixedDimension);
@@ -123,22 +124,22 @@ public:
   itkStaticConstMacro(VirtualDimension, DimensionType, TVirtualImage::ImageDimension);
 
   /** Types for the virtual domain */
-  typedef TVirtualImage                             VirtualImageType;
-  typedef typename VirtualImageType::Pointer        VirtualImagePointer;
-  typedef typename VirtualImageType::ConstPointer   VirtualImageConstPointer;
-  typedef typename VirtualImageType::PixelType      VirtualPixelType;
-  typedef typename VirtualImageType::RegionType     VirtualRegionType;
-  typedef typename VirtualRegionType::SizeType      VirtualSizeType;
-  typedef typename VirtualImageType::SpacingType    VirtualSpacingType;
-  typedef typename VirtualImageType::PointType      VirtualOriginType;
-  typedef typename VirtualImageType::PointType      VirtualPointType;
-  typedef typename VirtualImageType::DirectionType  VirtualDirectionType;
-  typedef typename VirtualImageType::SizeType       VirtualRadiusType;
-  typedef typename VirtualImageType::IndexType      VirtualIndexType;
+  typedef TVirtualImage                            VirtualImageType;
+  typedef typename VirtualImageType::Pointer       VirtualImagePointer;
+  typedef typename VirtualImageType::ConstPointer  VirtualImageConstPointer;
+  typedef typename VirtualImageType::PixelType     VirtualPixelType;
+  typedef typename VirtualImageType::RegionType    VirtualRegionType;
+  typedef typename VirtualRegionType::SizeType     VirtualSizeType;
+  typedef typename VirtualImageType::SpacingType   VirtualSpacingType;
+  typedef typename VirtualImageType::PointType     VirtualOriginType;
+  typedef typename VirtualImageType::PointType     VirtualPointType;
+  typedef typename VirtualImageType::DirectionType VirtualDirectionType;
+  typedef typename VirtualImageType::SizeType      VirtualRadiusType;
+  typedef typename VirtualImageType::IndexType     VirtualIndexType;
 
   /** Point set in the virtual domain */
-  typedef PointSet<VirtualPixelType, itkGetStaticConstMacro(VirtualDimension)>  VirtualPointSetType;
-  typedef typename VirtualPointSetType::Pointer                                 VirtualPointSetPointer;
+  typedef PointSet<VirtualPixelType, itkGetStaticConstMacro(VirtualDimension)> VirtualPointSetType;
+  typedef typename VirtualPointSetType::Pointer                                VirtualPointSetPointer;
 
   /**  Type of the Transform Base classes */
   typedef Transform<TInternalComputationValueType, TVirtualImage::ImageDimension, TMovingDimension> MovingTransformType;
@@ -155,20 +156,27 @@ public:
   typedef typename MovingTransformType::ParametersType  MovingTransformParametersType;
 
   /** Jacobian type. This is the same for all transforms */
-  typedef typename FixedTransformType::JacobianType     JacobianType;
-  typedef typename FixedTransformType::JacobianType     FixedTransformJacobianType;
-  typedef typename MovingTransformType::JacobianType    MovingTransformJacobianType;
+  typedef typename FixedTransformType::JacobianType  JacobianType;
+  typedef typename FixedTransformType::JacobianType  FixedTransformJacobianType;
+  typedef typename MovingTransformType::JacobianType MovingTransformJacobianType;
 
-  /** DisplacementFieldTransform types for working with local-support transforms */
-  typedef DisplacementFieldTransform<CoordinateRepresentationType, itkGetStaticConstMacro( MovingDimension ) >  MovingDisplacementFieldTransformType;
+  /** DisplacementFieldTransform types for working with local-support transforms
+    */
+  typedef DisplacementFieldTransform<CoordinateRepresentationType,
+                                     itkGetStaticConstMacro( MovingDimension ) > MovingDisplacementFieldTransformType;
 
   virtual void Initialize(void) throw ( ExceptionObject );
 
   virtual NumberOfParametersType GetNumberOfParameters() const;
+
   virtual NumberOfParametersType GetNumberOfLocalParameters() const;
+
   virtual void SetParameters( ParametersType & params );
+
   virtual const ParametersType & GetParameters() const;
+
   virtual bool HasLocalSupport() const;
+
   virtual void UpdateTransformParameters( const DerivativeType & derivative, TInternalComputationValueType factor);
 
   /** Connect the fixed transform. */
@@ -216,6 +224,7 @@ public:
   /** Use a virtual domain image to define the virtual reference space.
    * \sa SetVirtualDomain */
   void SetVirtualDomainFromImage( VirtualImageType * virtualImage);
+
   void SetVirtualDomainFromImage( const VirtualImageType * virtualImage);
 
   /** Returns a flag. True if arbitrary virtual domain points will
@@ -245,7 +254,7 @@ public:
 
   /** Return the virtual domain region, which is retrieved from
    *  the m_VirtualImage buffered region. */
-  const VirtualRegionType   &  GetVirtualRegion( void ) const;
+  const VirtualRegionType & GetVirtualRegion( void ) const;
 
   itkGetModifiableObjectMacro(VirtualImage, VirtualImageType );
 
@@ -258,7 +267,8 @@ public:
    * \param index the virtual index to convert
    * \param numberOfLocalParameters corresponding to the transform
    **/
-  OffsetValueType ComputeParameterOffsetFromVirtualIndex( const VirtualIndexType & index, const NumberOfParametersType &numberOfLocalParameters ) const;
+  OffsetValueType ComputeParameterOffsetFromVirtualIndex( const VirtualIndexType & index,
+                                                          const NumberOfParametersType &numberOfLocalParameters ) const;
 
   /** Computes an offset for accessing parameter data from a virtual domain
    * point. Relevant for metrics with local-support transforms, to access
@@ -269,18 +279,21 @@ public:
    * \param point the virtual point to convert
    * \param numberOfLocalParameters corresponding to the transform
    **/
-  OffsetValueType ComputeParameterOffsetFromVirtualPoint( const VirtualPointType & point, const NumberOfParametersType & numberOfLocalParameters ) const;
+  OffsetValueType ComputeParameterOffsetFromVirtualPoint( const VirtualPointType & point,
+                                                          const NumberOfParametersType & numberOfLocalParameters ) const;
 
   /** Determine if a point is within the virtual domain.
    * \note Returns true if the virtual domain has not been defined. This
    * allows, for example, use in point set metrics where the virtual domain
    * is implicitly defined by the point sets and transforms. */
   bool IsInsideVirtualDomain( const VirtualPointType & point ) const;
+
   bool IsInsideVirtualDomain( const VirtualIndexType & index ) const;
 
 protected:
   ObjectToObjectMetric();
-  virtual ~ObjectToObjectMetric();
+  virtual
+  ~ObjectToObjectMetric();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -289,6 +302,7 @@ protected:
   virtual void VerifyDisplacementFieldSizeAndPhysicalSpace();
 
   bool TransformPhysicalPointToVirtualIndex( const VirtualPointType &, VirtualIndexType & ) const;
+
   void TransformVirtualIndexToPhysicalPoint( const VirtualIndexType &, VirtualPointType & ) const;
 
   /** If the moving transform is a DisplacementFieldTransform, return it.
@@ -306,23 +320,23 @@ protected:
   bool VerifyNumberOfValidPoints( MeasureType & value, DerivativeType & derivative ) const;
 
   /** Transforms */
-  FixedTransformPointer   m_FixedTransform;
-  MovingTransformPointer  m_MovingTransform;
+  FixedTransformPointer  m_FixedTransform;
+  MovingTransformPointer m_MovingTransform;
 
-  VirtualImagePointer     m_VirtualImage;
+  VirtualImagePointer m_VirtualImage;
 
   /** Flag that is set when user provides a virtual domain, either via
    * SetVirtualDomain() or SetVirtualDomainFromImage(). */
-  bool                    m_UserHasSetVirtualDomain;
+  bool m_UserHasSetVirtualDomain;
 
   /** Store the number of points used during most recent value and derivative
    * calculation.
    * \sa VerifyNumberOfValidPoints() */
-  mutable SizeValueType                   m_NumberOfValidPoints;
+  mutable SizeValueType m_NumberOfValidPoints;
 
 private:
   ObjectToObjectMetric(const Self &); //purposely not implemented
-  void operator=(const Self &);     //purposely not implemented
+  void operator=(const Self &);       //purposely not implemented
 
 };
 } // end namespace itk

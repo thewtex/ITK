@@ -50,7 +50,8 @@
 //
 // \index{itk::ImageLinearIteratorWithIndex!PreviousLine()}
 //
-// \item \textbf{\code{PreviousLine()}} Moves the iterator to the \emph{last valid
+// \item \textbf{\code{PreviousLine()}} Moves the iterator to the \emph{last
+// valid
 // pixel location} in the previous line. The origin of the previous line is
 // determined by decrementing the current origin along the fastest increasing
 // dimension of the subspace of the image that excludes the selected dimension.
@@ -105,7 +106,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 3 )
@@ -132,16 +134,16 @@ int main( int argc, char *argv[] )
   typedef itk::Image< RGBPixelType, Dimension > ImageType;
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageLinearIteratorWithIndex< ImageType >      IteratorType;
+  typedef itk::ImageLinearIteratorWithIndex< ImageType > IteratorType;
   typedef itk::ImageLinearConstIteratorWithIndex<
-                                             ImageType > ConstIteratorType;
+      ImageType > ConstIteratorType;
 // Software Guide : EndCodeSnippet
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ImageType::ConstPointer inputImage;
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer     reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
@@ -180,7 +182,7 @@ int main( int argc, char *argv[] )
 
 // Software Guide : BeginCodeSnippet
   ConstIteratorType inputIt( inputImage, inputImage->GetRequestedRegion() );
-  IteratorType outputIt( outputImage, inputImage->GetRequestedRegion() );
+  IteratorType      outputIt( outputImage, inputImage->GetRequestedRegion() );
 
   inputIt.SetDirection(0);
   outputIt.SetDirection(0);
@@ -194,12 +196,12 @@ int main( int argc, char *argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  for ( inputIt.GoToBegin(),  outputIt.GoToBegin(); ! inputIt.IsAtEnd();
-        outputIt.NextLine(),  inputIt.NextLine())
+  for ( inputIt.GoToBegin(),  outputIt.GoToBegin(); !inputIt.IsAtEnd();
+        outputIt.NextLine(),  inputIt.NextLine() )
     {
     inputIt.GoToBeginOfLine();
     outputIt.GoToEndOfLine();
-    while ( ! inputIt.IsAtEndOfLine() )
+    while ( !inputIt.IsAtEndOfLine() )
       {
       --outputIt;
       outputIt.Set( inputIt.Get() );

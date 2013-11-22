@@ -31,15 +31,16 @@ namespace itk
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
 ::MetaMeshConverter()
-{}
+{
+}
 
 template < unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 typename MetaMeshConverter< NDimensions, PixelType, TMeshTraits >::MetaObjectType *
 MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new MeshMetaObjectType);
-}
+  }
 
 /** Convert a metaMesh into an Mesh SpatialObject  */
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
@@ -49,6 +50,7 @@ MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
 {
   const MeshMetaObjectType *_mesh =
     dynamic_cast<const MeshMetaObjectType *>(mo);
+
   if(_mesh == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaMesh");
@@ -113,7 +115,7 @@ MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
     typedef itk::HexahedronCell< CellInterfaceType >    HexahedronCellType;
     typedef itk::QuadraticEdgeCell< CellInterfaceType > QuadraticEdgeCellType;
     typedef itk::QuadraticTriangleCell< CellInterfaceType >
-    QuadraticTriangleCellType;
+      QuadraticTriangleCellType;
 
     while ( it_cells != cells.end() )
       {
@@ -228,11 +230,11 @@ template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 typename MetaMeshConverter< NDimensions, PixelType, TMeshTraits >::MetaObjectType *
 MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   const MeshSpatialObjectConstPointer meshSO =
     dynamic_cast<const MeshSpatialObjectType *>(so);
 
-  if(meshSO.IsNull())
+  if(meshSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to MeshSpatialObject");
     }
@@ -390,7 +392,7 @@ MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
       }
     }
   return metamesh;
-}
+  }
 
 } // end namespace itk
 

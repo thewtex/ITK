@@ -42,7 +42,8 @@ CorrespondenceDataStructureIterator< TStructureType >
 template< typename TStructureType >
 CorrespondenceDataStructureIterator< TStructureType >
 ::~CorrespondenceDataStructureIterator()
-{}
+{
+}
 
 /** Used to verify that the iterator is at the end of the data structure. */
 template< typename TStructureType >
@@ -64,7 +65,7 @@ CorrespondenceDataStructureIterator< TStructureType >
 
   if ( m_CorrespondingListIterator == m_CorrespondingListPointer->end() )
     {
-      this->GoToNextBaseGroup();
+    this->GoToNextBaseGroup();
     }
 }
 
@@ -116,6 +117,7 @@ CorrespondenceDataStructureIterator< TStructureType >
   m_CorrespondingListPointer = &( *m_SecondaryListIterator );
   m_CorrespondingListIterator = m_CorrespondingListPointer->begin();
 }
+
 } // end namespace itk
 
 #endif

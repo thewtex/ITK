@@ -19,26 +19,26 @@
 #include <iostream>
 #include "itkDistanceToCentroidMembershipFunction.h"
 
-int itkDistanceToCentroidMembershipFunctionTest(int, char* [] )
+int
+itkDistanceToCentroidMembershipFunctionTest(int, char* [] )
 {
 
   const unsigned int MeasurementVectorSize = 3;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >  MeasurementVectorType;
+      float, MeasurementVectorSize >  MeasurementVectorType;
 
   typedef itk::Statistics::DistanceToCentroidMembershipFunction<
-    MeasurementVectorType >   MembershipFunctionType;
+      MeasurementVectorType >   MembershipFunctionType;
   typedef itk::Statistics::MembershipFunctionBase< MeasurementVectorType > BaseType;
 
   MembershipFunctionType::Pointer function = MembershipFunctionType::New();
 
   std::cout << function->GetNameOfClass() << std::endl;
 
-
   //set the distance metric type
-  typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType >  DistanceMetricType;
-  typedef DistanceMetricType::MeasurementVectorSizeType MeasurementVectorSizeType;
+  typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType > DistanceMetricType;
+  typedef DistanceMetricType::MeasurementVectorSizeType                     MeasurementVectorSizeType;
 
   DistanceMetricType::Pointer distanceMetric = DistanceMetricType::New();
   function->SetDistanceMetric( distanceMetric );
@@ -51,7 +51,8 @@ int itkDistanceToCentroidMembershipFunctionTest(int, char* [] )
 
   function->Print(std::cout);
 
-  function->SetMeasurementVectorSize( MeasurementVectorSize ); // for code coverage
+  function->SetMeasurementVectorSize( MeasurementVectorSize ); // for code
+                                                               // coverage
 
   if( function->GetMeasurementVectorSize() != MeasurementVectorSize )
     {
@@ -59,21 +60,23 @@ int itkDistanceToCentroidMembershipFunctionTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  //Test if an exception will be thrown if we try to resize the measurement vector
+  //Test if an exception will be thrown if we try to resize the measurement
+  // vector
   //size
   try
     {
     MeasurementVectorSizeType measurementVector2 = MeasurementVectorSize + 1;
     function->SetMeasurementVectorSize( measurementVector2 );
-    std::cerr << "Exception should have been thrown since we are trying to resize\
-                  non-resizeable measurement vector type " << std::endl;
+    std::cerr <<
+      "Exception should have been thrown since we are trying to resize\
+                  non-resizeable measurement vector type "
+              << std::endl;
     return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )
     {
     std::cerr << "Caughted expected exception: " << excp << std::endl;
     }
-
 
   //Test if the distance computed is correct
   MembershipFunctionType::CentroidType origin;

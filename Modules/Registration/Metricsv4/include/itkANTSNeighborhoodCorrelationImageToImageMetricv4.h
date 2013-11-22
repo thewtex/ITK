@@ -91,20 +91,21 @@ namespace itk {
  * \ingroup ITKMetricsv4
  */
 template<typename TFixedImage, typename TMovingImage, typename TVirtualImage = TFixedImage,
-          typename TInternalComputationValueType = double,
-          typename TMetricTraits = DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
-          >
+         typename TInternalComputationValueType = double,
+         typename TMetricTraits =
+           DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
+         >
 class ANTSNeighborhoodCorrelationImageToImageMetricv4 :
   public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4                  Self;
+  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4 Self;
   typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage,
-                             TInternalComputationValueType,TMetricTraits>  Superclass;
-  typedef SmartPointer<Self>                                               Pointer;
-  typedef SmartPointer<const Self>                                         ConstPointer;
+                               TInternalComputationValueType,TMetricTraits>  Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -113,52 +114,52 @@ public:
   itkTypeMacro(Self, Superclass);
 
   /** superclass types */
-  typedef typename Superclass::MeasureType                    MeasureType;
-  typedef typename Superclass::DerivativeType                 DerivativeType;
-  typedef typename Superclass::DerivativeValueType            DerivativeValueType;
-  typedef typename Superclass::VirtualPointType               VirtualPointType;
-  typedef typename Superclass::FixedImagePointType            FixedImagePointType;
-  typedef typename Superclass::FixedImagePixelType            FixedImagePixelType;
-  typedef typename Superclass::FixedTransformType             FixedTransformType;
-  typedef typename Superclass::FixedImageGradientType         FixedImageGradientType;
-  typedef typename FixedTransformType::JacobianType           FixedImageJacobianType;
+  typedef typename Superclass::MeasureType            MeasureType;
+  typedef typename Superclass::DerivativeType         DerivativeType;
+  typedef typename Superclass::DerivativeValueType    DerivativeValueType;
+  typedef typename Superclass::VirtualPointType       VirtualPointType;
+  typedef typename Superclass::FixedImagePointType    FixedImagePointType;
+  typedef typename Superclass::FixedImagePixelType    FixedImagePixelType;
+  typedef typename Superclass::FixedTransformType     FixedTransformType;
+  typedef typename Superclass::FixedImageGradientType FixedImageGradientType;
+  typedef typename FixedTransformType::JacobianType   FixedImageJacobianType;
 
-  typedef typename Superclass::MovingImagePointType           MovingImagePointType;
-  typedef typename Superclass::MovingImagePixelType           MovingImagePixelType;
-  typedef typename Superclass::MovingImageGradientType        MovingImageGradientType;
-  typedef typename Superclass::MovingTransformType            MovingTransformType;
-  typedef typename MovingTransformType::JacobianType          MovingImageJacobianType;
-  typedef typename Superclass::JacobianType                   JacobianType;
+  typedef typename Superclass::MovingImagePointType    MovingImagePointType;
+  typedef typename Superclass::MovingImagePixelType    MovingImagePixelType;
+  typedef typename Superclass::MovingImageGradientType MovingImageGradientType;
+  typedef typename Superclass::MovingTransformType     MovingTransformType;
+  typedef typename MovingTransformType::JacobianType   MovingImageJacobianType;
+  typedef typename Superclass::JacobianType            JacobianType;
 
-  typedef typename Superclass::VirtualImageGradientType       VirtualImageGradientType;
+  typedef typename Superclass::VirtualImageGradientType VirtualImageGradientType;
 
-  typedef typename Superclass::FixedImageType                 FixedImageType;
-  typedef typename Superclass::MovingImageType                MovingImageType;
-  typedef typename Superclass::VirtualImageType               VirtualImageType;
-  typedef typename Superclass::FixedOutputPointType           FixedOutputPointType;
-  typedef typename Superclass::MovingOutputPointType          MovingOutputPointType;
+  typedef typename Superclass::FixedImageType        FixedImageType;
+  typedef typename Superclass::MovingImageType       MovingImageType;
+  typedef typename Superclass::VirtualImageType      VirtualImageType;
+  typedef typename Superclass::FixedOutputPointType  FixedOutputPointType;
+  typedef typename Superclass::MovingOutputPointType MovingOutputPointType;
 
   typedef typename Superclass::FixedTransformType::JacobianType
-                            FixedTransformJacobianType;
+    FixedTransformJacobianType;
   typedef typename Superclass::MovingTransformType::JacobianType
-                            MovingTransformJacobianType;
+    MovingTransformJacobianType;
 
-  typedef typename Superclass::NumberOfParametersType         NumberOfParametersType;
-  typedef typename Superclass::ImageDimensionType             ImageDimensionType;
+  typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
+  typedef typename Superclass::ImageDimensionType     ImageDimensionType;
 
-  typedef typename VirtualImageType::RegionType               ImageRegionType;
-  typedef typename VirtualImageType::SizeType                 RadiusType;
-  typedef typename VirtualImageType::IndexType                IndexType;
+  typedef typename VirtualImageType::RegionType ImageRegionType;
+  typedef typename VirtualImageType::SizeType   RadiusType;
+  typedef typename VirtualImageType::IndexType  IndexType;
 
   /* Image dimension accessors */
   itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
-      FixedImageType::ImageDimension);
+                      FixedImageType::ImageDimension);
 
   itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
-        MovingImageType::ImageDimension);
+                      MovingImageType::ImageDimension);
 
   itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
-        VirtualImageType::ImageDimension);
+                      VirtualImageType::ImageDimension);
 
   // Set the radius of the neighborhood window centered at each pixel.
   // See the note above about using a radius less than 2.
@@ -172,21 +173,33 @@ public:
 
 protected:
   ANTSNeighborhoodCorrelationImageToImageMetricv4();
-  virtual ~ANTSNeighborhoodCorrelationImageToImageMetricv4();
+  virtual
+  ~ANTSNeighborhoodCorrelationImageToImageMetricv4();
 
-  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >, Superclass, Self >;
-  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >, Superclass, Self >
+  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader<
+    ThreadedImageRegionPartitioner< VirtualImageDimension >, Superclass, Self >;
+  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner<
+                                                                                          VirtualImageDimension >,
+                                                                                        Superclass, Self >
     ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreaderType;
 
-  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >;
-  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >
+  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader<
+    ThreadedIndexedContainerPartitioner, Superclass, Self >;
+  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader<
+      ThreadedIndexedContainerPartitioner, Superclass, Self >
     ANTSNeighborhoodCorrelationImageToImageMetricv4SparseGetValueAndDerivativeThreaderType;
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  ANTSNeighborhoodCorrelationImageToImageMetricv4( const Self & ); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  ANTSNeighborhoodCorrelationImageToImageMetricv4( const Self & ); //purposely
+                                                                   // not
+                                                                   //
+                                                                   // implemented
+  void operator=(const Self &);                                    //purposely
+
+  // not
+  // implemented
 
   // Radius of the neighborhood window centered at each pixel
   RadiusType m_Radius;

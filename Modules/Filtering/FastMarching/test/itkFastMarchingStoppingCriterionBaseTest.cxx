@@ -22,13 +22,13 @@ namespace itk
 {
 template< typename TInput, typename TOutput >
 class FastMarchingStoppingCriterionBaseHelperTest :
-public FastMarchingStoppingCriterionBase< TInput, TOutput >
+  public FastMarchingStoppingCriterionBase< TInput, TOutput >
 {
 public:
-  typedef FastMarchingStoppingCriterionBaseHelperTest           Self;
-  typedef FastMarchingStoppingCriterionBase< TInput, TOutput >  Superclass;
-  typedef SmartPointer< Self >                                  Pointer;
-  typedef SmartPointer< const Self >                            ConstPointer;
+  typedef FastMarchingStoppingCriterionBaseHelperTest          Self;
+  typedef FastMarchingStoppingCriterionBase< TInput, TOutput > Superclass;
+  typedef SmartPointer< Self >                                 Pointer;
+  typedef SmartPointer< const Self >                           ConstPointer;
 
   typedef typename Superclass::NodeType NodeType;
 
@@ -37,26 +37,42 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(FastMarchingStoppingCriterionBaseHelperTest,
-                FastMarchingStoppingCriterionBase );
+               FastMarchingStoppingCriterionBase );
 
-  bool IsSatisfied() const { return true; }
-  std::string GetDescription() const { return "Description"; }
+  bool
+  IsSatisfied() const {
+    return true;
+  }
+
+  std::string
+  GetDescription() const {
+    return "Description";
+  }
 
 protected:
-  FastMarchingStoppingCriterionBaseHelperTest() : Superclass() {}
-  ~FastMarchingStoppingCriterionBaseHelperTest() {}
+  FastMarchingStoppingCriterionBaseHelperTest() : Superclass() {
+  }
 
-  void SetCurrentNode( const NodeType& ) {}
+  ~FastMarchingStoppingCriterionBaseHelperTest() {
+  }
 
-  void Reset() {}
+  void
+  SetCurrentNode( const NodeType& ) {
+  }
+
+  void
+  Reset() {
+  }
 
 private:
   FastMarchingStoppingCriterionBaseHelperTest( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 }
 
-int itkFastMarchingStoppingCriterionBaseTest( int , char *[] )
+int
+itkFastMarchingStoppingCriterionBaseTest( int , char *[] )
 {
   typedef itk::Image< float, 2> ImageType;
 
@@ -72,7 +88,7 @@ int itkFastMarchingStoppingCriterionBaseTest( int , char *[] )
   typedef itk::QuadEdgeMesh< float, 3 > MeshType;
 
   typedef itk::FastMarchingStoppingCriterionBaseHelperTest< MeshType, MeshType >
-      MeshStoppingCriterionType;
+    MeshStoppingCriterionType;
 
   MeshStoppingCriterionType::Pointer mesh_criterion = MeshStoppingCriterionType::New();
   if( mesh_criterion.IsNull() )

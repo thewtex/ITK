@@ -49,6 +49,7 @@ LevelSetVelocityNeighborhoodExtractor< TLevelSet, TAuxValue, VAuxDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Input aux image: [";
   unsigned int j;
   for ( j = 0; j + 1 < VAuxDimension; j++ )
@@ -170,6 +171,7 @@ LevelSetVelocityNeighborhoodExtractor< TLevelSet, TAuxValue, VAuxDimension >
 
   return distance;
 }
+
 } // namespace itk
 
 #endif

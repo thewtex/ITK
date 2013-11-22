@@ -46,19 +46,19 @@ class VTKVisualize2DSparseLevelSetLayers
  */
 template< typename TInputImage, typename TOutput, unsigned int VDimension >
 class VTKVisualize2DSparseLevelSetLayers<
-    TInputImage,
-    itk::WhitakerSparseLevelSetImage< TOutput, VDimension > > :
-public VTKVisualize2DSparseLevelSetLayersBase<
+  TInputImage,
+  itk::WhitakerSparseLevelSetImage< TOutput, VDimension > > :
+  public VTKVisualize2DSparseLevelSetLayersBase<
     TInputImage,
     itk::WhitakerSparseLevelSetImage< TOutput, VDimension > >
 {
 public:
   typedef itk::WhitakerSparseLevelSetImage< TOutput, VDimension > LevelSetType;
 
-  typedef VTKVisualize2DSparseLevelSetLayers                                    Self;
-  typedef VTKVisualize2DSparseLevelSetLayersBase< TInputImage, LevelSetType >   Superclass;
-  typedef itk::SmartPointer< Self >                                             Pointer;
-  typedef itk::SmartPointer< const Self >                                       ConstPointer;
+  typedef VTKVisualize2DSparseLevelSetLayers                                  Self;
+  typedef VTKVisualize2DSparseLevelSetLayersBase< TInputImage, LevelSetType > Superclass;
+  typedef itk::SmartPointer< Self >                                           Pointer;
+  typedef itk::SmartPointer< const Self >                                     ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -70,11 +70,12 @@ public:
   typedef typename Superclass::InputImageType InputImageType;
   typedef typename Superclass::InputPixelType InputPixelType;
 
-  typedef typename Superclass::LevelSetPointer  LevelSetPointer;
+  typedef typename Superclass::LevelSetPointer LevelSetPointer;
 
 protected:
   VTKVisualize2DSparseLevelSetLayers();
-  virtual ~VTKVisualize2DSparseLevelSetLayers();
+  virtual
+  ~VTKVisualize2DSparseLevelSetLayers();
 
   void AddLayers();
 
@@ -82,7 +83,8 @@ protected:
 
 private:
   VTKVisualize2DSparseLevelSetLayers ( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 
 // -----------------------------------------------------------------------------
@@ -93,19 +95,19 @@ private:
  */
 template< typename TInputImage, unsigned int VDimension >
 class VTKVisualize2DSparseLevelSetLayers<
-    TInputImage,
-    itk::ShiSparseLevelSetImage< VDimension > > :
-public VTKVisualize2DSparseLevelSetLayersBase<
+  TInputImage,
+  itk::ShiSparseLevelSetImage< VDimension > > :
+  public VTKVisualize2DSparseLevelSetLayersBase<
     TInputImage,
     itk::ShiSparseLevelSetImage< VDimension > >
 {
 public:
   typedef itk::ShiSparseLevelSetImage< VDimension > LevelSetType;
 
-  typedef VTKVisualize2DSparseLevelSetLayers                                    Self;
-  typedef VTKVisualize2DSparseLevelSetLayersBase< TInputImage, LevelSetType >   Superclass;
-  typedef itk::SmartPointer< Self >                                             Pointer;
-  typedef itk::SmartPointer< const Self >                                       ConstPointer;
+  typedef VTKVisualize2DSparseLevelSetLayers                                  Self;
+  typedef VTKVisualize2DSparseLevelSetLayersBase< TInputImage, LevelSetType > Superclass;
+  typedef itk::SmartPointer< Self >                                           Pointer;
+  typedef itk::SmartPointer< const Self >                                     ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -117,11 +119,12 @@ public:
   typedef typename Superclass::InputImageType InputImageType;
   typedef typename Superclass::InputPixelType InputPixelType;
 
-  typedef typename Superclass::LevelSetPointer  LevelSetPointer;
+  typedef typename Superclass::LevelSetPointer LevelSetPointer;
 
 protected:
   VTKVisualize2DSparseLevelSetLayers();
-  virtual ~VTKVisualize2DSparseLevelSetLayers();
+  virtual
+  ~VTKVisualize2DSparseLevelSetLayers();
 
   void AddLayers();
 
@@ -129,7 +132,8 @@ protected:
 
 private:
   VTKVisualize2DSparseLevelSetLayers ( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 
 // -----------------------------------------------------------------------------
@@ -141,19 +145,19 @@ private:
  */
 template< typename TInputImage, unsigned int VDimension >
 class VTKVisualize2DSparseLevelSetLayers<
-    TInputImage,
-    itk::MalcolmSparseLevelSetImage< VDimension > > :
-public VTKVisualize2DSparseLevelSetLayersBase<
+  TInputImage,
+  itk::MalcolmSparseLevelSetImage< VDimension > > :
+  public VTKVisualize2DSparseLevelSetLayersBase<
     TInputImage,
     itk::MalcolmSparseLevelSetImage< VDimension > >
 {
 public:
   typedef itk::MalcolmSparseLevelSetImage< VDimension > LevelSetType;
 
-  typedef VTKVisualize2DSparseLevelSetLayers                                    Self;
-  typedef VTKVisualize2DSparseLevelSetLayersBase< TInputImage, LevelSetType >   Superclass;
-  typedef itk::SmartPointer< Self >                                             Pointer;
-  typedef itk::SmartPointer< const Self >                                       ConstPointer;
+  typedef VTKVisualize2DSparseLevelSetLayers                                  Self;
+  typedef VTKVisualize2DSparseLevelSetLayersBase< TInputImage, LevelSetType > Superclass;
+  typedef itk::SmartPointer< Self >                                           Pointer;
+  typedef itk::SmartPointer< const Self >                                     ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -165,11 +169,12 @@ public:
   typedef typename Superclass::InputImageType InputImageType;
   typedef typename Superclass::InputPixelType InputPixelType;
 
-  typedef typename Superclass::LevelSetPointer  LevelSetPointer;
+  typedef typename Superclass::LevelSetPointer LevelSetPointer;
 
 protected:
   VTKVisualize2DSparseLevelSetLayers();
-  virtual ~VTKVisualize2DSparseLevelSetLayers();
+  virtual
+  ~VTKVisualize2DSparseLevelSetLayers();
 
   void AddLayers();
 
@@ -177,7 +182,8 @@ protected:
 
 private:
   VTKVisualize2DSparseLevelSetLayers ( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 }
 

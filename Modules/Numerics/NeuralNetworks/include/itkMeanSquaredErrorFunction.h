@@ -59,18 +59,19 @@ public:
 protected:
 
   MeanSquaredErrorFunction();
-  virtual ~MeanSquaredErrorFunction();
+  virtual
+  ~MeanSquaredErrorFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMeanSquaredErrorFunction.hxx"
+#include "itkMeanSquaredErrorFunction.hxx"
 #endif
-
 
 #endif

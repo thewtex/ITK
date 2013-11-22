@@ -19,7 +19,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if (argc < 3)
     {
@@ -27,9 +28,8 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-
   const char* envName = "ITK_AUTOLOAD_PATH";
-  char* oldenv = getenv( envName );
+  char*       oldenv = getenv( envName );
 
   std::string myenv = std::string(envName)+"=";
 
@@ -45,7 +45,7 @@ int main( int argc, char *argv[] )
 #endif
       }
     myenv += std::string(argv[3]);
-    putenv (const_cast<char *>(myenv.c_str()));
+    putenv (const_cast<char *>(myenv.c_str() ) );
 
     itk::ObjectFactoryBase::ReHash();
     }
@@ -59,10 +59,10 @@ int main( int argc, char *argv[] )
 
   std::cout << "----- Registered factories -----" << std::endl;
   std::cout << "Count: " << numFactories << std::endl;
-  if (!factories.empty())
+  if (!factories.empty() )
     {
     for ( std::list<itk::ObjectFactoryBase*>::iterator
-            f = factories.begin();
+          f = factories.begin();
           f != factories.end(); ++f )
       {
       std::cout << "  Factory version: "
@@ -71,13 +71,13 @@ int main( int argc, char *argv[] )
                 << (*f)->GetDescription() << std::endl
                 << "  Library Path: " << (*f)->GetLibraryPath() << std::endl;
 
-      std::list<std::string> overrides = (*f)->GetClassOverrideNames();
-      std::list<std::string> names = (*f)->GetClassOverrideWithNames();
-      std::list<std::string> descriptions = (*f)->GetClassOverrideDescriptions();
-      std::list<bool> enableflags = (*f)->GetEnableFlags();
+      std::list<std::string>                 overrides = (*f)->GetClassOverrideNames();
+      std::list<std::string>                 names = (*f)->GetClassOverrideWithNames();
+      std::list<std::string>                 descriptions = (*f)->GetClassOverrideDescriptions();
+      std::list<bool>                        enableflags = (*f)->GetEnableFlags();
       std::list<std::string>::const_iterator n = names.begin();
       std::list<std::string>::const_iterator d = descriptions.begin();
-      std::list<bool>::const_iterator e = enableflags.begin();
+      std::list<bool>::const_iterator        e = enableflags.begin();
       for ( std::list<std::string>::const_iterator o = overrides.begin();
             o != overrides.end(); ++o, ++n, ++d, e++ )
         {
@@ -96,41 +96,41 @@ int main( int argc, char *argv[] )
     }
 
   int status = EXIT_SUCCESS;
-  {
-  typedef itk::Image<unsigned char,2> ImageNDType;
-
-  typedef itk::ImageFileReader<ImageNDType> ReaderType;
-  typedef itk::ImageFileWriter<ImageNDType> WriterType;
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer = WriterType::New();
-
-  try
     {
-    reader->SetFileName(argv[1]);
+    typedef itk::Image<unsigned char,2> ImageNDType;
 
-    writer->SetFileName(argv[2]);
-    writer->SetInput(reader->GetOutput());
-    writer->Update();
-    reader->GetOutput()->Print(std::cout);
-    }
-  catch (itk::ExceptionObject &ex)
-    {
-    std::cout << "------------------ Caught unexpected exception!" << std::endl;
-    std::cout << ex;
-    status = EXIT_FAILURE;
-    }
+    typedef itk::ImageFileReader<ImageNDType> ReaderType;
+    typedef itk::ImageFileWriter<ImageNDType> WriterType;
+    ReaderType::Pointer reader = ReaderType::New();
+    WriterType::Pointer writer = WriterType::New();
 
-  try
-    {
-    reader->SetFileName("foo");
-    reader->Update();
+    try
+      {
+      reader->SetFileName(argv[1]);
+
+      writer->SetFileName(argv[2]);
+      writer->SetInput(reader->GetOutput() );
+      writer->Update();
+      reader->GetOutput()->Print(std::cout);
+      }
+    catch (itk::ExceptionObject &ex)
+      {
+      std::cout << "------------------ Caught unexpected exception!" << std::endl;
+      std::cout << ex;
+      status = EXIT_FAILURE;
+      }
+
+    try
+      {
+      reader->SetFileName("foo");
+      reader->Update();
+      }
+    catch (itk::ExceptionObject &ex)
+      {
+      std::cout << "------------------ Caught expected exception!" << std::endl;
+      std::cout << ex;
+      }
     }
-  catch (itk::ExceptionObject &ex)
-    {
-    std::cout << "------------------ Caught expected exception!" << std::endl;
-    std::cout << ex;
-    }
-  }
 
   // make sure all object, such as the ImageIO held by the ImageReader
   // are deleted before rehashing
@@ -142,10 +142,10 @@ int main( int argc, char *argv[] )
   std::cout << "----- Registered factories -----" << std::endl;
   std::cout << "Count: " << factories.size() << std::endl;
 
-  if (!factories.empty())
+  if (!factories.empty() )
     {
     for ( std::list<itk::ObjectFactoryBase*>::iterator
-            f = factories.begin();
+          f = factories.begin();
           f != factories.end(); ++f )
       {
       std::cout << "check " << (void *) *f << std::endl;
@@ -164,7 +164,7 @@ int main( int argc, char *argv[] )
       std::cout << "EnableFlags size: " << enableflags.size() << std::endl;
       std::list<std::string>::const_iterator n = names.begin();
       std::list<std::string>::const_iterator d = descriptions.begin();
-      std::list<bool>::const_iterator e = enableflags.begin();
+      std::list<bool>::const_iterator        e = enableflags.begin();
       for ( std::list<std::string>::const_iterator o = overrides.begin();
             o != overrides.end(); ++o, ++n, ++d, ++e )
         {
@@ -176,7 +176,6 @@ int main( int argc, char *argv[] )
       }
     std::cout << "----- -----" << std::endl;
     }
-
 
   if( numFactories != factories.size() )
     {

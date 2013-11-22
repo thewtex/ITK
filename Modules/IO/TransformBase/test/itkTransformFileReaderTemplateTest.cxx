@@ -16,10 +16,10 @@
  *
  *=========================================================================*/
 
-
 #include "itkTransformFileReader.h"
 
-int itkTransformFileReaderTemplateTest( int argc, char *argv[] )
+int
+itkTransformFileReaderTemplateTest( int argc, char *argv[] )
 {
   if( argc < 1 )
     {
@@ -28,14 +28,14 @@ int itkTransformFileReaderTemplateTest( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::TransformFileReaderTemplate<double>      TransformReaderType;
+  typedef itk::TransformFileReaderTemplate<double> TransformReaderType;
 
   TransformReaderType::Pointer transformReader = TransformReaderType::New();
 
   std::cout << "Reader class = "
             << transformReader->GetNameOfClass()
             << "Reader base = "
-            << dynamic_cast<TransformReaderType::Superclass *>(transformReader.GetPointer())->GetNameOfClass()
+            << dynamic_cast<TransformReaderType::Superclass *>(transformReader.GetPointer() )->GetNameOfClass()
             << std::endl;
 
   //trigger empty read exception

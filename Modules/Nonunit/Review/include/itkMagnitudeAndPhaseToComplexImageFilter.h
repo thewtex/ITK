@@ -56,14 +56,20 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class MagnitudeAndPhaseToComplex
 {
 public:
-  MagnitudeAndPhaseToComplex() {}
-  ~MagnitudeAndPhaseToComplex() {}
-  bool operator!=(const MagnitudeAndPhaseToComplex &) const
+  MagnitudeAndPhaseToComplex() {
+  }
+
+  ~MagnitudeAndPhaseToComplex() {
+  }
+
+  bool
+  operator!=(const MagnitudeAndPhaseToComplex &) const
   {
     return false;
   }
 
-  bool operator==(const MagnitudeAndPhaseToComplex & other) const
+  bool
+  operator==(const MagnitudeAndPhaseToComplex & other) const
   {
     return !( *this != other );
   }
@@ -72,14 +78,15 @@ public:
   {
     return std::complex< TOutput >( std::polar( static_cast< TOutput >( A ),  static_cast< TOutput >( B ) ) );
   }
+
 };
 }
 
 template< typename TInputImage1,
           typename TInputImage2 = TInputImage1,
           typename TOutputImage = itk::Image< std::complex< typename TInputImage1::PixelType>,
-                                           TInputImage1::ImageDimension > >
-class MagnitudeAndPhaseToComplexImageFilter:
+                                              TInputImage1::ImageDimension > >
+class MagnitudeAndPhaseToComplexImageFilter :
   public BinaryFunctorImageFilter<
     TInputImage1,
     TInputImage2,
@@ -95,13 +102,13 @@ public:
   typedef MagnitudeAndPhaseToComplexImageFilter Self;
 
   typedef BinaryFunctorImageFilter<
-    TInputImage1,
-    TInputImage2,
-    TOutputImage,
-    Functor::MagnitudeAndPhaseToComplex<
-      typename TInputImage1::PixelType,
-      typename TInputImage2::PixelType,
-      typename TOutputImage::PixelType::value_type > > Superclass;
+      TInputImage1,
+      TInputImage2,
+      TOutputImage,
+      Functor::MagnitudeAndPhaseToComplex<
+        typename TInputImage1::PixelType,
+        typename TInputImage2::PixelType,
+        typename TOutputImage::PixelType::value_type > > Superclass;
 
   typedef typename TInputImage1::PixelType InputPixel1Type;
   typedef typename TInputImage2::PixelType InputPixel2Type;
@@ -128,14 +135,19 @@ public:
 #endif
 
 protected:
-  MagnitudeAndPhaseToComplexImageFilter() {}
-  virtual ~MagnitudeAndPhaseToComplexImageFilter() {}
+  MagnitudeAndPhaseToComplexImageFilter() {
+  }
+
+  virtual
+  ~MagnitudeAndPhaseToComplexImageFilter() {
+  }
 
 private:
   MagnitudeAndPhaseToComplexImageFilter(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 };
 } // end namespace itk
 

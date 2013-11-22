@@ -22,28 +22,28 @@
 
 namespace itk
 {
-  /** \class TransformFileReaderTemplate
-   *
-   * \brief TODO
-   * \ingroup ITKIOTransformBase
-   *
-   * \wiki
-   * \wikiexample{IO/TransformFileReader,Read a transform from a file}
-   * \endwiki
-   */
+/** \class TransformFileReaderTemplate
+ *
+ * \brief TODO
+ * \ingroup ITKIOTransformBase
+ *
+ * \wiki
+ * \wikiexample{IO/TransformFileReader,Read a transform from a file}
+ * \endwiki
+ */
 template<typename ScalarType>
-class TransformFileReaderTemplate:public LightProcessObject
+class TransformFileReaderTemplate : public LightProcessObject
 {
 public:
 
   /** SmartPointer typedef support */
-  typedef TransformFileReaderTemplate         Self;
-  typedef SmartPointer< Self >                Pointer;
-  typedef TransformBaseTemplate<ScalarType>   TransformType;
+  typedef TransformFileReaderTemplate       Self;
+  typedef SmartPointer< Self >              Pointer;
+  typedef TransformBaseTemplate<ScalarType> TransformType;
 
-  typedef typename TransformType::ParametersType                           ParametersType;
-  typedef typename TransformIOBaseTemplate<ScalarType>::TransformPointer   TransformPointer;
-  typedef typename TransformIOBaseTemplate<ScalarType>::TransformListType  TransformListType;
+  typedef typename TransformType::ParametersType                          ParametersType;
+  typedef typename TransformIOBaseTemplate<ScalarType>::TransformPointer  TransformPointer;
+  typedef typename TransformIOBaseTemplate<ScalarType>::TransformListType TransformListType;
 
   /** Method for creation through the object factory */
   itkNewMacro(Self);
@@ -62,18 +62,23 @@ public:
   virtual void Update();
 
   /** Get the list of transform */
-  TransformListType * GetTransformList() { return &m_TransformList; }
+  TransformListType *
+  GetTransformList() {
+    return &m_TransformList;
+  }
 
 protected:
   typename TransformIOBaseTemplate<ScalarType>::Pointer m_TransformIO;
   TransformFileReaderTemplate(const Self &); //purposely not implemented
-  void operator=(const Self &);      //purposely not implemented
+  void operator=(const Self &);              //purposely not implemented
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   std::string m_FileName;
 
   TransformFileReaderTemplate();
-  virtual ~TransformFileReaderTemplate();
+  virtual
+  ~TransformFileReaderTemplate();
   void CreateTransform(TransformPointer & ptr, const std::string & ClassName);
 
   TransformListType m_TransformList;

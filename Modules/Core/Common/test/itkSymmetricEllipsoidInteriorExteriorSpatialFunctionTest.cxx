@@ -18,7 +18,8 @@
 
 #include "itkSymmetricEllipsoidInteriorExteriorSpatialFunction.h"
 
-int itkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
+int
+itkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
 {
   std::cout << "itkSymmetricEllipsoidInteriorExteriorSpatialFunction test start" << std::endl;
 
@@ -34,7 +35,8 @@ int itkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
   // Create an ellipsoid spatial function for the source image
   TSymEllipsoidFunctionType::Pointer spatialFunc = TSymEllipsoidFunctionType::New();
 
-  // Define function doitkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest, which encapsulates ellipsoid.
+  // Define function doitkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest,
+  // which encapsulates ellipsoid.
   int xExtent = 50;
   int yExtent = 50;
   int zExtent = 50;
@@ -61,10 +63,12 @@ int itkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
 
   // Evaluate all points in the spatial function and count the number of
   // pixels that are inside the sphere.
-  double testPosition[dimension];  // position of a pixel in the function doitkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest
+  double testPosition[dimension];  // position of a pixel in the function
+                                   //
+                                   // doitkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest
 
-  bool functionValue;  // Value of pixel at a given position
-  int interiorPixelCounter = 0;  // Count pixels inside ellipsoid
+  bool functionValue;            // Value of pixel at a given position
+  int  interiorPixelCounter = 0; // Count pixels inside ellipsoid
 
   for(int x = 0; x < xExtent; x++)
     {

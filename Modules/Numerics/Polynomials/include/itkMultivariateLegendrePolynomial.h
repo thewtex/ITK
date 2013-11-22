@@ -96,15 +96,22 @@ public:
                                  unsigned int degree,
                                  const DomainSizeType & domainSize);
   /** Destructor. */
-  virtual ~MultivariateLegendrePolynomial();
+  virtual
+  ~MultivariateLegendrePolynomial();
 
   /** Gets the dimension. */
-  unsigned int GetDimension(void) const
-  { return m_Dimension; }
+  unsigned int
+  GetDimension(void) const
+  {
+    return m_Dimension;
+  }
 
   /** Gets the degree (the degree of Legendre polynomials). */
-  unsigned int GetDegree(void) const
-  { return m_Degree; }
+  unsigned int
+  GetDegree(void) const
+  {
+    return m_Degree;
+  }
 
   /** Returns the number of coefficients of the polynomial
    *  This number is computed from the degree of the polynomial
@@ -112,12 +119,18 @@ public:
    *  size, an exception is thrown otherwise
    *  \sa SetCoefficients
    */
-  unsigned int GetNumberOfCoefficients(void) const
-  { return m_NumberOfCoefficients; }
+  unsigned int
+  GetNumberOfCoefficients(void) const
+  {
+    return m_NumberOfCoefficients;
+  }
 
   /** Gets each dimesion's size. */
-  const DomainSizeType & GetDomainSize(void) const
-  { return m_DomainSize; }
+  const DomainSizeType &
+  GetDomainSize(void) const
+  {
+    return m_DomainSize;
+  }
 
   /** \class CoefficientVectorSizeMismatch
    * \brief Exception object.
@@ -151,7 +164,8 @@ public:
 
   /** In the case which the bias field is 2D, it returns bias value at
    * the point which is specified by the index */
-  double Evaluate(IndexType & index)
+  double
+  Evaluate(IndexType & index)
   {
     if ( m_Dimension == 2 )
       {
@@ -159,14 +173,14 @@ public:
         {
         // normalized y [-1, 1]
         double norm_y =  m_NormFactor[1]
-                        * static_cast< double >( index[1] - 1 );
+          * static_cast< double >( index[1] - 1 );
         this->CalculateXCoef(norm_y, m_CoefficientArray);
         m_PrevY = index[1];
         }
 
       // normalized x [-1, 1]
       double norm_x =  m_NormFactor[0]
-                      * static_cast< double >( index[0] - 1 );
+        * static_cast< double >( index[0] - 1 );
 
       return LegendreSum(norm_x, m_Degree, m_CachedXCoef);
       }
@@ -176,7 +190,7 @@ public:
         {
         // normalized z [-1, 1]
         double norm_z =  m_NormFactor[2]
-                        * static_cast< double >( index[2] - 1 );
+          * static_cast< double >( index[2] - 1 );
         this->CalculateYCoef(norm_z, m_CoefficientArray);
         m_PrevZ = index[2];
         }
@@ -185,14 +199,14 @@ public:
         {
         // normalized y [-1, 1]
         double norm_y =  m_NormFactor[1]
-                        * static_cast< double >( index[1] - 1 );
+          * static_cast< double >( index[1] - 1 );
         this->CalculateXCoef(norm_y, m_CachedYCoef);
         m_PrevY = index[1];
         }
 
       // normalized x [-1, 1]
       double norm_x =  m_NormFactor[0]
-                      * static_cast< double >( index[0] - 1 );
+        * static_cast< double >( index[0] - 1 );
       return this->LegendreSum(norm_x, m_Degree, m_CachedXCoef);
       }
     return 0;
@@ -222,7 +236,8 @@ public:
       std::fill(m_Index.begin(), m_Index.end(), 0);
     }
 
-    void Begin(void)
+    void
+    Begin(void)
     {
       m_IsAtEnd = false;
       for ( unsigned int dim = 0; dim < m_Dimension; dim++ )
@@ -231,10 +246,14 @@ public:
         }
     }
 
-    bool IsAtEnd()
-    { return m_IsAtEnd; }
+    bool
+    IsAtEnd()
+    {
+      return m_IsAtEnd;
+    }
 
-    SimpleForwardIterator & operator++()
+    SimpleForwardIterator &
+    operator++()
     {
       for ( unsigned int dim = 0; dim < m_Dimension; dim++ )
         {
@@ -259,8 +278,11 @@ public:
       return *this;
     }
 
-    double Get()
-    { return m_MultivariateLegendrePolynomial->Evaluate(m_Index); }
+    double
+    Get()
+    {
+      return m_MultivariateLegendrePolynomial->Evaluate(m_Index);
+    }
 
 private:
     MultivariateLegendrePolynomial *m_MultivariateLegendrePolynomial;
@@ -299,7 +321,8 @@ private:
   IndexValueType  m_PrevZ;
 }; // end of class
 
- std::ostream & operator<<(std::ostream & os,
+std::ostream & operator<<(std::ostream & os,
                           MultivariateLegendrePolynomial & poly);
+
 } // end of namespace itk
 #endif

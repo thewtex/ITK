@@ -26,7 +26,8 @@
  * In this test, we approximate a sequence of 3D points with a parametric
  * curve described by B-Splines
  */
-int itkBSplineScatteredDataPointSetToImageFilterTest3( int argc, char * argv [] )
+int
+itkBSplineScatteredDataPointSetToImageFilterTest3( int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -40,10 +41,10 @@ int itkBSplineScatteredDataPointSetToImageFilterTest3( int argc, char * argv [] 
   const unsigned int ParametricDimension = 1;
   const unsigned int DataDimension = 3;
 
-  typedef double                                         RealType;
-  typedef itk::Vector<RealType, DataDimension>           VectorType;
-  typedef itk::Image<VectorType, ParametricDimension>    ImageType;
-  typedef VectorType                                     PointSetPixelType;
+  typedef double                                      RealType;
+  typedef itk::Vector<RealType, DataDimension>        VectorType;
+  typedef itk::Image<VectorType, ParametricDimension> ImageType;
+  typedef VectorType                                  PointSetPixelType;
 
   typedef itk::PointSet< PointSetPixelType, ParametricDimension > PointSetType;
 
@@ -52,7 +53,6 @@ int itkBSplineScatteredDataPointSetToImageFilterTest3( int argc, char * argv [] 
   // Read the input points
   std::ifstream inputFile;
   inputFile.open( argv[1] );
-
 
   VectorType P; // The actual data to be approximated
 
@@ -67,7 +67,7 @@ int itkBSplineScatteredDataPointSetToImageFilterTest3( int argc, char * argv [] 
   //  FIXME: add parameterization of the input points, in the range [0:1]
   double t =0.0;
 
-  while( ! inputFile.eof() )
+  while( !inputFile.eof() )
     {
     parameterPosition[0] = t;
     t += 0.01; // FIXME

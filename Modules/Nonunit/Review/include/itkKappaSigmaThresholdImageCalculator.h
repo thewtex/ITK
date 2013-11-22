@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TMaskImage >
-class KappaSigmaThresholdImageCalculator:public Object
+class KappaSigmaThresholdImageCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -95,7 +95,10 @@ public:
 
 protected:
   KappaSigmaThresholdImageCalculator();
-  virtual ~KappaSigmaThresholdImageCalculator() {}
+  virtual
+  ~KappaSigmaThresholdImageCalculator() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

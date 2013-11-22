@@ -42,14 +42,14 @@ namespace itk
 */
 template< typename TInput, typename TOutput >
 class FastMarchingQuadEdgeMeshFilterBase :
-    public FastMarchingBase< TInput, TOutput >
+  public FastMarchingBase< TInput, TOutput >
 {
 public:
-  typedef FastMarchingQuadEdgeMeshFilterBase     Self;
-  typedef FastMarchingBase< TInput, TOutput >    Superclass;
-  typedef SmartPointer< Self >                   Pointer;
-  typedef SmartPointer< const Self >             ConstPointer;
-  typedef typename Superclass::Traits            Traits;
+  typedef FastMarchingQuadEdgeMeshFilterBase  Self;
+  typedef FastMarchingBase< TInput, TOutput > Superclass;
+  typedef SmartPointer< Self >                Pointer;
+  typedef SmartPointer< const Self >          ConstPointer;
+  typedef typename Superclass::Traits         Traits;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -57,34 +57,33 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(FastMarchingQuadEdgeMeshFilterBase, FastMarchingBase);
 
-  typedef typename Superclass::InputDomainType     InputMeshType;
-  typedef typename Superclass::InputDomainPointer  InputMeshPointer;
-  typedef typename Superclass::InputPixelType      InputPixelType;
-  typedef typename InputMeshType::PointType        InputPointType;
-  typedef typename InputMeshType::PointIdentifier  InputPointIdentifierType;
+  typedef typename Superclass::InputDomainType    InputMeshType;
+  typedef typename Superclass::InputDomainPointer InputMeshPointer;
+  typedef typename Superclass::InputPixelType     InputPixelType;
+  typedef typename InputMeshType::PointType       InputPointType;
+  typedef typename InputMeshType::PointIdentifier InputPointIdentifierType;
 
-  typedef typename Superclass::OutputDomainType     OutputMeshType;
-  typedef typename Superclass::OutputDomainPointer  OutputMeshPointer;
-  typedef typename Superclass::OutputPixelType      OutputPixelType;
-  typedef typename OutputMeshType::PointType        OutputPointType;
-  typedef typename OutputPointType::VectorType      OutputVectorType;
-  typedef typename OutputVectorType::RealValueType  OutputVectorRealType;
-  typedef typename OutputMeshType::QEType           OutputQEType;
-  typedef typename OutputMeshType::PointIdentifier  OutputPointIdentifierType;
-  typedef typename OutputMeshType::PointsContainer  OutputPointsContainer;
-  typedef typename OutputPointsContainer::Pointer   OutputPointsContainerPointer;
-  typedef typename OutputPointsContainer::Iterator  OutputPointsContainerIterator;
+  typedef typename Superclass::OutputDomainType    OutputMeshType;
+  typedef typename Superclass::OutputDomainPointer OutputMeshPointer;
+  typedef typename Superclass::OutputPixelType     OutputPixelType;
+  typedef typename OutputMeshType::PointType       OutputPointType;
+  typedef typename OutputPointType::VectorType     OutputVectorType;
+  typedef typename OutputVectorType::RealValueType OutputVectorRealType;
+  typedef typename OutputMeshType::QEType          OutputQEType;
+  typedef typename OutputMeshType::PointIdentifier OutputPointIdentifierType;
+  typedef typename OutputMeshType::PointsContainer OutputPointsContainer;
+  typedef typename OutputPointsContainer::Pointer  OutputPointsContainerPointer;
+  typedef typename OutputPointsContainer::Iterator OutputPointsContainerIterator;
   typedef typename OutputMeshType::PointDataContainer
-                                                    OutputPointDataContainer;
+    OutputPointDataContainer;
   typedef typename OutputPointDataContainer::Pointer
-                                                    OutputPointDataContainerPointer;
+    OutputPointDataContainerPointer;
 
-  typedef typename OutputMeshType::CellsContainer   OutputCellsContainer;
-  typedef typename OutputCellsContainer::Pointer    OutputCellsContainerPointer;
+  typedef typename OutputMeshType::CellsContainer OutputCellsContainer;
+  typedef typename OutputCellsContainer::Pointer  OutputCellsContainerPointer;
   typedef typename OutputCellsContainer::ConstIterator
-                                                    OutputCellsContainerConstIterator;
-  typedef typename OutputMeshType::CellType         OutputCellType;
-
+    OutputCellsContainerConstIterator;
+  typedef typename OutputMeshType::CellType OutputCellType;
 
   typedef typename Traits::NodeType                 NodeType;
   typedef typename Traits::NodePairType             NodePairType;
@@ -107,18 +106,19 @@ public:
 protected:
 
   FastMarchingQuadEdgeMeshFilterBase();
-  virtual ~FastMarchingQuadEdgeMeshFilterBase();
+  virtual
+  ~FastMarchingQuadEdgeMeshFilterBase();
 
   NodeLabelMapType m_Label;
 
   IdentifierType GetTotalNumberOfNodes() const;
 
   void SetOutputValue( OutputMeshType* oMesh,
-                      const NodeType& iNode,
-                      const OutputPixelType& iValue );
+                       const NodeType& iNode,
+                       const OutputPixelType& iValue );
 
   const OutputPixelType GetOutputValue( OutputMeshType* oMesh,
-                                  const NodeType& iNode ) const;
+                                        const NodeType& iNode ) const;
 
   unsigned char GetLabelValueForGivenNode( const NodeType& iNode ) const;
 
@@ -141,14 +141,13 @@ protected:
          const bool& iIsFar2, const OutputVectorRealType& iVal2 )
   const;
 
-
   const OutputVectorRealType
   ComputeUpdate(
     const OutputVectorRealType& iVal1, const OutputVectorRealType& iVal2,
     const OutputVectorRealType& iNorm1, const OutputVectorRealType& iSqNorm1,
     const OutputVectorRealType& iNorm2, const OutputVectorRealType& iSqNorm2,
     const OutputVectorRealType& iDot, const OutputVectorRealType& iF )
-    const;
+  const;
 
   bool UnfoldTriangle(
     OutputMeshType* oMesh,
@@ -166,7 +165,8 @@ protected:
 
 private:
   FastMarchingQuadEdgeMeshFilterBase( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
   const InputMeshType *m_InputMesh;
 };
 }

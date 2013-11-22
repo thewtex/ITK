@@ -20,7 +20,6 @@
 
 #include "itksys/SystemTools.hxx"
 
-
 namespace itk
 {
 VTKImageIO::VTKImageIO()
@@ -36,9 +35,11 @@ VTKImageIO::VTKImageIO()
 }
 
 VTKImageIO::~VTKImageIO()
-{}
+{
+}
 
-bool VTKImageIO::CanReadFile(const char *filename)
+bool
+VTKImageIO::CanReadFile(const char *filename)
 {
   std::ifstream file;
   char          buffer[256];
@@ -77,24 +78,28 @@ bool VTKImageIO::CanReadFile(const char *filename)
     }
 }
 
-
-bool VTKImageIO::CanStreamRead(void)
+bool
+VTKImageIO::CanStreamRead(void)
 {
   bool canStreamRead = true;
+
   canStreamRead &= this->GetPixelType() != ImageIOBase::SYMMETRICSECONDRANKTENSOR;
   canStreamRead &= this->GetFileType() != ASCII;
   return canStreamRead;
 }
 
-bool VTKImageIO::CanStreamWrite(void)
+bool
+VTKImageIO::CanStreamWrite(void)
 {
   bool canStreamWrite = true;
+
   canStreamWrite &= this->GetPixelType() != ImageIOBase::SYMMETRICSECONDRANKTENSOR;
   canStreamWrite &= this->GetFileType() != ASCII;
   return canStreamWrite;
 }
 
-void VTKImageIO::SetPixelTypeFromString(const std::string & pixelType)
+void
+VTKImageIO::SetPixelTypeFromString(const std::string & pixelType)
 {
   if ( pixelType.find("float") < pixelType.length() )
     {
@@ -142,7 +147,8 @@ void VTKImageIO::SetPixelTypeFromString(const std::string & pixelType)
     }
 }
 
-void VTKImageIO::InternalReadImageInformation(std::ifstream & file)
+void
+VTKImageIO::InternalReadImageInformation(std::ifstream & file)
 {
   char        line[255];
   std::string text;
@@ -297,8 +303,8 @@ void VTKImageIO::InternalReadImageInformation(std::ifstream & file)
       {
       readAttribute = true;
 
-      char pixelType[256];
-      unsigned int  numComp = 1;
+      char         pixelType[256];
+      unsigned int numComp = 1;
       // numComp is optional
       sscanf(line, "%*s %*s %s %u", pixelType, &numComp);
       text = pixelType;
@@ -348,7 +354,8 @@ void VTKImageIO::InternalReadImageInformation(std::ifstream & file)
   this->m_HeaderSize = static_cast< SizeType >( file.tellg() );
 }
 
-void VTKImageIO::ReadHeaderSize(std::ifstream & file)
+void
+VTKImageIO::ReadHeaderSize(std::ifstream & file)
 {
   char        line[255];
   std::string text;
@@ -364,7 +371,10 @@ void VTKImageIO::ReadHeaderSize(std::ifstream & file)
 
   for ( bool readAttribute = false; !readAttribute; )
     {
-    file.getline(line, 255); // SPACING|ORIGIN|COLOR_SCALARS|SCALARS|VECTOR|TENSORS
+    file.getline(line, 255); //
+                             //
+                             //
+                             // SPACING|ORIGIN|COLOR_SCALARS|SCALARS|VECTOR|TENSORS
     text = line;
 
     if ( text.find("SCALARS") < text.length()
@@ -389,7 +399,7 @@ void VTKImageIO::ReadHeaderSize(std::ifstream & file)
         file.seekg(pos);
         }
       else
-            {}
+                   {}
       } //found scalars
     }
 
@@ -405,12 +415,13 @@ void VTKImageIO::ReadHeaderSize(std::ifstream & file)
 namespace
 {
 template <typename TComponent>
-void ReadTensorBuffer( std::istream& is, TComponent *buffer,
-  const ImageIOBase::SizeType num )
+void
+ReadTensorBuffer( std::istream& is, TComponent *buffer,
+                  const ImageIOBase::SizeType num )
 {
   typedef typename itk::NumericTraits<TComponent>::PrintType PrintType;
-  PrintType temp;
-  TComponent *ptr = buffer;
+  PrintType             temp;
+  TComponent *          ptr = buffer;
   ImageIOBase::SizeType i=0;
   // More than the resulting components because of symmetry.
   const ImageIOBase::SizeType fileComponents = num / 6 * 9;
@@ -443,10 +454,12 @@ void ReadTensorBuffer( std::istream& is, TComponent *buffer,
     i += 9;
     }
 }
+
 } // end anonymous namespace
 
-void VTKImageIO::ReadBufferAsASCII( std::istream & is, void * buffer, IOComponentType ctype,
-                                     const ImageIOBase::SizeType numComp)
+void
+VTKImageIO::ReadBufferAsASCII( std::istream & is, void * buffer, IOComponentType ctype,
+                               const ImageIOBase::SizeType numComp)
 {
   if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
     {
@@ -457,22 +470,23 @@ void VTKImageIO::ReadBufferAsASCII( std::istream & is, void * buffer, IOComponen
 
     switch( ctype )
       {
-      case FLOAT :
+      case FLOAT:
         {
         float * buf = reinterpret_cast<float *>(buffer);
         ReadTensorBuffer( is, buf, numComp );
         }
         break;
 
-      case DOUBLE :
+      case DOUBLE:
         {
         double * buf = reinterpret_cast<double *>(buffer);
         ReadTensorBuffer( is, buf, numComp );
         }
         break;
 
-      default :
-        itkExceptionMacro(<< "Per the vtk file format standard, only reading of float and double tensors is supported.");
+      default:
+        itkExceptionMacro(<<
+                          "Per the vtk file format standard, only reading of float and double tensors is supported.");
       }
     }
   else
@@ -481,9 +495,10 @@ void VTKImageIO::ReadBufferAsASCII( std::istream & is, void * buffer, IOComponen
     }
 }
 
-void VTKImageIO::ReadSymmetricTensorBufferAsBinary( std::istream & is,
-  void * buffer,
-  StreamingImageIOBase::SizeType num )
+void
+VTKImageIO::ReadSymmetricTensorBufferAsBinary( std::istream & is,
+                                               void * buffer,
+                                               StreamingImageIOBase::SizeType num )
 {
   std::streamsize bytesRemaining = num;
   const SizeType  componentSize = this->GetComponentSize();
@@ -515,7 +530,8 @@ void VTKImageIO::ReadSymmetricTensorBufferAsBinary( std::istream & is,
     }
 }
 
-void VTKImageIO::Read(void *buffer)
+void
+VTKImageIO::Read(void *buffer)
 {
   std::ifstream file;
 
@@ -539,16 +555,19 @@ void VTKImageIO::Read(void *buffer)
       case 1:
         break;
       case 2:
-        ByteSwapper< uint16_t >::SwapRangeFromSystemToBigEndian( (uint16_t *)buffer, this->GetIORegionSizeInComponents() );
+        ByteSwapper< uint16_t >::SwapRangeFromSystemToBigEndian( (uint16_t *)buffer,
+                                                                 this->GetIORegionSizeInComponents() );
         break;
       case 4:
-        ByteSwapper< uint32_t >::SwapRangeFromSystemToBigEndian( (uint32_t *)buffer, this->GetIORegionSizeInComponents() );
+        ByteSwapper< uint32_t >::SwapRangeFromSystemToBigEndian( (uint32_t *)buffer,
+                                                                 this->GetIORegionSizeInComponents() );
         break;
       case 8:
-        ByteSwapper< uint64_t >::SwapRangeFromSystemToBigEndian( (uint64_t *)buffer, this->GetIORegionSizeInComponents() );
+        ByteSwapper< uint64_t >::SwapRangeFromSystemToBigEndian( (uint64_t *)buffer,
+                                                                 this->GetIORegionSizeInComponents() );
         break;
       default:
-        itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize());
+        itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize() );
       }
     }
   else
@@ -592,29 +611,34 @@ void VTKImageIO::Read(void *buffer)
         case 1:
           break;
         case 2:
-          ByteSwapper< uint16_t >::SwapRangeFromSystemToBigEndian( (uint16_t *)buffer, this->GetImageSizeInComponents() );
+          ByteSwapper< uint16_t >::SwapRangeFromSystemToBigEndian( (uint16_t *)buffer,
+                                                                   this->GetImageSizeInComponents() );
           break;
         case 4:
-          ByteSwapper< uint32_t >::SwapRangeFromSystemToBigEndian( (uint32_t *)buffer, this->GetImageSizeInComponents() );
+          ByteSwapper< uint32_t >::SwapRangeFromSystemToBigEndian( (uint32_t *)buffer,
+                                                                   this->GetImageSizeInComponents() );
           break;
         case 8:
-          ByteSwapper< uint64_t >::SwapRangeFromSystemToBigEndian( (uint64_t *)buffer, this->GetImageSizeInComponents() );
+          ByteSwapper< uint64_t >::SwapRangeFromSystemToBigEndian( (uint64_t *)buffer,
+                                                                   this->GetImageSizeInComponents() );
           break;
         default:
-          itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize());
+          itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize() );
         }
       }
     }
 }
 
-void VTKImageIO::ReadImageInformation()
+void
+VTKImageIO::ReadImageInformation()
 {
   std::ifstream file;
 
   this->InternalReadImageInformation(file);
 }
 
-bool VTKImageIO::CanWriteFile(const char *name)
+bool
+VTKImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -626,7 +650,8 @@ bool VTKImageIO::CanWriteFile(const char *name)
   return false;
 }
 
-void VTKImageIO::WriteImageInformation( const void *itkNotUsed(buffer) )
+void
+VTKImageIO::WriteImageInformation( const void *itkNotUsed(buffer) )
 {
   std::ofstream file;
 
@@ -721,8 +746,9 @@ void VTKImageIO::WriteImageInformation( const void *itkNotUsed(buffer) )
 namespace
 {
 template<typename TComponent>
-void WriteTensorBuffer(std::ostream & os, const TComponent * buffer, const ImageIOBase::SizeType num,
-                       const ImageIOBase::SizeType components )
+void
+WriteTensorBuffer(std::ostream & os, const TComponent * buffer, const ImageIOBase::SizeType num,
+                  const ImageIOBase::SizeType components )
 {
   const TComponent * ptr = buffer;
 
@@ -785,14 +811,15 @@ void WriteTensorBuffer(std::ostream & os, const TComponent * buffer, const Image
 
 } // end anonymous namespace
 
-void VTKImageIO::WriteBufferAsASCII( std::ostream & os, const void * buffer, IOComponentType ctype,
-                                      const ImageIOBase::SizeType numComp)
+void
+VTKImageIO::WriteBufferAsASCII( std::ostream & os, const void * buffer, IOComponentType ctype,
+                                const ImageIOBase::SizeType numComp)
 {
   if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
     {
     switch( ctype )
       {
-      case FLOAT :
+      case FLOAT:
         {
         typedef const float * Type;
         Type buf = reinterpret_cast<Type>(buffer);
@@ -800,7 +827,7 @@ void VTKImageIO::WriteBufferAsASCII( std::ostream & os, const void * buffer, IOC
         }
         break;
 
-      case DOUBLE :
+      case DOUBLE:
         {
         typedef const double * Type;
         Type buf = reinterpret_cast<Type>(buffer);
@@ -808,8 +835,9 @@ void VTKImageIO::WriteBufferAsASCII( std::ostream & os, const void * buffer, IOC
         }
         break;
 
-      default :
-        itkExceptionMacro(<< "Per the vtk file format standard, only writing of float and double tensors is supported.");
+      default:
+        itkExceptionMacro(<<
+                          "Per the vtk file format standard, only writing of float and double tensors is supported.");
       }
     }
   else
@@ -819,47 +847,48 @@ void VTKImageIO::WriteBufferAsASCII( std::ostream & os, const void * buffer, IOC
 }
 
 #define WriteVTKImageBinaryBlockMACRO(storageType)                                                     \
-{                                                                                                      \
-   const ImageIOBase::BufferSizeType numbytes =                                                        \
-                            static_cast< ImageIOBase::BufferSizeType >( this->GetImageSizeInBytes() ); \
-   const ImageIOBase::BufferSizeType numberImageComponents =                                           \
-                       static_cast< ImageIOBase::BufferSizeType >( this->GetImageSizeInComponents() ); \
-   const bool isSymmetricSecondRankTensor=                                                             \
-                                   ( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR ); \
-   storageType *tempmemory = new storageType[numberImageComponents];                                   \
-   memcpy(tempmemory, buffer, numbytes );                                                              \
-   ByteSwapper< storageType >::SwapRangeFromSystemToBigEndian(  tempmemory , numberImageComponents );  \
-   /* write the image */                                                                               \
-   if( isSymmetricSecondRankTensor )                                                                   \
-     {                                                                                                 \
-     this->WriteSymmetricTensorBufferAsBinary( file, tempmemory, numbytes );                           \
-     }                                                                                                 \
-   else                                                                                                \
-     {                                                                                                 \
-     if ( !this->WriteBufferAsBinary( file, tempmemory, numbytes ) )                                   \
-       {                                                                                               \
-       itkExceptionMacro(<< "Could not write file: " << m_FileName);                                   \
-       }                                                                                               \
-     }                                                                                                 \
-   delete[] tempmemory;                                                                                \
-}                                                                                                      \
+    {                                                                                                      \
+    const ImageIOBase::BufferSizeType numbytes =                                                        \
+      static_cast< ImageIOBase::BufferSizeType >( this->GetImageSizeInBytes() ); \
+    const ImageIOBase::BufferSizeType numberImageComponents =                                           \
+      static_cast< ImageIOBase::BufferSizeType >( this->GetImageSizeInComponents() ); \
+    const bool isSymmetricSecondRankTensor=                                                             \
+      ( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR ); \
+    storageType *tempmemory = new storageType[numberImageComponents];                                   \
+    memcpy(tempmemory, buffer, numbytes );                                                              \
+    ByteSwapper< storageType >::SwapRangeFromSystemToBigEndian(  tempmemory , numberImageComponents );  \
+    /* write the image */                                                                               \
+    if( isSymmetricSecondRankTensor )                                                                   \
+      {                                                                                                 \
+      this->WriteSymmetricTensorBufferAsBinary( file, tempmemory, numbytes );                           \
+      }                                                                                                 \
+    else                                                                                                \
+      {                                                                                                 \
+      if ( !this->WriteBufferAsBinary( file, tempmemory, numbytes ) )                                   \
+        {                                                                                               \
+        itkExceptionMacro(<< "Could not write file: " << m_FileName);                                   \
+        }                                                                                               \
+      }                                                                                                 \
+    delete[] tempmemory;                                                                                \
+    }                                                                                                      \
 
 #define StreamWriteVTKImageBinaryBlockMACRO(storageType)                                               \
-{                                                                                                      \
-   const ImageIOBase::BufferSizeType numbytes =                                                        \
-                    static_cast< ImageIOBase::BufferSizeType >( this->GetIORegionSizeInBytes() );      \
-   const ImageIOBase::BufferSizeType numberImageComponents =                                           \
-                    static_cast< ImageIOBase::BufferSizeType >( this->GetIORegionSizeInComponents() ); \
-   storageType *tempmemory = new storageType[numberImageComponents];                                   \
-   memcpy(tempmemory, buffer, numbytes );                                                              \
-   ByteSwapper< storageType >::SwapRangeFromSystemToBigEndian(  tempmemory , numberImageComponents );  \
-   /* write the image */                                                                               \
-   this->StreamWriteBufferAsBinary( file, tempmemory);                                                 \
-   delete[] tempmemory;                                                                                \
-}                                                                                                      \
+    {                                                                                                      \
+    const ImageIOBase::BufferSizeType numbytes =                                                        \
+      static_cast< ImageIOBase::BufferSizeType >( this->GetIORegionSizeInBytes() );      \
+    const ImageIOBase::BufferSizeType numberImageComponents =                                           \
+      static_cast< ImageIOBase::BufferSizeType >( this->GetIORegionSizeInComponents() ); \
+    storageType *tempmemory = new storageType[numberImageComponents];                                   \
+    memcpy(tempmemory, buffer, numbytes );                                                              \
+    ByteSwapper< storageType >::SwapRangeFromSystemToBigEndian(  tempmemory , numberImageComponents );  \
+    /* write the image */                                                                               \
+    this->StreamWriteBufferAsBinary( file, tempmemory);                                                 \
+    delete[] tempmemory;                                                                                \
+    }                                                                                                      \
 
-void VTKImageIO::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const void * buffer,
-                                                     StreamingImageIOBase::SizeType num)
+void
+VTKImageIO::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const void * buffer,
+                                               StreamingImageIOBase::SizeType num)
 {
   std::streamsize bytesRemaining = num;
   const SizeType  componentSize = this->GetComponentSize();
@@ -870,7 +899,7 @@ void VTKImageIO::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const voi
 
   switch( this->GetNumberOfComponents() )
     {
-    case 3 :
+    case 3:
       {
       pixelSize = componentSize * 3;
       while( bytesRemaining )
@@ -890,7 +919,7 @@ void VTKImageIO::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const voi
 
       break;
       }
-    case 6 :
+    case 6:
       {
       pixelSize = componentSize * 6;
       while( bytesRemaining )
@@ -913,7 +942,7 @@ void VTKImageIO::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const voi
 
       break;
       }
-    default :
+    default:
       itkExceptionMacro(<< "Unsupported tensor dimension.");
       break;
     }
@@ -924,7 +953,8 @@ void VTKImageIO::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const voi
     }
 }
 
-void VTKImageIO::Write(const void *buffer)
+void
+VTKImageIO::Write(const void *buffer)
 {
   if ( this->RequestedToStream() )
     {
@@ -986,12 +1016,12 @@ void VTKImageIO::Write(const void *buffer)
           StreamWriteVTKImageBinaryBlockMACRO(uint64_t)
           break;
         default:
-          itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize());
+          itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize() );
         }
       }
     else
       {
-        this->StreamWriteBufferAsBinary(file, buffer);
+      this->StreamWriteBufferAsBinary(file, buffer);
       }
     }
   else
@@ -1042,7 +1072,7 @@ void VTKImageIO::Write(const void *buffer)
             WriteVTKImageBinaryBlockMACRO(uint64_t)
             break;
           default:
-            itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize());
+            itkExceptionMacro(<< "Unknown component size" << this->GetComponentSize() );
           }
         }
       else
@@ -1064,23 +1094,28 @@ void VTKImageIO::Write(const void *buffer)
     }
 }
 
-ImageIOBase::SizeType VTKImageIO::GetIORegionSizeInPixels() const
+ImageIOBase::SizeType
+VTKImageIO::GetIORegionSizeInPixels() const
 {
   return m_IORegion.GetNumberOfPixels();
 }
 
-ImageIOBase::SizeType VTKImageIO::GetIORegionSizeInComponents() const
+ImageIOBase::SizeType
+VTKImageIO::GetIORegionSizeInComponents() const
 {
   return ( this->GetIORegionSizeInPixels() * m_NumberOfComponents );
 }
 
-ImageIOBase::SizeType VTKImageIO::GetIORegionSizeInBytes() const
+ImageIOBase::SizeType
+VTKImageIO::GetIORegionSizeInBytes() const
 {
   return ( this->GetIORegionSizeInComponents() * this->GetComponentSize() );
 }
 
-void VTKImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+VTKImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk

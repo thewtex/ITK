@@ -19,10 +19,10 @@
 #include "itkImageFileWriter.h"
 #include <fstream>
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkBMPImageIOTest( int ac, char* av[] )
+int
+itkBMPImageIOTest( int ac, char* av[] )
 {
 
   if(ac < 3)
@@ -31,20 +31,21 @@ int itkBMPImageIOTest( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-
   // ATTENTION THIS IS THE PIXEL TYPE FOR
   // THE RESULTING IMAGE
   typedef itk::RGBPixel<unsigned char> PixelType;
   typedef itk::Image<PixelType, 2>     myImage;
 
   itk::ImageFileReader<myImage>::Pointer reader
-                                  = itk::ImageFileReader<myImage>::New();
+    = itk::ImageFileReader<myImage>::New();
 
   reader->SetFileName(av[1]);
   reader->UpdateOutputInformation();
 
-  std::cout << "PixelType: " << reader->GetImageIO()->GetPixelTypeAsString(reader->GetImageIO()->GetPixelType()) << std::endl;
-  std::cout << "ComponentType: " << reader->GetImageIO()->GetComponentTypeAsString(reader->GetImageIO()->GetComponentType()) << std::endl;
+  std::cout << "PixelType: " << reader->GetImageIO()->GetPixelTypeAsString(reader->GetImageIO()->GetPixelType() ) <<
+    std::endl;
+  std::cout << "ComponentType: " << reader->GetImageIO()->GetComponentTypeAsString(
+    reader->GetImageIO()->GetComponentType() ) << std::endl;
   std::cout << "NumberOfComponents: " << reader->GetImageIO()->GetNumberOfComponents() << std::endl;
   try
     {

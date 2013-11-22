@@ -29,7 +29,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class RegularStepGradientDescentBaseOptimizer:
+class RegularStepGradientDescentBaseOptimizer :
   public SingleValuedNonLinearOptimizer
 {
 public:
@@ -60,14 +60,29 @@ public:
   itkSetMacro(Maximize, bool);
   itkGetConstReferenceMacro(Maximize, bool);
   itkBooleanMacro(Maximize);
-  bool GetMinimize() const
-  { return !m_Maximize; }
-  void SetMinimize(bool v)
-  { this->SetMaximize(!v); }
-  void    MinimizeOn(void)
-  { SetMaximize(false); }
-  void    MinimizeOff(void)
-  { SetMaximize(true); }
+  bool
+  GetMinimize() const
+  {
+    return !m_Maximize;
+  }
+
+  void
+  SetMinimize(bool v)
+  {
+    this->SetMaximize(!v);
+  }
+
+  void
+  MinimizeOn(void)
+  {
+    SetMaximize(false);
+  }
+
+  void
+  MinimizeOff(void)
+  {
+    SetMaximize(true);
+  }
 
   /** Start optimization. */
   void    StartOptimization(void);
@@ -102,7 +117,10 @@ public:
 
 protected:
   RegularStepGradientDescentBaseOptimizer();
-  virtual ~RegularStepGradientDescentBaseOptimizer() {}
+  virtual
+  ~RegularStepGradientDescentBaseOptimizer() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Advance one step following the gradient direction
@@ -115,7 +133,8 @@ protected:
    * This method is invoked by AdvanceOneStep. It is expected
    * to be overrided by optimization methods in non-vector spaces
    * \sa AdvanceOneStep */
-  virtual void StepAlongGradient(
+  virtual void
+  StepAlongGradient(
     double,
     const DerivativeType &)
   {

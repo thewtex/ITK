@@ -30,7 +30,8 @@
 // Software Guide : EndCodeSnippet
 #include "itkEllipseSpatialObject.h"
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 //
@@ -63,7 +64,6 @@ int main( int , char *[] )
   ellipse2->SetRadius(2);
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // Then we add the two ellipses into the SceneSpatialObject.
@@ -74,7 +74,6 @@ int main( int , char *[] )
   scene->AddSpatialObject(ellipse1);
   scene->AddSpatialObject(ellipse2);
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -131,7 +130,6 @@ int main( int , char *[] )
   std::cout << myObjectList->size() << std::endl;
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // In some cases, it is useful to define the hierarchy by using
@@ -155,7 +153,6 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   scene->Clear();
 // Software Guide : EndCodeSnippet
-
 
   return 0;
 }

@@ -30,7 +30,8 @@
 //  Software Guide : BeginLatex
 //
 //  The classical method of smoothing an image by convolution with a Gaussian
-//  kernel has the drawback that it is slow when the standard deviation $\sigma$ of
+//  kernel has the drawback that it is slow when the standard deviation $\sigma$
+// of
 //  the Gaussian is large.  This is due to the larger size of the kernel,
 //  which results in a higher number of computations per pixel.
 //
@@ -43,7 +44,6 @@
 //  \index{itk::RecursiveGaussianImageFilter}
 //
 //  Software Guide : EndLatex
-
 
 #include "itkImage.h"
 #include "itkImageFileReader.h"
@@ -62,8 +62,8 @@
 #include "itkRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -72,7 +72,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Types should be selected on the desired input and output pixel types.
@@ -80,10 +79,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -92,13 +90,11 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -111,18 +107,17 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RecursiveGaussianImageFilter<
-                        InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
-
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
-
   //  Software Guide : BeginLatex
   //
   //  This filter applies the approximation of the convolution along a single
-  //  dimension. It is therefore necessary to concatenate several of these filters
+  //  dimension. It is therefore necessary to concatenate several of these
+  // filters
   //  to produce smoothing in all directions.  In this example, we create a pair
   //  of filters since we are processing a $2D$ image.  The filters are
   //  created by invoking the \code{New()} method and assigning the result to
@@ -153,7 +148,6 @@ int main( int argc, char * argv[] )
   filterY->SetDirection( 1 );   // 1 --> Y direction
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The \doxygen{RecursiveGaussianImageFilter} can approximate the
@@ -174,7 +168,6 @@ int main( int argc, char * argv[] )
   filterX->SetOrder( FilterType::ZeroOrder );
   filterY->SetOrder( FilterType::ZeroOrder );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -212,11 +205,11 @@ int main( int argc, char * argv[] )
   filterY->SetNormalizeAcrossScale( false );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input image can be obtained from the output of another
-  //  filter. Here, an image reader is used as the source. The image is passed to
+  //  filter. Here, an image reader is used as the source. The image is passed
+  // to
   //  the $x$ filter and then to the $y$ filter. The reason for keeping these
   //  two filters separate is that it is usual in scale-space applications to
   //  compute not only the smoothing but also combinations of derivatives at
@@ -231,7 +224,6 @@ int main( int argc, char * argv[] )
   filterX->SetInput( reader->GetOutput() );
   filterY->SetInput( filterX->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -253,7 +245,6 @@ int main( int argc, char * argv[] )
   filterY->SetSigma( sigma );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally the pipeline is executed by invoking the \code{Update()} method.
@@ -262,22 +253,20 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filterY->Update();
   // Software Guide : EndCodeSnippet
 
-
-  typedef unsigned char                              WritePixelType;
-  typedef itk::Image< WritePixelType, 2 >            WriteImageType;
+  typedef unsigned char                   WritePixelType;
+  typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::RescaleIntensityImageFilter<
-                   OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
 
@@ -285,34 +274,43 @@ int main( int argc, char * argv[] )
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{SmoothingRecursiveGaussianImageFilterOutput3}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{SmoothingRecursiveGaussianImageFilterOutput5}
-  // \itkcaption[Output of the SmoothingRecursiveGaussianImageFilter.]{Effect of the
-  // SmoothingRecursiveGaussianImageFilter on a slice from a MRI proton density image
+  // \itkcaption[Output of the SmoothingRecursiveGaussianImageFilter.]{Effect of
+  // the
+  // SmoothingRecursiveGaussianImageFilter on a slice from a MRI proton density
+  // image
   // of the brain.}
   // \label{fig:SmoothingRecursiveGaussianImageFilterInputOutput}
   // \end{figure}
   //
-  //  Figure~\ref{fig:SmoothingRecursiveGaussianImageFilterInputOutput} illustrates the
+  //  Figure~\ref{fig:SmoothingRecursiveGaussianImageFilterInputOutput}
+  // illustrates the
   //  effect of this filter on a MRI proton density image of the brain using
   //  $\sigma$ values of $3$ (left) and $5$ (right).  The figure shows how the
   //  attenuation of noise can be regulated by selecting the appropriate
   //  standard deviation.  This type of scale-tunable filter is suitable for
   //  performing scale-space analysis.
   //
-  //  The RecursiveGaussianFilters can also be applied on multi-component images. For instance,
-  //  the above filter could have applied with RGBPixel as the pixel type. Each component is
-  //  then independently filtered. However the RescaleIntensityImageFilter will not work on
-  //  RGBPixels since it does not mathematically make sense to rescale the output
+  //  The RecursiveGaussianFilters can also be applied on multi-component
+  // images. For instance,
+  //  the above filter could have applied with RGBPixel as the pixel type. Each
+  // component is
+  //  then independently filtered. However the RescaleIntensityImageFilter will
+  // not work on
+  //  RGBPixels since it does not mathematically make sense to rescale the
+  // output
   //  of multi-component images.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

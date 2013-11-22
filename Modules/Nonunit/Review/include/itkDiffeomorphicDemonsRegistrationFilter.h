@@ -75,16 +75,16 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class DiffeomorphicDemonsRegistrationFilter:
+class DiffeomorphicDemonsRegistrationFilter :
   public PDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
                                           TDisplacementField >
 {
 public:
   /** Standard class typedefs. */
-  typedef DiffeomorphicDemonsRegistrationFilter                                           Self;
+  typedef DiffeomorphicDemonsRegistrationFilter                                            Self;
   typedef PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField > Superclass;
-  typedef SmartPointer< Self >                                                            Pointer;
-  typedef SmartPointer< const Self >                                                      ConstPointer;
+  typedef SmartPointer< Self >                                                             Pointer;
+  typedef SmartPointer< const Self >                                                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -157,7 +157,9 @@ public:
 
 protected:
   DiffeomorphicDemonsRegistrationFilter();
-  ~DiffeomorphicDemonsRegistrationFilter() {}
+  ~DiffeomorphicDemonsRegistrationFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration. */
@@ -185,22 +187,22 @@ private:
 
   /** Exp and composition typedefs */
   typedef MultiplyImageFilter< DisplacementFieldType,
-    itk::Image<TimeStepType, ImageDimension>,
-    DisplacementFieldType >                              MultiplyByConstantType;
+                               itk::Image<TimeStepType, ImageDimension>,
+                               DisplacementFieldType >                              MultiplyByConstantType;
 
   typedef ExponentialDisplacementFieldImageFilter<
-    DisplacementFieldType, DisplacementFieldType >        FieldExponentiatorType;
+      DisplacementFieldType, DisplacementFieldType >        FieldExponentiatorType;
 
   typedef WarpVectorImageFilter<
-    DisplacementFieldType,
-    DisplacementFieldType, DisplacementFieldType >        VectorWarperType;
+      DisplacementFieldType,
+      DisplacementFieldType, DisplacementFieldType >        VectorWarperType;
 
   typedef VectorLinearInterpolateNearestNeighborExtrapolateImageFunction<
-    DisplacementFieldType, double >                      FieldInterpolatorType;
+      DisplacementFieldType, double >                      FieldInterpolatorType;
 
   typedef AddImageFilter<
-    DisplacementFieldType,
-    DisplacementFieldType, DisplacementFieldType >        AdderType;
+      DisplacementFieldType,
+      DisplacementFieldType, DisplacementFieldType >        AdderType;
 
   typedef typename MultiplyByConstantType::Pointer   MultiplyByConstantPointer;
   typedef typename FieldExponentiatorType::Pointer   FieldExponentiatorPointer;

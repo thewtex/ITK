@@ -18,7 +18,6 @@
 #ifndef __itkGroupSpatialObject_hxx
 #define __itkGroupSpatialObject_hxx
 
-
 #include "itkGroupSpatialObject.h"
 
 namespace itk
@@ -41,7 +40,8 @@ GroupSpatialObject< TDimension >
 template< unsigned int TDimension >
 GroupSpatialObject< TDimension >
 ::~GroupSpatialObject()
-{}
+{
+}
 
 /** Print the object */
 template< unsigned int TDimension >
@@ -52,6 +52,7 @@ GroupSpatialObject< TDimension >
   os << indent << "GroupSpatialObject(" << this << ")" << std::endl;
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif // end __itkGroupSpatialObject_hxx

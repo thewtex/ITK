@@ -52,15 +52,17 @@ namespace itk
  */
 
 template< typename T >
-class ObjectFactory:public ObjectFactoryBase
+class ObjectFactory : public ObjectFactoryBase
 {
 public:
-  static typename T::Pointer Create()
+  static typename T::Pointer
+  Create()
   {
     LightObject::Pointer ret = CreateInstance( typeid( T ).name() );
 
     return dynamic_cast< T * >( ret.GetPointer() );
   }
+
 };
 } // end namespace itk
 

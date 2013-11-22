@@ -34,24 +34,21 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkPolygonSpatialObject.h"
 #include "itkSpatialObjectToImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileWriter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc != 2 )
     {
     std::cerr << "Usage: " << argv[0] << " outputimagefile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -62,11 +59,10 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef unsigned char PixelType;
-  const unsigned int    Dimension = 3;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >       ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -76,9 +72,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::PolygonSpatialObject< Dimension >  PolygonType;
+  typedef itk::PolygonSpatialObject< Dimension > PolygonType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -89,12 +84,11 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::SpatialObjectToImageFilter<
-    PolygonType, ImageType >   SpatialObjectToImageFilterType;
+      PolygonType, ImageType >   SpatialObjectToImageFilterType;
 
   SpatialObjectToImageFilterType::Pointer imageFilter =
     SpatialObjectToImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -122,7 +116,6 @@ int main( int argc, char *argv[] )
   imageFilter->SetSpacing( spacing );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We create the polygon object.
@@ -133,7 +126,6 @@ int main( int argc, char *argv[] )
   PolygonType::Pointer polygon = PolygonType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We populate the points of the polygon by computing the edges of a
@@ -142,8 +134,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  const unsigned int numberOfPoints = 6;
-  PolygonType::PointType point;
+  const unsigned int                 numberOfPoints = 6;
+  PolygonType::PointType             point;
   PolygonType::PointType::VectorType radial;
   radial[0] = 0.0;
   radial[1] = 0.0;
@@ -179,7 +171,6 @@ int main( int argc, char *argv[] )
   imageFilter->SetInput(  polygon  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally we are ready to run the filter. We use the typical invocation of
@@ -189,7 +180,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< ImageType >     WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[1] );
@@ -206,7 +197,6 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

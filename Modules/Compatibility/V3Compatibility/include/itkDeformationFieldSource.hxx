@@ -36,8 +36,8 @@ DeformationFieldSource< TOutputImage >
   m_OutputDirection.SetIdentity();
 
   typedef ThinPlateSplineKernelTransform<
-    double,
-    itkGetStaticConstMacro(ImageDimension) >  DefaultTransformType;
+      double,
+      itkGetStaticConstMacro(ImageDimension) >  DefaultTransformType;
 
   m_KernelTransform = DefaultTransformType::New();
 }
@@ -73,6 +73,7 @@ DeformationFieldSource< TOutputImage >
   const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
     {
     s[i] = static_cast< typename SpacingType::ValueType >(spacing[i]);
@@ -147,7 +148,7 @@ DeformationFieldSource< TOutputImage >
 
   // Create an iterator that will walk the output region for this thread.
   typedef ImageRegionIteratorWithIndex<
-    TOutputImage > OutputIterator;
+      TOutputImage > OutputIterator;
 
   OutputImageRegionType region = outputPtr->GetRequestedRegion();
 
@@ -203,6 +204,7 @@ DeformationFieldSource< TOutputImage >
 
   // get pointers to the input and output
   OutputImagePointer outputPtr = this->GetOutput();
+
   if ( !outputPtr )
     {
     return;
@@ -252,6 +254,7 @@ DeformationFieldSource< TOutputImage >
     }
   return latestTime;
 }
+
 } // end namespace itk
 
 #endif

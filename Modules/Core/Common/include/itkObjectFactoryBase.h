@@ -55,7 +55,7 @@ namespace itk
 
 class OverRideMap;
 
-class ITKCommon_EXPORT ObjectFactoryBase:public Object
+class ITKCommon_EXPORT ObjectFactoryBase : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -122,7 +122,7 @@ public:
    * Returns false if factory is already loaded.
    */
   static bool RegisterFactory(ObjectFactoryBase *,
-    InsertionPositionType where=INSERT_AT_BACK, size_t position = 0);
+                              InsertionPositionType where=INSERT_AT_BACK, size_t position = 0);
 
   /** Remove a factory from the list of registered factories. */
   static void UnRegisterFactory(ObjectFactoryBase *);
@@ -147,8 +147,11 @@ public:
    * the versions do not match, only a warning message is printed out in the
    * console, and the factory is still registered. */
   static void SetStrictVersionChecking( bool );
+
   static void StrictVersionCheckingOn();
+
   static void StrictVersionCheckingOff();
+
   static bool GetStrictVersionChecking();
 
   /** Return a descriptive string describing the factory. */
@@ -192,7 +195,7 @@ public:
     std::string m_OverrideWithName;
     bool m_EnabledFlag;
     CreateObjectFunctionBase::Pointer m_CreateObject;
-  };
+    };
 
 protected:
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -216,7 +219,8 @@ protected:
   CreateAllObject(const char *itkclassname);
 
   ObjectFactoryBase();
-  virtual ~ObjectFactoryBase();
+  virtual
+  ~ObjectFactoryBase();
 
 private:
   OverRideMap *m_OverrideMap;
@@ -248,7 +252,7 @@ private:
   unsigned long m_LibraryDate;
   std::string   m_LibraryPath;
 
-  static  bool  m_StrictVersionChecking;
+  static  bool m_StrictVersionChecking;
 };
 } // end namespace itk
 

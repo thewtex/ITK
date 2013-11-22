@@ -140,6 +140,7 @@ NarrowBandImageFilterBase< TInputImage, TOutputImage >
     ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
 
   IdentifierType iter = 0;
+
   while ( !( this->ThreadedHalt(arg) ) )
     {
     if ( threadId == 0 )
@@ -288,9 +289,9 @@ NarrowBandImageFilterBase< TInputImage, TOutputImage >
     newvalue = oldvalue + dt * it->m_Data;
     //Check whether solution is out the inner band or not
     m_TouchedForThread[threadId] =
-        ( m_TouchedForThread[threadId]
-          || ( !( it->m_NodeState & INNER_MASK )
-               && ( ( oldvalue > 0 ) != ( newvalue > 0 ) ) ) );
+      ( m_TouchedForThread[threadId]
+        || ( !( it->m_NodeState & INNER_MASK )
+             && ( ( oldvalue > 0 ) != ( newvalue > 0 ) ) ) );
     image->SetPixel(it->m_Index, newvalue);
     }
 }
@@ -305,7 +306,7 @@ NarrowBandImageFilterBase< TInputImage, TOutputImage >
   typedef typename OutputImageType::SizeType OutputSizeType;
 
   typedef typename FiniteDifferenceFunctionType::NeighborhoodType
-  NeighborhoodIteratorType;
+    NeighborhoodIteratorType;
 
   typename OutputImageType::Pointer output = this->GetOutput();
   TimeStepType timeStep;
@@ -370,10 +371,12 @@ NarrowBandImageFilterBase< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "IsoSurfaceValue: "
      << static_cast< typename NumericTraits< ValueType >::PrintType >( m_IsoSurfaceValue )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

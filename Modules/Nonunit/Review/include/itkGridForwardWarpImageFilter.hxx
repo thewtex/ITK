@@ -67,7 +67,7 @@ void
 GridForwardWarpImageFilter< TDisplacementField, TOutputImage >
 ::GenerateData()
 {
-  OutputImagePointer           outputPtr = this->GetOutput();
+  OutputImagePointer            outputPtr = this->GetOutput();
   DisplacementFieldConstPointer fieldPtr = this->GetInput();
 
   SpacingType spacing = fieldPtr->GetSpacing();
@@ -80,7 +80,7 @@ GridForwardWarpImageFilter< TDisplacementField, TOutputImage >
 
   IndexType FirstIndex = fieldPtr->GetRequestedRegion().GetIndex();
   IndexType LastIndex = fieldPtr->GetRequestedRegion().GetIndex()
-                        + fieldPtr->GetRequestedRegion().GetSize();
+    + fieldPtr->GetRequestedRegion().GetSize();
 
   // iterator for the output image
   typedef ImageRegionIteratorWithIndex< OutputImageType > OutputImageIteratorWithIndex;
@@ -171,6 +171,7 @@ GridForwardWarpImageFilter< TDisplacementField, TOutputImage >
 
   //ProgressReporter progress(this, 0, numiter+1, numiter+1);
 }
+
 } // end namespace itk
 
 #endif

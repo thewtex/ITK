@@ -21,7 +21,8 @@
 
 #include "itkMeanProjectionImageFilter.h"
 
-int itkMeanProjectionImageFilterTest(int argc, char * argv[])
+int
+itkMeanProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
     {

@@ -65,7 +65,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh >
-class NormalQuadEdgeMeshFilter:
+class NormalQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -174,6 +174,7 @@ protected:
 private:
   NormalQuadEdgeMeshFilter (const Self &);
   void operator=(const Self &);
+
 };
 }
 

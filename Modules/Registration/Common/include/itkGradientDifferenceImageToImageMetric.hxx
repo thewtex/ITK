@@ -147,6 +147,7 @@ GradientDifferenceImageToImageMetric< TFixedImage, TMovingImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "DerivativeDelta: " << this->m_DerivativeDelta << std::endl;
 }
 
@@ -164,7 +165,7 @@ GradientDifferenceImageToImageMetric< TFixedImage, TMovingImage >
   for ( iDimension = 0; iDimension < FixedImageDimension; iDimension++ )
     {
     typedef itk::ImageRegionConstIteratorWithIndex<
-      MovedGradientImageType > IteratorType;
+        MovedGradientImageType > IteratorType;
 
     IteratorType iterate( m_MovedSobelFilters[iDimension]->GetOutput(),
                           this->GetFixedImageRegion() );
@@ -209,7 +210,7 @@ GradientDifferenceImageToImageMetric< TFixedImage, TMovingImage >
   for ( iDimension = 0; iDimension < FixedImageDimension; iDimension++ )
     {
     typedef itk::ImageRegionConstIteratorWithIndex<
-      FixedGradientImageType > IteratorType;
+        FixedGradientImageType > IteratorType;
 
     IteratorType iterate( m_FixedSobelFilters[iDimension]->GetOutput(),
                           this->GetFixedImageRegion() );
@@ -299,13 +300,13 @@ GradientDifferenceImageToImageMetric< TFixedImage, TMovingImage >
     MovedGradientPixelType diff;
 
     typedef  itk::ImageRegionConstIteratorWithIndex< FixedGradientImageType >
-    FixedIteratorType;
+      FixedIteratorType;
 
     FixedIteratorType fixedIterator( m_FixedSobelFilters[iDimension]->GetOutput(),
                                      this->GetFixedImageRegion() );
 
     typedef  itk::ImageRegionConstIteratorWithIndex< MovedGradientImageType >
-    MovedIteratorType;
+      MovedIteratorType;
 
     MovedIteratorType movedIterator( m_MovedSobelFilters[iDimension]->GetOutput(),
                                      this->GetFixedImageRegion() );
@@ -421,6 +422,7 @@ GradientDifferenceImageToImageMetric< TFixedImage, TMovingImage >
   Value      = this->GetValue(parameters);
   this->GetDerivative(parameters, Derivative);
 }
+
 } // end namespace itk
 
 #endif

@@ -92,7 +92,7 @@ template< typename TPointSet >
 inline const typename PointSetToListSampleAdaptor< TPointSet >::MeasurementVectorType &
 PointSetToListSampleAdaptor< TPointSet >
 ::GetMeasurementVector(InstanceIdentifier identifier) const
-{
+  {
   if ( m_PointSet.IsNull() )
     {
     itkExceptionMacro("Point set has not been set yet");
@@ -100,7 +100,7 @@ PointSetToListSampleAdaptor< TPointSet >
 
   m_PointSet->GetPoint(identifier, &m_TempPoint);
   return ( MeasurementVectorType & )m_TempPoint;
-}
+  }
 
 template< typename TPointSet >
 inline typename PointSetToListSampleAdaptor< TPointSet >::AbsoluteFrequencyType
@@ -127,6 +127,7 @@ PointSetToListSampleAdaptor< TPointSet >
 
   return this->Size();
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

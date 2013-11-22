@@ -21,7 +21,8 @@
 #include "itkLabelObject.h"
 #include "itkLabelMapFilter.h"
 
-int itkLabelMapFilterTest(int argc, char * argv[])
+int
+itkLabelMapFilterTest(int argc, char * argv[])
 {
 
   if( argc != 1 )

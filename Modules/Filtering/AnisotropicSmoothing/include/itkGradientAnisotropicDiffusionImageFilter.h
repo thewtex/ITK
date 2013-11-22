@@ -47,14 +47,14 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TInputImage, typename TOutputImage >
-class GradientAnisotropicDiffusionImageFilter:
+class GradientAnisotropicDiffusionImageFilter :
   public AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
   typedef GradientAnisotropicDiffusionImageFilter Self;
   typedef AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -86,7 +86,8 @@ protected:
     this->SetDifferenceFunction(p);
   }
 
-  ~GradientAnisotropicDiffusionImageFilter() {}
+  ~GradientAnisotropicDiffusionImageFilter() {
+  }
 
 private:
   GradientAnisotropicDiffusionImageFilter(const Self &); //purposely not

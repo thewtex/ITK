@@ -61,10 +61,10 @@ class ParticleSwarmOptimizer :
 {
 public:
   /** Standard "Self" typedef. */
-  typedef ParticleSwarmOptimizer              Self;
-  typedef ParticleSwarmOptimizerBase          Superclass;
-  typedef SmartPointer<Self>                  Pointer;
-  typedef SmartPointer<const Self>            ConstPointer;
+  typedef ParticleSwarmOptimizer     Self;
+  typedef ParticleSwarmOptimizerBase Superclass;
+  typedef SmartPointer<Self>         Pointer;
+  typedef SmartPointer<const Self>   ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self )
@@ -93,17 +93,19 @@ public:
 
 protected:
   ParticleSwarmOptimizer();
-  virtual ~ParticleSwarmOptimizer();
+  virtual
+  ~ParticleSwarmOptimizer();
   void PrintSelf(std::ostream& os, Indent indent) const;
+
   virtual void UpdateSwarm();
 
 private:
   ParticleSwarmOptimizer(const Self&); //purposely not implemented
-  void operator=(const Self&);//purposely not implemented
+  void operator=(const Self&);         //purposely not implemented
 
-  ParametersType::ValueType                    m_InertiaCoefficient;
-  ParametersType::ValueType                    m_PersonalCoefficient;
-  ParametersType::ValueType                    m_GlobalCoefficient;
+  ParametersType::ValueType m_InertiaCoefficient;
+  ParametersType::ValueType m_PersonalCoefficient;
+  ParametersType::ValueType m_GlobalCoefficient;
 };
 
 } // end namespace itk

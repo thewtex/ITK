@@ -39,7 +39,7 @@ namespace itk
  *
  * \ingroup ITKReview
  */
-class JPEG2000ImageIOFactory:public ObjectFactoryBase
+class JPEG2000ImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -55,13 +55,17 @@ public:
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
-  static JPEG2000ImageIOFactory * FactoryNew() { return new JPEG2000ImageIOFactory; }
+  static JPEG2000ImageIOFactory *
+  FactoryNew() {
+    return new JPEG2000ImageIOFactory;
+  }
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(JPEG2000ImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory()
+  static void
+  RegisterOneFactory()
   {
     JPEG2000ImageIOFactory::Pointer metaFactory = JPEG2000ImageIOFactory::New();
 
@@ -75,6 +79,7 @@ protected:
 private:
   JPEG2000ImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

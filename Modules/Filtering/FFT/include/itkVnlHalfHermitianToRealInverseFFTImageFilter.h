@@ -39,8 +39,9 @@ namespace itk
  * \ingroup ITKFFT
  *
  */
-template< typename TInputImage, typename TOutputImage=Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
-class VnlHalfHermitianToRealInverseFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
+class VnlHalfHermitianToRealInverseFFTImageFilter :
   public HalfHermitianToRealInverseFFTImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -87,14 +88,21 @@ public:
 #endif
 
 protected:
-  VnlHalfHermitianToRealInverseFFTImageFilter()  {}
-  virtual ~VnlHalfHermitianToRealInverseFFTImageFilter(){}
+  VnlHalfHermitianToRealInverseFFTImageFilter()  {
+  }
+
+  virtual
+  ~VnlHalfHermitianToRealInverseFFTImageFilter(){
+  }
 
   virtual void GenerateData();
 
 private:
-  VnlHalfHermitianToRealInverseFFTImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                          //purposely not implemented
+  VnlHalfHermitianToRealInverseFFTImageFilter(const Self &); //purposely not
+                                                             // implemented
+  void operator=(const Self &);                              //purposely not
+
+  // implemented
 
   typedef vnl_vector< InputPixelType  > SignalVectorType;
 };

@@ -43,15 +43,15 @@ namespace Statistics
  */
 
 template< typename TVectorContainer >
-class VectorContainerToListSampleAdaptor:
+class VectorContainerToListSampleAdaptor :
   public ListSample< typename TVectorContainer::Element >
 {
 public:
   /** Standard class typedefs */
-  typedef VectorContainerToListSampleAdaptor                   Self;
-  typedef ListSample<typename TVectorContainer::Element>       Superclass;
-  typedef SmartPointer< Self >                                 Pointer;
-  typedef SmartPointer< const Self >                           ConstPointer;
+  typedef VectorContainerToListSampleAdaptor             Self;
+  typedef ListSample<typename TVectorContainer::Element> Superclass;
+  typedef SmartPointer< Self >                           Pointer;
+  typedef SmartPointer< const Self >                     ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( VectorContainerToListSampleAdaptor, ListSample );
@@ -64,11 +64,11 @@ public:
                        TVectorContainer::Element::Dimension );
 
   /** VectorContainer typedefs */
-  typedef TVectorContainer                          VectorContainerType;
-  typedef typename TVectorContainer::Pointer        VectorContainerPointer;
-  typedef typename TVectorContainer::ConstPointer   VectorContainerConstPointer;
-  typedef typename TVectorContainer::Iterator       VectorContainerIterator;
-  typedef typename TVectorContainer::ConstIterator  VectorContainerConstIterator;
+  typedef TVectorContainer                         VectorContainerType;
+  typedef typename TVectorContainer::Pointer       VectorContainerPointer;
+  typedef typename TVectorContainer::ConstPointer  VectorContainerConstPointer;
+  typedef typename TVectorContainer::Iterator      VectorContainerIterator;
+  typedef typename TVectorContainer::ConstIterator VectorContainerConstIterator;
 
   /** Superclass typedefs for Measurement vector, measurement,
    * Instance Identifier, frequency, size, size element value */
@@ -104,7 +104,8 @@ public:
   class ConstIterator
   {
     friend class VectorContainerToListSampleAdaptor;
-  public:
+
+public:
 
     ConstIterator(const VectorContainerToListSampleAdaptor *adaptor)
     {
@@ -117,49 +118,56 @@ public:
       this->m_InstanceIdentifier = iter.m_InstanceIdentifier;
     }
 
-    ConstIterator & operator=(const ConstIterator & iter)
+    ConstIterator &
+    operator=(const ConstIterator & iter)
     {
       this->m_Iter = iter.m_Iter;
       this->m_InstanceIdentifier = iter.m_InstanceIdentifier;
       return *this;
     }
 
-    AbsoluteFrequencyType GetFrequency() const
+    AbsoluteFrequencyType
+    GetFrequency() const
     {
       return 1;
     }
 
-    const MeasurementVectorType & GetMeasurementVector() const
+    const MeasurementVectorType &
+    GetMeasurementVector() const
     {
       return ( const MeasurementVectorType & )m_Iter.Value();
     }
 
-    InstanceIdentifier GetInstanceIdentifier() const
+    InstanceIdentifier
+    GetInstanceIdentifier() const
     {
       return this->m_InstanceIdentifier;
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_Iter;
       ++m_InstanceIdentifier;
       return *this;
     }
 
-    bool operator!=( const ConstIterator & it )
+    bool
+    operator!=( const ConstIterator & it )
     {
       return ( this->m_Iter != it.m_Iter );
     }
 
-    bool operator==( const ConstIterator & it )
+    bool
+    operator==( const ConstIterator & it )
     {
       return ( this->m_Iter == it.m_Iter );
     }
 
-  protected:
+protected:
     // This method should only be available to the ListSample class
     ConstIterator( VectorContainerConstIterator iter,
-      InstanceIdentifier iid )
+                   InstanceIdentifier iid )
     {
       this->m_Iter = iter;
       this->m_InstanceIdentifier = iid;
@@ -167,32 +175,37 @@ public:
 
     // This method is purposely not implemented
     ConstIterator();
-  private:
-    VectorContainerConstIterator      m_Iter;
-    InstanceIdentifier                m_InstanceIdentifier;
+
+private:
+    VectorContainerConstIterator m_Iter;
+    InstanceIdentifier           m_InstanceIdentifier;
   };
 
   /** \class Iterator
    * \ingroup ITKStatistics
    */
-  class Iterator:public ConstIterator
+  class Iterator : public ConstIterator
   {
     friend class VectorContainerToListSampleAdaptor;
-  public:
 
-    Iterator(Self *adaptor):ConstIterator(adaptor)
-    {}
+public:
 
-    Iterator(const Iterator & iter):ConstIterator(iter)
-    {}
+    Iterator(Self *adaptor) : ConstIterator(adaptor)
+    {
+    }
 
-    Iterator & operator=(const Iterator & iter)
+    Iterator(const Iterator & iter) : ConstIterator(iter)
+    {
+    }
+
+    Iterator &
+    operator=(const Iterator & iter)
     {
       this->ConstIterator::operator=(iter);
       return *this;
     }
 
-  protected:
+protected:
     // To ensure const-correctness these method must not be in the public API.
     // The are purposly not implemented, since they should never be called.
     Iterator();
@@ -202,14 +215,16 @@ public:
     ConstIterator & operator=( const ConstIterator & it );
 
     Iterator( VectorContainerIterator iter, InstanceIdentifier iid )
-      :ConstIterator( iter, iid )
-    {}
+      : ConstIterator( iter, iid )
+    {
+    }
 
-  private:
+private:
   };
 
   /** returns an iterator that points to the beginning of the container */
-  Iterator Begin()
+  Iterator
+  Begin()
   {
     VectorContainerPointer nonConstVectorDataContainer =
       const_cast< VectorContainerType * >( this->m_VectorContainer.GetPointer() );
@@ -219,19 +234,21 @@ public:
   }
 
   /** returns an iterator that points to the end of the container */
-  Iterator End()
+  Iterator
+  End()
   {
     VectorContainerPointer nonConstVectorDataContainer =
       const_cast<VectorContainerType *>( this->m_VectorContainer.GetPointer() );
 
     Iterator iter( nonConstVectorDataContainer->End(),
-      this->m_VectorContainer->Size() );
+                   this->m_VectorContainer->Size() );
 
     return iter;
   }
 
   /** returns an iterator that points to the beginning of the container */
-  ConstIterator Begin() const
+  ConstIterator
+  Begin() const
   {
     ConstIterator iter( this->m_VectorContainer->Begin(), 0 );
 
@@ -239,26 +256,34 @@ public:
   }
 
   /** returns an iterator that points to the end of the container */
-  ConstIterator End() const
+  ConstIterator
+  End() const
   {
     ConstIterator iter( this->m_VectorContainer->End(),
-      this->m_VectorContainer->Size() );
+                        this->m_VectorContainer->Size() );
+
     return iter;
   }
 
 protected:
   VectorContainerToListSampleAdaptor();
 
-  virtual ~VectorContainerToListSampleAdaptor() {}
+  virtual
+  ~VectorContainerToListSampleAdaptor() {
+  }
+
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
-  VectorContainerToListSampleAdaptor( const Self &  ); //purposely not implemented
-  void operator=( const Self & );              //purposely not implemented
+  VectorContainerToListSampleAdaptor( const Self &  ); //purposely not
+                                                       // implemented
+  void operator=( const Self & );                      //purposely not
+
+  // implemented
 
   /** the points container which will be actually used for storing
    * measurement vectors */
-  VectorContainerConstPointer  m_VectorContainer;
+  VectorContainerConstPointer m_VectorContainer;
 
   /** temporary points for conversions */
   mutable typename VectorContainerType::Element m_TempPoint;

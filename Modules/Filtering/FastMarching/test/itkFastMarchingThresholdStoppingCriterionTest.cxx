@@ -18,7 +18,8 @@
 
 #include "itkFastMarchingThresholdStoppingCriterion.h"
 
-int itkFastMarchingThresholdStoppingCriterionTest( int , char * [] )
+int
+itkFastMarchingThresholdStoppingCriterionTest( int , char * [] )
 {
   typedef itk::Image< float, 2> ImageType;
 
@@ -34,7 +35,7 @@ int itkFastMarchingThresholdStoppingCriterionTest( int , char * [] )
   typedef itk::QuadEdgeMesh< float, 3 > MeshType;
 
   typedef itk::FastMarchingThresholdStoppingCriterion< MeshType, MeshType >
-      MeshStoppingCriterionType;
+    MeshStoppingCriterionType;
 
   MeshStoppingCriterionType::Pointer mesh_criterion = MeshStoppingCriterionType::New();
   if( mesh_criterion.IsNull() )

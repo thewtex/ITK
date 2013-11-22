@@ -18,7 +18,6 @@
 #ifndef _itkArchetypeSeriesFileNames_h
 #define _itkArchetypeSeriesFileNames_h
 
-
 #include "itkArchetypeSeriesFileNames.h"
 #include "itkRegularExpressionSeriesFileNames.h"
 #include "itksys/SystemTools.hxx"
@@ -27,8 +26,9 @@
 namespace itk
 {
 ArchetypeSeriesFileNames
-::ArchetypeSeriesFileNames():m_Archetype("")
-{}
+::ArchetypeSeriesFileNames() : m_Archetype("")
+{
+}
 
 void
 ArchetypeSeriesFileNames
@@ -137,10 +137,10 @@ ArchetypeSeriesFileNames
     pathPrefix = "";
     }
 
-  StringVectorType      regExpFileNameVector;
-  std::string           regExpString = "([0-9]+)";
-  IntVectorType         numGroupStart;
-  IntVectorType         numGroupLength;
+  StringVectorType regExpFileNameVector;
+  std::string      regExpString = "([0-9]+)";
+  IntVectorType    numGroupStart;
+  IntVectorType    numGroupLength;
   for ( std::string::iterator sit = fileName.begin(); sit < fileName.end(); ++sit )
     {
     // If the element is a number, find its starting index and length.
@@ -251,6 +251,7 @@ ArchetypeSeriesFileNames
       }
     }
 }
+
 } //namespace ITK
 
 #endif

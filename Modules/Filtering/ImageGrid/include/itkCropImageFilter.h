@@ -40,7 +40,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class CropImageFilter:
+class CropImageFilter :
   public ExtractImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -83,7 +83,8 @@ public:
   itkSetMacro(LowerBoundaryCropSize, SizeType);
   itkGetConstMacro(LowerBoundaryCropSize, SizeType);
 
-  void SetBoundaryCropSize(const SizeType & s)
+  void
+  SetBoundaryCropSize(const SizeType & s)
   {
     this->SetUpperBoundaryCropSize(s);
     this->SetLowerBoundaryCropSize(s);
@@ -106,7 +107,9 @@ protected:
     m_LowerBoundaryCropSize.Fill(0);
   }
 
-  ~CropImageFilter() {}
+  ~CropImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateOutputInformation();

@@ -67,7 +67,7 @@ namespace itk
  * \endwiki
  */
 template< typename TLabelObject >
-class LabelMap:public ImageBase< TLabelObject::ImageDimension >
+class LabelMap : public ImageBase< TLabelObject::ImageDimension >
 {
 public:
   /** Standard class typedefs */
@@ -146,6 +146,7 @@ public:
    * or if the label is the background one.
    */
   LabelObjectType * GetLabelObject(const LabelType & label);
+
   const LabelObjectType * GetLabelObject(const LabelType & label) const;
 
   /**
@@ -162,6 +163,7 @@ public:
    * This method thorws an exception if the index doesn't exist in this image.
    */
   LabelObjectType * GetNthLabelObject(const SizeValueType & pos);
+
   const LabelObjectType * GetNthLabelObject(const SizeValueType & pos) const;
 
   /**
@@ -269,7 +271,8 @@ public:
    */
   void PrintLabelObjects(std::ostream & os) const;
 
-  void PrintLabelObjects() const
+  void
+  PrintLabelObjects() const
   {
     this->PrintLabelObjects(std::cerr);
   }
@@ -285,9 +288,10 @@ public:
    */
   class ConstIterator
   {
-  public:
+public:
 
-    ConstIterator() {}
+    ConstIterator() {
+    }
 
     ConstIterator(const Self *lm)
     {
@@ -303,7 +307,8 @@ public:
       m_End = iter.m_End;
     }
 
-    ConstIterator & operator=(const ConstIterator & iter)
+    ConstIterator &
+    operator=(const ConstIterator & iter)
     {
       m_Iterator = iter.m_Iterator;
       m_Begin = iter.m_Begin;
@@ -311,50 +316,59 @@ public:
       return *this;
     }
 
-    const LabelObjectType * GetLabelObject() const
+    const LabelObjectType *
+    GetLabelObject() const
     {
       return m_Iterator->second;
     }
 
-    const LabelType & GetLabel() const
+    const LabelType &
+    GetLabel() const
     {
       return m_Iterator->first;
     }
 
-    ConstIterator operator++(int)
+    ConstIterator
+    operator++(int)
     {
       ConstIterator tmp = *this;
+
       ++(*this);
       return tmp;
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_Iterator;
       return *this;
     }
 
-  bool operator==(const ConstIterator & iter) const
+    bool
+    operator==(const ConstIterator & iter) const
     {
-    return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
+      return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
     }
 
-  bool operator!=(const ConstIterator & iter) const
+    bool
+    operator!=(const ConstIterator & iter) const
     {
-    return !( *this == iter );
+      return !( *this == iter );
     }
 
-  void GoToBegin()
+    void
+    GoToBegin()
     {
       m_Iterator = m_Begin;
     }
 
-    bool IsAtEnd() const
+    bool
+    IsAtEnd() const
     {
       return m_Iterator == m_End;
     }
 
-  private:
+private:
     typedef typename std::map< LabelType, LabelObjectPointerType >::const_iterator InternalIteratorType;
     InternalIteratorType m_Iterator;
     InternalIteratorType m_Begin;
@@ -367,9 +381,10 @@ public:
    */
   class Iterator
   {
-  public:
+public:
 
-    Iterator() {}
+    Iterator() {
+    }
 
     Iterator(Self *lm)
     {
@@ -385,7 +400,8 @@ public:
       m_End = iter.m_End;
     }
 
-    Iterator & operator=(const Iterator & iter)
+    Iterator &
+    operator=(const Iterator & iter)
     {
       m_Iterator = iter.m_Iterator;
       m_Begin = iter.m_Begin;
@@ -393,50 +409,59 @@ public:
       return *this;
     }
 
-    LabelObjectType * GetLabelObject()
+    LabelObjectType *
+    GetLabelObject()
     {
       return m_Iterator->second;
     }
 
-    const LabelType & GetLabel() const
+    const LabelType &
+    GetLabel() const
     {
       return m_Iterator->first;
     }
 
-    Iterator operator++(int)
+    Iterator
+    operator++(int)
     {
       Iterator tmp = *this;
+
       ++(*this);
       return tmp;
     }
 
-    Iterator & operator++()
+    Iterator &
+    operator++()
     {
       ++m_Iterator;
       return *this;
     }
 
-  bool operator==(const Iterator & iter) const
+    bool
+    operator==(const Iterator & iter) const
     {
-    return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
+      return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
     }
 
-  bool operator!=(const Iterator & iter) const
+    bool
+    operator!=(const Iterator & iter) const
     {
-    return !( *this == iter );
+      return !( *this == iter );
     }
 
-  void GoToBegin()
+    void
+    GoToBegin()
     {
       m_Iterator = m_Begin;
     }
 
-    bool IsAtEnd() const
+    bool
+    IsAtEnd() const
     {
       return m_Iterator == m_End;
     }
 
-  private:
+private:
     typedef typename std::map< LabelType, LabelObjectPointerType >::iterator InternalIteratorType;
     InternalIteratorType m_Iterator;
     InternalIteratorType m_Begin;
@@ -447,7 +472,10 @@ public:
 
 protected:
   LabelMap();
-  virtual ~LabelMap() {}
+  virtual
+  ~LabelMap() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -458,7 +486,7 @@ private:
   typedef std::map< LabelType, LabelObjectPointerType > LabelObjectContainerType;
   typedef typename LabelObjectContainerType::iterator   LabelObjectContainerIterator;
   typedef typename LabelObjectContainerType::const_iterator
-                                                        LabelObjectContainerConstIterator;
+    LabelObjectContainerConstIterator;
 
   LabelObjectContainerType m_LabelObjectContainer;
   LabelType                m_BackgroundValue;
@@ -470,6 +498,7 @@ private:
   void RemovePixel( const LabelObjectContainerIterator& it,
                     const IndexType& idx,
                     bool iEmitModifiedEvent );
+
 };
 } // end namespace itk
 

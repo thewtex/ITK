@@ -46,7 +46,7 @@ ProductInputFunction <TMeasurementVector,ScalarType>
 ::Evaluate(const TMeasurementVector& input)  const
 {
   vnl_vector<ScalarType> temp(input);
-  ScalarType product = temp[0];
+  ScalarType             product = temp[0];
   for (unsigned int i = 1; i < input.Size(); i++)
     {
     product *= temp[i];

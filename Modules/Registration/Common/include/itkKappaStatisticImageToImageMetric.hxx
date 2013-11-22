@@ -264,7 +264,7 @@ KappaStatisticImageToImageMetric<TFixedImage, TMovingImage>
       // which is equivalent to round up the point components.
       typedef typename OutputPointType::CoordRepType CoordRepType;
       typedef ContinuousIndex<CoordRepType, MovingImageType::ImageDimension>
-      MovingImageContinuousIndexType;
+        MovingImageContinuousIndexType;
 
       MovingImageContinuousIndexType tempIndex;
       this->m_MovingImage->TransformPhysicalPointToContinuousIndex(transformedPoint, tempIndex);
@@ -339,7 +339,8 @@ KappaStatisticImageToImageMetric<TFixedImage, TMovingImage>
     for( unsigned int i = 0; i < dim; i++ )
       {
       if( ( currIndex[i] == 0 )
-          || ( static_cast<typename MovingImageType::SizeType::SizeValueType>( currIndex[i] ) == ( movingSize[i] - 1 ) ) )
+          || ( static_cast<typename MovingImageType::SizeType::SizeValueType>( currIndex[i] ) ==
+               ( movingSize[i] - 1 ) ) )
         {
         tempGradPixel[i] = 0;
         }
@@ -395,6 +396,7 @@ KappaStatisticImageToImageMetric<TFixedImage, TMovingImage>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Complement: "         << ( m_Complement ? "On" : "Off" )  << std::endl;
   os << indent << "ForegroundValue: "    << m_ForegroundValue << std::endl;
 }

@@ -28,7 +28,7 @@ double MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, 
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction, typename TIdCell >
 const typename MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
-                                                                TOutputImage, TFunction, TIdCell >::ValueType
+                                                            TOutputImage, TFunction, TIdCell >::ValueType
 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage, TFunction, TIdCell >
 ::m_ValueOne = NumericTraits< typename
                               MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage,
@@ -37,7 +37,7 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutput
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction, typename TIdCell >
 const typename MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
-                                                                TOutputImage, TFunction, TIdCell >::ValueType
+                                                            TOutputImage, TFunction, TIdCell >::ValueType
 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage, TFunction, TIdCell >
 ::m_ValueZero = NumericTraits< typename
                                MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage,
@@ -46,7 +46,7 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutput
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction, typename TIdCell >
 const typename MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
-                                                                TOutputImage, TFunction, TIdCell >::StatusType
+                                                            TOutputImage, TFunction, TIdCell >::StatusType
 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage, TFunction, TIdCell >
 ::m_StatusNull = NumericTraits< typename
                                 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage,
@@ -55,25 +55,25 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutput
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction, typename TIdCell >
 const typename MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
-                                                                TOutputImage, TFunction, TIdCell >::StatusType
+                                                            TOutputImage, TFunction, TIdCell >::StatusType
 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage, TFunction, TIdCell >
 ::m_StatusChanging = -1;
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction, typename TIdCell >
 const typename MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
-                                                                TOutputImage, TFunction, TIdCell >::StatusType
+                                                            TOutputImage, TFunction, TIdCell >::StatusType
 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage, TFunction, TIdCell >
 ::m_StatusActiveChangingUp = -2;
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction, typename TIdCell >
 const typename MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
-                                                                TOutputImage, TFunction, TIdCell >::StatusType
+                                                            TOutputImage, TFunction, TIdCell >::StatusType
 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage, TFunction, TIdCell >
 ::m_StatusActiveChangingDown = -3;
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction, typename TIdCell >
 const typename MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
-                                                                TOutputImage, TFunction, TIdCell >::StatusType
+                                                            TOutputImage, TFunction, TIdCell >::StatusType
 MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutputImage, TFunction, TIdCell >
 ::m_StatusBoundaryPixel = -4;
 
@@ -168,13 +168,14 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutput
 
     FiniteDifferenceFunctionFloatOffsetType offset;
     ValueType                               gradientMagnitudeSqr,
-                                            forward, backward, current;
+      forward, backward, current;
     const ValueType MIN_NORM      = 1.0e-6;
 
     void *globalData = df->GetGlobalDataPointer();
 
     NeighborhoodIterator< InputImageType > outputIt ( df->GetRadius(),
-                                                      this->m_LevelSet[fId], this->m_LevelSet[fId]->GetRequestedRegion() );
+                                                      this->m_LevelSet[fId],
+                                                      this->m_LevelSet[fId]->GetRequestedRegion() );
 
     if ( m_BoundsCheckingActive == false )
       {
@@ -441,7 +442,7 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
     for ( i = 0; i < m_NeighborList.GetSize(); ++i )
       {
       neighbor_status = statusIt.GetPixel (
-        m_NeighborList.GetArrayIndex (i) );
+          m_NeighborList.GetArrayIndex (i) );
 
       // Have we bumped up against the boundary?  If so, turn on bounds
       // checking.
@@ -460,7 +461,7 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
           {
           node = sparsePtr->m_LayerNodeStore->Borrow();
           node->m_Value = statusIt.GetIndex()
-                          + m_NeighborList.GetNeighborhoodOffset (i);
+            + m_NeighborList.GetNeighborhoodOffset (i);
           OutputList->PushFront (node);
           } // else this index was out of bounds.
         }
@@ -694,7 +695,7 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
     unsigned int center; // index to active layer pixel
     center = outputIt.Size() / 2;
     ValueType dx, gradientMagnitude, gradientMagnitudeSqr,
-              distance, forward, current, backward;
+      distance, forward, current, backward;
 
     // For all indices in the active layer...
     activeIt = sparsePtr->m_Layers[0]->Begin();
@@ -1086,7 +1087,7 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutput
     if ( sparsePtr->m_Layers.size() < 3 )
       {
       itkExceptionMacro (<< "Not enough layers have been allocated for the"
-                            "sparse field.  Requires at least one layer.");
+                         "sparse field.  Requires at least one layer.");
       }
     }
 
@@ -1444,6 +1445,7 @@ MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage, TOutput
   os << indent << "Value One  "
      << static_cast< typename NumericTraits< ValueType >::PrintType >( m_ValueOne ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

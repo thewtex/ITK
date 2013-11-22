@@ -46,41 +46,49 @@ public:
   itkTypeMacro(BackPropagationLayer, LayerBase);
   itkNewMacro(Self);
 
-  typedef typename Superclass::ValueType              ValueType;
-  typedef vnl_vector<ValueType>                       NodeVectorType;
-  typedef typename Superclass::InternalVectorType     InternalVectorType;
-  typedef typename Superclass::OutputVectorType       OutputVectorType;
-  typedef typename Superclass::LayerInterfaceType     LayerInterfaceType;
+  typedef typename Superclass::ValueType          ValueType;
+  typedef vnl_vector<ValueType>                   NodeVectorType;
+  typedef typename Superclass::InternalVectorType InternalVectorType;
+  typedef typename Superclass::OutputVectorType   OutputVectorType;
+  typedef typename Superclass::LayerInterfaceType LayerInterfaceType;
   typedef CompletelyConnectedWeightSet<TMeasurementVector,TTargetVector>
-                                                      WeightSetType;
+    WeightSetType;
 
   typedef typename Superclass::WeightSetInterfaceType WeightSetInterfaceType;
   typedef typename Superclass::InputFunctionInterfaceType
-                                                      InputFunctionInterfaceType;
+    InputFunctionInterfaceType;
   typedef typename Superclass::TransferFunctionInterfaceType
-                                                      TransferFunctionInterfaceType;
+    TransferFunctionInterfaceType;
   //Member Functions
   virtual void SetNumberOfNodes(unsigned int numNodes);
+
   virtual ValueType GetInputValue(unsigned int i) const;
+
   virtual void SetInputValue(unsigned int i, ValueType value);
 
   virtual ValueType GetOutputValue(unsigned int) const;
+
   virtual void SetOutputValue(unsigned int, ValueType);
 
   virtual ValueType * GetOutputVector();
+
   void SetOutputVector(TMeasurementVector value);
 
   virtual void ForwardPropagate();
+
   virtual void ForwardPropagate(TMeasurementVector input);
 
   virtual void BackwardPropagate();
+
   virtual void BackwardPropagate(InternalVectorType errors);
 
   virtual void SetOutputErrorValues(TTargetVector);
   virtual ValueType GetOutputErrorValue(unsigned int node_id) const;
 
   virtual ValueType GetInputErrorValue(unsigned int node_id) const;
+
   virtual ValueType * GetInputErrorVector();
+
   virtual void SetInputErrorValue(ValueType, unsigned int node_id);
 
   virtual ValueType Activation(ValueType);
@@ -93,18 +101,19 @@ public:
 protected:
 
   BackPropagationLayer();
-  virtual ~BackPropagationLayer();
+  virtual
+  ~BackPropagationLayer();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
 private:
 
-  NodeVectorType   m_NodeInputValues;
-  NodeVectorType   m_NodeOutputValues;
-  NodeVectorType   m_InputErrorValues;
-  NodeVectorType   m_OutputErrorValues;
-  ValueType        m_Bias;
+  NodeVectorType m_NodeInputValues;
+  NodeVectorType m_NodeOutputValues;
+  NodeVectorType m_InputErrorValues;
+  NodeVectorType m_OutputErrorValues;
+  ValueType      m_Bias;
 };
 
 } // end namespace Statistics

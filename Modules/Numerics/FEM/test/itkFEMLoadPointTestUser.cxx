@@ -23,7 +23,8 @@ using std::ofstream;
 using std::ifstream;
 
 //
-int itkFEMLoadPointTestUser(int, char *[])
+int
+itkFEMLoadPointTestUser(int, char *[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

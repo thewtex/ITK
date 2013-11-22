@@ -40,7 +40,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class GaussianSpatialObject:
+class GaussianSpatialObject :
   public SpatialObject< TDimension >
 {
 public:
@@ -124,6 +124,7 @@ protected:
 
   /** Print the object information in a stream. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

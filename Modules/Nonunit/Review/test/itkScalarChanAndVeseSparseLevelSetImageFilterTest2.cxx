@@ -21,7 +21,8 @@
 #include "itkImageFileWriter.h"
 #include "itkAtanRegularizedHeavisideStepFunction.h"
 
-int itkScalarChanAndVeseSparseLevelSetImageFilterTest2( int argc, char * argv [] )
+int
+itkScalarChanAndVeseSparseLevelSetImageFilterTest2( int argc, char * argv [] )
 {
 
   if( argc < 4 )
@@ -34,12 +35,12 @@ int itkScalarChanAndVeseSparseLevelSetImageFilterTest2( int argc, char * argv []
     }
 
   unsigned int nb_iteration = 50;
-  double rms = 0.;
-  double epsilon = 1.;
-  double mu = 0.;
-  double nu = 0.;
-  double l1 = 1.;
-  double l2 = 3.;
+  double       rms = 0.;
+  double       epsilon = 1.;
+  double       mu = 0.;
+  double       nu = 0.;
+  double       l1 = 1.;
+  double       l2 = 3.;
 
   const unsigned int Dimension = 2;
   typedef float ScalarPixelType;
@@ -54,16 +55,17 @@ int itkScalarChanAndVeseSparseLevelSetImageFilterTest2( int argc, char * argv []
     SharedDataHelperType;
 
   typedef itk::ScalarChanAndVeseLevelSetFunction< LevelSetImageType,
-    FeatureImageType, SharedDataHelperType > LevelSetFunctionType;
+                                                  FeatureImageType, SharedDataHelperType > LevelSetFunctionType;
 
   typedef itk::ScalarChanAndVeseSparseLevelSetImageFilter< LevelSetImageType,
-    FeatureImageType, LevelSetImageType, LevelSetFunctionType, SharedDataHelperType > MultiLevelSetType;
+                                                           FeatureImageType, LevelSetImageType, LevelSetFunctionType,
+                                                           SharedDataHelperType > MultiLevelSetType;
 
-  typedef itk::ImageFileReader< LevelSetImageType >     LevelSetReaderType;
-  typedef itk::ImageFileReader< FeatureImageType >      FeatureReaderType;
-  typedef itk::ImageFileWriter< LevelSetImageType >     WriterType;
+  typedef itk::ImageFileReader< LevelSetImageType > LevelSetReaderType;
+  typedef itk::ImageFileReader< FeatureImageType >  FeatureReaderType;
+  typedef itk::ImageFileWriter< LevelSetImageType > WriterType;
 
-  typedef itk::AtanRegularizedHeavisideStepFunction< ScalarPixelType, ScalarPixelType >  DomainFunctionType;
+  typedef itk::AtanRegularizedHeavisideStepFunction< ScalarPixelType, ScalarPixelType > DomainFunctionType;
 
   DomainFunctionType::Pointer domainFunction = DomainFunctionType::New();
 

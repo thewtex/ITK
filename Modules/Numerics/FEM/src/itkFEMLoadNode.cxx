@@ -24,7 +24,8 @@ namespace fem
 {
 
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer LoadNode::CreateAnother(void) const
+::itk::LightObject::Pointer
+LoadNode::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -39,17 +40,20 @@ namespace fem
   return smartPtr;
 }
 
-void LoadNode::SetNode(int num)
+void
+LoadNode::SetNode(int num)
 {
   this->m_Point = num;
 }
 
-int LoadNode::GetNode() const
+int
+LoadNode::GetNode() const
 {
   return this->m_Point;
 }
 
-void LoadNode::SetForce(const vnl_vector<Float> force)
+void
+LoadNode::SetForce(const vnl_vector<Float> force)
 {
   this->m_Force = force;
 }
@@ -59,9 +63,11 @@ vnl_vector<itk::fem::Element::Float> LoadNode::GetForce() const
   return this->m_Force;
 }
 
-void LoadNode::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadNode::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Element: " << this->m_Element << std::endl;
   os << indent << "Point: " << this->m_Point << std::endl;
   os << indent << "Force: " << this->m_Force << std::endl;

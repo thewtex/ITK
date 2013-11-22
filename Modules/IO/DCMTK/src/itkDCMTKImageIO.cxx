@@ -71,7 +71,8 @@ DCMTKImageIO::~DCMTKImageIO()
   DcmRLEDecoderRegistration::cleanup();
 }
 
-bool DCMTKImageIO::CanReadFile(const char *filename)
+bool
+DCMTKImageIO::CanReadFile(const char *filename)
 {
   // First check the filename extension
   std::string fname = filename;
@@ -84,7 +85,8 @@ bool DCMTKImageIO::CanReadFile(const char *filename)
   return DCMTKFileReader::IsImageFile(filename);
 }
 
-bool DCMTKImageIO::CanWriteFile(const char *name)
+bool
+DCMTKImageIO::CanWriteFile(const char *name)
 {
   std::string fname = name;
 
@@ -159,6 +161,7 @@ DCMTKImageIO
                       << this->m_FileName)
     }
 }
+
 //------------------------------------------------------------------------------
 void
 DCMTKImageIO
@@ -167,14 +170,15 @@ DCMTKImageIO
   this->OpenDicomImage();
   if (m_DImage->getStatus() == EIS_Normal)
     {
-    m_Dimensions[0] = (unsigned int)(m_DImage->getWidth());
-    m_Dimensions[1] = (unsigned int)(m_DImage->getHeight());
+    m_Dimensions[0] = (unsigned int)(m_DImage->getWidth() );
+    m_Dimensions[1] = (unsigned int)(m_DImage->getHeight() );
     // m_Spacing[0] =
     // m_Spacing[1] =
     // m_Origin[0] =
     // m_Origin[1] =
 
-    // pick a size for output image (should get it from DCMTK in the ReadImageInformation()))
+    // pick a size for output image (should get it from DCMTK in the
+    // ReadImageInformation()))
     // NOTE ALEX: EP_Representation is made for that
     // but i don t know yet where to fetch it from
     size_t scalarSize = 0;
@@ -208,7 +212,7 @@ DCMTKImageIO
       case FLOAT:
       case DOUBLE:
         itkExceptionMacro(<< "Bad component type" <<
-                          ImageIOBase::GetComponentTypeAsString(this->m_ComponentType));
+                          ImageIOBase::GetComponentTypeAsString(this->m_ComponentType) );
         break;
       }
     size_t voxelSize(scalarSize);
@@ -237,7 +241,7 @@ DCMTKImageIO
   else
     {
     std::cerr << "Error: cannot load DICOM image (";
-    std::cerr << DicomImage::getString(m_DImage->getStatus());
+    std::cerr << DicomImage::getString(m_DImage->getStatus() );
     std::cerr << ")" << std::endl;
     }
 
@@ -246,13 +250,15 @@ DCMTKImageIO
 /**
  *  Read Information about the DICOM file
  */
-void DCMTKImageIO::ReadImageInformation()
+void
+DCMTKImageIO::ReadImageInformation()
 {
 
   DJDecoderRegistration::registerCodecs();
   DcmRLEDecoderRegistration::registerCodecs();
 
   DCMTKFileReader reader;
+
   reader.SetFileName(this->m_FileName);
   try
     {
@@ -266,7 +272,7 @@ void DCMTKImageIO::ReadImageInformation()
 
   // check for multiframe > 3D
   ::itk::int32_t numPhases;
-  unsigned      numDim(3);
+  unsigned numDim(3);
 
   if(reader.GetElementSL(0x2001,0x1017,numPhases,false) != EXIT_SUCCESS)
     {
@@ -310,9 +316,9 @@ void DCMTKImageIO::ReadImageInformation()
   else
     {
     vnl_vector<double> rowDirection4(4),
-      columnDirection4(4),
-      sliceDirection4(4),
-      phaseDirection4(4);
+    columnDirection4(4),
+    sliceDirection4(4),
+    phaseDirection4(4);
     for(unsigned i = 0; i < 3; ++i)
       {
       rowDirection4[i] = rowDirection[i];
@@ -356,7 +362,6 @@ void DCMTKImageIO::ReadImageInformation()
     this->m_Origin[3] = 0.0;
     this->m_Spacing.push_back(1.0);
     }
-
 
   this->OpenDicomImage();
   const DiPixel *interData = this->m_DImage->getInterData();
@@ -404,7 +409,8 @@ void DCMTKImageIO::ReadImageInformation()
 void
 DCMTKImageIO
 ::WriteImageInformation(void)
-{}
+{
+}
 
 /** */
 void
@@ -415,8 +421,10 @@ DCMTKImageIO
 }
 
 /** Print Self Method */
-void DCMTKImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+DCMTKImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk

@@ -75,14 +75,14 @@ namespace itk
  * \ingroup ITKIOCSV
  */
 template <typename TData>
-class CSVArray2DFileReader:public CSVFileReaderBase
+class CSVArray2DFileReader : public CSVFileReaderBase
 {
 public:
   /** Standard class typedefs */
-  typedef CSVArray2DFileReader      Self;
-  typedef CSVFileReaderBase         Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef CSVArray2DFileReader     Self;
+  typedef CSVFileReaderBase        Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Standard New method. */
   itkNewMacro(Self);
@@ -91,8 +91,8 @@ public:
   itkTypeMacro(Self,Superclass);
 
   /** DataFrame Object types */
-  typedef typename itk::CSVArray2DDataObject<TData>    Array2DDataObjectType;
-  typedef typename Array2DDataObjectType::Pointer      Array2DDataObjectPointer;
+  typedef typename itk::CSVArray2DDataObject<TData> Array2DDataObjectType;
+  typedef typename Array2DDataObjectType::Pointer   Array2DDataObjectPointer;
 
   /** The value type of the dataset. */
   typedef TData ValueType;
@@ -118,17 +118,20 @@ public:
 protected:
 
   CSVArray2DFileReader();
-  virtual ~CSVArray2DFileReader () {}
+  virtual
+  ~CSVArray2DFileReader () {
+  }
 
   /** Print the reader. */
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 
-  Array2DDataObjectPointer   m_Array2DDataObject;
+  Array2DDataObjectPointer m_Array2DDataObject;
 
   CSVArray2DFileReader(const Self &);  //purposely not implemented
-  void operator=(const Self &);          //purposely not implemented
+  void operator=(const Self &);        //purposely not implemented
+
 };
 
 } //end namespace itk

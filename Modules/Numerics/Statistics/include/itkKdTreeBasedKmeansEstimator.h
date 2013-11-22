@@ -74,7 +74,7 @@ namespace Statistics
  */
 
 template< typename TKdTree >
-class KdTreeBasedKmeansEstimator:
+class KdTreeBasedKmeansEstimator :
   public Object
 {
 public:
@@ -110,18 +110,18 @@ public:
   /** Typedef requried to generate dataobject decorated output that can
    * be plugged into SampleClassifierFilter */
   typedef DistanceToCentroidMembershipFunction< MeasurementVectorType >
-  DistanceToCentroidMembershipFunctionType;
+    DistanceToCentroidMembershipFunctionType;
 
   typedef typename DistanceToCentroidMembershipFunctionType::Pointer
-  DistanceToCentroidMembershipFunctionPointer;
+    DistanceToCentroidMembershipFunctionPointer;
 
   typedef MembershipFunctionBase< MeasurementVectorType > MembershipFunctionType;
   typedef typename MembershipFunctionType::ConstPointer   MembershipFunctionPointer;
   typedef std::vector< MembershipFunctionPointer >        MembershipFunctionVectorType;
   typedef SimpleDataObjectDecorator<
-    MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
+      MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
   typedef typename
-  MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
+    MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
 
   /** Output Membership function vector containing the membership functions with
     * the final optimized parameters */
@@ -163,7 +163,9 @@ public:
 
 protected:
   KdTreeBasedKmeansEstimator();
-  virtual ~KdTreeBasedKmeansEstimator() {}
+  virtual
+  ~KdTreeBasedKmeansEstimator() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -176,25 +178,30 @@ protected:
   class CandidateVector
   {
 public:
-    CandidateVector() {}
+    CandidateVector() {
+    }
 
     struct Candidate {
       CentroidType Centroid;
       CentroidType WeightedCentroid;
       int Size;
-    };   // end of struct
+      }; // end of struct
 
-    virtual ~CandidateVector() {}
+    virtual
+    ~CandidateVector() {
+    }
 
     /** returns the number of candidate = k */
-    int Size() const
+    int
+    Size() const
     {
       return static_cast< int >( m_Candidates.size() );
     }
 
     /** Initialize the centroids with the argument.
      * At each iteration, this should be called before filtering. */
-    void SetCentroids(InternalParametersType & centroids)
+    void
+    SetCentroids(InternalParametersType & centroids)
     {
       this->m_MeasurementVectorSize = NumericTraits<ParameterType>::GetLength(centroids[0]);
       m_Candidates.resize( centroids.size() );
@@ -203,7 +210,7 @@ public:
         Candidate candidate;
         candidate.Centroid = centroids[i];
         NumericTraits<CentroidType>::SetLength(candidate.WeightedCentroid,
-          m_MeasurementVectorSize);
+                                               m_MeasurementVectorSize);
         candidate.WeightedCentroid.Fill(0.0);
         candidate.Size = 0;
         m_Candidates[i] = candidate;
@@ -211,7 +218,8 @@ public:
     }
 
     /** gets the centroids (k-means) */
-    void GetCentroids(InternalParametersType & centroids)
+    void
+    GetCentroids(InternalParametersType & centroids)
     {
       unsigned int i;
 
@@ -224,7 +232,8 @@ public:
 
     /** updates the centroids using the vector sum of measurement vectors
      * that belongs to each centroid and the number of measurement vectors */
-    void UpdateCentroids()
+    void
+    UpdateCentroids()
     {
       unsigned int i, j;
 
@@ -243,7 +252,8 @@ public:
     }
 
     /** gets the index-th candidates */
-    Candidate & operator[](int index)
+    Candidate &
+    operator[](int index)
     {
       return m_Candidates[index];
     }

@@ -26,7 +26,6 @@
 #include "itkAutoCropLabelMapFilter.h"
 #include "itkPadLabelMapFilter.h"
 
-
 namespace itk {
 
 /** \class ObjectByObjectLabelMapFilter
@@ -70,14 +69,14 @@ namespace itk {
  * \endwiki
  */
 template<typename TInputImage, typename TOutputImage=TInputImage,
-  typename TInputFilter=ImageToImageFilter<
-    Image< unsigned char, TInputImage::ImageDimension >,
-    Image< unsigned char, TOutputImage::ImageDimension > >,
-  class TOutputFilter=typename TInputFilter::Superclass,
-  class TInternalInputImage=typename TInputFilter::InputImageType,
-  class TInternalOutputImage=typename TOutputFilter::OutputImageType >
+         typename TInputFilter=ImageToImageFilter<
+             Image< unsigned char, TInputImage::ImageDimension >,
+             Image< unsigned char, TOutputImage::ImageDimension > >,
+         class TOutputFilter=typename TInputFilter::Superclass,
+         class TInternalInputImage=typename TInputFilter::InputImageType,
+         class TInternalOutputImage=typename TOutputFilter::OutputImageType >
 class ObjectByObjectLabelMapFilter :
-    public LabelMapFilter<TInputImage, TOutputImage>
+  public LabelMapFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
@@ -87,22 +86,22 @@ public:
   typedef SmartPointer<const Self>                  ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage                              InputImageType;
-  typedef TOutputImage                             OutputImageType;
-  typedef typename InputImageType::Pointer         InputImagePointer;
-  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
-  typedef typename InputImageType::RegionType      InputImageRegionType;
-  typedef typename InputImageType::PixelType       InputImagePixelType;
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
-  typedef typename OutputImageType::SizeType       SizeType;
-  typedef OutputImageType                          LabelMapType;
-  typedef typename LabelMapType::LabelObjectType   LabelObjectType;
+  typedef TInputImage                            InputImageType;
+  typedef TOutputImage                           OutputImageType;
+  typedef typename InputImageType::Pointer       InputImagePointer;
+  typedef typename InputImageType::ConstPointer  InputImageConstPointer;
+  typedef typename InputImageType::RegionType    InputImageRegionType;
+  typedef typename InputImageType::PixelType     InputImagePixelType;
+  typedef typename OutputImageType::Pointer      OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType   OutputImageRegionType;
+  typedef typename OutputImageType::PixelType    OutputImagePixelType;
+  typedef typename OutputImageType::SizeType     SizeType;
+  typedef OutputImageType                        LabelMapType;
+  typedef typename LabelMapType::LabelObjectType LabelObjectType;
 
-  typedef TInputFilter                          InputFilterType;
-  typedef TOutputFilter                         OutputFilterType;
+  typedef TInputFilter  InputFilterType;
+  typedef TOutputFilter OutputFilterType;
 
   typedef TInternalInputImage                         InternalInputImageType;
   typedef typename InternalInputImageType::RegionType InternalRegionType;
@@ -138,20 +137,25 @@ public:
                LabelMapFilter);
 
   void SetFilter(InputFilterType * filter);
-  InputFilterType * GetFilter()
-    {
-    return this->m_InputFilter;
-    }
 
-  const InputFilterType * GetFilter() const
-    {
+  InputFilterType *
+  GetFilter()
+  {
     return this->m_InputFilter;
-    }
+  }
+
+  const InputFilterType *
+  GetFilter() const
+  {
+    return this->m_InputFilter;
+  }
 
   void SetInputFilter( InputFilterType * filter );
+
   itkGetModifiableObjectMacro(InputFilter, InputFilterType );
 
   void SetOutputFilter( OutputFilterType * filter );
+
   itkGetModifiableObjectMacro(OutputFilter, OutputFilterType );
 
   /** If KeepLabels is set to true, the filter will do its best to reuse the labels
@@ -203,23 +207,24 @@ public:
 
 protected:
   ObjectByObjectLabelMapFilter();
-  ~ObjectByObjectLabelMapFilter() {};
+  ~ObjectByObjectLabelMapFilter() {
+  }
+
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   virtual void GenerateData();
 
 private:
   ObjectByObjectLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);               //purposely not implemented
 
   bool     m_ConstrainPaddingToImage;
   SizeType m_PadSize;
   bool     m_BinaryInternalOutput;
 
-  bool     m_KeepLabels;
+  bool m_KeepLabels;
 
   InternalOutputPixelType m_InternalForegroundValue;
-
 
   typename InputFilterType::Pointer       m_InputFilter;
   typename OutputFilterType::Pointer      m_OutputFilter;
@@ -231,7 +236,7 @@ private:
   typename LI2LMType::Pointer  m_LI2LM;
   typename BI2LMType::Pointer  m_BI2LM;
 
-  InputImagePixelType          m_Label;
+  InputImagePixelType m_Label;
 
 }; // end of class
 

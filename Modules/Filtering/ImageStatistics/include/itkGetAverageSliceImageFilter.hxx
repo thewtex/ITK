@@ -41,6 +41,7 @@ GetAverageSliceImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream 
 
   os << indent << "AveragedOutDimension: " << m_AveragedOutDimension << std::endl;
 }
+
 } // end namespace itk
 
 #endif

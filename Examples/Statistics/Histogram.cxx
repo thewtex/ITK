@@ -49,7 +49,8 @@
 #include "itkDenseFrequencyContainer2.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -69,7 +70,7 @@ int main()
 
   const unsigned int numberOfComponents = 2;
   typedef itk::Statistics::Histogram< MeasurementType,
-    FrequencyContainerType > HistogramType;
+                                      FrequencyContainerType > HistogramType;
 
   HistogramType::Pointer histogram = HistogramType::New();
   histogram->SetMeasurementVectorSize( numberOfComponents );
@@ -111,15 +112,15 @@ int main()
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  histogram->SetFrequency(0UL, static_cast<FrequencyType>(0.0));
-  histogram->SetFrequency(1UL, static_cast<FrequencyType>(2.0));
-  histogram->SetFrequency(2UL, static_cast<FrequencyType>(3.0));
-  histogram->SetFrequency(3UL, static_cast<FrequencyType>(2.0f));
-  histogram->SetFrequency(4UL, static_cast<FrequencyType>(0.5f));
-  histogram->SetFrequency(5UL, static_cast<FrequencyType>(1.0f));
-  histogram->SetFrequency(6UL, static_cast<FrequencyType>(5.0f));
-  histogram->SetFrequency(7UL, static_cast<FrequencyType>(2.5f));
-  histogram->SetFrequency(8UL, static_cast<FrequencyType>(0.0f));
+  histogram->SetFrequency(0UL, static_cast<FrequencyType>(0.0) );
+  histogram->SetFrequency(1UL, static_cast<FrequencyType>(2.0) );
+  histogram->SetFrequency(2UL, static_cast<FrequencyType>(3.0) );
+  histogram->SetFrequency(3UL, static_cast<FrequencyType>(2.0f) );
+  histogram->SetFrequency(4UL, static_cast<FrequencyType>(0.5f) );
+  histogram->SetFrequency(5UL, static_cast<FrequencyType>(1.0f) );
+  histogram->SetFrequency(6UL, static_cast<FrequencyType>(5.0f) );
+  histogram->SetFrequency(7UL, static_cast<FrequencyType>(2.5f) );
+  histogram->SetFrequency(8UL, static_cast<FrequencyType>(0.0f) );
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -192,7 +193,6 @@ int main()
             << std::endl;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // If we want to check if an index is a valid one, we use the method
@@ -209,7 +209,6 @@ int main()
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The following code snippets show how to get the histogram size
@@ -222,7 +221,6 @@ int main()
             << " Total frequency = " << histogram->GetTotalFrequency()
             << " Dimension sizes = " << histogram->GetSize() << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //

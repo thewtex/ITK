@@ -90,7 +90,7 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
   // If all sub-transforms are linear, return true.
   for( SizeValueType tind = 0; tind < this->GetNumberOfTransforms(); tind++ )
     {
-    if( ! this->GetNthTransformConstPointer( tind )->IsLinear() )
+    if( !this->GetNthTransformConstPointer( tind )->IsLinear() )
       {
       return false;
       }
@@ -103,12 +103,12 @@ template
 const typename MultiTransform<TScalar, NDimensions, NSubDimensions>::ParametersType
 & MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetParameters() const
-{
+  {
   /* Resize destructively. But if it's already this size, nothing is done so
    * it's efficient. */
   this->m_Parameters.SetSize( this->GetNumberOfParameters() );
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
-  TransformQueueType transforms = this->GetTransformQueue();
+  TransformQueueType     transforms = this->GetTransformQueue();
   typename TransformQueueType::const_iterator it;
   it = transforms.begin();
 
@@ -125,7 +125,7 @@ const typename MultiTransform<TScalar, NDimensions, NSubDimensions>::ParametersT
   while( it != transforms.end() );
 
   return this->m_Parameters;
-}
+  }
 
 template
 <typename TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
@@ -142,10 +142,12 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
   /* Verify proper input size. */
   if( inputParameters.Size() != this->GetNumberOfParameters() )
     {
-    itkExceptionMacro(<< "Input parameter list size is not expected size. " << inputParameters.Size() << " instead of " << this->GetNumberOfParameters() << ".");
+    itkExceptionMacro(
+      << "Input parameter list size is not expected size. " << inputParameters.Size() << " instead of " << this->GetNumberOfParameters() <<
+      ".");
     }
 
-  TransformQueueType transforms = this->GetTransformQueue();
+  TransformQueueType     transforms = this->GetTransformQueue();
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
   typename TransformQueueType::const_iterator it;
   it = transforms.begin();
@@ -164,10 +166,10 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
       /* Use vnl_vector data_block() to get data ptr */
       std::copy(&(inputParameters.data_block() )[offset],
                 &(inputParameters.data_block() )[offset]+subParameters.Size(),
-                subParameters.data_block());
+                subParameters.data_block() );
       offset += subParameters.Size();
       }
-      /* Call SetParameters explicitly to include anything extra it does */
+    /* Call SetParameters explicitly to include anything extra it does */
     (*it)->SetParameters(subParameters);
     ++it;
     }
@@ -179,7 +181,7 @@ template
 const typename MultiTransform<TScalar, NDimensions, NSubDimensions>::ParametersType
 & MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetFixedParameters(void) const
-{
+  {
   /* Resize destructively. But if it's already this size, nothing is done so
    * it's efficient. */
   this->m_FixedParameters.SetSize( this->GetNumberOfFixedParameters() );
@@ -202,7 +204,7 @@ const typename MultiTransform<TScalar, NDimensions, NSubDimensions>::ParametersT
   while( it != transforms.end() );
 
   return this->m_FixedParameters;
-}
+  }
 
 template
 <typename TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
@@ -220,7 +222,7 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
 
   /* Assumes input params are concatenation of the parameters of the
    * sub transforms. */
-  TransformQueueType transforms = this->GetTransformQueue();
+  TransformQueueType     transforms = this->GetTransformQueue();
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
   typename TransformQueueType::const_iterator it;
 
@@ -234,7 +236,7 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
     /* Use vnl_vector data_block() to get data ptr */
     std::copy(&(this->m_FixedParameters.data_block() )[offset],
               &(this->m_FixedParameters.data_block() )[offset]+subFixedParameters.Size(),
-              subFixedParameters.data_block());
+              subFixedParameters.data_block() );
     /* Call SetParameters explicitly to include anything extra it does */
     (*it)->SetFixedParameters(subFixedParameters);
     offset += subFixedParameters.Size();
@@ -257,7 +259,6 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
    * we wouldn't know that in this class, so this is safest. */
   NumberOfParametersType result = NumericTraits< NumberOfParametersType >::Zero;
 
-
   for( SizeValueType tind = 0; tind < this->GetNumberOfTransforms(); tind++ )
     {
     /* Use raw pointer for efficiency */
@@ -273,9 +274,9 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetNumberOfLocalParameters(void) const
 {
   if ( this->GetMTime() == this->m_LocalParametersUpdateTime )
-   {
-   return this->m_NumberOfLocalParameters;
-   }
+    {
+    return this->m_NumberOfLocalParameters;
+    }
 
   this->m_LocalParametersUpdateTime = this->GetMTime();
 
@@ -365,7 +366,8 @@ MultiTransform<TScalar, NDimensions, NSubDimensions>
   inverse->ClearTransformQueue();
   for( it = this->m_TransformQueue.begin(); it != this->m_TransformQueue.end(); ++it )
     {
-    TransformTypePointer inverseTransform = dynamic_cast<TransformType *>( ( ( *it )->GetInverseTransform() ).GetPointer() );
+    TransformTypePointer inverseTransform =
+      dynamic_cast<TransformType *>( ( ( *it )->GetInverseTransform() ).GetPointer() );
     if( !inverseTransform )
       {
       inverse->ClearTransformQueue();

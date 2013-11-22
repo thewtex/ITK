@@ -57,7 +57,7 @@ namespace itk
  */
 template< typename TInputImage,
           typename TBasisImage = Image< double, TInputImage::ImageDimension > >
-class ImagePCADecompositionCalculator:public Object
+class ImagePCADecompositionCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -112,7 +112,10 @@ public:
   /** Set and get the basis images. */
   void SetBasisImages(const BasisImagePointerVector &);
 
-  BasisImagePointerVector GetBasisImages() { return m_BasisImages; }
+  BasisImagePointerVector
+  GetBasisImages() {
+    return m_BasisImages;
+  }
 
   /** Type definition of a compatible ImagePCAShapeModelEstimator */
   typedef typename ImagePCAShapeModelEstimator< TInputImage,
@@ -128,7 +131,10 @@ public:
 
 protected:
   ImagePCADecompositionCalculator();
-  virtual ~ImagePCADecompositionCalculator() {}
+  virtual
+  ~ImagePCADecompositionCalculator() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void CalculateBasisMatrix(void);

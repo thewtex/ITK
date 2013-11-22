@@ -41,7 +41,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class SampleClassifierFilter:
+class SampleClassifierFilter :
   public ProcessObject
 {
 public:
@@ -71,22 +71,22 @@ public:
   typedef typename MembershipFunctionType::ConstPointer   MembershipFunctionPointer;
   typedef std::vector< MembershipFunctionPointer >        MembershipFunctionVectorType;
   typedef SimpleDataObjectDecorator<
-    MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
+      MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
   typedef typename
-  MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
+    MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
 
   /** typedef for membership functions weight proprtion */
   typedef Array< double > MembershipFunctionsWeightsArrayType;
 
   typedef SimpleDataObjectDecorator<
-    MembershipFunctionsWeightsArrayType >                 MembershipFunctionsWeightsArrayObjectType;
+      MembershipFunctionsWeightsArrayType >                 MembershipFunctionsWeightsArrayObjectType;
   typedef typename
-  MembershipFunctionsWeightsArrayObjectType::Pointer MembershipFunctionsWeightsArrayPointer;
+    MembershipFunctionsWeightsArrayObjectType::Pointer MembershipFunctionsWeightsArrayPointer;
 
   typedef IdentifierType                ClassLabelType;
   typedef std::vector< ClassLabelType > ClassLabelVectorType;
   typedef SimpleDataObjectDecorator<
-    ClassLabelVectorType >                            ClassLabelVectorObjectType;
+      ClassLabelVectorType >                            ClassLabelVectorObjectType;
   typedef ClassLabelVectorObjectType::Pointer ClassLabelVectorObjectPointer;
 
   /** type of the decision rule */
@@ -127,7 +127,10 @@ public:
 
 protected:
   SampleClassifierFilter();
-  virtual ~SampleClassifierFilter() {}
+  virtual
+  ~SampleClassifierFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   SampleClassifierFilter(const Self &); //purposely not implemented

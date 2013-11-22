@@ -69,7 +69,8 @@ PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
  */
 template< typename TInputImage, typename TPolyline, typename TVector,
           typename TOutputImage >
-void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
+void
+PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
 ::SetInput1(const InputImageType *input)
 {
   // Process object is not const-correct so the const_cast is required here
@@ -82,7 +83,8 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
  */
 template< typename TInputImage, typename TPolyline, typename TVector,
           typename TOutputImage >
-void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
+void
+PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
 ::SetInput2(const PolylineType *input)
 {
   // Process object is not const-correct so the const_cast is required here
@@ -95,7 +97,8 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
  */
 template< typename TInputImage, typename TPolyline, typename TVector,
           typename TOutputImage >
-void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
+void
+PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
 ::GenerateRotationMatrix()
 {
   /* Normalize the view and up vector */
@@ -180,7 +183,8 @@ PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
  */
 template< typename TInputImage, typename TPolyline, typename TVector,
           typename TOutputImage >
-void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
+void
+PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
 ::GenerateData(void)
 {
   typedef typename TInputImage::SizeType          InputImageSizeType;
@@ -227,7 +231,7 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
 
   typedef NearestNeighborInterpolateImageFunction< TInputImage, double > InterpolatorType;
   typedef typename InterpolatorType::OutputType                          OutputType;
-  typedef typename InterpolatorType::PointType InterpolatorPointType;
+  typedef typename InterpolatorType::PointType                           InterpolatorPointType;
 
   /* Generate the transformation matrix */
   this->GenerateRotationMatrix();
@@ -237,13 +241,13 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
   ProjPlanePointType    outputPoint;
 
   // Generate a 2D image with the viewing polygon as a mask
-  typedef Image< PixelType, 2 >                        ProjectionImageType;
-  typedef typename ProjectionImageType::IndexType      ProjectionImageIndexType;
-  typedef typename ProjectionImageType::PointType      ProjectionImagePointType;
-  typedef typename ProjectionImageType::SpacingType    ProjectionImageSpacingType;
-  typedef typename ProjectionImageType::PixelType      ProjectionImagePixelType;
-  typedef typename ProjectionImageType::RegionType     ProjectionImageRegionType;
-  typedef typename ProjectionImageType::SizeType       ProjectionImageSizeType;
+  typedef Image< PixelType, 2 >                     ProjectionImageType;
+  typedef typename ProjectionImageType::IndexType   ProjectionImageIndexType;
+  typedef typename ProjectionImageType::PointType   ProjectionImagePointType;
+  typedef typename ProjectionImageType::SpacingType ProjectionImageSpacingType;
+  typedef typename ProjectionImageType::PixelType   ProjectionImagePixelType;
+  typedef typename ProjectionImageType::RegionType  ProjectionImageRegionType;
+  typedef typename ProjectionImageType::SizeType    ProjectionImageSizeType;
 
   ProjectionImageRegionType projectionRegion;
 
@@ -361,8 +365,8 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
   projectionStart[0] = 0;
   projectionStart[1] = 0;
 
-  ProjectionImageSizeType       projectionSize;
-  IndexValueType pad;
+  ProjectionImageSizeType projectionSize;
+  IndexValueType          pad;
 
   pad = 5;
 
@@ -552,9 +556,15 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
     projectionImagePtr->TransformPhysicalPointToIndex(outputPoint, projectionImageIndex);
 
     //itkDebugMacro(<<"Input image (index,physical
+    //
+    //
     // coordinate,pixel):"<<inputIt.GetIndex()<<","<<inputPoint<<inputIt.Get()<<std::endl);
     //itkDebugMacro(<<"Projection image (index,physical
+    //
+    //
     // coordinate,pixel):"<<projectionImageIndex<<","<<outputPoint<<","<<projectionIt.Get()<<std::endl);
+    //
+    //
     //
     // fileout<<inputIt.GetIndex()<<","<<inputPoint<<"="<<projectionImageIndex<<","<<outputPoint<<std::endl;
 
@@ -579,10 +589,12 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
 
 template< typename TInputImage, typename TPolyline, typename TVector,
           typename TOutputImage >
-void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
+void
+PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Viewing vector: "
      << static_cast< typename NumericTraits< VectorType >::PrintType >( m_ViewVector )
      << std::endl;
@@ -594,5 +606,6 @@ void PolylineMaskImageFilter< TInputImage, TPolyline, TVector, TOutputImage >
   os << indent << "Focal Distance     : " << m_FocalDistance     << std::endl;
   os << indent << "Rotation matrix    : " << m_RotationMatrix   << std::endl;
 }
+
 } // end namespace itk
 #endif

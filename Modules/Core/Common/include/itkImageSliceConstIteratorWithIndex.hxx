@@ -37,7 +37,7 @@ ImageSliceConstIteratorWithIndex< TImage >
   // Move to beginning of line
   this->m_PositionIndex[m_Direction_A] = this->m_BeginIndex[m_Direction_A];
   this->m_Position -= m_PixelJump
-                      * ( this->m_EndIndex[m_Direction_A] - this->m_BeginIndex[m_Direction_A] );
+    * ( this->m_EndIndex[m_Direction_A] - this->m_BeginIndex[m_Direction_A] );
 }
 
 //----------------------------------------------------------------------
@@ -55,7 +55,7 @@ ImageSliceConstIteratorWithIndex< TImage >
   // Move to end of line
   this->m_PositionIndex[m_Direction_A] = this->m_EndIndex[m_Direction_A] - 1;
   this->m_Position += m_PixelJump
-                      * ( this->m_EndIndex[m_Direction_A] - this->m_BeginIndex[m_Direction_A] );
+    * ( this->m_EndIndex[m_Direction_A] - this->m_BeginIndex[m_Direction_A] );
 }
 
 //----------------------------------------------------------------------
@@ -69,7 +69,7 @@ ImageSliceConstIteratorWithIndex< TImage >
   // Move to beginning of Slice
   this->m_PositionIndex[m_Direction_B] = this->m_BeginIndex[m_Direction_B];
   this->m_Position -= m_LineJump
-                      * ( this->m_EndIndex[m_Direction_B] - this->m_BeginIndex[m_Direction_B] );
+    * ( this->m_EndIndex[m_Direction_B] - this->m_BeginIndex[m_Direction_B] );
 }
 
 //----------------------------------------------------------------------
@@ -82,7 +82,7 @@ ImageSliceConstIteratorWithIndex< TImage >
 {
   // Move to beginning of Slice
   this->m_Position -= m_LineJump
-                      * ( this->m_PositionIndex[m_Direction_B] - this->m_BeginIndex[m_Direction_B] );
+    * ( this->m_PositionIndex[m_Direction_B] - this->m_BeginIndex[m_Direction_B] );
   this->m_PositionIndex[m_Direction_B] = this->m_BeginIndex[m_Direction_B];
 
   for ( unsigned int n = 0; n < TImage::ImageDimension; n++ )
@@ -120,7 +120,7 @@ ImageSliceConstIteratorWithIndex< TImage >
   // Move to end of Slice
   this->m_PositionIndex[m_Direction_B] = this->m_EndIndex[m_Direction_B] - 1;
   this->m_Position += m_LineJump
-                      * ( this->m_EndIndex[m_Direction_B] - this->m_BeginIndex[m_Direction_B] );
+    * ( this->m_EndIndex[m_Direction_B] - this->m_BeginIndex[m_Direction_B] );
 
   for ( unsigned int n = 0; n < TImage::ImageDimension; n++ )
     {
@@ -249,6 +249,7 @@ ImageSliceConstIteratorWithIndex< TImage >
   this->m_Position -= m_PixelJump;
   return *this;
 }
+
 } // end namespace itk
 
 #endif

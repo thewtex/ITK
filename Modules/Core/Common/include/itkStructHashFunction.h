@@ -48,6 +48,7 @@ public:
   typedef TInput InputType;
 
   IdentifierType operator()(const InputType & key) const;
+
 };
 
 template< typename TInput >
@@ -56,8 +57,9 @@ StructHashFunction< TInput >
 ::operator()(const InputType & key) const
 {
   IdentifierType len = static_cast< IdentifierType >( sizeof( InputType ) );
-  const char * p = reinterpret_cast< const char * >( &key );
+  const char *   p = reinterpret_cast< const char * >( &key );
   IdentifierType hash = 0UL;
+
   while ( len-- )
     {
     hash = hash * 65UL + static_cast<IdentifierType>(*p++);
@@ -65,6 +67,7 @@ StructHashFunction< TInput >
   hash += ( hash >> 5 );
   return hash;
 }
+
 }
 
 #endif  // ndef itkStructHashFunction_h

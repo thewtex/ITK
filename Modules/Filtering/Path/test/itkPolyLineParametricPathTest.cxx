@@ -19,22 +19,22 @@
 #include <iostream>
 #include "itkPolyLineParametricPath.h"
 
-int itkPolyLineParametricPathTest(int, char* [])
+int
+itkPolyLineParametricPathTest(int, char* [])
 {
-  typedef  itk::PolyLineParametricPath<2>  PathType;
-  typedef  PathType::InputType             InputType;
-  typedef  PathType::IndexType             IndexType;
-  typedef  PathType::OffsetType            OffsetType;
-  typedef  PathType::VertexType            VertexType;
+  typedef  itk::PolyLineParametricPath<2> PathType;
+  typedef  PathType::InputType            InputType;
+  typedef  PathType::IndexType            IndexType;
+  typedef  PathType::OffsetType           OffsetType;
+  typedef  PathType::VertexType           VertexType;
 
   bool passed = true;
 
-  InputType   input;
-  OffsetType  offset;
-  VertexType  v;
+  InputType  input;
+  OffsetType offset;
+  VertexType v;
 
   PathType::Pointer path = PathType::New();
-
 
   v.Fill(1);
   path->AddVertex(v);
@@ -55,11 +55,11 @@ int itkPolyLineParametricPathTest(int, char* [])
   path->AddVertex(v);
 
   std::cout << "Evaluating at 0, 0.5, and 4.0:  " << path->Evaluate(0) << ", "
-       << path->Evaluate(0.5) << ", " << path->Evaluate(4.0) << std::endl;
+            << path->Evaluate(0.5) << ", " << path->Evaluate(4.0) << std::endl;
 
   std::cout << "Evaluating to an index at 0, 0.5, and 1.0:  "
-       << path->EvaluateToIndex(0) << ", " << path->EvaluateToIndex(0.5)
-       << ", " << path->EvaluateToIndex(1.0) << std::endl;
+            << path->EvaluateToIndex(0) << ", " << path->EvaluateToIndex(0.5)
+            << ", " << path->EvaluateToIndex(1.0) << std::endl;
   if( path->EvaluateToIndex(4.0) != path->EvaluateToIndex(0) )
     {
     std::cout << "PolyLineParametricPathTest:  EvaluateToIndex() Failed" << std::endl;
@@ -67,10 +67,10 @@ int itkPolyLineParametricPathTest(int, char* [])
     }
 
   std::cout << "Evaluating the derivative at 0, 0.5, and 1.0:  "
-       << path->EvaluateDerivative(0) << ", " << path->EvaluateDerivative(0.5)
-       << ", " << path->EvaluateDerivative(1.0) << std::endl;
-  if( int(0.5+1000*(path->EvaluateDerivative(0.5))[0]) != 1000 ||
-      int(0.5+1000*(path->EvaluateDerivative(0.5))[1]) != 2000 )
+            << path->EvaluateDerivative(0) << ", " << path->EvaluateDerivative(0.5)
+            << ", " << path->EvaluateDerivative(1.0) << std::endl;
+  if( int(0.5+1000*(path->EvaluateDerivative(0.5) )[0]) != 1000 ||
+      int(0.5+1000*(path->EvaluateDerivative(0.5) )[1]) != 2000 )
     {
     std::cout << "PolyLineParametricPathTest:  EvaluateDerivative() Failed" << std::endl;
     passed = false;
@@ -91,8 +91,8 @@ int itkPolyLineParametricPathTest(int, char* [])
   //Add a bunch of points closely spaced together
   for (double k = 0; k < 10; k+=0.1)
     {
-      v.Fill(k);
-      path2->AddVertex(v);
+    v.Fill(k);
+    path2->AddVertex(v);
     }
 
   //Add a point that is very far away from the first points

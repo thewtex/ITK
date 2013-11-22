@@ -39,7 +39,7 @@ namespace itk
 //---------------------------------------------------------
 template< typename TInputImage >
 ImageFileWriter< TInputImage >
-::ImageFileWriter():
+::ImageFileWriter() :
   m_PasteIORegion(TInputImage::ImageDimension)
 {
   m_UseCompression = false;
@@ -54,7 +54,8 @@ ImageFileWriter< TInputImage >
 template< typename TInputImage >
 ImageFileWriter< TInputImage >
 ::~ImageFileWriter()
-{}
+{
+}
 
 //---------------------------------------------------------
 template< typename TInputImage >
@@ -72,18 +73,18 @@ template< typename TInputImage >
 const typename ImageFileWriter< TInputImage >::InputImageType *
 ImageFileWriter< TInputImage >
 ::GetInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< TInputImage * >( this->GetPrimaryInput() );
-}
+  }
 
 //---------------------------------------------------------
 template< typename TInputImage >
 const typename ImageFileWriter< TInputImage >::InputImageType *
 ImageFileWriter< TInputImage >
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< TInputImage * >( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 //---------------------------------------------------------
 template< typename TInputImage >
@@ -133,7 +134,8 @@ ImageFileWriter< TInputImage >
       itkDebugMacro(<< "Attempting factory creation of ImageIO for file: "
                     << m_FileName);
       }
-    else // ( m_FactorySpecifiedImageIO && !m_ImageIO->CanWriteFile( m_FileName.c_str() )
+    else // ( m_FactorySpecifiedImageIO && !m_ImageIO->CanWriteFile(
+         // m_FileName.c_str() )
       {
       itkDebugMacro(<< "ImageIO exists but doesn't know how to write file:"
                     << m_FileName);
@@ -195,7 +197,6 @@ ImageFileWriter< TInputImage >
 
     }
 
-
   // Setup the ImageIO
   //
   m_ImageIO->SetNumberOfDimensions(TInputImage::ImageDimension);
@@ -237,14 +238,14 @@ ImageFileWriter< TInputImage >
   if ( strcmp(input->GetNameOfClass(), "VectorImage") == 0 )
     {
     typedef typename InputImageType::InternalPixelType VectorImageScalarType;
-    m_ImageIO->SetPixelTypeInfo(static_cast<const VectorImageScalarType *>(0));
+    m_ImageIO->SetPixelTypeInfo(static_cast<const VectorImageScalarType *>(0) );
     typedef typename InputImageType::AccessorFunctorType AccessorFunctorType;
     m_ImageIO->SetNumberOfComponents( AccessorFunctorType::GetVectorLength(input) );
     }
   else
     {
     // Set the pixel and component type; the number of components.
-    m_ImageIO->SetPixelTypeInfo(static_cast<const InputImagePixelType *>(0));
+    m_ImageIO->SetPixelTypeInfo(static_cast<const InputImagePixelType *>(0) );
     }
 
   // Setup the image IO for writing.
@@ -466,6 +467,7 @@ ImageFileWriter< TInputImage >
     os << indent << "FactorySpecifiedmageIO: Off\n";
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -69,7 +69,8 @@ FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
     outputPtr->GetLargestPossibleRegion().GetSize();
 
   // figure out sizes
-  // size of input and output aren't the same which is handled in the superclass,
+  // size of input and output aren't the same which is handled in the
+  // superclass,
   // sort of.
   // the input size and output size only differ in the fastest moving dimension
   unsigned int totalInputSize = 1;
@@ -95,8 +96,8 @@ FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
   fftwOutput->Allocate();
 
   typename FFTWProxyType::PlanType plan;
-  InputPixelType * in = const_cast<InputPixelType*>(inputPtr->GetBufferPointer());
-  int flags = m_PlanRigor;
+  InputPixelType * in = const_cast<InputPixelType*>(inputPtr->GetBufferPointer() );
+  int              flags = m_PlanRigor;
   if( !m_CanUseDestructiveAlgorithm )
     {
     // if the input is about to be destroyed, there is no need to force fftw
@@ -113,7 +114,7 @@ FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
   plan = FFTWProxyType::Plan_dft_r2c(ImageDimension, sizes, in,
                                      (typename FFTWProxyType::ComplexType*)
                                      fftwOutput->GetBufferPointer(), flags,
-                                     this->GetNumberOfThreads());
+                                     this->GetNumberOfThreads() );
   delete[] sizes;
   FFTWProxyType::Execute(plan);
   FFTWProxyType::DestroyPlan(plan);
@@ -148,7 +149,8 @@ FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName(m_PlanRigor) << " (" << m_PlanRigor << ")" << std::endl;
+  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName(m_PlanRigor) << " (" << m_PlanRigor <<
+    ")" << std::endl;
 }
 
 } // namespace itk

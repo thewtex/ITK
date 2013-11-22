@@ -26,7 +26,8 @@ namespace itk
 template< typename TInputImage >
 TobogganImageFilter< TInputImage >
 ::TobogganImageFilter()
-{}
+{
+}
 
 template< typename TInputImage >
 void
@@ -34,6 +35,7 @@ TobogganImageFilter< TInputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -48,6 +50,7 @@ TobogganImageFilter< TInputImage >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -257,6 +260,7 @@ TobogganImageFilter< TInputImage >
     ++outIt;
     }
 }
+
 } // end namespace itk
 
 #endif

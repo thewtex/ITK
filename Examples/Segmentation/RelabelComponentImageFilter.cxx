@@ -27,7 +27,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
@@ -39,13 +38,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkRelabelComponentImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -53,7 +51,6 @@ int main( int argc, char * argv[] )
     std::cerr << argv[0] << "  inputImageFile   outputImageFile" << std::endl;
     return 1;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -63,16 +60,15 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -93,11 +89,10 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RelabelComponentImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer relabeler = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -111,13 +106,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   relabeler->SetInput( reader->GetOutput() );
   writer->SetInput( relabeler->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -129,7 +122,7 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   typedef std::vector< itk::SizeValueType > SizesInPixelsType;
   const SizesInPixelsType & sizesInPixels
-                                      = relabeler->GetSizeOfObjectsInPixels();
+    = relabeler->GetSizeOfObjectsInPixels();
 
   SizesInPixelsType::const_iterator sizeItr = sizesInPixels.begin();
   SizesInPixelsType::const_iterator sizeEnd = sizesInPixels.end();
@@ -146,12 +139,12 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   typedef std::vector< float > SizesInPhysicalUnitsType;
   const SizesInPhysicalUnitsType sizesInUnits
-                               = relabeler->GetSizeOfObjectsInPhysicalUnits();
+    = relabeler->GetSizeOfObjectsInPhysicalUnits();
 
   SizesInPhysicalUnitsType::const_iterator physicalSizeItr
-                                                       = sizesInUnits.begin();
+    = sizesInUnits.begin();
   SizesInPhysicalUnitsType::const_iterator physicalSizeEnd
-                                                         = sizesInUnits.end();
+    = sizesInUnits.end();
 
   std::cout << "Area in Physical Units per class " << std::endl;
   unsigned int jclass = 0;

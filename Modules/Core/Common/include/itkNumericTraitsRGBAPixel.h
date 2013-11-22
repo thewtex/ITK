@@ -84,52 +84,62 @@ public:
    * \note minimum value for floating pointer types is defined as
    * minimum positive normalize value.
    */
-  static const Self max(const Self &)
+  static const Self
+  max(const Self &)
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min(const Self &)
+  static const Self
+  min(const Self &)
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self max()
+  static const Self
+  max()
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min()
+  static const Self
+  min()
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self NonpositiveMin()
+  static const Self
+  NonpositiveMin()
   {
     return Self ( NumericTraits< ValueType >::NonpositiveMin() );
   }
 
-  static const Self ZeroValue()
+  static const Self
+  ZeroValue()
   {
     return Self(NumericTraits< T >::Zero);
   }
 
-  static const Self OneValue()
+  static const Self
+  OneValue()
   {
     return Self(NumericTraits< T >::One);
   }
 
-  static const Self NonpositiveMin(const Self &)
+  static const Self
+  NonpositiveMin(const Self &)
   {
     return NonpositiveMin();
   }
 
-  static const Self ZeroValue(const Self &)
+  static const Self
+  ZeroValue(const Self &)
   {
     return ZeroValue();
   }
 
-  static const Self OneValue(const Self &)
+  static const Self
+  OneValue(const Self &)
   {
     return OneValue();
   }
@@ -137,7 +147,8 @@ public:
   /** RGBA pixels must have 4 components, so the size cannot be
    *  set to anything besides 4.  If called with size of 4, this
    *  function will fill the pixel with zeros. */
-  static void SetLength(RGBAPixel< T > & m, const unsigned int s)
+  static void
+  SetLength(RGBAPixel< T > & m, const unsigned int s)
   {
     if ( s != 4 )
       {
@@ -148,24 +159,28 @@ public:
   }
 
   /** Return the dimensionality of the pixel. Always returns 4. */
-  static unsigned int GetLength(const RGBAPixel< T > &)
+  static unsigned int
+  GetLength(const RGBAPixel< T > &)
   {
     return 4;
   }
 
   /** Return the dimensionality of the pixel. Always returns 4. */
-  static unsigned int GetLength()
+  static unsigned int
+  GetLength()
   {
     return 4;
   }
 
-  static void AssignToArray( const Self & v, MeasurementVectorType & mv )
+  static void
+  AssignToArray( const Self & v, MeasurementVectorType & mv )
   {
     mv = v;
   }
 
   template<typename TArray>
-  static void AssignToArray( const Self & v, TArray & mv )
+  static void
+  AssignToArray( const Self & v, TArray & mv )
   {
     for( unsigned int i=0; i<4; i++ )
       {

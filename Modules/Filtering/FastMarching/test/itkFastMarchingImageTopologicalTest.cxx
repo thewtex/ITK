@@ -23,9 +23,9 @@
 #include "itkImageFileWriter.h"
 #include "itkLabelContourImageFilter.h"
 
-
 template <unsigned int VDimension>
-int FastMarchingImageFilter( unsigned int argc, char *argv[] )
+int
+FastMarchingImageFilter( unsigned int argc, char *argv[] )
 {
   typedef float InternalPixelType;
 
@@ -36,7 +36,7 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
   typedef itk::Image<OutputPixelType, VDimension> OutputImageType;
 
   typedef itk::FastMarchingThresholdStoppingCriterion< InternalImageType, InternalImageType >
-      CriterionType;
+    CriterionType;
 
   typedef typename CriterionType::Pointer CriterionPointer;
 
@@ -45,8 +45,8 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
   CriterionPointer criterion = CriterionType::New();
   criterion->SetThreshold( stoppingValue );
 
-  typedef itk::ImageFileReader< InternalImageType>  ReaderType;
-  typedef typename ReaderType::Pointer              ReaderPointer;
+  typedef itk::ImageFileReader< InternalImageType> ReaderType;
+  typedef typename ReaderType::Pointer             ReaderPointer;
 
   ReaderPointer reader = ReaderType::New();
   reader->SetFileName( argv[2] );
@@ -62,7 +62,7 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
     }
 
   typedef itk::FastMarchingImageFilterBase< InternalImageType, InternalImageType > FastMarchingType;
-  typedef typename FastMarchingType::Pointer FastMarchingPointer;
+  typedef typename FastMarchingType::Pointer                                       FastMarchingPointer;
 
   FastMarchingPointer fastMarching = FastMarchingType::New();
   fastMarching->SetInput( reader->GetOutput() );
@@ -71,8 +71,8 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
   typedef typename FastMarchingType::LabelImageType LabelImageType;
   typedef typename LabelImageType::PixelType        LabelType;
 
-  typedef itk::ImageFileReader<LabelImageType>    LabelImageReaderType;
-  typedef typename LabelImageReaderType::Pointer  LabelImageReaderPointer;
+  typedef itk::ImageFileReader<LabelImageType>   LabelImageReaderType;
+  typedef typename LabelImageReaderType::Pointer LabelImageReaderPointer;
   LabelImageReaderPointer labelImageReader = LabelImageReaderType::New();
   labelImageReader->SetFileName( argv[4] );
 
@@ -90,7 +90,7 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
   LabelType label_zero = itk::NumericTraits<LabelType>::Zero;
 
   typedef itk::LabelContourImageFilter<LabelImageType,
-      LabelImageType> ContourFilterType;
+                                       LabelImageType> ContourFilterType;
   typename ContourFilterType::Pointer contour = ContourFilterType::New();
   contour->SetInput( labelImageReader->GetOutput() );
   contour->FullyConnectedOff();
@@ -107,21 +107,20 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef typename FastMarchingType::NodePairType           NodePairType;
-  typedef typename FastMarchingType::NodeType               NodeType;
-  typedef typename FastMarchingType::NodePairContainerType  NodePairContainerType;
-
+  typedef typename FastMarchingType::NodePairType          NodePairType;
+  typedef typename FastMarchingType::NodeType              NodeType;
+  typedef typename FastMarchingType::NodePairContainerType NodePairContainerType;
 
   typename NodePairContainerType::Pointer AlivePoints = NodePairContainerType::New();
   typename NodePairContainerType::Pointer TrialPoints = NodePairContainerType::New();
 
   itk::ImageRegionIteratorWithIndex<LabelImageType> ItL(
-        labelImageReader->GetOutput(),
-        labelImageReader->GetOutput()->GetLargestPossibleRegion() );
+    labelImageReader->GetOutput(),
+    labelImageReader->GetOutput()->GetLargestPossibleRegion() );
 
   itk::ImageRegionIteratorWithIndex<LabelImageType> ItC(
-        contour->GetOutput(),
-        contour->GetOutput()->GetLargestPossibleRegion() );
+    contour->GetOutput(),
+    contour->GetOutput()->GetLargestPossibleRegion() );
 
   ItL.GoToBegin();
   ItC.GoToBegin();
@@ -185,13 +184,12 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
     {
     thresholder->Update();
     }
-   catch( itk::ExceptionObject & excep )
+  catch( itk::ExceptionObject & excep )
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
     return EXIT_FAILURE;
     }
-
 
   typedef itk::ImageFileWriter<OutputImageType> WriterType;
   typename WriterType::Pointer writer = WriterType::New();
@@ -255,25 +253,26 @@ int FastMarchingImageFilter( unsigned int argc, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkFastMarchingImageTopologicalTest( int argc, char *argv[] )
+int
+itkFastMarchingImageTopologicalTest( int argc, char *argv[] )
 {
   if( argc < 6 )
     {
     std::cerr << "Usage: " << argv[0] << " imageDimension";
     std::cerr << " speedImage outputImage seedImage ";
     std::cerr << " stoppingValue [checkTopology] [otherFilePrefix]"
-      << std::endl;
+              << std::endl;
     return EXIT_FAILURE;
     }
 
   switch( atoi( argv[1] ) )
-   {
-   case 2:
-     return FastMarchingImageFilter<2>( argc, argv );
-   case 3:
-     return FastMarchingImageFilter<3>( argc, argv );
-   default:
-     std::cerr << "Unsupported dimension" << std::endl;
-     return EXIT_FAILURE;
-   }
+    {
+    case 2:
+      return FastMarchingImageFilter<2>( argc, argv );
+    case 3:
+      return FastMarchingImageFilter<3>( argc, argv );
+    default:
+      std::cerr << "Unsupported dimension" << std::endl;
+      return EXIT_FAILURE;
+    }
 }

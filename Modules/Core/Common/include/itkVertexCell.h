@@ -36,7 +36,7 @@ namespace itk
  */
 
 template< typename TCellInterface >
-class VertexCell:public TCellInterface
+class VertexCell : public TCellInterface
 {
 public:
   /** Standard class typedefs. */
@@ -51,8 +51,12 @@ public:
   itkStaticConstMacro(CellDimension, unsigned int, 0);
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::VERTEX_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::VERTEX_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -101,7 +105,8 @@ public:
       }
   }
 
-  ~VertexCell() {}
+  ~VertexCell() {
+  }
 
 protected:
   /**
@@ -112,6 +117,7 @@ protected:
 private:
   VertexCell(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

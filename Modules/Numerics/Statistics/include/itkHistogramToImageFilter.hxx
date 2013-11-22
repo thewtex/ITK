@@ -36,7 +36,8 @@ HistogramToImageFilter< THistogram, TImage, TFunction >
 template< typename THistogram, typename TImage, typename TFunction >
 HistogramToImageFilter< THistogram, TImage, TFunction >
 ::~HistogramToImageFilter()
-{}
+{
+}
 
 /** Set the Input Histogram */
 template< typename THistogram, typename TImage, typename TFunction >
@@ -46,6 +47,7 @@ HistogramToImageFilter< THistogram, TImage, TFunction >
 {
   // Process object is not const-correct so the const_cast is required here
   HistogramType * histogram = const_cast< HistogramType * >( input );
+
   this->ProcessObject::SetNthInput(0,  histogram);
 }
 
@@ -53,9 +55,9 @@ template< typename THistogram, typename TImage, typename TFunction >
 const typename HistogramToImageFilter< THistogram, TImage, TFunction >::HistogramType *
 HistogramToImageFilter< THistogram, TImage, TFunction >
 ::GetInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< const HistogramType * >( this->GetPrimaryInput() );
-}
+  }
 
 template< typename THistogram, typename TImage, typename TFunction >
 void
@@ -93,12 +95,13 @@ HistogramToImageFilter< THistogram, TImage, TFunction >
   const HistogramType *inputHistogram = this->GetInput();
   OutputImageType *    outputImage    = this->GetOutput();
 
-  SizeType size;
-  PointType origin;
+  SizeType    size;
+  PointType   origin;
   SpacingType spacing;
   // Set the image size to the number of bins along each dimension.
-  // TODO: is it possible to have a size 0 on one of the dimension? if yes, the size must be checked
-  unsigned int minDim = std::min((unsigned int)ImageDimension, inputHistogram->GetMeasurementVectorSize());
+  // TODO: is it possible to have a size 0 on one of the dimension? if yes, the
+  // size must be checked
+  unsigned int minDim = std::min( (unsigned int)ImageDimension, inputHistogram->GetMeasurementVectorSize() );
   for ( unsigned int i = 0; i < minDim; i++ )
     {
     size[i]    = inputHistogram->GetSize(i);
@@ -106,7 +109,8 @@ HistogramToImageFilter< THistogram, TImage, TFunction >
     spacing[i] = inputHistogram->GetBinMax(i, 0) - inputHistogram->GetBinMin(i, 0);
     }
 
-  // if the image is of greater dimension than the histogram, use some default values
+  // if the image is of greater dimension than the histogram, use some default
+  // values
   for ( unsigned int i = inputHistogram->GetMeasurementVectorSize(); i<ImageDimension; i++ )
     {
     size[i]    = 1;
@@ -174,9 +178,11 @@ HistogramToImageFilter< THistogram, TImage, TFunction >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Sum of frequencies of measurement vectors of the histogram: "
      << m_Functor.GetTotalFrequency() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

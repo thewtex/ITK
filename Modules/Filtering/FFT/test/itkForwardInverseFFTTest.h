@@ -22,9 +22,11 @@
 #include "itkImageFileReader.h"
 
 template< typename TForwardFFT, typename TInverseFFT >
-bool ForwardInverseFullFFTTest(const char * inputFileName)
+bool
+ForwardInverseFullFFTTest(const char * inputFileName)
 {
   double tolerance = 1.e-3;
+
   typedef typename TForwardFFT::InputImageType ImageType;
   typedef itk::ImageFileReader< ImageType >    ReaderType;
   typename ReaderType::Pointer reader = ReaderType::New();
@@ -65,9 +67,11 @@ bool ForwardInverseFullFFTTest(const char * inputFileName)
 }
 
 template< typename TForwardFFT, typename TInverseFFT >
-bool ForwardInverseHalfFFTTest(const char * inputFileName)
+bool
+ForwardInverseHalfFFTTest(const char * inputFileName)
 {
   double tolerance = 1.e-3;
+
   typedef typename TForwardFFT::InputImageType ImageType;
   typedef itk::ImageFileReader< ImageType >    ReaderType;
   typename ReaderType::Pointer reader = ReaderType::New();

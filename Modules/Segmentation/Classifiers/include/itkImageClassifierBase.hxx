@@ -25,13 +25,15 @@ template< typename TInputImage,
           typename TClassifiedImage >
 ImageClassifierBase< TInputImage, TClassifiedImage >
 ::ImageClassifierBase(void)
-{}
+{
+}
 
 template< typename TInputImage,
           typename TClassifiedImage >
 ImageClassifierBase< TInputImage, TClassifiedImage >
 ::~ImageClassifierBase(void)
-{}
+{
+}
 
 /**
  * PrintSelf
@@ -95,7 +97,7 @@ ImageClassifierBase< TInputImage, TClassifiedImage >
   classifiedImage = this->GetClassifiedImage();
 
   ClassifiedImageIterator
-  classifiedIt( classifiedImage, classifiedImage->GetBufferedRegion() );
+    classifiedIt( classifiedImage, classifiedImage->GetBufferedRegion() );
 
   //--------------------------------------------------------------------
   //Set up the vector to store the image  data
@@ -181,8 +183,8 @@ std::vector< double >
 ImageClassifierBase< TInputImage, TClassifiedImage >
 ::GetPixelMembershipValue(const InputImagePixelType inputImagePixel)
 {
-  unsigned int numberOfClasses = this->GetNumberOfClasses();
-  std::vector< double >  pixelMembershipValue(numberOfClasses);
+  unsigned int          numberOfClasses = this->GetNumberOfClasses();
+  std::vector< double > pixelMembershipValue(numberOfClasses);
 
   for ( unsigned int classIndex = 0; classIndex < numberOfClasses; classIndex++ )
     {
@@ -193,6 +195,7 @@ ImageClassifierBase< TInputImage, TClassifiedImage >
   //Return the membership value of the
   return pixelMembershipValue;
 }
+
 } // namespace itk
 
 #endif

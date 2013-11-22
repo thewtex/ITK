@@ -20,12 +20,12 @@
 
 #include "itkImageRegionIterator.h"
 
-
 // This routine is used to make sure that we call the "const" version
 // of GetPixel() (via the operator[])
 template <typename T, unsigned int VImageDimension>
-void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
-                          itk::Image<T, VImageDimension> &out)
+void
+TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
+                     itk::Image<T, VImageDimension> &out)
 {
   typename itk::Image<T, VImageDimension>::IndexType regionStartIndex3D = {{5, 10, 15}};
   typename itk::Image<T, VImageDimension>::IndexType regionEndIndex3D = {{8, 15, 17}};
@@ -42,8 +42,8 @@ void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
   out[regionEndIndex3D] = in[regionStartIndex3D];
 }
 
-
-int itkImageRegionIteratorTest(int, char* [] )
+int
+itkImageRegionIteratorTest(int, char* [] )
 {
   std::cout << "Creating an image" << std::endl;
   itk::Image<itk::Vector<unsigned short, 5>, 3>::Pointer
@@ -63,8 +63,8 @@ int itkImageRegionIteratorTest(int, char* [] )
   itk::Image<itk::Vector<unsigned short, 5>, 3>::IndexType regionStartIndex3D = {{5, 10, 12}};
   itk::Image<itk::Vector<unsigned short, 5>, 3>::IndexType regionEndIndex3D = {{8, 15, 17}};
 
-
   itk::Image<itk::Vector<unsigned short, 5>, 3>::RegionType region;
+
   region.SetSize(imageSize3D);
   region.SetIndex(startIndex3D);
   o3->SetLargestPossibleRegion( region );
@@ -93,7 +93,6 @@ int itkImageRegionIteratorTest(int, char* [] )
   (*o3)[regionEndIndex3D] = (*o3)[regionStartIndex3D];
   TestConstPixelAccess(*o3, *o3);
 
-
   itk::ImageIterator<itk::Image<itk::Vector<unsigned short, 5>, 3> > standardIt(o3, region);
 
   // Iterate over a region using a simple for loop
@@ -118,7 +117,6 @@ int itkImageRegionIteratorTest(int, char* [] )
     std::cout << index << std::endl;
     }
 
-
   // Iterator over the region backwards using a simple for loop
   itk::ImageRegionIterator<itk::Image<itk::Vector<unsigned short, 5>, 3> > backIt(o3, region);
 
@@ -135,10 +133,11 @@ int itkImageRegionIteratorTest(int, char* [] )
       }
     std::cout << std::endl;
     }
-  while (!backIt.IsAtBegin()); // stop when we reach the beginning
+  while (!backIt.IsAtBegin() ); // stop when we reach the beginning
 
-  // Iterate over a region, then change the region and iterate over the new region
-  {
+  // Iterate over a region, then change the region and iterate over the new
+  // region
+    {
     // Create an image
     typedef itk::Image<int, 2> TestImageType;
     TestImageType::IndexType imageCorner;
@@ -155,8 +154,9 @@ int itkImageRegionIteratorTest(int, char* [] )
 
     itk::ImageRegionIterator<TestImageType> createImageIterator(image,imageRegion);
 
-    // Set all pixels with first index == 0 to 0, and set the rest of the image to 255
-    while(!createImageIterator.IsAtEnd())
+    // Set all pixels with first index == 0 to 0, and set the rest of the image
+    // to 255
+    while(!createImageIterator.IsAtEnd() )
       {
       if(createImageIterator.GetIndex()[0] == 0)
         {
@@ -187,7 +187,7 @@ int itkImageRegionIteratorTest(int, char* [] )
     expectedValuesRegion1[2] = 0;
     expectedValuesRegion1[3] = 255;
     unsigned int counter = 0;
-    while(!imageIterator.IsAtEnd())
+    while(!imageIterator.IsAtEnd() )
       {
       if(imageIterator.Get() != expectedValuesRegion1[counter])
         {
@@ -212,7 +212,7 @@ int itkImageRegionIteratorTest(int, char* [] )
     expectedValuesRegion2[2] = 255;
     expectedValuesRegion2[3] = 255;
     counter = 0;
-    while(!imageIterator.IsAtEnd())
+    while(!imageIterator.IsAtEnd() )
       {
       if(imageIterator.Get() != expectedValuesRegion2[counter])
         {
@@ -222,7 +222,7 @@ int itkImageRegionIteratorTest(int, char* [] )
       ++imageIterator;
       }
 
-  } // end "Change Region" test
+    } // end "Change Region" test
 
   if (status == 0)
     {

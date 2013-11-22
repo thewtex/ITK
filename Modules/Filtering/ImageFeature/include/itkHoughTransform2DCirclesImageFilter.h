@@ -18,7 +18,6 @@
 #ifndef __itkHoughTransform2DCirclesImageFilter_h
 #define __itkHoughTransform2DCirclesImageFilter_h
 
-
 #include "itkImageToImageFilter.h"
 #include "itkEllipseSpatialObject.h"
 
@@ -51,7 +50,7 @@ namespace itk
  */
 
 template< typename TInputPixelType, typename TOutputPixelType >
-class HoughTransform2DCirclesImageFilter:
+class HoughTransform2DCirclesImageFilter :
   public ImageToImageFilter< Image< TInputPixelType, 2 >, Image< TOutputPixelType, 2 > >
 {
 public:
@@ -70,8 +69,8 @@ public:
 
   /** Standard "Superclass" typedef. */
   typedef ImageToImageFilter<
-    Image< TInputPixelType, 2 >,
-    Image< TOutputPixelType, 2 > >  Superclass;
+      Image< TInputPixelType, 2 >,
+      Image< TOutputPixelType, 2 > >  Superclass;
 
   /** Smart pointer typedef support. */
   typedef SmartPointer< Self >       Pointer;
@@ -165,7 +164,9 @@ public:
 protected:
 
   HoughTransform2DCirclesImageFilter();
-  virtual ~HoughTransform2DCirclesImageFilter() {}
+  virtual
+  ~HoughTransform2DCirclesImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -191,12 +192,12 @@ private:
   double m_Threshold;
   double m_SigmaGradient;
 
-  OutputImagePointer    m_RadiusImage;
-  CirclesListType       m_CirclesList;
-  CirclesListSizeType   m_NumberOfCircles;
-  float                 m_DiscRadiusRatio;
-  float                 m_Variance;
-  ModifiedTimeType      m_OldModifiedTime;
+  OutputImagePointer  m_RadiusImage;
+  CirclesListType     m_CirclesList;
+  CirclesListSizeType m_NumberOfCircles;
+  float               m_DiscRadiusRatio;
+  float               m_Variance;
+  ModifiedTimeType    m_OldModifiedTime;
 
   CirclesListSizeType m_OldNumberOfCircles;
 };

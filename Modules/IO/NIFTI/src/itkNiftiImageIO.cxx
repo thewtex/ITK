@@ -26,7 +26,8 @@ namespace itk
 #if defined( __USE_VERY_VERBOSE_NIFTI_DEBUGGING__ )
 namespace
 {
-static int print_hex_vals(
+static int
+print_hex_vals(
   char const *const data,
   const int nbytes,
   FILE *const fp)
@@ -46,7 +47,8 @@ static int print_hex_vals(
   return 0;
 }
 
-static char * str_intent(unsigned int intent)
+static char *
+str_intent(unsigned int intent)
 {
   switch ( intent )
     {
@@ -128,7 +130,8 @@ static char * str_intent(unsigned int intent)
 /*----------------------------------------------------------------------*/
 /*! display the contents of the nifti_1_header (send to stdout)
  *--------------------------------------------------------------------*/
-static int DumpNiftiHeader(const std::string & fname)
+static int
+DumpNiftiHeader(const std::string & fname)
 {
   int             c;
   nifti_1_header *hp;
@@ -144,17 +147,17 @@ static int DumpNiftiHeader(const std::string & fname)
     }
 
   fprintf(stderr, " nifti_1_header :\n"
-                  "    sizeof_hdr     = %d\n"
-                  "    data_type[10]  = ", hp->sizeof_hdr);
+          "    sizeof_hdr     = %d\n"
+          "    data_type[10]  = ", hp->sizeof_hdr);
   print_hex_vals(hp->data_type, 10, stderr);
   fprintf(stderr, "\n"
-                  "    db_name[18]    = ");
+          "    db_name[18]    = ");
   print_hex_vals(hp->db_name, 18, stderr);
   fprintf(stderr, "\n"
-                  "    extents        = %d\n"
-                  "    session_error  = %d\n"
-                  "    regular        = 0x%x\n"
-                  "    dim_info       = 0x%x\n",
+          "    extents        = %d\n"
+          "    session_error  = %d\n"
+          "    regular        = 0x%x\n"
+          "    dim_info       = 0x%x\n",
           hp->extents, hp->session_error, hp->regular, hp->dim_info);
   fprintf(stderr, "    dim[8]         =");
   for ( c = 0; c < 8; c++ )
@@ -162,14 +165,14 @@ static int DumpNiftiHeader(const std::string & fname)
     fprintf(stderr, " %d", hp->dim[c]);
     }
   fprintf(stderr, "\n"
-                  "    intent_p1      = %f\n"
-                  "    intent_p2      = %f\n"
-                  "    intent_p3      = %f\n"
-                  "    intent_code    = %s\n"
-                  "    datatype       = %d\n"
-                  "    bitpix         = %d\n"
-                  "    slice_start    = %d\n"
-                  "    pixdim[8]      =",
+          "    intent_p1      = %f\n"
+          "    intent_p2      = %f\n"
+          "    intent_p3      = %f\n"
+          "    intent_code    = %s\n"
+          "    datatype       = %d\n"
+          "    bitpix         = %d\n"
+          "    slice_start    = %d\n"
+          "    pixdim[8]      =",
           hp->intent_p1, hp->intent_p2, hp->intent_p3,
           str_intent(hp->intent_code),
           hp->datatype, hp->bitpix, hp->slice_start);
@@ -184,18 +187,18 @@ static int DumpNiftiHeader(const std::string & fname)
     fprintf(stderr, " %f", hp->pixdim[c]);
     }
   fprintf(stderr, "\n"
-                  "    vox_offset     = %f\n"
-                  "    scl_slope      = %f\n"
-                  "    scl_inter      = %f\n"
-                  "    slice_end      = %d\n"
-                  "    slice_code     = %d\n"
-                  "    xyzt_units     = 0x%x\n"
-                  "    cal_max        = %f\n"
-                  "    cal_min        = %f\n"
-                  "    slice_duration = %f\n"
-                  "    toffset        = %f\n"
-                  "    glmax          = %d\n"
-                  "    glmin          = %d\n",
+          "    vox_offset     = %f\n"
+          "    scl_slope      = %f\n"
+          "    scl_inter      = %f\n"
+          "    slice_end      = %d\n"
+          "    slice_code     = %d\n"
+          "    xyzt_units     = 0x%x\n"
+          "    cal_max        = %f\n"
+          "    cal_min        = %f\n"
+          "    slice_duration = %f\n"
+          "    toffset        = %f\n"
+          "    glmax          = %d\n"
+          "    glmin          = %d\n",
           hp->vox_offset, hp->scl_slope, hp->scl_inter, hp->slice_end,
           hp->slice_code, hp->xyzt_units, hp->cal_max, hp->cal_min,
           hp->slice_duration, hp->toffset, hp->glmax, hp->glmin);
@@ -229,17 +232,20 @@ static int DumpNiftiHeader(const std::string & fname)
   return 0;
 }
 
-static void dumpdata(const void *x)
+static void
+dumpdata(const void *x)
 {
   std::cerr << "----------------------" << std::endl;
 
   //    typedef const float (*itkarray)[1][2][2][2][3];
   const float *a = (const float *)x;
+
   for ( unsigned int i = 0; i < 24; i++ )         // t
     {
     std::cerr << a[i] << std::endl;
     }
 }
+
 }
 #else
 #define dumpdata(x)
@@ -326,7 +332,8 @@ LowerToUpperOrder(int dim)
 
 // compute the rank of the symmetric matrix from
 // the count of the triangular matrix elements
-int SymMatDim(int count)
+int
+SymMatDim(int count)
 {
   int dim = 0;
   int row = 1;
@@ -347,7 +354,7 @@ NiftiImageIO
   return requestedRegion;
 }
 
-NiftiImageIO::NiftiImageIO():
+NiftiImageIO::NiftiImageIO() :
   m_NiftiImage(0),
   m_RescaleSlope(1.0),
   m_RescaleIntercept(0.0),
@@ -382,6 +389,7 @@ NiftiImageIO
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "LegacyAnalyze75Mode: " << this->m_LegacyAnalyze75Mode << std::endl;
 }
 
@@ -404,10 +412,11 @@ NiftiImageIO::MustRescale()
 
 // Internal function to rescale pixel according to Rescale Slope/Intercept
 template< typename TBuffer >
-void RescaleFunction(TBuffer *buffer,
-                     double slope,
-                     double intercept,
-                     size_t size)
+void
+RescaleFunction(TBuffer *buffer,
+                double slope,
+                double intercept,
+                size_t size)
 {
   for ( unsigned int i = 0; i < size; i++ )
     {
@@ -429,7 +438,8 @@ CastCopy(float *to, void *from, size_t pixelcount)
     }
 }
 
-void NiftiImageIO::Read(void *buffer)
+void
+NiftiImageIO::Read(void *buffer)
 {
   void *data = 0;
 
@@ -602,8 +612,8 @@ void NiftiImageIO::Read(void *buffer)
     {
     // otherwise nifti is x y z t vec l m 0, itk is
     // vec x y z t l m o
-    const char *       niftibuf = (const char *)data;
-    char *             itkbuf = (char *)buffer;
+    const char * niftibuf = (const char *)data;
+    char *       itkbuf = (char *)buffer;
     const size_t rowdist = this->m_NiftiImage->dim[1];
     const size_t slicedist = rowdist * this->m_NiftiImage->dim[2];
     const size_t volumedist = slicedist * this->m_NiftiImage->dim[3];
@@ -758,7 +768,8 @@ NiftiImageIO
 
 // This method adds the available header information to the
 // metadata dictionary.
-void NiftiImageIO::SetImageIOMetadataFromNIfTI()
+void
+NiftiImageIO::SetImageIOMetadataFromNIfTI()
 {
   int             swap = 0;
   nifti_1_header *header = nifti_read_header(this->GetFileName(), &swap, true);
@@ -977,7 +988,7 @@ NiftiImageIO
     for ( realdim = this->m_NiftiImage->dim[0];
           this->m_NiftiImage->dim[realdim] == 1 && realdim > 3;
           realdim-- )
-         {}
+               {}
     this->SetNumberOfDimensions(realdim);
     this->SetNumberOfComponents(1);
     }
@@ -1264,7 +1275,8 @@ NiftiImageIO
 
 namespace
 {
-inline mat44 mat44_transpose(mat44 in)
+inline mat44
+mat44_transpose(mat44 in)
 {
   mat44 out;
 
@@ -1277,6 +1289,7 @@ inline mat44 mat44_transpose(mat44 in)
     }
   return out;
 }
+
 }
 /**
  * For Nifti this does not write a file, it only fills in the
@@ -1384,15 +1397,15 @@ NiftiImageIO
     {
     case 7:
       this->m_NiftiImage->dim[7] = this->m_NiftiImage->nw =
-                                     static_cast< int >( this->GetDimensions(6) );
+          static_cast< int >( this->GetDimensions(6) );
       this->m_NiftiImage->pixdim[7] = this->m_NiftiImage->dw =
-                                        static_cast< float >( this->GetSpacing(6) );
+          static_cast< float >( this->GetSpacing(6) );
       this->m_NiftiImage->nvox *= this->m_NiftiImage->dim[7];
     case 6:
       this->m_NiftiImage->dim[6] = this->m_NiftiImage->nv =
-                                     this->GetDimensions(5);
+          this->GetDimensions(5);
       this->m_NiftiImage->pixdim[6] = this->m_NiftiImage->dv =
-                                        static_cast< float >( this->GetSpacing(5) );
+          static_cast< float >( this->GetSpacing(5) );
       this->m_NiftiImage->nvox *= this->m_NiftiImage->dim[6];
     case 5:
       this->m_NiftiImage->dim[5] =
@@ -1402,25 +1415,25 @@ NiftiImageIO
       this->m_NiftiImage->nvox *= this->m_NiftiImage->dim[5];
     case 4:
       this->m_NiftiImage->dim[4] = this->m_NiftiImage->nt =
-                                     this->GetDimensions(3);
+          this->GetDimensions(3);
       this->m_NiftiImage->pixdim[4] =
         this->m_NiftiImage->dt = static_cast< float >( this->GetSpacing(3) );
       this->m_NiftiImage->nvox *= this->m_NiftiImage->dim[4];
     case 3:
       this->m_NiftiImage->dim[3] = this->m_NiftiImage->nz =
-                                     this->GetDimensions(2);
+          this->GetDimensions(2);
       this->m_NiftiImage->pixdim[3] =
         this->m_NiftiImage->dz = static_cast< float >( this->GetSpacing(2) );
       this->m_NiftiImage->nvox *= this->m_NiftiImage->dim[3];
     case 2:
       this->m_NiftiImage->dim[2] = this->m_NiftiImage->ny =
-                                     this->GetDimensions(1);
+          this->GetDimensions(1);
       this->m_NiftiImage->pixdim[2] =
         this->m_NiftiImage->dy = static_cast< float >( this->GetSpacing(1) );
       this->m_NiftiImage->nvox *= this->m_NiftiImage->dim[2];
     case 1:
       this->m_NiftiImage->dim[1] = this->m_NiftiImage->nx =
-                                     this->GetDimensions(0);
+          this->GetDimensions(0);
       this->m_NiftiImage->pixdim[1] =
         this->m_NiftiImage->dx = static_cast< float >( this->GetSpacing(0) );
       this->m_NiftiImage->nvox *= this->m_NiftiImage->dim[1];
@@ -1444,8 +1457,8 @@ NiftiImageIO
     if ( this->GetNumberOfDimensions() > 4 )
       {
       itkExceptionMacro(
-         << "Can not store a vector image of more than 4 dimensions in a Nifti file. Dimension="
-         << this->GetNumberOfDimensions() );
+        << "Can not store a vector image of more than 4 dimensions in a Nifti file. Dimension="
+        << this->GetNumberOfDimensions() );
       }
     //
     // support symmetric matrix type
@@ -1541,7 +1554,7 @@ NiftiImageIO
   switch ( this->GetPixelType() )
     {
     case VECTOR: //NOTE: VECTOR is un-rolled by nifti to look like a
-                 // multi-dimensional scalar image
+    // multi-dimensional scalar image
     case SCALAR:
       break;
     case RGB:
@@ -1592,23 +1605,60 @@ NiftiImageIO
   this->m_NiftiImage->scl_slope = 1.0f;
   this->m_NiftiImage->scl_inter = 0.0f;
   this->SetNIfTIOrientationFromImageIO( this->GetNumberOfDimensions(), this->GetNumberOfDimensions() ); //TODO:
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // Note
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // both
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // arguments
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // are
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // the
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // same,
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // no
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // need
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // to
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // distinguish
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // between
+                                                                                                        //
+                                                                                                        //
+                                                                                                        //
                                                                                                         // them.
 }
 
 namespace
 {
-void Normalize(std::vector< double > & x)
+void
+Normalize(std::vector< double > & x)
 {
   double sum = 0;
 
@@ -1626,6 +1676,7 @@ void Normalize(std::vector< double > & x)
     x[i] = x[i] / sum;
     }
 }
+
 }
 
 void
@@ -1959,4 +2010,5 @@ NiftiImageIO
     delete[] nifti_buf;
     }
 }
+
 } // end namespace itk

@@ -19,11 +19,11 @@
 #include "itkWeightedCovarianceSampleFilter.h"
 #include "itkListSample.h"
 
-const unsigned int                  MeasurementVectorSize = 3;
-unsigned int                        counter = 0;
+const unsigned int MeasurementVectorSize = 3;
+unsigned int       counter = 0;
 
 typedef itk::FixedArray<
-  float, MeasurementVectorSize >             MeasurementVectorType;
+    float, MeasurementVectorSize >             MeasurementVectorType;
 
 namespace itk {
 namespace Statistics {
@@ -31,28 +31,29 @@ template < typename TSample >
 class MyWeightedCovarianceSampleFilter : public WeightedCovarianceSampleFilter< TSample >
 {
 public:
-  typedef MyWeightedCovarianceSampleFilter           Self;
+  typedef MyWeightedCovarianceSampleFilter Self;
 
-  typedef WeightedCovarianceSampleFilter<TSample>     Superclass;
+  typedef WeightedCovarianceSampleFilter<TSample> Superclass;
 
-  typedef SmartPointer<Self>                   Pointer;
-  typedef SmartPointer<const Self>             ConstPointer;
-  typedef TSample                              SampleType;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
+  typedef TSample                  SampleType;
 
   itkNewMacro(Self);
 
   //method to invoke MakeOutput with index value different
   //from one or zero. This is to check if an exception will be
   // thrown
-  void CreateInvalidOutput()
-    {
+  void
+  CreateInvalidOutput()
+  {
     unsigned int index=3;
     Superclass::MakeOutput( index );
-    }
+  }
+
 };
 }
 }
-
 
 class WeightedCovarianceTestFunction :
   public itk::FunctionBase< MeasurementVectorType, double >
@@ -79,35 +80,41 @@ public:
   typedef double OutputType;
 
   /**Evaluate at the specified input position */
-  OutputType Evaluate( const InputType & itkNotUsed( input ) ) const
-    {
+  OutputType
+  Evaluate( const InputType & itkNotUsed( input ) ) const
+  {
     MeasurementVectorType measurements;
+
     // set the weight factor of the measurment
     // vector with valuev[2, 2] to 0.5.
     return 1.0;
-    }
+  }
 
 protected:
-  WeightedCovarianceTestFunction() {}
-  ~WeightedCovarianceTestFunction() {}
+  WeightedCovarianceTestFunction() {
+  }
+
+  ~WeightedCovarianceTestFunction() {
+  }
+
 }; // end of class
 
-
-int itkWeightedCovarianceSampleFilterTest(int, char* [] )
+int
+itkWeightedCovarianceSampleFilterTest(int, char* [] )
 {
   std::cout << "WeightedCovarianceSampleFilter test \n \n";
 
- typedef itk::Statistics::ListSample<
-    MeasurementVectorType >                    SampleType;
+  typedef itk::Statistics::ListSample<
+      MeasurementVectorType >                    SampleType;
 
   typedef itk::Statistics::MyWeightedCovarianceSampleFilter< SampleType > FilterType;
 
-  typedef FilterType::MeasurementVectorRealType  MeasurementVectorRealType;
-  typedef FilterType::MatrixType                 CovarianceMatrixType;
+  typedef FilterType::MeasurementVectorRealType MeasurementVectorRealType;
+  typedef FilterType::MatrixType                CovarianceMatrixType;
 
   FilterType::Pointer filter = FilterType::New();
 
-  MeasurementVectorType               measure;
+  MeasurementVectorType measure;
 
   SampleType::Pointer sample = SampleType::New();
 
@@ -146,8 +153,10 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
   try
     {
     filter->Update();
-    std::cerr << "Exception should have been thrown since \
-                    Update() is invoked without setting an input" << std::endl;
+    std::cerr <<
+      "Exception should have been thrown since \
+                    Update() is invoked without setting an input"                                                 <<
+      std::endl;
     return EXIT_FAILURE;
     }
   catch ( itk::ExceptionObject & excp )
@@ -189,8 +198,8 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
     std::cout << "Expected exception caught: " << excp << std::endl;
     }
 
-  MeasurementVectorRealType  mean = filter->GetMean();
-  CovarianceMatrixType matrix = filter->GetCovarianceMatrix();
+  MeasurementVectorRealType mean = filter->GetMean();
+  CovarianceMatrixType      matrix = filter->GetCovarianceMatrix();
 
   std::cout << "Mean: "              << mean << std::endl;
   std::cout << "Covariance Matrix: " << matrix << std::endl;
@@ -199,7 +208,7 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
 
   double epsilon = 1e-2;
 
-  MeasurementVectorRealType  meanExpected33;
+  MeasurementVectorRealType meanExpected33;
   itk::NumericTraits< MeasurementVectorRealType >::SetLength( meanExpected33, MeasurementVectorSize );
   meanExpected33[0] = 4.10;
   meanExpected33[1] = 2.08;
@@ -214,7 +223,7 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
       }
     }
 
-  CovarianceMatrixType  matrixExpected33( MeasurementVectorSize, MeasurementVectorSize );
+  CovarianceMatrixType matrixExpected33( MeasurementVectorSize, MeasurementVectorSize );
 
   matrixExpected33[0][0] = 0.025;
   matrixExpected33[0][1] = 0.0075;
@@ -229,18 +238,18 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
   matrixExpected33[2][2] = 0.00043;
 
   for ( unsigned int i = 0; i < MeasurementVectorSize; i++ )
-  {
-  for ( unsigned int j = 0; j < MeasurementVectorSize; j++ )
-    if ( vcl_abs( matrixExpected33[i][j] - matrix[i][j] ) > epsilon )
-      {
-      std::cerr << "Computed covariance matrix value is incorrrect" << std::endl;
-      return EXIT_FAILURE;
-      }
+    {
+    for ( unsigned int j = 0; j < MeasurementVectorSize; j++ )
+      if ( vcl_abs( matrixExpected33[i][j] - matrix[i][j] ) > epsilon )
+        {
+        std::cerr << "Computed covariance matrix value is incorrrect" << std::endl;
+        return EXIT_FAILURE;
+        }
     }
 
   //Specify weight
-  typedef FilterType::WeightArrayType  WeightArrayType;
-  WeightArrayType weightArray(sample->Size());
+  typedef FilterType::WeightArrayType WeightArrayType;
+  WeightArrayType weightArray(sample->Size() );
   weightArray.Fill(1.0);
 
   filter->SetWeights( weightArray );
@@ -256,14 +265,13 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   mean = filter->GetMean();
   matrix = filter->GetCovarianceMatrix();
 
   std::cout << "Mean: "              << mean << std::endl;
   std::cout << "Covariance Matrix: " << matrix << std::endl;
 
-  MeasurementVectorRealType  meanExpected3;
+  MeasurementVectorRealType meanExpected3;
 
   itk::NumericTraits< MeasurementVectorRealType >::SetLength( meanExpected3, MeasurementVectorSize );
   meanExpected3[0] = 4.10;
@@ -279,7 +287,7 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
       }
     }
 
-  CovarianceMatrixType  matrixExpected( MeasurementVectorSize, MeasurementVectorSize );
+  CovarianceMatrixType matrixExpected( MeasurementVectorSize, MeasurementVectorSize );
 
   matrixExpected[0][0] = 0.025;
   matrixExpected[0][1] = 0.0075;
@@ -343,7 +351,6 @@ int itkWeightedCovarianceSampleFilterTest(int, char* [] )
         }
       }
     }
-
 
   //set  a constant 1.0 weight using a function
   WeightedCovarianceTestFunction::Pointer weightFunction = WeightedCovarianceTestFunction::New();

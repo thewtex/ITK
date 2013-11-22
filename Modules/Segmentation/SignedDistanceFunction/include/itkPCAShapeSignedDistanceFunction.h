@@ -65,14 +65,14 @@ namespace itk
 template< typename TCoordRep,
           unsigned int VSpaceDimension,
           typename TImage = Image< double, VSpaceDimension > >
-class PCAShapeSignedDistanceFunction:
+class PCAShapeSignedDistanceFunction :
   public ShapeSignedDistanceFunction< TCoordRep, VSpaceDimension >
 {
 public:
   /** Standard class typedefs. */
   typedef PCAShapeSignedDistanceFunction Self;
   typedef ShapeSignedDistanceFunction<
-    TCoordRep, VSpaceDimension >                   Superclass;
+      TCoordRep, VSpaceDimension >                   Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -137,8 +137,12 @@ public:
   itkGetModifiableObjectMacro(MeanImage, ImageType);
 
   /** Set/Get the principal component images. */
-  void SetPrincipalComponentImages(ImagePointerVector v)
-  { m_PrincipalComponentImages = v; }
+  void
+  SetPrincipalComponentImages(ImagePointerVector v)
+  {
+    m_PrincipalComponentImages = v;
+  }
+
 //  ImagePointerVector & GetPrincipalComponentImages()
 //    { return m_PrincipalComponentImages; }
 
@@ -154,10 +158,17 @@ public:
   /** A PCAShape is defined by a set of shape and pose parameters. */
   virtual void SetParameters(const ParametersType &);
 
-  virtual unsigned int GetNumberOfShapeParameters(void) const
-  { return m_NumberOfPrincipalComponents; }
-  virtual unsigned int GetNumberOfPoseParameters(void) const
-  { return m_Transform ? m_Transform->GetNumberOfParameters() : 0; }
+  virtual unsigned int
+  GetNumberOfShapeParameters(void) const
+  {
+    return m_NumberOfPrincipalComponents;
+  }
+
+  virtual unsigned int
+  GetNumberOfPoseParameters(void) const
+  {
+    return m_Transform ? m_Transform->GetNumberOfParameters() : 0;
+  }
 
   /** Evaluate the signed distance from a shape at a given position. */
   virtual OutputType Evaluate(const PointType & point) const;
@@ -169,7 +180,8 @@ public:
 
 protected:
   PCAShapeSignedDistanceFunction();
-  ~PCAShapeSignedDistanceFunction(){}
+  ~PCAShapeSignedDistanceFunction(){
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

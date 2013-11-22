@@ -57,14 +57,14 @@ namespace itk
  */
 template<typename TInternalComputationValueType>
 class GradientDescentLineSearchOptimizerv4Template
-: public GradientDescentOptimizerv4Template<TInternalComputationValueType>
+  : public GradientDescentOptimizerv4Template<TInternalComputationValueType>
 {
 public:
   /** Standard class typedefs. */
-  typedef GradientDescentLineSearchOptimizerv4Template                 Self;
+  typedef GradientDescentLineSearchOptimizerv4Template                       Self;
   typedef  GradientDescentOptimizerv4Template<TInternalComputationValueType> Superclass;
-  typedef SmartPointer< Self >                                         Pointer;
-  typedef SmartPointer< const Self >                                   ConstPointer;
+  typedef SmartPointer< Self >                                               Pointer;
+  typedef SmartPointer< const Self >                                         ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(GradientDescentLineSearchOptimizerv4Template, Superclass);
@@ -72,15 +72,16 @@ public:
   /** New macro for creation of through a Smart Pointer   */
   itkNewMacro(Self);
 
-  /** It should be possible to derive the internal computation type from the class object. */
-  typedef TInternalComputationValueType            InternalComputationValueType;
+  /** It should be possible to derive the internal computation type from the
+    class object. */
+  typedef TInternalComputationValueType InternalComputationValueType;
 
   /** Derivative type */
-  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::DerivativeType DerivativeType;
 
   /** Metric type over which this class is templated */
-  typedef typename Superclass::MeasureType         MeasureType;
-  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::MeasureType    MeasureType;
+  typedef typename Superclass::ParametersType ParametersType;
 
   /** Type for the convergence checker */
   typedef itk::Function::WindowConvergenceMonitoringFunction<TInternalComputationValueType> ConvergenceMonitoringType;
@@ -116,11 +117,13 @@ protected:
   GradientDescentLineSearchOptimizerv4Template();
 
   /** Destructor */
-  virtual ~GradientDescentLineSearchOptimizerv4Template();
+  virtual
+  ~GradientDescentLineSearchOptimizerv4Template();
 
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
-  TInternalComputationValueType GoldenSectionSearch( TInternalComputationValueType a, TInternalComputationValueType b, TInternalComputationValueType c );
+  TInternalComputationValueType GoldenSectionSearch( TInternalComputationValueType a, TInternalComputationValueType b,
+                                                     TInternalComputationValueType c );
 
   TInternalComputationValueType m_LowerLimit;
   TInternalComputationValueType m_UpperLimit;
@@ -129,13 +132,16 @@ protected:
   TInternalComputationValueType m_Epsilon;
 
   /** Controls the maximum recursion depth for the golden section search */
-  unsigned int      m_MaximumLineSearchIterations;
+  unsigned int m_MaximumLineSearchIterations;
   /** Counts the recursion depth for the golden section search */
-  unsigned int      m_LineSearchIterations;
+  unsigned int m_LineSearchIterations;
 
 private:
-  GradientDescentLineSearchOptimizerv4Template( const Self & ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  GradientDescentLineSearchOptimizerv4Template( const Self & ); //purposely not
+                                                                // implemented
+  void operator=( const Self& );                                //purposely not
+
+  // implemented
 
 };
 

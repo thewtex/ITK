@@ -42,7 +42,7 @@ namespace itk
  */
 template <
   typename TScalar = double,          // Data type for scalars (float or
-                                       // double)
+                                      // double)
   unsigned int NDimensions = 3>
 // Number of dimensions
 class TranslationTransform :
@@ -103,7 +103,8 @@ public:
 
   /** This method returns the value of the offset of the
    * TranslationTransform. */
-  const OutputVectorType & GetOffset(void) const
+  const OutputVectorType &
+  GetOffset(void) const
   {
     return m_Offset;
   }
@@ -118,7 +119,8 @@ public:
   /** Set offset of an Translation Transform.
    * This method sets the offset of an TranslationTransform to a
    * value specified by the user. */
-  void SetOffset(const OutputVectorType & offset)
+  void
+  SetOffset(const OutputVectorType & offset)
   {
     m_Offset = offset; return;
   }
@@ -179,7 +181,8 @@ public:
   void SetIdentity(void);
 
   /** Return the number of parameters that completely define the Transfom  */
-  virtual NumberOfParametersType GetNumberOfParameters(void) const
+  virtual NumberOfParametersType
+  GetNumberOfParameters(void) const
   {
     return NDimensions;
   }
@@ -189,7 +192,8 @@ public:
    *
    * \f[ T( a*P + b*Q ) = a * T(P) + b * T(Q) \f]
    */
-  virtual bool IsLinear() const
+  virtual bool
+  IsLinear() const
   {
     return true;
   }
@@ -197,7 +201,8 @@ public:
   /** Indicates the category transform.
    *  e.g. an affine transform, or a local one, e.g. a deformation field.
    */
-  virtual TransformCategoryType GetTransformCategory() const
+  virtual TransformCategoryType
+  GetTransformCategory() const
   {
     return Self::Linear;
   }
@@ -205,14 +210,16 @@ public:
   /** Set the fixed parameters and update internal transformation.
    * The Translation Transform does not require fixed parameters,
    * therefore the implementation of this method is a null operation. */
-  virtual void SetFixedParameters(const ParametersType &)
+  virtual void
+  SetFixedParameters(const ParametersType &)
   {
   }
 
   /** Get the Fixed Parameters. The TranslationTransform does not
    * require Fixed parameters, therefore this method returns an
    * parameters array of size zero. */
-  virtual const ParametersType & GetFixedParameters(void) const
+  virtual const ParametersType &
+  GetFixedParameters(void) const
   {
     this->m_FixedParameters.SetSize(0);
     return this->m_FixedParameters;

@@ -35,7 +35,8 @@ IterativeInverseDeformationFieldImageFilter< TInputImage, TOutputImage >::Iterat
 
 //----------------------------------------------------------------------------
 template< typename TInputImage, typename TOutputImage >
-void IterativeInverseDeformationFieldImageFilter< TInputImage, TOutputImage >
+void
+IterativeInverseDeformationFieldImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
   const unsigned int ImageDimension = InputImageType::ImageDimension;
@@ -246,7 +247,8 @@ void IterativeInverseDeformationFieldImageFilter< TInputImage, TOutputImage >
 
 //----------------------------------------------------------------------------
 template< typename TInputImage, typename TOutputImage >
-void IterativeInverseDeformationFieldImageFilter< TInputImage, TOutputImage >
+void
+IterativeInverseDeformationFieldImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -256,6 +258,7 @@ void IterativeInverseDeformationFieldImageFilter< TInputImage, TOutputImage >
   os << indent << "Elapsed time:         " << m_Time << " sec" << std::endl;
   os << std::endl;
 }
+
 } // end namespace itk
 
 #endif

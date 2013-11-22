@@ -21,28 +21,29 @@
 #include "itkSampleToHistogramFilter.h"
 #include "itkIntTypes.h"
 
-
-int itkSampleToHistogramFilterTest( int , char * [] )
+int
+itkSampleToHistogramFilterTest( int , char * [] )
 {
 
   const unsigned int numberOfComponents = 3;
-  typedef float      MeasurementType;
+
+  typedef float MeasurementType;
 
   typedef itk::Array< MeasurementType > MeasurementVectorType;
 
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   typedef itk::Statistics::Histogram< MeasurementType,
-          itk::Statistics::DenseFrequencyContainer2 > HistogramType;
+                                      itk::Statistics::DenseFrequencyContainer2 > HistogramType;
 
   typedef itk::Statistics::SampleToHistogramFilter<
-    SampleType, HistogramType > FilterType;
+      SampleType, HistogramType > FilterType;
 
-  typedef FilterType::InputHistogramSizeObjectType         InputHistogramSizeObjectType;
-  typedef FilterType::HistogramSizeType                    HistogramSizeType;
-  typedef FilterType::HistogramMeasurementType             HistogramMeasurementType;
-  typedef FilterType::HistogramMeasurementVectorType       HistogramMeasurementVectorType;
-  typedef FilterType::InputHistogramMeasurementObjectType  InputHistogramMeasurementObjectType;
+  typedef FilterType::InputHistogramSizeObjectType        InputHistogramSizeObjectType;
+  typedef FilterType::HistogramSizeType                   HistogramSizeType;
+  typedef FilterType::HistogramMeasurementType            HistogramMeasurementType;
+  typedef FilterType::HistogramMeasurementVectorType      HistogramMeasurementVectorType;
+  typedef FilterType::InputHistogramMeasurementObjectType InputHistogramMeasurementObjectType;
   typedef FilterType::
     InputHistogramMeasurementVectorObjectType  InputHistogramMeasurementVectorObjectType;
 
@@ -74,7 +75,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
 
   // Exercise the Print method.
   filter->Print( std::cout );
-
 
   // Test exception when calling Update() without having
   // defined the size of the histogram in the filter.
@@ -141,7 +141,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
   histogramSize2[1] = 128;
   histogramSize2[2] = 128;
 
-
   filter->SetHistogramSize( histogramSize1 );
 
   const InputHistogramSizeObjectType * returnedHistogramSizeObject =
@@ -167,7 +166,7 @@ int itkSampleToHistogramFilterTest( int , char * [] )
   filter->SetHistogramSize( histogramSize2 );
 
   returnedHistogramSizeObject =
-      filter->GetHistogramSizeInput();
+    filter->GetHistogramSizeInput();
 
   returnedHistogramSize = returnedHistogramSizeObject->Get();
 
@@ -179,7 +178,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       return EXIT_FAILURE;
       }
     }
-
 
   InputHistogramSizeObjectType::Pointer histogramSizeObject =
     InputHistogramSizeObjectType::New();
@@ -230,7 +228,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetHistogramSize( histogramSize1 );
   filter->Update();
   itk::ModifiedTimeType modifiedTime = filter->GetMTime();
@@ -249,7 +246,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << "SetHistogramSize() failed modified Test 2" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Testing the settings of the MarginalScale.
   const HistogramMeasurementType marginalScale1 = 237;
@@ -287,7 +283,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << "GetMarginalScaleInput() test for value consistency 2 failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   InputHistogramMeasurementObjectType::Pointer marginalScaleObject1 =
     InputHistogramMeasurementObjectType::New();
@@ -347,7 +342,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     return EXIT_FAILURE;
     }
 
-
   // Testing the settings of the BinMaximum and BinMinimum methods.
   HistogramMeasurementVectorType histogramBinMinimum1( numberOfComponents );
   histogramBinMinimum1[0] = 0;
@@ -358,7 +352,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
   histogramBinMinimum2[0] = 17;
   histogramBinMinimum2[1] = 17;
   histogramBinMinimum2[2] = 17;
-
 
   filter->SetHistogramBinMinimum( histogramBinMinimum1 );
 
@@ -383,7 +376,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetHistogramBinMinimum( histogramBinMinimum2 );
 
   returnedHistogramBinMinimumObject = filter->GetHistogramBinMinimumInput();
@@ -398,7 +390,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       return EXIT_FAILURE;
       }
     }
-
 
   InputHistogramMeasurementVectorObjectType::Pointer histogramBinMinimumObject =
     InputHistogramMeasurementVectorObjectType::New();
@@ -449,7 +440,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetHistogramBinMinimum( histogramBinMinimum1 );
   filter->Update();
   modifiedTime = filter->GetMTime();
@@ -469,7 +459,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     return EXIT_FAILURE;
     }
 
-
   HistogramMeasurementVectorType histogramBinMaximum1( numberOfComponents );
   histogramBinMaximum1[0] = 0;
   histogramBinMaximum1[1] = 0;
@@ -479,7 +468,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
   histogramBinMaximum2[0] = 17;
   histogramBinMaximum2[1] = 17;
   histogramBinMaximum2[2] = 17;
-
 
   filter->SetHistogramBinMaximum( histogramBinMaximum1 );
 
@@ -504,7 +492,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetHistogramBinMaximum( histogramBinMaximum2 );
 
   returnedHistogramBinMaximumObject = filter->GetHistogramBinMaximumInput();
@@ -519,7 +506,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       return EXIT_FAILURE;
       }
     }
-
 
   InputHistogramMeasurementVectorObjectType::Pointer histogramBinMaximumObject =
     InputHistogramMeasurementVectorObjectType::New();
@@ -569,7 +555,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       return EXIT_FAILURE;
       }
     }
-
 
   filter->SetHistogramBinMaximum( histogramBinMaximum1 );
   filter->Update();
@@ -629,7 +614,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     return EXIT_FAILURE;
     }
 
-
   InputBooleanObjectType::Pointer autoMinimumMaximumObject1 =
     InputBooleanObjectType::New();
 
@@ -688,7 +672,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     return EXIT_FAILURE;
     }
 
-
   //
   // Testing exception cases in the GenerateData() method.
   //
@@ -743,7 +726,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
 
   marginalScaleObject1->Set( 100 );
   filter->SetMarginalScaleInput( marginalScaleObject1 );
-
 
   //
   // Testing exception cases in the GenerateData() method.
@@ -805,7 +787,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
   histogramBinMaximumObject->Set( histogramBinMaximum1 );
   filter->SetHistogramBinMaximumInput( histogramBinMaximumObject );
 
-
   try
     {
     filter->Update();
@@ -815,7 +796,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Test GetOutput() after creating the output
   if( filter->GetOutput() == NULL )

@@ -23,14 +23,14 @@
 namespace itk {
 namespace Statistics {
 
-  template < typename TImage, typename TBoundaryCondition>
+template < typename TImage, typename TBoundaryCondition>
 ImageToNeighborhoodSampleAdaptor< TImage, TBoundaryCondition>
 ::ImageToNeighborhoodSampleAdaptor()
 {
   m_Image = 0;
   m_Radius.Fill(0);
   NeighborhoodIndexType start;
-  NeighborhoodSizeType sz;
+  NeighborhoodSizeType  sz;
   start.Fill(0);
   sz.Fill(0);
   m_Region.SetIndex(start);
@@ -44,7 +44,7 @@ template < typename TImage, typename TBoundaryCondition>
 const typename ImageToNeighborhoodSampleAdaptor< TImage, TBoundaryCondition >::MeasurementVectorType&
 ImageToNeighborhoodSampleAdaptor< TImage, TBoundaryCondition>
 ::GetMeasurementVector(InstanceIdentifier id) const
-{
+  {
   if( m_Image.IsNull() )
     {
     itkExceptionMacro("Image has not been set yet");
@@ -58,10 +58,10 @@ ImageToNeighborhoodSampleAdaptor< TImage, TBoundaryCondition>
     {
     IndexType reqIndex;
     ImageHelper<ImageType::ImageDimension,
-      ImageType::ImageDimension>::ComputeIndex(m_Region.GetIndex(),
-                                               id,
-                                               m_OffsetTable,
-                                               reqIndex);
+                ImageType::ImageDimension>::ComputeIndex(m_Region.GetIndex(),
+                                                         id,
+                                                         m_OffsetTable,
+                                                         reqIndex);
 
     OffsetType offset = reqIndex - m_NeighborIndexInternal;
 
@@ -71,7 +71,7 @@ ImageToNeighborhoodSampleAdaptor< TImage, TBoundaryCondition>
 
     return m_MeasurementVectorInternal;
     }
-}
+  }
 
 /** returns the number of measurement vectors in this container*/
 template < typename TImage, typename TBoundaryCondition>
@@ -99,7 +99,6 @@ ImageToNeighborhoodSampleAdaptor< TImage, TBoundaryCondition>
 
   return NumericTraits< AbsoluteFrequencyType >::One;
 }
-
 
 template < typename TImage, typename TBoundaryCondition>
 void
@@ -251,10 +250,12 @@ ImageToNeighborhoodSampleAdaptor< TImage, TBoundaryCondition>
 } // end of namespace Statistics
 
 template <typename TImage, typename TBoundaryCondition>
-std::ostream & operator<<(std::ostream &os,
-                          const std::vector< itk::ConstNeighborhoodIterator<TImage, TBoundaryCondition> > &mv)
+std::ostream &
+operator<<(std::ostream &os,
+           const std::vector< itk::ConstNeighborhoodIterator<TImage, TBoundaryCondition> > &mv)
 {
   itk::ConstNeighborhoodIterator<TImage, TBoundaryCondition> nbhd = mv[0];
+
   os << "Neighborhood:" << std::endl;
   os << "    Radius: " << nbhd.GetRadius() << std::endl;
   os << "    Size: " << nbhd.GetSize() << std::endl;

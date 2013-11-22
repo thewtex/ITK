@@ -23,8 +23,8 @@
 #include "itkImageFileReader.h"
 #include "itkTestingComparisonImageFilter.h"
 
-
-int itkImageRandomIteratorTest2( int argc, char * argv [] )
+int
+itkImageRandomIteratorTest2( int argc, char * argv [] )
 {
   if( argc < 2 )
     {
@@ -37,10 +37,10 @@ int itkImageRandomIteratorTest2( int argc, char * argv [] )
 
   const unsigned int ImageDimension = 2;
 
-  typedef unsigned long  PixelType;
+  typedef unsigned long PixelType;
 
-  typedef itk::Image< PixelType, ImageDimension >  ImageType;
-  typedef itk::ImageFileWriter< ImageType >        WriterType;
+  typedef itk::Image< PixelType, ImageDimension > ImageType;
+  typedef itk::ImageFileWriter< ImageType >       WriterType;
 
   ImageType::Pointer image = ImageType::New();
 
@@ -63,7 +63,7 @@ int itkImageRandomIteratorTest2( int argc, char * argv [] )
   image->SetRegions( region );
   image->Allocate();
   image->FillBuffer(0);
-  typedef itk::ImageRandomIteratorWithIndex< ImageType >      RandomIteratorType;
+  typedef itk::ImageRandomIteratorWithIndex< ImageType > RandomIteratorType;
 
   RandomIteratorType it( image, region );
 
@@ -96,11 +96,11 @@ int itkImageRandomIteratorTest2( int argc, char * argv [] )
 
     reader->SetFileName( argv[2] );
 
-    typedef signed long    DifferencePixelType;
+    typedef signed long                                       DifferencePixelType;
     typedef itk::Image< DifferencePixelType, ImageDimension > DifferenceImageType;
 
     typedef itk::Testing::ComparisonImageFilter<
-      ImageType, DifferenceImageType > DifferenceFilterType;
+        ImageType, DifferenceImageType > DifferenceFilterType;
 
     DifferenceFilterType::Pointer difference = DifferenceFilterType::New();
 
@@ -109,7 +109,7 @@ int itkImageRandomIteratorTest2( int argc, char * argv [] )
     difference->SetToleranceRadius( 0 );
     difference->SetDifferenceThreshold( 0 );
 
-    typedef itk::ImageFileWriter< DifferenceImageType >  DifferenceWriterType;
+    typedef itk::ImageFileWriter< DifferenceImageType > DifferenceWriterType;
     DifferenceWriterType::Pointer writer2 = DifferenceWriterType::New();
 
     writer2->SetInput( difference->GetOutput() );
@@ -130,4 +130,4 @@ int itkImageRandomIteratorTest2( int argc, char * argv [] )
 
   return EXIT_SUCCESS;
 
-  }
+}

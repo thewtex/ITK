@@ -32,8 +32,8 @@
 #include "itkPointSet.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -45,9 +45,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel< float >    PixelType;
+  typedef itk::RGBPixel< float > PixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -58,9 +57,8 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::PointSet< PixelType, 3 > PointSetType;
-  PointSetType::Pointer  pointSet = PointSetType::New();
+  PointSetType::Pointer pointSet = PointSetType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -74,10 +72,10 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointSetType::PixelType   pixel;
-  PointSetType::PointType   point;
-  unsigned int pointId =  0;
-  const double radius = 3.0;
+  PointSetType::PixelType pixel;
+  PointSetType::PointType point;
+  unsigned int            pointId =  0;
+  const double            radius = 3.0;
 
   for(unsigned int i=0; i<360; i++)
     {
@@ -94,7 +92,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  All the points on the PointSet are visited using the following code.
@@ -106,7 +103,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef  PointSetType::PointsContainer::ConstIterator     PointIterator;
+  typedef  PointSetType::PointsContainer::ConstIterator PointIterator;
   PointIterator pointIterator = pointSet->GetPoints()->Begin();
   PointIterator pointEnd      = pointSet->GetPoints()->End();
   while( pointIterator != pointEnd )
@@ -117,7 +114,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that here the \code{ConstIterator} was used instead of the
@@ -125,7 +121,6 @@ int main(int, char *[])
   //  ITK supports const-correctness at the API level.
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -136,7 +131,6 @@ int main(int, char *[])
   //  \index{itk::PointSet!iterating point data}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   typedef  PointSetType::PointDataContainer::ConstIterator PointDataIterator;

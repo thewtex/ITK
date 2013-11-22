@@ -79,6 +79,7 @@ WarpVectorImageFilter< TInputImage, TOutputImage, TDisplacementField >
 ::SetOutputSpacing(const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TInputImage::ImageDimension; ++i)
     {
     s[i] = static_cast< typename SpacingType::ValueType >(spacing[i]);
@@ -132,10 +133,10 @@ typename WarpVectorImageFilter< TInputImage, TOutputImage, TDisplacementField >
 ::DisplacementFieldType *
 WarpVectorImageFilter< TInputImage, TOutputImage, TDisplacementField >
 ::GetDisplacementField(void)
-{
+  {
   return itkDynamicCastInDebugMode< DisplacementFieldType * >
-         ( this->ProcessObject::GetInput(1) );
-}
+           ( this->ProcessObject::GetInput(1) );
+  }
 
 /**
  * Setup state of filter before multi-threading.
@@ -166,8 +167,8 @@ WarpVectorImageFilter< TInputImage, TOutputImage, TDisplacementField >
   const OutputImageRegionType & outputRegionForThread,
   ThreadIdType threadId)
 {
-  InputImageConstPointer  inputPtr = this->GetInput();
-  OutputImagePointer      outputPtr = this->GetOutput();
+  InputImageConstPointer   inputPtr = this->GetInput();
+  OutputImagePointer       outputPtr = this->GetOutput();
   DisplacementFieldPointer fieldPtr = this->GetDisplacementField();
 
   // support progress methods/callbacks
@@ -244,7 +245,7 @@ WarpVectorImageFilter< TInputImage, TOutputImage, TDisplacementField >
   // just propagate up the output requested region for the
   // displacement field.
   DisplacementFieldPointer fieldPtr = this->GetDisplacementField();
-  OutputImagePointer      outputPtr = this->GetOutput();
+  OutputImagePointer       outputPtr = this->GetOutput();
   if ( fieldPtr )
     {
     fieldPtr->SetRequestedRegion( outputPtr->GetRequestedRegion() );
@@ -272,6 +273,7 @@ WarpVectorImageFilter< TInputImage, TOutputImage, TDisplacementField >
                                          GetLargestPossibleRegion() );
     }
 }
+
 } // end namespace itk
 
 #endif

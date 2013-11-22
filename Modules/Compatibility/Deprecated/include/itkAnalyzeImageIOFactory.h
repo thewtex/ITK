@@ -19,7 +19,6 @@
 #define __itkAnalyzeImageIOFactory_h
 #if !defined( ITK_LEGACY_REMOVE )
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -30,7 +29,7 @@ namespace itk
    * \deprecated
    * \ingroup ITKDeprecated
    */
-class AnalyzeImageIOFactory:public ObjectFactoryBase
+class AnalyzeImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -51,7 +50,8 @@ public:
   itkTypeMacro(AnalyzeImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     AnalyzeImageIOFactory::Pointer metaFactory = AnalyzeImageIOFactory::New();
 
@@ -66,6 +66,7 @@ protected:
 private:
   AnalyzeImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

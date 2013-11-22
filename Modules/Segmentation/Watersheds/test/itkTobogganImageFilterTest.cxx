@@ -25,11 +25,11 @@
 #include "itkImageFileWriter.h"
 #include "itkTextOutput.h"
 
-
-int itkTobogganImageFilterTest(int ac, char* av[] )
+int
+itkTobogganImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 3)
     {
@@ -37,33 +37,31 @@ int itkTobogganImageFilterTest(int ac, char* av[] )
     exit ( 1 );
     }
 
-
   typedef unsigned char                       PixelType;
   typedef itk::Image<unsigned char, 2>        InputImageType;
   typedef itk::Image<float, 2>                FloatImageType;
   typedef itk::Image<unsigned char, 2>        OutputImageType;
   typedef itk::Image< itk::IdentifierType, 2> LongImageType;
 
-
   // Create a pipeline
   typedef itk::CastImageFilter<InputImageType, FloatImageType>
-                                           InCastType;
+    InCastType;
   typedef itk::RecursiveGaussianImageFilter<InputImageType,FloatImageType>
-                                           GaussianFilterType;
+    GaussianFilterType;
   typedef itk::GradientMagnitudeImageFilter<FloatImageType,FloatImageType>
-                                           GradientMagnitudeFilterType;
+    GradientMagnitudeFilterType;
   typedef itk::TobogganImageFilter<FloatImageType>
-                                           FilterType;
+    FilterType;
   typedef itk::CastImageFilter<LongImageType, OutputImageType>
-                                           CastType;
+    CastType;
   typedef itk::DiscreteGaussianImageFilter<FloatImageType,FloatImageType>
-                                           DGIFType;
+    DGIFType;
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<FloatImageType,FloatImageType>
-                                           GMGaussianType;
+    GMGaussianType;
 
-  FilterType::Pointer toboggan = FilterType::New();
-  CastType::Pointer cast = CastType::New();
-  InCastType::Pointer incast = InCastType::New();
+  FilterType::Pointer     toboggan = FilterType::New();
+  CastType::Pointer       cast = CastType::New();
+  InCastType::Pointer     incast = InCastType::New();
   GMGaussianType::Pointer gmgaussian = GMGaussianType::New();
 
   itk::ImageFileReader<InputImageType>::Pointer input

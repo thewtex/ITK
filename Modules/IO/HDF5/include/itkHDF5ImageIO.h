@@ -25,7 +25,6 @@
 #ifndef __itkHDF5ImageIO_h
 #define __itkHDF5ImageIO_h
 
-
 // itk namespace first suppresses
 // kwstyle error for the H5 namespace below
 namespace itk
@@ -82,7 +81,7 @@ class MetaDataDictionary;
  *
  */
 
-class HDF5ImageIO:public StreamingImageIOBase
+class HDF5ImageIO : public StreamingImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -138,19 +137,23 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  HDF5ImageIO(const Self &);   //purposely not implemented
+  HDF5ImageIO(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
   void WriteString(const std::string &path,
                    const std::string &value);
+
   void WriteString(const std::string &path,
                    const char *s);
+
   std::string ReadString(const std::string &path);
 
   void WriteScalar(const std::string &path,
                    const bool &value);
+
   void WriteScalar(const std::string &path,
                    const long &value);
+
   void WriteScalar(const std::string &path,
                    const unsigned long &value);
 
@@ -174,19 +177,23 @@ private:
   std::vector<std::vector<double> > ReadDirections(const std::string &path);
 
   template <typename TType>
-    bool WriteMeta(const std::string &name,
-                   MetaDataObjectBase *metaObj);
+  bool WriteMeta(const std::string &name,
+                 MetaDataObjectBase *metaObj);
+
   template <typename TType>
-    bool WriteMetaArray(const std::string &name,
-                   MetaDataObjectBase *metaObj);
+  bool WriteMetaArray(const std::string &name,
+                      MetaDataObjectBase *metaObj);
+
   template <typename TType>
-    void StoreMetaData(MetaDataDictionary *metaDict,
-                       const std::string &HDFPath,
-                       const std::string &name,
-                       unsigned long numElements);
+  void StoreMetaData(MetaDataDictionary *metaDict,
+                     const std::string &HDFPath,
+                     const std::string &name,
+                     unsigned long numElements);
+
   void SetupStreaming(H5::DataSpace *imageSpace,
                       H5::DataSpace *slabSpace);
-  H5::H5File  *m_H5File;
+
+  H5::H5File * m_H5File;
   H5::DataSet *m_VoxelDataSet;
   bool         m_ImageInformationWritten;
 };

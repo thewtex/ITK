@@ -41,7 +41,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class NeighborhoodSampler:public SampleToSubsampleFilter< TSample >
+class NeighborhoodSampler : public SampleToSubsampleFilter< TSample >
 {
 public:
   /** Standard class typedefs. */
@@ -56,12 +56,12 @@ public:
 
   /** Typedefs for Measurement vector, measurement, Instance Identifier,
    * frequency, size, size element value from the template argument TSample */
-  typedef typename Superclass::SampleType             SampleType;
-  typedef typename Superclass::MeasurementVectorType  MeasurementVectorType;
-  typedef typename Superclass::MeasurementType        MeasurementType;
-  typedef typename Superclass::InstanceIdentifier     InstanceIdentifier;
-  typedef typename Superclass::SubsampleType          SubsampleType;
-  typedef typename Superclass::OutputType             OutputType;
+  typedef typename Superclass::SampleType            SampleType;
+  typedef typename Superclass::MeasurementVectorType MeasurementVectorType;
+  typedef typename Superclass::MeasurementType       MeasurementType;
+  typedef typename Superclass::InstanceIdentifier    InstanceIdentifier;
+  typedef typename Superclass::SubsampleType         SubsampleType;
+  typedef typename Superclass::OutputType            OutputType;
 
   /** Type of the distance radius. */
   typedef double RadiusType;
@@ -74,7 +74,8 @@ public:
 
 protected:
   NeighborhoodSampler();
-  virtual ~NeighborhoodSampler();
+  virtual
+  ~NeighborhoodSampler();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
@@ -82,6 +83,7 @@ protected:
 private:
   NeighborhoodSampler(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };                                   // end of class
 } // end of namespace Statistics
 } // end of namespace itk

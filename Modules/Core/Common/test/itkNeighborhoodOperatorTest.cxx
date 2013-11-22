@@ -24,10 +24,15 @@
 #include "itkSobelOperator.h"
 namespace
 {
-  void println(const char *c) { std::cout << std::endl << c << std::endl; }
+void
+println(const char *c) {
+  std::cout << std::endl << c << std::endl;
 }
 
-int itkNeighborhoodOperatorTest(int, char* [] )
+}
+
+int
+itkNeighborhoodOperatorTest(int, char* [] )
 {
   println("Testing derivative operator");
   itk::DerivativeOperator<float, 3, vnl_vector<float> > d;
@@ -45,7 +50,7 @@ int itkNeighborhoodOperatorTest(int, char* [] )
 
   println("Testing ForwardDifferenceOperator");
   itk::ForwardDifferenceOperator<float, 4, vnl_vector<float> > f;
-  itk::Size<4> sz;
+  itk::Size<4>                                                 sz;
   sz[0] = sz[1] = sz[2] = sz[3] = 2;
   f.SetDirection(2);
   f.CreateToRadius(sz);

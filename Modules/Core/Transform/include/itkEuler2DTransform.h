@@ -39,7 +39,7 @@ namespace itk
  */
 template< typename TScalar = double >
 // Data type for scalars
-class Euler2DTransform:
+class Euler2DTransform :
   public Rigid2DTransform< TScalar >
 {
 public:
@@ -112,19 +112,24 @@ public:
    * Update the angle from the underlying matrix. This method
    * is old and is retained for backward compatibility.
    */
-  void ComputeAngleFromMatrix()
-  { this->ComputeMatrixParameters(); }
+  void
+  ComputeAngleFromMatrix()
+  {
+    this->ComputeMatrixParameters();
+  }
 
 protected:
   Euler2DTransform(unsigned int parametersDimension);
   Euler2DTransform();
-  ~Euler2DTransform(){}
+  ~Euler2DTransform(){
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   Euler2DTransform(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };                                //class Euler2DTransform
 }  // namespace itk
 

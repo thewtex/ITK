@@ -226,7 +226,7 @@ MatchCardinalityImageToImageMetric< TFixedImage, TMovingImage >
 
   // determine the actual number of pieces that will be generated
   typename FixedImageRegionType::SizeType::SizeValueType range = fixedRegionSize[splitAxis];
-  int valuesPerThread = Math::Ceil< int >(range / (double)num);
+  int          valuesPerThread = Math::Ceil< int >(range / (double)num);
   ThreadIdType maxThreadIdUsed = Math::Ceil< int >(range / (double)valuesPerThread) - 1;
 
   // Split the region
@@ -295,8 +295,10 @@ MatchCardinalityImageToImageMetric< TFixedImage, TMovingImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "MeasureMatches: " << ( m_MeasureMatches ? "On" : "Off" )  << std::endl;
 }
+
 } // end namespace itk
 
 #endif

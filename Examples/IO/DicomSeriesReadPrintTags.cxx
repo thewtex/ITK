@@ -40,7 +40,8 @@
 #include "itkGDCMSeriesFileNames.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -56,10 +57,10 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short       PixelType;
-  const unsigned int         Dimension = 3;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -70,7 +71,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
   // Software Guide : EndCodeSnippet
@@ -82,7 +83,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO       ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
 
   ImageIOType::Pointer dicomIO = ImageIOType::New();
 
@@ -99,7 +100,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMSeriesFileNames     NamesGeneratorType;
+  typedef itk::GDCMSeriesFileNames NamesGeneratorType;
 
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
 
@@ -116,7 +117,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef std::vector<std::string>    FileNamesContainer;
+  typedef std::vector<std::string> FileNamesContainer;
   FileNamesContainer fileNames = nameGenerator->GetInputFileNames();
 
   reader->SetFileNames( fileNames );
@@ -156,7 +157,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::MetaDataDictionary   DictionaryType;
+  typedef itk::MetaDataDictionary DictionaryType;
 
   const  DictionaryType & dictionary = dicomIO->GetMetaDataDictionary();
   // Software Guide : EndCodeSnippet
@@ -180,7 +181,8 @@ int main( int argc, char* argv[] )
   // Software Guide : BeginLatex
   //
   // The Meta data dictionary is organized as a container with its corresponding
-  // iterators. We can therefore visit all its entries by first getting access to
+  // iterators. We can therefore visit all its entries by first getting access
+  // to
   // its \code{Begin()} and \code{End()} methods.
   //
   // \index{MetaDataDictionary!Begin()}
@@ -199,10 +201,12 @@ int main( int argc, char* argv[] )
   //
   // We are now ready for walking through the list of DICOM tags. For this
   // purpose we use the iterators that we just declared. At every entry we
-  // attempt to convert it in to a string entry by using the \code{dynamic\_cast}
+  // attempt to convert it in to a string entry by using the
+  // \code{dynamic\_cast}
   // based on RTTI information\footnote{Run Time Type Information}. The
   // dictionary is organized like a \code{std::map} structure, we should use
-  // therefore the \code{first} and \code{second} members of every entry in order
+  // therefore the \code{first} and \code{second} members of every entry in
+  // order
   // to get access to the \{key,value\} pairs.
   //
   // Software Guide : EndLatex
@@ -210,7 +214,7 @@ int main( int argc, char* argv[] )
   // Software Guide : BeginCodeSnippet
   while( itr != end )
     {
-    itk::MetaDataObjectBase::Pointer  entry = itr->second;
+    itk::MetaDataObjectBase::Pointer entry = itr->second;
 
     MetaDataStringType::Pointer entryvalue =
       dynamic_cast<MetaDataStringType *>( entry.GetPointer() );
@@ -228,9 +232,11 @@ int main( int argc, char* argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  It is also possible to query for specific entries instead of reading all of
+  //  It is also possible to query for specific entries instead of reading all
+  // of
   //  them as we did above. In this case, the user must provide the tag
-  //  identifier using the standard DICOM encoding. The identifier is stored in a
+  //  identifier using the standard DICOM encoding. The identifier is stored in
+  // a
   //  string and used as key on the dictionary.
   //
   //  Software Guide : EndLatex
@@ -251,7 +257,8 @@ int main( int argc, char* argv[] )
   // Software Guide : BeginLatex
   //
   // Since the entry may or may not be of string type we must again use a
-  // \code{dynamic\_cast} in order to attempt to convert it to a string dictionary
+  // \code{dynamic\_cast} in order to attempt to convert it to a string
+  // dictionary
   // entry. If the conversion is successful, then we can print out its content.
   //
   // Software Guide : EndLatex

@@ -35,11 +35,11 @@ template< typename TInput, typename TOutput >
 class FastMarchingStoppingCriterionBase : public StoppingCriterionBase
 {
 public:
-  typedef FastMarchingStoppingCriterionBase      Self;
-  typedef StoppingCriterionBase                  Superclass;
-  typedef SmartPointer< Self >                   Pointer;
-  typedef SmartPointer< const Self >             ConstPointer;
-  typedef FastMarchingTraits< TInput, TOutput >  Traits;
+  typedef FastMarchingStoppingCriterionBase     Self;
+  typedef StoppingCriterionBase                 Superclass;
+  typedef SmartPointer< Self >                  Pointer;
+  typedef SmartPointer< const Self >            ConstPointer;
+  typedef FastMarchingTraits< TInput, TOutput > Traits;
 
   typedef typename Traits::NodeType            NodeType;
   typedef typename Traits::OutputPixelType     OutputPixelType;
@@ -51,24 +51,26 @@ public:
   itkTypeMacro(FastMarchingStoppingCriterionBase, StoppingCriterionBase);
 
   /** Reinitialize internal values. */
-  void Reinitialize()
-    {
+  void
+  Reinitialize()
+  {
     m_CurrentValue  = NumericTraits< OutputPixelType >::Zero;
     m_PreviousValue = NumericTraits< OutputPixelType >::Zero;
 
     this->Reset();
-    }
+  }
 
-  void SetCurrentNodePair( const NodePairType& iNodePair )
-    {
+  void
+  SetCurrentNodePair( const NodePairType& iNodePair )
+  {
     this->SetCurrentNode( iNodePair.GetNode() );
     this->SetCurrentValue( iNodePair.GetValue() );
-    }
+  }
 
   itkSetObjectMacro( Domain, OutputDomainType );
   itkGetModifiableObjectMacro(Domain, OutputDomainType );
 
- protected:
+protected:
   /** Constructor */
   FastMarchingStoppingCriterionBase() : Superclass(), m_Domain( NULL )
   {
@@ -77,7 +79,9 @@ public:
   }
 
   /** Destructor */
-  virtual ~FastMarchingStoppingCriterionBase() {}
+  virtual
+  ~FastMarchingStoppingCriterionBase() {
+  }
 
   OutputDomainPointer m_Domain;
 
@@ -92,15 +96,17 @@ public:
   virtual void SetCurrentNode( const NodeType& iNode ) = 0;
 
   /** Set the Current Value */
-  virtual void SetCurrentValue( const OutputPixelType& iValue )
-    {
+  virtual void
+  SetCurrentValue( const OutputPixelType& iValue )
+  {
     m_PreviousValue = m_CurrentValue;
     m_CurrentValue = iValue;
-    }
+  }
 
 private:
   FastMarchingStoppingCriterionBase( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 }
 #endif

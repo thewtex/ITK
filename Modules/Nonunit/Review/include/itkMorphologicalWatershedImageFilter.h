@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TOutputImage >
-class MorphologicalWatershedImageFilter:
+class MorphologicalWatershedImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -112,7 +112,9 @@ public:
 
 protected:
   MorphologicalWatershedImageFilter();
-  ~MorphologicalWatershedImageFilter() {}
+  ~MorphologicalWatershedImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** MorphologicalWatershedImageFilter needs the entire input be

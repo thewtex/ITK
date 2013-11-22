@@ -66,5 +66,6 @@ RankImageFilter< TInputImage, TOutputImage, TKernel >
 
   os << indent << "Rank: " << static_cast< typename NumericTraits< float >::PrintType >( m_Rank ) << std::endl;
 }
+
 } // end namespace itk
 #endif

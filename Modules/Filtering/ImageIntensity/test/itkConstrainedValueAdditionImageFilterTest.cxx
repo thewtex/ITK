@@ -19,26 +19,26 @@
 #include "itkConstrainedValueAdditionImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
-int itkConstrainedValueAdditionImageFilterTest(int, char* [] )
+int
+itkConstrainedValueAdditionImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>          myImageType1;
-  typedef itk::Image<float, myDimension>          myImageType2;
-  typedef itk::Image<unsigned char, myDimension>  myImageType3;
+  typedef itk::Image<float, myDimension>         myImageType1;
+  typedef itk::Image<float, myDimension>         myImageType2;
+  typedef itk::Image<unsigned char, myDimension> myImageType3;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>         myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>          mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create two images
   myImageType1::Pointer inputImageA  = myImageType1::New();
@@ -71,17 +71,17 @@ int itkConstrainedValueAdditionImageFilterTest(int, char* [] )
   inputImageB->SetRequestedRegion( region );
   inputImageB->Allocate();
 
-
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType1>  myIteratorType1;
-  typedef itk::ImageRegionIteratorWithIndex<myImageType2>  myIteratorType2;
-  typedef itk::ImageRegionIteratorWithIndex<myImageType3>  myIteratorType3;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType1> myIteratorType1;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType2> myIteratorType2;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType3> myIteratorType3;
 
   // Create one iterator for Image A (this is a light object)
   myIteratorType1 it1( inputImageA, inputImageA->GetBufferedRegion() );
 
   // Initialize the content of Image A
-  float valueA = 125; // when added to B will saturate a char in some of the pixels.
+  float valueA = 125; // when added to B will saturate a char in some of the
+                      // pixels.
   std::cout << "First operand " << std::endl;
   while( !it1.IsAtEnd() )
     {
@@ -95,7 +95,8 @@ int itkConstrainedValueAdditionImageFilterTest(int, char* [] )
   myIteratorType2 it2( inputImageB, inputImageB->GetBufferedRegion() );
 
   // Initialize the content of Image B
-  float valueB = 125; // when added to A will saturate a char in some of the pixels.
+  float valueB = 125; // when added to A will saturate a char in some of the
+                      // pixels.
   std::cout << "Second operand " << std::endl;
   while( !it2.IsAtEnd() )
     {
@@ -107,14 +108,12 @@ int itkConstrainedValueAdditionImageFilterTest(int, char* [] )
 
   // Declare the type for the ADD filter
   typedef itk::ConstrainedValueAdditionImageFilter<
-                                myImageType1,
-                                myImageType2,
-                                myImageType3  >       myFilterType;
-
+      myImageType1,
+      myImageType2,
+      myImageType3  >       myFilterType;
 
   // Create an ADD Filter
   myFilterType::Pointer filter = myFilterType::New();
-
 
   // Connect the input images
   filter->SetInput1( inputImageA );
@@ -123,12 +122,11 @@ int itkConstrainedValueAdditionImageFilterTest(int, char* [] )
   // Get the Smart Pointer to the Filter Output
   myImageType3::Pointer outputImage = filter->GetOutput();
 
-
   // Execute the filter
   filter->Update();
 
   // Create an iterator for going through the image output
-  myIteratorType3 it3(outputImage, outputImage->GetBufferedRegion());
+  myIteratorType3 it3(outputImage, outputImage->GetBufferedRegion() );
 
   //  Print the content of the result image
   std::cout << " Result " << std::endl;
@@ -137,7 +135,6 @@ int itkConstrainedValueAdditionImageFilterTest(int, char* [] )
     std::cout << itk::NumericTraits<myImageType3::PixelType>::PrintType( it3.Get() ) << std::endl;
     ++it3;
     }
-
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;

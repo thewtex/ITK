@@ -50,7 +50,7 @@ namespace itk
 template< typename TInputImage,
           typename TMaskImage = Image< unsigned char, TInputImage::ImageDimension >,
           class TOutputImage = TInputImage >
-class KappaSigmaThresholdImageFilter:
+class KappaSigmaThresholdImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -116,33 +116,39 @@ public:
 #endif
 
   /** Set the mask image */
-  void SetMaskImage(const MaskImageType *input)
+  void
+  SetMaskImage(const MaskImageType *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< MaskImageType * >( input ) );
   }
 
   /** Get the mask image */
-  const MaskImageType * GetMaskImage() const
+  const MaskImageType *
+  GetMaskImage() const
   {
     return static_cast< MaskImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Set the input image */
-  void SetInput1(const TInputImage *input)
+  void
+  SetInput1(const TInputImage *input)
   {
     this->SetInput(input);
   }
 
   /** Set the marker image */
-  void SetInput2(const MaskImageType *input)
+  void
+  SetInput2(const MaskImageType *input)
   {
     this->SetMaskImage(input);
   }
 
 protected:
   KappaSigmaThresholdImageFilter();
-  ~KappaSigmaThresholdImageFilter(){}
+  ~KappaSigmaThresholdImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateInputRequestedRegion();

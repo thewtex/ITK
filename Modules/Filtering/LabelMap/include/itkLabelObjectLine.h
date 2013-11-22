@@ -47,8 +47,13 @@ public:
   typedef Index< VImageDimension > IndexType;
   typedef SizeValueType            LengthType;
 
-  LabelObjectLine() {}
-  virtual ~LabelObjectLine() {}
+  LabelObjectLine() {
+  }
+
+  virtual
+  ~LabelObjectLine() {
+  }
+
   LabelObjectLine(const IndexType & idx, const LengthType & length);
 
   /**

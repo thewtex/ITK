@@ -31,12 +31,14 @@ namespace itk
 template<typename ParametersValueType>
 TxtTransformIOTemplate<ParametersValueType>
 ::TxtTransformIOTemplate()
-{}
+{
+}
 
 template<typename ParametersValueType>
 TxtTransformIOTemplate<ParametersValueType>
 ::~TxtTransformIOTemplate()
-{}
+{
+}
 
 template<typename ParametersValueType>
 bool
@@ -102,7 +104,7 @@ TxtTransformIOTemplate<ParametersValueType>
 
   /* Use TransformFileReader to read each component file. */
   typename TransformFileReaderTemplate<ParametersValueType>::Pointer reader =
-      TransformFileReaderTemplate<ParametersValueType>::New();
+    TransformFileReaderTemplate<ParametersValueType>::New();
   std::string componentFullPath = filePath + Value;
   reader->SetFileName( componentFullPath );
   try
@@ -112,7 +114,7 @@ TxtTransformIOTemplate<ParametersValueType>
   catch (itk::ExceptionObject &ex)
     {
     itkExceptionMacro("Error reading component file: " << Value
-                      << std::endl << ex );
+                                                       << std::endl << ex );
     }
   TransformPointer transform = reader->GetTransformList()->front().GetPointer();
   this->GetReadTransformList().push_back (transform);
@@ -190,7 +192,7 @@ TxtTransformIOTemplate<ParametersValueType>
       itkExceptionMacro("Couldn't find end of line in " << data );
       }
 
-    std::string            line = trim ( data.substr (position, end - position) );
+    std::string line = trim ( data.substr (position, end - position) );
     position = end + 1;
     itkDebugMacro ("Found line: \"" << line << "\"");
 
@@ -289,7 +291,8 @@ TxtTransformIOTemplate<ParametersValueType>
 
 namespace {
 template<typename ParametersValueType>
-void print_vector(std::ofstream& s, vnl_vector<ParametersValueType> const &v)
+void
+print_vector(std::ofstream& s, vnl_vector<ParametersValueType> const &v)
 {
   NumberToString<ParametersValueType> convert;
   for (unsigned i = 0; i+1 < v.size(); ++i)
@@ -301,6 +304,7 @@ void print_vector(std::ofstream& s, vnl_vector<ParametersValueType> const &v)
     s << convert(v[v.size()-1]);
     }
 }
+
 }
 
 template<typename ParametersValueType>
@@ -311,7 +315,8 @@ TxtTransformIOTemplate<ParametersValueType>
   ConstTransformListType &transformList =
     this->GetWriteTransformList();
 
-  std::ofstream        out;
+  std::ofstream out;
+
   this->OpenStream(out, false);
 
   out << "#Insight Transform File V1.0" << std::endl;
@@ -325,10 +330,10 @@ TxtTransformIOTemplate<ParametersValueType>
   CompositeTransformIOHelperTemplate<ParametersValueType> helper;
   if(CompositeTransformTypeName.find("CompositeTransform") != std::string::npos)
     {
-    transformList = helper.GetTransformList(transformList.front().GetPointer());
+    transformList = helper.GetTransformList(transformList.front().GetPointer() );
     }
   vnl_vector< ParametersValueType > TempArray;
-  int count = 0;
+  int                               count = 0;
 
   typename ConstTransformListType::const_iterator end = transformList.end();
 
@@ -352,17 +357,18 @@ TxtTransformIOTemplate<ParametersValueType>
     else
       {
       TempArray = ( *it )->GetParameters();
-      out << "Parameters: ";// << TempArray << std::endl;
+      out << "Parameters: "; // << TempArray << std::endl;
       print_vector(out,TempArray);
       out << std::endl;
       TempArray = ( *it )->GetFixedParameters();
-      out << "FixedParameters: ";// << TempArray << std::endl;
+      out << "FixedParameters: "; // << TempArray << std::endl;
       print_vector(out,TempArray);
       out << std::endl;
       }
     }
   out.close();
 }
+
 }
 
 #endif

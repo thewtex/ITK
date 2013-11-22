@@ -18,7 +18,6 @@
 #ifndef __itkJPEGImageIOFactory_h
 #define __itkJPEGImageIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -28,7 +27,7 @@ namespace itk
  * \brief Create instances of JPEGImageIO objects using an object factory.
  * \ingroup ITKIOJPEG
  */
-class JPEGImageIOFactory:public ObjectFactoryBase
+class JPEGImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -44,12 +43,17 @@ public:
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
-  static JPEGImageIOFactory * FactoryNew() { return new JPEGImageIOFactory; }
+  static JPEGImageIOFactory *
+  FactoryNew() {
+    return new JPEGImageIOFactory;
+  }
+
   /** Run-time type information (and related methods). */
   itkTypeMacro(JPEGImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     JPEGImageIOFactory::Pointer JPEGFactory = JPEGImageIOFactory::New();
 
@@ -63,6 +67,7 @@ protected:
 private:
   JPEGImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -18,7 +18,8 @@
 
 #include "itkQuadEdgeMesh.h"
 
-int itkQuadEdgeMeshTest1( int , char* [] )
+int
+itkQuadEdgeMeshTest1( int , char* [] )
 {
   std::cout << "Testing points..." << std::endl;
 
@@ -31,14 +32,14 @@ int itkQuadEdgeMeshTest1( int , char* [] )
   typedef itk::QuadEdgeMeshPolygonCell< CellType >  QEPolygonCellType;
   typedef itk::QuadEdgeMeshLineCell< CellType >     QELineCellType;
 
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
 
   mesh->GetCellBoundaryFeatureNeighbors( 0, 0, 0, 0 );
   mesh->GetCellNeighbors( 0, 0 );
 
   // test ComputeNumberOfPoints( ) failsafe
     {
-    if( mesh->ComputeNumberOfPoints( ) )
+    if( mesh->ComputeNumberOfPoints() )
       {
       return EXIT_FAILURE;
       }
@@ -65,7 +66,7 @@ int itkQuadEdgeMeshTest1( int , char* [] )
     }
 
   typedef MeshType::PointsContainer::Iterator PointsIterator;
-  PointsIterator  pointIterator = mesh->GetPoints()->Begin();
+  PointsIterator pointIterator = mesh->GetPoints()->Begin();
   PointsIterator end = mesh->GetPoints()->End();
 
   int nPoints = 0;
@@ -108,13 +109,13 @@ int itkQuadEdgeMeshTest1( int , char* [] )
 
     // create a tetahedra and one isolated point: id = 4
     int specialCells[12] =
-    {  0,  1,  2,
-       0,  2,  3,
-       3,  1,  0,
-       1,  3,  2 };
+                {  0,  1,  2,
+                0,  2,  3,
+                3,  1,  0,
+                1,  3,  2 };
 
     CellType::CellAutoPointer cellpointer;
-    QEPolygonCellType *poly;
+    QEPolygonCellType *       poly;
     for(int i=0; i<4; i++)
       {
       poly = new QEPolygonCellType( 3 );
@@ -163,7 +164,7 @@ int itkQuadEdgeMeshTest1( int , char* [] )
     // LightWeightDeleteEdge
     QELineCellType * qeLineCell = new QELineCellType;
     mesh->LightWeightDeleteEdge( (QEType *)NULL );
-    mesh->LightWeightDeleteEdge( qeLineCell->GetQEGeom( ) );
+    mesh->LightWeightDeleteEdge( qeLineCell->GetQEGeom() );
     mesh->LightWeightDeleteEdge( qeLineCell );
     }
 

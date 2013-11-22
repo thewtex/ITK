@@ -101,14 +101,14 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class LaplacianSegmentationLevelSetImageFilter:
+class LaplacianSegmentationLevelSetImageFilter :
   public SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
 {
 public:
   /** Standard class typedefs */
   typedef LaplacianSegmentationLevelSetImageFilter Self;
   typedef  SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -128,7 +128,9 @@ public:
   itkNewMacro(Self);
 
 protected:
-  ~LaplacianSegmentationLevelSetImageFilter() {}
+  ~LaplacianSegmentationLevelSetImageFilter() {
+  }
+
   LaplacianSegmentationLevelSetImageFilter();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -137,7 +139,8 @@ private:
   LaplacianSegmentationLevelSetImageFilter(const Self &); //purposely not
                                                           // implemented
   void operator=(const Self &);                           //purposely not
-                                                          // implemented
+
+  // implemented
 
   typename LaplacianFunctionType::Pointer m_LaplacianFunction;
 };

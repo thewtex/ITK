@@ -35,41 +35,48 @@ LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 template< typename TInput, typename TLevelSetContainer >
 LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 ::~LevelSetEquationBinaryMaskTerm()
-{}
+{
+}
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 ::Update()
-{}
+{
+}
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 ::InitializeParameters()
 {
   this->SetUp();
 }
 
-
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 ::Initialize( const LevelSetInputIndexType& itkNotUsed( index ) )
-{}
-
+{
+}
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 ::UpdatePixel( const LevelSetInputIndexType& itkNotUsed( index ),
                const LevelSetOutputRealType & itkNotUsed( oldValue ),
                const LevelSetOutputRealType & itkNotUsed( newValue ) )
-{}
+{
+}
 
 template< typename TInput, typename TLevelSetContainer >
 typename LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >::LevelSetOutputRealType
 LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 ::Value( const LevelSetInputIndexType& index )
 {
-  const InputPixelType pixel = this->m_Mask->GetPixel( index );
+  const InputPixelType   pixel = this->m_Mask->GetPixel( index );
   LevelSetOutputRealType value;
+
   if( pixel > 0 )
     {
     value = NumericTraits< LevelSetOutputRealType >::Zero;
@@ -86,8 +93,9 @@ typename LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >::LevelSetO
 LevelSetEquationBinaryMaskTerm< TInput, TLevelSetContainer >
 ::Value( const LevelSetInputIndexType& index, const LevelSetDataType& itkNotUsed( data ) )
 {
-  const InputPixelType pixel = this->m_Mask->GetPixel( index );
+  const InputPixelType   pixel = this->m_Mask->GetPixel( index );
   LevelSetOutputRealType value;
+
   if( pixel > 0 )
     {
     value = NumericTraits< LevelSetOutputRealType >::Zero;

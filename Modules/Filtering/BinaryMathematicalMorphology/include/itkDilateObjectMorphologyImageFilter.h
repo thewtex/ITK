@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKBinaryMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class DilateObjectMorphologyImageFilter:
+class DilateObjectMorphologyImageFilter :
   public ObjectMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -73,7 +73,7 @@ public:
   typedef NeighborhoodIterator< TOutputImage > OutputNeighborhoodIteratorType;
 
   typedef typename Superclass::DefaultBoundaryConditionType
-  DefaultBoundaryConditionType;
+    DefaultBoundaryConditionType;
 
   /** Type of the pixels in the Kernel. */
   typedef typename TKernel::PixelType KernelPixelType;
@@ -87,7 +87,9 @@ public:
 
 protected:
   DilateObjectMorphologyImageFilter();
-  ~DilateObjectMorphologyImageFilter() {}
+  ~DilateObjectMorphologyImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Apply the kernel to the neighborhood given.

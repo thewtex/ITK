@@ -36,9 +36,14 @@ class WeightedAdd2
 public:
   typedef typename NumericTraits< TInput1 >::AccumulateType AccumulatorType;
   typedef typename NumericTraits< TInput1 >::RealType       RealType;
-  WeightedAdd2() {}
-  ~WeightedAdd2() {}
-  bool operator!=(const WeightedAdd2 & other) const
+  WeightedAdd2() {
+  }
+
+  ~WeightedAdd2() {
+  }
+
+  bool
+  operator!=(const WeightedAdd2 & other) const
   {
     if ( m_Alpha != other.m_Alpha )
       {
@@ -47,12 +52,14 @@ public:
     return false;
   }
 
-  bool operator==(const WeightedAdd2 & other) const
+  bool
+  operator==(const WeightedAdd2 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     const RealType sum1 = A * m_Alpha;
     const RealType sum2 = B * m_Beta;
@@ -60,13 +67,15 @@ public:
     return static_cast< TOutput >( sum1 + sum2 );
   }
 
-  void SetAlpha(RealType alpha)
+  void
+  SetAlpha(RealType alpha)
   {
     m_Alpha = alpha;
     m_Beta  = NumericTraits< RealType >::One - m_Alpha;
   }
 
-  RealType GetAlpha() const
+  RealType
+  GetAlpha() const
   {
     return m_Alpha;
   }
@@ -110,7 +119,7 @@ private:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class WeightedAddImageFilter:
+class WeightedAddImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::WeightedAdd2<
@@ -143,14 +152,16 @@ public:
                BinaryFunctorImageFilter);
 
   /** Set the weight for the first operand of the weighted addition */
-  void SetAlpha(RealType alpha)
+  void
+  SetAlpha(RealType alpha)
   {
     this->GetFunctor().SetAlpha(alpha);
     this->Modified();
   }
 
   /** Returns the current alpha value setting */
-  RealType GetAlpha() const
+  RealType
+  GetAlpha() const
   {
     return this->GetFunctor().GetAlpha();
   }
@@ -169,12 +180,17 @@ public:
 #endif
 
 protected:
-  WeightedAddImageFilter() {}
-  virtual ~WeightedAddImageFilter() {}
+  WeightedAddImageFilter() {
+  }
+
+  virtual
+  ~WeightedAddImageFilter() {
+  }
 
 private:
   WeightedAddImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

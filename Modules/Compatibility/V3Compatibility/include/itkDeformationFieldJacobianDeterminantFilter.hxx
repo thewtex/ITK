@@ -33,7 +33,8 @@ namespace itk
 template< typename TInputImage, typename TRealType, typename TOutputImage >
 DeformationFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage >
 ::DeformationFieldJacobianDeterminantFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TRealType, typename TOutputImage >
 TRealType
@@ -58,6 +59,7 @@ DeformationFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage 
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

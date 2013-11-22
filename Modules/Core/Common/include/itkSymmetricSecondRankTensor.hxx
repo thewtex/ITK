@@ -31,6 +31,7 @@ SymmetricSecondRankTensor< T, NDimension >
 ::operator=(const ComponentType & r)
 {
   BaseArray::operator=(&r);
+
   return *this;
 }
 
@@ -43,6 +44,7 @@ SymmetricSecondRankTensor< T, NDimension >
 ::operator=(const ComponentArrayType r)
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -324,33 +326,34 @@ SymmetricSecondRankTensor<T,NDimension>
 ::Rotate( const Matrix<TMatrixValueType, NDimension, NDimension> & m ) const
 {
   Self result;
+
   typedef Matrix<double, NDimension, NDimension> RotationMatrixType;
   RotationMatrixType SCT; //self * Transpose(m)
   for(unsigned int r=0; r<NDimension; r++)
-  {
-    for(unsigned int c=0; c<NDimension; c++)
     {
+    for(unsigned int c=0; c<NDimension; c++)
+      {
       double sum = 0.0;
       for(unsigned int t=0; t<NDimension; t++)
-      {
+        {
         sum += (*this)(r,t) * m(c,t);
-      }
+        }
       SCT(r,c) = sum;
+      }
     }
-  }
   //self = m * sct;
   for(unsigned int r=0; r<NDimension; r++)
-  {
-    for(unsigned int c=0; c<NDimension; c++)
     {
+    for(unsigned int c=0; c<NDimension; c++)
+      {
       double sum = 0.0;
       for(unsigned int t=0; t<NDimension; t++)
-      {
+        {
         sum += m(r,t) * SCT(t,c);
-      }
+        }
       (result)(r,c) = static_cast<T>( sum );
+      }
     }
-  }
   return result;
 }
 
@@ -433,6 +436,7 @@ operator>>(std::istream & is, SymmetricSecondRankTensor< T, NDimension > & dt)
     }
   return is;
 }
+
 } // end namespace itk
 
 #endif

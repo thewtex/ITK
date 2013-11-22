@@ -26,10 +26,10 @@ class MyDecisionRule : public DecisionRule
 {
 public:
   /** Standard class typedef. */
-  typedef MyDecisionRule                   Self;
-  typedef DecisionRule                     Superclass;
-  typedef SmartPointer< Self >             Pointer;
-  typedef SmartPointer<const Self>         ConstPointer;
+  typedef MyDecisionRule           Self;
+  typedef DecisionRule             Superclass;
+  typedef SmartPointer< Self >     Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Standard macros */
   itkTypeMacro(MyDecisionRule, DecisionRule);
@@ -45,12 +45,14 @@ public:
   typedef Superclass::ClassIdentifierType ClassIdentifierType;
 
   /** Evaluate membership score */
-  ClassIdentifierType Evaluate(const MembershipVectorType &scoreVector) const
-    {
+  ClassIdentifierType
+  Evaluate(const MembershipVectorType &scoreVector) const
+  {
     double max = scoreVector[0];
 
     unsigned int maxIndex = 0;
     unsigned int i;
+
     for (i = 1; i < scoreVector.size(); i++)
       {
       if (scoreVector[i] > max)
@@ -60,13 +62,15 @@ public:
         }
       }
     return maxIndex;
-    }
+  }
+
 };
 
 }
 }
 }
-int itkDecisionRuleTest(int, char* [] )
+int
+itkDecisionRuleTest(int, char* [] )
 {
   typedef itk::Statistics::DecisionRuleTest::MyDecisionRule DecisionRuleType;
 

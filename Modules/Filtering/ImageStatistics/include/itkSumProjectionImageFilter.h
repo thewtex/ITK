@@ -50,20 +50,26 @@ template< typename TInputPixel, typename TOuputPixel >
 class SumAccumulator
 {
 public:
-  SumAccumulator( SizeValueType ) {}
-  ~SumAccumulator(){}
+  SumAccumulator( SizeValueType ) {
+  }
 
-  inline void Initialize()
+  ~SumAccumulator(){
+  }
+
+  inline void
+  Initialize()
   {
     m_Sum = NumericTraits< TOuputPixel >::Zero;
   }
 
-  inline void operator()(const TInputPixel & input)
+  inline void
+  operator()(const TInputPixel & input)
   {
     m_Sum = m_Sum + input;
   }
 
-  inline TOuputPixel GetValue()
+  inline TOuputPixel
+  GetValue()
   {
     return m_Sum;
   }
@@ -73,7 +79,7 @@ public:
 } // end namespace Function
 
 template< typename TInputImage, typename TOutputImage >
-class SumProjectionImageFilter:
+class SumProjectionImageFilter :
   public
   ProjectionImageFilter< TInputImage, TOutputImage,
                          Functor::SumAccumulator<
@@ -113,12 +119,17 @@ public:
 #endif
 
 protected:
-  SumProjectionImageFilter() {}
-  virtual ~SumProjectionImageFilter() {}
+  SumProjectionImageFilter() {
+  }
+
+  virtual
+  ~SumProjectionImageFilter() {
+  }
 
 private:
   SumProjectionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };                                        // end SumProjectionImageFilter
 } //end namespace itk
 

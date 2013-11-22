@@ -29,8 +29,10 @@
 
 namespace itk
 {
-void FastMutexLock::PrintSelf(std::ostream & os, Indent indent) const
+void
+FastMutexLock::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } //end namespace itk

@@ -114,7 +114,7 @@ namespace itk
  *
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT ProcessObject:public Object
+class ITKCommon_EXPORT ProcessObject : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -138,7 +138,7 @@ public:
   typedef DataObject::DataObjectIdentifierType DataObjectIdentifierType;
 
   /** STL array of data object names */
-  typedef std::vector< DataObjectIdentifierType >  NameArray;
+  typedef std::vector< DataObjectIdentifierType > NameArray;
 
   /** Return a array with the names of the inputs of this process object.
    * The names are ordered lexicographically, and match the order of the
@@ -154,6 +154,7 @@ public:
    * by GetInputNames()
    */
   DataObjectPointerArray GetInputs();
+
   // ConstDataObjectPointerArray GetInputs() const;
 
   /** Return true if the input with this name exists */
@@ -182,6 +183,7 @@ public:
    * by GetOutputNames()
    */
   DataObjectPointerArray GetOutputs();
+
   // ConstDataObjectPointerArray GetOutputs() const;
 
   /** Return true if the output with this name exists */
@@ -191,6 +193,7 @@ public:
    * This is useful for tracing back in the pipeline to construct
    * graphs etc.  */
   DataObjectPointerArray GetIndexedInputs();
+
   // ConstDataObjectPointerArray GetIndexedInputs() const;
 
   /** Get the size of the input vector.  This is merely the size of
@@ -208,6 +211,7 @@ public:
    * This is useful for tracing forward in the pipeline to contruct
    * graphs etc. */
   DataObjectPointerArray GetIndexedOutputs();
+
   // ConstDataObjectPointerArray GetIndexedOutputs() const;
   DataObjectPointerArraySizeType GetNumberOfIndexedOutputs() const;
 
@@ -250,13 +254,15 @@ public:
    * if it doesn't need to.
    * Thus, we implement the SetClampMacro directly without the call to
    * Modified. */
-#if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
-  void SetProgress(float progress)
+#if !defined ( ITK_FUTURE_LEGACY_REMOVE )
+  void
+  SetProgress(float progress)
   {
     // Clamp the value to be between 0 and 1.
     m_Progress = std::max(progress, 0.0f);
     m_Progress = std::min(m_Progress, 1.0f);
   }
+
 #endif
 
   /** Get the execution progress of a process object. The progress is
@@ -327,7 +333,9 @@ public:
    * These filters must provide an implementation of this method, setting
    * the output requested region to the size they will produce.  By default,
    * a process object does not modify the size of the output requested region. */
-  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) ){}
+  virtual void
+  EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) ){
+  }
 
   /** Reset the pipeline. If an exception is thrown during an Update(),
    * the pipeline may be in an inconsistent state.  This method clears
@@ -356,9 +364,18 @@ public:
    * options for controlling memory utilization is the
    * ReleaseDataBeforeUpdateFlag. */
   virtual void SetReleaseDataFlag(bool flag);
+
   virtual bool GetReleaseDataFlag() const;
-  void ReleaseDataFlagOn() { this->SetReleaseDataFlag(true); }
-  void ReleaseDataFlagOff() { this->SetReleaseDataFlag(false); }
+
+  void
+  ReleaseDataFlagOn() {
+    this->SetReleaseDataFlag(true);
+  }
+
+  void
+  ReleaseDataFlagOff() {
+    this->SetReleaseDataFlag(false);
+  }
 
   /** Turn on/off the flags to control whether the bulk data belonging
    * to the outputs of this ProcessObject are released/reallocated
@@ -381,8 +398,11 @@ public:
   itkGetConstReferenceMacro(NumberOfThreads, ThreadIdType);
 
   /** Return the multithreader used by this class. */
-  MultiThreader * GetMultiThreader() const
-  { return m_Threader; }
+  MultiThreader *
+  GetMultiThreader() const
+  {
+    return m_Threader;
+  }
 
   /** An opportunity to deallocate a ProcessObject's bulk data
    *  storage. Some filters may wish to reuse existing bulk data
@@ -407,33 +427,35 @@ protected:
    * \ingroup ITKCommon
    */
   template< typename TDomainPartitioner, typename TAssociate >
-  class ProcessObjectDomainThreader: public DomainThreader< TDomainPartitioner, TAssociate >
+  class ProcessObjectDomainThreader : public DomainThreader< TDomainPartitioner, TAssociate >
   {
-  public:
+public:
     /** Standard class typedefs. */
     typedef ProcessObjectDomainThreader                               Self;
     typedef DomainThreader< TDomainPartitioner, ProcessObject::Self > Superclass;
     typedef SmartPointer< Self >                                      Pointer;
     typedef SmartPointer< const Self >                                ConstPointer;
 
-    typedef typename Superclass::DomainPartitionerType            DomainPartitionerType;
-    typedef typename Superclass::DomainType                       DomainType;
+    typedef typename Superclass::DomainPartitionerType DomainPartitionerType;
+    typedef typename Superclass::DomainType            DomainType;
 
     /** Run-time type information (and related methods). */
     itkTypeMacro( ProcessObject::ProcessObjectDomainThreader, DomainThreader );
 
-  protected:
+protected:
     ProcessObjectDomainThreader();
-    virtual ~ProcessObjectDomainThreader();
+    virtual
+    ~ProcessObjectDomainThreader();
 
     /** This is overridden to set the MultiThreader and number of threads used
      * the same as the ProcessObject. */
     virtual void DetermineNumberOfThreadsUsed();
 
-  private:
+private:
     ProcessObjectDomainThreader( const Self & ); // purposely not implemented
-    void operator=( const Self & ); // purposely not implemented
-   };
+    void operator=( const Self & );              // purposely not implemented
+
+  };
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -443,14 +465,22 @@ protected:
 
   /** Return an input, NULL is returned if out of bounds or not set. */
   DataObject * GetInput(const DataObjectIdentifierType & key);
+
   const DataObject * GetInput(const DataObjectIdentifierType & key) const;
 
   /** Method used internally for getting an indexed input.
    */
-  DataObject * GetInput(DataObjectPointerArraySizeType idx)
-  { return idx < m_IndexedInputs.size() ? m_IndexedInputs[idx]->second : NULL; }
-  const DataObject * GetInput(DataObjectPointerArraySizeType idx) const
-  { return idx < m_IndexedInputs.size() ? m_IndexedInputs[idx]->second : NULL; }
+  DataObject *
+  GetInput(DataObjectPointerArraySizeType idx)
+  {
+    return idx < m_IndexedInputs.size() ? m_IndexedInputs[idx]->second : NULL;
+  }
+
+  const DataObject *
+  GetInput(DataObjectPointerArraySizeType idx) const
+  {
+    return idx < m_IndexedInputs.size() ? m_IndexedInputs[idx]->second : NULL;
+  }
 
   /** Set an input */
   virtual void SetInput(const DataObjectIdentifierType & key, DataObject *input);
@@ -468,8 +498,11 @@ protected:
    * filters with different types of inputs.  These routines follow
    * the semantics of STL. */
   virtual void PushBackInput(const DataObject *input);
+
   virtual void PopBackInput();
+
   virtual void PushFrontInput(const DataObject *input);
+
   virtual void PopFrontInput();
 
   /** \brief Remove an input.
@@ -479,18 +512,31 @@ protected:
    *  required or an index it will be set to NULL.
    */
   virtual void RemoveInput(const DataObjectIdentifierType & key);
+
   virtual void RemoveInput(DataObjectPointerArraySizeType);
 
   /** Return the main input */
-  DataObject * GetPrimaryInput()
-  { return m_IndexedInputs[0]->second; }
-  const DataObject * GetPrimaryInput() const
-  { return m_IndexedInputs[0]->second; }
+  DataObject *
+  GetPrimaryInput()
+  {
+    return m_IndexedInputs[0]->second;
+  }
 
-  /** Set/Get the name associated with the Primary output.  Defaults to "Primary". */
+  const DataObject *
+  GetPrimaryInput() const
+  {
+    return m_IndexedInputs[0]->second;
+  }
+
+  /** Set/Get the name associated with the Primary output.  Defaults to
+    "Primary". */
   virtual void SetPrimaryInputName(const DataObjectIdentifierType & key);
-  virtual const char *GetPrimaryInputName( void ) const
-  { return this->m_IndexedInputs[0]->first.c_str(); }
+
+  virtual const char *
+  GetPrimaryInputName( void ) const
+  {
+    return this->m_IndexedInputs[0]->first.c_str();
+  }
 
   /** Set the main input */
   virtual void SetPrimaryInput(DataObject *input);
@@ -513,9 +559,13 @@ protected:
   /** Methods to add/remove and query the set of required inputs by name.
    */
   bool AddRequiredInputName( const DataObjectIdentifierType & );
+
   bool AddRequiredInputName( const DataObjectIdentifierType &, DataObjectPointerArraySizeType idx );
+
   bool RemoveRequiredInputName( const DataObjectIdentifierType & );
+
   bool IsRequiredInputName( const DataObjectIdentifierType & ) const;
+
   void SetRequiredInputNames( const NameArray & );
 
   //
@@ -524,15 +574,22 @@ protected:
 
   /** Return an output */
   DataObject * GetOutput(const DataObjectIdentifierType & key);
+
   const DataObject * GetOutput(const DataObjectIdentifierType & key) const;
 
-  /** Set/Get the name associated with the Primary output.  Defaults to "Primary". */
+  /** Set/Get the name associated with the Primary output.  Defaults to
+    "Primary". */
   virtual void SetPrimaryOutputName(const DataObjectIdentifierType & key);
-  virtual const char *GetPrimaryOutputName( void ) const
-  { return this->m_IndexedOutputs[0]->first.c_str(); }
+
+  virtual const char *
+  GetPrimaryOutputName( void ) const
+  {
+    return this->m_IndexedOutputs[0]->first.c_str();
+  }
 
   /** Method used internally for getting an indexed output. */
   DataObject * GetOutput(DataObjectPointerArraySizeType idx);
+
   const DataObject * GetOutput(DataObjectPointerArraySizeType idx) const;
 
   /** Set an output */
@@ -542,10 +599,17 @@ protected:
   virtual void RemoveOutput(const DataObjectIdentifierType & key);
 
   /** Return the main output */
-  DataObject * GetPrimaryOutput()
-  { return m_IndexedOutputs[0]->second; }
-  const DataObject * GetPrimaryOutput() const
-  { return m_IndexedOutputs[0]->second; }
+  DataObject *
+  GetPrimaryOutput()
+  {
+    return m_IndexedOutputs[0]->second;
+  }
+
+  const DataObject *
+  GetPrimaryOutput() const
+  {
+    return m_IndexedOutputs[0]->second;
+  }
 
   /** Set the main output */
   virtual void SetPrimaryOutput(DataObject *output);
@@ -564,27 +628,31 @@ protected:
   /** Called to allocate the output array.  Copies old outputs. */
   void SetNumberOfIndexedOutputs(DataObjectPointerArraySizeType num);
 
-
   DataObjectIdentifierType MakeNameFromInputIndex( DataObjectPointerArraySizeType idx ) const;
+
   DataObjectIdentifierType MakeNameFromOutputIndex( DataObjectPointerArraySizeType idx ) const;
+
   DataObjectPointerArraySizeType MakeIndexFromInputName( const DataObjectIdentifierType & name ) const;
+
   DataObjectPointerArraySizeType MakeIndexFromOutputName( const DataObjectIdentifierType & name ) const;
+
   bool IsIndexedInputName( const DataObjectIdentifierType & ) const;
+
   bool IsIndexedOutputName( const DataObjectIdentifierType & ) const;
 
   /** \deprecated use RemoveOutput(unsigned int) instead */
-  itkLegacyMacro(virtual void RemoveOutput(DataObject *output));
+  itkLegacyMacro(virtual void RemoveOutput(DataObject *output) );
 
   /** \deprecated use SetNumberOfIndexedInputs() instead */
-  itkLegacyMacro(void SetNumberOfOutputs(DataObjectPointerArraySizeType num));
+  itkLegacyMacro(void SetNumberOfOutputs(DataObjectPointerArraySizeType num) );
 
   /** Remove an indexed input.
    *\deprecated use RemoveInput(unsigned int) instead
    */
-  itkLegacyMacro(virtual void RemoveInput(DataObject *input));
+  itkLegacyMacro(virtual void RemoveInput(DataObject *input) );
 
   /** \deprecated use SetNumberOfIndexedInputs() instead */
-  itkLegacyMacro(void SetNumberOfInputs(DataObjectPointerArraySizeType num));
+  itkLegacyMacro(void SetNumberOfInputs(DataObjectPointerArraySizeType num) );
 
   //
   // Pipeline Methods
@@ -656,7 +724,9 @@ protected:
   virtual void GenerateOutputInformation();
 
   /** This method causes the filter to generate its output. */
-  virtual void GenerateData() {}
+  virtual void
+  GenerateData() {
+  }
 
   /** Called to allocate the input array.  Copies old inputs. */
   /** Propagate a call to ResetPipeline() up the pipeline. Called only from
@@ -711,10 +781,9 @@ private:
   /** STL map to store the named inputs and outputs */
   typedef std::map< DataObjectIdentifierType, DataObjectPointer > DataObjectPointerMap;
 
-
   /** Named input and outputs containers */
-  DataObjectPointerMap   m_Inputs;
-  DataObjectPointerMap   m_Outputs;
+  DataObjectPointerMap m_Inputs;
+  DataObjectPointerMap m_Outputs;
 
   std::vector< DataObjectPointerMap::iterator > m_IndexedInputs;
   std::vector< DataObjectPointerMap::iterator > m_IndexedOutputs;
@@ -722,8 +791,8 @@ private:
   /** An array that caches the ReleaseDataFlags of the inputs */
   std::map< DataObjectIdentifierType, bool > m_CachedInputReleaseDataFlags;
 
-  DataObjectPointerArraySizeType  m_NumberOfRequiredInputs;
-  DataObjectPointerArraySizeType  m_NumberOfRequiredOutputs;
+  DataObjectPointerArraySizeType m_NumberOfRequiredInputs;
+  DataObjectPointerArraySizeType m_NumberOfRequiredOutputs;
 
   /** STL map to store the named inputs and outputs */
   typedef std::set< DataObjectIdentifierType > NameSet;

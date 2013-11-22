@@ -76,20 +76,23 @@ public:
 
   /** Compatible Index and value typedef */
   typedef   Index< VIndexDimension > IndexType;
-  typedef   ::itk::IndexValueType    IndexValueType;
+  typedef::itk::IndexValueType       IndexValueType;
 
   /** Dimension constant */
   itkStaticConstMacro(Dimension, unsigned int, VIndexDimension);
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetIndexDimension() { return VIndexDimension; }
+  static unsigned int
+  GetIndexDimension() {
+    return VIndexDimension;
+  }
 
   /** Compatible Size typedef. */
   typedef   Size< VIndexDimension > SizeType;
 
   /** Compatible Offset and Offset value typedef. */
-  typedef   Offset< VIndexDimension >            OffsetType;
-  typedef   ::itk::OffsetValueType               OffsetValueType;
+  typedef   Offset< VIndexDimension > OffsetType;
+  typedef::itk::OffsetValueType       OffsetValueType;
 
   /** Lexicographic ordering functor type.  */
   typedef Functor::IndexLexicographicCompare< VIndexDimension > LexicographicCompare;
@@ -101,7 +104,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { result[i] = m_Index[i] + static_cast< IndexValueType >( size[i] ); }
+                        { result[i] = m_Index[i] + static_cast< IndexValueType >( size[i] ); }
     return result;
   }
 
@@ -110,7 +113,7 @@ public:
   operator+=(const SizeType & size)
   {
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { m_Index[i] += static_cast< IndexValueType >( size[i] ); }
+                        { m_Index[i] += static_cast< IndexValueType >( size[i] ); }
     return *this;
   }
 
@@ -122,7 +125,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { result[i] = m_Index[i] - static_cast< IndexValueType >( size[i] ); }
+                        { result[i] = m_Index[i] - static_cast< IndexValueType >( size[i] ); }
     return result;
   }
 
@@ -131,7 +134,7 @@ public:
   operator-=(const SizeType & size)
   {
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { m_Index[i] -= static_cast< IndexValueType >( size[i] ); }
+                        { m_Index[i] -= static_cast< IndexValueType >( size[i] ); }
     return *this;
   }
 
@@ -142,7 +145,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { result[i] = m_Index[i] + offset[i]; }
+                        { result[i] = m_Index[i] + offset[i]; }
     return result;
   }
 
@@ -151,7 +154,7 @@ public:
   operator+=(const OffsetType & offset)
   {
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { m_Index[i] += offset[i]; }
+                        { m_Index[i] += offset[i]; }
     return *this;
   }
 
@@ -160,7 +163,7 @@ public:
   operator-=(const OffsetType & offset)
   {
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { m_Index[i] -= offset[i]; }
+                        { m_Index[i] -= offset[i]; }
     return *this;
   }
 
@@ -171,7 +174,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { result[i] = m_Index[i] - off.m_Offset[i]; }
+                        { result[i] = m_Index[i] - off.m_Offset[i]; }
     return result;
   }
 
@@ -182,7 +185,7 @@ public:
     OffsetType result;
 
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { result[i] = m_Index[i] - vec.m_Index[i]; }
+                        { result[i] = m_Index[i] - vec.m_Index[i]; }
     return result;
   }
 
@@ -194,7 +197,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VIndexDimension; i++ )
-                { result[i] = m_Index[i] * static_cast< IndexValueType >( vec.m_Size[i] ); }
+                        { result[i] = m_Index[i] * static_cast< IndexValueType >( vec.m_Size[i] ); }
     return result;
   }
 
@@ -205,7 +208,7 @@ public:
     bool same = true;
 
     for ( unsigned int i = 0; i < VIndexDimension && same; i++ )
-                { same = ( m_Index[i] == vec.m_Index[i] ); }
+                        { same = ( m_Index[i] == vec.m_Index[i] ); }
     return same;
   }
 
@@ -216,30 +219,40 @@ public:
     bool same = true;
 
     for ( unsigned int i = 0; i < VIndexDimension && same; i++ )
-                { same = ( m_Index[i] == vec.m_Index[i] ); }
+                        { same = ( m_Index[i] == vec.m_Index[i] ); }
     return !same;
   }
 
   /** Access an element of the index. Elements are numbered
    * 0, ..., VIndexDimension-1. No bounds checking is performed. */
-  IndexValueType & operator[](unsigned int dim)
-  { return m_Index[dim]; }
+  IndexValueType &
+  operator[](unsigned int dim)
+  {
+    return m_Index[dim];
+  }
 
   /** Access an element of the index. Elements are numbered
    * 0, ..., VIndexDimension-1. This version can only be an rvalue.
    * No bounds checking is performed. */
-  IndexValueType operator[](unsigned int dim) const
-  { return m_Index[dim]; }
+  IndexValueType
+  operator[](unsigned int dim) const
+  {
+    return m_Index[dim];
+  }
 
   /** Get the index. This provides a read only reference to the index.
    * \sa SetIndex() */
-  const IndexValueType * GetIndex() const { return m_Index; }
+  const IndexValueType *
+  GetIndex() const {
+    return m_Index;
+  }
 
   /** Set the index.
    * Try to prototype this function so that val has to point to a block of
    * memory that is the appropriate size.
    * \sa GetIndex() */
-  void SetIndex(const IndexValueType val[VIndexDimension])
+  void
+  SetIndex(const IndexValueType val[VIndexDimension])
   {
     std::copy(val,
               val+VIndexDimension,
@@ -252,8 +265,11 @@ public:
    * \warning No bound checking is performed
    * \sa SetIndex()
    * \sa GetElement() */
-  void SetElement(unsigned long element, IndexValueType val)
-  { m_Index[element] = val;  }
+  void
+  SetElement(unsigned long element, IndexValueType val)
+  {
+    m_Index[element] = val;
+  }
 
   /** Gets the value of one of the elements in the index.
    * This method is mainly intended to facilitate the access to elements
@@ -261,8 +277,11 @@ public:
    * \warning No bound checking is performed
    * \sa GetIndex()
    * \sa SetElement() */
-  IndexValueType GetElement(unsigned long element) const
-  { return m_Index[element]; }
+  IndexValueType
+  GetElement(unsigned long element) const
+  {
+    return m_Index[element];
+  }
 
   /** Return a basis vector of the form [0, ..., 0, 1, 0, ... 0] where the "1"
    * is positioned in the location specified by the parameter "dim". Valid
@@ -271,8 +290,11 @@ public:
 
   /** Set one value for the index in all dimensions.  Useful for initializing
    * an offset to zero. */
-  void Fill(IndexValueType value)
-  { for ( unsigned int i = 0; i < VIndexDimension; ++i ) { m_Index[i] = value; } }
+  void
+  Fill(IndexValueType value)
+  {
+    for ( unsigned int i = 0; i < VIndexDimension; ++i ) { m_Index[i] = value; }
+  }
 
   /** Index is an "aggregate" class.  Its data is public (m_Index)
    * allowing for fast and convenient instantiations/assignments.
@@ -283,7 +305,8 @@ public:
 
   /** Copy values from a FixedArray by rounding each one of the components */
   template< typename TCoordRep >
-  inline void CopyWithRound(const FixedArray< TCoordRep, VIndexDimension > & point)
+  inline void
+  CopyWithRound(const FixedArray< TCoordRep, VIndexDimension > & point)
   {
     itkForLoopRoundingAndAssignmentMacro(IndexType,
                                          ContinuousIndexType,
@@ -302,7 +325,8 @@ public:
 
   /** Copy values from a FixedArray by casting each one of the components */
   template< typename TCoordRep >
-  inline void CopyWithCast(const FixedArray< TCoordRep, VIndexDimension > & point)
+  inline void
+  CopyWithCast(const FixedArray< TCoordRep, VIndexDimension > & point)
   {
     for ( unsigned int i = 0; i < VIndexDimension; ++i )
       {
@@ -334,8 +358,9 @@ template< unsigned int VIndexDimension >
 class IndexLexicographicCompare
 {
 public:
-  bool operator()(Index< VIndexDimension > const & l,
-                  Index< VIndexDimension > const & r) const
+  bool
+  operator()(Index< VIndexDimension > const & l,
+             Index< VIndexDimension > const & r) const
   {
     for ( unsigned int i = 0; i < VIndexDimension; ++i )
       {
@@ -350,6 +375,7 @@ public:
       }
     return false;
   }
+
 };
 }
 
@@ -366,7 +392,8 @@ Index< VIndexDimension >
 }
 
 template< unsigned int VIndexDimension >
-std::ostream & operator<<(std::ostream & os, const Index< VIndexDimension > & ind)
+std::ostream &
+operator<<(std::ostream & os, const Index< VIndexDimension > & ind)
 {
   os << "[";
   for ( unsigned int i = 0; i + 1 < VIndexDimension; ++i )
@@ -380,6 +407,7 @@ std::ostream & operator<<(std::ostream & os, const Index< VIndexDimension > & in
   os << "]";
   return os;
 }
+
 } // end namespace itk
 
 #endif

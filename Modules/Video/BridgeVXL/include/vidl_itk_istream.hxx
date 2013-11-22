@@ -79,7 +79,7 @@ bool
 vidl_itk_istream< TVideoStream >::is_seekable() const
 {
   // return false if not open
-  if (!this->is_open())
+  if (!this->is_open() )
     {
     return false;
     }
@@ -101,7 +101,7 @@ int
 vidl_itk_istream< TVideoStream >::num_frames() const
 {
   // return -1 if not open or not seekable (this calls UpdateOutputInformation)
-  if (!this->is_open() || !this->is_seekable())
+  if (!this->is_open() || !this->is_seekable() )
     {
     return -1;
     }
@@ -118,7 +118,7 @@ unsigned int
 vidl_itk_istream< TVideoStream >::frame_number() const
 {
   // return static_cast<unsigned int>(-1) if not open or not valid
-  if (!this->is_open() || !this->is_valid())
+  if (!this->is_open() || !this->is_valid() )
     {
     return static_cast<unsigned int>(-1);
     }
@@ -135,7 +135,7 @@ unsigned int
 vidl_itk_istream< TVideoStream >::width() const
 {
   // return false if not open
-  if (!this->is_open())
+  if (!this->is_open() )
     {
     return -1;
     }
@@ -155,7 +155,7 @@ unsigned int
 vidl_itk_istream< TVideoStream >::height() const
 {
   // return false if not open
-  if (!this->is_open())
+  if (!this->is_open() )
     {
     return -1;
     }
@@ -185,7 +185,7 @@ vidl_itk_istream< TVideoStream >::format() const
   //
 
   // bool
-  if (typeid(PixelValueType) == typeid(bool))
+  if (typeid(PixelValueType) == typeid(bool) )
     {
     if (channels == 1)
       {
@@ -199,7 +199,7 @@ vidl_itk_istream< TVideoStream >::format() const
 
   // char / unsigned char
   else if (typeid(PixelValueType) == typeid(char) ||
-           typeid(PixelValueType) == typeid(unsigned char))
+           typeid(PixelValueType) == typeid(unsigned char) )
     {
     if (channels == 1)
       {
@@ -221,7 +221,7 @@ vidl_itk_istream< TVideoStream >::format() const
 
   // short / unsigned short
   else if (typeid(PixelValueType) == typeid(short) ||
-           typeid(PixelValueType) == typeid(unsigned short))
+           typeid(PixelValueType) == typeid(unsigned short) )
     {
     if (channels == 1)
       {
@@ -234,7 +234,7 @@ vidl_itk_istream< TVideoStream >::format() const
     }
 
   // float
-  else if (typeid(PixelValueType) == typeid(float))
+  else if (typeid(PixelValueType) == typeid(float) )
     {
     if (channels == 1)
       {
@@ -265,7 +265,7 @@ double
 vidl_itk_istream< TVideoStream >::duration() const
 {
   // return false if not open
-  if (!this->is_open())
+  if (!this->is_open() )
     {
     return -1;
     }
@@ -289,7 +289,7 @@ bool
 vidl_itk_istream< TVideoStream >::advance()
 {
   // Make sure it's open
-  if (!this->is_open())
+  if (!this->is_open() )
     {
     return false;
     }
@@ -299,12 +299,12 @@ vidl_itk_istream< TVideoStream >::advance()
 
   // We re-implement seeking forward because we want to be able to advance even
   // if the duration is infinite (and hence the video isn't seekable)
-  TemporalRegion currentRequest = m_VideoStream->GetRequestedTemporalRegion();
+  TemporalRegion  currentRequest = m_VideoStream->GetRequestedTemporalRegion();
   FrameOffsetType currentFrame = currentRequest.GetFrameStart();
 
   // we can't advance if we're at the end
   itk::IdentifierType firstFrame = m_VideoStream->GetLargestPossibleTemporalRegion().GetFrameStart();
-  FrameOffsetType frameDuration = m_VideoStream->GetLargestPossibleTemporalRegion().GetFrameDuration();
+  FrameOffsetType     frameDuration = m_VideoStream->GetLargestPossibleTemporalRegion().GetFrameDuration();
   if (frameDuration == 0 || currentFrame >= firstFrame + frameDuration - 2)
     {
     return false;
@@ -335,7 +335,7 @@ template< typename TVideoStream >
 vidl_frame_sptr
 vidl_itk_istream< TVideoStream >::read_frame()
 {
-  if (this->advance())
+  if (this->advance() )
     {
     return this->current_frame();
     }
@@ -353,7 +353,7 @@ vidl_frame_sptr
 vidl_itk_istream< TVideoStream >::current_frame()
 {
   // Return if not valid
-  if (!this->is_valid())
+  if (!this->is_valid() )
     {
     return NULL;
     }
@@ -362,11 +362,11 @@ vidl_itk_istream< TVideoStream >::current_frame()
   m_VideoStream->Update();
 
   // Get the frame
-  FrameType* frame = m_VideoStream->GetFrame(this->frame_number());
+  FrameType* frame = m_VideoStream->GetFrame(this->frame_number() );
 
   // Set up the output vidl_frame_sptr
-  vidl_frame_sptr output_frame = new vidl_shared_frame(static_cast<void*>(frame->GetBufferPointer()),
-    this->width(), this->height(), this->format());
+  vidl_frame_sptr output_frame = new vidl_shared_frame(static_cast<void*>(frame->GetBufferPointer() ),
+                                                       this->width(), this->height(), this->format() );
 
   // Return frame
   return output_frame;
@@ -381,7 +381,7 @@ vidl_itk_istream< TVideoStream >::seek_frame(unsigned int frameNumber)
 {
   // return false if not open, not seekable, or frame number out of bounds
   if (!this->is_open() || !this->is_seekable() ||
-      frameNumber >= static_cast<unsigned int>(this->num_frames()))
+      frameNumber >= static_cast<unsigned int>(this->num_frames() ) )
     {
     return false;
     }
@@ -394,7 +394,6 @@ vidl_itk_istream< TVideoStream >::seek_frame(unsigned int frameNumber)
   m_VideoStream->SetRequestedTemporalRegion(request);
   return true;
 }
-
 
 } // end namespace itk
 

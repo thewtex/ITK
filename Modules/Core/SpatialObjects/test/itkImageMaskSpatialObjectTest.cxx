@@ -24,13 +24,12 @@
 * unsigned int, or itk::Vector<...>.
 */
 
-
 #include "itkImageRegionIterator.h"
 
 #include "itkImageMaskSpatialObject.h"
 
-
-int itkImageMaskSpatialObjectTest(int, char* [])
+int
+itkImageMaskSpatialObjectTest(int, char* [])
 {
   const unsigned int NDimensions = 3;
 
@@ -42,9 +41,9 @@ int itkImageMaskSpatialObjectTest(int, char* [])
   typedef itk::ImageRegionIterator<ImageType>      Iterator;
   typedef itk::Point<ScalarType,NDimensions>       Point;
 
-  ImageType::Pointer image = ImageType::New();
-  ImageType::SizeType size = {{ 50, 50, 50 }};
-  ImageType::IndexType index = {{ 0, 0, 0 }};
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size = {{ 50, 50, 50 }};
+  ImageType::IndexType  index = {{ 0, 0, 0 }};
   ImageType::RegionType region;
 
   region.SetSize(size);
@@ -58,11 +57,10 @@ int itkImageMaskSpatialObjectTest(int, char* [])
   image->FillBuffer( p );
 
   ImageType::RegionType insideRegion;
-  ImageType::SizeType insideSize   = {{ 30, 30, 30 }};
-  ImageType::IndexType insideIndex = {{ 10, 10, 10 }};
+  ImageType::SizeType   insideSize   = {{ 30, 30, 30 }};
+  ImageType::IndexType  insideIndex = {{ 10, 10, 10 }};
   insideRegion.SetSize( insideSize );
   insideRegion.SetIndex( insideIndex );
-
 
   Iterator it( image, insideRegion );
   it.GoToBegin();
@@ -86,16 +84,16 @@ int itkImageMaskSpatialObjectTest(int, char* [])
   while( !itr.IsAtEnd() )
     {
     const ImageType::IndexType constIndex =  itr.GetIndex();
-    const bool reference = insideRegion.IsInside( constIndex );
-    ImageType::PointType point;
+    const bool                 reference = insideRegion.IsInside( constIndex );
+    ImageType::PointType       point;
     image->TransformIndexToPhysicalPoint( constIndex, point );
     const bool test      = maskSO->IsInside( point );
-      if( test != reference )
-        {
-        std::cerr << "Error in the evaluation of IsInside() " << std::endl;
-        std::cerr << "Index failed = " << constIndex << std::endl;
-        return EXIT_FAILURE;
-        }
+    if( test != reference )
+      {
+      std::cerr << "Error in the evaluation of IsInside() " << std::endl;
+      std::cerr << "Index failed = " << constIndex << std::endl;
+      return EXIT_FAILURE;
+      }
     ++itr;
     }
 

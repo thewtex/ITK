@@ -49,7 +49,8 @@ ImageRegion< VImageDimension >
 template< unsigned int VImageDimension >
 ImageRegion< VImageDimension >
 ::~ImageRegion()
-{}
+{
+}
 
 template< unsigned int VImageDimension >
 typename ImageRegion< VImageDimension >::IndexType
@@ -57,6 +58,7 @@ ImageRegion< VImageDimension >
 ::GetUpperIndex() const
 {
   IndexType idx;
+
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     idx[i] = m_Index[i] + m_Size[i] - 1;
@@ -178,6 +180,7 @@ ImageRegion< VImageDimension >
 ::ShrinkByRadius(const SizeType & radius)
 {
   bool shrunkSuccessfully = true;
+
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     if( m_Size[i] <= 2 * radius[i] )
@@ -199,6 +202,7 @@ ImageRegion< VImageDimension >
 ::ShrinkByRadius(const IndexValueArrayType radius)
 {
   bool shrunkSuccessfully = true;
+
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     if( static_cast< IndexValueType >( m_Size[i] ) <= 2 * radius[i] )
@@ -266,7 +270,7 @@ ImageRegion< VImageDimension >
       {
       // how much do we need to adjust
       crop = m_Index[i] + static_cast< OffsetValueType >( m_Size[i] )
-             - region.GetIndex()[i] - static_cast< OffsetValueType >( region.GetSize()[i] );
+        - region.GetIndex()[i] - static_cast< OffsetValueType >( region.GetSize()[i] );
 
       // adjust the size
       m_Size[i] -= static_cast< SizeValueType >( crop );
@@ -308,11 +312,13 @@ ImageRegion< VImageDimension >
 }
 
 template< unsigned int VImageDimension >
-std::ostream & operator<<(std::ostream & os, const ImageRegion< VImageDimension > & region)
+std::ostream &
+operator<<(std::ostream & os, const ImageRegion< VImageDimension > & region)
 {
   region.Print(os);
   return os;
 }
+
 } // end namespace itk
 
 #endif

@@ -60,14 +60,14 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TInputImage, typename TOutputImage >
-class VectorCurvatureAnisotropicDiffusionImageFilter:
+class VectorCurvatureAnisotropicDiffusionImageFilter :
   public AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard itk typedefs */
   typedef VectorCurvatureAnisotropicDiffusionImageFilter Self;
   typedef AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -102,11 +102,14 @@ protected:
     this->SetDifferenceFunction(q);
   }
 
-  ~VectorCurvatureAnisotropicDiffusionImageFilter() {}
+  ~VectorCurvatureAnisotropicDiffusionImageFilter() {
+  }
 
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     Superclass::InitializeIteration();
+
     if ( this->GetTimeStep() >  0.5 / vcl_pow( 2.0, static_cast< double >( ImageDimension ) ) )
       {
       itkWarningMacro(

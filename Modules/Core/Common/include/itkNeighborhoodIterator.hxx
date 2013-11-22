@@ -49,7 +49,9 @@ NeighborhoodIterator< TImage, TBoundaryCondition >
     for ( unsigned int ii = 0; ii < Superclass::Dimension; ++ii )
       {
       OverlapLow[ii] = this->m_InnerBoundsLow[ii] - this->m_Loop[ii];
-      OverlapHigh[ii] = static_cast< OffsetValueType >( this->GetSize(ii) - ( ( this->m_Loop[ii] + 2 ) - this->m_InnerBoundsHigh[ii] ) );
+      OverlapHigh[ii] =
+        static_cast< OffsetValueType >( this->GetSize(ii) -
+                                        ( ( this->m_Loop[ii] + 2 ) - this->m_InnerBoundsHigh[ii] ) );
       }
 
     bool flag = true;
@@ -226,6 +228,7 @@ NeighborhoodIterator< TImage, TBoundaryCondition >
       }
     }
 }
+
 } // namespace itk
 
 #endif

@@ -21,7 +21,6 @@
 #include "itkMatrixOffsetTransformBase.h"
 #include <iostream>
 
-
 namespace itk
 {
 /**
@@ -97,10 +96,10 @@ namespace itk
 
 template<
   typename TScalar = double,      // Data type for scalars
-                                   //    (e.g. float or double)
+                                  //    (e.g. float or double)
   unsigned int NDimensions = 3 >
 // Number of dimensions in the input space
-class AffineTransform:
+class AffineTransform :
   public MatrixOffsetTransformBase< TScalar, NDimensions, NDimensions >
 {
 public:
@@ -246,10 +245,10 @@ public:
    *
    * \deprecated Please use GetInverseTransform and then call the
    *   forward transform function */
-  itkLegacyMacro(InputPointType   BackTransform(const OutputPointType  & point) const);
-  itkLegacyMacro(InputVectorType  BackTransform(const OutputVectorType & vector) const);
-  itkLegacyMacro(InputVnlVectorType BackTransform( const OutputVnlVectorType & vector) const);
-  itkLegacyMacro(InputCovariantVectorType BackTransform( const OutputCovariantVectorType & vector) const);
+  itkLegacyMacro(InputPointType   BackTransform(const OutputPointType  &point) const);
+  itkLegacyMacro(InputVectorType  BackTransform(const OutputVectorType &vector) const);
+  itkLegacyMacro(InputVnlVectorType BackTransform( const OutputVnlVectorType &vector) const);
+  itkLegacyMacro(InputCovariantVectorType BackTransform( const OutputCovariantVectorType &vector) const);
 
   /** Back transform a point by an affine transform
    *
@@ -260,7 +259,7 @@ public:
    *
    * \deprecated Please use GetInverseTransform and then call the
    *   forward transform function */
-  itkLegacyMacro(InputPointType BackTransformPoint(const OutputPointType  & point) const);
+  itkLegacyMacro(InputPointType BackTransformPoint(const OutputPointType  &point) const);
 
   /** Compute distance between two affine transformations
    *
@@ -294,7 +293,8 @@ protected:
   AffineTransform();
 
   /** Destroy an AffineTransform object   */
-  virtual ~AffineTransform();
+  virtual
+  ~AffineTransform();
 
   /** Print contents of an AffineTransform */
   void PrintSelf(std::ostream & s, Indent indent) const;
@@ -303,6 +303,7 @@ private:
 
   AffineTransform(const Self & other);
   const Self & operator=(const Self &);
+
 }; //class AffineTransform
 
 #if !defined(ITK_LEGACY_REMOVE)
@@ -394,6 +395,7 @@ AffineTransform< TScalar, NDimensions >::BackTransform(const OutputPointType & p
     }
   return result;
 }
+
 #endif
 }  // namespace itk
 

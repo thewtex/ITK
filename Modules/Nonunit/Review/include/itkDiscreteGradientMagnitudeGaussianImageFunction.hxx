@@ -26,7 +26,7 @@ namespace itk
 /** Set the Input Image */
 template< typename TInputImage, typename TOutput >
 DiscreteGradientMagnitudeGaussianImageFunction< TInputImage, TOutput >
-::DiscreteGradientMagnitudeGaussianImageFunction():
+::DiscreteGradientMagnitudeGaussianImageFunction() :
   m_MaximumError(0.005),
   m_MaximumKernelWidth(30),
   m_NormalizeAcrossScale(true),
@@ -62,6 +62,7 @@ DiscreteGradientMagnitudeGaussianImageFunction< TInputImage, TOutput >
 ::SetInputImage(const InputImageType *ptr)
 {
   Superclass::SetInputImage(ptr);
+
   m_OperatorImageFunction->SetInputImage(ptr);
 }
 
@@ -150,7 +151,7 @@ DiscreteGradientMagnitudeGaussianImageFunction< TInputImage, TOutput >
 
   // Now create an image filter to perform successive convolutions
   typedef itk::NeighborhoodOperatorImageFilter< KernelImageType, KernelImageType >
-  NeighborhoodFilterType;
+    NeighborhoodFilterType;
   typename NeighborhoodFilterType::Pointer convolutionFilter = NeighborhoodFilterType::New();
 
   unsigned int opidx; // current operator index in m_OperatorArray
@@ -255,7 +256,7 @@ DiscreteGradientMagnitudeGaussianImageFunction< TInputImage, TOutput >
     {
     typedef unsigned int NumberOfNeighborsType;
 
-    unsigned int  dim; // index over dimension
+    unsigned int          dim; // index over dimension
     NumberOfNeighborsType neighbors = 1 << ImageDimension2;
 
     // Compute base index = closet index below point
@@ -277,9 +278,10 @@ DiscreteGradientMagnitudeGaussianImageFunction< TInputImage, TOutput >
 
     for ( NumberOfNeighborsType counter = 0; counter < neighbors; counter++ )
       {
-      double       overlap = 1.0;    // fraction overlap
-      NumberOfNeighborsType upper = counter;  // each bit indicates upper/lower neighbour
-      IndexType    neighIndex;
+      double                overlap = 1.0;   // fraction overlap
+      NumberOfNeighborsType upper = counter; // each bit indicates upper/lower
+                                             // neighbour
+      IndexType neighIndex;
 
       // get neighbor index and overlap fraction
       for ( dim = 0; dim < ImageDimension2; dim++ )
@@ -313,6 +315,7 @@ DiscreteGradientMagnitudeGaussianImageFunction< TInputImage, TOutput >
     return ( static_cast< OutputType >( value ) );
     }
 }
+
 } // end namespace itk
 
 #endif

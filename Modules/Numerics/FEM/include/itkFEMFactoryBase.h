@@ -59,10 +59,14 @@ public:
   itkFactorylessNewMacro(Self);
 
   /** Register all builtin transforms */
-  static void RegisterDefaultTypes();  //HACK: This should not have a public interface since it does nothing except during instantiation of the class.
+  static void RegisterDefaultTypes();  //HACK: This should not have a public
+
+  // interface since it does nothing except
+  // during instantiation of the class.
 
   /** Register this transform */
-  static FEMFactoryBase * GetFactory()
+  static FEMFactoryBase *
+  GetFactory()
   {
     if( m_Factory == 0 )
       {
@@ -78,7 +82,7 @@ public:
           {
           std::ostringstream message;
           message << "itk::ERROR: " << "FEMFactoryBase"
-            << " instance not created";
+                  << " instance not created";
           ::itk::ExceptionObject e_(__FILE__, __LINE__, message.str().c_str(), ITK_LOCATION);
           throw e_; /* Explicit naming to work around for Intel compiler bug. */
           }
@@ -91,18 +95,20 @@ public:
     return m_Factory;
   }
 
-  void RegisterType(const char* classOverride,
-                    const char* overrideClassName,
-                    const char* description,
-                    bool enableFlag,
-                    CreateObjectFunctionBase* createFunction)
+  void
+  RegisterType(const char* classOverride,
+               const char* overrideClassName,
+               const char* description,
+               bool enableFlag,
+               CreateObjectFunctionBase* createFunction)
   {
     this->RegisterOverride( classOverride, overrideClassName, description, enableFlag, createFunction );
   }
 
 protected:
   FEMFactoryBase();
-  virtual ~FEMFactoryBase();
+  virtual
+  ~FEMFactoryBase();
 
 private:
   FEMFactoryBase(const Self &); // purposely not implemented

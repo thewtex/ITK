@@ -56,7 +56,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInputImage >
-class ImageTransformer:public ProcessObject
+class ImageTransformer : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -84,9 +84,13 @@ public:
   /** Set/Get the image input of this process object.  */
   using Superclass::SetInput;
   virtual void SetInput(const InputImageType *image);
+
   virtual void SetInput(unsigned int, const TInputImage *image);
+
   const InputImageType * GetInput(void) const;
+
   InputImageType * GetInput(void);
+
   const InputImageType * GetInput(unsigned int idx) const;
 
   /** Push/Pop the input of this process object. These methods allow a
@@ -109,13 +113,18 @@ public:
    * an input to a filter.
    */
   virtual void PushBackInput(const InputImageType *image);
+
   virtual void PopBackInput();
+
   virtual void PushFrontInput(const InputImageType *image);
+
   virtual void PopFrontInput();
 
 protected:
   ImageTransformer();
-  virtual ~ImageTransformer() {}
+  virtual
+  ~ImageTransformer() {
+  }
 
   /** The image transformer is assumed to need the whole input.
    *
@@ -192,7 +201,9 @@ protected:
    *      4) Call AfterThreadedGenerateData()
    * Note that this flow of control is only available if a filter provides
    * a ThreadedGenerateData() method and NOT a GenerateData() method. */
-  virtual void BeforeThreadedGenerateData() {}
+  virtual void
+  BeforeThreadedGenerateData() {
+  }
 
   /** If an imaging filter needs to perform processing after all
    * processing threads have completed, the filter can can provide an
@@ -204,7 +215,9 @@ protected:
    *      4) Call AfterThreadedGenerateData()
    * Note that this flow of control is only available if a filter provides
    * a ThreadedGenerateData() method and NOT a GenerateData() method. */
-  virtual void AfterThreadedGenerateData() {}
+  virtual void
+  AfterThreadedGenerateData() {
+  }
 
   /** Split the input's RequestedRegion into "num" pieces, returning
    * region "i" as "splitRegion". This method is called "num" times. The
@@ -228,20 +241,28 @@ protected:
    * methods from the superclass.
    * NOTE: The same code resides in ImageToImageFilter
    */
-  void PushBackInput(const DataObject *input)
-  { Superclass::PushBackInput(input); }
-  void PushFrontInput(const DataObject *input)
-  { Superclass::PushFrontInput(input); }
+  void
+  PushBackInput(const DataObject *input)
+  {
+    Superclass::PushBackInput(input);
+  }
+
+  void
+  PushFrontInput(const DataObject *input)
+  {
+    Superclass::PushFrontInput(input);
+  }
 
   /** Internal structure used for passing image data into the threading library
     */
   struct ThreadStruct {
     Pointer Filter;
-  };
+    };
 
 private:
-  ImageTransformer(const Self &);    //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  ImageTransformer(const Self &); //purposely not implemented
+  void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -131,6 +131,7 @@ SimpleContourExtractorImageFilter< TInputImage, TOutput >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Input Foreground Value: "
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( m_InputForegroundValue ) << std::endl;
   os << indent << "Input Background Value: "
@@ -140,6 +141,7 @@ SimpleContourExtractorImageFilter< TInputImage, TOutput >
   os << indent << "Output Background Value: "
      << static_cast< typename NumericTraits< OutputPixelType >::PrintType >( m_OutputBackgroundValue ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -64,10 +64,11 @@ public:
   typedef Concept::Detail::UniqueType_bool< true >  UniqueTypeBoolTrue;
 
   /** ComputeIndex with recursive templates */
-  inline static void ComputeIndex(const IndexType & bufferedRegionIndex,
-                                  OffsetValueType offset,
-                                  const OffsetValueType offsetTable[],
-                                  IndexType & index)
+  inline static void
+  ComputeIndex(const IndexType & bufferedRegionIndex,
+               OffsetValueType offset,
+               const OffsetValueType offsetTable[],
+               IndexType & index)
   {
     ImageHelper< NImageDimension, NLoop - 1 >::
     ComputeIndexInner( bufferedRegionIndex,
@@ -77,11 +78,12 @@ public:
                        Concept::Detail::UniqueType_bool< ( NLoop == 1 ) >() );
   }
 
-  inline static void ComputeIndexInner(const IndexType & bufferedRegionIndex,
-                                       OffsetValueType & offset,
-                                       const OffsetValueType offsetTable[],
-                                       IndexType & index,
-                                       const UniqueTypeBoolFalse &)
+  inline static void
+  ComputeIndexInner(const IndexType & bufferedRegionIndex,
+                    OffsetValueType & offset,
+                    const OffsetValueType offsetTable[],
+                    IndexType & index,
+                    const UniqueTypeBoolFalse &)
   {
     index[NLoop] = static_cast< IndexValueType >( offset / offsetTable[NLoop] );
     offset = offset - ( index[NLoop] * offsetTable[NLoop] );
@@ -94,11 +96,12 @@ public:
                        Concept::Detail::UniqueType_bool< ( NLoop == 1 ) >() );
   }
 
-  inline static void ComputeIndexInner(const IndexType & bufferedRegionIndex,
-                                       OffsetValueType & offset,
-                                       const OffsetValueType[],
-                                       IndexType & index,
-                                       const UniqueTypeBoolTrue &)
+  inline static void
+  ComputeIndexInner(const IndexType & bufferedRegionIndex,
+                    OffsetValueType & offset,
+                    const OffsetValueType[],
+                    IndexType & index,
+                    const UniqueTypeBoolTrue &)
   {
     // Do last
     index[0] = bufferedRegionIndex[0] + static_cast< IndexValueType >( offset );
@@ -106,10 +109,11 @@ public:
 
   // ComputeOffset
   //
-  inline static void ComputeOffset(const IndexType & bufferedRegionIndex,
-                                   const IndexType & index,
-                                   const OffsetValueType offsetTable[],
-                                   OffsetValueType & offset)
+  inline static void
+  ComputeOffset(const IndexType & bufferedRegionIndex,
+                const IndexType & index,
+                const OffsetValueType offsetTable[],
+                OffsetValueType & offset)
   {
     ImageHelper< NImageDimension, NLoop - 1 >::
     ComputeOffsetInner( bufferedRegionIndex,
@@ -119,11 +123,12 @@ public:
                         Concept::Detail::UniqueType_bool< ( NLoop == 1 ) >() );
   }
 
-  inline static void ComputeOffsetInner(const IndexType & bufferedRegionIndex,
-                                        const IndexType & index,
-                                        const OffsetValueType offsetTable[],
-                                        OffsetValueType & offset,
-                                        const UniqueTypeBoolFalse &)
+  inline static void
+  ComputeOffsetInner(const IndexType & bufferedRegionIndex,
+                     const IndexType & index,
+                     const OffsetValueType offsetTable[],
+                     OffsetValueType & offset,
+                     const UniqueTypeBoolFalse &)
   {
     offset = offset + ( index[NLoop] - bufferedRegionIndex[NLoop] ) * offsetTable[NLoop];
     ImageHelper< NImageDimension, NLoop - 1 >::
@@ -134,15 +139,17 @@ public:
                         Concept::Detail::UniqueType_bool< ( NLoop == 1 ) >() );
   }
 
-  inline static void ComputeOffsetInner(const IndexType & bufferedRegionIndex,
-                                        const IndexType & index,
-                                        const OffsetValueType[],
-                                        OffsetValueType & offset,
-                                        const UniqueTypeBoolTrue &)
+  inline static void
+  ComputeOffsetInner(const IndexType & bufferedRegionIndex,
+                     const IndexType & index,
+                     const OffsetValueType[],
+                     OffsetValueType & offset,
+                     const UniqueTypeBoolTrue &)
   {
     // Do last
     offset = offset + index[0] - bufferedRegionIndex[0];
   }
+
 };
 } // end namespace itk
 

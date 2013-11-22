@@ -26,7 +26,8 @@
  * TODO Numerical verification.
  */
 
-int itkMeanSquaresImageToImageMetricv4OnVectorTest(int, char ** const)
+int
+itkMeanSquaresImageToImageMetricv4OnVectorTest(int, char ** const)
 {
 
   const unsigned int imageSize = 5;
@@ -36,18 +37,18 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest(int, char ** const)
   typedef itk::Vector<double, vectorLength>             VectorType;
   typedef itk::Image< VectorType, imageDimensionality > ImageType;
 
-  ImageType::SizeType       size;
+  ImageType::SizeType size;
   size.Fill( imageSize );
-  ImageType::IndexType      index;
+  ImageType::IndexType index;
   index.Fill( 0 );
-  ImageType::RegionType     region;
+  ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
-  ImageType::SpacingType    spacing;
+  ImageType::SpacingType spacing;
   spacing.Fill(1.0);
-  ImageType::PointType      origin;
+  ImageType::PointType origin;
   origin.Fill(0);
-  ImageType::DirectionType  direction;
+  ImageType::DirectionType direction;
   direction.SetIdentity();
 
   /* Create simple test images. */
@@ -98,14 +99,16 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest(int, char ** const)
   typedef itk::TranslationTransform<double,imageDimensionality> FixedTransformType;
   typedef itk::TranslationTransform<double,imageDimensionality> MovingTransformType;
 
-  FixedTransformType::Pointer fixedTransform = FixedTransformType::New();
+  FixedTransformType::Pointer  fixedTransform = FixedTransformType::New();
   MovingTransformType::Pointer movingTransform = MovingTransformType::New();
 
   fixedTransform->SetIdentity();
   movingTransform->SetIdentity();
 
   /* The metric */
-  typedef itk::VectorImageToImageMetricTraitsv4< ImageType, ImageType, ImageType, vectorLength, double > MetricTraitsType;
+  typedef itk::VectorImageToImageMetricTraitsv4< ImageType, ImageType, ImageType, vectorLength,
+                                                 double >
+    MetricTraitsType;
   typedef itk::MeanSquaresImageToImageMetricv4< ImageType, ImageType, ImageType, double, MetricTraitsType > MetricType;
 
   MetricType::Pointer metric = MetricType::New();
@@ -135,7 +138,7 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest(int, char ** const)
   std::cout << "Initialized" << std::endl;
 
   /* Evaluate with GetValueAndDerivative */
-  MetricType::MeasureType valueReturn1, valueReturn2;
+  MetricType::MeasureType    valueReturn1, valueReturn2;
   MetricType::DerivativeType derivativeReturn;
 
   try

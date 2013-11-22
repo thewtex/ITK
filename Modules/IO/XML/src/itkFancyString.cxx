@@ -49,7 +49,7 @@ FancyString::operator=( const char* s )
 }
 
 /** Function to cast this type to "const char *". */
-FancyString::operator const char * () const
+FancyString::operator const char *() const
 {
   return this->c_str();
 }
@@ -58,27 +58,33 @@ FancyString::operator const char * () const
 // helper functions for string manipulations
 /////////////////////////////////////////////////////////////////////////////
 
-/** Method to trim the spaces or user-specified characters on both ends of a string. */
+/** Method to trim the spaces or user-specified characters on both ends of a
+  string. */
 FancyString&
 FancyString::Trim( const std::string& dislike )
 {
   StringTools::Trim( *this, dislike );
+
   return *this;
 }
 
-/** Method to trim the spaces or user-specified characters on left end of a string. */
+/** Method to trim the spaces or user-specified characters on left end of a
+  string. */
 FancyString&
 FancyString::TrimLeft( const std::string& dislike )
 {
   StringTools::TrimLeft( *this, dislike );
+
   return *this;
 }
 
-/** Method to trim the spaces or user-specified characters on right end of a string. */
+/** Method to trim the spaces or user-specified characters on right end of a
+  string. */
 FancyString&
 FancyString::TrimRight( const std::string& dislike )
 {
   StringTools::TrimRight( *this, dislike );
+
   return *this;
 }
 
@@ -87,6 +93,7 @@ FancyString&
 FancyString::ToUpperCase()
 {
   StringTools::ToUpperCase( *this );
+
   return *this;
 }
 
@@ -95,6 +102,7 @@ FancyString&
 FancyString::ToLowerCase()
 {
   StringTools::ToLowerCase( *this );
+
   return *this;
 }
 
@@ -105,7 +113,8 @@ FancyString::Split( std::string& lpart, std::string& rpart, const std::string& d
   StringTools::Split( *this, lpart, rpart, delims );
 }
 
-/** Method to split a string into a sequence of strings with user-defined delimiters. */
+/** Method to split a string into a sequence of strings with user-defined
+  delimiters. */
 void
 FancyString::Split( std::vector<std::string>& result, const std::string& delims ) const
 {

@@ -19,7 +19,6 @@
 #include "itkEigenAnalysis2DImageFilter.h"
 #include "itkFilterWatcher.h"
 
-
 // Define the dimension of the images
 const unsigned int myDimension = 2;
 
@@ -27,23 +26,21 @@ const unsigned int myDimension = 2;
 typedef itk::Vector<double, myDimension> myVectorType;
 
 // Declare the types of the images
-typedef itk::Image<double, myDimension>           myImageType;
-typedef itk::Image<myVectorType, myDimension>     myVectorImageType;
+typedef itk::Image<double, myDimension>       myImageType;
+typedef itk::Image<myVectorType, myDimension> myVectorImageType;
 
 // Declare the type of the index to access images
-typedef itk::Index<myDimension>             myIndexType;
+typedef itk::Index<myDimension> myIndexType;
 
 // Declare the type of the size
-typedef itk::Size<myDimension>              mySizeType;
+typedef itk::Size<myDimension> mySizeType;
 
 // Declare the type of the Region
-typedef itk::ImageRegion<myDimension>        myRegionType;
-
+typedef itk::ImageRegion<myDimension> myRegionType;
 
 // Declare Iterator types apropriated for each image
 typedef itk::ImageRegionIteratorWithIndex<myImageType>       myIteratorType;
 typedef itk::ImageRegionIteratorWithIndex<myVectorImageType> myVectorIteratorType;
-
 
 // Declare the Filter
 typedef itk::EigenAnalysis2DImageFilter< myImageType,
@@ -51,13 +48,15 @@ typedef itk::EigenAnalysis2DImageFilter< myImageType,
                                          myVectorImageType >  myFilterType;
 
 // Function for image initialization
-void InitializeImage( myImageType * image, double value   )
+void
+InitializeImage( myImageType * image, double value   )
 {
 
   myImageType::Pointer inputImage( image );
 
   // Define their size, and start index
   mySizeType size;
+
   size[0] = 2;
   size[1] = 2;
 
@@ -86,7 +85,8 @@ void InitializeImage( myImageType * image, double value   )
 }
 
 // Function for image printing
-void PrintImage( myImageType * image, const char *text )
+void
+PrintImage( myImageType * image, const char *text )
 {
 
   myImageType::Pointer imagePtr( image );
@@ -100,16 +100,16 @@ void PrintImage( myImageType * image, const char *text )
   //  Print the content of the image
   std::cout << text << std::endl;
   while( !it.IsAtEnd() )
-  {
+    {
     std::cout << it.Get() << std::endl;
     ++it;
-  }
+    }
 
 }
 
-
 // Function for image printing
-void PrintImage( myVectorImageType * image, const char *text )
+void
+PrintImage( myVectorImageType * image, const char *text )
 {
 
   myVectorImageType::Pointer imagePtr( image );
@@ -123,35 +123,33 @@ void PrintImage( myVectorImageType * image, const char *text )
   //  Print the content of the image
   std::cout << text << std::endl;
   while( !it.IsAtEnd() )
-  {
+    {
     std::cout << it.Get() << std::endl;
     ++it;
-  }
+    }
 
 }
 
-int itkEigenAnalysis2DImageFilterTest(int, char* [] )
+int
+itkEigenAnalysis2DImageFilterTest(int, char* [] )
 {
   // Create the images
   myImageType::Pointer inputImageXX  = myImageType::New();
   myImageType::Pointer inputImageXY  = myImageType::New();
   myImageType::Pointer inputImageYY  = myImageType::New();
 
-
   InitializeImage( inputImageXX, vcl_cos( vnl_math::pi / 6.0 ) );
   InitializeImage( inputImageXY, vcl_sin( vnl_math::pi / 6.0 ) );
   InitializeImage( inputImageYY, vcl_cos( vnl_math::pi / 6.0 ) );
 
-
   // Create a  Filter
   myFilterType::Pointer filter = myFilterType::New();
-  FilterWatcher watcher(filter);
+  FilterWatcher         watcher(filter);
 
   // Connect the input images
   filter->SetInput1( inputImageXX );
   filter->SetInput2( inputImageXY );
   filter->SetInput3( inputImageYY );
-
 
   // Execute the filter
   filter->Update();
@@ -165,7 +163,6 @@ int itkEigenAnalysis2DImageFilterTest(int, char* [] )
   PrintImage( maxEigenValue, "Max Eigen Value");
   PrintImage( minEigenValue, "Min Eigen Value");
   PrintImage( maxEigenVector, "Max Eigen Vector");
-
 
   // All objects should be automatically destroyed at this point
 

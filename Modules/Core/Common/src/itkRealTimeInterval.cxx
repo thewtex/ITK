@@ -22,16 +22,16 @@
 // the microseconds. In other words, both of them are measured toward the same
 // direction of time.
 #define ALIGN_THE_ARROW_OF_TIME( seconds, micro_seconds ) \
-if( seconds > 0 && micro_seconds < 0 ) \
-  { \
-  seconds -= 1; \
-  micro_seconds = 1000000L - micro_seconds; \
-  } \
-if( seconds < 0 && micro_seconds > 0 ) \
-  { \
-  seconds += 1; \
-  micro_seconds = 1000000L + micro_seconds; \
-  }
+  if( seconds > 0 && micro_seconds < 0 ) \
+    { \
+    seconds -= 1; \
+    micro_seconds = 1000000L - micro_seconds; \
+    } \
+  if( seconds < 0 && micro_seconds > 0 ) \
+    { \
+    seconds += 1; \
+    micro_seconds = 1000000L + micro_seconds; \
+    }
 
 namespace itk
 {
@@ -71,7 +71,8 @@ RealTimeInterval::~RealTimeInterval()
 /**
  * Set the interval to a given combination of seconds and micro seconds.
  */
-void RealTimeInterval::Set( SecondsDifferenceType seconds, MicroSecondsDifferenceType micro_seconds )
+void
+RealTimeInterval::Set( SecondsDifferenceType seconds, MicroSecondsDifferenceType micro_seconds )
 {
   // Ensure that microseconds carry over
   // to seconds if there are more than a million.
@@ -91,6 +92,7 @@ RealTimeInterval::TimeRepresentationType
 RealTimeInterval::GetTimeInMicroSeconds() const
 {
   TimeRepresentationType result = static_cast< TimeRepresentationType >( this->m_Seconds );
+
   result *= 1e6;
   result += static_cast< TimeRepresentationType >( this->m_MicroSeconds );
 
@@ -104,6 +106,7 @@ RealTimeInterval::TimeRepresentationType
 RealTimeInterval::GetTimeInMilliSeconds() const
 {
   TimeRepresentationType result = static_cast< TimeRepresentationType >( this->m_Seconds );
+
   result *= 1e3;
   result += static_cast< TimeRepresentationType >( this->m_MicroSeconds ) / 1e3;
 
@@ -117,6 +120,7 @@ RealTimeInterval::TimeRepresentationType
 RealTimeInterval::GetTimeInSeconds() const
 {
   TimeRepresentationType result = static_cast< TimeRepresentationType >( this->m_MicroSeconds );
+
   result /= 1e6;
   result += static_cast< TimeRepresentationType >( this->m_Seconds );
 
@@ -130,6 +134,7 @@ RealTimeInterval::TimeRepresentationType
 RealTimeInterval::GetTimeInMinutes() const
 {
   const TimeRepresentationType result = this->GetTimeInSeconds() / 60.00;
+
   return result;
 }
 
@@ -140,6 +145,7 @@ RealTimeInterval::TimeRepresentationType
 RealTimeInterval::GetTimeInHours() const
 {
   const TimeRepresentationType result = this->GetTimeInSeconds() / 3600.00;
+
   return result;
 }
 
@@ -150,6 +156,7 @@ RealTimeInterval::TimeRepresentationType
 RealTimeInterval::GetTimeInDays() const
 {
   const TimeRepresentationType result = this->GetTimeInSeconds() / 86400.00;
+
   return result;
 }
 
@@ -159,8 +166,8 @@ RealTimeInterval::GetTimeInDays() const
 RealTimeInterval
 RealTimeInterval::operator-( const RealTimeInterval & other ) const
 {
-  SecondsDifferenceType       seconds       = this->m_Seconds      - other.m_Seconds;
-  MicroSecondsDifferenceType  micro_seconds = this->m_MicroSeconds - other.m_MicroSeconds;
+  SecondsDifferenceType      seconds       = this->m_Seconds      - other.m_Seconds;
+  MicroSecondsDifferenceType micro_seconds = this->m_MicroSeconds - other.m_MicroSeconds;
 
   ALIGN_THE_ARROW_OF_TIME( seconds, micro_seconds );
 
@@ -178,8 +185,8 @@ RealTimeInterval::operator-( const RealTimeInterval & other ) const
 RealTimeInterval
 RealTimeInterval::operator+( const RealTimeInterval & other ) const
 {
-  SecondsDifferenceType       seconds       = this->m_Seconds      + other.m_Seconds;
-  MicroSecondsDifferenceType  micro_seconds = this->m_MicroSeconds + other.m_MicroSeconds;
+  SecondsDifferenceType      seconds       = this->m_Seconds      + other.m_Seconds;
+  MicroSecondsDifferenceType micro_seconds = this->m_MicroSeconds + other.m_MicroSeconds;
 
   ALIGN_THE_ARROW_OF_TIME( seconds, micro_seconds );
 
@@ -197,8 +204,8 @@ RealTimeInterval::operator+( const RealTimeInterval & other ) const
 const RealTimeInterval::Self &
 RealTimeInterval::operator+=( const RealTimeInterval & other )
 {
-  SecondsDifferenceType       seconds       = this->m_Seconds      + other.m_Seconds;
-  MicroSecondsDifferenceType  micro_seconds = this->m_MicroSeconds + other.m_MicroSeconds;
+  SecondsDifferenceType      seconds       = this->m_Seconds      + other.m_Seconds;
+  MicroSecondsDifferenceType micro_seconds = this->m_MicroSeconds + other.m_MicroSeconds;
 
   ALIGN_THE_ARROW_OF_TIME( seconds, micro_seconds );
 
@@ -214,8 +221,8 @@ RealTimeInterval::operator+=( const RealTimeInterval & other )
 const RealTimeInterval::Self &
 RealTimeInterval::operator-=( const RealTimeInterval & other )
 {
-  SecondsDifferenceType       seconds       = this->m_Seconds      - other.m_Seconds;
-  MicroSecondsDifferenceType  micro_seconds = this->m_MicroSeconds - other.m_MicroSeconds;
+  SecondsDifferenceType      seconds       = this->m_Seconds      - other.m_Seconds;
+  MicroSecondsDifferenceType micro_seconds = this->m_MicroSeconds - other.m_MicroSeconds;
 
   ALIGN_THE_ARROW_OF_TIME( seconds, micro_seconds );
 
@@ -322,11 +329,11 @@ RealTimeInterval::operator!=( const Self & other ) const
 }
 
 /** Default print out of a RealTimeStamp */
-std::ostream & operator<<(std::ostream & os, const RealTimeInterval & v)
+std::ostream &
+operator<<(std::ostream & os, const RealTimeInterval & v)
 {
   os << v.GetTimeInSeconds() << " seconds ";
   return os;
 }
-
 
 } // end of namespace itk

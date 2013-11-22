@@ -22,25 +22,25 @@
 
 #include "itkQuadEdgeMesh.h"
 
-
-int itkConformalFlatteningQuadEdgeMeshFilterTest(int argc, char *argv[])
+int
+itkConformalFlatteningQuadEdgeMeshFilterTest(int argc, char *argv[])
 {
   if( argc != 6 )
     {
     std::cerr << "Usage: itkConformalFlatteningMeshFilterTest "
-     << "vtkInputFilename vtkOutputFilename "
-     << "polarCellId scale mapToSphere[0:1]" << std::endl;
+              << "vtkInputFilename vtkOutputFilename "
+              << "polarCellId scale mapToSphere[0:1]" << std::endl;
     return EXIT_FAILURE;
     }
 
   typedef itk::QuadEdgeMesh< double, 3 > MeshType;
 
-  typedef itk::ConformalFlatteningMeshFilter<MeshType, MeshType>  FilterType;
+  typedef itk::ConformalFlatteningMeshFilter<MeshType, MeshType> FilterType;
 
-  typedef itk::MeshFileReader<MeshType>  ReaderType;
-  typedef itk::MeshFileWriter<MeshType>  WriterType;
+  typedef itk::MeshFileReader<MeshType> ReaderType;
+  typedef itk::MeshFileWriter<MeshType> WriterType;
 
-  typedef MeshType::CellIdentifier  CellIdentifier;
+  typedef MeshType::CellIdentifier CellIdentifier;
 
   //
   // Read mesh file
@@ -72,7 +72,7 @@ int itkConformalFlatteningQuadEdgeMeshFilterTest(int argc, char *argv[])
   // Connect the input
   filter->SetInput( mesh );
 
-  CellIdentifier  polarCellId = atoi( argv[3] );
+  CellIdentifier polarCellId = atoi( argv[3] );
   filter->SetPolarCellIdentifier( polarCellId );
 
   int mapToSphere = atoi( argv[5] );

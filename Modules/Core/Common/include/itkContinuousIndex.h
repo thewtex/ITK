@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TCoordRep = double, unsigned int VIndexDimension = 2 >
-class ContinuousIndex:public Point< TCoordRep, VIndexDimension >
+class ContinuousIndex : public Point< TCoordRep, VIndexDimension >
 {
 public:
   /** Standard class typedefs. */
@@ -66,11 +66,15 @@ public:
   typedef typename BaseArray::ConstIterator ConstIterator;
 
   /** Default constructor has nothing to do. */
-  ContinuousIndex() {}
+  ContinuousIndex() {
+  }
 
   /** Pass-through constructor to the Point base class. */
-  ContinuousIndex(const Self & r):Superclass(r) {}
-  ContinuousIndex(const ValueType r[IndexDimension]):Superclass(r) {}
+  ContinuousIndex(const Self & r) : Superclass(r) {
+  }
+
+  ContinuousIndex(const ValueType r[IndexDimension]) : Superclass(r) {
+  }
 
   /** Construct from discrete index type */
   ContinuousIndex(const IndexType & index)
@@ -80,6 +84,7 @@ public:
       ( *this )[i] = TCoordRep(index[i]);
       }
   }
+
 };
 } // namespace itk
 

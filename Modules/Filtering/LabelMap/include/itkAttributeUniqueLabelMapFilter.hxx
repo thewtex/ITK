@@ -31,7 +31,6 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
   m_ReverseOrdering = false;
 }
 
-
 template <typename TImage, typename TAttributeAccessor>
 void
 AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
@@ -49,7 +48,7 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
   // TODO: really report the progress
 
   for ( typename ImageType::Iterator it2( this->GetLabelMap() );
-        ! it2.IsAtEnd();
+        !it2.IsAtEnd();
         ++it2 )
     {
     LabelObjectType *lo = it2.GetLabelObject();
@@ -58,7 +57,7 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
     lo->Optimize();
 
     typename LabelObjectType::ConstLineIterator lit( lo );
-    while( ! lit.IsAtEnd() )
+    while( !lit.IsAtEnd() )
       {
       pq.push( LineOfLabelObject(lit.GetLine(), lo) );
       ++lit;
@@ -177,7 +176,7 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
           prevLength = idx[0] - prevIdx[0];
           if ( prevLength != 0 )
             {
-            lines.back(). line.SetLength(idx[0] - prevIdx[0]);
+            lines.back().line.SetLength(idx[0] - prevIdx[0]);
             }
           else
             {
@@ -247,7 +246,6 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
     }
 }
 
-
 template <typename TImage, typename TAttributeAccessor>
 void
 AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
@@ -258,5 +256,5 @@ AttributeUniqueLabelMapFilter<TImage, TAttributeAccessor>
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

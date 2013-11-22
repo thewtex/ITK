@@ -154,7 +154,6 @@ VotingBinaryImageFilter< TInputImage, TOutputImage >
         it.Set( static_cast< OutputPixelType >( m_BackgroundValue ) );
         }
 
-
       ++bit;
       ++it;
       progress.CompletedPixel();
@@ -173,6 +172,7 @@ VotingBinaryImageFilter< TInputImage, TOutput >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Radius: " << m_Radius << std::endl;
   os << indent << "Foreground value : "
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( m_ForegroundValue ) << std::endl;
@@ -181,6 +181,7 @@ VotingBinaryImageFilter< TInputImage, TOutput >
   os << indent << "Birth Threshold   : " << m_BirthThreshold << std::endl;
   os << indent << "Survival Threshold   : " << m_SurvivalThreshold << std::endl;
 }
+
 } // end namespace itk
 
 #endif

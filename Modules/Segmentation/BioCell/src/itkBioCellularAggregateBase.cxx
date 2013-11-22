@@ -23,11 +23,13 @@ namespace bio
 {
 CellularAggregateBase
 ::CellularAggregateBase()
-{}
+{
+}
 
 CellularAggregateBase
 ::~CellularAggregateBase()
-{}
+{
+}
 
 /** The actual implementation is provided in the derived classes where the Cell
  * dimension is known. */
@@ -43,14 +45,16 @@ CellularAggregateBase
 void
 CellularAggregateBase
 ::Add(CellBase *, CellBase *, double)
-{}
+{
+}
 
 /** The actual implementation is provided in the derived classes where the Cell
  * dimension is known. */
 void
 CellularAggregateBase
 ::Remove(CellBase *)
-{}
+{
+}
 
 void
 CellularAggregateBase
@@ -60,5 +64,6 @@ CellularAggregateBase
 
   os << "Cellular Aggregate Base " << std::endl;
 }
+
 } // end namespace bio
 } // end namespace itk

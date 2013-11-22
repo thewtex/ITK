@@ -40,7 +40,6 @@ MeshIOFactory
 {
 }
 
-
 MeshIOBase::Pointer
 MeshIOFactory
 ::CreateMeshIO(const char *path, FileModeType mode)
@@ -87,7 +86,6 @@ MeshIOFactory
   return 0;
 }
 
-
 void
 MeshIOFactory
 ::RegisterBuiltInFactories()
@@ -113,6 +111,5 @@ MeshIOFactory
       }
     }
 }
-
 
 } // end namespace itk

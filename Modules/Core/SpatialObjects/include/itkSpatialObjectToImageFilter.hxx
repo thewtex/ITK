@@ -49,7 +49,8 @@ SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
 template< typename TInputSpatialObject, typename TOutputImage >
 SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
 ::~SpatialObjectToImageFilter()
-{}
+{
+}
 
 /** Set the Input SpatialObject */
 template< typename TInputSpatialObject, typename TOutputImage >
@@ -78,19 +79,19 @@ template< typename TInputSpatialObject, typename TOutputImage >
 const typename SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >::InputSpatialObjectType *
 SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
 ::GetInput(void)
-{
+  {
   return static_cast< const TInputSpatialObject * >( this->GetPrimaryInput() );
-}
+  }
 
 /** Get the input Spatial Object */
 template< typename TInputSpatialObject, typename TOutputImage >
 const typename SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >::InputSpatialObjectType *
 SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
 ::GetInput(unsigned int idx)
-{
+  {
   return static_cast< const TInputSpatialObject * >
          ( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TInputSpatialObject, typename TOutputImage >
@@ -271,9 +272,9 @@ template< typename TInputSpatialObject, typename TOutputImage >
 const typename SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >::DirectionType &
 SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
 ::GetDirection(void) const
-{
+  {
   return m_Direction;
-}
+  }
 
 //----------------------------------------------------------------------------
 
@@ -298,7 +299,7 @@ SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
   for ( i = 0; i < ObjectDimension; i++ )
     {
     size[i] = static_cast<SizeValueType>( InputObject->GetBoundingBox()->GetMaximum()[i]
-                                   - InputObject->GetBoundingBox()->GetMinimum()[i] );
+                                          - InputObject->GetBoundingBox()->GetMinimum()[i] );
     }
 
   typename OutputImageType::IndexType index;
@@ -369,7 +370,7 @@ SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
   itk::Point< double, OutputImageDimension > imagePoint;
 
   ProgressReporter
-    progress(this,0,OutputImage->GetRequestedRegion().GetNumberOfPixels());
+    progress(this,0,OutputImage->GetRequestedRegion().GetNumberOfPixels() );
 
   while( !it.IsAtEnd() )
     {
@@ -418,6 +419,7 @@ SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Size : " << m_Size << std::endl;
   os << indent << "Children depth : " << m_ChildrenDepth << std::endl;
   os << indent << "Inside Value : " << m_InsideValue << std::endl;
@@ -431,6 +433,7 @@ SpatialObjectToImageFilter< TInputSpatialObject, TOutputImage >
     os << indent << "Using Object Value : OFF" << std::endl;
     }
 }
+
 } // end namespace itk
 
 #endif

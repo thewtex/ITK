@@ -23,7 +23,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkNrrdComplexImageReadWriteTest( int ac, char* av[] )
+int
+itkNrrdComplexImageReadWriteTest( int ac, char* av[] )
 {
   if(ac < 2)
     {
@@ -34,7 +35,7 @@ int itkNrrdComplexImageReadWriteTest( int ac, char* av[] )
   typedef std::complex<float>      PixelType;
   typedef itk::Image<PixelType, 2> myImage;
 
-  typedef itk::ImageFileReader<myImage>  ReaderType;
+  typedef itk::ImageFileReader<myImage> ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -72,7 +73,6 @@ int itkNrrdComplexImageReadWriteTest( int ac, char* av[] )
     std::cerr << e << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

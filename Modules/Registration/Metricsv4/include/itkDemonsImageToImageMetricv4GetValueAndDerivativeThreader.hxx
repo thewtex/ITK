@@ -55,9 +55,10 @@ DemonsImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TIm
   /* Metric value */
   const InternalComputationValueType speedValue = fixedImageValue - movingImageValue;
   const InternalComputationValueType sqr_speedValue = vnl_math_sqr( speedValue );
+
   metricValueReturn = sqr_speedValue;
 
-  if( ! this->GetComputeDerivative() )
+  if( !this->GetComputeDerivative() )
     {
     return true;
     }
@@ -93,7 +94,8 @@ DemonsImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TIm
    * such that denominator = (g-f)^2/K + grad_mag^2
    * where K = mean square spacing to compensate for the mismatch in units.
    */
-  const InternalComputationValueType denominator = sqr_speedValue / this->m_DemonsAssociate->m_Normalizer + gradientSquaredMagnitude;
+  const InternalComputationValueType denominator = sqr_speedValue / this->m_DemonsAssociate->m_Normalizer +
+    gradientSquaredMagnitude;
 
   if ( vnl_math_abs(speedValue) < this->m_DemonsAssociate->GetIntensityDifferenceThreshold() ||
        denominator < this->m_DemonsAssociate->GetDenominatorThreshold() )

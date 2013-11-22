@@ -36,7 +36,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 
-class MaximumDecisionRule:public DecisionRule
+class MaximumDecisionRule : public DecisionRule
 {
 public:
   /** Standard class typedefs */
@@ -65,8 +65,12 @@ public:
   virtual ClassIdentifierType Evaluate(const MembershipVectorType & discriminantScores) const;
 
 protected:
-  MaximumDecisionRule() {}
-  virtual ~MaximumDecisionRule() {}
+  MaximumDecisionRule() {
+  }
+
+  virtual
+  ~MaximumDecisionRule() {
+  }
 
 };  // end of class
 } // end of namespace Statistics

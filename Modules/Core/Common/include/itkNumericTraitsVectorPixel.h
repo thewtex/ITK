@@ -71,59 +71,71 @@ public:
    * \note minimum value for floating pointer types is defined as
    * minimum positive normalize value.
    */
-  static const Self max(const Self &)
+  static const Self
+  max(const Self &)
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min(const Self &)
+  static const Self
+  min(const Self &)
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self max()
+  static const Self
+  max()
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min()
+  static const Self
+  min()
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self NonpositiveMin()
+  static const Self
+  NonpositiveMin()
   {
     return Self( NumericTraits< T >::NonpositiveMin() );
   }
 
-  static const Self ZeroValue()
+  static const Self
+  ZeroValue()
   {
     return Self( NumericTraits< T >::ZeroValue() );
   }
 
-  static const Self OneValue()
+  static const Self
+  OneValue()
   {
     return Self( NumericTraits< T >::OneValue() );
   }
 
-  static const Self NonpositiveMin(const Self &)
+  static const Self
+  NonpositiveMin(const Self &)
   {
     return NonpositiveMin();
   }
 
-  static const Self ZeroValue(const Self &)
+  static const Self
+  ZeroValue(const Self &)
   {
     return ZeroValue();
   }
 
-  static const Self OneValue(const Self &)
+  static const Self
+  OneValue(const Self &)
   {
     return OneValue();
   }
 
-  static bool IsPositive( const Self & a)
+  static bool
+  IsPositive( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
       if ( a[i] > NumericTraits< ValueType >::ZeroValue() )
@@ -134,12 +146,14 @@ public:
     return flag;
   }
 
-  static bool IsNonpositive( const Self & a)
+  static bool
+  IsNonpositive( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
-      if ( ! (a[i] > 0.0 ) )
+      if ( !(a[i] > 0.0 ) )
         {
         flag = true;
         }
@@ -147,9 +161,11 @@ public:
     return flag;
   }
 
-  static bool IsNegative( const Self & a)
+  static bool
+  IsNegative( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
       if ( a[i] < 0.0 )
@@ -160,12 +176,14 @@ public:
     return flag;
   }
 
-  static bool IsNonnegative( const Self & a)
+  static bool
+  IsNonnegative( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
-      if ( ! (a[i] < 0.0 ))
+      if ( !(a[i] < 0.0 ) )
         {
         flag = true;
         }
@@ -176,7 +194,8 @@ public:
   /** Fixed length vectors cannot be resized, so an exception will
    *  be thrown if the input size is not valid.  If the size is valid
    *  the vector will be filled with zeros. */
-  static void SetLength(Vector< T, D > & m, const unsigned int s)
+  static void
+  SetLength(Vector< T, D > & m, const unsigned int s)
   {
     if ( s != D )
       {
@@ -187,24 +206,28 @@ public:
   }
 
   /** Return the size of the vector. */
-  static unsigned int GetLength(const Vector< T, D > &)
+  static unsigned int
+  GetLength(const Vector< T, D > &)
   {
     return D;
   }
 
   /** Return the size of the vector. */
-  static unsigned int GetLength()
+  static unsigned int
+  GetLength()
   {
     return D;
   }
 
-  static void AssignToArray( const Self & v, MeasurementVectorType & mv )
+  static void
+  AssignToArray( const Self & v, MeasurementVectorType & mv )
   {
     mv = v;
   }
 
   template<typename TArray>
-  static void AssignToArray( const Self & v, TArray & mv )
+  static void
+  AssignToArray( const Self & v, TArray & mv )
   {
     for( unsigned int i=0; i<D; i++ )
       {

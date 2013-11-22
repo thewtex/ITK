@@ -18,17 +18,17 @@
 
 #include "itkWhitakerSparseLevelSetImage.h"
 
-int itkWhitakerSparseLevelSetImageTest( int , char* [] )
+int
+itkWhitakerSparseLevelSetImageTest( int , char* [] )
 {
   typedef double OutputType;
   const unsigned int Dimension = 2;
   typedef itk::WhitakerSparseLevelSetImage< OutputType, Dimension >
-      SparseLevelSetType;
+    SparseLevelSetType;
 
   typedef SparseLevelSetType::LabelMapType LabelMapType;
   typedef LabelMapType::Pointer            LabelMapPointer;
   typedef LabelMapType::IndexType          IndexType;
-
 
   IndexType index;
   index.Fill( 3 );

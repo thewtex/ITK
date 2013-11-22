@@ -40,7 +40,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class BinomialBlurImageFilter:
+class BinomialBlurImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -103,7 +103,10 @@ public:
 
 protected:
   BinomialBlurImageFilter();
-  virtual ~BinomialBlurImageFilter() {}
+  virtual
+  ~BinomialBlurImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method for evaluating the implicit function over the image. */

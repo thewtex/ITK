@@ -34,23 +34,27 @@ public:
   {
     m_Threshold = 1e-5 * NumericTraits< TDenominator >::OneValue();
     m_Constant = NumericTraits< TOutput >::ZeroValue();
-  };
+  }
 
-  ~DivideOrZeroOut() {};
+  ~DivideOrZeroOut() {
+  }
 
-  bool operator!=( const DivideOrZeroOut & other ) const
+  bool
+  operator!=( const DivideOrZeroOut & other ) const
   {
     return !(*this == other);
   }
 
-  bool operator==( const DivideOrZeroOut & itkNotUsed(other) ) const
+  bool
+  operator==( const DivideOrZeroOut & itkNotUsed(other) ) const
   {
     // Always return true for now.  Do a comparison to m_Threshold if it is
     // every made set-able.
     return true;
   }
 
-  inline TOutput operator()( const TNumerator & n, const TDenominator & d )
+  inline TOutput
+  operator()( const TNumerator & n, const TDenominator & d )
   {
     if ( d < m_Threshold )
       {
@@ -58,11 +62,11 @@ public:
       }
     return static_cast< TOutput >( n ) / static_cast< TOutput >( d );
   }
+
   TDenominator m_Threshold;
   TOutput      m_Constant;
 };
 }  // end namespace functor
-
 
 /** \class DivideOrZeroOutImageFilter
  * \brief
@@ -86,14 +90,14 @@ class DivideOrZeroOutImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef DivideOrZeroOutImageFilter       Self;
+  typedef DivideOrZeroOutImageFilter Self;
   typedef BinaryFunctorImageFilter<TInputImage1, TInputImage2, TOutputImage,
-    Functor::DivideOrZeroOut<
-      typename TInputImage1::PixelType,
-      typename TInputImage2::PixelType,
-      typename TOutputImage::PixelType > > Superclass;
-  typedef SmartPointer< Self >             Pointer;
-  typedef SmartPointer< const Self >       ConstPointer;
+                                   Functor::DivideOrZeroOut<
+                                     typename TInputImage1::PixelType,
+                                     typename TInputImage2::PixelType,
+                                     typename TOutputImage::PixelType > > Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   typedef typename TInputImage1::PixelType NumeratorPixelType;
   typedef typename TInputImage2::PixelType DenominatorPixelType;
@@ -106,15 +110,18 @@ public:
   itkTypeMacro(DivideOrZeroOutImageFilter, BinaryFunctorImageFilter);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream& os, Indent indent) const
+  void
+  PrintSelf(std::ostream& os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "Threshold: "  << GetThreshold() << std::endl;
   }
 
   /** Set/get the threshold below which pixels in the denominator will
    * be considered zero. */
-  void SetThreshold( DenominatorPixelType threshold  )
+  void
+  SetThreshold( DenominatorPixelType threshold  )
   {
     if ( threshold != this->GetFunctor().m_Threshold )
       {
@@ -122,14 +129,17 @@ public:
       this->Modified();
       }
   }
-  DenominatorPixelType GetThreshold() const
+
+  DenominatorPixelType
+  GetThreshold() const
   {
     return this->GetFunctor().m_Threshold;
   }
 
   /** Set/get the constant value returned when the denominator input
    * value is considered zero. */
-  void SetConstant( OutputPixelType constant )
+  void
+  SetConstant( OutputPixelType constant )
   {
     if ( constant != this->GetFunctor().m_Constant )
       {
@@ -137,18 +147,25 @@ public:
       this->Modified();
       }
   }
-  OutputPixelType GetConstant() const
+
+  OutputPixelType
+  GetConstant() const
   {
     return this->GetFunctor().m_Constant;
   }
 
 protected:
-  DivideOrZeroOutImageFilter() {};
-  virtual ~DivideOrZeroOutImageFilter() {};
+  DivideOrZeroOutImageFilter() {
+  }
+
+  virtual
+  ~DivideOrZeroOutImageFilter() {
+  }
 
 private:
   DivideOrZeroOutImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);             //purposely not implemented
+
 };
 
 } // end namespace itk

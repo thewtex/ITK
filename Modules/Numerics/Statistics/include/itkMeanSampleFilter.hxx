@@ -38,7 +38,8 @@ MeanSampleFilter< TSample >
 template< typename TSample >
 MeanSampleFilter< TSample >
 ::~MeanSampleFilter()
-{}
+{
+}
 
 template< typename TSample >
 void
@@ -70,6 +71,7 @@ MeanSampleFilter< TSample >
 ::MakeOutput( DataObjectPointerArraySizeType itkNotUsed(idx) )
 {
   MeasurementVectorRealType mean;
+
   (void)mean; // for complainty pants : valgrind
   NumericTraits<MeasurementVectorRealType>::SetLength( mean, this->GetMeasurementVectorSize() );
   mean.Fill( NumericTraits< MeasurementRealType >::Zero );
@@ -82,9 +84,9 @@ template< typename TSample >
 const typename MeanSampleFilter< TSample >::MeasurementVectorDecoratedType *
 MeanSampleFilter< TSample >
 ::GetOutput() const
-{
+  {
   return itkDynamicCastInDebugMode< const MeasurementVectorDecoratedType * >(this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename TSample >
 const typename MeanSampleFilter< TSample >::MeasurementVectorRealType
@@ -92,6 +94,7 @@ MeanSampleFilter< TSample >
 ::GetMean() const
 {
   const MeasurementVectorDecoratedType * decorator = this->GetOutput();
+
   return decorator->Get();
 }
 
@@ -121,7 +124,6 @@ MeanSampleFilter< TSample >
   return measurementVectorSize;
 }
 
-
 template< typename TSample >
 void
 MeanSampleFilter< TSample >
@@ -144,7 +146,7 @@ MeanSampleFilter< TSample >
   double totalFrequency = 0.0;
 
   typedef typename NumericTraits<
-    MeasurementRealType >::AccumulateType MeasurementRealAccumulateType;
+      MeasurementRealType >::AccumulateType MeasurementRealAccumulateType;
 
   Array< MeasurementRealAccumulateType > sum( measurementVectorSize );
   sum.Fill( NumericTraits< MeasurementRealAccumulateType >::Zero );
@@ -182,6 +184,7 @@ MeanSampleFilter< TSample >
 
   decoratedOutput->Set( output );
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

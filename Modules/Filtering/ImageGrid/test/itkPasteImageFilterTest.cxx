@@ -23,7 +23,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkPasteImageFilterTest(int ac, char* av[] )
+int
+itkPasteImageFilterTest(int ac, char* av[] )
 {
   if(ac < 4)
     {
@@ -31,8 +32,8 @@ int itkPasteImageFilterTest(int ac, char* av[] )
     return -1;
     }
 
-  typedef unsigned char             PixelType;
-  typedef itk::Image<PixelType, 2>  myImage;
+  typedef unsigned char            PixelType;
+  typedef itk::Image<PixelType, 2> myImage;
   itk::ImageFileReader<myImage>::Pointer dest
     = itk::ImageFileReader<myImage>::New();
   dest->SetFileName(av[1]);
@@ -45,7 +46,7 @@ int itkPasteImageFilterTest(int ac, char* av[] )
   typedef itk::PasteImageFilter<myImage> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  filter->SetDestinationImage(dest->GetOutput());
+  filter->SetDestinationImage(dest->GetOutput() );
   filter->SetSourceImage( src->GetOutput() );
 
   FilterType::InputImageIndexType destIndex;
@@ -53,8 +54,8 @@ int itkPasteImageFilterTest(int ac, char* av[] )
   destIndex[1] = 70;
   filter->SetDestinationIndex( destIndex );
 
-  FilterType::InputImageIndexType srcIndex;
-  FilterType::InputImageSizeType srcSize;
+  FilterType::InputImageIndexType  srcIndex;
+  FilterType::InputImageSizeType   srcSize;
   FilterType::InputImageRegionType srcRegion;
 
   srcIndex[0] = 20;
@@ -68,7 +69,6 @@ int itkPasteImageFilterTest(int ac, char* av[] )
 
   filter->SetSourceRegion( srcRegion );
 
-
   // We'll tie this to a streamer to really exercise the paste code
   typedef itk::ImageRegionSplitterMultidimensional SplitterType;
   SplitterType::Pointer splitter = SplitterType::New();
@@ -80,9 +80,8 @@ int itkPasteImageFilterTest(int ac, char* av[] )
   streamer->SetNumberOfStreamDivisions( 25 );
   streamer->SetRegionSplitter( splitter );
 
-
   // Test itkGetMacros
-  myImage::IndexType  value  = filter->GetDestinationIndex();
+  myImage::IndexType value  = filter->GetDestinationIndex();
   std::cout << "filter->GetDestinationIndex(): " << value << std::endl;
 
   myImage::RegionType value2 = filter->GetSourceRegion();
@@ -105,10 +104,10 @@ int itkPasteImageFilterTest(int ac, char* av[] )
 
   // Generate test image
   itk::ImageFileWriter<myImage>::Pointer writer;
-    writer = itk::ImageFileWriter<myImage>::New();
-    writer->SetInput( streamer->GetOutput() );
-    writer->SetFileName( av[3] );
-    writer->Update();
+  writer = itk::ImageFileWriter<myImage>::New();
+  writer->SetInput( streamer->GetOutput() );
+  writer->SetFileName( av[3] );
+  writer->Update();
 
   return EXIT_SUCCESS;
 }

@@ -17,7 +17,6 @@
  *=========================================================================*/
 #include "itkFastMutexLock.h"
 
-
 // Better name demanging for gcc
 #if __GNUC__ > 3 || ( __GNUC__ == 3 && __GNUC_MINOR__ > 0 )
 #define GCC_USEDEMANGLE
@@ -30,16 +29,16 @@
 
 #if defined( __APPLE__ )
 // OSAtomic.h optimizations only used in 10.5 and later
-  #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
-    #include <libkern/OSAtomic.h>
-  #endif
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
+#include <libkern/OSAtomic.h>
+#endif
 
 #elif defined( __GLIBCPP__ ) || defined( __GLIBCXX__ )
-  #if ( __GNUC__ > 4 ) || ( ( __GNUC__ == 4 ) && ( __GNUC_MINOR__ >= 2 ) )
-  #include <ext/atomicity.h>
-  #else
-  #include <bits/atomicity.h>
-  #endif
+#if ( __GNUC__ > 4 ) || ( ( __GNUC__ == 4 ) && ( __GNUC_MINOR__ >= 2 ) )
+#include <ext/atomicity.h>
+#else
+#include <bits/atomicity.h>
+#endif
 
 #endif
 
@@ -148,7 +147,8 @@ LightObject
 void
 LightObject
 ::BreakOnError()
-{}
+{
+}
 
 /**
  * Increase the reference count (mark as used by another object).
@@ -163,11 +163,11 @@ LightObject
 
   // Mac optimization
 #elif defined( __APPLE__ ) && ( MAC_OS_X_VERSION_MIN_REQUIRED >= 1050 )
- #if defined ( __LP64__ ) && __LP64__
+#if defined ( __LP64__ ) && __LP64__
   OSAtomicIncrement64Barrier(&m_ReferenceCount);
- #else
+#else
   OSAtomicIncrement32Barrier(&m_ReferenceCount);
- #endif
+#endif
 
   // gcc optimization
 #elif defined( __GLIBCPP__ ) || defined( __GLIBCXX__ )
@@ -200,17 +200,17 @@ LightObject
 
 // Mac optimization
 #elif defined( __APPLE__ ) && ( MAC_OS_X_VERSION_MIN_REQUIRED >= 1050 )
- #if defined ( __LP64__ ) && __LP64__
+#if defined ( __LP64__ ) && __LP64__
   if ( OSAtomicDecrement64Barrier(&m_ReferenceCount) <= 0 )
     {
     delete this;
     }
- #else
+#else
   if ( OSAtomicDecrement32Barrier(&m_ReferenceCount) <= 0 )
     {
     delete this;
     }
- #endif
+#endif
 
 // gcc optimization
 #elif defined( __GLIBCPP__ ) || defined( __GLIBCXX__ )
@@ -323,7 +323,8 @@ LightObject
 void
 LightObject
 ::PrintTrailer( std::ostream & itkNotUsed(os), Indent itkNotUsed(indent) ) const
-{}
+{
+}
 
 /**
  * This operator allows all subclasses of LightObject to be printed via <<.
@@ -337,4 +338,5 @@ operator<<(std::ostream & os, const LightObject & o)
   o.Print(os);
   return os;
 }
+
 } // end namespace itk

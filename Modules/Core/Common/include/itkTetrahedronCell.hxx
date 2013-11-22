@@ -470,6 +470,7 @@ TetrahedronCell< TCellInterface >
   facePointer.TakeOwnership(face);
   return true;
 }
+
 } // end namespace itk
 
 #endif

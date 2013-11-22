@@ -43,8 +43,8 @@ template< typename TPixel, unsigned int VImageDimensions,
 int
 test_fft(unsigned int *SizeOfDimensions)
 {
-  typedef itk::Image< TPixel, VImageDimensions >                  RealImageType;
-  typedef itk::Image< std::complex< TPixel >, VImageDimensions >  ComplexImageType;
+  typedef itk::Image< TPixel, VImageDimensions >                 RealImageType;
+  typedef itk::Image< std::complex< TPixel >, VImageDimensions > ComplexImageType;
   unsigned int counter = 0;
   typename RealImageType::SizeType  imageSize;
   typename RealImageType::IndexType imageIndex;
@@ -57,8 +57,9 @@ test_fft(unsigned int *SizeOfDimensions)
   for (unsigned int i = 0; i < VImageDimensions; i++)
     {
     imageSize.SetElement( i, SizeOfDimensions[i] );
-    imageIndex.SetElement( i, -2*static_cast<int>(i) - 5 ); // Test for handling non-zero
-                                          // image indices correctly
+    imageIndex.SetElement( i, -2*static_cast<int>(i) - 5 ); // Test for handling
+                                                            // non-zero
+    // image indices correctly
     }
 
   typename RealImageType::RegionType region;
@@ -158,9 +159,11 @@ test_fft(unsigned int *SizeOfDimensions)
 
   std::cout << std::endl << std::endl;
 
-  // Perform the HalfHermitianToRealInverse FFT to get back the Real Image. C2R is the
+  // Perform the HalfHermitianToRealInverse FFT to get back the Real Image. C2R
+  // is the
   // complex conjugate to real image filter and we give the resulting
-  // complex image as input to this filter. This is the HalfHermitianToRealInverse FFT of
+  // complex image as input to this filter. This is the
+  // HalfHermitianToRealInverse FFT of
   // the image.
   C2R->SetInput( complexImage );
 
@@ -173,14 +176,17 @@ test_fft(unsigned int *SizeOfDimensions)
   std::cerr << "C2R region: " << C2R->GetOutput()->GetLargestPossibleRegion() << std::endl;
   typename RealImageType::Pointer imageAfterHalfHermitianToRealInverseFFT = C2R->GetOutput();
 
-  // The HalfHermitianToRealInverse FFT image iterator is the resultant iterator after we
-  // perform the FFT and HalfHermitianToRealInverse FFT on the Original Image. */
+  // The HalfHermitianToRealInverse FFT image iterator is the resultant iterator
+  // after we
+  // perform the FFT and HalfHermitianToRealInverse FFT on the Original Image.
+  // */
   itk::ImageRegionIterator< RealImageType > inverseFFTImageIterator( imageAfterHalfHermitianToRealInverseFFT,
                                                                      region );
   counter = 0;
   inverseFFTImageIterator.GoToBegin();
 
-  // Print the Image data obtained by performing the HalfHermitianToRealInverse FFT.
+  // Print the Image data obtained by performing the HalfHermitianToRealInverse
+  // FFT.
   std::cerr << "---- HalfHermitianToRealInverse FFT image ----" << std::endl;
   while ( !inverseFFTImageIterator.IsAtEnd() )
     {
@@ -227,7 +233,6 @@ test_fft(unsigned int *SizeOfDimensions)
   return 0;
 }
 
-
 /* test_fft_rtc is the test function to compare two implementations
  * (Direct FFT only).  It is templated over the pixel, Image
  * dimensions and the FFT libraries to be used. */
@@ -236,8 +241,8 @@ template< typename TPixel, unsigned int VImageDimensions,
 int
 test_fft_rtc(unsigned int *SizeOfDimensions)
 {
-  typedef itk::Image< TPixel, VImageDimensions >                  RealImageType;
-  typedef itk::Image< std::complex< TPixel >, VImageDimensions >  ComplexImageType;
+  typedef itk::Image< TPixel, VImageDimensions >                 RealImageType;
+  typedef itk::Image< std::complex< TPixel >, VImageDimensions > ComplexImageType;
   unsigned int counter = 0;
   typename RealImageType::SizeType  imageSize;
   typename RealImageType::IndexType imageIndex;
@@ -322,7 +327,6 @@ test_fft_rtc(unsigned int *SizeOfDimensions)
   const typename ComplexImageType::SizeType & complexImageSizeB =
     complexImageB->GetLargestPossibleRegion().GetSize();
 
-
   unsigned int sizesA[4] = { 1,1,1,1 };
   unsigned int sizesB[4] = { 1,1,1,1 };
   for(unsigned int i = 0; i < VImageDimensions; i++)
@@ -366,7 +370,6 @@ test_fft_rtc(unsigned int *SizeOfDimensions)
     }
   std::cout << std::endl << std::endl;
 
-
   // Subtract the pixel values from the two images. If one pixel
   // difference is greater than 0.01, the test is considered to have
   // failed.
@@ -400,4 +403,5 @@ test_fft_rtc(unsigned int *SizeOfDimensions)
 
   return 0;
 }
+
 #endif

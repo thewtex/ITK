@@ -27,7 +27,8 @@ This program tests operations on a DOM node.
 #include <iostream>
 #include "itkMacro.h"
 
-int itkDOMTest1( int, char*[] )
+int
+itkDOMTest1( int, char*[] )
 {
   try
     {

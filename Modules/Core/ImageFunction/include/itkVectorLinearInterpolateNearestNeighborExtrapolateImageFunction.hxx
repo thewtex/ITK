@@ -38,7 +38,8 @@ VectorLinearInterpolateNearestNeighborExtrapolateImageFunction< TInputImage, TCo
 template< typename TInputImage, typename TCoordRep >
 VectorLinearInterpolateNearestNeighborExtrapolateImageFunction< TInputImage, TCoordRep >
 ::VectorLinearInterpolateNearestNeighborExtrapolateImageFunction()
-{}
+{
+}
 
 /**
  * PrintSelf
@@ -183,6 +184,7 @@ VectorLinearInterpolateNearestNeighborExtrapolateImageFunction< TInputImage, TCo
   // since we have ensured that the index lies in the image region
   return this->Superclass::EvaluateAtIndex(insideIndex);
 }
+
 } // end namespace itk
 
 #endif

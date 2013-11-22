@@ -28,15 +28,16 @@
  *
  */
 
-int itkKappaStatisticImageToImageMetricTest(int, char* [] )
+int
+itkKappaStatisticImageToImageMetricTest(int, char* [] )
 {
-  typedef itk::Image< unsigned char, 2 >                                               UCharImage2DType;
-  typedef itk::Image< double, 2 >                                                      DoubleImage2DType;
-  typedef itk::KappaStatisticImageToImageMetric< UCharImage2DType, UCharImage2DType >  MetricType;
-  typedef itk::ImageRegionIteratorWithIndex< UCharImage2DType >                        UCharIteratorType;
-  typedef itk::ImageRegionIteratorWithIndex< DoubleImage2DType >                       DoubleIteratorType;
-  typedef itk::TranslationTransform< double, 2 >                                       TransformType;
-  typedef itk::NearestNeighborInterpolateImageFunction< UCharImage2DType, double >     InterpolatorType;
+  typedef itk::Image< unsigned char, 2 >                                              UCharImage2DType;
+  typedef itk::Image< double, 2 >                                                     DoubleImage2DType;
+  typedef itk::KappaStatisticImageToImageMetric< UCharImage2DType, UCharImage2DType > MetricType;
+  typedef itk::ImageRegionIteratorWithIndex< UCharImage2DType >                       UCharIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< DoubleImage2DType >                      DoubleIteratorType;
+  typedef itk::TranslationTransform< double, 2 >                                      TransformType;
+  typedef itk::NearestNeighborInterpolateImageFunction< UCharImage2DType, double >    InterpolatorType;
 
   double epsilon = 0.000001;
 
@@ -58,7 +59,7 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
   for ( fixedIt.GoToBegin(); !fixedIt.IsAtEnd(); ++fixedIt )
     {
     UCharImage2DType::IndexType index = fixedIt.GetIndex();
-    if ((index[0]>=48)&&(index[0]<=80)&&(index[1]>=48)&&(index[1]<=80))
+    if ( (index[0]>=48)&&(index[0]<=80)&&(index[1]>=48)&&(index[1]<=80) )
       {
       fixedIt.Set(255);
       }
@@ -75,14 +76,13 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
   for ( movingIt.GoToBegin(); !movingIt.IsAtEnd(); ++movingIt )
     {
     UCharImage2DType::IndexType index = movingIt.GetIndex();
-    if ((index[0]>=55)&&(index[0]<=87)&&(index[1]>=55)&&(index[1]<=87))
+    if ( (index[0]>=55)&&(index[0]<=87)&&(index[1]>=55)&&(index[1]<=87) )
       {
       movingIt.Set(255);
       }
     }
 
   MetricType::Pointer metric = MetricType::New();
-
 
   //------------------------------------------------------------------
   // exercise [Set,Get]ForegroundValue method
@@ -96,7 +96,6 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
     return EXIT_FAILURE;
     }
   std::cout << " [ PASSED ] " << std::endl;
-
 
   //------------------------------------------------------------------
   // exercise GetValue method
@@ -131,7 +130,6 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
     }
   std::cout << " [ PASSED ] " << std::endl;
 
-
   //------------------------------------------------------------------
   // exercise ComputeGradient method
   //------------------------------------------------------------------
@@ -162,19 +160,19 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
     {
     DoubleImage2DType::IndexType index = xGradIt.GetIndex();
 
-    if (((index[0]==54)||(index[0]==55))&&(index[1]>=55)&&(index[1]<=87))
+    if ( ( (index[0]==54)||(index[0]==55) )&&(index[1]>=55)&&(index[1]<=87) )
       {
       xGradIt.Set(1);
       }
-    if (((index[0]==87)||(index[0]==88))&&(index[1]>=55)&&(index[1]<=87))
+    if ( ( (index[0]==87)||(index[0]==88) )&&(index[1]>=55)&&(index[1]<=87) )
       {
       xGradIt.Set(-1);
       }
-    if (((index[1]==54)||(index[1]==55))&&(index[0]>=55)&&(index[0]<=87))
+    if ( ( (index[1]==54)||(index[1]==55) )&&(index[0]>=55)&&(index[0]<=87) )
       {
       yGradIt.Set(1);
       }
-    if (((index[1]==87)||(index[1]==88))&&(index[0]>=55)&&(index[0]<=87))
+    if ( ( (index[1]==87)||(index[1]==88) )&&(index[0]>=55)&&(index[0]<=87) )
       {
       yGradIt.Set(-1);
       }
@@ -183,14 +181,14 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
     ++yGradIt;
     }
 
-  typedef itk::ImageRegionIteratorWithIndex< const MetricType::GradientImageType >  GradIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< const MetricType::GradientImageType > GradIteratorType;
   GradIteratorType gradIt( metric->GetGradientImage(), metric->GetGradientImage()->GetBufferedRegion() );
   gradIt.GoToBegin();
   xGradIt.GoToBegin();
   yGradIt.GoToBegin();
   while ( !gradIt.IsAtEnd() )
     {
-    if (((gradIt.Get())[0] != xGradIt.Get())||((gradIt.Get())[1] != yGradIt.Get()))
+    if ( ( (gradIt.Get() )[0] != xGradIt.Get() )||( (gradIt.Get() )[1] != yGradIt.Get() ) )
       {
       std::cerr << "Error!" << std::endl;
       return EXIT_FAILURE;
@@ -202,7 +200,6 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
     }
   std::cout << " [ PASSED ] " << std::endl;
 
-
   //------------------------------------------------------------------
   // exercise GetDerivative method
   //------------------------------------------------------------------
@@ -211,12 +208,12 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
   metric->GetDerivative( parameters, derivative );
 
   // The value 0.0477502 was computed by hand
-  if (!((derivative[0]>=-0.0477502-epsilon)&&(derivative[0]<=-0.0477502+epsilon)))
+  if (!( (derivative[0]>=-0.0477502-epsilon)&&(derivative[0]<=-0.0477502+epsilon) ) )
     {
     std::cerr << "Error!" << std::endl;
     return EXIT_FAILURE;
     }
-  if (!((derivative[1]>=-0.0477502-epsilon)&&(derivative[1]<=-0.0477502+epsilon)))
+  if (!( (derivative[1]>=-0.0477502-epsilon)&&(derivative[1]<=-0.0477502+epsilon) ) )
     {
     std::cerr << "Error!" << std::endl;
     return EXIT_FAILURE;
@@ -254,7 +251,7 @@ int itkKappaStatisticImageToImageMetricTest(int, char* [] )
   metric->ComplementOn();
 
   // The value 0.379247 was computed by hand
-  if (!((metric->GetValue(parameters)>=0.379247-epsilon)&&(metric->GetValue(parameters)<=0.379247+epsilon)))
+  if (!( (metric->GetValue(parameters)>=0.379247-epsilon)&&(metric->GetValue(parameters)<=0.379247+epsilon) ) )
     {
     std::cerr << "Error!" << std::endl;
     return EXIT_FAILURE;

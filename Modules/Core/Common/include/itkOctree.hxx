@@ -24,7 +24,7 @@ namespace itk
 {
 template< typename TPixel, unsigned int ColorTableSize, typename MappingFunctionType >
 Octree< TPixel, ColorTableSize,
-        MappingFunctionType >::Octree(void):m_Plane(UNKNOWN_PLANE), m_Width(0), m_Depth(0), m_Tree()
+        MappingFunctionType >::Octree(void) : m_Plane(UNKNOWN_PLANE), m_Width(0), m_Depth(0), m_Tree()
 {
   m_TrueDims[0] = 0;
   m_TrueDims[1] = 1;
@@ -34,7 +34,8 @@ Octree< TPixel, ColorTableSize,
 
 template< typename TPixel, unsigned int ColorTableSize, typename MappingFunctionType >
 Octree< TPixel, ColorTableSize, MappingFunctionType >::
-~Octree(void) { /*Nothing to be done here*/ }
+~Octree(void) { /*Nothing to be done here*/
+}
 
 template< typename TPixel, unsigned int ColorTableSize, typename MappingFunctionType >
 void
@@ -72,17 +73,18 @@ Octree< TPixel, ColorTableSize, MappingFunctionType >::SetTrueDims(const unsigne
  *   \param CenterLineZ The division line between octants
  *   \return The octant that the voxel falls into.
  */
-inline unsigned int OCTREE_OCTANT(const unsigned int VoxX, const unsigned int CenterLineX,
-                                  const unsigned int VoxY, const unsigned int CenterLineY,
-                                  const unsigned int VoxZ, const unsigned int CenterLineZ)
+inline unsigned int
+OCTREE_OCTANT(const unsigned int VoxX, const unsigned int CenterLineX,
+              const unsigned int VoxY, const unsigned int CenterLineY,
+              const unsigned int VoxZ, const unsigned int CenterLineZ)
 {
   return (
-           (
-             ( static_cast< unsigned int >( VoxZ >= CenterLineZ ) << 2 )
-             |  ( static_cast< unsigned int >( VoxY >= CenterLineY ) << 1 )
-           )
-           | ( static_cast< unsigned int >( VoxX >= CenterLineX ) )
-           );
+    (
+      ( static_cast< unsigned int >( VoxZ >= CenterLineZ ) << 2 )
+      |  ( static_cast< unsigned int >( VoxY >= CenterLineY ) << 1 )
+    )
+    | ( static_cast< unsigned int >( VoxX >= CenterLineX ) )
+    );
 }
 
 /**
@@ -91,17 +93,20 @@ inline unsigned int OCTREE_OCTANT(const unsigned int VoxX, const unsigned int Ce
    * "upper" portion of the Octree in the given directions.
    * @{
    */
-inline unsigned int XF(const unsigned int octantID)
+inline unsigned int
+XF(const unsigned int octantID)
 {
   return octantID & 1; //Just return 1 if 0th bit is a one
 }
 
-inline unsigned int YF(const unsigned int octantID)
+inline unsigned int
+YF(const unsigned int octantID)
 {
   return ( octantID >> 1 ) & 1; //Just return 1 if 1st bit is a one
 }
 
-inline unsigned int ZF(const unsigned int octantID)
+inline unsigned int
+ZF(const unsigned int octantID)
 {
   return ( octantID >> 2 ) & 1; //Just return 1 if 2nd bit is a one
 }
@@ -231,8 +236,8 @@ Octree< TPixel, ColorTableSize, MappingFunctionType >::BuildFromBuffer(const voi
                                                                        const unsigned int zsize)
 {
   unsigned maxSize = xsize >= ysize ?
-                     ( xsize >= zsize ? xsize : zsize ) :
-                     ( ysize >= zsize ? ysize : zsize );
+    ( xsize >= zsize ? xsize : zsize ) :
+    ( ysize >= zsize ? ysize : zsize );
   unsigned width = 1;
   unsigned depth = 0;
 
@@ -349,6 +354,7 @@ Octree< TPixel, ColorTableSize, MappingFunctionType >::GetColorTableSize() const
 {
   return ColorTableSize;
 }
+
 }
 
 #endif

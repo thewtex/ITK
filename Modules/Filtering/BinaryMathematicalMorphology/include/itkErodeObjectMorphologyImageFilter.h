@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKBinaryMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class ErodeObjectMorphologyImageFilter:
+class ErodeObjectMorphologyImageFilter :
   public ObjectMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -72,18 +72,20 @@ public:
 
   /** Default boundary condition type */
   typedef typename Superclass::DefaultBoundaryConditionType
-  DefaultBoundaryConditionType;
+    DefaultBoundaryConditionType;
 
   /** Set the object's value. Added for API consistency with itkBinaryErode
     filter */
-  void SetErodeValue(PixelType objectValue)
+  void
+  SetErodeValue(PixelType objectValue)
   {
     this->SetObjectValue(objectValue);
   }
 
   /** Set the object's value. Added for API consistency with itkBinaryErode
     filter */
-  PixelType GetErodeValue(void)
+  PixelType
+  GetErodeValue(void)
   {
     return this->GetObjectValue();
   }
@@ -106,7 +108,9 @@ public:
 
 protected:
   ErodeObjectMorphologyImageFilter();
-  ~ErodeObjectMorphologyImageFilter() {}
+  ~ErodeObjectMorphologyImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Apply the kernel to the neighborhood given.

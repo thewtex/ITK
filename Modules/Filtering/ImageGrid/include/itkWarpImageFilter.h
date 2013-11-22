@@ -85,7 +85,7 @@ template<
   typename TOutputImage,
   typename TDisplacementField
   >
-class WarpImageFilter:
+class WarpImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -142,7 +142,7 @@ public:
   typedef InterpolateImageFunction< InputImageType, CoordRepType > InterpolatorType;
   typedef typename InterpolatorType::Pointer                       InterpolatorPointer;
   typedef LinearInterpolateImageFunction< InputImageType, CoordRepType >
-  DefaultInterpolatorType;
+    DefaultInterpolatorType;
 
   /** Point type */
   typedef Point< CoordRepType, itkGetStaticConstMacro(ImageDimension) > PointType;
@@ -152,18 +152,23 @@ public:
 
   /** Set the displacement field. */
   void SetDisplacementField(const DisplacementFieldType *field);
+
   /** Get a pointer the displacement field. */
   DisplacementFieldType * GetDisplacementField(void);
 
 #ifdef ITKV3_COMPATIBILITY
-  void SetDeformationField(const DisplacementFieldType *field)
+  void
+  SetDeformationField(const DisplacementFieldType *field)
   {
     this->SetDisplacementField(field);
   }
-  DeformationFieldType * GetDeformationField(void)
+
+  DeformationFieldType *
+  GetDeformationField(void)
   {
-    return static_cast<DeformationFieldType *> (GetDisplacementField());
+    return static_cast<DeformationFieldType *> (GetDisplacementField() );
   }
+
 #endif
 
   /** Get/Set the interpolator function. */

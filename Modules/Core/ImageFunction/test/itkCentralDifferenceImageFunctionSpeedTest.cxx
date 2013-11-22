@@ -19,7 +19,8 @@
 #include "itkCentralDifferenceImageFunction.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-int itkCentralDifferenceImageFunctionSpeedTest(int argc, char* argv[] )
+int
+itkCentralDifferenceImageFunctionSpeedTest(int argc, char* argv[] )
 {
   if( argc != 6 )
     {
@@ -27,19 +28,20 @@ int itkCentralDifferenceImageFunctionSpeedTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  int imageSize = atoi( argv[1] );
-  int reps = atoi( argv[2] );
+  int  imageSize = atoi( argv[1] );
+  int  reps = atoi( argv[2] );
   bool doEAI = atoi( argv[3] );
   bool doEACI = atoi( argv[4] );
   bool doE = atoi( argv[5] );
 
-  std::cout << "imageSize: " << imageSize << " reps: " << reps << " doEAI, doEACI, doE: " << doEAI << ", " << doEACI << ", " << doE << std::endl;
+  std::cout << "imageSize: " << imageSize << " reps: " << reps << " doEAI, doEACI, doE: " << doEAI << ", " << doEACI <<
+    ", " << doE << std::endl;
 
-  const unsigned int                            ImageDimension = 2;
-  typedef unsigned int                          PixelType;
-  typedef itk::Image<PixelType,ImageDimension>  ImageType;
+  const unsigned int ImageDimension = 2;
+  typedef unsigned int                         PixelType;
+  typedef itk::Image<PixelType,ImageDimension> ImageType;
 
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( imageSize );
   ImageType::RegionType region( size );
@@ -61,9 +63,9 @@ int itkCentralDifferenceImageFunctionSpeedTest(int argc, char* argv[] )
     }
 
   // set up central difference calculator
-  typedef float CoordRepType;
+  typedef float                                                       CoordRepType;
   typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType> FunctionType;
-  typedef FunctionType::OutputType  OutputType;
+  typedef FunctionType::OutputType                                    OutputType;
 
   FunctionType::Pointer function = FunctionType::New();
 

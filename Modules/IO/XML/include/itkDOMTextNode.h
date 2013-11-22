@@ -41,10 +41,10 @@ class DOMTextNode : public DOMNode
 {
 public:
   /** Standard class typedefs. */
-  typedef DOMTextNode                 Self;
-  typedef DOMNode                     Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef DOMTextNode                Self;
+  typedef DOMNode                    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -66,8 +66,9 @@ private:
   /** Variable to hold the text string of this node. */
   std::string m_Text;
 
-  DOMTextNode(const Self &); //purposely not implemented
+  DOMTextNode(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 } // namespace itk

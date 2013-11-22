@@ -27,7 +27,7 @@
 struct itk_jpeg_error_mgr {
   struct jpeg_error_mgr pub;    /* "public" fields */
   jmp_buf setjmp_buffer;        /* for return to caller */
-};
+  };
 
 extern "C" {
 METHODDEF(void) itk_jpeg_error_exit (j_common_ptr cinfo)
@@ -56,7 +56,8 @@ namespace itk
 namespace
 {
 // Wrap setjmp call to avoid warnings about variable clobbering.
-bool wrapSetjmp( itk_jpeg_error_mgr & jerr )
+bool
+wrapSetjmp( itk_jpeg_error_mgr & jerr )
 {
   if( setjmp( jerr.setjmp_buffer ) )
     {
@@ -64,6 +65,7 @@ bool wrapSetjmp( itk_jpeg_error_mgr & jerr )
     }
   return false;
 }
+
 }
 
 // simple class to call fopen on construct and
@@ -71,12 +73,13 @@ bool wrapSetjmp( itk_jpeg_error_mgr & jerr )
 class JPEGFileWrapper
 {
 public:
-  JPEGFileWrapper(const char *const fname, const char *const openMode):m_FilePointer(NULL)
+  JPEGFileWrapper(const char *const fname, const char *const openMode) : m_FilePointer(NULL)
   {
     m_FilePointer = fopen(fname, openMode);
   }
 
-  virtual ~JPEGFileWrapper()
+  virtual
+  ~JPEGFileWrapper()
   {
     if ( m_FilePointer != NULL )
       {
@@ -87,7 +90,8 @@ public:
   FILE *m_FilePointer;
 };
 
-bool JPEGImageIO::CanReadFile(const char *file)
+bool
+JPEGImageIO::CanReadFile(const char *file)
 {
   // First check the extension
   std::string filename = file;
@@ -187,12 +191,15 @@ bool JPEGImageIO::CanReadFile(const char *file)
   return true;
 }
 
-void JPEGImageIO::ReadVolume(void *)
-{}
+void
+JPEGImageIO::ReadVolume(void *)
+{
+}
 
 //-----------------------------------------------------------------------------
 
-void JPEGImageIO::Read(void *buffer)
+void
+JPEGImageIO::Read(void *buffer)
 {
   unsigned int ui;
 
@@ -298,16 +305,20 @@ JPEGImageIO::JPEGImageIO()
 }
 
 JPEGImageIO::~JPEGImageIO()
-{}
+{
+}
 
-void JPEGImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+JPEGImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Quality : " << m_Quality << "\n";
   os << indent << "Progressive : " << m_Progressive << "\n";
 }
 
-void JPEGImageIO::ReadImageInformation()
+void
+JPEGImageIO::ReadImageInformation()
 {
   m_Spacing[0] = 1.0;  // We'll look for JPEG pixel size information later,
   m_Spacing[1] = 1.0;  // but set the defaults now
@@ -401,7 +412,8 @@ void JPEGImageIO::ReadImageInformation()
   jpeg_destroy_decompress(&cinfo);
 }
 
-bool JPEGImageIO::CanWriteFile(const char *name)
+bool
+JPEGImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -441,10 +453,13 @@ bool JPEGImageIO::CanWriteFile(const char *name)
   return false;
 }
 
-void JPEGImageIO::WriteImageInformation(void)
-{}
+void
+JPEGImageIO::WriteImageInformation(void)
+{
+}
 
-void JPEGImageIO::Write(const void *buffer)
+void
+JPEGImageIO::Write(const void *buffer)
 {
   // the IORegion is not required to be set so we must use GetNumberOfDimensions
   if ( this->GetNumberOfDimensions() != 2 )
@@ -461,7 +476,8 @@ void JPEGImageIO::Write(const void *buffer)
   this->WriteSlice(m_FileName, buffer);
 }
 
-void JPEGImageIO::WriteSlice(std::string & fileName, const void *buffer)
+void
+JPEGImageIO::WriteSlice(std::string & fileName, const void *buffer)
 {
   // use this class so return will call close
   JPEGFileWrapper JPEGfp(fileName.c_str(), "wb");
@@ -555,7 +571,8 @@ void JPEGImageIO::WriteSlice(std::string & fileName, const void *buffer)
 
   if ( m_Spacing[0] > 0 && m_Spacing[1] > 0 )
     {
-    // store the spacing information as pixels per inch or cm, depending on which option
+    // store the spacing information as pixels per inch or cm, depending on
+    // which option
     // retains as much precision as possible
     std::vector< UINT16 > densityPerInch( 2 );
     densityPerInch[0] = static_cast<UINT16>(25.4/m_Spacing[0] + 0.5);
@@ -566,7 +583,7 @@ void JPEGImageIO::WriteSlice(std::string & fileName, const void *buffer)
     densityPerCm[1] = static_cast<UINT16>(10.0/m_Spacing[1] + 0.5);
 
     if (std::abs(25.4/m_Spacing[0] - densityPerInch[0]) + std::abs(25.4/m_Spacing[1] - densityPerInch[1])
-      <= std::abs(10.0/m_Spacing[0] - densityPerCm[0]) + std::abs(10.0/m_Spacing[1] - densityPerCm[1]))
+        <= std::abs(10.0/m_Spacing[0] - densityPerCm[0]) + std::abs(10.0/m_Spacing[1] - densityPerCm[1]) )
       {
       cinfo.density_unit = 1;
       cinfo.X_density = densityPerInch[0];
@@ -608,4 +625,5 @@ void JPEGImageIO::WriteSlice(std::string & fileName, const void *buffer)
   delete[] row_pointers;
   jpeg_destroy_compress(&cinfo);
 }
+
 } // end namespace itk

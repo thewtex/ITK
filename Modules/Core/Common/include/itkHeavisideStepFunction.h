@@ -56,7 +56,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInput = float, typename TOutput = double >
-class HeavisideStepFunction:
+class HeavisideStepFunction :
   public HeavisideStepFunctionBase< TInput, TOutput >
 {
 public:
@@ -85,6 +85,7 @@ protected:
 private:
   HeavisideStepFunction(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 }
 

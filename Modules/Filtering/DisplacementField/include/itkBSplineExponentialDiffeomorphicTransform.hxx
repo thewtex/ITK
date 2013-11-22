@@ -58,6 +58,7 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
 ::SetMeshSizeForTheUpdateField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   for( unsigned int d = 0; d < Dimension; d++ )
     {
     numberOfControlPoints[d] = meshSize[d] + this->m_SplineOrder;
@@ -74,6 +75,7 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
 ::SetMeshSizeForTheConstantVelocityField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   for( unsigned int d = 0; d < Dimension; d++ )
     {
     numberOfControlPoints[d] = meshSize[d] + this->m_SplineOrder;
@@ -90,6 +92,7 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
   // Smooth the update field
   //
   bool smoothUpdateField = true;
+
   for( unsigned int d = 0; d < Dimension; d++ )
     {
     if( this->GetNumberOfControlPointsForTheUpdateField()[d] <= this->GetSplineOrder() )
@@ -109,7 +112,8 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
   const typename ConstantVelocityFieldType::RegionType & bufferedRegion = velocityField->GetBufferedRegion();
   const SizeValueType numberOfPixels = bufferedRegion.GetNumberOfPixels();
 
-  DisplacementVectorType *updateFieldPointer = reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>( update ).data_block() );
+  DisplacementVectorType *updateFieldPointer =
+    reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>( update ).data_block() );
 
   typedef ImportImageFilter<DisplacementVectorType, NDimensions> ImporterType;
   const bool importFilterWillReleaseMemory = false;
@@ -171,7 +175,8 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
     itkDebugMacro( "Smoothing the velocity field." );
 
     ConstantVelocityFieldPointer velocitySmoothField =
-      this->BSplineSmoothConstantVelocityField( updatedVelocityField, this->GetNumberOfControlPointsForTheConstantVelocityField() );
+      this->BSplineSmoothConstantVelocityField( updatedVelocityField,
+                                                this->GetNumberOfControlPointsForTheConstantVelocityField() );
 
     this->SetConstantVelocityField( velocitySmoothField );
     }
@@ -214,9 +219,9 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
 
   os << indent << "Spline order = " << this->m_SplineOrder << std::endl;
   os << indent << "Number of control points for the velocity field = "
-    << this->m_NumberOfControlPointsForTheConstantVelocityField << std::endl;
+     << this->m_NumberOfControlPointsForTheConstantVelocityField << std::endl;
   os << indent << "Number of control points for the update field = "
-    << this->m_NumberOfControlPointsForTheUpdateField << std::endl;
+     << this->m_NumberOfControlPointsForTheUpdateField << std::endl;
 }
 
 } // namespace itk

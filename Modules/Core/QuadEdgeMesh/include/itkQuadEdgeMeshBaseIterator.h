@@ -107,13 +107,17 @@ public:
 // Object creation methods.
   QuadEdgeMeshBaseIterator(QuadEdgeType *e,
                            int op = OperatorOnext,
-                           bool start = true):
+                           bool start = true) :
     m_StartEdge(e), m_Iterator(e),
-    m_OpType(op), m_Start(start) {}
+    m_OpType(op), m_Start(start) {
+  }
 
-  virtual ~QuadEdgeMeshBaseIterator() {}
+  virtual
+  ~QuadEdgeMeshBaseIterator() {
+  }
 
-  Self & operator=(const Self & r)
+  Self &
+  operator=(const Self & r)
   {
     if(this != &r)
       {
@@ -125,13 +129,29 @@ public:
     return ( *this );
   }
 
-  QuadEdgeType * GetStartEdge() const { return ( m_StartEdge ); }
-  QuadEdgeType * GetIterator() const { return ( m_Iterator ); }
-  int           GetOpType() const { return ( m_OpType ); }
-  bool          GetStart() const { return ( m_Start ); }
+  QuadEdgeType *
+  GetStartEdge() const {
+    return ( m_StartEdge );
+  }
+
+  QuadEdgeType *
+  GetIterator() const {
+    return ( m_Iterator );
+  }
+
+  int
+  GetOpType() const {
+    return ( m_OpType );
+  }
+
+  bool
+  GetStart() const {
+    return ( m_Start );
+  }
 
   /** Iteration methods. */
-  bool operator==(Self & r)
+  bool
+  operator==(Self & r)
   {
     return ( ( m_StartEdge == r.m_StartEdge )
              && ( m_Iterator  == r.m_Iterator )
@@ -139,7 +159,8 @@ public:
              && ( m_Start     == r.m_Start ) );
   }
 
-  bool operator==(const Self & r) const
+  bool
+  operator==(const Self & r) const
   {
     return ( ( m_StartEdge == r.m_StartEdge )
              && ( m_Iterator  == r.m_Iterator )
@@ -147,17 +168,20 @@ public:
              && ( m_Start     == r.m_Start ) );
   }
 
-  bool operator!=(Self & r)
+  bool
+  operator!=(Self & r)
   {
     return ( !( this->operator==(r) ) );
   }
 
-  bool operator!=(const Self & r) const
+  bool
+  operator!=(const Self & r) const
   {
     return ( !( this->operator==(r) ) );
   }
 
-  Self & operator++()
+  Self &
+  operator++()
   {
     if ( m_Start )
       {
@@ -168,7 +192,8 @@ public:
     return ( *this );
   }
 
-  Self & operator++(int)
+  Self &
+  operator++(int)
   {
     if ( m_Start )
       {
@@ -180,7 +205,8 @@ public:
 
 protected:
   /** Method that should do all the iteration work. */
-  virtual void GoToNext()
+  virtual void
+  GoToNext()
   {
     switch ( m_OpType )
       {
@@ -242,7 +268,7 @@ protected:
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TQuadEdge >
-class QuadEdgeMeshIterator:
+class QuadEdgeMeshIterator :
   public QuadEdgeMeshBaseIterator< TQuadEdge >
 {
 public:
@@ -255,13 +281,24 @@ public:
   /** Object creation methods. */
   QuadEdgeMeshIterator(QuadEdgeType *e = (QuadEdgeType *)0,
                        int op = Superclass::OperatorOnext,
-                       bool start = true):
-    Superclass(e, op, start) {}
+                       bool start = true) :
+    Superclass(e, op, start) {
+  }
 
-  virtual ~QuadEdgeMeshIterator() {}
+  virtual
+  ~QuadEdgeMeshIterator() {
+  }
 
-  QuadEdgeType * Value() { return ( this->m_Iterator ); }
-  const QuadEdgeType * Value() const { return ( this->m_Iterator ); }
+  QuadEdgeType *
+  Value() {
+    return ( this->m_Iterator );
+  }
+
+  const QuadEdgeType *
+  Value() const {
+    return ( this->m_Iterator );
+  }
+
 };
 
 /**
@@ -271,7 +308,7 @@ public:
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TGeometricalQuadEdge >
-class QuadEdgeMeshIteratorGeom:
+class QuadEdgeMeshIteratorGeom :
   public QuadEdgeMeshIterator< TGeometricalQuadEdge >
 {
 public:
@@ -285,9 +322,15 @@ public:
 public:
   QuadEdgeMeshIteratorGeom(QuadEdgeType *e = (QuadEdgeType *)0,
                            int op = Superclass::OperatorOnext,
-                           bool start = true):
-    Superclass(e, op, start) {}
-  OriginRefType operator*() { return ( this->m_Iterator->GetOrigin() ); }
+                           bool start = true) :
+    Superclass(e, op, start) {
+  }
+
+  OriginRefType
+  operator*() {
+    return ( this->m_Iterator->GetOrigin() );
+  }
+
 };
 
 /**
@@ -297,7 +340,7 @@ public:
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TQuadEdge >
-class QuadEdgeMeshConstIterator:
+class QuadEdgeMeshConstIterator :
   public QuadEdgeMeshBaseIterator< TQuadEdge >
 {
 public:
@@ -311,12 +354,16 @@ public:
   /** Object creation methods. */
   QuadEdgeMeshConstIterator(const QuadEdgeType *e = (QuadEdgeType *)0,
                             int op = Superclass::OperatorOnext,
-                            bool start = true):
-    Superclass(const_cast< QuadEdgeType * >( e ), op, start) {}
+                            bool start = true) :
+    Superclass(const_cast< QuadEdgeType * >( e ), op, start) {
+  }
 
-  virtual ~QuadEdgeMeshConstIterator() {}
+  virtual
+  ~QuadEdgeMeshConstIterator() {
+  }
 
-  Self & operator=(const NoConstType & r)
+  Self &
+  operator=(const NoConstType & r)
   {
     this->m_StartEdge = r.GetStartEdge();
     this->m_Iterator = r.GetIterator();
@@ -325,7 +372,11 @@ public:
     return ( *this );
   }
 
-  const QuadEdgeType * Value() const { return ( this->m_Iterator ); }
+  const QuadEdgeType *
+  Value() const {
+    return ( this->m_Iterator );
+  }
+
 };
 
 /**
@@ -335,7 +386,7 @@ public:
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TGeometricalQuadEdge >
-class QuadEdgeMeshConstIteratorGeom:
+class QuadEdgeMeshConstIteratorGeom :
   public QuadEdgeMeshConstIterator< TGeometricalQuadEdge >
 {
 public:
@@ -351,12 +402,16 @@ public:
 public:
   QuadEdgeMeshConstIteratorGeom(const QuadEdgeType *e = (QuadEdgeType *)0,
                                 int op = Superclass::OperatorOnext,
-                                bool start = true):
-    Superclass(e, op, start) {}
+                                bool start = true) :
+    Superclass(e, op, start) {
+  }
 
-  virtual ~QuadEdgeMeshConstIteratorGeom() {}
+  virtual
+  ~QuadEdgeMeshConstIteratorGeom() {
+  }
 
-  Self & operator=(const NoConstType & r)
+  Self &
+  operator=(const NoConstType & r)
   {
     this->m_StartEdge = r.GetStartEdge();
     this->m_Iterator = r.GetIterator();
@@ -365,10 +420,12 @@ public:
     return ( *this );
   }
 
-  const OriginRefType operator*() const
+  const OriginRefType
+  operator*() const
   {
     return ( this->m_Iterator->GetOrigin() );
   }
+
 };
 }
 

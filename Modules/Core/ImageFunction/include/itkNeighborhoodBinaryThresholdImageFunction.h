@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = float >
-class NeighborhoodBinaryThresholdImageFunction:
+class NeighborhoodBinaryThresholdImageFunction :
   public BinaryThresholdImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -90,7 +90,8 @@ public:
   virtual bool EvaluateAtIndex(const IndexType & index) const;
 
   /** Evaluate the function at non-integer positions */
-  virtual bool Evaluate(const PointType & point) const
+  virtual bool
+  Evaluate(const PointType & point) const
   {
     IndexType index;
 
@@ -98,7 +99,8 @@ public:
     return this->EvaluateAtIndex(index);
   }
 
-  virtual bool EvaluateAtContinuousIndex(
+  virtual bool
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & cindex) const
   {
     IndexType index;
@@ -109,7 +111,9 @@ public:
 
 protected:
   NeighborhoodBinaryThresholdImageFunction();
-  ~NeighborhoodBinaryThresholdImageFunction(){}
+  ~NeighborhoodBinaryThresholdImageFunction(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

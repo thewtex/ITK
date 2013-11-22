@@ -50,7 +50,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkScalarImageToHistogramGenerator.h"
 #include "itkImage.h"
@@ -58,7 +57,8 @@
 
 #include "itkImageFileReader.h"
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -77,8 +77,8 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char       PixelType;
-  const   unsigned int        Dimension = 3;
+  typedef unsigned char PixelType;
+  const   unsigned int Dimension = 3;
 
   typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
@@ -102,19 +102,19 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginLatex
   //
-  // The image type is used as template parameter for instantiating the histogram
+  // The image type is used as template parameter for instantiating the
+  // histogram
   // generator.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ScalarImageToHistogramGenerator<
-                                      ImageType >   HistogramGeneratorType;
+      ImageType >   HistogramGeneratorType;
 
   HistogramGeneratorType::Pointer histogramGenerator =
-                                      HistogramGeneratorType::New();
+    HistogramGeneratorType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -133,7 +133,6 @@ int main( int argc, char * argv [] )
   histogramGenerator->SetMarginalScale( 10.0 );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We can then connect as input the output image from a reader and trigger the
@@ -148,7 +147,6 @@ int main( int argc, char * argv [] )
   histogramGenerator->Compute();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The resulting histogram can be recovered from the generator by using the
@@ -158,11 +156,10 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramGeneratorType::HistogramType  HistogramType;
+  typedef HistogramGeneratorType::HistogramType HistogramType;
 
   const HistogramType * histogram = histogramGenerator->GetOutput();
   // Software Guide : EndCodeSnippet
-
 
   const unsigned int histogramSize = histogram->Size();
 
@@ -174,23 +171,23 @@ int main( int argc, char * argv [] )
     std::cout << histogram->GetFrequency( bin, 0 ) << std::endl;
     }
 
-
   // Software Guide : BeginLatex
   //
   // We proceed now to compute the \emph{estimation} of entropy given the
   // histogram. The first conceptual jump to be done here is that we assume that
   // the histogram, which is the simple count of frequency of occurrence for the
-  // gray scale values of the image pixels, can be normalized in order to estimate
+  // gray scale values of the image pixels, can be normalized in order to
+  // estimate
   // the probability density function \textbf{PDF} of the actual statistical
   // distribution of pixel values.
   //
-  //  First we declare an iterator that will visit all the bins in the histogram.
+  //  First we declare an iterator that will visit all the bins in the
+  // histogram.
   //  Then we obtain the total number of counts using the
   //  \code{GetTotalFrequency()} method, and we initialize the entropy variable
   //  to zero.
   //
   // Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   HistogramType::ConstIterator itr = histogram->Begin();
@@ -201,10 +198,10 @@ int main( int argc, char * argv [] )
   double Entropy = 0.0;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
-  // We start now visiting every bin and estimating the probability of a pixel to
+  // We start now visiting every bin and estimating the probability of a pixel
+  // to
   // have a value in the range of that bin. The base 2 logarithm of that
   // probability is computed, and then weighted by the probability in order to
   // compute the expected amount of information for any given pixel. Note that a
@@ -212,7 +209,8 @@ int main( int argc, char * argv [] )
   // logarithms of zeros.
   //
   //  Note that the $\log{(2)}$ factor is used to convert the natural logarithm
-  //  in to a logarithm of base 2, and make possible to report the entropy in its
+  //  in to a logarithm of base 2, and make possible to report the entropy in
+  // its
   //  natural unit: the bit.
   //
   // Software Guide : EndLatex
@@ -224,19 +222,20 @@ int main( int argc, char * argv [] )
 
     if( probability > 0.99 / Sum )
       {
-      Entropy += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      Entropy += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The result of this sum is considered to be our estimation of the image
   // entropy. Note that the Entrpy value will change depending on the number of
-  // histogram bins that we use for computing the histogram. This is particularly
-  // important when dealing with images whose pixel values have dynamic ranges so
+  // histogram bins that we use for computing the histogram. This is
+  // particularly
+  // important when dealing with images whose pixel values have dynamic ranges
+  // so
   // large that our number of bins will always underestimate the variability of
   // the data.
   //
@@ -246,7 +245,6 @@ int main( int argc, char * argv [] )
   std::cout << "Image entropy = " << Entropy << " bits " << std::endl;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // As an illustration, the application of this program to the image
@@ -255,7 +253,8 @@ int main( int argc, char * argv [] )
   // \item \code{Examples/Data/BrainProtonDensitySlice.png}
   // \end{itemize}
   //
-  // results in the following values of entropy for different values of number of
+  // results in the following values of entropy for different values of number
+  // of
   // histogram bins.
   //
   // \begin{center}
@@ -274,7 +273,6 @@ int main( int argc, char * argv [] )
   // measures such as the entropy.
   //
   // Software Guide : EndLatex
-
 
   return 0;
 

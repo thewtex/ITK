@@ -21,22 +21,23 @@
 
 #include <iostream>
 
-int itkVTKPolyDataReaderQuadEdgeMeshTest(int argc, char* argv[] )
+int
+itkVTKPolyDataReaderQuadEdgeMeshTest(int argc, char* argv[] )
 {
   if( argc != 2 )
     {
     std::cerr << "Usage: itkVTKPolyDataReaderTest inputFilename"
-      << std::endl;
+              << std::endl;
     return EXIT_FAILURE;
     }
 
-  typedef itk::QuadEdgeMesh<float, 3>         MeshType;
-  typedef itk::VTKPolyDataReader< MeshType >  ReaderType;
+  typedef itk::QuadEdgeMesh<float, 3>        MeshType;
+  typedef itk::VTKPolyDataReader< MeshType > ReaderType;
 
-  ReaderType::Pointer  polyDataReader = ReaderType::New();
+  ReaderType::Pointer polyDataReader = ReaderType::New();
 
-  typedef ReaderType::PointType   PointType;
-  typedef ReaderType::VectorType  VectorType;
+  typedef ReaderType::PointType  PointType;
+  typedef ReaderType::VectorType VectorType;
 
   polyDataReader->SetFileName(argv[1]);
 
@@ -56,9 +57,9 @@ int itkVTKPolyDataReaderQuadEdgeMeshTest(int argc, char* argv[] )
   MeshType::Pointer mesh = polyDataReader->GetOutput();
 
   std::cout << "Using following MeshType :";
-  std::cout << mesh->GetNameOfClass( ) << std::endl;
+  std::cout << mesh->GetNameOfClass() << std::endl;
 
-  PointType  point;
+  PointType point;
 
   std::cout << "Testing itk::VTKPolyDataReader" << std::endl;
 

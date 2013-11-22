@@ -58,7 +58,7 @@ namespace itk
 template< typename TInputImage,
           typename TOutputImage =
             LabelMap< LabelObject< SizeValueType, TInputImage::ImageDimension > > >
-class BinaryImageToLabelMapFilter:
+class BinaryImageToLabelMapFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -97,7 +97,7 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int, TOutputImage::ImageDimension);
   itkStaticConstMacro(InputImageDimension, unsigned int, TInputImage::ImageDimension);
 
-  typedef SizeValueType   LabelType;
+  typedef SizeValueType LabelType;
 
   /**
    * Image typedef support
@@ -152,7 +152,10 @@ public:
 
 protected:
   BinaryImageToLabelMapFilter();
-  virtual ~BinaryImageToLabelMapFilter() {}
+  virtual
+  ~BinaryImageToLabelMapFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
@@ -185,11 +188,11 @@ private:
   // types to support the run length encoding of lines
   class runLength
   {
-  public:
+public:
     // run length information - may be a more type safe way of doing this
     SizeValueType length;
     typename InputImageType::IndexType where; // Index of the start of the run
-    LabelType label;                  // the initial label of the run
+    LabelType label;                          // the initial label of the run
   };
 
   typedef std::vector< runLength > lineEncoding;
@@ -204,7 +207,8 @@ private:
   UnionFindType m_UnionFind;
   UnionFindType m_Consecutive;
   // functions to support union-find operations
-  void InitUnion(const LabelType size)
+  void
+  InitUnion(const LabelType size)
   {
     m_UnionFind = UnionFindType(size + 1);
   }
@@ -228,7 +232,8 @@ private:
 
   void SetupLineOffsets(OffsetVectorType & LineOffsets);
 
-  void Wait()
+  void
+  Wait()
   {
     // use m_NumberOfLabels.size() to get the number of thread used
     if ( m_NumberOfLabels.size() > 1 )

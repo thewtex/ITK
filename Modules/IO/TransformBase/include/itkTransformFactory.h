@@ -38,10 +38,11 @@ namespace itk
  */
 
 template< typename T >
-class TransformFactory:public TransformFactoryBase
+class TransformFactory : public TransformFactoryBase
 {
 public:
-  static void RegisterTransform()
+  static void
+  RegisterTransform()
   {
     typename T::Pointer t = T::New();
 
@@ -53,6 +54,7 @@ public:
                            1,
                            CreateObjectFunction< T >::New() );
   }
+
 };
 } // end namespace itk
 

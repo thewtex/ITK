@@ -22,16 +22,17 @@
 const int HEIGHT = 20;
 const int WIDTH = 20;
 
-int itkHardConnectedComponentImageFilterTest(int, char* [] )
+int
+itkHardConnectedComponentImageFilterTest(int, char* [] )
 {
   typedef itk::Image<bool,2>           InputImageType;
   typedef itk::Image<unsigned short,2> OutputImageType;
   typedef InputImageType::IndexType    IndexType;
 
   itk::HardConnectedComponentImageFilter<InputImageType, OutputImageType>::Pointer
-    filter = itk::HardConnectedComponentImageFilter<InputImageType, OutputImageType>::New();
+                          filter = itk::HardConnectedComponentImageFilter<InputImageType, OutputImageType>::New();
   InputImageType::Pointer inputimg = InputImageType::New();
-  IndexType index;
+  IndexType               index;
   index.Fill(0);
   InputImageType::RegionType region;
 
@@ -47,38 +48,38 @@ int itkHardConnectedComponentImageFilterTest(int, char* [] )
   inputimg->SetRequestedRegion( region );
   inputimg->Allocate();
 
-  int row, col;
+  int       row, col;
   IndexType myIndex;
-  for(row = 0;row<20;row++)
+  for(row = 0; row<20; row++)
     {
-    for(col = 0;col < 20;col++)
+    for(col = 0; col < 20; col++)
       {
       myIndex[1] = row;
       myIndex[0] = col;
       inputimg->SetPixel(myIndex,false);
       }
     }
-  for(row = 0;row<15;row++)
+  for(row = 0; row<15; row++)
     {
-    for(col = 0;col<20;col++)
+    for(col = 0; col<20; col++)
       {
       myIndex[1] = row;
       myIndex[0] = col;
       inputimg->SetPixel(myIndex,true);
       }
     }
-  for(row = 0;row<10;row++)
+  for(row = 0; row<10; row++)
     {
-    for(col = 5;col<15;col++)
+    for(col = 5; col<15; col++)
       {
       myIndex[1] = row;
       myIndex[0] = col;
       inputimg->SetPixel(myIndex,false);
       }
     }
-  for(row = 0;row<7;row++)
+  for(row = 0; row<7; row++)
     {
-    for(col = 7;col<12;col++)
+    for(col = 7; col<12; col++)
       {
       myIndex[1] = row;
       myIndex[0] = col;
@@ -98,9 +99,9 @@ int itkHardConnectedComponentImageFilterTest(int, char* [] )
 
   std::cout << "Input Image" << std::endl;
   it.GoToBegin();
-  for(int i = 0;i < HEIGHT*WIDTH; i++)
+  for(int i = 0; i < HEIGHT*WIDTH; i++)
     {
-    if((i%WIDTH) == 0)
+    if( (i%WIDTH) == 0)
       {
       std::cout<<std::endl;
       }
@@ -114,9 +115,9 @@ int itkHardConnectedComponentImageFilterTest(int, char* [] )
 
   std::cout << std::endl << "Output Image" << std::endl;
   ot.GoToBegin();
-  for(int i = 0;i < HEIGHT*WIDTH; i++)
+  for(int i = 0; i < HEIGHT*WIDTH; i++)
     {
-    if((i%WIDTH) == 0)
+    if( (i%WIDTH) == 0)
       {
       std::cout<<std::endl;
       }

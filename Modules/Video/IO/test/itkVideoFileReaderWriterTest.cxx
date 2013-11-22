@@ -21,7 +21,8 @@
 #include "itkVideoFileWriter.h"
 #include "itkFileListVideoIOFactory.h"
 
-int itkVideoFileReaderWriterTest( int argc, char *argv[] )
+int
+itkVideoFileReaderWriterTest( int argc, char *argv[] )
 {
   // Check parameters
   if (argc != 7)

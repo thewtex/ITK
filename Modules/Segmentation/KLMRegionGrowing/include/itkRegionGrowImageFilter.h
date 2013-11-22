@@ -77,7 +77,7 @@ namespace itk
  * \ingroup ITKKLMRegionGrowing
  */
 template< typename TInputImage, typename TOutputImage >
-class RegionGrowImageFilter:
+class RegionGrowImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:

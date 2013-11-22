@@ -40,27 +40,27 @@ namespace itk
 
 template< unsigned int TDimension = 3,
           typename TTubePointType = TubeSpatialObjectPoint< TDimension > >
-class TubeSpatialObject:
+class TubeSpatialObject :
   public PointBasedSpatialObject< TDimension >
 {
 public:
 
-  typedef TubeSpatialObject                             Self;
-  typedef PointBasedSpatialObject< TDimension >         Superclass;
-  typedef SmartPointer< Self >                          Pointer;
-  typedef SmartPointer< const Self >                    ConstPointer;
-  typedef double                                        ScalarType;
-  typedef TTubePointType                                TubePointType;
-  typedef std::vector< TubePointType >                  PointListType;
-  typedef PointListType *                               PointListPointer;
-  typedef typename Superclass::PointType                PointType;
-  typedef typename Superclass::TransformType            TransformType;
-  typedef typename Superclass::SpatialObjectPointType   SpatialObjectPointType;
-  typedef VectorContainer< IdentifierType, PointType >  PointContainerType;
-  typedef SmartPointer< PointContainerType >            PointContainerPointer;
-  typedef typename Superclass::VectorType               VectorType;
-  typedef typename Superclass::CovariantVectorType      CovariantVectorType;
-  typedef typename Superclass::BoundingBoxType          BoundingBoxType;
+  typedef TubeSpatialObject                            Self;
+  typedef PointBasedSpatialObject< TDimension >        Superclass;
+  typedef SmartPointer< Self >                         Pointer;
+  typedef SmartPointer< const Self >                   ConstPointer;
+  typedef double                                       ScalarType;
+  typedef TTubePointType                               TubePointType;
+  typedef std::vector< TubePointType >                 PointListType;
+  typedef PointListType *                              PointListPointer;
+  typedef typename Superclass::PointType               PointType;
+  typedef typename Superclass::TransformType           TransformType;
+  typedef typename Superclass::SpatialObjectPointType  SpatialObjectPointType;
+  typedef VectorContainer< IdentifierType, PointType > PointContainerType;
+  typedef SmartPointer< PointContainerType >           PointContainerPointer;
+  typedef typename Superclass::VectorType              VectorType;
+  typedef typename Superclass::CovariantVectorType     CovariantVectorType;
+  typedef typename Superclass::BoundingBoxType         BoundingBoxType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -78,24 +78,39 @@ public:
   virtual void SetPoints(PointListType & newPoints);
 
   /** Return a point in the list given the index. */
-  virtual const SpatialObjectPointType * GetPoint(IdentifierType ind) const
-  { return &( m_Points[ind] ); }
+  virtual const SpatialObjectPointType *
+  GetPoint(IdentifierType ind) const
+  {
+    return &( m_Points[ind] );
+  }
 
   /** Return a point in the list given the index */
-  virtual SpatialObjectPointType * GetPoint(IdentifierType ind)
-  { return &( m_Points[ind] ); }
+  virtual SpatialObjectPointType *
+  GetPoint(IdentifierType ind)
+  {
+    return &( m_Points[ind] );
+  }
 
   /** Set a point in the list at the specified index */
-  virtual void SetPoint(IdentifierType ind, const TubePointType & pnt)
-  { m_Points[ind] = pnt; }
+  virtual void
+  SetPoint(IdentifierType ind, const TubePointType & pnt)
+  {
+    m_Points[ind] = pnt;
+  }
 
   /** Remove a point in the list given the index */
-  virtual void RemovePoint(IdentifierType ind)
-  { m_Points.erase(m_Points.begin() + ind); }
+  virtual void
+  RemovePoint(IdentifierType ind)
+  {
+    m_Points.erase(m_Points.begin() + ind);
+  }
 
   /** Return the number of points in the list */
-  virtual SizeValueType GetNumberOfPoints(void) const
-  { return m_Points.size(); }
+  virtual SizeValueType
+  GetNumberOfPoints(void) const
+  {
+    return m_Points.size();
+  }
 
   /** Set the type of tube end-type: 0 = flat, 1 = rounded */
   itkSetMacro(EndType, unsigned int);
@@ -162,7 +177,8 @@ protected:
   bool m_Artery;
 
   TubeSpatialObject();
-  virtual ~TubeSpatialObject();
+  virtual
+  ~TubeSpatialObject();
 
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -174,6 +190,7 @@ protected:
 private:
   TubeSpatialObject(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -37,7 +37,7 @@ namespace itk
  *
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT ProgressAccumulator:public Object
+class ITKCommon_EXPORT ProgressAccumulator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -91,8 +91,9 @@ public:
    * because this functionality is already present in the filter
    * constructor.
    */
-#if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
+#if !defined ( ITK_FUTURE_LEGACY_REMOVE )
   void ResetProgress();
+
 #endif
 
   /**
@@ -107,13 +108,15 @@ public:
    * triggered a ModifiedTime and thus caused the filters to rerun.
    * To avoid this behavior, the implementation of this method is now empty.
    */
-#if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
+#if !defined ( ITK_FUTURE_LEGACY_REMOVE )
   void ResetFilterProgressAndKeepAccumulatedProgress();
+
 #endif
 
 protected:
   ProgressAccumulator();
-  virtual ~ProgressAccumulator();
+  virtual
+  ~ProgressAccumulator();
   void PrintSelf(std::ostream & s, Indent indent) const;
 
 private:
@@ -132,7 +135,7 @@ private:
     // The tags for adding/removing observers to mini-pipeline filter
     unsigned long ProgressObserverTag;
     unsigned long StartObserverTag;
-  };
+    };
 
   /** A callback function that is called by the progressing filters */
   void ReportProgress(Object *object, const EventObject & event);

@@ -22,7 +22,6 @@
 #include  <locale>
 #include <vector>
 
-
 namespace itk
 {
 OBJMeshIO
@@ -112,10 +111,10 @@ OBJMeshIO
   this->m_NumberOfPoints = 0;
   this->m_NumberOfCells = 0;
   this->m_NumberOfPointPixels = 0;
-  std::string   line;
-  std::string   inputLine;
-  std::string   type;
-  std::locale   loc;
+  std::string line;
+  std::string inputLine;
+  std::string type;
+  std::locale loc;
   while ( std::getline(m_InputFile, line, '\n') )
     {
     inputLine.clear();
@@ -742,4 +741,5 @@ OBJMeshIO
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // namespace itk end

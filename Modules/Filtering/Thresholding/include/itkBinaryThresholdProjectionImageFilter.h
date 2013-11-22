@@ -52,15 +52,20 @@ template< typename TInputPixel, typename TOutputPixel >
 class BinaryThresholdAccumulator
 {
 public:
-  BinaryThresholdAccumulator(SizeValueType) {}
-  ~BinaryThresholdAccumulator(){}
+  BinaryThresholdAccumulator(SizeValueType) {
+  }
 
-  inline void Initialize()
+  ~BinaryThresholdAccumulator(){
+  }
+
+  inline void
+  Initialize()
   {
     m_IsForeground = false;
   }
 
-  inline void operator()(const TInputPixel & input)
+  inline void
+  operator()(const TInputPixel & input)
   {
     if ( input >= m_ThresholdValue )
       {
@@ -68,7 +73,8 @@ public:
       }
   }
 
-  inline TOutputPixel GetValue()
+  inline TOutputPixel
+  GetValue()
   {
     if ( m_IsForeground )
       {
@@ -89,7 +95,7 @@ public:
 } // end namespace Function
 
 template< typename TInputImage, typename TOutputImage >
-class BinaryThresholdProjectionImageFilter:
+class BinaryThresholdProjectionImageFilter :
   public ProjectionImageFilter< TInputImage, TOutputImage,
                                 Function::BinaryThresholdAccumulator<
                                   typename TInputImage::PixelType,
@@ -153,21 +159,24 @@ protected:
     m_ThresholdValue = NumericTraits< InputPixelType >::Zero;
   }
 
-  virtual ~BinaryThresholdProjectionImageFilter() {}
+  virtual
+  ~BinaryThresholdProjectionImageFilter() {
+  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
 
     typedef typename NumericTraits< InputPixelType >::PrintType
-    InputPixelPrintType;
+      InputPixelPrintType;
 
     os << indent << "ForegroundValue: "
        << static_cast< InputPixelPrintType >( m_ForegroundValue )
        << std::endl;
 
     typedef typename NumericTraits< OutputPixelType >::PrintType
-    OutputPixelPrintType;
+      OutputPixelPrintType;
 
     os << indent << "BackgroundValue: "
        << static_cast< OutputPixelPrintType >( m_BackgroundValue )
@@ -178,7 +187,8 @@ protected:
        << std::endl;
   }
 
-  virtual AccumulatorType NewAccumulator(SizeValueType size) const
+  virtual AccumulatorType
+  NewAccumulator(SizeValueType size) const
   {
     AccumulatorType accumulator(size);
 
@@ -201,6 +211,7 @@ private:
   //purposely not implemented
   BinaryThresholdProjectionImageFilter(const Self &);
   void operator=(const Self &);
+
 };  // end BinaryThresholdProjectionImageFilter
 } //end namespace itk
 

@@ -69,7 +69,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class InPlaceImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+class InPlaceImageFilter : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -137,9 +137,10 @@ protected:
    * an InPlaceFilter is not threaded (i.e. it provides an
    * implementation of GenerateData()), then this method (or
    * equivalent) must be called in GenerateData(). */
-  virtual void AllocateOutputs()
+  virtual void
+  AllocateOutputs()
   {
-    this->InternalAllocateOutputs(IsSame<TInputImage, TOutputImage>());
+    this->InternalAllocateOutputs(IsSame<TInputImage, TOutputImage>() );
   }
 
   /** InPlaceImageFilter may transfer ownership of the input bulk data
@@ -164,7 +165,8 @@ private:
   void operator=(const Self &);     //purposely not implemented
 
   // the type are different we can't run in place
-  void InternalAllocateOutputs( const FalseType& )
+  void
+  InternalAllocateOutputs( const FalseType& )
   {
     this->m_RunningInPlace = false;
     this->Superclass::AllocateOutputs();

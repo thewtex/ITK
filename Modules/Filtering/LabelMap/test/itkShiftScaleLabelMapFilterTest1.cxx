@@ -35,8 +35,8 @@
 
 #include "itkTestingMacros.h"
 
-
-int itkShiftScaleLabelMapFilterTest1(int argc, char * argv[])
+int
+itkShiftScaleLabelMapFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 6 )
@@ -70,7 +70,6 @@ int itkShiftScaleLabelMapFilterTest1(int argc, char * argv[])
   change->SetScale( atof( argv[4] ) );
   TEST_SET_GET_VALUE( atof( argv[4] ), change->GetScale() );
 
-
   bool changeBackground = atoi( argv[5] );
   change->SetChangeBackgroundValue( changeBackground );
   TEST_SET_GET_VALUE( (atoi( argv[5] ) != 0), change->GetChangeBackgroundValue() );
@@ -80,7 +79,6 @@ int itkShiftScaleLabelMapFilterTest1(int argc, char * argv[])
 
   change->ChangeBackgroundValueOn();
   TEST_SET_GET_VALUE( true, change->GetChangeBackgroundValue() );
-
 
   itk::SimpleFilterWatcher watcher6(change, "filter");
 

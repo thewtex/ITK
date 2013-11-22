@@ -23,6 +23,7 @@ int
 TestImageOfVectors(const std::string &fname)
 {
   const int dimsize = 2;
+
   /** Deformation field pixel type. */
   typedef typename itk::Vector<ScalarType,TVecLength> FieldPixelType;
 
@@ -37,18 +38,23 @@ TestImageOfVectors(const std::string &fname)
   typename VectorImageType::SpacingType spacing;
   typename VectorImageType::PointType origin;
   // original test case was destined for failure.  NIfTI always writes out 3D
-  // orientation.  The only sensible matrices you could pass in would be of the form
+  // orientation.  The only sensible matrices you could pass in would be of the
+  // form
   // A B C 0
   // D E F 0
   // E F G 0
   // 0 0 0 1
-  // anything in the 4th dimension that didn't follow that form would just come up scrambled.
-  //NOTE: Nifti only reports up to 3D images correctly for direction cosigns.  It is implicitly assumed
-  //      that the direction for dimensions 4 or greater come diagonal elements including a 1 in the
+  // anything in the 4th dimension that didn't follow that form would just come
+  // up scrambled.
+  //NOTE: Nifti only reports up to 3D images correctly for direction cosigns.
+  //  It is implicitly assumed
+  //      that the direction for dimensions 4 or greater come diagonal elements
+  // including a 1 in the
   //      direction matrix.
   const typename VectorImageType::DirectionType myDirection = PreFillDirection<TDimension>();
 
-  std::cout << " === Testing VectorLength: " << TVecLength << " Image Dimension " << static_cast<int>(TDimension) << std::endl;
+  std::cout << " === Testing VectorLength: " << TVecLength << " Image Dimension " << static_cast<int>(TDimension) <<
+    std::endl;
   std::cout << "======================== Initialized Direction" << std::endl;
   std::cout << myDirection << std::endl;
 
@@ -133,7 +139,7 @@ TestImageOfVectors(const std::string &fname)
     message += fname; message += "\n";
     message += ex.GetLocation(); message += "\n";
     message += ex.GetDescription(); std::cout << message << std::endl;
-    itk::IOTestHelper::Remove(fname.c_str());
+    itk::IOTestHelper::Remove(fname.c_str() );
     return EXIT_FAILURE;
     }
   //
@@ -150,7 +156,7 @@ TestImageOfVectors(const std::string &fname)
     message += fname; message += "\n";
     message += ex.GetLocation(); message += "\n";
     message += ex.GetDescription(); std::cout << message << std::endl;
-    itk::IOTestHelper::Remove(fname.c_str());
+    itk::IOTestHelper::Remove(fname.c_str() );
     return EXIT_FAILURE;
     }
   bool same = true;
@@ -164,13 +170,14 @@ TestImageOfVectors(const std::string &fname)
     std::cout << "Spacing is different: " << readback->GetSpacing() << " != " << vi->GetSpacing()  << std::endl;
     same = false;
     }
-  for(unsigned int r=0;r<TDimension;r++)
+  for(unsigned int r=0; r<TDimension; r++)
     {
-    for(unsigned int c=0;c<TDimension;c++)
+    for(unsigned int c=0; c<TDimension; c++)
       {
       if(vcl_abs(readback->GetDirection()[r][c] - vi->GetDirection()[r][c]) > 1e-7 )
         {
-        std::cout << "Direction is different:\n " << readback->GetDirection() << "\n != \n" << vi->GetDirection()  << std::endl;
+        std::cout << "Direction is different:\n " << readback->GetDirection() << "\n != \n" << vi->GetDirection()  <<
+          std::endl;
         same = false;
         break;
         }
@@ -223,7 +230,7 @@ TestImageOfVectors(const std::string &fname)
     }
   if(same)
     {
-    itk::IOTestHelper::Remove(fname.c_str());
+    itk::IOTestHelper::Remove(fname.c_str() );
     }
   else
     {
@@ -234,7 +241,8 @@ TestImageOfVectors(const std::string &fname)
 
 /** Test writing and reading a Vector Image
  */
-int itkNiftiImageIOTest3(int ac, char* av[])
+int
+itkNiftiImageIOTest3(int ac, char* av[])
 {
   //
   // first argument is passing in the writable directory to do all testing
@@ -249,12 +257,12 @@ int itkNiftiImageIOTest3(int ac, char* av[])
     }
   int success(0);
 
-  success |= TestImageOfVectors<float,3,1>(std::string("testVectorImage_float_3_1.nii.gz"));
-  success |= TestImageOfVectors<float,3,2>(std::string("testVectorImage_float_3_2.nii.gz"));
-  success |= TestImageOfVectors<float,3,3>(std::string("testVectorImage_float_3_3.nii.gz"));
-  success |= TestImageOfVectors<float,4,3>(std::string("testVectorImage_float_4_3.nii.gz"));
-  success |= TestImageOfVectors<float,4,4>(std::string("testVectorImage_float_4_4.nii.gz"));
-  success |= TestImageOfVectors<double,3,3>(std::string("testVectorImage_double_3_3.nii.gz"));
+  success |= TestImageOfVectors<float,3,1>(std::string("testVectorImage_float_3_1.nii.gz") );
+  success |= TestImageOfVectors<float,3,2>(std::string("testVectorImage_float_3_2.nii.gz") );
+  success |= TestImageOfVectors<float,3,3>(std::string("testVectorImage_float_3_3.nii.gz") );
+  success |= TestImageOfVectors<float,4,3>(std::string("testVectorImage_float_4_3.nii.gz") );
+  success |= TestImageOfVectors<float,4,4>(std::string("testVectorImage_float_4_4.nii.gz") );
+  success |= TestImageOfVectors<double,3,3>(std::string("testVectorImage_double_3_3.nii.gz") );
 
   return success;
 }

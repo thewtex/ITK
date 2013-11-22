@@ -45,7 +45,8 @@ class ScalarToRGBPixelFunctor
 {
 public:
   ScalarToRGBPixelFunctor();
-  ~ScalarToRGBPixelFunctor() {}
+  ~ScalarToRGBPixelFunctor() {
+  }
 
   typedef unsigned char                RGBComponentType;
   typedef RGBPixel< RGBComponentType > RGBPixelType;
@@ -53,40 +54,45 @@ public:
 
   RGBPixelType operator()(const TScalar &) const;
 
-  void SetLittleEndian()
+  void
+  SetLittleEndian()
   {
     m_UseMSBForHashing = false;
   }
 
-  void SetBigEndian()
+  void
+  SetBigEndian()
   {
     m_UseMSBForHashing = true;
   }
 
-  void SetUseMSBForHashing(bool value)
+  void
+  SetUseMSBForHashing(bool value)
   {
     m_UseMSBForHashing = value;
   }
 
-  bool GetUseMSBForHashing() const
+  bool
+  GetUseMSBForHashing() const
   {
     return m_UseMSBForHashing;
   }
 
-  void UseMSBForHashingOn()
+  void
+  UseMSBForHashingOn()
   {
     m_UseMSBForHashing = true;
   }
 
-  void UseMSBForHashingOff()
+  void
+  UseMSBForHashingOff()
   {
     m_UseMSBForHashing = false;
   }
 
-
 private:
-  bool          m_UseMSBForHashing;
-  unsigned int  m_ColorIndex[3];
+  bool         m_UseMSBForHashing;
+  unsigned int m_ColorIndex[3];
 };
 } // end namespace functor
 } // end namespace itk

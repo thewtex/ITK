@@ -25,7 +25,6 @@ namespace itk
 namespace watershed
 {
 
-
 template< typename TScalar >
 void
 SegmentTree< TScalar >
@@ -50,6 +49,7 @@ SegmentTree< TScalar >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace watershed
 } // end namespace itk
 

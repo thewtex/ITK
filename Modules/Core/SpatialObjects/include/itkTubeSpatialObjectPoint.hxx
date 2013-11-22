@@ -39,7 +39,8 @@ TubeSpatialObjectPoint< TPointDimension >
 template< unsigned int TPointDimension >
 TubeSpatialObjectPoint< TPointDimension >
 ::~TubeSpatialObjectPoint(void)
-{}
+{
+}
 
 /** Get the radius */
 template< unsigned int TPointDimension >
@@ -63,9 +64,9 @@ template< unsigned int TPointDimension >
 const typename TubeSpatialObjectPoint< TPointDimension >::VectorType &
 TubeSpatialObjectPoint< TPointDimension >
 ::GetTangent(void) const
-{
+  {
   return m_T;
-}
+  }
 
 // n-D case
 template< unsigned int TPointDimension >
@@ -101,9 +102,9 @@ template< unsigned int TPointDimension >
 const typename TubeSpatialObjectPoint< TPointDimension >::CovariantVectorType &
 TubeSpatialObjectPoint< TPointDimension >
 ::GetNormal1() const
-{
+  {
   return m_Normal1;
-}
+  }
 
 // n-D case
 template< unsigned int TPointDimension >
@@ -139,9 +140,9 @@ template< unsigned int TPointDimension >
 const typename TubeSpatialObjectPoint< TPointDimension >::CovariantVectorType &
 TubeSpatialObjectPoint< TPointDimension >
 ::GetNormal2() const
-{
+  {
   return m_Normal2;
-}
+  }
 
 // n-D case
 template< unsigned int TPointDimension >
@@ -187,6 +188,7 @@ TubeSpatialObjectPoint< TPointDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "#Dims: " << m_NumDimensions << std::endl;
   os << indent << "R: " << m_R << std::endl;
   os << indent << "X: " << this->m_X << std::endl;
@@ -213,6 +215,7 @@ TubeSpatialObjectPoint< TPointDimension >
     }
   return *this;
 }
+
 } // end namespace itk
 
 #endif

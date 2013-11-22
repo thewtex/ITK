@@ -59,12 +59,16 @@ class ITKCommon_EXPORT EventObject
 public:
   /** Constructor and copy constructor.  Note that these functions will be
    * called when children are instantiated. */
-  EventObject() {}
+  EventObject() {
+  }
 
-  EventObject(const EventObject &){}
+  EventObject(const EventObject &){
+  }
 
   /** Virtual destructor needed  */
-  virtual ~EventObject() {}
+  virtual
+  ~EventObject() {
+  }
 
   /**  Create an Event of this type This method work as a Factory for
    *  creating events of each particular type. */
@@ -93,17 +97,18 @@ protected:
   virtual void PrintTrailer(std::ostream & os, Indent indent) const;
 
 private:
-  typedef  EventObject *EventFactoryFunction ( );
+  typedef  EventObject *EventFactoryFunction ();
   void operator=(const EventObject &);
+
 };
 
 /** Generic inserter operator for EventObject and its subclasses. */
-inline std::ostream & operator<<(std::ostream & os, EventObject & e)
+inline std::ostream &
+operator<<(std::ostream & os, EventObject & e)
 {
   ( &e )->Print(os);
   return os;
 }
-
 
 #define ITKEvent_EXPORT ITKCommon_EXPORT
 
@@ -112,7 +117,7 @@ inline std::ostream & operator<<(std::ostream & os, EventObject & e)
  */
 #define itkEventMacro(classname, super)                              \
   /** \class classname */                                            \
-  class ITKEvent_EXPORT classname:public super                       \
+  class ITKEvent_EXPORT classname : public super                       \
   {                                                                  \
 public:                                                              \
     typedef classname Self;                                          \
@@ -121,12 +126,13 @@ public:                                                              \
     virtual ~classname() {}                                          \
     virtual const char *GetEventName() const { return #classname; } \
     virtual bool CheckEvent(const::itk::EventObject * e) const       \
-               { return ( dynamic_cast< const Self * >( e ) != NULL ); }         \
+                       { return ( dynamic_cast< const Self * >( e ) != NULL ); }         \
     virtual::itk::EventObject *MakeObject() const                    \
-               { return new Self; }                                  \
-    classname(const Self &s):super(s){};                             \
+                       { return new Self; }                                  \
+    classname(const Self &s) : super(s){};                             \
 private:                                                             \
-    void operator=(const Self &);                                    \
+    void \
+    operator=(const Self &);                                    \
   };
 
 /**

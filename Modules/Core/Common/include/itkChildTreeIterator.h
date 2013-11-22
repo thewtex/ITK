@@ -23,18 +23,18 @@
 namespace itk
 {
 template< typename TTreeType >
-class ChildTreeIterator:public TreeIteratorBase< TTreeType >
+class ChildTreeIterator : public TreeIteratorBase< TTreeType >
 {
 public:
 
   /** Typedefs */
-  typedef ChildTreeIterator                       Self;
-  typedef TreeIteratorBase< TTreeType >           Superclass;
-  typedef TTreeType                               TreeType;
-  typedef typename TTreeType::ValueType           ValueType;
-  typedef typename Superclass::TreeNodeType       TreeNodeType;
-  typedef typename TreeNodeType::ChildIdentifier  ChildIdentifier;
-  typedef typename Superclass::NodeType           NodeType;
+  typedef ChildTreeIterator                      Self;
+  typedef TreeIteratorBase< TTreeType >          Superclass;
+  typedef TTreeType                              TreeType;
+  typedef typename TTreeType::ValueType          ValueType;
+  typedef typename Superclass::TreeNodeType      TreeNodeType;
+  typedef typename TreeNodeType::ChildIdentifier ChildIdentifier;
+  typedef typename Superclass::NodeType          NodeType;
 
   /** Constructor */
   ChildTreeIterator(TreeType *tree, const TreeNodeType *start = NULL);
@@ -55,11 +55,13 @@ public:
   TreeIteratorBase< TTreeType > * Clone();
 
   /** operator = */
-  Self & operator=(Superclass & iterator)
+  Self &
+  operator=(Superclass & iterator)
   {
     if(this != &iterator)
       {
       Superclass::operator=(iterator);
+
       ChildTreeIterator< TTreeType > & it =
         static_cast< ChildTreeIterator< TTreeType > & >( iterator );
       m_ListPosition = it.m_ListPosition;
@@ -78,8 +80,8 @@ protected:
 
 private:
 
-  mutable ChildIdentifier  m_ListPosition;
-  TreeNodeType *           m_ParentNode;
+  mutable ChildIdentifier m_ListPosition;
+  TreeNodeType *          m_ParentNode;
 };
 
 } // end namespace itk

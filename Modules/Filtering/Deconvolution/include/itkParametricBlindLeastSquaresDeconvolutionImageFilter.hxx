@@ -219,10 +219,10 @@ ParametricBlindLeastSquaresDeconvolutionImageFilter< TInputImage, TKernelImage, 
     // Subtract the two and divide by deltaTheta * 2 to get the
     // partial derivative image estimate, then multiply the result by
     // the Jacobian. We'll do this all in one loop to simplify things.
-    typename InternalKernelImageType::RegionType region( plusImage->GetLargestPossibleRegion() );
+    typename InternalKernelImageType::RegionType        region( plusImage->GetLargestPossibleRegion() );
     ImageRegionConstIterator< InternalKernelImageType > plusImageIter( plusImage, region );
     ImageRegionConstIterator< InternalKernelImageType > minusImageIter( minusImage, region );
-    ImageRegionConstIterator< InternalImageType > jacobianImageIter( jacobianIFFT->GetOutput(), region );
+    ImageRegionConstIterator< InternalImageType >       jacobianImageIter( jacobianIFFT->GetOutput(), region );
 
     double sum = 0.0;
     while ( !plusImageIter.IsAtEnd() )
@@ -283,6 +283,7 @@ ParametricBlindLeastSquaresDeconvolutionImageFilter< TInputImage, TKernelImage, 
   os << indent << "Alpha: " << m_Alpha << std::endl;
   os << indent << "Beta: " << m_Beta << std::endl;
 }
+
 } // end namespace itk
 
 #endif

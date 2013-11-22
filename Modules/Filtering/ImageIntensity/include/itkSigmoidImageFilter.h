@@ -58,8 +58,11 @@ public:
     m_OutputMaximum = NumericTraits< TOutput >::max();
   }
 
-  ~Sigmoid() {}
-  bool operator!=(const Sigmoid & other) const
+  ~Sigmoid() {
+  }
+
+  bool
+  operator!=(const Sigmoid & other) const
   {
     if ( m_Alpha != other.m_Alpha
          || m_Beta != other.m_Beta
@@ -71,12 +74,14 @@ public:
     return false;
   }
 
-  bool operator==(const Sigmoid & other) const
+  bool
+  operator==(const Sigmoid & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     const double x = ( static_cast< double >( A ) - m_Beta ) / m_Alpha;
     const double e = 1.0 / ( 1.0 + vcl_exp(-x) );
@@ -86,42 +91,50 @@ public:
     return static_cast< TOutput >( v );
   }
 
-  void SetAlpha(double alpha)
+  void
+  SetAlpha(double alpha)
   {
     m_Alpha = alpha;
   }
 
-  void SetBeta(double beta)
+  void
+  SetBeta(double beta)
   {
     m_Beta = beta;
   }
 
-  double GetAlpha() const
+  double
+  GetAlpha() const
   {
     return m_Alpha;
   }
 
-  double GetBeta() const
+  double
+  GetBeta() const
   {
     return m_Beta;
   }
 
-  void SetOutputMinimum(TOutput min)
+  void
+  SetOutputMinimum(TOutput min)
   {
     m_OutputMinimum = min;
   }
 
-  void SetOutputMaximum(TOutput max)
+  void
+  SetOutputMaximum(TOutput max)
   {
     m_OutputMaximum = max;
   }
 
-  TOutput GetOutputMinimum() const
+  TOutput
+  GetOutputMinimum() const
   {
     return m_OutputMinimum;
   }
 
-  TOutput GetOutputMaximum() const
+  TOutput
+  GetOutputMaximum() const
   {
     return m_OutputMaximum;
   }
@@ -135,7 +148,7 @@ private:
 }
 
 template< typename TInputImage, typename TOutputImage >
-class SigmoidImageFilter:
+class SigmoidImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Sigmoid<
@@ -146,9 +159,9 @@ public:
   /** Standard class typedefs. */
   typedef SigmoidImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Sigmoid< typename TInputImage::PixelType,
-                       typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Sigmoid< typename TInputImage::PixelType,
+                        typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -161,7 +174,8 @@ public:
   /** Macro that provides the GetNameOfClass() method */
   itkTypeMacro(SigmoidImageFilter, UnaryFunctorImageFilter);
 
-  void SetAlpha(double alpha)
+  void
+  SetAlpha(double alpha)
   {
     if ( alpha == this->GetFunctor().GetAlpha() )
       {
@@ -171,12 +185,14 @@ public:
     this->Modified();
   }
 
-  double GetAlpha() const
+  double
+  GetAlpha() const
   {
     return this->GetFunctor().GetAlpha();
   }
 
-  void SetBeta(double beta)
+  void
+  SetBeta(double beta)
   {
     if ( beta == this->GetFunctor().GetBeta() )
       {
@@ -186,12 +202,14 @@ public:
     this->Modified();
   }
 
-  double GetBeta() const
+  double
+  GetBeta() const
   {
     return this->GetFunctor().GetBeta();
   }
 
-  void SetOutputMinimum(OutputPixelType min)
+  void
+  SetOutputMinimum(OutputPixelType min)
   {
     if ( min == this->GetFunctor().GetOutputMinimum() )
       {
@@ -201,12 +219,14 @@ public:
     this->Modified();
   }
 
-  OutputPixelType GetOutputMinimum() const
+  OutputPixelType
+  GetOutputMinimum() const
   {
     return this->GetFunctor().GetOutputMinimum();
   }
 
-  void SetOutputMaximum(OutputPixelType max)
+  void
+  SetOutputMaximum(OutputPixelType max)
   {
     if ( max == this->GetFunctor().GetOutputMaximum() )
       {
@@ -216,7 +236,8 @@ public:
     this->Modified();
   }
 
-  OutputPixelType GetOutputMaximum() const
+  OutputPixelType
+  GetOutputMaximum() const
   {
     return this->GetFunctor().GetOutputMaximum();
   }
@@ -237,12 +258,17 @@ public:
 #endif
 
 protected:
-  SigmoidImageFilter() {}
-  virtual ~SigmoidImageFilter() {}
+  SigmoidImageFilter() {
+  }
+
+  virtual
+  ~SigmoidImageFilter() {
+  }
 
 private:
   SigmoidImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -91,8 +91,8 @@ BinaryMorphologicalClosingImageFilter< TInputImage, TOutputImage, TKernel >
     {
     typedef ConstantPadImageFilter< InputImageType, InputImageType > PadType;
     typename PadType::Pointer pad = PadType::New();
-    pad->SetPadLowerBound(this->GetKernel().GetRadius());
-    pad->SetPadUpperBound(this->GetKernel().GetRadius());
+    pad->SetPadLowerBound(this->GetKernel().GetRadius() );
+    pad->SetPadUpperBound(this->GetKernel().GetRadius() );
     pad->SetConstant(backgroundValue);
     pad->SetInput( this->GetInput() );
 
@@ -175,5 +175,6 @@ BinaryMorphologicalClosingImageFilter< TInputImage, TOutputImage, TKernel >
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( m_ForegroundValue ) << std::endl;
   os << indent << "SafeBorder: " << m_SafeBorder << std::endl;
 }
+
 } // end namespace itk
 #endif

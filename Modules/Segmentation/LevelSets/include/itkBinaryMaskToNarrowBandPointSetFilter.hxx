@@ -59,7 +59,8 @@ BinaryMaskToNarrowBandPointSetFilter< TInputImage, TOutputMesh >
 template< typename TInputImage, typename TOutputMesh >
 BinaryMaskToNarrowBandPointSetFilter< TInputImage, TOutputMesh >
 ::~BinaryMaskToNarrowBandPointSetFilter()
-{}
+{
+}
 
 /**
  *
@@ -70,6 +71,7 @@ BinaryMaskToNarrowBandPointSetFilter< TInputImage, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "BandWidth: " << m_BandWidth << std::endl;
 }
 
@@ -80,7 +82,8 @@ template< typename TInputImage, typename TOutputMesh >
 void
 BinaryMaskToNarrowBandPointSetFilter< TInputImage, TOutputMesh >
 ::GenerateOutputInformation()
-{}
+{
+}
 
 /**
  *
@@ -148,6 +151,7 @@ BinaryMaskToNarrowBandPointSetFilter< TInputImage, TOutputMesh >
   // the pipeline.
   mesh->SetBufferedRegion( mesh->GetRequestedRegion() );
 }
+
 } // end namespace itk
 
 #endif

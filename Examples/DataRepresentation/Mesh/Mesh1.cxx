@@ -54,7 +54,8 @@
 #include "itkMesh.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
 
   //  Software Guide : BeginLatex
@@ -65,9 +66,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float   PixelType;
+  typedef   float PixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -85,9 +85,8 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 3;
-  typedef itk::Mesh< PixelType, Dimension >   MeshType;
+  typedef itk::Mesh< PixelType, Dimension > MeshType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -103,9 +102,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -131,7 +129,6 @@ int main(int, char *[])
   p3[0]= -1.0; p3[1]=  1.0; p3[2]= 0.0; // fourth point ( -1,  1, 0 )
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The points can now be inserted in the Mesh using the \code{SetPoint()}
@@ -150,7 +147,6 @@ int main(int, char *[])
   mesh->SetPoint( 3, p3 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The current number of points in the Mesh can be queried with the
@@ -163,7 +159,6 @@ int main(int, char *[])
   // Software Guide : BeginCodeSnippet
   std::cout << "Points = " << mesh->GetNumberOfPoints() << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -178,9 +173,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::PointsContainer::Iterator     PointsIterator;
+  typedef MeshType::PointsContainer::Iterator PointsIterator;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -193,9 +187,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointsIterator  pointIterator = mesh->GetPoints()->Begin();
+  PointsIterator pointIterator = mesh->GetPoints()->Begin();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

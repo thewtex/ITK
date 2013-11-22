@@ -33,7 +33,8 @@ public:
 
   typedef DataObject::DataObjectIdentifierType DataObjectIdentifierType;
 
-  DataObjectIterator() {}
+  DataObjectIterator() {
+  }
 
   DataObjectIterator(const DataObjectIterator & iter)
   {
@@ -42,7 +43,8 @@ public:
     m_End = iter.m_End;
   }
 
-  DataObjectIterator & operator=(const DataObjectIterator & iter)
+  DataObjectIterator &
+  operator=(const DataObjectIterator & iter)
   {
     if(this != &iter)
       {
@@ -53,48 +55,57 @@ public:
     return *this;
   }
 
-  DataObject * GetDataObject()
+  DataObject *
+  GetDataObject()
   {
     return m_Iterator->second;
   }
 
-  const DataObjectIdentifierType & GetName() const
+  const DataObjectIdentifierType &
+  GetName() const
   {
     return m_Iterator->first;
   }
 
-  DataObjectIterator operator++(int)
+  DataObjectIterator
+  operator++(int)
   {
     DataObjectIterator tmp = *this;
+
     ++(*this);
     return tmp;
   }
 
-  DataObjectIterator & operator++()
+  DataObjectIterator &
+  operator++()
   {
     ++m_Iterator;
     return *this;
   }
 
-  bool operator==(const DataObjectIterator & iter) const
-    {
+  bool
+  operator==(const DataObjectIterator & iter) const
+  {
     return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
-    }
+  }
 
-  bool operator!=(const DataObjectIterator & iter) const
-    {
+  bool
+  operator!=(const DataObjectIterator & iter) const
+  {
     return !( *this == iter );
-    }
+  }
 
-  void GoToBegin()
-    {
-      m_Iterator = m_Begin;
-    }
+  void
+  GoToBegin()
+  {
+    m_Iterator = m_Begin;
+  }
 
-    bool IsAtEnd() const
-    {
-      return m_Iterator == m_End;
-    }
+  bool
+  IsAtEnd() const
+  {
+    return m_Iterator == m_End;
+  }
 
 protected:
   typedef ProcessObject::DataObjectPointerMap::iterator InternalIteratorType;

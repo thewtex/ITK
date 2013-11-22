@@ -50,7 +50,7 @@ namespace Statistics
  */
 
 template< typename TImage >
-class ImageToListSampleAdaptor:
+class ImageToListSampleAdaptor :
   public ListSample< typename MeasurementVectorPixelTraits< typename TImage::PixelType >::MeasurementVectorType >
 {
 public:
@@ -59,7 +59,7 @@ public:
 
   typedef ListSample< typename MeasurementVectorPixelTraits<
                         typename TImage::PixelType >::MeasurementVectorType >
-  Superclass;
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -83,11 +83,10 @@ public:
   typedef ImageRegionConstIterator< ImageType >     ImageConstIteratorType;
   typedef PixelTraits< typename TImage::PixelType > PixelTraitsType;
 
-
   /** Superclass typedefs for Measurement vector, measurement,
    * Instance Identifier, frequency, size, size element value */
-  typedef MeasurementVectorPixelTraits< PixelType >                   MeasurementPixelTraitsType;
-  typedef typename MeasurementPixelTraitsType::MeasurementVectorType  MeasurementVectorType;
+  typedef MeasurementVectorPixelTraits< PixelType >                  MeasurementPixelTraitsType;
+  typedef typename MeasurementPixelTraitsType::MeasurementVectorType MeasurementVectorType;
 
   typedef MeasurementVectorTraitsTypes< MeasurementVectorType > MeasurementVectorTraitsType;
   typedef typename MeasurementVectorTraitsType::ValueType       MeasurementType;
@@ -111,10 +110,12 @@ public:
   /** method to return measurement vector for a specified id */
   virtual const MeasurementVectorType & GetMeasurementVector(InstanceIdentifier id) const;
 
-  virtual MeasurementVectorSizeType GetMeasurementVectorSize() const
+  virtual MeasurementVectorSizeType
+  GetMeasurementVectorSize() const
   {
     // some filter are expected that this method returns something even if the
-    // input is not set. This won't be the right value for a variable length vector
+    // input is not set. This won't be the right value for a variable length
+    // vector
     // but it's better than an exception.
     if( m_Image.IsNull() )
       {
@@ -153,42 +154,50 @@ public:
       m_InstanceIdentifier = iter.m_InstanceIdentifier;
     }
 
-    ConstIterator & operator=(const ConstIterator & iter)
+    ConstIterator &
+    operator=(const ConstIterator & iter)
     {
       m_Iter = iter.m_Iter;
       m_InstanceIdentifier = iter.m_InstanceIdentifier;
       return *this;
     }
 
-    AbsoluteFrequencyType GetFrequency() const
+    AbsoluteFrequencyType
+    GetFrequency() const
     {
       return 1;
     }
 
-    const MeasurementVectorType & GetMeasurementVector() const
+    const MeasurementVectorType &
+    GetMeasurementVector() const
     {
       MeasurementVectorTraits::Assign( this->m_MeasurementVectorCache, m_Iter.Get() );
+
       return this->m_MeasurementVectorCache;
     }
 
-    InstanceIdentifier GetInstanceIdentifier() const
+    InstanceIdentifier
+    GetInstanceIdentifier() const
     {
       return m_InstanceIdentifier;
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_Iter;
       ++m_InstanceIdentifier;
       return *this;
     }
 
-    bool operator!=(const ConstIterator & it)
+    bool
+    operator!=(const ConstIterator & it)
     {
       return ( m_Iter != it.m_Iter );
     }
 
-    bool operator==(const ConstIterator & it)
+    bool
+    operator==(const ConstIterator & it)
     {
       return ( m_Iter == it.m_Iter );
     }
@@ -216,19 +225,22 @@ private:
    *  \brief Iterator
    * \ingroup ITKStatistics
    */
-  class Iterator:public ConstIterator
+  class Iterator : public ConstIterator
   {
     friend class ImageToListSampleAdaptor;
 
 public:
 
-    Iterator(Self *adaptor):ConstIterator(adaptor)
-    {}
+    Iterator(Self *adaptor) : ConstIterator(adaptor)
+    {
+    }
 
-    Iterator(const Iterator & iter):ConstIterator(iter)
-    {}
+    Iterator(const Iterator & iter) : ConstIterator(iter)
+    {
+    }
 
-    Iterator & operator=(const Iterator & iter)
+    Iterator &
+    operator=(const Iterator & iter)
     {
       this->ConstIterator::operator=(iter);
       return *this;
@@ -243,56 +255,68 @@ protected:
     Iterator(const ConstIterator & it);
     ConstIterator & operator=(const ConstIterator & it);
 
-    Iterator( ImageIteratorType iter, InstanceIdentifier iid):ConstIterator(iter, iid)
-    {}
+    Iterator( ImageIteratorType iter, InstanceIdentifier iid) : ConstIterator(iter, iid)
+    {
+    }
 
 private:
   };
 
   /** returns an iterator that points to the beginning of the container */
-  Iterator Begin()
+  Iterator
+  Begin()
   {
-    ImagePointer           nonConstImage = const_cast< ImageType * >( m_Image.GetPointer() );
+    ImagePointer      nonConstImage = const_cast< ImageType * >( m_Image.GetPointer() );
     ImageIteratorType imageIterator( nonConstImage, nonConstImage->GetLargestPossibleRegion() );
+
     imageIterator.GoToBegin();
-    Iterator               iter(imageIterator, 0);
+    Iterator iter(imageIterator, 0);
     return iter;
   }
 
   /** returns an iterator that points to the end of the container */
-  Iterator End()
+  Iterator
+  End()
   {
-    ImagePointer           nonConstImage = const_cast< ImageType * >( m_Image.GetPointer() );
+    ImagePointer      nonConstImage = const_cast< ImageType * >( m_Image.GetPointer() );
     ImageIteratorType imageIterator( nonConstImage, nonConstImage->GetLargestPossibleRegion() );
+
     imageIterator.GoToEnd();
-    Iterator          iter( imageIterator, m_Image->GetPixelContainer()->Size() );
+    Iterator iter( imageIterator, m_Image->GetPixelContainer()->Size() );
 
     return iter;
   }
 
   /** returns an iterator that points to the beginning of the container */
-  ConstIterator Begin() const
+  ConstIterator
+  Begin() const
   {
     ImageConstIteratorType imageConstIterator( m_Image, m_Image->GetLargestPossibleRegion() );
+
     imageConstIterator.GoToBegin();
-    ConstIterator          iter(imageConstIterator, 0);
+    ConstIterator iter(imageConstIterator, 0);
 
     return iter;
   }
 
   /** returns an iterator that points to the end of the container */
-  ConstIterator End() const
+  ConstIterator
+  End() const
   {
     ImageConstIteratorType imageConstIterator( m_Image, m_Image->GetLargestPossibleRegion() );
+
     imageConstIterator.GoToEnd();
-    ConstIterator          iter( imageConstIterator, m_Image->GetPixelContainer()->Size() );
+    ConstIterator iter( imageConstIterator, m_Image->GetPixelContainer()->Size() );
 
     return iter;
   }
 
 protected:
   ImageToListSampleAdaptor();
-  virtual ~ImageToListSampleAdaptor() {}
+  virtual
+  ~ImageToListSampleAdaptor() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

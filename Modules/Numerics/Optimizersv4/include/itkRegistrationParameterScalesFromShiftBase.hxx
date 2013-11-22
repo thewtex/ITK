@@ -74,7 +74,8 @@ RegistrationParameterScalesFromShiftBase< TMetric >
   // compute voxel shift generated from each transform parameter
   for (SizeValueType i=0; i<numLocalPara; i++)
     {
-    // For local support, we need to refill deltaParameters with zeros at each loop
+    // For local support, we need to refill deltaParameters with zeros at each
+    // loop
     // since smoothing may change the values around the local voxel.
     deltaParameters.Fill(NumericTraits< typename ParametersType::ValueType >::Zero);
     deltaParameters[offset + i] = this->m_SmallParameterVariation;
@@ -88,9 +89,10 @@ RegistrationParameterScalesFromShiftBase< TMetric >
       }
     }
 
-  if (minNonZeroShift == NumericTraits<FloatType>::max())
+  if (minNonZeroShift == NumericTraits<FloatType>::max() )
     {
-    itkWarningMacro(  << "Variation in any parameter won't change a voxel position. The default scales (1.0) are used to avoid division-by-zero." );
+    itkWarningMacro(
+      << "Variation in any parameter won't change a voxel position. The default scales (1.0) are used to avoid division-by-zero." );
     parameterScales.Fill(NumericTraits< typename ScalesType::ValueType >::One);
     }
   else
@@ -103,9 +105,10 @@ RegistrationParameterScalesFromShiftBase< TMetric >
       {
       for (SizeValueType i=0; i<numLocalPara; i++)
         {
-        if (parameterScales[i] <= NumericTraits<FloatType>::epsilon())
+        if (parameterScales[i] <= NumericTraits<FloatType>::epsilon() )
           {
-          // To avoid division-by-zero in optimizers, assign a small value for a zero scale.
+          // To avoid division-by-zero in optimizers, assign a small value for a
+          // zero scale.
           parameterScales[i] = minNonZeroShift * minNonZeroShift;
           }
         else
@@ -113,7 +116,8 @@ RegistrationParameterScalesFromShiftBase< TMetric >
           parameterScales[i] *= parameterScales[i];
           }
         //normalize to unit variation
-        parameterScales[i] *= NumericTraits< typename ScalesType::ValueType >::One / vnl_math_sqr( this->m_SmallParameterVariation );
+        parameterScales[i] *= NumericTraits< typename ScalesType::ValueType >::One / vnl_math_sqr(
+            this->m_SmallParameterVariation );
         }
       }
     }
@@ -142,19 +146,19 @@ RegistrationParameterScalesFromShiftBase< TMetric >
   FloatType maxStep = NumericTraits<FloatType>::Zero;
   for (typename ParametersType::SizeValueType p = 0; p < step.GetSize(); p++)
     {
-    if (maxStep < vcl_abs(step[p]))
+    if (maxStep < vcl_abs(step[p]) )
       {
       maxStep = vcl_abs(step[p]);
       }
     }
-  if (maxStep <= NumericTraits<FloatType>::epsilon())
+  if (maxStep <= NumericTraits<FloatType>::epsilon() )
     {
     return NumericTraits<FloatType>::Zero;
     }
   else
     {
-    FloatType factor = this->m_SmallParameterVariation / maxStep;
-    ParametersType smallStep(step.size());
+    FloatType      factor = this->m_SmallParameterVariation / maxStep;
+    ParametersType smallStep(step.size() );
     //Use a small step to have a linear approximation.
     smallStep = step * factor;
     return this->ComputeMaximumVoxelShift(smallStep) / factor;
@@ -171,7 +175,8 @@ RegistrationParameterScalesFromShiftBase< TMetric >
 {
   if( !this->TransformHasLocalSupportForScalesEstimation() )
     {
-    itkExceptionMacro( "EstimateLocalStepScales: the transform doesn't have local support (displacement field or b-spline)." );
+    itkExceptionMacro(
+      "EstimateLocalStepScales: the transform doesn't have local support (displacement field or b-spline)." );
     }
 
   this->CheckAndSetInputs();
@@ -192,7 +197,7 @@ RegistrationParameterScalesFromShiftBase< TMetric >
   for (SizeValueType c=0; c<numSamples; c++)
     {
     VirtualPointType &point = this->m_SamplePoints[c];
-    IndexValueType localId = this->m_Metric->ComputeParameterOffsetFromVirtualPoint( point, numPara) / numPara;
+    IndexValueType    localId = this->m_Metric->ComputeParameterOffsetFromVirtualPoint( point, numPara) / numPara;
     localStepScales[localId] = sampleShifts[c];
     }
 }

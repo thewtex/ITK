@@ -28,7 +28,7 @@ namespace itk
  *
  * \ingroup ITKVideoBridgeVXL
  */
-class VXLVideoIOFactory:public ObjectFactoryBase
+class VXLVideoIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +49,8 @@ public:
   itkTypeMacro(VXLVideoIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     VXLVideoIOFactory::Pointer VXLFactory = VXLVideoIOFactory::New();
 
@@ -63,6 +64,7 @@ protected:
 private:
   VXLVideoIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

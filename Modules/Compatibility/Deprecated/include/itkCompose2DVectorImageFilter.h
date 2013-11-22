@@ -31,20 +31,27 @@ class Compose2DVector
 {
 public:
   typedef Vector< TInput, 2 > OutputType;
-  Compose2DVector() {}
-  ~Compose2DVector() {}
-  bool operator!=(const Compose2DVector &) const
+  Compose2DVector() {
+  }
+
+  ~Compose2DVector() {
+  }
+
+  bool
+  operator!=(const Compose2DVector &) const
   {
     return false;
   }
 
-  bool operator==(const Compose2DVector & other) const
+  bool
+  operator==(const Compose2DVector & other) const
   {
     return !( *this != other );
   }
 
-  inline OutputType operator()(const TInput & s1,
-                               const TInput & s2) const
+  inline OutputType
+  operator()(const TInput & s1,
+             const TInput & s2) const
   {
     OutputType v;
 
@@ -52,6 +59,7 @@ public:
     v[1] = s2;
     return v;
   }
+
 };
 }
 
@@ -71,7 +79,7 @@ template< typename TInputImage,
           typename TOutputImage =
             Image< Vector< typename TInputImage::PixelType, 2 >,
                    TInputImage::ImageDimension > >
-class Compose2DVectorImageFilter:
+class Compose2DVectorImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage, TInputImage,
                             TOutputImage,
@@ -81,10 +89,10 @@ public:
   /** Standard class typedefs. */
   typedef Compose2DVectorImageFilter Self;
   typedef BinaryFunctorImageFilter<
-    TInputImage, TInputImage,
-    TOutputImage,
-    Functor::Compose2DVector<
-      typename TInputImage::PixelType > > Superclass;
+      TInputImage, TInputImage,
+      TOutputImage,
+      Functor::Compose2DVector<
+        typename TInputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -106,12 +114,17 @@ public:
 #endif
 
 protected:
-  Compose2DVectorImageFilter() {}
-  virtual ~Compose2DVectorImageFilter() {}
+  Compose2DVectorImageFilter() {
+  }
+
+  virtual
+  ~Compose2DVectorImageFilter() {
+  }
 
 private:
   Compose2DVectorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

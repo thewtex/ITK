@@ -19,19 +19,20 @@
 #include "itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction.h"
 #include "itkQuadEdgeMeshEulerOperatorsTestHelper.h"
 
-int itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest( int, char * [] )
+int
+itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest( int, char * [] )
 {
 
-  typedef itk::QuadEdgeMesh< double, 3 >                      MeshType;
-  typedef MeshType::Pointer                                   MeshPointer;
-  typedef MeshType::QEType                                    QEType;
-  typedef MeshType::PointIdentifier                           PointIdentifier;
-  typedef MeshType::PointType                                 PointType;
-  typedef MeshType::CellType                                  CellType;
-  typedef itk::QuadEdgeMeshLineCell< CellType >               LineCellType;
+  typedef itk::QuadEdgeMesh< double, 3 >        MeshType;
+  typedef MeshType::Pointer                     MeshPointer;
+  typedef MeshType::QEType                      QEType;
+  typedef MeshType::PointIdentifier             PointIdentifier;
+  typedef MeshType::PointType                   PointType;
+  typedef MeshType::CellType                    CellType;
+  typedef itk::QuadEdgeMeshLineCell< CellType > LineCellType;
 
   typedef itk::QuadEdgeMeshEulerOperatorCreateCenterVertexFunction< MeshType,
-    QEType> CreateCenterVertex;
+                                                                    QEType> CreateCenterVertex;
 
   /////////////////////////////////////////
   //
@@ -66,7 +67,7 @@ int itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest( int, char * [] )
   MeshPointer mesh = MeshType::New();
   CreateSquareTriangularMesh<MeshType>( mesh );
 
-  CreateCenterVertex::Pointer createCenterVertex = CreateCenterVertex::New( );
+  CreateCenterVertex::Pointer createCenterVertex = CreateCenterVertex::New();
 #ifndef NDEBUG
   std::cout << "     " << "Test No Mesh Input";
   if( createCenterVertex->Evaluate( (QEType*)1 ) )
@@ -107,20 +108,20 @@ int itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest( int, char * [] )
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 26, 59, 34, 1, 0 ) )
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 26, 59, 34, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( mesh->GetPoint( createCenterVertex->GetNewPointID( ) ).GetValence( ) != 3
-)
+  if ( mesh->GetPoint( createCenterVertex->GetNewPointID() ).GetValence() != 3
+       )
     {
     std::cout << "FAILED, wrong valence of "
-       << mesh->GetPoint( createCenterVertex->GetNewPointID( ) ).GetValence( )
-       << " for vertex "
-       << createCenterVertex->GetNewPointID( )
-       << "." << std::endl;
+              << mesh->GetPoint( createCenterVertex->GetNewPointID() ).GetValence()
+              << " for vertex "
+              << createCenterVertex->GetNewPointID()
+              << "." << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << ".OK" << std::endl;
@@ -169,19 +170,19 @@ int itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest( int, char * [] )
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 25, 56, 32, 1, 0 ) )
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 25, 56, 32, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( mesh->GetPoint( createCenterVertex->GetNewPointID( ) ).GetValence( ) != 8 )
+  if ( mesh->GetPoint( createCenterVertex->GetNewPointID() ).GetValence() != 8 )
     {
     std::cout << "FAILED, wrong valence of "
-       << mesh->GetPoint( createCenterVertex->GetNewPointID( ) ).GetValence( )
-       << " for vertex "
-       << createCenterVertex->GetNewPointID( )
-       << "." << std::endl;
+              << mesh->GetPoint( createCenterVertex->GetNewPointID() ).GetValence()
+              << " for vertex "
+              << createCenterVertex->GetNewPointID()
+              << "." << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << ".OK" << std::endl;

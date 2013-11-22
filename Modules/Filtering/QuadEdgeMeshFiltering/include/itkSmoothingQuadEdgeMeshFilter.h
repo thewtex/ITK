@@ -29,11 +29,11 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class SmoothingQuadEdgeMeshFilter:
+class SmoothingQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
-  typedef SmoothingQuadEdgeMeshFilter                                       Self;
+  typedef SmoothingQuadEdgeMeshFilter                                 Self;
   typedef SmartPointer< Self >                                        Pointer;
   typedef SmartPointer< const Self >                                  ConstPointer;
   typedef QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh > Superclass;
@@ -71,8 +71,11 @@ public:
 
   typedef MatrixCoefficients< OutputMeshType > CoefficientsComputation;
 
-  void SetCoefficientsMethod(CoefficientsComputation *iMethod)
-  { m_CoefficientsMethod = iMethod; }
+  void
+  SetCoefficientsMethod(CoefficientsComputation *iMethod)
+  {
+    m_CoefficientsMethod = iMethod;
+  }
 
   itkSetMacro(NumberOfIterations, unsigned int);
   itkGetConstMacro(NumberOfIterations, unsigned int);
@@ -105,6 +108,7 @@ protected:
 private:
   SmoothingQuadEdgeMeshFilter(const Self &);
   void operator=(const Self &);
+
 };
 }
 

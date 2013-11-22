@@ -35,7 +35,7 @@ namespace itk
  */
 template< unsigned int NDimensions = 3 >
 class MetaImageMaskConverter :
-    public MetaImageConverter< NDimensions, unsigned char, ImageMaskSpatialObject< NDimensions > >
+  public MetaImageConverter< NDimensions, unsigned char, ImageMaskSpatialObject< NDimensions > >
 {
 public:
   /** Standard class typedefs */
@@ -51,16 +51,22 @@ public:
   itkTypeMacro(MetaImageMaskConverter, MetaImageConverter);
 
 protected:
-  virtual const char *GetMetaObjectSubType()
+  virtual const char *
+  GetMetaObjectSubType()
   {
     return "Mask";
   }
-  MetaImageMaskConverter() {}
-  ~MetaImageMaskConverter() {}
+
+  MetaImageMaskConverter() {
+  }
+
+  ~MetaImageMaskConverter() {
+  }
 
 private:
-  MetaImageMaskConverter(const Self &);   //purposely not implemented
-  void operator=(const Self &);       //purposely not implemented
+  MetaImageMaskConverter(const Self &); //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
+
 };
 
 } // end namespace itk

@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMObject.h"
 #include "itkFEMObjectSpatialObject.h"
@@ -25,7 +24,8 @@
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMSolverTest2D(int argc, char *argv[])
+int
+itkFEMSolverTest2D(int argc, char *argv[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

@@ -92,25 +92,28 @@ DomainThreader< TDomainPartitioner, TAssociate >
 {
   const ThreadIdType threaderNumberOfThreads = this->GetMultiThreader()->GetNumberOfThreads();
 
-  // Attempt a single dummy partition, just to get the number of subdomains actually created
+  // Attempt a single dummy partition, just to get the number of subdomains
+  // actually created
   DomainType subdomain;
+
   this->m_NumberOfThreadsUsed = this->m_DomainPartitioner->PartitionDomain(0,
-                                            threaderNumberOfThreads,
-                                            this->m_CompleteDomain,
-                                            subdomain);
+                                                                           threaderNumberOfThreads,
+                                                                           this->m_CompleteDomain,
+                                                                           subdomain);
 
   if( this->m_NumberOfThreadsUsed < threaderNumberOfThreads )
     {
     // If PartitionDomain is only able to create a lesser number of subdomains,
     // ensure that superfluous threads aren't created
-    // DomainThreader::SetMaximumNumberOfThreads *should* already have been called by this point,
+    // DomainThreader::SetMaximumNumberOfThreads *should* already have been
+    // called by this point,
     // but it's not fatal if it somehow gets called later
     this->GetMultiThreader()->SetNumberOfThreads(this->m_NumberOfThreadsUsed);
     }
   else if( this->m_NumberOfThreadsUsed > threaderNumberOfThreads )
     {
     itkExceptionMacro( "A subclass of ThreadedDomainPartitioner::PartitionDomain"
-                      << "returned more subdomains than were requested" );
+                       << "returned more subdomains than were requested" );
     }
 }
 
@@ -121,6 +124,7 @@ DomainThreader< TDomainPartitioner, TAssociate >
 {
   // Set up the multithreaded processing
   ThreadStruct str;
+
   str.domainThreader = this;
 
   MultiThreader* multiThreader = this->GetMultiThreader();
@@ -136,17 +140,17 @@ DomainThreader< TDomainPartitioner, TAssociate >
 ::ThreaderCallback( void* arg )
 {
   MultiThreader::ThreadInfoStruct* info = static_cast<MultiThreader::ThreadInfoStruct *>(arg);
-  ThreadStruct *str = static_cast<ThreadStruct *>(info->UserData);
-  DomainThreader *thisDomainThreader = str->domainThreader;
-  const ThreadIdType threadId    = info->ThreadID;
-  const ThreadIdType threadCount = info->NumberOfThreads;
+  ThreadStruct *                   str = static_cast<ThreadStruct *>(info->UserData);
+  DomainThreader *                 thisDomainThreader = str->domainThreader;
+  const ThreadIdType               threadId    = info->ThreadID;
+  const ThreadIdType               threadCount = info->NumberOfThreads;
 
   // Get the sub-domain to process for this thread.
-  DomainType subdomain;
+  DomainType         subdomain;
   const ThreadIdType total = thisDomainThreader->GetDomainPartitioner()->PartitionDomain(threadId,
-                                            threadCount,
-                                            thisDomainThreader->m_CompleteDomain,
-                                            subdomain);
+                                                                                         threadCount,
+                                                                                         thisDomainThreader->m_CompleteDomain,
+                                                                                         subdomain);
 
   // Execute the actual method with appropriate sub-domain.
   // If the threadID is greater than the total number of regions
@@ -160,6 +164,7 @@ DomainThreader< TDomainPartitioner, TAssociate >
 
   return ITK_THREAD_RETURN_VALUE;
 }
+
 }
 
 #endif

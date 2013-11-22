@@ -59,7 +59,8 @@
 // \begin{itemize}
 //
 // \item First, the user can define a single threshold.  Any pixels with values
-// below this threshold will be replaced by a user defined value, called here the
+// below this threshold will be replaced by a user defined value, called here
+// the
 // \code{OutsideValue}.  Pixels with values above the threshold remain
 // unchanged. This type of thresholding is illustrated in
 // Figure~\ref{fig:ThresholdTransferFunctionBelow}.
@@ -67,7 +68,8 @@
 // \item Second, the user can define a particular threshold such that all the
 // pixels with values above the threshold will be replaced by the
 // \code{OutsideValue}.  Pixels with values below the threshold remain
-// unchanged. This is illustrated in Figure~\ref{fig:ThresholdTransferFunctionAbove}.
+// unchanged. This is illustrated in
+// Figure~\ref{fig:ThresholdTransferFunctionAbove}.
 //
 // \item Third, the user can provide two thresholds. All the pixels with
 // intensity values inside the range defined by the two thresholds will remain
@@ -103,7 +105,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
 
   if( argc < 5 )
@@ -123,7 +126,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef  unsigned char  PixelType;
+  typedef  unsigned char PixelType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -133,9 +136,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< PixelType,  2 >   ImageType;
+  typedef itk::Image< PixelType,  2 > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -144,9 +146,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ThresholdImageFilter< ImageType >  FilterType;
+  typedef itk::ThresholdImageFilter< ImageType > FilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -156,7 +157,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -167,9 +168,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -187,7 +187,6 @@ int main( int argc, char * argv[] )
   writer->SetInput( filter->GetOutput() );
   reader->SetFileName( argv[1] );
 
-
   //  Software Guide : BeginLatex
   //
   //  The image obtained with the reader is passed as input to the
@@ -201,7 +200,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -218,11 +216,11 @@ int main( int argc, char * argv[] )
   filter->SetOutsideValue( 0 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The method \code{ThresholdBelow()} defines the intensity value below
-  //  which pixels of the input image will be changed to the \code{OutsideValue}.
+  //  which pixels of the input image will be changed to the
+  // \code{OutsideValue}.
   //
   //  \index{itk::ThresholdImageFilter!ThresholdBelow()}
   //  Software Guide : EndLatex
@@ -244,15 +242,14 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   writer->SetFileName( argv[2] );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
   //  The output of this example is shown in
-  //  Figure~\ref{fig:ThresholdTransferFunctionBelow}.  The second operating mode of
+  //  Figure~\ref{fig:ThresholdTransferFunctionBelow}.  The second operating
+  // mode of
   //  the filter is now enabled by calling the method
   //  \code{ThresholdAbove()}.
   //
@@ -262,7 +259,6 @@ int main( int argc, char * argv[] )
   filter->ThresholdAbove( 180 );
   filter->Update();
   // Software Guide : EndCodeSnippet
-
 
   writer->SetFileName( argv[3] );
   writer->Update();
@@ -280,10 +276,8 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   writer->SetFileName( argv[4] );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
@@ -291,7 +285,8 @@ int main( int argc, char * argv[] )
   //  Figure~\ref{fig:ThresholdTransferFunctionOutside}.
   //
   //  The examples in this
-  //  section also illustrate the limitations of the thresholding filter for performing
+  //  section also illustrate the limitations of the thresholding filter for
+  // performing
   //  segmentation by itself. These limitations are particularly noticeable
   //  in noisy images and in images lacking spatial uniformity, as is the case
   //  with MRI due to field bias.
@@ -302,7 +297,6 @@ int main( int argc, char * argv[] )
   //  \end{itemize}
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

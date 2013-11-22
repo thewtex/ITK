@@ -58,7 +58,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 
-class PowellOptimizer:
+class PowellOptimizer :
   public SingleValuedNonLinearOptimizer
 {
 public:
@@ -69,7 +69,7 @@ public:
   typedef SmartPointer< const Self >     ConstPointer;
 
   typedef SingleValuedNonLinearOptimizer::ParametersType
-  ParametersType;
+    ParametersType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -112,7 +112,10 @@ public:
 
   /** Return Current Value */
   itkGetConstReferenceMacro(CurrentCost, MeasureType);
-  MeasureType GetValue() const { return this->GetCurrentCost(); }
+  MeasureType
+  GetValue() const {
+    return this->GetCurrentCost();
+  }
 
   /** Return Current Iteration */
   itkGetConstReferenceMacro(CurrentIteration, unsigned int);
@@ -126,8 +129,11 @@ public:
   /** When users call StartOptimization, this value will be set false.
    * By calling StopOptimization, this flag will be set true, and
    * optimization will stop at the next iteration. */
-  void StopOptimization()
-  { m_Stop = true; }
+  void
+  StopOptimization()
+  {
+    m_Stop = true;
+  }
 
   itkGetConstReferenceMacro(CatchGetValueException, bool);
   itkSetMacro(CatchGetValueException, bool);
@@ -140,7 +146,8 @@ public:
 protected:
   PowellOptimizer();
   PowellOptimizer(const PowellOptimizer &);
-  virtual ~PowellOptimizer();
+  virtual
+  ~PowellOptimizer();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   itkSetMacro(CurrentCost, double);
@@ -200,7 +207,8 @@ protected:
                                        ParametersType & tempCoord);
 
   itkGetMacro(SpaceDimension, unsigned int);
-  void SetSpaceDimension(unsigned int dim)
+  void
+  SetSpaceDimension(unsigned int dim)
   {
     this->m_SpaceDimension = dim;
     this->m_LineDirection.set_size(dim);

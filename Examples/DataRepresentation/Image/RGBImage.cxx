@@ -42,7 +42,8 @@
 #include "itkRGBPixel.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char * argv[] )
+int
+main( int , char * argv[] )
 {
   // Software Guide : BeginLatex
   //
@@ -55,7 +56,7 @@ int main( int , char * argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel< unsigned char >    PixelType;
+  typedef itk::RGBPixel< unsigned char > PixelType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -65,7 +66,7 @@ int main( int , char * argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< PixelType, 3 >   ImageType;
+  typedef itk::Image< PixelType, 3 > ImageType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -79,15 +80,15 @@ int main( int , char * argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   // Software Guide : EndCodeSnippet
 
   ReaderType::Pointer reader = ReaderType::New();
-  const char * const filename = argv[1];
+  const char * const  filename = argv[1];
   reader->SetFileName( filename );
   reader->Update();
 
-  ImageType::Pointer image = reader->GetOutput();
+  ImageType::Pointer         image = reader->GetOutput();
   const ImageType::IndexType pixelIndex = {{25,35,0}};
 
   // Software Guide : BeginLatex

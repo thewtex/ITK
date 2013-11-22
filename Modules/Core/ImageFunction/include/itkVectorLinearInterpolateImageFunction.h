@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = double >
-class VectorLinearInterpolateImageFunction:
+class VectorLinearInterpolateImageFunction :
   public VectorInterpolateImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -71,7 +71,7 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
   /** Index typedef support. */
-  typedef typename Superclass::IndexType      IndexType;
+  typedef typename Superclass::IndexType IndexType;
 
   /** ContinuousIndex typedef support. */
   typedef typename Superclass::ContinuousIndexType ContinuousIndexType;
@@ -93,14 +93,17 @@ public:
 
 protected:
   VectorLinearInterpolateImageFunction();
-  ~VectorLinearInterpolateImageFunction(){}
+  ~VectorLinearInterpolateImageFunction(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   VectorLinearInterpolateImageFunction(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 
   /** Number of neighbors used in the interpolation */
   static const unsigned long m_Neighbors;

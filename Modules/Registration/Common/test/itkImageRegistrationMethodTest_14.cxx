@@ -28,6 +28,7 @@
 namespace
 {
 double F( itk::Vector<double,3> & v );
+
 }
 
 /**
@@ -96,53 +97,53 @@ double F( itk::Vector<double,3> & v );
  *
  */
 
-int itkImageRegistrationMethodTest_14(int, char* [] )
+int
+itkImageRegistrationMethodTest_14(int, char* [] )
 {
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   bool pass = true;
 
   const unsigned int dimension = 3;
-  unsigned int j;
+  unsigned int       j;
 
-  typedef float  PixelType;
+  typedef float PixelType;
 
   // Fixed Image Type
-  typedef itk::Image<PixelType,dimension>               FixedImageType;
+  typedef itk::Image<PixelType,dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<PixelType,dimension>               MovingImageType;
+  typedef itk::Image<PixelType,dimension> MovingImageType;
 
   // Transform Type
-  typedef itk::QuaternionRigidTransform< double >       TransformType;
+  typedef itk::QuaternionRigidTransform< double > TransformType;
 
   // Optimizer Type
   typedef itk::QuaternionRigidTransformGradientDescentOptimizer
-                                                         OptimizerType;
+    OptimizerType;
 
   // Metric Type
   typedef itk::MutualInformationImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
   // Interpolation technique
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
 
   // Registration Method
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
-
-  MetricType::Pointer         metric        = MetricType::New();
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  FixedImageType::Pointer     fixedImage    = FixedImageType::New();
-  MovingImageType::Pointer    movingImage   = MovingImageType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  MetricType::Pointer       metric        = MetricType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  FixedImageType::Pointer   fixedImage    = FixedImageType::New();
+  MovingImageType::Pointer  movingImage   = MovingImageType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   /*********************************************************
    * Set up the two input images.
@@ -151,8 +152,8 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
   double displacement[dimension] = {7,3,2};
   double angle = 10.0 / 180.0 * vnl_math::pi;
 
-  FixedImageType::SizeType size = {{100,100,40}};
-  FixedImageType::IndexType index = {{0,0,0}};
+  FixedImageType::SizeType   size = {{100,100,40}};
+  FixedImageType::IndexType  index = {{0,0,0}};
   FixedImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
@@ -176,7 +177,7 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
     center[j] = 0.5 *  (double)region.GetSize()[j];
     }
 
-  itk::Point<double,dimension> p;
+  itk::Point<double,dimension>  p;
   itk::Vector<double,dimension> d, d2;
 
   MovingImageIterator mIter( movingImage, region );
@@ -192,7 +193,6 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
     d = p - center;
 
     fIter.Set( (PixelType) F(d) );
-
 
     d2[0] =  d[0] * vcl_cos(angle) + d[1] * vcl_sin(angle) + displacement[0];
     d2[1] = -d[0] * vcl_sin(angle) + d[1] * vcl_cos(angle) + displacement[1];
@@ -214,7 +214,6 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
 
   movingImage->SetOrigin( transCenter );
   fixedImage->SetOrigin( transCenter );
-
 
   /******************************************************************
    * Set up the optimizer.
@@ -272,25 +271,24 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
   initialParameters.Fill( 0.0 );
   initialParameters[3] = 1.0;
 
-
   /***********************************************************
    * Run the registration - reducing learning rate as we go
    ************************************************************/
   const unsigned int numberOfLoops = 3;
-  unsigned int iter[numberOfLoops] = { 300, 300, 350 };
-  double      rates[numberOfLoops] = { 1e-3, 5e-4, 1e-4 };
+  unsigned int       iter[numberOfLoops] = { 300, 300, 350 };
+  double             rates[numberOfLoops] = { 1e-3, 5e-4, 1e-4 };
 
   for ( j = 0; j < numberOfLoops; j++ )
     {
 
     try
       {
-        optimizer->SetNumberOfIterations( iter[j] );
-        optimizer->SetLearningRate( rates[j] );
-        registration->SetInitialTransformParameters( initialParameters );
-        registration->Update();
+      optimizer->SetNumberOfIterations( iter[j] );
+      optimizer->SetLearningRate( rates[j] );
+      registration->SetInitialTransformParameters( initialParameters );
+      registration->Update();
 
-        initialParameters = registration->GetLastTransformParameters();
+      initialParameters = registration->GetLastTransformParameters();
 
       }
     catch( itk::ExceptionObject & e )
@@ -302,7 +300,6 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
 
     }
 
-
   /***********************************************************
    * Check the results
    ************************************************************/
@@ -310,7 +307,6 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
     registration->GetLastTransformParameters();
 
   std::cout << "Solution is: " << solution << std::endl;
-
 
   RegistrationType::ParametersType trueParameters(
     transform->GetNumberOfParameters() );
@@ -377,7 +373,6 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
 
   metric->SetMovingImageStandardDeviation( oldValue );
 
-
   /*************************************************
    * Check for mapped out of image error
    **************************************************/
@@ -403,10 +398,8 @@ int itkImageRegistrationMethodTest_14(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }
 
@@ -417,20 +410,22 @@ namespace
  * The pattern is a 3D gaussian in the middle
  * and some directional pattern on the outside.
  */
-double F( itk::Vector<double,3> & v )
+double
+F( itk::Vector<double,3> & v )
 {
-  double x = v[0];
-  double y = v[1];
-  double z = v[2];
+  double       x = v[0];
+  double       y = v[1];
+  double       z = v[2];
   const double s = 50;
-  double value = 200.0 * vcl_exp( - ( x*x + y*y + z*z )/(s*s) );
+  double       value = 200.0 * vcl_exp( -( x*x + y*y + z*z )/(s*s) );
+
   x -= 8; y += 3; z += 0;
   double r = vcl_sqrt( x*x + y*y + z*z );
   if( r > 35 )
     {
     value = 2 * ( vnl_math_abs( x ) +
-      0.8 * vnl_math_abs( y ) +
-      0.5 * vnl_math_abs( z ) );
+                  0.8 * vnl_math_abs( y ) +
+                  0.5 * vnl_math_abs( z ) );
     }
   if( r < 4 )
     {
@@ -440,4 +435,5 @@ double F( itk::Vector<double,3> & v )
   return value;
 
 }
+
 }

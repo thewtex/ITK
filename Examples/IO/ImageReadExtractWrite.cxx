@@ -36,7 +36,6 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  The filter used to extract a region from an image is the
@@ -52,11 +51,10 @@
 #include "itkExtractImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -67,7 +65,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Image types are defined below. Note that the input image type is $3D$ and
@@ -76,13 +73,12 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short        InputPixelType;
-  typedef signed short        OutputPixelType;
+  typedef signed short InputPixelType;
+  typedef signed short OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  3 >    InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >    OutputImageType;
+  typedef itk::Image< InputPixelType,  3 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -92,16 +88,14 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-
 
   //  Software Guide : BeginLatex
   //
@@ -120,7 +114,6 @@ int main( int argc, char ** argv )
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The name of the file to be read or written is passed with the
@@ -138,7 +131,6 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The ExtractImageFilter type is instantiated using the input and
@@ -154,7 +146,6 @@ int main( int argc, char ** argv )
   filter->InPlaceOn();
   filter->SetDirectionCollapseToSubmatrix();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -172,13 +163,11 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   reader->UpdateOutputInformation();
   InputImageType::RegionType inputRegion =
-           reader->GetOutput()->GetLargestPossibleRegion();
+    reader->GetOutput()->GetLargestPossibleRegion();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -204,7 +193,6 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
 
-
   //  Software Guide : BeginLatex
   //
   //  Then, we take the index from the region and set its $Z$ value to the
@@ -215,10 +203,9 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   InputImageType::IndexType start = inputRegion.GetIndex();
-  const unsigned int sliceNumber = atoi( argv[3] );
+  const unsigned int        sliceNumber = atoi( argv[3] );
   start[2] = sliceNumber;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -233,7 +220,6 @@ int main( int argc, char ** argv )
   desiredRegion.SetIndex( start );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Then the region is passed to the filter using the
@@ -243,11 +229,9 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetExtractionRegion( desiredRegion );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -260,7 +244,6 @@ int main( int argc, char ** argv )
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -282,7 +265,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

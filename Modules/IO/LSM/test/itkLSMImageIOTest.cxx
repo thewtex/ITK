@@ -19,10 +19,10 @@
 #include "itkImageFileWriter.h"
 #include "itkLSMImageIO.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkLSMImageIOTest(int argc, char* argv[])
+int
+itkLSMImageIOTest(int argc, char* argv[])
 {
   if(argc < 3)
     {
@@ -56,7 +56,7 @@ int itkLSMImageIOTest(int argc, char* argv[])
     }
 
   //
-  typedef itk::ImageFileWriter< InputImageType >  WriterType;
+  typedef itk::ImageFileWriter< InputImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( outfilename );
   writer->SetInput( reader->GetOutput() );

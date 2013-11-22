@@ -65,7 +65,7 @@ namespace itk
 
 template< typename TInputImage, typename TOutputImage, typename TKernel =
             FlatStructuringElement< TInputImage::ImageDimension > >
-class RankImageFilter:
+class RankImageFilter :
   public MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel,
                                      Function::RankHistogram< typename TInputImage::PixelType > >
 {
@@ -96,7 +96,7 @@ public:
   typedef typename TOutputImage::PixelType           OutputPixelType;
   typedef typename TInputImage::PixelType            InputPixelType;
 
-  typedef typename Superclass::HistogramType         HistogramType;
+  typedef typename Superclass::HistogramType HistogramType;
 
   /** Image related typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -114,14 +114,16 @@ public:
   itkSetMacro(Rank, float)
   itkGetConstMacro(Rank, float)
 
-  bool GetUseVectorBasedAlgorithm()
+  bool
+  GetUseVectorBasedAlgorithm()
   {
     return HistogramType::UseVectorBasedAlgorithm();
   }
 
 protected:
   RankImageFilter();
-  ~RankImageFilter() {}
+  ~RankImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

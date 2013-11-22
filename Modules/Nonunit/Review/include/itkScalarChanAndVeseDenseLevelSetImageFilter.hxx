@@ -103,6 +103,7 @@ ScalarChanAndVeseDenseLevelSetImageFilter< TInputImage, TFeatureImage, TOutputIm
     this->m_DifferenceFunctions[fId]->UpdateSharedData (false);
     }
 }
+
 } /* end namespace itk */
 
 #endif

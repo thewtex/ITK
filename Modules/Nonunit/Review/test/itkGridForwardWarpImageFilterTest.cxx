@@ -18,36 +18,35 @@
 
 #include "itkGridForwardWarpImageFilter.h"
 
-
-int itkGridForwardWarpImageFilterTest(int, char* [] )
+int
+itkGridForwardWarpImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int ImageDimension = 3;
 
-  typedef itk::Vector< double, ImageDimension >   DeformationPixelType;
-  typedef unsigned char                           OutputPixelType;
+  typedef itk::Vector< double, ImageDimension > DeformationPixelType;
+  typedef unsigned char                         OutputPixelType;
 
   // Declare the types of the images
-  typedef itk::Image<DeformationPixelType, ImageDimension>  DisplacementFieldType;
-  typedef itk::Image<OutputPixelType, ImageDimension>       OutputImageType;
+  typedef itk::Image<DeformationPixelType, ImageDimension> DisplacementFieldType;
+  typedef itk::Image<OutputPixelType, ImageDimension>      OutputImageType;
 
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIteratorWithIndex< DisplacementFieldType >  DeformationIteratorType;
-  typedef itk::ImageRegionIteratorWithIndex< OutputImageType >  OutputIteratorType;
-
+  typedef itk::ImageRegionIteratorWithIndex< DisplacementFieldType > DeformationIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< OutputImageType >       OutputIteratorType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<ImageDimension>         IndexType;
+  typedef itk::Index<ImageDimension> IndexType;
 
   // Declare the type of the size
-  typedef itk::Size<ImageDimension>          SizeType;
+  typedef itk::Size<ImageDimension> SizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<ImageDimension>   RegionType;
+  typedef itk::ImageRegion<ImageDimension> RegionType;
 
   // Create two images
-  DisplacementFieldType ::Pointer inputDisplacementField  = DisplacementFieldType ::New();
+  DisplacementFieldType::Pointer inputDisplacementField  = DisplacementFieldType::New();
 
   // Define their size, and start index
   SizeType size;
@@ -88,12 +87,10 @@ int itkGridForwardWarpImageFilterTest(int, char* [] )
 
   // Declare the type for the Log filter
   typedef itk::GridForwardWarpImageFilter<
-    DisplacementFieldType, OutputImageType  >   FilterType;
-
+      DisplacementFieldType, OutputImageType  >   FilterType;
 
   // Create one Filter
   FilterType::Pointer filter = FilterType::New();
-
 
   // Connect the input images
   filter->SetInput( inputDisplacementField );
@@ -105,7 +102,7 @@ int itkGridForwardWarpImageFilterTest(int, char* [] )
   OutputImageType::Pointer outputImage = filter->GetOutput();
 
   // Create an iterator for going through the image output
-  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion());
+  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion() );
 
   //  Check the content of the result image
   std::cout << "Verification of the output " << std::endl;
@@ -115,7 +112,7 @@ int itkGridForwardWarpImageFilterTest(int, char* [] )
   while( !ot.IsAtEnd() )
     {
     DeformationPixelType input  = it.Get();
-    OutputPixelType output = ot.Get();
+    OutputPixelType      output = ot.Get();
     std::cout << input << " => ";
     std::cout << output  << std::endl;
     ++ot;

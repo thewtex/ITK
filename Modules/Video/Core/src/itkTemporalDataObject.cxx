@@ -27,16 +27,15 @@
  *=========================================================================*/
 #include "itkTemporalDataObject.h"
 
-
 namespace itk
 {
 
 //----------------------------------------------------------------------------
 TemporalDataObject::TemporalDataObject()
   : m_LargestPossibleTemporalRegion(),
-    m_RequestedTemporalRegion(),
-    m_BufferedTemporalRegion(),
-    m_TemporalUnit(Frame)
+  m_RequestedTemporalRegion(),
+  m_BufferedTemporalRegion(),
+  m_TemporalUnit(Frame)
 {
   m_DataObjectBuffer = BufferType::New();
 }
@@ -44,7 +43,8 @@ TemporalDataObject::TemporalDataObject()
 //----------------------------------------------------------------------------
 TemporalDataObject
 ::~TemporalDataObject()
-{}
+{
+}
 
 //----------------------------------------------------------------------------
 TemporalDataObject::TemporalUnitType
@@ -150,7 +150,8 @@ const TemporalDataObject::TemporalRegionType
 TemporalDataObject
 ::GetUnbufferedRequestedTemporalRegion()
 {
-  // If nothing is buffered or nothing is requested, just return the entire request
+  // If nothing is buffered or nothing is requested, just return the entire
+  // request
   if (m_BufferedTemporalRegion.GetFrameDuration() == 0 ||
       m_RequestedTemporalRegion.GetFrameDuration() == 0)
     {
@@ -160,11 +161,11 @@ TemporalDataObject
   // Get the start and end of the buffered and requested temporal regions
   SizeValueType reqStart = m_RequestedTemporalRegion.GetFrameStart();
   SizeValueType reqEnd = m_RequestedTemporalRegion.GetFrameStart() +
-                          m_RequestedTemporalRegion.GetFrameDuration() - 1;
+    m_RequestedTemporalRegion.GetFrameDuration() - 1;
 
   SizeValueType bufStart = m_BufferedTemporalRegion.GetFrameStart();
   SizeValueType bufEnd = m_BufferedTemporalRegion.GetFrameStart() +
-                          m_BufferedTemporalRegion.GetFrameDuration() - 1;
+    m_BufferedTemporalRegion.GetFrameDuration() - 1;
 
   // If the request starts after the buffered region, return the whole request
   if (reqStart > bufEnd)
@@ -189,7 +190,8 @@ TemporalDataObject
     return out;
     }
 
-  // Handle case with unbuffered frames at beginning -- TODO: FIX FOR REAL TIME!!!!!
+  // Handle case with unbuffered frames at beginning -- TODO: FIX FOR REAL
+  // TIME!!!!!
   else if(reqStart < bufStart)
     {
     TemporalRegionType out;
@@ -224,6 +226,7 @@ TemporalDataObject
 {
   bool frameFlag = m_RequestedTemporalRegion.GetFrameStart() <
     m_BufferedTemporalRegion.GetFrameStart();
+
   frameFlag |= m_RequestedTemporalRegion.GetFrameDuration() + m_RequestedTemporalRegion.GetFrameStart() >
     m_BufferedTemporalRegion.GetFrameDuration() + m_BufferedTemporalRegion.GetFrameStart();
   bool realTimeFlag = m_RequestedTemporalRegion.GetRealStart() <
@@ -260,6 +263,7 @@ TemporalDataObject
 {
   bool frameFlag = m_RequestedTemporalRegion.GetFrameStart() >=
     m_LargestPossibleTemporalRegion.GetFrameStart();
+
   frameFlag &= m_RequestedTemporalRegion.GetFrameDuration() <=
     m_LargestPossibleTemporalRegion.GetFrameDuration();
   bool realTimeFlag = m_RequestedTemporalRegion.GetRealStart() >=
@@ -296,6 +300,7 @@ TemporalDataObject
   Superclass::CopyInformation(data);
 
   const TemporalDataObject* temporalData;
+
   temporalData = dynamic_cast< const TemporalDataObject* >( data );
 
   if ( temporalData )
@@ -403,6 +408,7 @@ TemporalDataObject
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Data Object Buffer: " << m_DataObjectBuffer.GetPointer()
      << std::endl;
   os << indent << "LargestPossibleTemporalRegion: " << std::endl;

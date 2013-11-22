@@ -72,7 +72,7 @@ namespace itk
  * \endwiki
  */
 template< typename TPixel, unsigned int VImageDimension = 2 >
-class Image:public ImageBase< VImageDimension >
+class Image : public ImageBase< VImageDimension >
 {
 public:
   /** Standard class typedefs */
@@ -163,9 +163,8 @@ public:
   template <typename UPixelType, unsigned int UImageDimension = VImageDimension>
   struct Rebind
     {
-      typedef itk::Image<UPixelType, UImageDimension>  Type;
+    typedef itk::Image<UPixelType, UImageDimension> Type;
     };
-
 
   /** Allocate the image memory. The size of the image must
    * already be set, e.g. by calling SetRegions(). */
@@ -184,9 +183,11 @@ public:
    * Allocate() needs to have been called first -- for efficiency,
    * this function does not check that the image has actually been
    * allocated yet. */
-  void SetPixel(const IndexType & index, const TPixel & value)
+  void
+  SetPixel(const IndexType & index, const TPixel & value)
   {
     OffsetValueType offset = this->ComputeOffset(index);
+
     ( *m_Buffer )[offset] = value;
   }
 
@@ -194,9 +195,11 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  const TPixel & GetPixel(const IndexType & index) const
+  const TPixel &
+  GetPixel(const IndexType & index) const
   {
     OffsetValueType offset = this->ComputeOffset(index);
+
     return ( ( *m_Buffer )[offset] );
   }
 
@@ -204,9 +207,11 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  TPixel & GetPixel(const IndexType & index)
+  TPixel &
+  GetPixel(const IndexType & index)
   {
     OffsetValueType offset = this->ComputeOffset(index);
+
     return ( ( *m_Buffer )[offset] );
   }
 
@@ -214,29 +219,48 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  TPixel & operator[](const IndexType & index)
-  { return this->GetPixel(index); }
+  TPixel &
+  operator[](const IndexType & index)
+  {
+    return this->GetPixel(index);
+  }
 
   /** \brief Access a pixel. This version can only be an rvalue.
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  const TPixel & operator[](const IndexType & index) const
-  { return this->GetPixel(index); }
+  const TPixel &
+  operator[](const IndexType & index) const
+  {
+    return this->GetPixel(index);
+  }
 
   /** Return a pointer to the beginning of the buffer.  This is used by
    * the image iterator class. */
-  virtual TPixel * GetBufferPointer()
-  { return m_Buffer ? m_Buffer->GetBufferPointer() : 0; }
-  virtual const TPixel * GetBufferPointer() const
-  { return m_Buffer ? m_Buffer->GetBufferPointer() : 0; }
+  virtual TPixel *
+  GetBufferPointer()
+  {
+    return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
+  }
+
+  virtual const TPixel *
+  GetBufferPointer() const
+  {
+    return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
+  }
 
   /** Return a pointer to the container. */
-  PixelContainer * GetPixelContainer()
-  { return m_Buffer.GetPointer(); }
+  PixelContainer *
+  GetPixelContainer()
+  {
+    return m_Buffer.GetPointer();
+  }
 
-  const PixelContainer * GetPixelContainer() const
-  { return m_Buffer.GetPointer(); }
+  const PixelContainer *
+  GetPixelContainer() const
+  {
+    return m_Buffer.GetPointer();
+  }
 
   /** Set the container to use. Note that this does not cause the
    * DataObject to be modified. */
@@ -255,20 +279,32 @@ public:
   virtual void Graft(const DataObject *data);
 
   /** Return the Pixel Accessor object */
-  AccessorType GetPixelAccessor(void)
-  { return AccessorType(); }
+  AccessorType
+  GetPixelAccessor(void)
+  {
+    return AccessorType();
+  }
 
   /** Return the Pixel Accesor object */
-  const AccessorType GetPixelAccessor(void) const
-  { return AccessorType(); }
+  const AccessorType
+  GetPixelAccessor(void) const
+  {
+    return AccessorType();
+  }
 
   /** Return the NeighborhoodAccessor functor */
-  NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
-  { return NeighborhoodAccessorFunctorType(); }
+  NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor()
+  {
+    return NeighborhoodAccessorFunctorType();
+  }
 
   /** Return the NeighborhoodAccessor functor */
-  const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
-  { return NeighborhoodAccessorFunctorType(); }
+  const NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor() const
+  {
+    return NeighborhoodAccessorFunctorType();
+  }
 
   virtual unsigned int GetNumberOfComponentsPerPixel() const;
 
@@ -276,7 +312,9 @@ protected:
   Image();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  virtual ~Image() {}
+  virtual
+  ~Image() {
+  }
 
   /** Compute helper matrices used to transform Index coordinates to
    * PhysicalPoint coordinates and back. This method is virtual and will be

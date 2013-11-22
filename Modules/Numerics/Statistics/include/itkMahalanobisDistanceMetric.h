@@ -43,7 +43,7 @@ namespace Statistics
  */
 
 template< typename TVector >
-class MahalanobisDistanceMetric:
+class MahalanobisDistanceMetric :
   public DistanceMetric< TVector >
 {
 public:
@@ -111,7 +111,10 @@ public:
 
 protected:
   MahalanobisDistanceMetric(void);
-  virtual ~MahalanobisDistanceMetric(void) {}
+  virtual
+  ~MahalanobisDistanceMetric(void) {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -126,6 +129,7 @@ private:
   double m_DoubleMax;
 
   void CalculateInverseCovariance();
+
 };
 } // end of namespace Statistics
 } // end namespace itk

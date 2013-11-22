@@ -21,7 +21,8 @@
 #include "itkMetaDataObject.h"
 #include "itkSpatialOrientationAdapter.h"
 
-int itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
+int
+itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
 {
   if( argc != 2 )
     {
@@ -34,7 +35,7 @@ int itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
   typedef itk::ImageFileWriter< ImageType > WriterType;
 
   //Create the 16x16 input image
-  ImageType::Pointer  inputImage = ImageType::New();
+  ImageType::Pointer inputImage = ImageType::New();
 
   ImageType::SizeType size;
   size.Fill( 16 );
@@ -54,13 +55,17 @@ int itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
   // Add some metadata in the dictionary
   itk::MetaDataDictionary & inputDictionary =
     inputImage->GetMetaDataDictionary();
-  std::string voxelunitstr = "mm. "; // try to follow analyze format (length matters)
+  std::string voxelunitstr = "mm. "; // try to follow analyze format (length
+                                     // matters)
   itk::EncapsulateMetaData<std::string>(inputDictionary,itk::ITK_VoxelUnits,voxelunitstr);
-  std::string datestr = "26-05-2010"; // try to follow analyze format (length matters)
+  std::string datestr = "26-05-2010"; // try to follow analyze format (length
+                                      // matters)
   itk::EncapsulateMetaData<std::string>(inputDictionary,itk::ITK_ExperimentDate,datestr );
-  std::string timestr = "13-44-00.0"; // try to follow analyze format (length matters)
+  std::string timestr = "13-44-00.0"; // try to follow analyze format (length
+                                      // matters)
   itk::EncapsulateMetaData<std::string>(inputDictionary,itk::ITK_ExperimentTime,timestr );
-  std::string patientstr = "patientid "; // try to follow analyze format (length matters)
+  std::string patientstr = "patientid "; // try to follow analyze format (length
+                                         // matters)
   itk::EncapsulateMetaData<std::string>(inputDictionary,itk::ITK_PatientID,patientstr );
 
   // Write the image down
@@ -89,7 +94,8 @@ int itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
 
   if ( itk::ExposeMetaData<std::string>( outputDictionary, itk::ITK_VoxelUnits, metadatastr ) )
     {
-    // MetaIO is rather strict on the format of ITK_VoxelUnits but for our purpose "mm"=="mm. "
+    // MetaIO is rather strict on the format of ITK_VoxelUnits but for our
+    // purpose "mm"=="mm. "
     if ( !( metadatastr==voxelunitstr || (metadatastr=="mm" && voxelunitstr=="mm. ") ) )
       {
       std::cout<<"voxelunitstr.size()="<<voxelunitstr.size()<<std::endl;
@@ -203,11 +209,13 @@ int itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
   std::cout<<"(weak but exhaustive) Number of wrong metadata = "<<numWrongMetaData2<<std::endl;
   std::cout<<"(weak but exhaustive) Number of added metadata = "<<numAddedMetaData2<<std::endl<<std::endl;
 
-  // Do not consider added metadata as errors since this may just indicate file format information
+  // Do not consider added metadata as errors since this may just indicate file
+  // format information
   if ( numMissingMetaData!=0 || numWrongMetaData!=0 ||
        numMissingMetaData2!=0 || numWrongMetaData2!=0 )
     {
-    // FIXME:   FIXME MetaImage library: Then restore this test:    return EXIT_FAILURE;
+    // FIXME:   FIXME MetaImage library: Then restore this test:    return
+    // EXIT_FAILURE;
     std::cout <<" FAILED: FIXME MetaImage library: Then restore this test" << std::endl;
     }
 

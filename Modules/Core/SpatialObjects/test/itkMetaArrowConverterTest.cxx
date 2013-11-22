@@ -33,7 +33,8 @@
  *        MetaObject only holds a parent id rather than a parent object.
  *        Only the ParentID can be properly converted.
  */
-int itkMetaArrowConverterTest(int ac, char* av[])
+int
+itkMetaArrowConverterTest(int ac, char* av[])
 {
 
   // check number of arguments
@@ -43,7 +44,6 @@ int itkMetaArrowConverterTest(int ac, char* av[])
     return EXIT_FAILURE;
     }
 
-
   // typedefs
   const unsigned int Dimensions = 3;
   typedef itk::ArrowSpatialObject<Dimensions> SpatialObjectType;
@@ -52,7 +52,6 @@ int itkMetaArrowConverterTest(int ac, char* av[])
 
   // instantiate new converter and object
   ConverterType::Pointer converter = ConverterType::New();
-
 
   //
   // create the test data
@@ -103,20 +102,19 @@ int itkMetaArrowConverterTest(int ac, char* av[])
 
   // set up metaArrow
   MetaArrow* metaArrow = new MetaArrow(Dimensions);
-  metaArrow->Length((float)length);
-  metaArrow->Position((const double*)mPosition);
-  metaArrow->Direction((const double*)mDirection);
-  metaArrow->Color((const float*)color);
-  metaArrow->ParentID(itkParent->GetId());
+  metaArrow->Length( (float)length);
+  metaArrow->Position( (const double*)mPosition);
+  metaArrow->Direction( (const double*)mDirection);
+  metaArrow->Color( (const float*)color);
+  metaArrow->ParentID(itkParent->GetId() );
 
   // precision limit for comparing floats and doubles
   double precisionLimit = .000001;
 
-
   //
   // test itk to metaArrow
   //
-  MetaArrow* newMetaArrow = dynamic_cast<MetaArrow *>(converter->SpatialObjectToMetaObject(itkArrow));
+  MetaArrow* newMetaArrow = dynamic_cast<MetaArrow *>(converter->SpatialObjectToMetaObject(itkArrow) );
   if(newMetaArrow == 0)
     {
     itkGenericExceptionMacro(<< "Failed to downcast from MetaObject to MetaArrow");
@@ -144,7 +142,7 @@ int itkMetaArrowConverterTest(int ac, char* av[])
   std::cout << "[PASSED] SpatialObject -> MetaObject: color" << std::endl;
 
   // check parent id
-  if (newMetaArrow->ParentID() != itkArrow->GetParent()->GetId())
+  if (newMetaArrow->ParentID() != itkArrow->GetParent()->GetId() )
     {
     std::cout << "Conversion to MetaArrow failed to convert parent [FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -165,7 +163,7 @@ int itkMetaArrowConverterTest(int ac, char* av[])
   // check direction (note: need to normalize before comparing)
   SpatialObjectType::VectorType directionNorm = direction;
   directionNorm.Normalize();
-  const double* newMetaDirection = newMetaArrow->Direction();
+  const double*                 newMetaDirection = newMetaArrow->Direction();
   SpatialObjectType::VectorType newMetaDirectionNorm;
   newMetaDirectionNorm[0] = newMetaDirection[0];
   newMetaDirectionNorm[1] = newMetaDirection[1];
@@ -190,15 +188,14 @@ int itkMetaArrowConverterTest(int ac, char* av[])
   // must now return to the emptiness of the universe
   delete newMetaArrow;
 
-
   //
   // test metaArrow to itk
   //
   SpatialObjectType::Pointer newItkArrow =
-    dynamic_cast<SpatialObjectType *>(converter->MetaObjectToSpatialObject(metaArrow).GetPointer());
+    dynamic_cast<SpatialObjectType *>(converter->MetaObjectToSpatialObject(metaArrow).GetPointer() );
 
   // check length
-  if (vcl_fabs(newItkArrow->GetLength() - metaArrow->Length()) > precisionLimit)
+  if (vcl_fabs(newItkArrow->GetLength() - metaArrow->Length() ) > precisionLimit)
     {
     std::cout << "Conversion to SpatialObject failed to convert length [FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -221,7 +218,7 @@ int itkMetaArrowConverterTest(int ac, char* av[])
   std::cout << "[PASSED] MetaObject -> SpatialObject: color" << std::endl;
 
   // check parent id
-  if (newItkArrow->GetParentId() != itkParent->GetId())
+  if (newItkArrow->GetParentId() != itkParent->GetId() )
     {
     std::cout << "Conversion to SpatialObject failed to convert parent id [FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -260,11 +257,10 @@ int itkMetaArrowConverterTest(int ac, char* av[])
     }
   std::cout << "[PASSED] MetaObject -> SpatialObject: direction" << std::endl;
 
-
   //
   // test writing
   //
-  if (!converter->WriteMeta(itkArrow, av[1]))
+  if (!converter->WriteMeta(itkArrow, av[1]) )
     {
     std::cout << "Didn't write properly [FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -275,7 +271,7 @@ int itkMetaArrowConverterTest(int ac, char* av[])
   // test reading
   //
   SpatialObjectType::Pointer reLoad =
-    dynamic_cast<SpatialObjectType *>(converter->ReadMeta(av[1]).GetPointer());
+    dynamic_cast<SpatialObjectType *>(converter->ReadMeta(av[1]).GetPointer() );
 
   // check length
   if (vcl_fabs(reLoad->GetLength() - length) > precisionLimit)
@@ -297,7 +293,7 @@ int itkMetaArrowConverterTest(int ac, char* av[])
   std::cout << "[PASSED] Reading: color" << std::endl;
 
   // check parent id
-  if (reLoad->GetParentId() != itkParent->GetId())
+  if (reLoad->GetParentId() != itkParent->GetId() )
     {
     std::cout << "Didn't read parent id properly [FAILED]" << std::endl;
     return EXIT_FAILURE;

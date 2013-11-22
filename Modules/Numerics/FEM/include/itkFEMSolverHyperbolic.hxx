@@ -54,6 +54,7 @@ SolverHyperbolic<VDimension>
 {
   // Copy the element stiffness matrix for faster access.
   Element::MatrixType Ke;
+
   e->GetStiffnessMatrix(Ke);
   Element::MatrixType Me;
   e->GetMassMatrix(Me);
@@ -169,7 +170,9 @@ SolverHyperbolic<VDimension>
     Float d0=this->m_ls->GetSolutionValue(i,solution_d);
     Float v0=this->m_ls->GetSolutionValue(i,solution_v);
     Float a0=this->m_ls->GetSolutionValue(i,solution_a);
-    this->m_ls->SetVectorValue( i, -(d0+this->m_TimeStep*v0+0.5*this->m_TimeStep*this->m_TimeStep*(1.0-2.0*this->m_Beta)*a0), vector_dhat);
+    this->m_ls->SetVectorValue( i,
+                                -(d0+this->m_TimeStep*v0+0.5*this->m_TimeStep*this->m_TimeStep*(1.0-2.0*this->m_Beta)*a0),
+                                vector_dhat);
     this->m_ls->SetVectorValue( i, -(v0+this->m_TimeStep*(1.0-this->m_Gamma)*a0), vector_vhat);
     }
 
@@ -194,12 +197,12 @@ SolverHyperbolic<VDimension>
     Float a1=this->m_ls->GetSolutionValue(i,solution_a);
 
     this->m_ls->SetSolutionValue(i, dhat +
-                           this->m_Beta*this->m_TimeStep*this->m_TimeStep*a1
-                           , solution_d);
+                                 this->m_Beta*this->m_TimeStep*this->m_TimeStep*a1
+                                 , solution_d);
 
     this->m_ls->SetSolutionValue(i, vhat +
-                           this->m_Gamma*this->m_TimeStep*a1
-                           , solution_v);
+                                 this->m_Gamma*this->m_TimeStep*a1
+                                 , solution_v);
     }
 
   this->m_ls->DestroyVector(vector_tmp);
@@ -246,6 +249,7 @@ SolverHyperbolic<VDimension>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "Number Of Iterations: " << this->m_NumberOfIterations << std::endl;
   os << indent << "Time Step: " << this->m_TimeStep << std::endl;
   os << indent << "Beta: " << this->m_Beta << std::endl;

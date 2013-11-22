@@ -19,7 +19,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkIOPluginTest(int argc, char *argv[])
+int
+itkIOPluginTest(int argc, char *argv[])
 {
   if (argc < 4)
     {
@@ -28,7 +29,7 @@ int itkIOPluginTest(int argc, char *argv[])
     }
 
   const char* envName = "ITK_AUTOLOAD_PATH";
-  char*myenv = getenv( envName );
+  char*       myenv = getenv( envName );
 
   if (myenv)
     {
@@ -44,10 +45,10 @@ int itkIOPluginTest(int argc, char *argv[])
     itk::ObjectFactoryBase::GetRegisteredFactories();
 
   std::cout << "----- Registered factories -----" << std::endl;
-  if (!factories.empty())
+  if (!factories.empty() )
     {
     for ( std::list<itk::ObjectFactoryBase*>::iterator
-            f = factories.begin();
+          f = factories.begin();
           f != factories.end(); ++f )
       {
       std::cout << "  Factory version: "
@@ -55,13 +56,13 @@ int itkIOPluginTest(int argc, char *argv[])
                 << "  Factory description: "
                 << (*f)->GetDescription() << std::endl;
 
-      std::list<std::string> overrides = (*f)->GetClassOverrideNames();
-      std::list<std::string> names = (*f)->GetClassOverrideWithNames();
-      std::list<std::string> descriptions = (*f)->GetClassOverrideDescriptions();
-      std::list<bool> enableflags = (*f)->GetEnableFlags();
+      std::list<std::string>                 overrides = (*f)->GetClassOverrideNames();
+      std::list<std::string>                 names = (*f)->GetClassOverrideWithNames();
+      std::list<std::string>                 descriptions = (*f)->GetClassOverrideDescriptions();
+      std::list<bool>                        enableflags = (*f)->GetEnableFlags();
       std::list<std::string>::const_iterator n = names.begin();
       std::list<std::string>::const_iterator d = descriptions.begin();
-      std::list<bool>::const_iterator e = enableflags.begin();
+      std::list<bool>::const_iterator        e = enableflags.begin();
       for ( std::list<std::string>::const_iterator o = overrides.begin();
             o != overrides.end(); ++o, ++n, ++d, e++ )
         {
@@ -91,10 +92,10 @@ int itkIOPluginTest(int argc, char *argv[])
     reader->SetFileName(argv[2]);
 
     writer->SetFileName(argv[3]);
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
     writer->Update();
     reader->GetOutput()->Print(std::cout);
-  }
+    }
   catch (itk::ExceptionObject &ex)
     {
     std::cout << "------------------ Caught unexpected exception!" << std::endl;

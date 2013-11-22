@@ -28,7 +28,6 @@
 
 #include "itkTestDriverIncludeRequiredIOFactories.h"
 
-
 /* Select the environment variable holding the shared library runtime
    search path for this platform.  */
 
@@ -90,8 +89,8 @@
 # define ITK_TEST_DRIVER_PATH_SLASH '/'
 #endif
 
-
-void AddEntriesBeforeLibraryPath( const ArgumentsList & args )
+void
+AddEntriesBeforeLibraryPath( const ArgumentsList & args )
 {
   unsigned int i = 0;
 
@@ -129,8 +128,8 @@ void AddEntriesBeforeLibraryPath( const ArgumentsList & args )
     }
 }
 
-
-void AddEntriesBeforeEnvironment( const ArgumentsList & args )
+void
+AddEntriesBeforeEnvironment( const ArgumentsList & args )
 {
   unsigned int i = 0;
 
@@ -151,8 +150,8 @@ void AddEntriesBeforeEnvironment( const ArgumentsList & args )
     }
 }
 
-
-void AddEntriesBeforeEnvironmentWithSeparator( const ArgumentsList & args )
+void
+AddEntriesBeforeEnvironmentWithSeparator( const ArgumentsList & args )
 {
   unsigned int i = 0;
 
@@ -173,11 +172,12 @@ void AddEntriesBeforeEnvironmentWithSeparator( const ArgumentsList & args )
     }
 }
 
-
-int TestDriverInvokeProcess( const ArgumentsList & args )
+int
+TestDriverInvokeProcess( const ArgumentsList & args )
 {
   // a NULL is required at the end of the table
   char ** argv = new char *[args.size() + 1];
+
   for ( unsigned int i = 0; i < args.size(); i++ )
     {
     argv[i] = args[i];
@@ -254,11 +254,11 @@ int TestDriverInvokeProcess( const ArgumentsList & args )
     std::cerr << "itkTestDriver: Process exited with return value: " << retCode << std::endl;
     }
   itksysProcess_Delete(process);
-return retCode;
+  return retCode;
 }
 
-
-int main(int ac, char *av[])
+int
+main(int ac, char *av[])
 {
   RegisterRequiredFactories();
 
@@ -285,7 +285,6 @@ int main(int ac, char *av[])
     return 1;
     }
 
-
   if ( !result && po.externalProcessMustBeCalled )
     {
     AddEntriesBeforeLibraryPath( po.add_before_libpath );
@@ -299,8 +298,8 @@ int main(int ac, char *av[])
 
   if (result == 0)
     {
-    #include "itkTestDriverBeforeTest.inc"
-    #include "itkTestDriverAfterTest.inc"
+#include "itkTestDriverBeforeTest.inc"
+#include "itkTestDriverAfterTest.inc"
     }
 
   return result;

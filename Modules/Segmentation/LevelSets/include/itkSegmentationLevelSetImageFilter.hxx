@@ -28,6 +28,7 @@ SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_ReverseExpansionDirection = " << m_ReverseExpansionDirection << std::endl;
   os << indent << "m_AutoGenerateSpeedAdvection = " << m_AutoGenerateSpeedAdvection << std::endl;
   os << indent << "m_SegmentationFunction = " << m_SegmentationFunction << std::endl;
@@ -109,6 +110,7 @@ SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
     this->GetSegmentationFunction()->ReverseExpansionDirection();
     }
 }
+
 } // end namespace itk
 
 #endif

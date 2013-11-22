@@ -21,7 +21,6 @@
 #include "itkUnaryFunctorImageFilter.h"
 #include "itkProgressReporter.h"
 
-
 namespace itk
 {
 namespace Functor
@@ -36,25 +35,33 @@ template< typename TInput, typename TOutput >
 class Cast
 {
 public:
-  Cast() {}
-  virtual ~Cast() {}
-  bool operator!=(const Cast &) const
+  Cast() {
+  }
+
+  virtual
+  ~Cast() {
+  }
+
+  bool
+  operator!=(const Cast &) const
   {
     return false;
   }
 
-  bool operator==(const Cast & other) const
+  bool
+  operator==(const Cast & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( A );
   }
+
 };
 }
-
 
 /** \class CastImageFilter
  *
@@ -94,11 +101,11 @@ public:
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class CastImageFilter:
-    public UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                                    Functor::Cast<
-                                      typename TInputImage::PixelType,
-                                      typename TOutputImage::PixelType > >
+class CastImageFilter :
+  public UnaryFunctorImageFilter< TInputImage, TOutputImage,
+                                  Functor::Cast<
+                                    typename TInputImage::PixelType,
+                                    typename TOutputImage::PixelType > >
 {
 public:
   /** Standard class typedefs. */
@@ -111,7 +118,6 @@ public:
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
-
 
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
 
@@ -140,11 +146,11 @@ protected:
 private:
   CastImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 
 #endif
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCastImageFilter.hxx"

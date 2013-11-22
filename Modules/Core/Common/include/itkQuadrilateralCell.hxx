@@ -313,10 +313,12 @@ QuadrilateralCell< TCellInterface >
 
   pcoords[0] = pcoords[1] = params[0] = params[1] = 0.5;
 
-  // NOTE: Point x is here assumed to lie on the plane of Quad.  Otherwise, (FIXME)
+  // NOTE: Point x is here assumed to lie on the plane of Quad.  Otherwise,
+  // (FIXME)
   //   - Get normal for quadrilateral, using its 3 corners
   //   - Project point x onto Quad plane using this normal
-  // See vtkQuad for this:  ComputeNormal (this, pt1, pt2, pt3, n);  vtkPlane::ProjectPoint(x,pt1,n,cp);
+  // See vtkQuad for this:  ComputeNormal (this, pt1, pt2, pt3, n);
+  //  vtkPlane::ProjectPoint(x,pt1,n,cp);
 
   //  enter iteration loop
   for ( iteration = converged = 0;
@@ -334,8 +336,10 @@ QuadrilateralCell< TCellInterface >
     for ( unsigned int i = 0; i < NumberOfPoints; ++i )
       {
       pt = points->GetElement(m_PointIds[i]);
-      // using the projection normal n, one can choose which 2 axes to use out of 3
-      // any 2 should work, so (not having n) we use [x,y] (also assuming 2D use of QuadCell)
+      // using the projection normal n, one can choose which 2 axes to use out
+      // of 3
+      // any 2 should work, so (not having n) we use [x,y] (also assuming 2D use
+      // of QuadCell)
       // if we compute n, one can use the closest two indices as in vtkQuad
       for ( unsigned int j = 0; j < CellDimension; ++j )
         {
@@ -510,7 +514,8 @@ QuadrilateralCell< TCellInterface >
 template< typename TCellInterface >
 void
 QuadrilateralCell< TCellInterface >
-::EvaluateLocation(int & itkNotUsed(subId), const PointsContainer *points, const CoordRepType pointCoords[PointDimension],
+::EvaluateLocation(int & itkNotUsed(
+                     subId), const PointsContainer *points, const CoordRepType pointCoords[PointDimension],
                    CoordRepType x[PointDimension], InterpolationWeightType *weights)
 {
   this->InterpolationFunctions(pointCoords, weights);

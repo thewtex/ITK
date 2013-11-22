@@ -33,7 +33,8 @@ void testFancyStringWithItkArray();
 
 void testFancyStringForStringOperations();
 
-int itkDOMTest7( int, char*[] )
+int
+itkDOMTest7( int, char*[] )
 {
   try
     {
@@ -65,7 +66,8 @@ int itkDOMTest7( int, char*[] )
 }
 
 // test for basic data type
-void testFancyStringWithBasicType()
+void
+testFancyStringWithBasicType()
 {
   // for unsigned char
     {
@@ -140,12 +142,14 @@ void testFancyStringWithBasicType()
 }
 
 // test for std::vector<T>
-void testFancyStringWithStdVector()
+void
+testFancyStringWithStdVector()
 {
   itk::FancyString svalue;
   itk::FancyString s;
 
   std::vector<float> dataIn( 10, -0.1f );
+
   svalue << dataIn;
   // add one more data element to the end of the string
   svalue.append( " 10 " );
@@ -226,7 +230,8 @@ void testFancyStringWithStdVector()
 }
 
 // test for itk::Array<T>
-void testFancyStringWithItkArray()
+void
+testFancyStringWithItkArray()
 {
   typedef itk::Array<double> DataType;
 
@@ -316,7 +321,8 @@ void testFancyStringWithItkArray()
   // all testings were successful if reached here
 }
 
-void testFancyStringForStringOperations()
+void
+testFancyStringForStringOperations()
 {
   itk::FancyString s;
 

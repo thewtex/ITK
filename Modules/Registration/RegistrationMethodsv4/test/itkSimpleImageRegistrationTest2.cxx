@@ -31,36 +31,44 @@ template<typename TFilter>
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef CommandIterationUpdate   Self;
-  typedef itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>  Pointer;
+  typedef CommandIterationUpdate  Self;
+  typedef itk::Command            Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *) caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     const TFilter * filter =
       dynamic_cast< const TFilter * >( object );
+
     if( typeid( event ) != typeid( itk::IterationEvent ) )
-      { return; }
+                { return; }
 
     unsigned int currentLevel = filter->GetCurrentLevel();
-    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension( currentLevel );
+    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension(
+        currentLevel );
     typename TFilter::SmoothingSigmasArrayType smoothingSigmas = filter->GetSmoothingSigmasPerLevel();
-    typename TFilter::TransformParametersAdaptorsContainerType adaptors = filter->GetTransformParametersAdaptorsPerLevel();
+    typename TFilter::TransformParametersAdaptorsContainerType adaptors =
+      filter->GetTransformParametersAdaptorsPerLevel();
 
-    typename itk::ObjectToObjectOptimizerBase::Pointer optimizerBase = (const_cast<TFilter*>(filter))->GetModifiableOptimizer();
+    typename itk::ObjectToObjectOptimizerBase::Pointer optimizerBase =
+      (const_cast<TFilter*>(filter) )->GetModifiableOptimizer();
     typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
-    typename GradientDescentOptimizerv4Type::Pointer optimizer = dynamic_cast<GradientDescentOptimizerv4Type *>(optimizerBase.GetPointer());
+    typename GradientDescentOptimizerv4Type::Pointer optimizer =
+      dynamic_cast<GradientDescentOptimizerv4Type *>(optimizerBase.GetPointer() );
     if( !optimizer )
       {
       itkGenericExceptionMacro( "Error dynamic_cast failed" );
@@ -95,15 +103,19 @@ public:
         }
       }
     std::cout << std::endl;
-    }
+  }
+
 };
 
 template <unsigned int VImageDimension>
-int PerformSimpleImageRegistration2( int argc, char *argv[] )
+int
+PerformSimpleImageRegistration2( int argc, char *argv[] )
 {
   if( argc < 6 )
     {
-    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" << std::endl;
+    std::cout << argv[0] <<
+      " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" <<
+      std::endl;
     exit( 1 );
     }
 
@@ -127,9 +139,10 @@ int PerformSimpleImageRegistration2( int argc, char *argv[] )
   movingImage->Update();
   movingImage->DisconnectPipeline();
 
-  typedef itk::AffineTransform<double, VImageDimension> AffineTransformType;
+  typedef itk::AffineTransform<double, VImageDimension>                                        AffineTransformType;
   typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, AffineTransformType> AffineRegistrationType;
-  typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
+  typedef itk::GradientDescentOptimizerv4
+    GradientDescentOptimizerv4Type;
   typename AffineRegistrationType::Pointer affineSimple = AffineRegistrationType::New();
 
   // Ensuring code coverage for boolean macros
@@ -152,7 +165,7 @@ int PerformSimpleImageRegistration2( int argc, char *argv[] )
   typename GlobalCorrelationMetricType::Pointer gCorrelationMetric = GlobalCorrelationMetricType::New();
 
   typedef itk::ObjectToObjectMultiMetricv4<VImageDimension, VImageDimension> MultiMetricType;
-  typedef typename MultiMetricType::MetricType LocalMetricType;
+  typedef typename MultiMetricType::MetricType                               LocalMetricType;
 
   typename MultiMetricType::Pointer multiMetric = MultiMetricType::New();
   multiMetric->AddMetric( mutualInformationMetric );
@@ -177,16 +190,17 @@ int PerformSimpleImageRegistration2( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  // Smooth by specified gaussian sigmas for each level.  These values are specified in
+  // Smooth by specified gaussian sigmas for each level.  These values are
+  // specified in
   // physical units. Sigmas of zero cause inconsistency between some platforms.
-  {
-  typename AffineRegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
-  smoothingSigmasPerLevel.SetSize( 3 );
-  smoothingSigmasPerLevel[0] = 2;
-  smoothingSigmasPerLevel[1] = 1;
-  smoothingSigmasPerLevel[2] = 1; //0;
-  affineSimple->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
-  }
+    {
+    typename AffineRegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
+    smoothingSigmasPerLevel.SetSize( 3 );
+    smoothingSigmasPerLevel[0] = 2;
+    smoothingSigmasPerLevel[1] = 1;
+    smoothingSigmasPerLevel[2] = 1; //0;
+    affineSimple->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
+    }
 
   typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
   typename GradientDescentOptimizerv4Type::Pointer affineOptimizer =
@@ -220,17 +234,18 @@ int PerformSimpleImageRegistration2( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  {
-  typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
-  std::cout << "Affine parameters after registration: " << std::endl
-            << affineOptimizer->GetCurrentPosition() << std::endl
-            << "Last LearningRate: " << affineOptimizer->GetLearningRate() << std::endl
-            << std::endl << " optimizer: " << affineOptimizer->GetNumberOfThreads() << std::endl;
-  }
+    {
+    typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
+    std::cout << "Affine parameters after registration: " << std::endl
+              << affineOptimizer->GetCurrentPosition() << std::endl
+              << "Last LearningRate: " << affineOptimizer->GetLearningRate() << std::endl
+              << std::endl << " optimizer: " << affineOptimizer->GetNumberOfThreads() << std::endl;
+    }
 
   typedef itk::ResampleImageFilter<MovingImageType, FixedImageType> ResampleFilterType;
   typename ResampleFilterType::Pointer resampler = ResampleFilterType::New();
-  resampler->SetTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->GetOutput()->Get() ) );
+  resampler->SetTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->GetOutput()
+                                                                                               ->Get() ) );
   resampler->SetInput( movingImage );
   resampler->SetSize( fixedImage->GetLargestPossibleRegion().GetSize() );
   resampler->SetOutputOrigin( fixedImage->GetOrigin() );
@@ -248,7 +263,8 @@ int PerformSimpleImageRegistration2( int argc, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkSimpleImageRegistrationTest2( int argc, char *argv[] )
+int
+itkSimpleImageRegistrationTest2( int argc, char *argv[] )
 {
   if( argc < 6 )
     {
@@ -257,16 +273,16 @@ int itkSimpleImageRegistrationTest2( int argc, char *argv[] )
     }
 
   switch( atoi( argv[1] ) )
-   {
-   case 2:
-     PerformSimpleImageRegistration2<2>( argc, argv );
-     break;
-   case 3:
-     PerformSimpleImageRegistration2<3>( argc, argv );
-     break;
-   default:
+    {
+    case 2:
+      PerformSimpleImageRegistration2<2>( argc, argv );
+      break;
+    case 3:
+      PerformSimpleImageRegistration2<3>( argc, argv );
+      break;
+    default:
       std::cerr << "Unsupported dimension" << std::endl;
       exit( EXIT_FAILURE );
-   }
+    }
   return EXIT_SUCCESS;
 }

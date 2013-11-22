@@ -55,14 +55,14 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TFeatureImageType >
-class VectorThresholdSegmentationLevelSetFunction:
+class VectorThresholdSegmentationLevelSetFunction :
   public SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 {
 public:
   /** Standard class typedefs. */
   typedef VectorThresholdSegmentationLevelSetFunction Self;
   typedef SegmentationLevelSetFunction< TImageType, TFeatureImageType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
   typedef TFeatureImageType          FeatureImageType;
@@ -94,26 +94,43 @@ public:
   typedef typename MahalanobisFunctionType::CovarianceMatrixType                 CovarianceMatrixType;
 
   /** Set/Get mean and covariance */
-  void SetMean(const MeanVectorType & mean) {  m_Mahalanobis->SetMean(mean); }
-  const MeanVectorType & GetMean() const {  return m_Mahalanobis->GetMean(); }
+  void
+  SetMean(const MeanVectorType & mean) {
+    m_Mahalanobis->SetMean(mean);
+  }
 
-  void SetCovariance(const CovarianceMatrixType & cov) { m_Mahalanobis->SetCovariance(cov); }
-  const CovarianceMatrixType & GetCovariance() const { return m_Mahalanobis->GetCovariance(); }
+  const MeanVectorType &
+  GetMean() const {
+    return m_Mahalanobis->GetMean();
+  }
+
+  void
+  SetCovariance(const CovarianceMatrixType & cov) {
+    m_Mahalanobis->SetCovariance(cov);
+  }
+
+  const CovarianceMatrixType &
+  GetCovariance() const {
+    return m_Mahalanobis->GetCovariance();
+  }
 
   /** Set/Get the threshold value for the MahanalobisDistance */
-  void SetThreshold(ScalarValueType thr)
+  void
+  SetThreshold(ScalarValueType thr)
   {
     m_Threshold = thr;
   }
 
-  ScalarValueType GetThreshold()
+  ScalarValueType
+  GetThreshold()
   {
     return m_Threshold;
   }
 
   virtual void CalculateSpeedImage();
 
-  virtual void Initialize(const RadiusType & r)
+  virtual void
+  Initialize(const RadiusType & r)
   {
     Superclass::Initialize(r);
 
@@ -140,7 +157,9 @@ protected:
     this->SetThreshold(1.8);
   }
 
-  virtual ~VectorThresholdSegmentationLevelSetFunction(){}
+  virtual
+  ~VectorThresholdSegmentationLevelSetFunction(){
+  }
 
   VectorThresholdSegmentationLevelSetFunction(const Self &); //purposely not
                                                              // implemented
@@ -148,9 +167,11 @@ protected:
 
   // implemented
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "MahalanobisFunction: " << m_Mahalanobis << std::endl;
     os << indent << "ThresholdValue: " << m_Threshold << std::endl;
   }

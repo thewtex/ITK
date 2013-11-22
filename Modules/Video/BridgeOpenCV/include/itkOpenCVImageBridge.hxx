@@ -31,7 +31,7 @@ typename TOutputImageType::Pointer
 OpenCVImageBridge::IplImageToITKImage(const IplImage* in)
 {
   // Typedefs
-  typedef TOutputImageType                           ImageType;
+  typedef TOutputImageType ImageType;
 
   //
   // Make sure input isn't null and output type is 2D or 1D
@@ -98,6 +98,7 @@ typename TOutputImageType::Pointer
 OpenCVImageBridge::CVMatToITKImage(const cv::Mat & in)
 {
   const IplImage converted = in;
+
   return IplImageToITKImage<TOutputImageType>(&converted);
 }
 
@@ -127,7 +128,7 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
   if (ImageType::ImageDimension > 2)
     {
     bool IsA2DImage = false;
-    for( unsigned int dim = 2; ( dim < ImageType::ImageDimension) && !IsA2DImage;dim++ )
+    for( unsigned int dim = 2; ( dim < ImageType::ImageDimension) && !IsA2DImage; dim++ )
       {
       if( size[dim] != 1 )
         {
@@ -154,7 +155,7 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
   //
   // Set up the output image
   //
-  IplImage* out;
+  IplImage*    out;
   unsigned int w = static_cast< unsigned int >( size[0] );
   unsigned int h = static_cast< unsigned int >( size[1] );
 
@@ -162,12 +163,12 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
   // set the depth correctly based on input pixel type
   //
   unsigned int typeSize = 1;
-  if (typeid(ValueType) == typeid(unsigned char))
+  if (typeid(ValueType) == typeid(unsigned char) )
     {
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_8U, outChannels);
     typeSize = IPL_DEPTH_8U/8;
     }
-  else if (typeid(ValueType) == typeid(char))
+  else if (typeid(ValueType) == typeid(char) )
     {
     if (outChannels != 1)
       {
@@ -176,12 +177,12 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_8S, outChannels);
     typeSize = IPL_DEPTH_8U/8;
     }
-  else if (typeid(ValueType) == typeid(unsigned short))
+  else if (typeid(ValueType) == typeid(unsigned short) )
     {
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_16U, outChannels);
     typeSize = IPL_DEPTH_16U/8;
     }
-  else if (typeid(ValueType) == typeid(short))
+  else if (typeid(ValueType) == typeid(short) )
     {
     if (outChannels != 1)
       {
@@ -190,12 +191,12 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_16S, outChannels);
     typeSize = IPL_DEPTH_16U/8;
     }
-  else if (typeid(ValueType) == typeid(float))
+  else if (typeid(ValueType) == typeid(float) )
     {
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_32F, outChannels);
     typeSize = IPL_DEPTH_32F/8;
     }
-  else if (typeid(ValueType) == typeid(double))
+  else if (typeid(ValueType) == typeid(double) )
     {
     if (outChannels != 1)
       {
@@ -213,12 +214,12 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
   if (outChannels == 1)
     {
     size_t paddedRowBytes = typeSize * out->width;
-    for (int i=0;i<out->height;i++)
-       {
-        memcpy( out->imageData + i*out->widthStep,
-             in->GetBufferPointer() + i*out->width,
-             paddedRowBytes);
-       }
+    for (int i=0; i<out->height; i++)
+      {
+      memcpy( out->imageData + i*out->widthStep,
+              in->GetBufferPointer() + i*out->width,
+              paddedRowBytes);
+      }
     }
   // BGR output
   else
@@ -237,7 +238,7 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
       {
       IplImage* temp = cvCreateImage(cvSize(w,h), out->depth, inChannels);
       temp->imageData = reinterpret_cast<char*>(
-       const_cast<InputPixelType*>(in->GetBufferPointer()));
+          const_cast<InputPixelType*>(in->GetBufferPointer() ) );
       cvCvtColor(temp, out, CV_GRAY2BGR);
       cvReleaseImage(&temp);
       }
@@ -258,11 +259,11 @@ OpenCVImageBridge::ITKImageToCVMat(const TInputImageType* in, bool force3Channel
 {
   // Extra copy, but necessary to prevent memory leaks
   IplImage* temp = ITKImageToIplImage<TInputImageType>(in, force3Channels);
-  cv::Mat out(temp, true);
+  cv::Mat   out(temp, true);
+
   cvReleaseImage(&temp);
   return out;
 }
-
 
 } // end namespace itk
 

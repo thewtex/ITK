@@ -27,8 +27,8 @@ typedef itk::Image<PixelType,2>         ImageType;
 typedef itk::Image<unsigned char,2>     SegmentationType;
 typedef itk::ImageFileReader<ImageType> ReaderType;
 typedef itk::VoronoiSegmentationRGBImageFilter<ImageType, SegmentationType>
-                                        FilterType;
-typedef FilterType::BinaryObjectImage   BinaryObjectImage;
+  FilterType;
+typedef FilterType::BinaryObjectImage BinaryObjectImage;
 
 namespace VoronoiSegRGBTest
 {
@@ -36,32 +36,34 @@ namespace VoronoiSegRGBTest
 //
 // global constants
 //
-const unsigned int width = 256;
-const unsigned int height = 256;
+const unsigned int  width = 256;
+const unsigned int  height = 256;
 const unsigned char bgMean = 64;
 const unsigned char bgStd = 10;
 const unsigned char fgMean = 128;
 const unsigned char fgStd = 5;
-const unsigned int objAStartX = 30;
-const unsigned int objAEndX = 94;
-const unsigned int objAStartY = 30;
-const unsigned int objAEndY = 94;
-const unsigned int objBStartX = 150;
-const unsigned int objBEndX = 214;
-const unsigned int objBStartY = 150;
-const unsigned int objBEndY = 214;
-const double minCorrectRate = .875;  // .875 is all classified as background
-
+const unsigned int  objAStartX = 30;
+const unsigned int  objAEndX = 94;
+const unsigned int  objAStartY = 30;
+const unsigned int  objAEndY = 94;
+const unsigned int  objBStartX = 150;
+const unsigned int  objBEndX = 214;
+const unsigned int  objBStartY = 150;
+const unsigned int  objBEndY = 214;
+const double        minCorrectRate = .875; // .875 is all classified as
+                                           // background
 
 //
 // Function to set up input image
 //
-ImageType::Pointer SetUpInputImage()
+ImageType::Pointer
+SetUpInputImage()
 {
   // initialize the test input image
-  ImageType::Pointer inputImage = ImageType::New();
-  ImageType::SizeType size = {{width,height}};
+  ImageType::Pointer    inputImage = ImageType::New();
+  ImageType::SizeType   size = {{width,height}};
   ImageType::RegionType region;
+
   region.SetSize(size);
   inputImage->SetLargestPossibleRegion(region);
   inputImage->SetBufferedRegion(region);
@@ -70,12 +72,12 @@ ImageType::Pointer SetUpInputImage()
 
   // add background random field
   itk::ImageRegionIterator<ImageType> iter(inputImage, region);
-  while (!iter.IsAtEnd())
+  while (!iter.IsAtEnd() )
     {
     PixelType px;
-    px[0] = (unsigned char)(vnl_sample_uniform(bgMean-bgStd,bgMean+bgStd));
-    px[1] = (unsigned char)(vnl_sample_uniform(bgMean-bgStd,bgMean+bgStd));
-    px[2] = (unsigned char)(vnl_sample_uniform(bgMean-bgStd,bgMean+bgStd));
+    px[0] = (unsigned char)(vnl_sample_uniform(bgMean-bgStd,bgMean+bgStd) );
+    px[1] = (unsigned char)(vnl_sample_uniform(bgMean-bgStd,bgMean+bgStd) );
+    px[2] = (unsigned char)(vnl_sample_uniform(bgMean-bgStd,bgMean+bgStd) );
     iter.Set(px);
     ++iter;
     }
@@ -90,9 +92,9 @@ ImageType::Pointer SetUpInputImage()
       idx[1] = y;
 
       PixelType px;
-      px[0] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd));
-      px[1] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd));
-      px[2] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd));
+      px[0] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd) );
+      px[1] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd) );
+      px[2] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd) );
       inputImage->SetPixel(idx, px);
       }
     }
@@ -105,9 +107,9 @@ ImageType::Pointer SetUpInputImage()
       idx[1] = y;
 
       PixelType px;
-      px[0] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd));
-      px[1] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd));
-      px[2] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd));
+      px[0] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd) );
+      px[1] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd) );
+      px[2] = (unsigned char)(vnl_sample_uniform(fgMean-fgStd,fgMean+fgStd) );
       inputImage->SetPixel(idx, px);
       }
     }
@@ -115,17 +117,18 @@ ImageType::Pointer SetUpInputImage()
   return inputImage;
 }
 
-
 //
 // Function to check the results
 //
-double CheckResults(SegmentationType::Pointer outputImage)
+double
+CheckResults(SegmentationType::Pointer outputImage)
 {
   // walk the image and count the correctly segmented pixels
   unsigned int correctInterior = 0;
   unsigned int correctExterior = 0;
   unsigned int falseInterior = 0;
   unsigned int falseExterior = 0;
+
   for (unsigned int x = 0; x < width; x++)
     {
     for (unsigned int y = 0; y < height; y++)
@@ -184,11 +187,11 @@ double CheckResults(SegmentationType::Pointer outputImage)
   return percentCorrect;
 }
 
-
 //
 // Test with no prior
 //
-int TestNoPrior(ImageType::Pointer inputImage)
+int
+TestNoPrior(ImageType::Pointer inputImage)
 {
 
   std::cout << "Beginning no-prior test" << std::endl;
@@ -196,6 +199,7 @@ int TestNoPrior(ImageType::Pointer inputImage)
   // set up the filter
   FilterType::Pointer filter = FilterType::New();
   std::cout << "Setting filter input" << std::endl;
+
   filter->SetInput(inputImage);
 
   // explicitly set mean and std
@@ -234,7 +238,7 @@ int TestNoPrior(ImageType::Pointer inputImage)
 
   // check the results
   std::cout << "Checking the filter results" << std::endl;
-  double percentCorrect = CheckResults(filter->GetOutput());
+  double percentCorrect = CheckResults(filter->GetOutput() );
   if (percentCorrect <= minCorrectRate)
     {
     std::cout << "[FAILED] Did not segment over "<< minCorrectRate*100 <<"% correctly" << std::endl;
@@ -245,21 +249,22 @@ int TestNoPrior(ImageType::Pointer inputImage)
   return EXIT_SUCCESS;
 }
 
-
 //
 // Test with a prior
 //
-int TestWithPrior(ImageType::Pointer inputImage)
+int
+TestWithPrior(ImageType::Pointer inputImage)
 {
   // set up the filter
   std::cout << "Setting up the filter and image" << std::endl;
   FilterType::Pointer filter = FilterType::New();
+
   filter->SetInput(inputImage);
 
   // set up the prior
   std::cout << "Setting up the prior image" << std::endl;
-  BinaryObjectImage::Pointer prior = BinaryObjectImage::New();
-  BinaryObjectImage::SizeType size = {{width,height}};
+  BinaryObjectImage::Pointer    prior = BinaryObjectImage::New();
+  BinaryObjectImage::SizeType   size = {{width,height}};
   BinaryObjectImage::RegionType region;
   region.SetSize(size);
   prior->SetLargestPossibleRegion(region);
@@ -310,7 +315,7 @@ int TestWithPrior(ImageType::Pointer inputImage)
 
   // check the results
   std::cout << "Checking the results of the filter" << std::endl;
-  double percentCorrect = CheckResults(filter->GetOutput());
+  double percentCorrect = CheckResults(filter->GetOutput() );
   if (percentCorrect <= minCorrectRate)
     {
     std::cout << "[FAILED] Did not segment over "<< minCorrectRate*100 <<"% correctly" << std::endl;
@@ -323,11 +328,11 @@ int TestWithPrior(ImageType::Pointer inputImage)
 
 } // end namespace VoronoiSegRGBTest
 
-
 //
 // Main test function
 //
-int itkVoronoiSegmentationRGBImageFilterTest(int, char* [] )
+int
+itkVoronoiSegmentationRGBImageFilterTest(int, char* [] )
 {
   // set up the input image
   ImageType::Pointer inputImage = VoronoiSegRGBTest::SetUpInputImage();
@@ -335,6 +340,7 @@ int itkVoronoiSegmentationRGBImageFilterTest(int, char* [] )
   // test without prior
   std::cout << "[Running test without prior]" << std::endl;
   int noPriorTestResult = VoronoiSegRGBTest::TestNoPrior(inputImage);
+
   if (noPriorTestResult == EXIT_FAILURE)
     {
     std::cout << "Failed on test without prior" << std::endl;

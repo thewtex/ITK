@@ -57,6 +57,7 @@ PhasedArray3DSpecialCoordinatesImage< TPixel >
      << m_FirstSampleDistance
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -25,6 +25,7 @@ double
 SimpleSignedDistance( const TPoint & p )
 {
   TPoint center;
+
   center.Fill( 16 );
   double radius = 10;
 
@@ -36,7 +37,7 @@ SimpleSignedDistance( const TPoint & p )
   accum = vcl_sqrt( accum );
   if (vnl_math_abs(accum - radius) > 1)
     {
-    if((accum - radius) > 0)
+    if( (accum - radius) > 0)
       {
       return radius;
       }
@@ -54,9 +55,10 @@ SimpleSignedDistance( const TPoint & p )
 }
 
 template< unsigned int VDimension >
-int FastChamferDistanceImageFilterTest( unsigned int iPositive,
-                                        unsigned int iNegative,
-                                        unsigned int iOther )
+int
+FastChamferDistanceImageFilterTest( unsigned int iPositive,
+                                    unsigned int iNegative,
+                                    unsigned int iOther )
 {
   std::cout<< "Test ITK Chamfer Distance Image Filter" << std::endl;
   std::cout << "Compute the distance map of a 32^d image" << std::endl;
@@ -94,7 +96,7 @@ int FastChamferDistanceImageFilterTest( unsigned int iPositive,
 
   /* Create Fast Chamfer Distance filter */
   typedef itk::FastChamferDistanceImageFilter<
-                                ImageType,ImageType> ChamferFilterType;
+      ImageType,ImageType> ChamferFilterType;
   typename ChamferFilterType::Pointer filter = ChamferFilterType::New();
 
   filter->SetInput(inputImage);
@@ -115,15 +117,15 @@ int FastChamferDistanceImageFilterTest( unsigned int iPositive,
   filter->Print(std::cout);
 
   //Create NarrowBand
-  typedef typename ChamferFilterType::BandNodeType    BandNodeType;
-  typedef typename ChamferFilterType::NarrowBandType  NarrowBandType;
+  typedef typename ChamferFilterType::BandNodeType   BandNodeType;
+  typedef typename ChamferFilterType::NarrowBandType NarrowBandType;
 
   typename NarrowBandType::Pointer band = NarrowBandType::New();
   band->SetTotalRadius(4);
   band->SetInnerRadius(2);
   filter->SetMaximumDistance(5);
   std::cout<<"Band initial size: "<<band->Size()<<std::endl;
-  filter->SetNarrowBand(band.GetPointer());
+  filter->SetNarrowBand(band.GetPointer() );
   filter->Update();
 
   std::cout<<"Band size: "<<band->Size()<<std::endl;
@@ -215,7 +217,8 @@ int FastChamferDistanceImageFilterTest( unsigned int iPositive,
   return returnVal;
 }
 
-int itkFastChamferDistanceImageFilterTest( int argc, char* argv[] )
+int
+itkFastChamferDistanceImageFilterTest( int argc, char* argv[] )
 {
   if( argc != 2 )
     {

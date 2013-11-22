@@ -44,7 +44,8 @@
 #include "itkTreeIteratorClone.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char* [])
+int
+main(int, char* [])
 {
   // Software Guide : BeginLatex
   // First, we create a tree of integers.
@@ -78,17 +79,21 @@ int main(int, char* [])
   tree->Add(7,1);
   // Software Guide : EndCodeSnippet
   // Software Guide : BeginLatex
-  // We define an \doxygen{LevelOrderTreeIterator} to parse the tree in level order.
-  // This particular iterator takes three arguments. The first one is the actual tree
-  // to be parsed, the second one is the maximum depth level and the third one is the
-  // starting node. The \code{GetNode()} function return a node given its value. Once
+  // We define an \doxygen{LevelOrderTreeIterator} to parse the tree in level
+  // order.
+  // This particular iterator takes three arguments. The first one is the actual
+  // tree
+  // to be parsed, the second one is the maximum depth level and the third one
+  // is the
+  // starting node. The \code{GetNode()} function return a node given its value.
+  // Once
   // again the first node that corresponds to the value is returned.
   // Software Guide : EndLatex
   std::cout << "LevelOrderTreeIterator:" << std::endl;
   // Software Guide : BeginCodeSnippet
-  itk::LevelOrderTreeIterator<TreeType> levelIt(tree,10,tree->GetNode(2));
+  itk::LevelOrderTreeIterator<TreeType> levelIt(tree,10,tree->GetNode(2) );
   levelIt.GoToBegin();
-  while(!levelIt.IsAtEnd())
+  while(!levelIt.IsAtEnd() )
     {
     std::cout << levelIt.Get()
               << " ("<< levelIt.GetLevel()
@@ -100,10 +105,12 @@ int main(int, char* [])
   levelIt.GoToBegin();
   // Software Guide : BeginLatex
   // The TreeIterators have useful functions to test the property of the current
-  // pointed node. Among these functions: \code{IsLeaf{}} returns true if the current
+  // pointed node. Among these functions: \code{IsLeaf{}} returns true if the
+  // current
   // node is a leaf, \code{IsRoot{}} returns true if the node is a root,
   // \code{HasParent{}} returns true if the node has a parent and
-  // \code{CountChildren{}} returns the number of children for this particular node.
+  // \code{CountChildren{}} returns the number of children for this particular
+  // node.
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
   levelIt.IsLeaf();
@@ -112,14 +119,15 @@ int main(int, char* [])
   levelIt.CountChildren();
   // Software Guide : EndCodeSnippet
   // Software Guide : BeginLatex
-  // The \doxygen{ChildTreeIterator} provides another way to iterate through a tree
+  // The \doxygen{ChildTreeIterator} provides another way to iterate through a
+  // tree
   // by listing all the children of a node.
   // Software Guide : EndLatex
   std::cout << "ChildTreeIterator:" << std::endl;
   // Software Guide : BeginCodeSnippet
   itk::ChildTreeIterator<TreeType> childIt(tree);
   childIt.GoToBegin();
-  while(!childIt.IsAtEnd())
+  while(!childIt.IsAtEnd() )
     {
     std::cout << childIt.Get() << std::endl;
     ++childIt;
@@ -156,7 +164,7 @@ int main(int, char* [])
   // Software Guide : BeginCodeSnippet
   itk::LeafTreeIterator<TreeType> leafIt(tree);
   leafIt.GoToBegin();
-  while(!leafIt.IsAtEnd())
+  while(!leafIt.IsAtEnd() )
     {
     std::cout << leafIt.Get() << std::endl;
     ++leafIt;
@@ -171,7 +179,7 @@ int main(int, char* [])
   // Software Guide : BeginCodeSnippet
   itk::InOrderTreeIterator<TreeType> InOrderIt(tree);
   InOrderIt.GoToBegin();
-  while(!InOrderIt.IsAtEnd())
+  while(!InOrderIt.IsAtEnd() )
     {
     std::cout << InOrderIt.Get() << std::endl;
     ++InOrderIt;
@@ -186,7 +194,7 @@ int main(int, char* [])
   // Software Guide : BeginCodeSnippet
   itk::PreOrderTreeIterator<TreeType> PreOrderIt(tree);
   PreOrderIt.GoToBegin();
-  while(!PreOrderIt.IsAtEnd())
+  while(!PreOrderIt.IsAtEnd() )
     {
     std::cout << PreOrderIt.Get() << std::endl;
     ++PreOrderIt;
@@ -201,7 +209,7 @@ int main(int, char* [])
   // Software Guide : BeginCodeSnippet
   itk::PostOrderTreeIterator<TreeType> PostOrderIt(tree);
   PostOrderIt.GoToBegin();
-  while(!PostOrderIt.IsAtEnd())
+  while(!PostOrderIt.IsAtEnd() )
     {
     std::cout << PostOrderIt.Get() << std::endl;
     ++PostOrderIt;
@@ -215,9 +223,9 @@ int main(int, char* [])
   // Software Guide : EndLatex
   std::cout << "RootTreeIterator:" << std::endl;
   // Software Guide : BeginCodeSnippet
-  itk::RootTreeIterator<TreeType> RootIt(tree,tree->GetNode(6));
+  itk::RootTreeIterator<TreeType> RootIt(tree,tree->GetNode(6) );
   RootIt.GoToBegin();
-  while(!RootIt.IsAtEnd())
+  while(!RootIt.IsAtEnd() )
     {
     std::cout << RootIt.Get() << std::endl;
     ++RootIt;
@@ -254,7 +262,7 @@ int main(int, char* [])
   typedef itk::TreeIteratorBase<TreeType>      IteratorType;
   typedef itk::TreeIteratorClone<IteratorType> IteratorCloneType;
   itk::PreOrderTreeIterator<TreeType> anIterator(tree);
-  IteratorCloneType aClone = anIterator;
+  IteratorCloneType                   aClone = anIterator;
   // Software Guide : EndCodeSnippet
 
   return EXIT_SUCCESS;

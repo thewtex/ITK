@@ -35,7 +35,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
 #include "itkImageFileReader.h"
@@ -43,7 +42,8 @@
 #include "itkScalarImageKmeansImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
   if( argc < 5 )
     {
@@ -56,19 +56,19 @@ int main( int argc, char * argv [] )
 
   const char * inputImageFileName = argv[1];
 
-
   // Software Guide : BeginLatex
   //
   // First we define the pixel type and dimension of the image that we intend to
   // classify. With this image type we can =also declare the
-  // \doxygen{ImageFileReader} needed for reading the input image, create one and
+  // \doxygen{ImageFileReader} needed for reading the input image, create one
+  // and
   // set its input filename.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short       PixelType;
-  const unsigned int          Dimension = 2;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image<PixelType, Dimension > ImageType;
 
@@ -76,7 +76,6 @@ int main( int argc, char * argv [] )
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( inputImageFileName );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -96,11 +95,11 @@ int main( int argc, char * argv [] )
   const unsigned int numberOfInitialClasses = atoi( argv[4] );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // In general the classification will produce as output an image whose pixel
-  // values are integers associated to the labels of the classes. Since typically
+  // values are integers associated to the labels of the classes. Since
+  // typically
   // these integers will be generated in order (0,1,2,...N), the output image
   // will tend to look very dark when displayed with naive viewers. It is
   // therefore convenient to have the option of spreading the label values over
@@ -119,7 +118,6 @@ int main( int argc, char * argv [] )
   kmeansFilter->SetUseNonContiguousLabels( useNonContiguousLabels );
   // Software Guide : EndCodeSnippet
 
-
   const unsigned int argoffset = 5;
 
   if( static_cast<unsigned int>(argc) <
@@ -132,7 +130,6 @@ int main( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
   // Software Guide : BeginLatex
   //
   // For each one of the classes we must provide a tentative initial value for
@@ -143,7 +140,6 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   for( unsigned k=0; k < numberOfInitialClasses; k++ )
     {
@@ -152,9 +148,7 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   const char * outputImageFileName = argv[2];
-
 
   // Software Guide : BeginLatex
   //
@@ -168,7 +162,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef KMeansFilterType::OutputImageType  OutputImageType;
+  typedef KMeansFilterType::OutputImageType OutputImageType;
 
   typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
@@ -179,7 +173,6 @@ int main( int argc, char * argv [] )
   writer->SetFileName( outputImageFileName );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We are now ready for triggering the execution of the pipeline. This is done
@@ -187,7 +180,6 @@ int main( int argc, char * argv [] )
   // propagate the update request to the reader and then to the classifier.
   //
   // Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   try
@@ -203,18 +195,18 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // At this point the classification is done, the labeled image is saved in a
-  // file, and we can take a look at the means that were found as a result of the
+  // file, and we can take a look at the means that were found as a result of
+  // the
   // model estimation performed inside the classifier filter.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   KMeansFilterType::ParametersType estimatedMeans =
-                                            kmeansFilter->GetFinalMeans();
+    kmeansFilter->GetFinalMeans();
 
   const unsigned int numberOfClasses = estimatedMeans.Size();
 

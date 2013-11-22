@@ -29,24 +29,25 @@
 #include "itkImageFileWriter.h"
 #include "itkTriangleMeshToBinaryImageFilter.h"
 
-int itkTriangleMeshToBinaryImageFilterTest(int argc, char * argv [] )
+int
+itkTriangleMeshToBinaryImageFilterTest(int argc, char * argv [] )
 {
   // Declare the type of the input and output mesh
   typedef itk::DefaultDynamicMeshTraits<double, 3, 3> TriangleMeshTraits;
   typedef itk::Mesh<double,3, TriangleMeshTraits>     TriangleMeshType;
 
   // declare triangle mesh source
-  typedef itk::RegularSphereMeshSource<TriangleMeshType>  SphereMeshSourceType;
-  typedef SphereMeshSourceType::PointType                 PointType;
-  typedef SphereMeshSourceType::VectorType                VectorType;
+  typedef itk::RegularSphereMeshSource<TriangleMeshType> SphereMeshSourceType;
+  typedef SphereMeshSourceType::PointType                PointType;
+  typedef SphereMeshSourceType::VectorType               VectorType;
 
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
-  PointType center;
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
+  PointType                     center;
   center[0] = 50;
   center[1] = 50;
   center[2] = 50;
   PointType::ValueType scaleInit[3] = {10,10,10};
-  VectorType scale = scaleInit;
+  VectorType           scale = scaleInit;
 
   mySphereMeshSource->SetCenter(center);
   mySphereMeshSource->SetResolution(3);
@@ -62,7 +63,7 @@ int itkTriangleMeshToBinaryImageFilterTest(int argc, char * argv [] )
 
   typedef itk::TriangleMeshToBinaryImageFilter<TriangleMeshType,ImageType> TriangleMeshToBinaryImageFilterType;
   TriangleMeshToBinaryImageFilterType::Pointer imageFilter = TriangleMeshToBinaryImageFilterType::New();
-  imageFilter->SetInput(mySphereMeshSource->GetOutput());
+  imageFilter->SetInput(mySphereMeshSource->GetOutput() );
   ImageType::SizeType size;
 
   size[0]=100;
@@ -73,7 +74,6 @@ int itkTriangleMeshToBinaryImageFilterTest(int argc, char * argv [] )
   imageFilter->Update();
 
   std::cout << "[PASSED]" << std::endl;
-
 
   if( argc > 1 )
     {

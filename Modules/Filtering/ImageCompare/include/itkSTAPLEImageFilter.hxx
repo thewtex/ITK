@@ -29,6 +29,7 @@ STAPLEImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_MaximumIterations = " << m_MaximumIterations << std::endl;
   os << indent << "m_ForegroundValue = " << m_ForegroundValue << std::endl;
   os << indent << "m_ConfidenceWeight = " << m_ConfidenceWeight << std::endl;
@@ -76,7 +77,7 @@ STAPLEImageFilter< TInputImage, TOutputImage >
 
   // Come up with an initial Wi which is simply the average of
   // all the segmentations.
-  IteratorType in;
+  IteratorType      in;
   FuzzyIteratorType out;
   for ( i = 0; i < number_of_input_files; ++i )
     {
@@ -175,7 +176,7 @@ STAPLEImageFilter< TInputImage, TOutputImage >
     out = FuzzyIteratorType( W, W->GetRequestedRegion() );
 
     out.GoToBegin();
-    while ( !out.IsAtEnd())
+    while ( !out.IsAtEnd() )
       {
       while ( !out.IsAtEndOfLine() )
         {
@@ -183,7 +184,7 @@ STAPLEImageFilter< TInputImage, TOutputImage >
         for ( i = 0; i < number_of_input_files; ++i )
           {
           if ( D_it[i].Get() > m_ForegroundValue - epsilon && D_it[i].Get() < m_ForegroundValue + epsilon )
-            // Dij == 1
+          // Dij == 1
             {
             alpha1 = alpha1 * p[i];
             beta1  = beta1 * ( 1.0 - q[i] );
@@ -262,6 +263,7 @@ STAPLEImageFilter< TInputImage, TOutputImage >
   delete[] last_p;
   delete[] D_it;
 }
+
 } // end namespace itk
 
 #endif

@@ -40,7 +40,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class BoxMeanImageFilter:
+class BoxMeanImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -85,7 +85,8 @@ public:
 
 protected:
   BoxMeanImageFilter();
-  ~BoxMeanImageFilter() {}
+  ~BoxMeanImageFilter() {
+  }
 
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
@@ -93,6 +94,7 @@ protected:
 private:
   BoxMeanImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };                                  // end of class
 } // end namespace itk
 

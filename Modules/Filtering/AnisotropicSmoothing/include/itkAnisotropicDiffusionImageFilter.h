@@ -70,7 +70,7 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TInputImage, typename TOutputImage >
-class AnisotropicDiffusionImageFilter:
+class AnisotropicDiffusionImageFilter :
   public DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -124,7 +124,8 @@ public:
       at a pixel.  This method is  useful in streaming applications to avoid
       block artifacts by overriding the normal gradient magnitude calculation
       (i.e. all image chunks are scaled uniformly). */
-  void SetFixedAverageGradientMagnitude(double a)
+  void
+  SetFixedAverageGradientMagnitude(double a)
   {
     m_FixedAverageGradientMagnitude = a;
     this->Modified();
@@ -135,7 +136,9 @@ public:
 
 protected:
   AnisotropicDiffusionImageFilter();
-  ~AnisotropicDiffusionImageFilter() {}
+  ~AnisotropicDiffusionImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Supplies the halting criteria for this class of filters.  The

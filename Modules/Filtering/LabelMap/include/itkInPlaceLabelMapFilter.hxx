@@ -47,8 +47,9 @@ namespace itk
  */
 template< typename TInputImage >
 InPlaceLabelMapFilter< TInputImage >
-::InPlaceLabelMapFilter():m_InPlace(true)
-{}
+::InPlaceLabelMapFilter() : m_InPlace(true)
+{
+}
 
 /**
  *
@@ -56,7 +57,8 @@ InPlaceLabelMapFilter< TInputImage >
 template< typename TInputImage >
 InPlaceLabelMapFilter< TInputImage >
 ::~InPlaceLabelMapFilter()
-{}
+{
+}
 
 template< typename TInputImage >
 void
@@ -64,6 +66,7 @@ InPlaceLabelMapFilter< TInputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "InPlace: " << ( this->m_InPlace ? "On" : "Off" ) << std::endl;
   if ( this->CanRunInPlace() )
     {
@@ -88,7 +91,8 @@ InPlaceLabelMapFilter< TInputImage >
     // Graft this first input to the output.  Later, we'll need to
     // remove the input's hold on the bulk data.
     //
-    OutputImagePointer inputAsOutput = dynamic_cast< TOutputImage * >( const_cast< TInputImage * >( this->GetInput() ) );
+    OutputImagePointer inputAsOutput =
+      dynamic_cast< TOutputImage * >( const_cast< TInputImage * >( this->GetInput() ) );
 
     if ( inputAsOutput )
       {
@@ -122,12 +126,12 @@ InPlaceLabelMapFilter< TInputImage >
     output->SetBackgroundValue( input->GetBackgroundValue() );
 
     typename TInputImage::ConstIterator it( input );
-    while ( ! it.IsAtEnd() )
+    while ( !it.IsAtEnd() )
       {
       const LabelObjectType *labeObject = it.GetLabelObject();
 
       itkAssertInDebugAndIgnoreInReleaseMacro(labeObject != NULL);
-      itkAssertInDebugAndIgnoreInReleaseMacro(labeObject->GetLabel() == it.GetLabel());
+      itkAssertInDebugAndIgnoreInReleaseMacro(labeObject->GetLabel() == it.GetLabel() );
 
       typename LabelObjectType::Pointer newLabelObject = LabelObjectType::New();
       newLabelObject->CopyAllFrom(labeObject);

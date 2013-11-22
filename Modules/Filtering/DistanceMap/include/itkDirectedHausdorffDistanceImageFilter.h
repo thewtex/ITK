@@ -69,7 +69,7 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TInputImage1, typename TInputImage2 >
-class DirectedHausdorffDistanceImageFilter:
+class DirectedHausdorffDistanceImageFilter :
   public ImageToImageFilter< TInputImage1, TInputImage1 >
 {
 public:
@@ -136,7 +136,9 @@ public:
 
 protected:
   DirectedHausdorffDistanceImageFilter();
-  ~DirectedHausdorffDistanceImageFilter(){}
+  ~DirectedHausdorffDistanceImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Pass the input through unmodified. Do this by Grafting in the
@@ -162,24 +164,26 @@ protected:
   void EnlargeOutputRequestedRegion(DataObject *data);
 
 private:
-  DirectedHausdorffDistanceImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                       //purposely not implemented
+  DirectedHausdorffDistanceImageFilter(const Self &); //purposely not
+                                                      // implemented
+  void operator=(const Self &);                       //purposely not
+
+  // implemented
 
   typedef Image< RealType, itkGetStaticConstMacro(ImageDimension) > DistanceMapType;
   typedef typename DistanceMapType::Pointer                         DistanceMapPointer;
 
-
-  DistanceMapPointer      m_DistanceMap;
+  DistanceMapPointer m_DistanceMap;
 
   Array< RealType >       m_MaxDistance;
   Array< IdentifierType > m_PixelCount;
 
   typedef itk::CompensatedSummation< RealType > CompensatedSummationType;
-  std::vector< CompensatedSummationType >       m_Sum;
+  std::vector< CompensatedSummationType > m_Sum;
 
-  RealType                m_DirectedHausdorffDistance;
-  RealType                m_AverageHausdorffDistance;
-  bool                    m_UseImageSpacing;
+  RealType m_DirectedHausdorffDistance;
+  RealType m_AverageHausdorffDistance;
+  bool     m_UseImageSpacing;
 }; // end of class
 } // end namespace itk
 

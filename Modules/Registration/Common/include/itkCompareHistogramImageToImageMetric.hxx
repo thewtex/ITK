@@ -108,7 +108,7 @@ throw ( ExceptionObject )
                                         this->Superclass::m_LowerBound,
                                         this->Superclass::m_UpperBound);
   typedef itk::ImageRegionConstIteratorWithIndex< FixedImageType >
-  TrainingFixedIteratorType;
+    TrainingFixedIteratorType;
   typename FixedImageType::IndexType index;
   typename FixedImageType::RegionType fixedRegion;
 
@@ -159,7 +159,8 @@ age");
 }
 
 template< typename TFixedImage, typename TMovingImage >
-void CompareHistogramImageToImageMetric< TFixedImage, TMovingImage >::PrintSelf(std::ostream & os, Indent indent) const
+void
+CompareHistogramImageToImageMetric< TFixedImage, TMovingImage >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
@@ -212,6 +213,7 @@ void CompareHistogramImageToImageMetric< TFixedImage, TMovingImage >::PrintSelf(
   os << indent << "TrainingFixedImageRegion: " << m_TrainingFixedImageRegion
      << std::endl;
 }
+
 } // End namespace itk
 
 #endif // itkCompareHistogramImageToImageMetric_hxx

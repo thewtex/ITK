@@ -62,15 +62,15 @@ namespace itk
  */
 template<typename TTransform>
 class ConstantVelocityFieldTransformParametersAdaptor
-: public TransformParametersAdaptor<TTransform>
+  : public TransformParametersAdaptor<TTransform>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef ConstantVelocityFieldTransformParametersAdaptor      Self;
-  typedef TransformParametersAdaptor<TTransform>               Superclass;
-  typedef SmartPointer<Self>                                   Pointer;
-  typedef SmartPointer<const Self>                             ConstPointer;
+  typedef ConstantVelocityFieldTransformParametersAdaptor Self;
+  typedef TransformParametersAdaptor<TTransform>          Superclass;
+  typedef SmartPointer<Self>                              Pointer;
+  typedef SmartPointer<const Self>                        ConstPointer;
 
   /** New macro for creation of through a Smart Pointer. */
   itkNewMacro( Self );
@@ -79,16 +79,16 @@ public:
   itkTypeMacro( ConstantVelocityFieldTransformParametersAdaptor, TransformParametersAdaptor );
 
   /** Typedefs associated with the transform */
-  typedef TTransform                                     TransformType;
-  typedef typename TransformType::Pointer                TransformPointer;
-  typedef typename TransformType::ParametersType         ParametersType;
-  typedef typename TransformType::ParametersValueType    ParametersValueType;
+  typedef TTransform                                  TransformType;
+  typedef typename TransformType::Pointer             TransformPointer;
+  typedef typename TransformType::ParametersType      ParametersType;
+  typedef typename TransformType::ParametersValueType ParametersValueType;
 
-  typedef typename TransformType::ConstantVelocityFieldType  ConstantVelocityFieldType;
-  typedef typename ConstantVelocityFieldType::PointType      PointType;
-  typedef typename ConstantVelocityFieldType::SizeType       SizeType;
-  typedef typename ConstantVelocityFieldType::DirectionType  DirectionType;
-  typedef typename ConstantVelocityFieldType::SpacingType    SpacingType;
+  typedef typename TransformType::ConstantVelocityFieldType ConstantVelocityFieldType;
+  typedef typename ConstantVelocityFieldType::PointType     PointType;
+  typedef typename ConstantVelocityFieldType::SizeType      SizeType;
+  typedef typename ConstantVelocityFieldType::DirectionType DirectionType;
+  typedef typename ConstantVelocityFieldType::SpacingType   SpacingType;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( ConstantVelocityFieldDimension, unsigned int, TransformType::ConstantVelocityFieldDimension );
@@ -125,8 +125,14 @@ protected:
   ~ConstantVelocityFieldTransformParametersAdaptor();
 
 private:
-  ConstantVelocityFieldTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  ConstantVelocityFieldTransformParametersAdaptor( const Self & ); //purposely
+                                                                   // not
+                                                                   //
+                                                                   // implemented
+  void operator=( const Self & );                                  //purposely
+
+  // not
+  // implemented
 
 }; //class ConstantVelocityFieldTransformParametersAdaptor
 }  // namespace itk

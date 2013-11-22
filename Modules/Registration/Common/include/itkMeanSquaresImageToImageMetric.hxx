@@ -194,7 +194,7 @@ MeanSquaresImageToImageMetric<TFixedImage, TMovingImage>
       {
       sum += 2.0 *diff *threadS.m_Jacobian(dim, par) * movingImageGradientValue[dim];
       }
-   threadS.m_MSEDerivative[par] += sum;
+    threadS.m_MSEDerivative[par] += sum;
     }
 
   return true;
@@ -238,7 +238,6 @@ MeanSquaresImageToImageMetric<TFixedImage, TMovingImage>
             0,
             this->m_NumberOfParameters * sizeof( double ) );
     }
-
 
   // MUST BE CALLED TO INITIATE PROCESSING
   this->GetValueAndDerivativeMultiThreadedInitiate();

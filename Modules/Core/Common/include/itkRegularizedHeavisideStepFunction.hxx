@@ -27,12 +27,14 @@ RegularizedHeavisideStepFunction< TInput, TOutput >
 ::RegularizedHeavisideStepFunction() : Superclass(),
   m_Epsilon( NumericTraits< RealType >::One ),
   m_OneOverEpsilon( NumericTraits< RealType >::One )
-{}
+{
+}
 
 template< typename TInput, typename TOutput >
 RegularizedHeavisideStepFunction< TInput, TOutput >
 ::~RegularizedHeavisideStepFunction()
-{}
+{
+}
 
 template< typename TInput, typename TOutput >
 void
@@ -47,9 +49,10 @@ RegularizedHeavisideStepFunction< TInput, TOutput >
   else
     {
     itkGenericExceptionMacro("ERROR: Epsilon needs to be greater than "
-                               << NumericTraits< RealType >::epsilon() );
+                             << NumericTraits< RealType >::epsilon() );
     }
 }
+
 }
 
 #endif

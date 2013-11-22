@@ -73,9 +73,10 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TSharedData = ConstrainedRegionBasedLevelSetFunctionSharedData< TInputImage, TFeatureImage,
-                                                                                ScalarChanAndVeseLevelSetFunctionData<
-                                                                                  TInputImage, TFeatureImage > > >
-class ScalarChanAndVeseLevelSetFunction:
+                                                                                   ScalarChanAndVeseLevelSetFunctionData
+                                                                                   <
+                                                                                     TInputImage, TFeatureImage > > >
+class ScalarChanAndVeseLevelSetFunction :
   public ScalarRegionBasedLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
 {
 public:
@@ -132,8 +133,11 @@ public:
   typedef typename Superclass::ListImageType          ListImageType;
 
 protected:
-  ScalarChanAndVeseLevelSetFunction():Superclass() {}
-  ~ScalarChanAndVeseLevelSetFunction(){}
+  ScalarChanAndVeseLevelSetFunction() : Superclass() {
+  }
+
+  ~ScalarChanAndVeseLevelSetFunction(){
+  }
 
   void ComputeParameters();
 
@@ -154,6 +158,7 @@ protected:
 private:
   ScalarChanAndVeseLevelSetFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 }
 

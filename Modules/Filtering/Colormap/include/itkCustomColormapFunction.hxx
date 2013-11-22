@@ -48,7 +48,7 @@ CustomColormapFunction< TScalar, TRGBPixel >
     RealType     m1 = this->m_RedChannel[index - 1u];
     RealType     d = p1 - m1;
     red = d * ( size - 1.0 ) * ( value - ( index - 1.0 ) / ( size - 1.0 ) )
-          + m1;
+      + m1;
     }
 
   RealType green = 0.0;
@@ -64,7 +64,7 @@ CustomColormapFunction< TScalar, TRGBPixel >
     RealType     m1 = this->m_GreenChannel[index - 1u];
     RealType     d = p1 - m1;
     green = d * ( size - 1.0 ) * ( value - ( index - 1.0 ) / ( size - 1.0 ) )
-            + m1;
+      + m1;
     }
 
   RealType blue = 0.0;
@@ -80,7 +80,7 @@ CustomColormapFunction< TScalar, TRGBPixel >
     RealType     m1 = this->m_BlueChannel[index - 1u];
     RealType     d = p1 - m1;
     blue = d * ( size - 1.0 ) * ( value - ( index - 1.0 ) / ( size - 1.0 ) )
-           + m1;
+      + m1;
     }
 
   // Set the rgb components after rescaling the values.
@@ -93,6 +93,7 @@ CustomColormapFunction< TScalar, TRGBPixel >
 
   return pixel;
 }
+
 } // end namespace Function
 } // end namespace itk
 

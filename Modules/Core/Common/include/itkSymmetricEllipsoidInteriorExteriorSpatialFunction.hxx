@@ -36,7 +36,8 @@ SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 template< unsigned int VDimension, typename TInput >
 SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 ::~SymmetricEllipsoidInteriorExteriorSpatialFunction()
-{}
+{
+}
 
 template< unsigned int VDimension, typename TInput >
 typename SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >::OutputType
@@ -60,7 +61,8 @@ SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
                         static_cast< double >( 2 ) );
   symmetricVector = pointVector - ( m_Orientation * ( pointVector * m_Orientation ) );
   symmetricTerm = vcl_pow(
-    static_cast< double >( ( ( symmetricVector.GetNorm() ) / ( .5 * m_SymmetricAxes ) ) ), static_cast< double >( 2 ) );
+      static_cast< double >( ( ( symmetricVector.GetNorm() ) / ( .5 * m_SymmetricAxes ) ) ),
+      static_cast< double >( 2 ) );
 
   if ( ( uniqueTerm + symmetricTerm ) >= 0 && ( uniqueTerm + symmetricTerm ) <= 1 )
     {
@@ -71,7 +73,8 @@ SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 }
 
 template< unsigned int VDimension, typename TInput >
-void SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
+void
+SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -87,13 +90,15 @@ void SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 }
 
 template< unsigned int VDimension, typename TInput >
-void SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
+void
+SymmetricEllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 ::SetOrientation(VectorType orientation, double uniqueAxis, double symmetricAxes)
 {
   m_Orientation = orientation;     // Orientation of unique axis of ellipsoid
   m_SymmetricAxes = symmetricAxes; // Length of symmetric axes
   m_UniqueAxis = uniqueAxis;       // Length of unique axis
 }
+
 } // end namespace itk
 
 #endif

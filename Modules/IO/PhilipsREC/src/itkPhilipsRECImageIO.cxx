@@ -102,7 +102,7 @@ GetExtension(const std::string & filename)
   if ( fileExt == std::string(".gz") )
     {
     fileExt = itksys::SystemTools::GetFilenameLastExtension(
-      itksys::SystemTools::GetFilenameWithoutLastExtension(filename) );
+        itksys::SystemTools::GetFilenameWithoutLastExtension(filename) );
     fileExt += ".gz";
     }
   // Check that a valid extension was found
@@ -166,7 +166,8 @@ GetHeaderFileName(const std::string & filename)
 }
 
 //Returns the base image filename.
-static std::string GetImageFileName(const std::string & filename)
+static std::string
+GetImageFileName(const std::string & filename)
 {
   std::string       ImageFileName(filename);
   const std::string fileExt = GetExtension(filename);
@@ -188,13 +189,14 @@ static std::string GetImageFileName(const std::string & filename)
 //----------------------------------------------------------------------------
 // This generates the correct offset to the desired image type and
 // scanning sequence (randomly ordered in the REC).
-int PhilipsRECImageIOGetImageTypeOffset(int imageType, int scanSequence,
-                                        int volumeIndex, int slice, int numSlices, struct par_parameter parParam,
-                                        PhilipsPAR::PARSliceIndexImageTypeVector sliceImageTypesIndex,
-                                        PhilipsPAR::PARSliceIndexScanSequenceVector sliceScanSequenceIndex)
+int
+PhilipsRECImageIOGetImageTypeOffset(int imageType, int scanSequence,
+                                    int volumeIndex, int slice, int numSlices, struct par_parameter parParam,
+                                    PhilipsPAR::PARSliceIndexImageTypeVector sliceImageTypesIndex,
+                                    PhilipsPAR::PARSliceIndexScanSequenceVector sliceScanSequenceIndex)
 {
   int index = volumeIndex * parParam.num_slice_repetitions * numSlices
-              + slice * parParam.num_slice_repetitions;
+    + slice * parParam.num_slice_repetitions;
   int i;
 
   for ( i = 0; i < parParam.num_slice_repetitions; i++ )
@@ -210,7 +212,8 @@ int PhilipsRECImageIOGetImageTypeOffset(int imageType, int scanSequence,
 
 //----------------------------------------------------------------------------
 // This creates the desired slice order index (slice or image block).
-void PhilipsRECImageIOSetupSliceIndex(
+void
+PhilipsRECImageIOSetupSliceIndex(
   PhilipsRECImageIO::SliceIndexType *indexMatrix, int sortBlock,
   struct par_parameter parParam,
   PhilipsPAR::PARImageTypeScanSequenceVector imageTypesScanSequenceIndex,
@@ -247,7 +250,7 @@ void PhilipsRECImageIOSetupSliceIndex(
     throw exception;
     }
   if ( !parParam.slicessorted && (imageTypesScanSequenceIndex.size() !=
-       (PhilipsRECImageIO::SliceIndexType::size_type)parParam.num_slice_repetitions) )
+                                  (PhilipsRECImageIO::SliceIndexType::size_type)parParam.num_slice_repetitions) )
     {
     std::ostringstream message;
     message << "imageTypesScanSequenceIndex.size(): "
@@ -284,11 +287,11 @@ void PhilipsRECImageIOSetupSliceIndex(
         for ( int k = 0; k < actualSlices; k++ )
           {
           ( *indexMatrix )[index] = j * parParam.num_slice_repetitions * actualSlices
-                                    + k * parParam.num_slice_repetitions
-                                    + PhilipsRECImageIOGetImageTypeOffset(
-            imageTypesScanSequenceIndex[i].first,
-            imageTypesScanSequenceIndex[i].second, j, k, actualSlices, parParam,
-            sliceImageTypesIndex, sliceScanSequenceIndex);
+            + k * parParam.num_slice_repetitions
+            + PhilipsRECImageIOGetImageTypeOffset(
+              imageTypesScanSequenceIndex[i].first,
+              imageTypesScanSequenceIndex[i].second, j, k, actualSlices, parParam,
+              sliceImageTypesIndex, sliceScanSequenceIndex);
           index++;
           }
         }
@@ -443,7 +446,8 @@ PhilipsRECImageIO::~PhilipsRECImageIO()
   delete this->m_SliceIndex;
 }
 
-void PhilipsRECImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+PhilipsRECImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
@@ -461,7 +465,8 @@ PhilipsRECImageIO::GetSliceIndex(IndexValueType index) const
   return ( *this->m_SliceIndex )[index];
 }
 
-void PhilipsRECImageIO::Read(void *buffer)
+void
+PhilipsRECImageIO::Read(void *buffer)
 {
   unsigned int       dim;
   const unsigned int dimensions = this->GetNumberOfDimensions();
@@ -504,8 +509,8 @@ void PhilipsRECImageIO::Read(void *buffer)
               << GetImageFileName(this->m_FileName) << std::endl
               << ImageFileName;
       ExceptionObject exception(__FILE__, __LINE__,
-                              message.str(),
-                              ITK_LOCATION);
+                                message.str(),
+                                ITK_LOCATION);
       throw exception;
       }
     }
@@ -537,13 +542,14 @@ void PhilipsRECImageIO::Read(void *buffer)
     const z_off_t offset =  Math::CastWithRangeCheck< z_off_t, SizeType >(realIndex * imageSliceSizeInBytes);
     gzseek(file_p, offset, SEEK_SET);
     gzread( file_p, p + ( slice * imageSliceSizeInBytes ),
-              Math::CastWithRangeCheck< unsigned int, SizeType >(imageSliceSizeInBytes) );
+            Math::CastWithRangeCheck< unsigned int, SizeType >(imageSliceSizeInBytes) );
     }
   gzclose(file_p);
   SwapBytesIfNecessary(buffer, numberOfPixels);
 }
 
-bool PhilipsRECImageIO::CanReadFile(const char *FileNameToRead)
+bool
+PhilipsRECImageIO::CanReadFile(const char *FileNameToRead)
 {
   std::string filename(FileNameToRead);
 
@@ -586,7 +592,8 @@ bool PhilipsRECImageIO::CanReadFile(const char *FileNameToRead)
   return true;
 }
 
-void PhilipsRECImageIO::ReadImageInformation()
+void
+PhilipsRECImageIO::ReadImageInformation()
 {
   const std::string    HeaderFileName = GetHeaderFileName(this->m_FileName);
   struct par_parameter par;
@@ -602,7 +609,7 @@ void PhilipsRECImageIO::ReadImageInformation()
     }
   catch ( itk::ExceptionObject & err )
     {
-    throw & err;
+    throw &err;
     }
   if ( par.problemreading )
     {
@@ -618,7 +625,8 @@ void PhilipsRECImageIO::ReadImageInformation()
   GradientDirectionContainerType::Pointer diffusionGradientOrientationVector =
     GradientDirectionContainerType::New();
   if ( !philipsPAR->GetDiffusionGradientOrientationAndBValues(HeaderFileName,
-                                                              diffusionGradientOrientationVector, diffusionBvalueVector) )
+                                                              diffusionGradientOrientationVector,
+                                                              diffusionBvalueVector) )
     {
     ExceptionObject exception(__FILE__, __LINE__,
                               "Problem reading diffusion gradients and b values from PAR file",
@@ -742,7 +750,7 @@ void PhilipsRECImageIO::ReadImageInformation()
   MetaDataDictionary & thisDic = this->GetMetaDataDictionary();
   // Necessary to clear dict if ImageIO object is re-used
   thisDic.Clear();
-  std::string          classname( this->GetNameOfClass() );
+  std::string classname( this->GetNameOfClass() );
   EncapsulateMetaData< std::string >(thisDic, ITK_InputFilterName, classname);
 
   EncapsulateMetaData< std::string >( thisDic, ITK_ImageFileBaseName,
@@ -1057,7 +1065,7 @@ void PhilipsRECImageIO::ReadImageInformation()
   EncapsulateMetaData< ScanningSequencesType >( thisDic, PAR_ScanningSequences,
                                                 ScanningSequencesType(par.scanning_sequences) );
   typedef ScanningSequenceImageTypeRescaleValuesContainerType::Pointer
-  ScanningSequenceImageTypeRescaleValuesContainerTypePtr;
+    ScanningSequenceImageTypeRescaleValuesContainerTypePtr;
   EncapsulateMetaData< ScanningSequenceImageTypeRescaleValuesContainerTypePtr >(
     thisDic, PAR_ScanningSequenceImageTypeRescaleValues,
     scanningSequenceImageTypeRescaleVector);
@@ -1066,4 +1074,5 @@ void PhilipsRECImageIO::ReadImageInformation()
   EncapsulateMetaData< LabelTypesASLContainerType::Pointer >(thisDic,
                                                              PAR_ASLLabelTypes, labelTypesASLVector);
 }
+
 } // end namespace itk

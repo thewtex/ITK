@@ -53,7 +53,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class ChangeRegionLabelMapFilter:public InPlaceLabelMapFilter< TInputImage >
+class ChangeRegionLabelMapFilter : public InPlaceLabelMapFilter< TInputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -100,8 +100,11 @@ public:
   itkGetConstReferenceMacro(Region, OutputImageRegionType);
 
 protected:
-  ChangeRegionLabelMapFilter() {}
-  ~ChangeRegionLabelMapFilter() {}
+  ChangeRegionLabelMapFilter() {
+  }
+
+  ~ChangeRegionLabelMapFilter() {
+  }
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 

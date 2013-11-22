@@ -43,14 +43,12 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageRegistrationMethod.h"
 #include "itkTranslationTransform.h"
 #include "itkMeanSquaresImageToImageMetric.h"
 #include "itkRegularStepGradientDescentOptimizer.h"
 // Software Guide : EndCodeSnippet
-
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -60,34 +58,36 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSubtractImageFilter.h"
 
-
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef CommandIterationUpdate   Self;
-  typedef itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>  Pointer;
+  typedef CommandIterationUpdate  Self;
+  typedef itk::Command            Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
 
   typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   typedef const OptimizerType*                     OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
   {
     Execute( (const itk::Object *)caller, event);
   }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
   {
     OptimizerPointer optimizer =
-                         dynamic_cast< OptimizerPointer >( object );
+      dynamic_cast< OptimizerPointer >( object );
 
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
@@ -99,8 +99,8 @@ public:
 
 };
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -112,7 +112,6 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-
   // Software Guide : BeginLatex
   //
   // The types of each one of the components in the registration methods should
@@ -122,10 +121,9 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  const    unsigned int    Dimension = 2;
-  typedef  float           PixelType;
+  const    unsigned int Dimension = 2;
+  typedef  float PixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -134,10 +132,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -150,7 +147,6 @@ int main( int argc, char *argv[] )
   typedef itk::TranslationTransform< double, Dimension > TransformType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  An optimizer is required to explore the parameter space of the transform
@@ -159,9 +155,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -173,10 +168,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::MeanSquaresImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -186,11 +180,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -202,10 +195,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -216,17 +208,17 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MetricType::Pointer         metric        = MetricType::New();
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  MetricType::Pointer       metric        = MetricType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
-  //  Each component is now connected to the instance of the registration method.
+  //  Each component is now connected to the instance of the registration
+  // method.
   //  \index{itk::RegistrationMethod!SetMetric()}
   //  \index{itk::RegistrationMethod!SetOptimizer()}
   //  \index{itk::RegistrationMethod!SetTransform()}
@@ -243,7 +235,6 @@ int main( int argc, char *argv[] )
   registration->SetInterpolator(  interpolator  );
   // Software Guide : EndCodeSnippet
 
-
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
   typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
   FixedImageReaderType::Pointer  fixedImageReader  = FixedImageReaderType::New();
@@ -251,7 +242,6 @@ int main( int argc, char *argv[] )
 
   fixedImageReader->SetFileName(  argv[1] );
   movingImageReader->SetFileName( argv[2] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -266,14 +256,14 @@ int main( int argc, char *argv[] )
   registration->SetMovingImage(   movingImageReader->GetOutput()   );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The registration can be restricted to consider only a particular region
   //  of the fixed image as input to the metric computation. This region is
   //  defined with the \code{SetFixedImageRegion()} method.  You could use this
   //  feature to reduce the computational time of the registration or to avoid
-  //  unwanted objects present in the image from affecting the registration outcome.
+  //  unwanted objects present in the image from affecting the registration
+  // outcome.
   //  In this example we use the full available content of the image. This
   //  region is identified by the \code{BufferedRegion} of the fixed image.
   //  Note that for this region to be valid the reader must first invoke its
@@ -287,9 +277,8 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   fixedImageReader->Update();
   registration->SetFixedImageRegion(
-                    fixedImageReader->GetOutput()->GetBufferedRegion() );
+    fixedImageReader->GetOutput()->GetBufferedRegion() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -318,7 +307,6 @@ int main( int argc, char *argv[] )
   registration->SetInitialTransformParameters( initialParameters );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  At this point the registration method is ready for execution. The
@@ -339,15 +327,22 @@ int main( int argc, char *argv[] )
   //  step length by a half. After several reductions of the step length, the
   //  optimizer may be moving in a very restricted area of the transform
   //  parameter space. The user can define how small the step length should be
-  //  to consider convergence to have been reached. This is equivalent to defining
+  //  to consider convergence to have been reached. This is equivalent to
+  // defining
   //  the precision with which the final transform should be known.
   //
   //  The initial step length is defined with the method
   //  \code{SetMaximumStepLength()}, while the tolerance for convergence is
   //  defined with the method \code{SetMinimumStepLength()}.
   //
-  //  \index{itk::Regular\-Setp\-Gradient\-Descent\-Optimizer!SetMaximumStepLength()}
-  //  \index{itk::Regular\-Step\-Gradient\-Descent\-Optimizer!SetMinimumStepLength()}
+  //
+  //
+  //
+  // \index{itk::Regular\-Setp\-Gradient\-Descent\-Optimizer!SetMaximumStepLength()}
+  //
+  //
+  //
+  // \index{itk::Regular\-Step\-Gradient\-Descent\-Optimizer!SetMinimumStepLength()}
   //
   //  Software Guide : EndLatex
 
@@ -356,7 +351,6 @@ int main( int argc, char *argv[] )
   optimizer->SetMinimumStepLength( 0.01 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  In case the optimizer never succeeds reaching the desired
@@ -364,7 +358,10 @@ int main( int argc, char *argv[] )
   //  iterations to be performed. This maximum number is defined with the
   //  method \code{SetNumberOfIterations()}.
   //
-  //  \index{itk::Regular\-Setp\-Gradient\-Descent\-Optimizer!SetNumberOfIterations()}
+  //
+  //
+  //
+  // \index{itk::Regular\-Setp\-Gradient\-Descent\-Optimizer!SetNumberOfIterations()}
   //
   //  Software Guide : EndLatex
 
@@ -372,11 +369,9 @@ int main( int argc, char *argv[] )
   optimizer->SetNumberOfIterations( 200 );
   // Software Guide : EndCodeSnippet
 
-
   // Connect an observer
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
-
 
   //  Software Guide : BeginLatex
   //
@@ -401,7 +396,6 @@ int main( int argc, char *argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // In a real life application, you may attempt to recover from the error by
@@ -424,7 +418,6 @@ int main( int argc, char *argv[] )
   ParametersType finalParameters = registration->GetLastTransformParameters();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  In the case of the \doxygen{TranslationTransform}, there is a
@@ -438,7 +431,6 @@ int main( int argc, char *argv[] )
   const double TranslationAlongY = finalParameters[1];
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The optimizer can be queried for the actual number of iterations
@@ -447,7 +439,10 @@ int main( int argc, char *argv[] )
   //  indication that the maximum step length has been set too small, which
   //  is undesirable since it results in long computational times.
   //
-  //  \index{itk::Regular\-Setp\-Gradient\-Descent\-Optimizer!GetCurrentIteration()}
+  //
+  //
+  //
+  // \index{itk::Regular\-Setp\-Gradient\-Descent\-Optimizer!GetCurrentIteration()}
   //
   //  Software Guide : EndLatex
 
@@ -466,7 +461,6 @@ int main( int argc, char *argv[] )
   const double bestValue = optimizer->GetValue();
   // Software Guide : EndCodeSnippet
 
-
   // Print out results
   //
   std::cout << "Result = " << std::endl;
@@ -474,7 +468,6 @@ int main( int argc, char *argv[] )
   std::cout << " Translation Y = " << TranslationAlongY  << std::endl;
   std::cout << " Iterations    = " << numberOfIterations << std::endl;
   std::cout << " Metric value  = " << bestValue          << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -489,7 +482,8 @@ int main( int argc, char *argv[] )
   //  The second image is the result of intentionally translating the first
   //  image by $(13,17)$ millimeters. Both images have unit-spacing and
   //  are shown in Figure \ref{fig:FixedMovingImageRegistration1}. The
-  //  registration takes 18 iterations and the resulting transform parameters are:
+  //  registration takes 18 iterations and the resulting transform parameters
+  // are:
   //
   //  \begin{verbatim}
   //  Translation X = 12.9959
@@ -502,6 +496,8 @@ int main( int argc, char *argv[] )
   // \begin{figure}
   // \center
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySliceBorder20}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySliceShifted13x17y}
   // \itkcaption[Fixed and Moving images in registration framework]{Fixed and
   // Moving image provided as input to the registration method.}
@@ -510,7 +506,6 @@ int main( int argc, char *argv[] )
   //
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -527,10 +522,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -543,7 +537,6 @@ int main( int argc, char *argv[] )
   ResampleFilterType::Pointer resampler = ResampleFilterType::New();
   resampler->SetInput( movingImageReader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -568,7 +561,6 @@ int main( int argc, char *argv[] )
   resampler->SetTransform( registration->GetOutput()->Get() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  As described in Section \ref{sec:ResampleImageFilter}, the
@@ -588,7 +580,6 @@ int main( int argc, char *argv[] )
   resampler->SetDefaultPixelValue( 100 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
@@ -596,13 +587,13 @@ int main( int argc, char *argv[] )
   // \includegraphics[width=0.32\textwidth]{ImageRegistration1Output}
   // \includegraphics[width=0.32\textwidth]{ImageRegistration1DifferenceBefore}
   // \includegraphics[width=0.32\textwidth]{ImageRegistration1DifferenceAfter}
-  // \itkcaption[HelloWorld registration output images]{Mapped moving image and its
+  // \itkcaption[HelloWorld registration output images]{Mapped moving image and
+  // its
   // difference with the fixed image before and after registration}
   // \label{fig:ImageRegistration1Output}
   // \end{figure}
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -617,11 +608,10 @@ int main( int argc, char *argv[] )
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType >          CastFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+      FixedImageType,
+      OutputImageType >          CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -631,13 +621,11 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   writer->SetFileName( argv[3] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -652,7 +640,6 @@ int main( int argc, char *argv[] )
   writer->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
@@ -666,7 +653,6 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
   //  Software Guide : BeginLatex
   //
   //  The fixed image and the transformed moving image can easily be compared
@@ -677,16 +663,15 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::SubtractImageFilter<
-                                  FixedImageType,
-                                  FixedImageType,
-                                  FixedImageType > DifferenceFilterType;
+      FixedImageType,
+      FixedImageType,
+      FixedImageType > DifferenceFilterType;
 
   DifferenceFilterType::Pointer difference = DifferenceFilterType::New();
 
   difference->SetInput1( fixedImageReader->GetOutput() );
   difference->SetInput2( resampler->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -696,7 +681,6 @@ int main( int argc, char *argv[] )
   //  type of the images were any of the \code{unsigned} integer type.
   //
   // Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -714,8 +698,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RescaleIntensityImageFilter<
-                                  FixedImageType,
-                                  OutputImageType >   RescalerType;
+      FixedImageType,
+      OutputImageType >   RescalerType;
 
   RescalerType::Pointer intensityRescaler = RescalerType::New();
 
@@ -725,7 +709,6 @@ int main( int argc, char *argv[] )
 
   resampler->SetDefaultPixelValue( 1 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -738,13 +721,11 @@ int main( int argc, char *argv[] )
   writer2->SetInput( intensityRescaler->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   if( argc > 4 )
     {
     writer2->SetFileName( argv[4] );
     writer2->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -765,13 +746,11 @@ int main( int argc, char *argv[] )
   resampler->SetTransform( identityTransform );
   // Software Guide : EndCodeSnippet
 
-
   if( argc > 5 )
     {
     writer2->SetFileName( argv[5] );
     writer2->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -795,14 +774,16 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
+  //
+  //
   // \includegraphics[height=0.44\textwidth]{ImageRegistration1TraceTranslations}
   // \includegraphics[height=0.44\textwidth]{ImageRegistration1TraceMetric}
-  // \itkcaption[Trace of translations and metrics during registration]{The sequence
+  // \itkcaption[Trace of translations and metrics during registration]{The
+  // sequence
   // of translations and metric values at each iteration of the optimizer.}
   // \label{fig:ImageRegistration1Trace}
   // \end{figure}
@@ -818,7 +799,6 @@ int main( int argc, char *argv[] )
   //  around the extrema value.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

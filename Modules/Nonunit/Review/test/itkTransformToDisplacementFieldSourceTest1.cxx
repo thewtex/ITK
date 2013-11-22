@@ -29,7 +29,8 @@
 #include "itkResampleImageFilter.h"
 #include "itkWarpImageFilter.h"
 
-int itkTransformToDisplacementFieldSourceTest1( int argc, char *argv[] )
+int
+itkTransformToDisplacementFieldSourceTest1( int argc, char *argv[] )
 {
   if ( argc < 2 )
     {
@@ -44,25 +45,25 @@ int itkTransformToDisplacementFieldSourceTest1( int argc, char *argv[] )
   //  const unsigned int  SplineOrder = 3;
 
   typedef itk::Image<
-    ScalarPixelType, Dimension>          ImageType;
+      ScalarPixelType, Dimension>          ImageType;
   typedef itk::Vector<
-    ScalarPixelType, Dimension>          VectorPixelType;
+      ScalarPixelType, Dimension>          VectorPixelType;
 
   typedef itk::Image<
-    VectorPixelType, Dimension>          DisplacementFieldImageType;
+      VectorPixelType, Dimension>          DisplacementFieldImageType;
 
   typedef itk::Euler3DTransform<
-    CoordRepresentationType>             TransformType;
+      CoordRepresentationType>             TransformType;
 
   typedef TransformType::ParametersType ParametersType;
 
   typedef itk::TransformToDisplacementFieldSource<
-    DisplacementFieldImageType,
-    CoordRepresentationType>             DisplacementFieldGeneratorType;
+      DisplacementFieldImageType,
+      CoordRepresentationType>             DisplacementFieldGeneratorType;
 
   typedef itk::WarpImageFilter<ImageType,
-    ImageType,
-    DisplacementFieldImageType>  WarpImageType;
+                               ImageType,
+                               DisplacementFieldImageType>  WarpImageType;
 
   typedef ImageType::SizeType      SizeType;
   typedef ImageType::SpacingType   SpacingType;
@@ -71,7 +72,7 @@ int itkTransformToDisplacementFieldSourceTest1( int argc, char *argv[] )
   typedef ImageType::RegionType    RegionType;
   typedef ImageType::DirectionType DirectionType;
   typedef itk::ImageFileWriter<
-    ImageType>                         WriterType;
+      ImageType>                         WriterType;
 
   /** Create input image. */
   SizeType size;
@@ -179,7 +180,7 @@ int itkTransformToDisplacementFieldSourceTest1( int argc, char *argv[] )
 
   /** Use ResampleImageFilter to get transformed image. */
   typedef  itk::ResampleImageFilter<ImageType,
-    ImageType> ResampleImageFilter;
+                                    ImageType> ResampleImageFilter;
   ResampleImageFilter::Pointer resample = ResampleImageFilter::New();
   resample->SetInput(image);
   resample->SetTransform(eulerTransform);
@@ -234,7 +235,7 @@ int itkTransformToDisplacementFieldSourceTest1( int argc, char *argv[] )
   warper->SetInput( image );
   try
     {
-    warper->Update( );
+    warper->Update();
     }
   catch ( itk::ExceptionObject & e )
     {

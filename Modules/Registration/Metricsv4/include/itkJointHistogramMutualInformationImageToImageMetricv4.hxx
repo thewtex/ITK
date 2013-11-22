@@ -27,8 +27,10 @@
 namespace itk
 {
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
 ::JointHistogramMutualInformationImageToImageMetricv4()
 {
   // Initialize histogram properties
@@ -46,23 +48,31 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
 
   // We have our own GetValueAndDerivativeThreader's that we want
   // ImageToImageMetricv4 to use.
-  this->m_DenseGetValueAndDerivativeThreader  = JointHistogramMutualInformationDenseGetValueAndDerivativeThreaderType::New();
-  this->m_SparseGetValueAndDerivativeThreader = JointHistogramMutualInformationSparseGetValueAndDerivativeThreaderType::New();
+  this->m_DenseGetValueAndDerivativeThreader  =
+    JointHistogramMutualInformationDenseGetValueAndDerivativeThreaderType::New();
+  this->m_SparseGetValueAndDerivativeThreader =
+    JointHistogramMutualInformationSparseGetValueAndDerivativeThreaderType::New();
 
-  this->m_JointHistogramMutualInformationDenseComputeJointPDFThreader  = JointHistogramMutualInformationDenseComputeJointPDFThreaderType::New();
-  this->m_JointHistogramMutualInformationSparseComputeJointPDFThreader = JointHistogramMutualInformationSparseComputeJointPDFThreaderType::New();
+  this->m_JointHistogramMutualInformationDenseComputeJointPDFThreader  =
+    JointHistogramMutualInformationDenseComputeJointPDFThreaderType::New();
+  this->m_JointHistogramMutualInformationSparseComputeJointPDFThreader =
+    JointHistogramMutualInformationSparseComputeJointPDFThreaderType::New();
   this->m_JointPDF             = JointPDFType::New();
 }
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
 ::~JointHistogramMutualInformationImageToImageMetricv4()
 {
 }
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
 ::Initialize() throw (itk::ExceptionObject)
 {
   Superclass::Initialize();
@@ -70,68 +80,70 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   /** Get the fixed and moving image true max's and mins.
    *  Initialize them to the PixelType min and max. */
   this->m_FixedImageTrueMin =
-                    vcl_numeric_limits<typename TFixedImage::PixelType>::max();
+    vcl_numeric_limits<typename TFixedImage::PixelType>::max();
   this->m_FixedImageTrueMax =
-                    vcl_numeric_limits<typename TFixedImage::PixelType>::min();
+    vcl_numeric_limits<typename TFixedImage::PixelType>::min();
   this->m_MovingImageTrueMin =
-                    vcl_numeric_limits<typename TMovingImage::PixelType>::max();
+    vcl_numeric_limits<typename TMovingImage::PixelType>::max();
   this->m_MovingImageTrueMax =
-                    vcl_numeric_limits<typename TMovingImage::PixelType>::min();
+    vcl_numeric_limits<typename TMovingImage::PixelType>::min();
 
   /** Iterate through the fixed image and set the true
    *  max and min for the fixed image. */
   itk::ImageRegionConstIteratorWithIndex<TFixedImage>
-                fi(this->m_FixedImage,this->m_FixedImage->GetRequestedRegion());
+  fi(this->m_FixedImage,this->m_FixedImage->GetRequestedRegion() );
 
   /** \todo multi-thread me */
   while( !fi.IsAtEnd() )
     {
     typename TFixedImage::PointType fixedSpacePhysicalPoint;
     this->m_FixedImage->TransformIndexToPhysicalPoint(fi.GetIndex(), fixedSpacePhysicalPoint);
-    if ( this->m_FixedImageMask.IsNull()  /* A null mask implies entire space is to be used.*/
+    if ( this->m_FixedImageMask.IsNull()  /* A null mask implies entire space is
+                                            to be used.*/
          || this->m_FixedImageMask->IsInside(fixedSpacePhysicalPoint) )
-       {
-       const typename TFixedImage::PixelType currentValue = fi.Get();
-       // update the Fixed Image true min accordingly
-       if ( currentValue < this->m_FixedImageTrueMin )
-         {
-         this->m_FixedImageTrueMin = currentValue;
-         }
-       // update the Fixed Image true max accordingly
-       if ( currentValue > this->m_FixedImageTrueMax )
-         {
-         this->m_FixedImageTrueMax = currentValue;
-         }
-       }
-      ++fi;
+      {
+      const typename TFixedImage::PixelType currentValue = fi.Get();
+      // update the Fixed Image true min accordingly
+      if ( currentValue < this->m_FixedImageTrueMin )
+        {
+        this->m_FixedImageTrueMin = currentValue;
+        }
+      // update the Fixed Image true max accordingly
+      if ( currentValue > this->m_FixedImageTrueMax )
+        {
+        this->m_FixedImageTrueMax = currentValue;
+        }
+      }
+    ++fi;
     }
   /** Iterate through the moving image and set the true
    * max and min for the moving image. */
   itk::ImageRegionConstIteratorWithIndex<TMovingImage>
-              mi(this->m_MovingImage,this->m_MovingImage->GetBufferedRegion());
+  mi(this->m_MovingImage,this->m_MovingImage->GetBufferedRegion() );
 
   while( !mi.IsAtEnd() )
     {
     typename TMovingImage::PointType movingSpacePhysicalPoint;
     this->m_MovingImage->TransformIndexToPhysicalPoint
-                                      (mi.GetIndex(), movingSpacePhysicalPoint);
+      (mi.GetIndex(), movingSpacePhysicalPoint);
 
-    if ( this->m_MovingImageMask.IsNull() /* A null mask implies entire space is to be used.*/
+    if ( this->m_MovingImageMask.IsNull() /* A null mask implies entire space is
+                                            to be used.*/
          || this->m_MovingImageMask->IsInside(movingSpacePhysicalPoint) )
-       {
-       const typename TMovingImage::PixelType currentValue=mi.Get();
-       // update the Moving Image true min accordingly
-       if ( currentValue < this->m_MovingImageTrueMin )
-         {
-         this->m_MovingImageTrueMin = currentValue;
-         }
-       // update the Moving Image true max accordingly
-       if ( currentValue > this->m_MovingImageTrueMax )
-         {
-         this->m_MovingImageTrueMax = currentValue;
-         }
-       }
-      ++mi;
+      {
+      const typename TMovingImage::PixelType currentValue=mi.Get();
+      // update the Moving Image true min accordingly
+      if ( currentValue < this->m_MovingImageTrueMin )
+        {
+        this->m_MovingImageTrueMin = currentValue;
+        }
+      // update the Moving Image true max accordingly
+      if ( currentValue > this->m_MovingImageTrueMax )
+        {
+        this->m_MovingImageTrueMax = currentValue;
+        }
+      }
+    ++mi;
     }
   itkDebugMacro(" FixedImageMin: " << this->m_FixedImageTrueMin
                                    << " FixedImageMax: "
@@ -139,7 +151,6 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   itkDebugMacro(" MovingImageMin: " << this->m_MovingImageTrueMin
                                     << " MovingImageMax: "
                                     << this->m_MovingImageTrueMax << std::endl);
-
 
   // Allocate memory for the joint PDF.
 
@@ -157,14 +168,16 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   // Set the regions and allocate
   this->m_JointPDF->SetRegions(jointPDFRegion);
 
-  //By setting these values, the joint histogram physical locations will correspond to intensity values.
+  //By setting these values, the joint histogram physical locations will
+  // correspond to intensity values.
   JointPDFSpacingType spacing;
-  spacing[0]=1/(TInternalComputationValueType)(this->m_NumberOfHistogramBins-(TInternalComputationValueType)this->m_Padding*2-1);
+  spacing[0]=1/
+    (TInternalComputationValueType)(this->m_NumberOfHistogramBins-(TInternalComputationValueType) this->m_Padding*2-1);
   spacing[1]=spacing[0];
   this->m_JointPDF->SetSpacing(spacing);
   this->m_JointPDFSpacing=this->m_JointPDF->GetSpacing();
   JointPDFPointType origin;
-  origin[0]=this->m_JointPDFSpacing[0]*(TInternalComputationValueType)this->m_Padding*(-1.0);
+  origin[0]=this->m_JointPDFSpacing[0]*(TInternalComputationValueType) this->m_Padding*(-1.0);
   origin[1]=origin[0];
   this->m_JointPDF->SetOrigin(origin);
   this->m_JointPDF->Allocate();
@@ -174,8 +187,8 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   this->m_MovingImageMarginalPDF = MarginalPDFType::New();
 
   // Instantiate a region, index, size
-  typedef typename MarginalPDFType::RegionType  MarginalPDFRegionType;
-  typedef typename MarginalPDFType::SizeType    MarginalPDFSizeType;
+  typedef typename MarginalPDFType::RegionType MarginalPDFRegionType;
+  typedef typename MarginalPDFType::SizeType   MarginalPDFSizeType;
   MarginalPDFRegionType marginalPDFRegion;
   MarginalPDFIndexType  marginalPDFIndex;
   MarginalPDFSizeType   marginalPDFSize;
@@ -190,7 +203,8 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   this->m_FixedImageMarginalPDF->SetRegions(marginalPDFRegion);
   this->m_MovingImageMarginalPDF->SetRegions(marginalPDFRegion);
 
-  //By setting these values, the marginal histogram physical locations will correspond to intensity values.
+  //By setting these values, the marginal histogram physical locations will
+  // correspond to intensity values.
   typename MarginalPDFType::PointType fixedorigin;
   typename MarginalPDFType::PointType movingorigin;
   fixedorigin[0]=origin[0];
@@ -206,10 +220,11 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   this->m_MovingImageMarginalPDF->Allocate();
 }
 
-
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
 ::InitializeForIteration() const
 {
   Superclass::InitializeForIteration();
@@ -218,6 +233,7 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
 
   // Initialize the joint pdf and the fixed and moving image marginal pdfs
   PDFValueType pdfzero = NumericTraits< PDFValueType >::Zero;
+
   this->m_JointPDF->FillBuffer(pdfzero);
   this->m_FixedImageMarginalPDF->FillBuffer(pdfzero);
   this->m_MovingImageMarginalPDF->FillBuffer(pdfzero);
@@ -235,11 +251,13 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
     typename JointHistogramMutualInformationSparseComputeJointPDFThreaderType::DomainType sampledRange;
     sampledRange[0] = 0;
     sampledRange[1] = numberOfPoints - 1;
-    this->m_JointHistogramMutualInformationSparseComputeJointPDFThreader->Execute( const_cast<Self *>(this), sampledRange );
+    this->m_JointHistogramMutualInformationSparseComputeJointPDFThreader->Execute( const_cast<Self *>(this),
+                                                                                   sampledRange );
     }
   else
     {
-    this->m_JointHistogramMutualInformationDenseComputeJointPDFThreader->Execute( const_cast<Self *>(this), this->GetVirtualRegion() );
+    this->m_JointHistogramMutualInformationDenseComputeJointPDFThreader->Execute( const_cast<Self *>(this),
+                                                                                  this->GetVirtualRegion() );
     }
 
   // Optionally smooth the joint pdf
@@ -260,7 +278,7 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   JointPDFLinearIterator linearIter(m_JointPDF, m_JointPDF->GetBufferedRegion() );
   linearIter.SetDirection( 0 );
   linearIter.GoToBegin();
-  unsigned int fixedIndex = 0;
+  unsigned int                                          fixedIndex = 0;
   CompensatedSummation< TInternalComputationValueType > sum;
   while( !linearIter.IsAtEnd() )
     {
@@ -272,7 +290,7 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
       }
     MarginalPDFIndexType mind;
     mind[0] = fixedIndex;
-    m_FixedImageMarginalPDF->SetPixel(mind,static_cast<PDFValueType>(sum.GetSum()));
+    m_FixedImageMarginalPDF->SetPixel(mind,static_cast<PDFValueType>(sum.GetSum() ) );
     linearIter.NextLine();
     ++fixedIndex;
     }
@@ -290,18 +308,22 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
       }
     MarginalPDFIndexType mind;
     mind[0] = movingIndex;
-    m_MovingImageMarginalPDF->SetPixel(mind,static_cast<PDFValueType>(sum.GetSum()));
+    m_MovingImageMarginalPDF->SetPixel(mind,static_cast<PDFValueType>(sum.GetSum() ) );
     linearIter.NextLine();
     ++movingIndex;
     }
 }
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
-typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>::MeasureType
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
+typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                             TInternalComputationValueType, TMetricTraits>::MeasureType
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
 ::GetValue() const
 {
   DerivativeType dummyDeriviative;
+
   this->m_DerivativeResult = &dummyDeriviative;
   this->InitializeForIteration();
   this->m_NumberOfValidPoints = this->m_JointHistogramTotalCount;
@@ -316,9 +338,12 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   return this->m_Value;
 }
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
-typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>::MeasureType
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
+typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                             TInternalComputationValueType, TMetricTraits>::MeasureType
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
 ::ComputeValue() const
 {
   /**
@@ -327,9 +352,10 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   3- The ComputeMutualInformation() iterator range should cover the entire PDF.
   4- The normalization is done based on NumberOfHistogramBins-1 instead of NumberOfHistogramBins. */
   TInternalComputationValueType px,py,pxy;
+
   CompensatedSummation< TInternalComputationValueType > total_mi;
-  TInternalComputationValueType local_mi;
-  TInternalComputationValueType eps = NumericTraits<TInternalComputationValueType>::epsilon();
+  TInternalComputationValueType                         local_mi;
+  TInternalComputationValueType                         eps = NumericTraits<TInternalComputationValueType>::epsilon();
   typename JointPDFType::IndexType index;
   for (SizeValueType ii = 0; ii<m_NumberOfHistogramBins; ii++)
     {
@@ -355,27 +381,34 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
         }
       total_mi += local_mi;
       } // over jh bins 2
-    } // over jh bins 1
+    }   // over jh bins 1
   return ( -1.0 * total_mi.GetSum() / this->m_Log2  );
 }
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
 ::ComputeJointPDFPoint( const FixedImagePixelType fixedImageValue,
                         const MovingImagePixelType movingImageValue,
                         JointPDFPointType& jointPDFpoint ) const
 {
-    TInternalComputationValueType a = ( fixedImageValue - this->m_FixedImageTrueMin ) / ( this->m_FixedImageTrueMax - this->m_FixedImageTrueMin );
-    TInternalComputationValueType b = ( movingImageValue - this->m_MovingImageTrueMin ) / ( this->m_MovingImageTrueMax - this->m_MovingImageTrueMin );
-    jointPDFpoint[0] = a;
-    jointPDFpoint[1] = b;
+  TInternalComputationValueType a =
+    ( fixedImageValue - this->m_FixedImageTrueMin ) / ( this->m_FixedImageTrueMax - this->m_FixedImageTrueMin );
+  TInternalComputationValueType b =
+    ( movingImageValue - this->m_MovingImageTrueMin ) / ( this->m_MovingImageTrueMax - this->m_MovingImageTrueMin );
+
+  jointPDFpoint[0] = a;
+  jointPDFpoint[1] = b;
 }
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
-::PrintSelf (std::ostream & os, Indent indent) const
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,
+                                                    TInternalComputationValueType, TMetricTraits>
+::PrintSelf(std::ostream & os, Indent indent) const
 {
   // Print the superclass
   Superclass::PrintSelf(os,indent);

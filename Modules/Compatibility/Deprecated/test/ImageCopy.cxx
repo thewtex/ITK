@@ -23,7 +23,8 @@
 #include <iostream>
 #include <fstream>
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
   if( argc < 2 )
     {
@@ -37,8 +38,8 @@ int main(int argc, char *argv[])
   typedef itk::Image< unsigned char, Dimension > OutputType;
   typedef itk::Image< unsigned char, Dimension > DiffOutputType;
 
-  typedef itk::ImageFileReader< ImageType >      ReaderType;
-  typedef itk::ImageFileWriter< OutputType >     WriterType;
+  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileWriter< OutputType > WriterType;
 
   // Read the baseline file
   ReaderType::Pointer baselineReader = ReaderType::New();
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
 
   WriterType::Pointer writer = WriterType::New();
 
-  writer->SetInput(baselineReader->GetOutput());
+  writer->SetInput(baselineReader->GetOutput() );
 
   itksys_ios::ostringstream baseName;
   baseName << argv[1] << ".base.png";

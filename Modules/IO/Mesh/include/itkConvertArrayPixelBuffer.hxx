@@ -40,6 +40,7 @@ ConvertPixelBuffer< InputPixelType, Array< T >, OutputConvertTraits >
     outputData++;
     }
 }
+
 } // end namespace itk
 
 #endif

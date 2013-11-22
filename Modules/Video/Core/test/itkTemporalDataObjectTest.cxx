@@ -20,7 +20,8 @@
 /**
  * Test the basic functionality of temporal data objects
  */
-int itkTemporalDataObjectTest( int, char* [] )
+int
+itkTemporalDataObjectTest( int, char* [] )
 {
 
 #define CHECK_FOR_VALUE(a,b)                                            \

@@ -35,7 +35,7 @@ namespace itk
  */
 
 template< unsigned int TPointDimension = 3 >
-class TubeSpatialObjectPoint:
+class TubeSpatialObjectPoint :
   public SpatialObjectPoint< TPointDimension >
 {
 public:
@@ -51,7 +51,8 @@ public:
   TubeSpatialObjectPoint(void);
 
   /** Default destructor. */
-  virtual ~TubeSpatialObjectPoint(void);
+  virtual
+  ~TubeSpatialObjectPoint(void);
 
   /** Get the tangent */
   const VectorType & GetTangent(void) const;
@@ -109,6 +110,7 @@ protected:
 
   /** Print the object */
   void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end of namespace itk
 

@@ -19,14 +19,15 @@
 // The class is capable of generating an itk::ListSample from an image
 // confined to a mask (if specified). This test exercises that.
 
-
 #include "itkImageToListSampleFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-int itkImageToListSampleFilterTest2(int, char* [] )
+int
+itkImageToListSampleFilterTest2(int, char* [] )
 {
   const unsigned int MeasurementVectorSize = 8;
-  typedef unsigned long MeasurementComponentType;
+
+  typedef unsigned long                                                      MeasurementComponentType;
   typedef itk::FixedArray< MeasurementComponentType, MeasurementVectorSize > PixelType;
 
   const unsigned int ImageDimension = 3;
@@ -34,7 +35,7 @@ int itkImageToListSampleFilterTest2(int, char* [] )
 
   typedef itk::Image< unsigned char, ImageDimension > MaskImageType;
 
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer   image = ImageType::New();
   ImageType::IndexType start;
   ImageType::SizeType  size;
 
@@ -47,7 +48,7 @@ int itkImageToListSampleFilterTest2(int, char* [] )
   typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
   IteratorType it( image, region );
   it.GoToBegin();
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
     PixelType value;
     for( unsigned int i=0; i< MeasurementVectorSize; i++ )
@@ -63,7 +64,7 @@ int itkImageToListSampleFilterTest2(int, char* [] )
   maskImage->Allocate();
   maskImage->FillBuffer(0);
   MaskImageType::IndexType startMask;
-  MaskImageType::SizeType sizeMask;
+  MaskImageType::SizeType  sizeMask;
 
   startMask[0] = 2;
   startMask[1] = 3;
@@ -79,15 +80,15 @@ int itkImageToListSampleFilterTest2(int, char* [] )
   mit.GoToBegin();
   while( !mit.IsAtEnd() )
     {
-    mit.Set((unsigned char)255);
+    mit.Set( (unsigned char)255);
     ++mit;
     }
 
   // Generate a list sample from "image" confined to the mask, "maskImage".
   typedef itk::Statistics::ImageToListSampleFilter<
-    ImageType, MaskImageType > ImageToListSampleFilterType;
+      ImageType, MaskImageType > ImageToListSampleFilterType;
   ImageToListSampleFilterType::Pointer filter
-                              = ImageToListSampleFilterType::New();
+    = ImageToListSampleFilterType::New();
 
   filter->SetInput( image );
   filter->SetMaskImage( maskImage );
@@ -109,9 +110,9 @@ int itkImageToListSampleFilterTest2(int, char* [] )
   // Check the sum of the pixels in the list sample. This should
   // be 420
   ListSampleType::ConstIterator lit = list->Begin();
-  unsigned int sum = 0;
+  unsigned int                  sum = 0;
 
-  while (lit != list->End())
+  while (lit != list->End() )
     {
     sum += lit.GetMeasurementVector()[0];
     ++lit;

@@ -54,5 +54,7 @@ EventObject
 void
 EventObject
 ::PrintSelf(std::ostream &, Indent) const
-{}
+{
+}
+
 } // end namespace itk

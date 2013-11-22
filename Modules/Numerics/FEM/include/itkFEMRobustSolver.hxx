@@ -55,13 +55,11 @@ RobustSolver<VDimension>
   this->m_UseInterpolationGrid = true;
 }
 
-
 template <unsigned int VDimension>
 RobustSolver<VDimension>
 ::~RobustSolver()
 {
 }
-
 
 template <unsigned int VDimension>
 void
@@ -99,7 +97,6 @@ RobustSolver<VDimension>
   this->InitializeLandmarks();
 }
 
-
 template <unsigned int VDimension>
 void
 RobustSolver<VDimension>
@@ -122,7 +119,7 @@ RobustSolver<VDimension>
     {
     Load::Pointer load = it.Value();
 
-    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer());
+    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer() );
 
     itkAssertInDebugAndIgnoreInReleaseMacro(landmark != NULL);
 
@@ -148,10 +145,10 @@ RobustSolver<VDimension>
           landmark->SetContainedElement( element );
 
           const FEMIndexType numberOfDimensions = element->GetNumberOfSpatialDimensions();
-          VectorType localPos(numberOfDimensions);
+          VectorType         localPos(numberOfDimensions);
 
           element->GetLocalFromGlobalCoordinates(globalPosition, localPos);
-          landmark->SetShape(element->ShapeFunctions(localPos));
+          landmark->SetShape(element->ShapeFunctions(localPos) );
           landmark->SetIsOutOfMesh(false);
           }
         else
@@ -167,15 +164,14 @@ RobustSolver<VDimension>
       {
       landmark->AssignToElement(this->m_FEMObject->GetModifiableElementContainer() );
       Element::ConstPointer ep = landmark->GetElement(0);
-      VectorType localPos = landmark->GetPoint();
-      landmark->SetShape(ep->ShapeFunctions(localPos));
+      VectorType            localPos = landmark->GetPoint();
+      landmark->SetShape(ep->ShapeFunctions(localPos) );
       }
     }
 
-    // remove landmarks outside of the mesh
-    this->DeleteLandmarksOutOfMesh();
+  // remove landmarks outside of the mesh
+  this->DeleteLandmarksOutOfMesh();
 }
-
 
 template <unsigned int VDimension>
 void
@@ -191,14 +187,13 @@ RobustSolver<VDimension>
   // copy the input to the output and add the
   // displacements to update the nodal coordinates
   FEMObjectType *femObject = this->GetOutput();
-  femObject->DeepCopy(this->GetInput());
+  femObject->DeepCopy(this->GetInput() );
 
   // create DOF
   femObject->FinalizeMesh();
 
   this->UpdateDisplacements();
 }
-
 
 template <unsigned int VDimension>
 void
@@ -227,7 +222,6 @@ RobustSolver<VDimension>
     }
 }
 
-
 template <unsigned int VDimension>
 void
 RobustSolver<VDimension>
@@ -236,7 +230,7 @@ RobustSolver<VDimension>
   // Solve the displacement vector U with outlier rejection
 
   const unsigned int numberOfLoads = this->m_FEMObject->GetNumberOfLoads();
-  const double rejectionRate = this->m_FractionErrorRejected / this->m_OutlierRejectionSteps;
+  const double       rejectionRate = this->m_FractionErrorRejected / this->m_OutlierRejectionSteps;
 
   const unsigned int numberOfRejectedLandmarksPerStep =
     static_cast<unsigned int>( floor(numberOfLoads * rejectionRate) );
@@ -297,7 +291,6 @@ RobustSolver<VDimension>
   this->IncrementalSolverWithoutOutlierRejection();
 }
 
-
 template <unsigned int VDimension>
 void
 RobustSolver<VDimension>
@@ -335,18 +328,18 @@ RobustSolver<VDimension>
 
   LoadContainerIterator it = container->Begin();
 
-  while(it != container->End())
+  while(it != container->End() )
     {
     Load::Pointer load = it.Value();
 
-    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer());
+    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer() );
 
     if(landmark == NULL)
       {
       itkExceptionMacro("Encounter landmark that is not a LoadNoisyLandmark");
       }
 
-    if(!landmark->IsOutlier())
+    if(!landmark->IsOutlier() )
       {
       const VectorType & shape = landmark->GetShape();
 
@@ -374,19 +367,19 @@ RobustSolver<VDimension>
       const double displacementNorm = error.two_norm();
       error = landmark->GetRealDisplacement() - error;
 
-      const double confidence = landmark->GetConfidence();
-      const VectorType weightedError = error / ((1-lambda) * displacementNorm + lambda);
+      const double     confidence = landmark->GetConfidence();
+      const VectorType weightedError = error / ( (1-lambda) * displacementNorm + lambda);
 
-      if(landmark->HasStructureTensor())
+      if(landmark->HasStructureTensor() )
         {
         MatrixType structureTensor = landmark->GetStructureTensor();
         VectorType structureTensorPonderatedError = structureTensor * confidence * weightedError;
-        landmark->SetErrorNorm(structureTensorPonderatedError.two_norm());
+        landmark->SetErrorNorm(structureTensorPonderatedError.two_norm() );
         }
       else
         {
         VectorType nonStructureTensorponderatedError = confidence * weightedError;
-        landmark->SetErrorNorm(nonStructureTensorponderatedError.two_norm());
+        landmark->SetErrorNorm(nonStructureTensorponderatedError.two_norm() );
         }
       }
 
@@ -414,11 +407,11 @@ RobustSolver<VDimension>
     {
     Load::Pointer load = it.Value();
 
-    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer());
+    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer() );
 
     itkAssertInDebugAndIgnoreInReleaseMacro(landmark != NULL);
 
-    if(!landmark->IsOutlier())
+    if(!landmark->IsOutlier() )
       {
       const VectorType & shape = landmark->GetShape();
 
@@ -447,7 +440,7 @@ RobustSolver<VDimension>
         landmarkTensor += nodeTensor * shape[nodeId];
         }
 
-      if(landmark->HasStructureTensor())
+      if(landmark->HasStructureTensor() )
         {
         landmarkTensor *= landmark->GetStructureTensor();
         }
@@ -457,7 +450,6 @@ RobustSolver<VDimension>
       }
     }
 }
-
 
 template <unsigned int VDimension>
 void
@@ -485,9 +477,8 @@ RobustSolver<VDimension>
   LoadVectorType::iterator it = loadVector.begin();
   std::advance(it, nthPoint - 1);
   LoadVectorType::iterator nth = it;
-  std::nth_element(loadVector.begin(), nth ,loadVector.end(), CompareLandmarkDisplacementError());
+  std::nth_element(loadVector.begin(), nth ,loadVector.end(), CompareLandmarkDisplacementError() );
 }
-
 
 template <unsigned int VDimension>
 void
@@ -517,13 +508,12 @@ RobustSolver<VDimension>
 
   for(it = loadVector.begin(); it <= nth; it++)
     {
-    LoadNoisyLandmark * landmark = dynamic_cast<LoadNoisyLandmark*>((*it).GetPointer());
+    LoadNoisyLandmark * landmark = dynamic_cast<LoadNoisyLandmark*>( (*it).GetPointer() );
     itkAssertInDebugAndIgnoreInReleaseMacro(landmark != NULL);
 
     landmark->SetOutlier(true);
     }
 }
-
 
 template <unsigned int VDimension>
 void
@@ -553,7 +543,6 @@ RobustSolver<VDimension>
   loadVector.erase(loadVector.begin(), nth);
 }
 
-
 template <unsigned int VDimension>
 void
 RobustSolver<VDimension>
@@ -577,14 +566,14 @@ RobustSolver<VDimension>
     {
     Load::Pointer load = it.Value();
 
-    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer());
+    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer() );
 
     if(landmark == NULL)
       {
       itkExceptionMacro("Encounter landmark that is not a LoadNoisyLandmark");
       }
 
-    if(landmark->IsOutOfMesh())
+    if(landmark->IsOutOfMesh() )
       {
       numToRemoveLoads++;
       }
@@ -604,11 +593,10 @@ RobustSolver<VDimension>
     // add the new loads to Load container
     for(LoadContainerIterator it = newLoadContainer->Begin(); it != newLoadContainer->End(); ++it)
       {
-      this->m_FEMObject->AddNextLoad(it.Value());
+      this->m_FEMObject->AddNextLoad(it.Value() );
       }
     }
 }
-
 
 template <unsigned int VDimension>
 void
@@ -624,7 +612,6 @@ RobustSolver<VDimension>
 
   this->m_ls->ScaleMatrix(newPointTensorPonderation, m_LandmarkStiffnessMatrixIndex);
 }
-
 
 template <unsigned int VDimension>
 void
@@ -643,13 +630,13 @@ RobustSolver<VDimension>
   FEMIndexType numberOfElements = this->m_FEMObject->GetNumberOfElements();
   for( FEMIndexType i = 0; i < numberOfElements; i++)
     {
-    // call the function that actually moves the element matrix to the master matrix.
+    // call the function that actually moves the element matrix to the master
+    // matrix.
     Element::Pointer element = this->m_FEMObject->GetElement(i);
 
     this->AssembleElementMatrixWithID(element, this->m_MeshStiffnessMatrixIndex);
     }
 }
-
 
 template <unsigned int VDimension>
 void
@@ -704,18 +691,18 @@ RobustSolver<VDimension>
 
   LoadContainerIterator it = container->Begin();
 
-  for(;it != container->End(); ++it)
+  for(; it != container->End(); ++it)
     {
     Load::Pointer load = it.Value();
 
-    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer());
+    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer() );
 
     if(landmark == NULL)
       {
       itkExceptionMacro("Encounter landmark that is not a LoadNoisyLandmark");
       }
 
-    if(!landmark->IsOutlier())
+    if(!landmark->IsOutlier() )
       {
       const double confidence = landmark->GetConfidence();
 
@@ -737,9 +724,11 @@ RobustSolver<VDimension>
           {
           for(FEMIndexType m = 0; m < numberOfDOFs; m++)
             {
-            const int dofn = element->GetDegreeOfFreedom(k * numberOfDOFs + n);
-            const int dofm = element->GetDegreeOfFreedom(k * numberOfDOFs + m);
-            const float value = static_cast<float>( barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation * (tens(n,m)) * confidence );
+            const int   dofn = element->GetDegreeOfFreedom(k * numberOfDOFs + n);
+            const int   dofm = element->GetDegreeOfFreedom(k * numberOfDOFs + m);
+            const float value =
+              static_cast<float>( barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation *
+                                  (tens(n,m) ) * confidence );
 
             this->m_ls->AddMatrixValue(dofn, dofm, value, m_LandmarkStiffnessMatrixIndex);
             }
@@ -757,9 +746,11 @@ RobustSolver<VDimension>
             {
             for(FEMIndexType m = 0; m < numberOfDOFs; m++)
               {
-              const int dofn = element->GetDegreeOfFreedom(i * numberOfDOFs + n);
-              const int dofm = element->GetDegreeOfFreedom(j * numberOfDOFs + m);
-              const float value = static_cast<float>( barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation * (tens(n, m)) * confidence );
+              const int   dofn = element->GetDegreeOfFreedom(i * numberOfDOFs + n);
+              const int   dofm = element->GetDegreeOfFreedom(j * numberOfDOFs + m);
+              const float value =
+                static_cast<float>( barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation *
+                                    (tens(n, m) ) * confidence );
 
               this->m_ls->AddMatrixValue(dofn, dofm, value, m_LandmarkStiffnessMatrixIndex);
               this->m_ls->AddMatrixValue(dofm, dofn, value, m_LandmarkStiffnessMatrixIndex);
@@ -793,15 +784,15 @@ RobustSolver<VDimension>
 
   LoadContainerIterator it = container->Begin();
 
-  for(;it != container->End(); ++it)
+  for(; it != container->End(); ++it)
     {
     Load::Pointer load = it.Value();
 
-    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer());
+    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer() );
 
     itkAssertInDebugAndIgnoreInReleaseMacro(landmark != NULL);
 
-    if(landmark->IsOutlier())
+    if(landmark->IsOutlier() )
       {
       const float confidence = landmark->GetConfidence();
 
@@ -822,9 +813,11 @@ RobustSolver<VDimension>
           {
           for(FEMIndexType m = 0; m < numberOfDOFs; m++)
             {
-            const int dofn = element->GetDegreeOfFreedom(k * numberOfDOFs + n);
-            const int dofm = element->GetDegreeOfFreedom(k * numberOfDOFs + m);
-            const float value = static_cast<float>( -barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation * (tens(n, m)) * confidence );
+            const int   dofn = element->GetDegreeOfFreedom(k * numberOfDOFs + n);
+            const int   dofm = element->GetDegreeOfFreedom(k * numberOfDOFs + m);
+            const float value =
+              static_cast<float>( -barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation *
+                                  (tens(n, m) ) * confidence );
 
             this->m_ls->AddMatrixValue(dofn, dofm, value, m_LandmarkStiffnessMatrixIndex);
 
@@ -842,9 +835,11 @@ RobustSolver<VDimension>
             {
             for(FEMIndexType m = 0; m < numberOfDOFs; m++)
               {
-              const int dofn = element->GetDegreeOfFreedom(i * numberOfDOFs + n);
-              const int dofm = element->GetDegreeOfFreedom(j * numberOfDOFs + m);
-              const float value = static_cast<float>( -barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation * (tens(n,m)) * confidence );
+              const int   dofn = element->GetDegreeOfFreedom(i * numberOfDOFs + n);
+              const int   dofm = element->GetDegreeOfFreedom(j * numberOfDOFs + m);
+              const float value =
+                static_cast<float>( -barCoor * m_TradeOffImageMeshEnergy * pointTensorPonderation *
+                                    (tens(n,m) ) * confidence );
 
               this->m_ls->AddMatrixValue(dofn, dofm, value, m_LandmarkStiffnessMatrixIndex);
               this->m_ls->AddMatrixValue(dofm, dofn, value, m_LandmarkStiffnessMatrixIndex);
@@ -856,7 +851,6 @@ RobustSolver<VDimension>
       }
     }
 }
-
 
 template <unsigned int VDimension>
 float
@@ -883,7 +877,6 @@ RobustSolver<VDimension>
 
   return ponderation;
 }
-
 
 template <unsigned int VDimension>
 void
@@ -912,15 +905,15 @@ RobustSolver<VDimension>
 
   LoadContainerIterator it = container->Begin();
 
-  for(;it != container->End(); ++it)
+  for(; it != container->End(); ++it)
     {
     Load::Pointer load = it.Value();
 
-    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer());
+    LoadNoisyLandmark *landmark = dynamic_cast<LoadNoisyLandmark*>(load.GetPointer() );
 
     itkAssertInDebugAndIgnoreInReleaseMacro(landmark != NULL);
 
-    if(!landmark->IsOutlier())
+    if(!landmark->IsOutlier() )
       {
       const double confidence = landmark->GetConfidence();
 
@@ -935,11 +928,12 @@ RobustSolver<VDimension>
       const FEMIndexType numberOfDOFs = element->GetNumberOfDegreesOfFreedomPerNode();
       const FEMIndexType numberOfNodes = element->GetNumberOfNodes();
 
-      for(FEMIndexType m = 0;m < numberOfNodes; ++m)
+      for(FEMIndexType m = 0; m < numberOfNodes; ++m)
         {
         double barCoor = shape[m];
 
-        const VectorType weightedRealDisplacement = confidence * barCoor * pointTensorPonderation * m_TradeOffImageMeshEnergy * ((tensor) * realDisplacement);
+        const VectorType weightedRealDisplacement = confidence * barCoor * pointTensorPonderation *
+          m_TradeOffImageMeshEnergy * ( (tensor) * realDisplacement);
 
         for(FEMIndexType j = 0; j < numberOfDOFs; ++j)
           {
@@ -951,27 +945,25 @@ RobustSolver<VDimension>
     }
 }
 
-
 template <unsigned int VDimension>
 void
 RobustSolver<VDimension>
 ::CalculateExternalForces()
 {
-  this->m_ls->MultiplyMatrixSolution( this->m_ExternalForceIndex, this->m_MeshStiffnessMatrixIndex, this->m_SolutionIndex);
+  this->m_ls->MultiplyMatrixSolution( this->m_ExternalForceIndex, this->m_MeshStiffnessMatrixIndex,
+                                      this->m_SolutionIndex);
 }
-
 
 template <unsigned int VDimension>
 void
 RobustSolver<VDimension>
 ::AddExternalForcesToSetMeshZeroEnergy()
 {
-   // Add exteranl force to set the mesh energy to be zero, which
-   // is equivalent to starting FEM solver from the deformed mesh
+  // Add exteranl force to set the mesh energy to be zero, which
+  // is equivalent to starting FEM solver from the deformed mesh
   this->m_ls->CopyVector( this->m_LandmarkForceIndex, this->m_ForceIndex );
   this->m_ls->AddVectorVector( this->m_ForceIndex, this->m_ExternalForceIndex );
 }
-
 
 template <unsigned int VDimension>
 void
@@ -980,10 +972,10 @@ RobustSolver<VDimension>
 {
   // Solve the linear system of equations
 
-  // note that VNL LS solver uses the matrix and vector with index zero to construct the LS
+  // note that VNL LS solver uses the matrix and vector with index zero to
+  // construct the LS
   this->m_ls->Solve();
 }
-
 
 template <unsigned int VDimension>
 void
@@ -991,7 +983,8 @@ RobustSolver<VDimension>
 ::InitializeInterpolationGrid()
 {
   const InterpolationGridRegionType & region = this->GetRegion();
-  InterpolationGridSizeType size = region.GetSize();
+  InterpolationGridSizeType           size = region.GetSize();
+
   for( unsigned int i = 0; i < this->FEMDimension; i++ )
     {
     if( size[i] == 0 )
@@ -1007,7 +1000,7 @@ RobustSolver<VDimension>
   this->m_InterpolationGrid->SetRegions( this->GetRegion() );
   this->m_InterpolationGrid->Allocate();
 
-   // initialize all pointers in interpolation grid image to 0
+  // initialize all pointers in interpolation grid image to 0
   this->m_InterpolationGrid->FillBuffer(0);
 
   // fill the interpolation grid with proper pointers to elements
@@ -1016,8 +1009,8 @@ RobustSolver<VDimension>
     {
     const Element * element = this->m_FEMObject->GetElement( index );
     // get square boundary box of an element
-    VectorType v1 = element->GetNodeCoordinates(0);      // lower left corner
-    VectorType v2 = v1;                            // upper right corner
+    VectorType v1 = element->GetNodeCoordinates(0); // lower left corner
+    VectorType v2 = v1;                             // upper right corner
 
     const FEMIndexType NumberOfDimensions = element->GetNumberOfSpatialDimensions();
     for( FEMIndexType n = 1; n < element->GetNumberOfNodes(); n++ )

@@ -30,7 +30,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshEulerOperatorCreateCenterVertexFunction:
+class QuadEdgeMeshEulerOperatorCreateCenterVertexFunction :
   public QuadEdgeMeshFunctionBase< TMesh, TQEType * >
 {
 public:
@@ -58,7 +58,8 @@ public:
   /** Evaluate at the specified input position */
   virtual OutputType Evaluate(QEType *e);
 
-  PointIdentifier GetNewPointID()
+  PointIdentifier
+  GetNewPointID()
   {
     return ( this->m_NewPointID );
   }
@@ -69,7 +70,8 @@ protected:
     this->m_NewPointID = (PointIdentifier)0;
   }
 
-  ~QuadEdgeMeshEulerOperatorCreateCenterVertexFunction() {}
+  ~QuadEdgeMeshEulerOperatorCreateCenterVertexFunction() {
+  }
 
 private:
   QuadEdgeMeshEulerOperatorCreateCenterVertexFunction(const Self &);

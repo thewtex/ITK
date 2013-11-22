@@ -22,8 +22,8 @@
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkLabelMapMaskImageFilter.h"
 
-
-int itkLabelMapMaskImageFilterTest(int argc, char * argv[])
+int
+itkLabelMapMaskImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 9 )
@@ -33,7 +33,8 @@ int itkLabelMapMaskImageFilterTest(int argc, char * argv[])
     exit(1);
     }
 
-  // the filters are able to work in any dimension. Lets choose 3, so the program can be tested on
+  // the filters are able to work in any dimension. Lets choose 3, so the
+  // program can be tested on
   // 2D and 2D image.
   const int dim = 3;
 
@@ -41,7 +42,8 @@ int itkLabelMapMaskImageFilterTest(int argc, char * argv[])
   typedef itk::Image< unsigned char, dim > ImageType;
 
   // and the label object type to use. The input image is a label image, so the
-  // type of the label can be the same type than the pixel type. itk::LabelObject is
+  // type of the label can be the same type than the pixel type.
+  // itk::LabelObject is
   // chosen, because only the mask feature is tested here, so we don't need any
   // attribute.
   typedef itk::LabelObject< unsigned char, dim > LabelObjectType;
@@ -61,14 +63,22 @@ int itkLabelMapMaskImageFilterTest(int argc, char * argv[])
   i2l->SetInput( reader->GetOutput() );
 //  i2l->SetUseBackground( true );
 
-  // then mask the image. Two inputs are required (the label collection image, and
-  // the image to be masked). The label used to mask the image is passed with the
-  // SetLabel() method. The background in the output image, where the image is masked,
-  // is passed with SetBackground(). The user can choose to mask the image outside the
-  // label object (that's the default behavior), or inside the label object with the
-  // chosen label, by calling SetNegated(). Finally, the image can be cropped to the
-  // masked region, by calling SetCrop( true ), or to a region padded by a border, by
-  // calling both SetCrop() and SetCropBorder(). The crop border defaults to 0, and the
+  // then mask the image. Two inputs are required (the label collection image,
+  // and
+  // the image to be masked). The label used to mask the image is passed with
+  // the
+  // SetLabel() method. The background in the output image, where the image is
+  // masked,
+  // is passed with SetBackground(). The user can choose to mask the image
+  // outside the
+  // label object (that's the default behavior), or inside the label object with
+  // the
+  // chosen label, by calling SetNegated(). Finally, the image can be cropped to
+  // the
+  // masked region, by calling SetCrop( true ), or to a region padded by a
+  // border, by
+  // calling both SetCrop() and SetCropBorder(). The crop border defaults to 0,
+  // and the
   // image is not cropped by default.
   typedef itk::LabelMapMaskImageFilter< LabelMapType, ImageType > MaskType;
   MaskType::Pointer mask = MaskType::New();

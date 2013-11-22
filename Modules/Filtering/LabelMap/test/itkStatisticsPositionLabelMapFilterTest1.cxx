@@ -22,8 +22,8 @@
 #include "itkLabelImageToStatisticsLabelMapFilter.h"
 #include "itkStatisticsPositionLabelMapFilter.h"
 
-
-int itkStatisticsPositionLabelMapFilterTest1(int argc, char * argv[])
+int
+itkStatisticsPositionLabelMapFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 5 )

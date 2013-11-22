@@ -40,7 +40,8 @@ VoxBoCUBImageIOFactory::VoxBoCUBImageIOFactory()
 }
 
 VoxBoCUBImageIOFactory::~VoxBoCUBImageIOFactory()
-{}
+{
+}
 
 const char *
 VoxBoCUBImageIOFactory::GetITKSourceVersion(void) const
@@ -53,4 +54,5 @@ VoxBoCUBImageIOFactory::GetDescription() const
 {
   return "VoxBo CUB ImageIO Factory, allows the loading of VoxBoCUB images into Insight";
 }
+
 } // end namespace itk

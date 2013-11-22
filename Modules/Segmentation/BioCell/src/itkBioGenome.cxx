@@ -26,14 +26,16 @@ namespace bio
  */
 Genome
 ::Genome()
-{}
+{
+}
 
 /**
  *    Destructor
  */
 Genome
 ::~Genome()
-{}
+{
+}
 
 /**
  *    Copy from another genome
@@ -98,5 +100,6 @@ Genome
 {
   m_Map[geneId] = level;
 }
+
 }  // end namespace bio
 }  // end namespace itk

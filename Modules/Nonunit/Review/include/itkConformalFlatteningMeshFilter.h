@@ -25,7 +25,6 @@
 #include "vnl/vnl_math.h"
 #include "vnl/vnl_sparse_matrix.h"
 
-
 namespace itk
 {
 /** \class ConformalFlatteningMeshFilter
@@ -45,7 +44,7 @@ namespace itk
  */
 
 template< typename TInputMesh, typename TOutputMesh >
-class ConformalFlatteningMeshFilter:
+class ConformalFlatteningMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -111,7 +110,9 @@ public:
 
 protected:
   ConformalFlatteningMeshFilter();
-  ~ConformalFlatteningMeshFilter() {}
+  ~ConformalFlatteningMeshFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Requested Data */

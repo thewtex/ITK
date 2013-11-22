@@ -31,6 +31,7 @@ LaplacianImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "UseImageSpacing = " << m_UseImageSpacing << std::endl;
 }
 
@@ -148,6 +149,7 @@ LaplacianImageFilter< TInputImage, TOutputImage >
   // this copies back the region ivars and meta-dataig
   this->GraftOutput( filter->GetOutput() );
 }
+
 } // end namespace itk
 
 #endif

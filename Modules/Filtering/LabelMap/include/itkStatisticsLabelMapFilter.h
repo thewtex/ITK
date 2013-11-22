@@ -38,9 +38,9 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage, typename TFeatureImage >
-class StatisticsLabelMapFilter:
+class StatisticsLabelMapFilter :
   public ShapeLabelMapFilter< TImage,
-                              Image< typename TImage::PixelType,  TImage ::ImageDimension > >
+                              Image< typename TImage::PixelType,  TImage::ImageDimension > >
 {
 public:
   /** Standard class typedefs. */
@@ -88,26 +88,30 @@ public:
 #endif
 
   /** Set the feature image */
-  void SetFeatureImage(const TFeatureImage *input)
+  void
+  SetFeatureImage(const TFeatureImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TFeatureImage * >( input ) );
   }
 
   /** Get the feature image */
-  FeatureImageType * GetFeatureImage()
+  FeatureImageType *
+  GetFeatureImage()
   {
     return static_cast< FeatureImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Set the input image */
-  void SetInput1(TImage *input)
+  void
+  SetInput1(TImage *input)
   {
     this->SetInput(input);
   }
 
   /** Set the feature image */
-  void SetInput2(const TFeatureImage *input)
+  void
+  SetInput2(const TFeatureImage *input)
   {
     this->SetFeatureImage(input);
   }
@@ -132,7 +136,8 @@ public:
 
 protected:
   StatisticsLabelMapFilter();
-  ~StatisticsLabelMapFilter() {}
+  ~StatisticsLabelMapFilter() {
+  }
 
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 

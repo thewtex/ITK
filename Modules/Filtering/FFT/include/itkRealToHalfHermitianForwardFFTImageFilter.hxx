@@ -29,36 +29,42 @@ namespace itk
 
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage, typename TPixel >
 struct DispatchFFTW_R2C_New
-{
-  static TSelfPointer Apply()
-    {
-      return VnlRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return VnlRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 
 #ifdef ITK_USE_FFTWD
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage >
 struct DispatchFFTW_R2C_New< TSelfPointer, TInputImage, TOutputImage, double >
-{
-  static TSelfPointer Apply()
-    {
-      return FFTWRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return FFTWRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 #endif
 
 #ifdef ITK_USE_FFTWF
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage >
 struct DispatchFFTW_R2C_New< TSelfPointer, TInputImage, TOutputImage, float >
-{
-  static TSelfPointer Apply()
-    {
-      return FFTWRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return FFTWRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 #endif
 
 template< typename TInputImage, typename TOutputImage >
@@ -95,10 +101,10 @@ RealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
   // This is all based on the same function in itk::ShrinkImageFilter
   // ShrinkImageFilter also modifies the image spacing, but spacing
   // has no meaning in the result of an FFT.
-  const InputSizeType inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
+  const InputSizeType  inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
   const InputIndexType inputStartIndex = inputPtr->GetLargestPossibleRegion().GetIndex();
 
-  OutputSizeType outputSize;
+  OutputSizeType  outputSize;
   OutputIndexType outputStartIndex;
 
   // In 4.3.4 of the FFTW documentation, they indicate the size of
@@ -149,7 +155,9 @@ RealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
+
 }
 #endif

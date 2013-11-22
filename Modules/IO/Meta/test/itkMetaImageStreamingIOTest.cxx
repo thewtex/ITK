@@ -23,25 +23,26 @@
 #include "itkMedianImageFilter.h"
 #include "itkMetaImageIO.h"
 
-int itkMetaImageStreamingIOTest(int ac, char* av[])
+int
+itkMetaImageStreamingIOTest(int ac, char* av[])
 {
   //  Image types are defined below.
-  typedef unsigned char       InputPixelType;
-  typedef unsigned char       OutputPixelType;
-  const   unsigned int        Dimension = 3;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
+  const   unsigned int Dimension = 3;
 
-  typedef itk::Image< InputPixelType,  Dimension >    InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >    OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
-  typedef itk::MetaImageIO                         IOType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
+  typedef itk::MetaImageIO                        IOType;
 
   typedef itk::MedianImageFilter< OutputImageType,
-                                            OutputImageType > FilterType;
+                                  OutputImageType > FilterType;
 
   typedef itk::StreamingImageFilter< OutputImageType,
-                                            OutputImageType > StreamingFilterType;
+                                     OutputImageType > StreamingFilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -76,12 +77,12 @@ int itkMetaImageStreamingIOTest(int ac, char* av[])
   writer->SetInput( streamer->GetOutput() );
 
   // test streaming check methods
-  if (!metaIn->CanStreamRead())
+  if (!metaIn->CanStreamRead() )
     {
     std::cerr << "Failed stream read check" << std::endl;
     return EXIT_FAILURE;
     }
-  if (!metaOut->CanStreamWrite())
+  if (!metaOut->CanStreamWrite() )
     {
     std::cerr << "Failed stream write check" << std::endl;
     return EXIT_FAILURE;

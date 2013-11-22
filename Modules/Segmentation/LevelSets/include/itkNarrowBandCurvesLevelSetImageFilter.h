@@ -100,7 +100,7 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class NarrowBandCurvesLevelSetImageFilter:
+class NarrowBandCurvesLevelSetImageFilter :
   public NarrowBandLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType,
                                         Image< TOutputPixelType,
                                                TInputImage::ImageDimension > >
@@ -111,7 +111,7 @@ public:
   typedef  NarrowBandLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType,
                                           Image< TOutputPixelType,
                                                  TInputImage::ImageDimension > >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -124,7 +124,7 @@ public:
   typedef CurvesLevelSetFunction< OutputImageType,
                                   FeatureImageType > CurvesFunctionType;
   typedef typename CurvesFunctionType::Pointer
-  CurvesFunctionPointer;
+    CurvesFunctionPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(NarrowBandCurvesLevelSetImageFilter, NarrowBandLevelSetImageFilter);
@@ -133,14 +133,18 @@ public:
   itkNewMacro(Self);
 
   /** Set the value of sigma used to compute derivatives */
-  void SetDerivativeSigma(float value)
+  void
+  SetDerivativeSigma(float value)
   {
     m_CurvesFunction->SetDerivativeSigma(value);
     this->Modified();
   }
 
-  float GetDerivativeSigma() const
-  { return m_CurvesFunction->GetDerivativeSigma(); }
+  float
+  GetDerivativeSigma() const
+  {
+    return m_CurvesFunction->GetDerivativeSigma();
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -150,7 +154,9 @@ public:
 #endif
 
 protected:
-  ~NarrowBandCurvesLevelSetImageFilter() {}
+  ~NarrowBandCurvesLevelSetImageFilter() {
+  }
+
   NarrowBandCurvesLevelSetImageFilter();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

@@ -25,7 +25,6 @@
 #include "itkQuadraticTriangleCell.h"
 #include "itkPolygonCell.h"
 
-
 /**
  * Define a mesh type that stores a PixelType of "int".  Use the defaults
  * for the other template parameters.
@@ -42,37 +41,48 @@ typedef itk::QuadEdgeMeshPolygonCell<CellInterfaceType> QEPolygonCellType;
  * Typedef the generic cell type for the mesh.  It is an abstract class,
  * so we can only use information from it, like get its pointer type.
  */
-typedef MeshType::CellType              CellType;
-typedef CellType::CellAutoPointer       CellAutoPointer;
+typedef MeshType::CellType        CellType;
+typedef CellType::CellAutoPointer CellAutoPointer;
 
 class CustomQELineVisitor
 {
 public:
-  void Visit(unsigned long cellId, QELineCellType * t )
-    {
+  void
+  Visit(unsigned long cellId, QELineCellType * t )
+  {
     (void)cellId;
     (void)t;
-    }
-  virtual ~CustomQELineVisitor() {}
+  }
+
+  virtual
+  ~CustomQELineVisitor() {
+  }
+
 };
 
 class CustomQEPolyVisitor
 {
 public:
-  void Visit(unsigned long cellId, QEPolygonCellType * t )
-    {
+  void
+  Visit(unsigned long cellId, QEPolygonCellType * t )
+  {
     (void)cellId;
     (void)t;
-    }
-  virtual ~CustomQEPolyVisitor() {}
+  }
+
+  virtual
+  ~CustomQEPolyVisitor() {
+  }
+
 };
 
 // Test the cell interface
-template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
+template<typename TCell> int
+TestCellInterface(std::string name, TCell *aCell)
 {
 
   CellAutoPointer cell(aCell,true);
-  const TCell * cell2 = aCell;
+  const TCell *   cell2 = aCell;
 
   std::cout << "-------- " << name << "("
             << aCell->GetNameOfClass() << ")" << std::endl;
@@ -80,6 +90,7 @@ template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
   std::cout << "    Dimension: " << cell->GetDimension() << std::endl;
   std::cout << "    NumberOfPoints: " << cell->GetNumberOfPoints() << std::endl;
   std::cout << "    NumberOfBoundaryFeatures:" << std::endl;
+
   // Note the <= is here to test the default case
   for (unsigned int i = 0; i <= cell->GetDimension(); i++)
     {
@@ -115,7 +126,7 @@ template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
   // Add point ids
   std::cout << "    SetPointIds" << std::endl;
 
-  typedef MeshType::PointIdentifier  PointIdentifier;
+  typedef MeshType::PointIdentifier PointIdentifier;
 
   PointIdentifier *pointIds = new PointIdentifier[cell->GetNumberOfPoints() * 2];
   for (unsigned int i = 0; i < cell->GetNumberOfPoints() * 2; i++)
@@ -126,9 +137,9 @@ template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
   cell->SetPointIds(pointIds);
   // exercing the const GetPointIds() method
   // null for QE Cells
-  if(cell2->GetPointIds())
+  if(cell2->GetPointIds() )
     {
-    cell->SetPointIds(cell2->GetPointIds());
+    cell->SetPointIds(cell2->GetPointIds() );
     }
   if (cell->GetNumberOfPoints() > 0)
     {
@@ -170,22 +181,23 @@ template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
     }
   std::cout << std::endl;
 
-
   delete[] pointIds;
   return EXIT_SUCCESS;
 }
 
 // Test the QEcell interface
 
-template<typename TCell> int TestQECellInterface(std::string name, TCell *aCell)
+template<typename TCell> int
+TestQECellInterface(std::string name, TCell *aCell)
 {
   std::cout << "-------- " << name << "("
             << aCell->GetNameOfClass() << ")" << std::endl;
 
-  TCell *  cell = aCell;
+  TCell *       cell = aCell;
   const TCell * cell2 = aCell;
 
   std::cout << "    QE Iterator test: PointIds for empty cell: ";
+
   typename TCell::PointIdInternalIterator pointId
     = cell->InternalPointIdsBegin();
   typename TCell::PointIdInternalIterator endId
@@ -213,7 +225,7 @@ template<typename TCell> int TestQECellInterface(std::string name, TCell *aCell)
   // Add point ids
   std::cout << "    SetPointIds" << std::endl;
 
-  typedef typename TCell::PointIdentifier  PointIdentifier;
+  typedef typename TCell::PointIdentifier PointIdentifier;
 
   PointIdentifier *pointIds = new PointIdentifier[cell->GetNumberOfPoints() * 2];
   for (unsigned int i = 0; i < cell->GetNumberOfPoints() * 2; i++)
@@ -224,10 +236,9 @@ template<typename TCell> int TestQECellInterface(std::string name, TCell *aCell)
   // actually populate
   cell->SetPointIds(pointIds);
   // exercing the non const internal equivalent.
-  cell->InternalSetPointIds( cell->InternalGetPointIds( ) );
+  cell->InternalSetPointIds( cell->InternalGetPointIds() );
   // exercing the const internal equivalent
-  cell->InternalSetPointIds( cell2->InternalGetPointIds( ));
-
+  cell->InternalSetPointIds( cell2->InternalGetPointIds() );
 
   std::cout << "    ConstIterator test: PointIds for populated cell: ";
   typename TCell::PointIdInternalConstIterator ppointId
@@ -242,7 +253,7 @@ template<typename TCell> int TestQECellInterface(std::string name, TCell *aCell)
   std::cout << std::endl;
 
   cell->InternalSetPointIds( cell2->InternalPointIdsBegin(),
-                             cell2->InternalPointIdsEnd());
+                             cell2->InternalPointIdsEnd() );
   std::cout << "    Iterator test: PointIds for populated cell: ";
   typename TCell::PointIdInternalIterator pxpointId
     = cell->InternalPointIdsBegin();
@@ -259,8 +270,8 @@ template<typename TCell> int TestQECellInterface(std::string name, TCell *aCell)
   return EXIT_SUCCESS;
 }
 
-
-int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
+int
+itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
 {
   int status;
 
@@ -328,7 +339,7 @@ int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
 
   typedef itk::PolygonCell<CellInterfaceType> PolygonCellType;
   status = TestCellInterface("PolygonCell with 0 vertices",
-                             new PolygonCellType());
+                             new PolygonCellType() );
   if (status != 0)
     {
     return EXIT_FAILURE;
@@ -336,7 +347,7 @@ int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
 
   typedef itk::PolygonCell<CellInterfaceType> PolygonCellType;
   status = TestCellInterface("PolygonCell with 5 vertices",
-                             new PolygonCellType(5));
+                             new PolygonCellType(5) );
   if (status != 0)
     {
     return EXIT_FAILURE;
@@ -360,7 +371,7 @@ int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  status = TestCellInterface("QuadEdgeLineCell", new QELineCellType());
+  status = TestCellInterface("QuadEdgeLineCell", new QELineCellType() );
   if (status != 0)
     {
     return EXIT_FAILURE;
@@ -371,7 +382,7 @@ int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
   tempQEPolygon = new QEPolygonCellType();
 
   status = TestQECellInterface("QuadEdgePolygonCell with 0 vertices",
-                             tempQEPolygon);
+                               tempQEPolygon);
   delete tempQEPolygon;
 
   if (status != 0)
@@ -381,7 +392,7 @@ int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
 
   tempQEPolygon = new QEPolygonCellType(5);
   status = TestQECellInterface("QuadEdgePolygonCell with 5 vertices",
-                             tempQEPolygon);
+                               tempQEPolygon);
   delete tempQEPolygon;
 
   if (status != 0)
@@ -400,26 +411,25 @@ int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
 
   // test the visitor API
   typedef itk::CellInterfaceVisitorImplementation<
-                              PixelType, MeshType::CellTraits,
-                              QELineCellType, CustomQELineVisitor
-                                                 > QELineVisitorInterfaceType;
+      PixelType, MeshType::CellTraits,
+      QELineCellType, CustomQELineVisitor
+      > QELineVisitorInterfaceType;
   QELineVisitorInterfaceType::Pointer QELineVisitor =
-                                   QELineVisitorInterfaceType::New();
+    QELineVisitorInterfaceType::New();
 
   typedef itk::CellInterfaceVisitorImplementation<
-                              PixelType, MeshType::CellTraits,
-                              QEPolygonCellType, CustomQEPolyVisitor
-                                                 > QEPolyVisitorInterfaceType;
+      PixelType, MeshType::CellTraits,
+      QEPolygonCellType, CustomQEPolyVisitor
+      > QEPolyVisitorInterfaceType;
   QEPolyVisitorInterfaceType::Pointer QEPolyVisitor =
-                                   QEPolyVisitorInterfaceType::New();
-
+    QEPolyVisitorInterfaceType::New();
 
   typedef CellType::MultiVisitor CellMultiVisitorType;
   CellMultiVisitorType::Pointer multiVisitor = CellMultiVisitorType::New();
   multiVisitor->AddVisitor( QELineVisitor );
   multiVisitor->AddVisitor( QEPolyVisitor );
 
-  MeshType::Pointer mesh = MeshType::New( );
+  MeshType::Pointer   mesh = MeshType::New();
   MeshType::PointType pts[3];
   pts[0][0] = 0; pts[0][1] = 0; pts[0][2] = 0;
   pts[1][0] = 0; pts[1][1] = 0; pts[1][2] = 1;
@@ -433,26 +443,26 @@ int itkQuadEdgeMeshCellInterfaceTest(int, char* [] )
 
   // test 4 very specific QELineCell destructor cases
   QELineCellType* test = new QELineCellType();
-  QEType* m_QuadEdgeGeom = test->GetQEGeom( );
-  delete m_QuadEdgeGeom->GetRot( )->GetRot( )->GetRot( );
-  m_QuadEdgeGeom->GetRot( )->GetRot( )->SetRot( NULL );
+  QEType*         m_QuadEdgeGeom = test->GetQEGeom();
+  delete m_QuadEdgeGeom->GetRot()->GetRot()->GetRot();
+  m_QuadEdgeGeom->GetRot()->GetRot()->SetRot( NULL );
   delete test;
 
   test = new QELineCellType();
-  m_QuadEdgeGeom = test->GetQEGeom( );
-  delete m_QuadEdgeGeom->GetRot( )->GetRot( )->GetRot( );
-  m_QuadEdgeGeom->GetRot( )->GetRot( )->SetRot( NULL );
-  delete m_QuadEdgeGeom->GetRot( )->GetRot( );
-  m_QuadEdgeGeom->GetRot( )->SetRot( NULL );
+  m_QuadEdgeGeom = test->GetQEGeom();
+  delete m_QuadEdgeGeom->GetRot()->GetRot()->GetRot();
+  m_QuadEdgeGeom->GetRot()->GetRot()->SetRot( NULL );
+  delete m_QuadEdgeGeom->GetRot()->GetRot();
+  m_QuadEdgeGeom->GetRot()->SetRot( NULL );
   delete test;
 
   test = new QELineCellType();
-  m_QuadEdgeGeom = test->GetQEGeom( );
-  delete m_QuadEdgeGeom->GetRot( )->GetRot( )->GetRot( );
-  m_QuadEdgeGeom->GetRot( )->GetRot( )->SetRot( NULL );
-  delete m_QuadEdgeGeom->GetRot( )->GetRot( );
-  m_QuadEdgeGeom->GetRot( )->SetRot( NULL );
-  delete m_QuadEdgeGeom->GetRot( );
+  m_QuadEdgeGeom = test->GetQEGeom();
+  delete m_QuadEdgeGeom->GetRot()->GetRot()->GetRot();
+  m_QuadEdgeGeom->GetRot()->GetRot()->SetRot( NULL );
+  delete m_QuadEdgeGeom->GetRot()->GetRot();
+  m_QuadEdgeGeom->GetRot()->SetRot( NULL );
+  delete m_QuadEdgeGeom->GetRot();
   m_QuadEdgeGeom->SetRot( NULL );
   delete test;
 

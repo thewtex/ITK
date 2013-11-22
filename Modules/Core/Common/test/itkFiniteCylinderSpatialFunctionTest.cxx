@@ -18,7 +18,8 @@
 
 #include "itkFiniteCylinderSpatialFunction.h"
 
-int itkFiniteCylinderSpatialFunctionTest(int, char* [] )
+int
+itkFiniteCylinderSpatialFunctionTest(int, char* [] )
 {
   std::cout << "itkFiniteCylinderSpatialFunction test start" << std::endl;
 
@@ -27,7 +28,7 @@ int itkFiniteCylinderSpatialFunctionTest(int, char* [] )
 
   // Cylinder spatial function typedef.
   typedef itk::FiniteCylinderSpatialFunction<dimension> TCylinderFunctionType;
-  typedef TCylinderFunctionType::InputType TCylinderFunctionVectorType;
+  typedef TCylinderFunctionType::InputType              TCylinderFunctionVectorType;
 
   //cylinder
   TCylinderFunctionType::Pointer spatialFunc = TCylinderFunctionType::New();
@@ -59,8 +60,8 @@ int itkFiniteCylinderSpatialFunctionTest(int, char* [] )
   // pixels that are inside the cylinder.
   double testPosition[dimension];  // position of a pixel
 
-  bool functionValue;  // Value of pixel at a given position
-  int interiorPixelCounter = 0;  // Count pixels inside cylinder
+  bool functionValue;            // Value of pixel at a given position
+  int  interiorPixelCounter = 0; // Count pixels inside cylinder
 
   for(int x = 0; x < xExtent; x++)
     {
@@ -73,7 +74,7 @@ int itkFiniteCylinderSpatialFunctionTest(int, char* [] )
         testPosition[2] = z;
         functionValue = spatialFunc->Evaluate(testPosition);
         if(functionValue == 1)
-          interiorPixelCounter ++;
+          interiorPixelCounter++;
         }
       }
     }
@@ -113,14 +114,14 @@ int itkFiniteCylinderSpatialFunctionTest(int, char* [] )
               << "itkFiniteCylinderSpatialFunction test ended successfully!" << std::endl;
     return EXIT_SUCCESS;
     }
-    //Default is to produce error code
-    std::cerr << "calculated ellipsoid volume = " << volume << std::endl
-              << "measured ellipsoid volume = " << interiorPixelCounter << std::endl
-              << "volume error = " << volumeError << "%" << std::endl
-              << "function value = " << functionValue << std::endl
-              << "center location = (" << spatialFunc->GetCenter()[0] << ", " << spatialFunc->GetCenter()[0]
-              << ", " << spatialFunc->GetCenter()[2] << ")" << std::endl
-              << "axis length = " << axis << std::endl
-              << "itkFiniteCylinderSpatialFunction test failed :(" << std::endl;
-    return EXIT_FAILURE;
+  //Default is to produce error code
+  std::cerr << "calculated ellipsoid volume = " << volume << std::endl
+            << "measured ellipsoid volume = " << interiorPixelCounter << std::endl
+            << "volume error = " << volumeError << "%" << std::endl
+            << "function value = " << functionValue << std::endl
+            << "center location = (" << spatialFunc->GetCenter()[0] << ", " << spatialFunc->GetCenter()[0]
+            << ", " << spatialFunc->GetCenter()[2] << ")" << std::endl
+            << "axis length = " << axis << std::endl
+            << "itkFiniteCylinderSpatialFunction test failed :(" << std::endl;
+  return EXIT_FAILURE;
 }

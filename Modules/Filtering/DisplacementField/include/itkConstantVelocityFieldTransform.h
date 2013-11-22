@@ -39,10 +39,10 @@ class ConstantVelocityFieldTransform :
 {
 public:
   /** Standard class typedefs. */
-  typedef ConstantVelocityFieldTransform                        Self;
-  typedef DisplacementFieldTransform<TScalar, NDimensions>      Superclass;
-  typedef SmartPointer<Self>                                    Pointer;
-  typedef SmartPointer<const Self>                              ConstPointer;
+  typedef ConstantVelocityFieldTransform                   Self;
+  typedef DisplacementFieldTransform<TScalar, NDimensions> Superclass;
+  typedef SmartPointer<Self>                               Pointer;
+  typedef SmartPointer<const Self>                         ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( ConstantVelocityFieldTransform, DisplacementFieldTransform );
@@ -51,14 +51,14 @@ public:
   itkNewMacro( Self );
 
   /** InverseTransform type. */
-  typedef typename Superclass:: InverseTransformBasePointer InverseTransformBasePointer;
+  typedef typename Superclass::InverseTransformBasePointer InverseTransformBasePointer;
 
   /** Scalar type. */
   typedef typename Superclass::ScalarType ScalarType;
 
   /** Type of the input parameters. */
-  typedef typename Superclass::ParametersType          ParametersType;
-  typedef typename Superclass::ParametersValueType     ParametersValueType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   /** Transform category type. */
   typedef typename Superclass::TransformCategoryType TransformCategoryType;
@@ -87,23 +87,23 @@ public:
   itkStaticConstMacro( Dimension, unsigned int, NDimensions );
 
   /** Define the displacement field type and corresponding interpolator type. */
-  typedef typename Superclass::DisplacementFieldType   DisplacementFieldType;
-  typedef typename DisplacementFieldType::Pointer      DisplacementFieldPointer;
+  typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
+  typedef typename DisplacementFieldType::Pointer    DisplacementFieldPointer;
 
   /** Define the displacement field type and corresponding interpolator type. */
-  typedef Image<OutputVectorType, ConstantVelocityFieldDimension>    ConstantVelocityFieldType;
-  typedef typename ConstantVelocityFieldType::Pointer                ConstantVelocityFieldPointer;
+  typedef Image<OutputVectorType, ConstantVelocityFieldDimension> ConstantVelocityFieldType;
+  typedef typename ConstantVelocityFieldType::Pointer             ConstantVelocityFieldPointer;
 
   /** Standard types for the velocity Field */
-  typedef typename ConstantVelocityFieldType::IndexType      IndexType;
-  typedef typename ConstantVelocityFieldType::RegionType     RegionType;
-  typedef typename ConstantVelocityFieldType::SizeType       SizeType;
-  typedef typename ConstantVelocityFieldType::SpacingType    SpacingType;
-  typedef typename ConstantVelocityFieldType::DirectionType  DirectionType;
-  typedef typename ConstantVelocityFieldType::PointType      PointType;
-  typedef typename ConstantVelocityFieldType::PixelType      PixelType;
+  typedef typename ConstantVelocityFieldType::IndexType     IndexType;
+  typedef typename ConstantVelocityFieldType::RegionType    RegionType;
+  typedef typename ConstantVelocityFieldType::SizeType      SizeType;
+  typedef typename ConstantVelocityFieldType::SpacingType   SpacingType;
+  typedef typename ConstantVelocityFieldType::DirectionType DirectionType;
+  typedef typename ConstantVelocityFieldType::PointType     PointType;
+  typedef typename ConstantVelocityFieldType::PixelType     PixelType;
 
-  typedef ConstantVelocityFieldType                         VelocityFieldType;
+  typedef ConstantVelocityFieldType VelocityFieldType;
 
   typedef VectorInterpolateImageFunction<ConstantVelocityFieldType, ScalarType>
     ConstantVelocityFieldInterpolatorType;
@@ -119,6 +119,7 @@ public:
    * interpolator and assign displacement field to transform parameters
    * container. */
   virtual void SetConstantVelocityField( ConstantVelocityFieldType * );
+
   itkGetModifiableObjectMacro(ConstantVelocityField, ConstantVelocityFieldType );
 
   virtual void SetFixedParameters( const ParametersType & );
@@ -126,6 +127,7 @@ public:
   /** Get/Set the interpolator.
    * Create out own set accessor that assigns the velocity field */
   virtual void SetConstantVelocityFieldInterpolator( ConstantVelocityFieldInterpolatorType * );
+
   itkGetModifiableObjectMacro(ConstantVelocityFieldInterpolator, ConstantVelocityFieldInterpolatorType );
 
   /** Get the modification time of velocity field */
@@ -185,7 +187,8 @@ public:
 protected:
 
   ConstantVelocityFieldTransform();
-  virtual ~ConstantVelocityFieldTransform();
+  virtual
+  ~ConstantVelocityFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Clone the current transform */
@@ -193,25 +196,25 @@ protected:
 
   typename DisplacementFieldType::Pointer CopyDisplacementField( const DisplacementFieldType * ) const;
 
-  ConstantVelocityFieldPointer              m_ConstantVelocityField;
+  ConstantVelocityFieldPointer m_ConstantVelocityField;
 
-  bool                                      m_CalculateNumberOfIntegrationStepsAutomatically;
+  bool m_CalculateNumberOfIntegrationStepsAutomatically;
 
   /** The interpolator. */
-  ConstantVelocityFieldInterpolatorPointer  m_ConstantVelocityFieldInterpolator;
+  ConstantVelocityFieldInterpolatorPointer m_ConstantVelocityFieldInterpolator;
 
   /** Track when the VELOCITY field was last set/assigned, as
    * distinct from when it may have had its contents modified. */
   ModifiedTimeType m_ConstantVelocityFieldSetTime;
 
-  ScalarType                                m_LowerTimeBound;
-  ScalarType                                m_UpperTimeBound;
+  ScalarType m_LowerTimeBound;
+  ScalarType m_UpperTimeBound;
 
-  unsigned int                              m_NumberOfIntegrationSteps;
+  unsigned int m_NumberOfIntegrationSteps;
 
 private:
   ConstantVelocityFieldTransform( const Self & ); // purposely not implemented
-  void operator=( const Self & );             // purposely not implemented
+  void operator=( const Self & );                 // purposely not implemented
 
   /**
    * Convenience method which reads the information from the current

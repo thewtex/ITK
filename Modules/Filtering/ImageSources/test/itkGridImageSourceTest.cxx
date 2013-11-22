@@ -20,7 +20,8 @@
 #include "itkBSplineKernelFunction.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkGridImageSourceTest0( int, char *argv[] )
+int
+itkGridImageSourceTest0( int, char *argv[] )
 {
   typedef float PixelType;
   const unsigned int ImageDimension = 3;
@@ -30,7 +31,7 @@ int itkGridImageSourceTest0( int, char *argv[] )
   typedef itk::GridImageSource<ImageType> GridSourceType;
   GridSourceType::Pointer gridImage = GridSourceType::New();
 
-  double scale = 255.0;
+  double                   scale = 255.0;
   ImageType::SizeType      size;
   ImageType::PointType     origin;
   ImageType::SpacingType   spacing;
@@ -102,7 +103,8 @@ int itkGridImageSourceTest0( int, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkGridImageSourceTest1( int, char *argv[] )
+int
+itkGridImageSourceTest1( int, char *argv[] )
 {
   typedef float PixelType;
   const unsigned int ImageDimension = 3;
@@ -112,13 +114,13 @@ int itkGridImageSourceTest1( int, char *argv[] )
   typedef itk::GridImageSource<ImageType> GridSourceType;
   GridSourceType::Pointer gridImage = GridSourceType::New();
 
-  double scale = 255.0;
-  ImageType::SizeType size;
-  ImageType::PointType origin;
-  ImageType::SpacingType spacing;
-  GridSourceType::ArrayType gridSpacing;
-  GridSourceType::ArrayType gridOffset;
-  GridSourceType::ArrayType sigma;
+  double                        scale = 255.0;
+  ImageType::SizeType           size;
+  ImageType::PointType          origin;
+  ImageType::SpacingType        spacing;
+  GridSourceType::ArrayType     gridSpacing;
+  GridSourceType::ArrayType     gridOffset;
+  GridSourceType::ArrayType     sigma;
   GridSourceType::BoolArrayType which;
 
   // Specify image parameters
@@ -176,7 +178,8 @@ int itkGridImageSourceTest1( int, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkGridImageSourceTest2( int, char *argv[] )
+int
+itkGridImageSourceTest2( int, char *argv[] )
 {
   typedef float PixelType;
   const unsigned int ImageDimension = 3;
@@ -186,13 +189,13 @@ int itkGridImageSourceTest2( int, char *argv[] )
   typedef itk::GridImageSource<ImageType> GridSourceType;
   GridSourceType::Pointer gridImage = GridSourceType::New();
 
-  double scale = 255.0;
-  ImageType::SizeType size;
-  ImageType::PointType origin;
-  ImageType::SpacingType spacing;
-  GridSourceType::ArrayType gridSpacing;
-  GridSourceType::ArrayType gridOffset;
-  GridSourceType::ArrayType sigma;
+  double                        scale = 255.0;
+  ImageType::SizeType           size;
+  ImageType::PointType          origin;
+  ImageType::SpacingType        spacing;
+  GridSourceType::ArrayType     gridSpacing;
+  GridSourceType::ArrayType     gridOffset;
+  GridSourceType::ArrayType     sigma;
   GridSourceType::BoolArrayType which;
 
   // Specify image parameters
@@ -246,7 +249,8 @@ int itkGridImageSourceTest2( int, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkGridImageSourceTest3( int, char *argv[] )
+int
+itkGridImageSourceTest3( int, char *argv[] )
 {
   typedef float PixelType;
   const unsigned int ImageDimension = 3;
@@ -256,13 +260,13 @@ int itkGridImageSourceTest3( int, char *argv[] )
   typedef itk::GridImageSource<ImageType> GridSourceType;
   GridSourceType::Pointer gridImage = GridSourceType::New();
 
-  double scale = 255.0;
-  ImageType::SizeType size;
-  ImageType::PointType origin;
-  ImageType::SpacingType spacing;
-  GridSourceType::ArrayType gridSpacing;
-  GridSourceType::ArrayType gridOffset;
-  GridSourceType::ArrayType sigma;
+  double                        scale = 255.0;
+  ImageType::SizeType           size;
+  ImageType::PointType          origin;
+  ImageType::SpacingType        spacing;
+  GridSourceType::ArrayType     gridSpacing;
+  GridSourceType::ArrayType     gridOffset;
+  GridSourceType::ArrayType     sigma;
   GridSourceType::BoolArrayType which;
 
   // Specify image parameters
@@ -320,7 +324,8 @@ int itkGridImageSourceTest3( int, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkGridImageSourceTest( int argc, char *argv[] )
+int
+itkGridImageSourceTest( int argc, char *argv[] )
 {
   if ( argc != 3 )
     {

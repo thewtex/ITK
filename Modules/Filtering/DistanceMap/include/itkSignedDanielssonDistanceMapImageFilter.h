@@ -30,7 +30,8 @@ template< typename InputPixelType >
 class InvertIntensityFunctor
 {
 public:
-  InputPixelType operator()(InputPixelType input) const
+  InputPixelType
+  operator()(InputPixelType input) const
   {
     if ( input )
       {
@@ -41,6 +42,7 @@ public:
       return NumericTraits< InputPixelType >::One;
       }
   }
+
 };
 }
 }
@@ -87,7 +89,7 @@ namespace itk
 template< typename TInputImage,
           typename TOutputImage,
           typename TVoronoiImage = TInputImage >
-class SignedDanielssonDistanceMapImageFilter:
+class SignedDanielssonDistanceMapImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -142,9 +144,9 @@ public:
   /** Pointer Type for the vector distance image. */
   typedef typename VectorImageType::Pointer VectorImagePointer;
 
-  typedef TVoronoiImage                         VoronoiImageType;
-  typedef typename VoronoiImageType::Pointer    VoronoiImagePointer;
-  typedef typename VoronoiImageType::PixelType  VoronoiPixelType;
+  typedef TVoronoiImage                        VoronoiImageType;
+  typedef typename VoronoiImageType::Pointer   VoronoiImagePointer;
+  typedef typename VoronoiImageType::PixelType VoronoiPixelType;
 
   /** Pointer Type for data object */
   typedef typename Superclass::DataObjectPointer DataObjectPointer;
@@ -216,7 +218,10 @@ public:
 
 protected:
   SignedDanielssonDistanceMapImageFilter();
-  virtual ~SignedDanielssonDistanceMapImageFilter() {}
+  virtual
+  ~SignedDanielssonDistanceMapImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute Danielsson distance map and Voronoi Map. */

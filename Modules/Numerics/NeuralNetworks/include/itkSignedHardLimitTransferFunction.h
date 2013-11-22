@@ -56,18 +56,19 @@ public:
 protected:
 
   SignedHardLimitTransferFunction();
-  virtual ~SignedHardLimitTransferFunction();
+  virtual
+  ~SignedHardLimitTransferFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkSignedHardLimitTransferFunction.hxx"
+#include "itkSignedHardLimitTransferFunction.hxx"
 #endif
-
 
 #endif

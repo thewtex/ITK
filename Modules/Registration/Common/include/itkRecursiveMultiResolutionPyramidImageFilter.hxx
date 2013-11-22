@@ -88,11 +88,11 @@ RecursiveMultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
     {
     resampleShrinker = ResampleShrinkerType::New();
     typedef itk::LinearInterpolateImageFunction< OutputImageType, double >
-    LinearInterpolatorType;
+      LinearInterpolatorType;
     typename LinearInterpolatorType::Pointer interpolator =
       LinearInterpolatorType::New();
     typedef itk::IdentityTransform< double, OutputImageType::ImageDimension >
-    IdentityTransformType;
+      IdentityTransformType;
     typename IdentityTransformType::Pointer identityTransform =
       IdentityTransformType::New();
     resampleShrinker->SetInterpolator(interpolator);
@@ -140,7 +140,7 @@ RecursiveMultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
       else
         {
         factors[idim] = this->GetSchedule()[ilevel][idim]
-                        / this->GetSchedule()[ilevel + 1][idim];
+          / this->GetSchedule()[ilevel + 1][idim];
         }
       variance[idim] = vnl_math_sqr( 0.5
                                      * static_cast< float >( factors[idim] ) );
@@ -249,6 +249,7 @@ RecursiveMultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
   Superclass::GenerateOutputRequestedRegion(ptr);
 
   TOutputImage *refOutputPtr = itkDynamicCastInDebugMode< TOutputImage * >( ptr );
+
   if ( !refOutputPtr )
     {
     itkExceptionMacro(<< "Could not cast ptr to TOutputImage*.");
@@ -343,7 +344,7 @@ RecursiveMultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
         }
 
       requestedSize[idim] -= static_cast< SizeValueType >(
-        2 * radius[idim] );
+          2 * radius[idim] );
       requestedIndex[idim] += radius[idim];
 
       // take into account shrink component
@@ -385,6 +386,7 @@ RecursiveMultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
   // get pointers to the input and output
   InputImagePointer inputPtr =
     const_cast< InputImageType * >( this->GetInput() );
+
   if ( !inputPtr )
     {
     itkExceptionMacro(<< "Input has not been set.");
@@ -444,6 +446,7 @@ RecursiveMultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
   // set the input requested region
   inputPtr->SetRequestedRegion(inputRequestedRegion);
 }
+
 } // namespace itk
 
 #endif

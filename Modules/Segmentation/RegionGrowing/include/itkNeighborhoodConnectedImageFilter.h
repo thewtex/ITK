@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKRegionGrowing
  */
 template< typename TInputImage, typename TOutputImage >
-class NeighborhoodConnectedImageFilter:
+class NeighborhoodConnectedImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -117,7 +117,9 @@ public:
 
 protected:
   NeighborhoodConnectedImageFilter();
-  ~NeighborhoodConnectedImageFilter(){}
+  ~NeighborhoodConnectedImageFilter(){
+  }
+
   std::vector< IndexType > m_Seeds;
 
   InputImagePixelType m_Lower;
@@ -138,6 +140,7 @@ protected:
 private:
   NeighborhoodConnectedImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 } // end namespace itk
 

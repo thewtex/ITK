@@ -93,7 +93,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int VDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class SobelOperator:
+class SobelOperator :
   public NeighborhoodOperator< TPixel, VDimension, TAllocator >
 {
 public:
@@ -103,17 +103,21 @@ public:
 
   itkTypeMacro(SobelOperator, NeighborhoodOperator);
 
-  SobelOperator() {}
-  SobelOperator(const Self & other):
+  SobelOperator() {
+  }
+
+  SobelOperator(const Self & other) :
     NeighborhoodOperator< TPixel, VDimension, TAllocator >(other)
-  {}
+  {
+  }
 
   /** Creates the operator with length only in the specified direction.  For
    * the Sobel operator, this
    * The radius of the operator will be 0 except along the axis on which
    * the operator will work.
    * \sa CreateToRadius \sa FillCenteredDirectional \sa SetDirection() \sa GetDirection() */
-  virtual void CreateDirectional()
+  virtual void
+  CreateDirectional()
   {
     this->CreateToRadius(1);
   }
@@ -126,16 +130,19 @@ public:
   /**
    * Assignment operator
    */
-  Self & operator=(const Self & other)
+  Self &
+  operator=(const Self & other)
   {
     Superclass::operator=(other);
+
     return *this;
   }
 
   /**
    * Prints some debugging information
    */
-  virtual void PrintSelf(std::ostream & os, Indent i) const
+  virtual void
+  PrintSelf(std::ostream & os, Indent i) const
   {
     os << i << "SobelOperator { this=" << this  << "}" << std::endl;
     Superclass::PrintSelf( os, i.GetNextIndent() );
@@ -158,6 +165,7 @@ protected:
    * Arranges coefficients spatially in the memory buffer.
    */
   void Fill(const CoefficientVector & c);
+
 };
 } // namespace itk
 

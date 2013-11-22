@@ -21,7 +21,6 @@
 #include "itkBinaryReconstructionLabelMapFilter.h"
 #include "itkProgressReporter.h"
 
-
 namespace itk {
 
 template <typename TImage, typename TMarkerImage, typename TAttributeAccessor>
@@ -31,7 +30,6 @@ BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
   this->SetNumberOfRequiredInputs(2);
   m_ForegroundValue = NumericTraits< MarkerImagePixelType >::max();
 }
-
 
 template <typename TImage, typename TMarkerImage, typename TAttributeAccessor>
 void
@@ -43,9 +41,9 @@ BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
   const MarkerImageType * maskImage = this->GetMarkerImage();
 
   typename LabelObjectType::ConstIndexIterator it( labelObject );
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-    const IndexType & idx = it.GetIndex();
+    const IndexType &            idx = it.GetIndex();
     const MarkerImagePixelType & v = maskImage->GetPixel( idx );
     if( v == m_ForegroundValue )
       {
@@ -61,7 +59,6 @@ BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
 
 }
 
-
 template <typename TImage, typename TMarkerImage, typename TAttributeAccessor>
 void
 BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
@@ -69,8 +66,9 @@ BinaryReconstructionLabelMapFilter<TImage, TMarkerImage, TAttributeAccessor>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<MarkerImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "ForegroundValue: "  <<
+    static_cast<typename NumericTraits<MarkerImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

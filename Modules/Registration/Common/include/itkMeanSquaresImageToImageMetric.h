@@ -22,7 +22,6 @@
 #include "itkPoint.h"
 #include "itkIndex.h"
 
-
 namespace itk
 {
 
@@ -36,7 +35,7 @@ namespace itk
  * \endwiki
  */
 template< typename TFixedImage, typename TMovingImage >
-class MeanSquaresImageToImageMetric:
+class MeanSquaresImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -104,7 +103,8 @@ public:
 protected:
 
   MeanSquaresImageToImageMetric();
-  virtual ~MeanSquaresImageToImageMetric();
+  virtual
+  ~MeanSquaresImageToImageMetric();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -127,11 +127,11 @@ private:
                                                        movingImageGradientValue) const;
 
   struct PerThreadS
-  {
+    {
     TransformJacobianType m_Jacobian;
-    MeasureType           m_MSE;
-    DerivativeType        m_MSEDerivative;
-  };
+    MeasureType m_MSE;
+    DerivativeType m_MSEDerivative;
+    };
 
   itkAlignedTypedef( 64, PerThreadS, AlignedPerThreadType );
   AlignedPerThreadType *m_PerThread;

@@ -21,12 +21,13 @@
 #include "itkStreamingImageFilter.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-int itkStreamingImageFilterTest(int, char* [] )
+int
+itkStreamingImageFilterTest(int, char* [] )
 {
   const unsigned int numberOfStreamDivisions = 4;
 
   // typedefs to simplify the syntax
-  typedef itk::Image<short, 2>   ShortImage;
+  typedef itk::Image<short, 2> ShortImage;
 
   // Test the creation of an image with native type
   ShortImage::Pointer if2 = ShortImage::New();
@@ -77,7 +78,6 @@ int itkStreamingImageFilterTest(int, char* [] )
             << ", "
             << streamer->GetOutput()->GetSpacing()[1] << std::endl;
 
-
   // Test itkGetConstReferenceMacro and itkGetModifiableObjectMacro
   const unsigned int & value = streamer->GetNumberOfStreamDivisions();
   std::cout << "streamer->GetNumberOfStreamDivisions(): " << value << std::endl;
@@ -93,7 +93,6 @@ int itkStreamingImageFilterTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   //
   // The rest of this code determines whether the shrink code produced
   // the image we expected.
@@ -102,7 +101,7 @@ int itkStreamingImageFilterTest(int, char* [] )
   requestedRegion = streamer->GetOutput()->GetRequestedRegion();
 
   itk::ImageRegionIterator<ShortImage>
-    iterator2(streamer->GetOutput(), requestedRegion);
+  iterator2(streamer->GetOutput(), requestedRegion);
   std::cout << "requestedRegion: " << requestedRegion;
 
   // If size is not a multiple of the shrink factors, then adjust the
@@ -112,18 +111,18 @@ int itkStreamingImageFilterTest(int, char* [] )
   if (region.GetSize()[1] % shrink->GetShrinkFactors()[1])
     {
     rowOffset = static_cast<short>(
-      region.GetSize()[1] / 2.0 -
-      ((region.GetSize()[1] / shrink->GetShrinkFactors()[1]) / 2.0 *
-       shrink->GetShrinkFactors()[1])
-      );
+        region.GetSize()[1] / 2.0 -
+        ( (region.GetSize()[1] / shrink->GetShrinkFactors()[1]) / 2.0 *
+          shrink->GetShrinkFactors()[1])
+        );
     }
   if (region.GetSize()[0] % shrink->GetShrinkFactors()[0])
     {
     colOffset = static_cast<short>(
-      region.GetSize()[0] / 2.0 -
-      ((region.GetSize()[0] / shrink->GetShrinkFactors()[0]) / 2.0 *
-       shrink->GetShrinkFactors()[0])
-      );
+        region.GetSize()[0] / 2.0 -
+        ( (region.GetSize()[0] / shrink->GetShrinkFactors()[0]) / 2.0 *
+          shrink->GetShrinkFactors()[0])
+        );
     }
 
   bool passed = true;

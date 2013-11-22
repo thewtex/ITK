@@ -66,7 +66,7 @@ namespace itk
  *
  * \ingroup ITKIOImageBase
  */
-class ITKIOImageBase_EXPORT ImageIOBase:public LightProcessObject
+class ITKIOImageBase_EXPORT ImageIOBase : public LightProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -82,8 +82,8 @@ public:
   itkGetStringMacro(FileName);
 
   /** Types for managing image size and image index components. */
-  typedef ::itk::IndexValueType  IndexValueType;
-  typedef ::itk::SizeValueType   SizeValueType;
+  typedef::itk::IndexValueType IndexValueType;
+  typedef::itk::SizeValueType  SizeValueType;
 
   /**
    * \class UnknownType
@@ -118,14 +118,18 @@ public:
    * SetDimensions() is used prior to writing the data. */
   virtual void SetDimensions(unsigned int i, unsigned int dim);
 
-  virtual itk::SizeValueType GetDimensions(unsigned int i) const
-  { return m_Dimensions[i]; }
+  virtual itk::SizeValueType
+  GetDimensions(unsigned int i) const
+  {
+    return m_Dimensions[i];
+  }
 
   /** Set/Get the image origin on a axis-by-axis basis. The SetOrigin() method
    * is required when writing the image. */
   virtual void SetOrigin(unsigned int i, double origin);
 
-  virtual double GetOrigin(unsigned int i) const
+  virtual double
+  GetOrigin(unsigned int i) const
   {
     return m_Origin[i];
   }
@@ -134,7 +138,8 @@ public:
    * SetSpacing() method is required when writing the image. */
   virtual void SetSpacing(unsigned int i, double spacing);
 
-  virtual double GetSpacing(unsigned int i) const
+  virtual double
+  GetSpacing(unsigned int i) const
   {
     return m_Spacing[i];
   }
@@ -208,7 +213,8 @@ public:
    * used for writing output files. */
   static std::string GetComponentTypeAsString(IOComponentType);
 
-  /** Convenience method returns the IOComponentType corresponding to a string. */
+  /** Convenience method returns the IOComponentType corresponding to a string.
+    */
   static IOComponentType GetComponentTypeFromString(const std::string &typeString);
 
   /** Convenience method returns the IOPixelType as a string. This can be
@@ -230,12 +236,14 @@ public:
    * Many file formats (i.e., subclasses) ignore this flag. */
   itkSetEnumMacro(FileType, FileType);
   itkGetEnumMacro(FileType, FileType);
-  void SetFileTypeToASCII()
+  void
+  SetFileTypeToASCII()
   {
     this->SetFileType(ASCII);
   }
 
-  void SetFileTypeToBinary()
+  void
+  SetFileTypeToBinary()
   {
     this->SetFileType(Binary);
   }
@@ -253,12 +261,14 @@ public:
    * ignore these methods. */
   itkSetEnumMacro(ByteOrder, ByteOrder);
   itkGetEnumMacro(ByteOrder, ByteOrder);
-  void SetByteOrderToBigEndian()
+  void
+  SetByteOrderToBigEndian()
   {
     this->SetByteOrder(BigEndian);
   }
 
-  void SetByteOrderToLittleEndian()
+  void
+  SetByteOrderToLittleEndian()
   {
     this->SetByteOrder(LittleEndian);
   }
@@ -272,11 +282,11 @@ public:
   std::string GetByteOrderAsString(ByteOrder) const;
 
   /** Type for representing size of bytes, and or positions along a file */
-  typedef ::itk::intmax_t          SizeType;
+  typedef::itk::intmax_t SizeType;
 
   /** Type for representing size of bytes, and or positions along a memory
     buffer */
-  typedef ::itk::OffsetValueType   BufferSizeType;
+  typedef::itk::OffsetValueType BufferSizeType;
 
   /** Convenient method for accessing the number of bytes to get to
    * the next pixel. Returns m_Strides[1];
@@ -312,7 +322,8 @@ public:
       current settings. Default is false. If this is queried after
       the header of the file has been read then it will indicate if
       that file can be streamed */
-  virtual bool CanStreamRead()
+  virtual bool
+  CanStreamRead()
   {
     return false;
   }
@@ -336,7 +347,8 @@ public:
    * There are two types of non exclusive streaming: pasteing subregions, and iterative
    *
    */
-  virtual bool CanStreamWrite()
+  virtual bool
+  CanStreamWrite()
   {
     return false;
   }
@@ -357,7 +369,8 @@ public:
    * while others can support 2D, 3D, or even n-D. This method returns
    * true/false as to whether the ImageIO can support the dimension
    * indicated. */
-  virtual bool SupportsDimension(unsigned long dim)
+  virtual bool
+  SupportsDimension(unsigned long dim)
   {
     return ( dim == 2 );
   }
@@ -421,59 +434,72 @@ public:
   const ArrayOfExtensionsType & GetSupportedWriteExtensions() const;
 
   template <typename TPixel>
-    void SetTypeInfo(const TPixel *);
+  void SetTypeInfo(const TPixel *);
 
   /** Map between C++ Pixel type and ImageIOBase ComponentType */
   template <typename TPixel>
-    struct MapPixelType
-  {
+  struct MapPixelType
+    {
     static const IOComponentType CType =
       UNKNOWNCOMPONENTTYPE;
-  };
+    };
   template <typename TPixel>
-    void SetPixelTypeInfo(const TPixel *)
+  void
+  SetPixelTypeInfo(const TPixel *)
   {
     this->SetNumberOfComponents(1);
     this->SetPixelType(SCALAR);
     this->SetComponentType(MapPixelType<TPixel>::CType);
   }
+
   template <typename TPixel>
-    void SetPixelTypeInfo(const RGBPixel< TPixel > *)
+  void
+  SetPixelTypeInfo(const RGBPixel< TPixel > *)
   {
     this->SetNumberOfComponents(3);
     this->SetPixelType(RGB);
     this->SetComponentType(MapPixelType<TPixel>::CType);
   }
+
   template <typename TPixel>
-    void SetPixelTypeInfo(const RGBAPixel< TPixel > *)
+  void
+  SetPixelTypeInfo(const RGBAPixel< TPixel > *)
   {
     this->SetNumberOfComponents(4);
     this->SetPixelType(RGBA);
     this->SetComponentType(MapPixelType<TPixel>::CType);
   }
+
   template <typename TPixel, unsigned VLength>
-    void SetPixelTypeInfo(const Vector< TPixel , VLength > *)
+  void
+  SetPixelTypeInfo(const Vector< TPixel , VLength > *)
   {
     this->SetNumberOfComponents(VLength);
     this->SetPixelType(VECTOR);
     this->SetComponentType(MapPixelType<TPixel>::CType);
   }
+
   template <typename TPixel>
-    void SetPixelTypeInfo(const VariableLengthVector< TPixel > *)
+  void
+  SetPixelTypeInfo(const VariableLengthVector< TPixel > *)
   {
     this->SetNumberOfComponents(1);
     this->SetPixelType(VECTOR);
     this->SetComponentType(MapPixelType<TPixel>::CType);
   }
+
   template <typename TPixel, unsigned VLength>
-    void SetPixelTypeInfo(const CovariantVector< TPixel,VLength > *)
+  void
+  SetPixelTypeInfo(const CovariantVector< TPixel,VLength > *)
   {
     this->SetNumberOfComponents(VLength);
     this->SetPixelType(COVARIANTVECTOR);
     this->SetComponentType(MapPixelType<TPixel>::CType);
   }
+
   template <typename TPixel,unsigned VLength>
-    void SetPixelTypeInfo(const FixedArray< TPixel,VLength > *)
+  void
+  SetPixelTypeInfo(const FixedArray< TPixel,VLength > *)
   {
     this->SetNumberOfComponents(VLength);
     this->SetPixelType(COVARIANTVECTOR);
@@ -481,7 +507,8 @@ public:
   }
 
   template <typename TPixel, unsigned VLength>
-    void SetPixelTypeInfo(const SymmetricSecondRankTensor<TPixel,VLength> *)
+  void
+  SetPixelTypeInfo(const SymmetricSecondRankTensor<TPixel,VLength> *)
   {
     this->SetNumberOfComponents(VLength * (VLength + 1) / 2 );
     this->SetPixelType(SYMMETRICSECONDRANKTENSOR);
@@ -489,15 +516,17 @@ public:
   }
 
   template <typename TPixel>
-    inline void SetPixelTypeInfo(const DiffusionTensor3D< TPixel > *)
+  inline void
+  SetPixelTypeInfo(const DiffusionTensor3D< TPixel > *)
   {
     this->SetNumberOfComponents(6);
     this->SetPixelType(DIFFUSIONTENSOR3D);
     this->SetComponentType(MapPixelType<TPixel>::CType);
-    }
+  }
 
   template <typename TPixel, unsigned VLength>
-    void SetPixelTypeInfo(const Matrix< TPixel,VLength, VLength > *)
+  void
+  SetPixelTypeInfo(const Matrix< TPixel,VLength, VLength > *)
   {
     this->SetNumberOfComponents(VLength * VLength);
     this->SetPixelType(MATRIX);
@@ -505,7 +534,8 @@ public:
   }
 
   template <typename TPixel>
-    void SetPixelTypeInfo(const std::complex< TPixel > *)
+  void
+  SetPixelTypeInfo(const std::complex< TPixel > *)
   {
     this->SetNumberOfComponents(2);
     this->SetPixelType(COMPLEX);
@@ -513,7 +543,8 @@ public:
   }
 
   template <unsigned VLength>
-    void SetPixelTypeInfo(const Offset< VLength > *)
+  void
+  SetPixelTypeInfo(const Offset< VLength > *)
   {
     this->SetNumberOfComponents(VLength);
     this->SetPixelType(ImageIOBase::OFFSET);
@@ -615,13 +646,13 @@ protected:
 
   /** Convenient method to write a buffer as ASCII text. */
   virtual void WriteBufferAsASCII(std::ostream & os, const void *buffer,
-                          IOComponentType ctype,
-                          SizeType numberOfBytesToWrite);
+                                  IOComponentType ctype,
+                                  SizeType numberOfBytesToWrite);
 
   /** Convenient method to read a buffer as ASCII text. */
   virtual void ReadBufferAsASCII(std::istream & os, void *buffer,
-                         IOComponentType ctype,
-                         SizeType numberOfBytesToBeRead);
+                                 IOComponentType ctype,
+                                 SizeType numberOfBytesToBeRead);
 
   /** Convenient method to read a buffer as binary. Return true on success. */
   bool ReadBufferAsBinary(std::istream & os, void *buffer, SizeType numberOfBytesToBeRead);
@@ -653,9 +684,9 @@ private:
 
 #define IMAGEIOBASE_TYPEMAP(type,ctype)                         \
   template <> struct ImageIOBase::MapPixelType<type>    \
-  {                                                     \
+    {                                                     \
     static const IOComponentType CType = ctype; \
-  }
+    }
 
 IMAGEIOBASE_TYPEMAP(char, CHAR);
 IMAGEIOBASE_TYPEMAP(unsigned char, UCHAR);
@@ -668,7 +699,6 @@ IMAGEIOBASE_TYPEMAP(unsigned long, ULONG);
 IMAGEIOBASE_TYPEMAP(float, FLOAT);
 IMAGEIOBASE_TYPEMAP(double, DOUBLE);
 #undef IMAGIOBASE_TYPEMAP
-
 
 } // end namespace itk
 

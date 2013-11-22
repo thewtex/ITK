@@ -52,7 +52,7 @@ FastSymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDispl
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 
   m_WarpedMovingImageGradientCalculator = MovingGradientCalculatorType::New();
   m_MovingImageWarper = WarperType::New();
@@ -175,7 +175,7 @@ FastSymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDispl
   GlobalDataStruct *globalData = (GlobalDataStruct *)gd;
   const IndexType   FirstIndex = this->GetFixedImage()->GetLargestPossibleRegion().GetIndex();
   const IndexType   LastIndex = this->GetFixedImage()->GetLargestPossibleRegion().GetIndex()
-                                + this->GetFixedImage()->GetLargestPossibleRegion().GetSize();
+    + this->GetFixedImage()->GetLargestPossibleRegion().GetSize();
 
   const IndexType index = it.GetIndex();
 
@@ -293,7 +293,7 @@ FastSymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDispl
   if ( m_NumberOfPixelsProcessed )
     {
     m_Metric = m_SumOfSquaredDifference
-               / static_cast< double >( m_NumberOfPixelsProcessed );
+      / static_cast< double >( m_NumberOfPixelsProcessed );
     m_RMSChange = vcl_sqrt( m_SumOfSquaredChange
                             / static_cast< double >( m_NumberOfPixelsProcessed ) );
     }
@@ -301,6 +301,7 @@ FastSymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDispl
 
   delete globalData;
 }
+
 } // end namespace itk
 
 #endif

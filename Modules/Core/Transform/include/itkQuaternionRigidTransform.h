@@ -100,7 +100,8 @@ public:
   /** Get the rotation from an QuaternionRigidTransform.
    * This method returns the value of the rotation of the
    * QuaternionRigidTransform. */
-  const VnlQuaternionType & GetRotation(void) const
+  const VnlQuaternionType &
+  GetRotation(void) const
   {
     return m_Rotation;
   }
@@ -136,7 +137,8 @@ protected:
 
   void ComputeMatrixParameters();
 
-  void SetVarRotation(const VnlQuaternionType & rotation)
+  void
+  SetVarRotation(const VnlQuaternionType & rotation)
   {
     m_Rotation = rotation;
   }

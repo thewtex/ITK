@@ -21,7 +21,8 @@
 #include "itkLabelImageToShapeLabelMapFilter.h"
 #include "itkTestingMacros.h"
 
-int itkLabelImageToShapeLabelMapFilterTest1(int argc, char * argv[])
+int
+itkLabelImageToShapeLabelMapFilterTest1(int argc, char * argv[])
 {
   if( argc != 6 )
     {
@@ -38,8 +39,8 @@ int itkLabelImageToShapeLabelMapFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::ShapeLabelObject< PixelType, dim >     LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType >            LabelMapType;
+  typedef itk::ShapeLabelObject< PixelType, dim > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType >        LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
@@ -60,7 +61,6 @@ int itkLabelImageToShapeLabelMapFilterTest1(int argc, char * argv[])
   const bool computePerimeter = atoi( argv[5]);
   l2s->SetComputePerimeter( computePerimeter );
   TEST_SET_GET_VALUE( computePerimeter, l2s->GetComputeFeretDiameter() );
-
 
   typedef itk::LabelMapToLabelImageFilter< LabelMapType, ImageType> L2IType;
   L2IType::Pointer l2i = L2IType::New();

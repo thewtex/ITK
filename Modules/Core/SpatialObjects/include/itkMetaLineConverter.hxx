@@ -26,15 +26,16 @@ namespace itk
 template< unsigned int NDimensions >
 MetaLineConverter< NDimensions >
 ::MetaLineConverter()
-{}
+{
+}
 
 template< unsigned int NDimensions >
 typename MetaLineConverter< NDimensions >::MetaObjectType *
 MetaLineConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new LineMetaObjectType);
-}
+  }
 
 /** Convert a metaLine into an Line SpatialObject  */
 template< unsigned int NDimensions >
@@ -44,6 +45,7 @@ MetaLineConverter< NDimensions >
 {
   const LineMetaObjectType *lineMO =
     dynamic_cast<const LineMetaObjectType *>(mo);
+
   if(lineMO == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaLine" );
@@ -114,10 +116,11 @@ template< unsigned int NDimensions >
 typename MetaLineConverter< NDimensions >::MetaObjectType *
 MetaLineConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
-{
+  {
   LineSpatialObjectConstPointer lineSO =
     dynamic_cast<const LineSpatialObjectType *>(spatialObject);
-  if(lineSO.IsNull())
+
+  if(lineSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to LineSpatialObject");
     }
@@ -182,7 +185,7 @@ MetaLineConverter< NDimensions >
   lineMO->NPoints( linePoints.size() );
   lineMO->BinaryData(true);
   return lineMO;
-}
+  }
 
 } // end namespace itk
 

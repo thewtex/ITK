@@ -42,6 +42,7 @@ ElementStd<VNumberOfPoints, VNumberOfSpatialDimensions, TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "#Nodes: " << NumberOfNodes << std::endl;
   for( unsigned int i = 0; i < NumberOfNodes; i++ )
     {

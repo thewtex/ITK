@@ -26,51 +26,66 @@
 namespace
 {
 
-  template< unsigned int D >
-  typename itk::EnableIfC< D == 1 >::Type
-  test1( void )
-  {std::cout << "D is one" << std::endl;}
+template< unsigned int D >
+typename itk::EnableIfC< D == 1 >::Type
+test1( void )
+{
+  std::cout << "D is one" << std::endl;
+}
 
-  template< unsigned int D >
-  typename itk::EnableIfC< D != 1 >::Type
-  test1( void )
-  {std::cout << "D is not one" << std::endl;}
+template< unsigned int D >
+typename itk::EnableIfC< D != 1 >::Type
+test1( void )
+{
+  std::cout << "D is not one" << std::endl;
+}
 
-  template< typename T >
-  typename itk::EnableIfC< sizeof( T ) == 1 >::Type
-  test2( void )
-  {std::cout << "T is one in size" << std::endl;}
+template< typename T >
+typename itk::EnableIfC< sizeof( T ) == 1 >::Type
+test2( void )
+{
+  std::cout << "T is one in size" << std::endl;
+}
 
-  template< typename T >
-  typename itk::EnableIfC< sizeof(T) != 1 >::Type
-  test2( void )
-  {std::cout << "D is not one in size" << std::endl;}
+template< typename T >
+typename itk::EnableIfC< sizeof(T) != 1 >::Type
+test2( void )
+{
+  std::cout << "D is not one in size" << std::endl;
+}
 
+template< typename T >
+typename itk::EnableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
+test3( void )
+{
+  std::cout << "T is enabled" << std::endl;
+}
 
-  template< typename T >
-  typename itk::EnableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
-  test3( void )
-  {std::cout << "T is enabled" << std::endl;}
+template< typename T >
+typename itk::DisableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
+test3( void )
+{
+  std::cout << "T is disabled" << std::endl;
+}
 
-  template< typename T >
-  typename itk::DisableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
-  test3( void )
-  {std::cout << "T is disabled" << std::endl;}
+template< typename T >
+typename itk::EnableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
+test4( const T & )
+{
+  std::cout << "T is enabled" << std::endl;
+}
 
-  template< typename T >
-  typename itk::EnableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
-  test4( const T & )
-  {std::cout << "T is enabled" << std::endl;}
-
-  template< typename T >
-  typename itk::DisableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
-  test4( const T & )
-  {std::cout << "T is disabled" << std::endl;}
-
+template< typename T >
+typename itk::DisableIfC< itk::IsSame<T, typename itk::NumericTraits<T>::ValueType>::Value >::Type
+test4( const T & )
+{
+  std::cout << "T is disabled" << std::endl;
+}
 
 }
 
-int itkEnableIfTest( int, char*[] )
+int
+itkEnableIfTest( int, char*[] )
 {
 
   test1<0>();

@@ -25,21 +25,23 @@ namespace itk
 void
 OFFMeshIOFactory
 ::PrintSelf(std::ostream &, Indent) const
-{}
+{
+}
 
 OFFMeshIOFactory
 ::OFFMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkOFFMeshIO",
-                         "OFF Mesh IO",
-                         1,
-                         CreateObjectFunction< OFFMeshIO >::New() );
+                          "itkOFFMeshIO",
+                          "OFF Mesh IO",
+                          1,
+                          CreateObjectFunction< OFFMeshIO >::New() );
 }
 
 OFFMeshIOFactory
 ::~OFFMeshIOFactory()
-{}
+{
+}
 
 const char *
 OFFMeshIOFactory
@@ -54,4 +56,5 @@ OFFMeshIOFactory
 {
   return "OFF Mesh IO Factory, allows the loading of OFF mesh into insight";
 }
+
 } // end namespace itk

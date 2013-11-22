@@ -23,20 +23,22 @@ namespace
 {
 
 template <typename T>
-bool CheckSize( size_t size, T* = 0 )
+bool
+CheckSize( size_t size, T* = 0 )
 {
   return ( sizeof( T ) == size );
 }
 
 template <typename T>
-bool CheckAtleastSize( size_t size, T* = 0 )
+bool
+CheckAtleastSize( size_t size, T* = 0 )
 {
   return ( sizeof( T ) >= size );
 }
 
-
 template <typename T>
-bool CheckTraits( bool issigned, T* = 0 )
+bool
+CheckTraits( bool issigned, T* = 0 )
 {
   // make sure that we have a specialized NumericTraits
   T t0 = itk::NumericTraits<T>::Zero;
@@ -56,9 +58,9 @@ bool CheckTraits( bool issigned, T* = 0 )
   return true;
 }
 
-
 template<typename T>
-bool CheckType( size_t size, bool exactSize, bool issigned, const char * name, T* = 0 )
+bool
+CheckType( size_t size, bool exactSize, bool issigned, const char * name, T* = 0 )
 {
   bool ret = true;
 
@@ -86,9 +88,11 @@ bool CheckType( size_t size, bool exactSize, bool issigned, const char * name, T
 
 #define CHECKTYPE( T, SIZE, EXACT, ISSIGNED ) CheckType<T>( SIZE, EXACT, ISSIGNED, #T )
 
-int itkIntTypesTest( int, char *[] )
+int
+itkIntTypesTest( int, char *[] )
 {
   bool pass = true;
+
   // fixed width types
   pass &= CHECKTYPE( itk::int8_t, 1, true, true );
   pass &= CHECKTYPE( itk::uint8_t, 1, true, false );
@@ -98,7 +102,6 @@ int itkIntTypesTest( int, char *[] )
 
   pass &= CHECKTYPE( itk::int32_t, 4, true, true );
   pass &= CHECKTYPE( itk::uint32_t, 4, true, false );
-
 
   // least types
   pass &= CHECKTYPE( itk::int_least8_t, 1, false, true );
@@ -134,7 +137,6 @@ int itkIntTypesTest( int, char *[] )
 
   pass &= CHECKTYPE( itk::intptr_t, sizeof(void *), false, true );
   pass &= CHECKTYPE( itk::uintptr_t, sizeof(void *), false, false );
-
 
   if ( pass )
     return EXIT_SUCCESS;

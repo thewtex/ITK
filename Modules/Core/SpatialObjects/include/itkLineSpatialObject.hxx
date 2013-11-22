@@ -18,7 +18,6 @@
 #ifndef __itkLineSpatialObject_hxx
 #define __itkLineSpatialObject_hxx
 
-
 #include "itkLineSpatialObject.h"
 
 namespace itk
@@ -41,7 +40,8 @@ LineSpatialObject< TDimension >
 template< unsigned int TDimension >
 LineSpatialObject< TDimension >
 ::~LineSpatialObject()
-{}
+{
+}
 
 /** Set the list of Line points. */
 template< unsigned int TDimension >
@@ -100,7 +100,7 @@ LineSpatialObject< TDimension >
     else
       {
       PointType pt =  this->GetIndexToWorldTransform()->TransformPoint(
-        ( *it ).GetPosition() );
+          ( *it ).GetPosition() );
       const_cast< BoundingBoxType * >( this->GetBounds() )->SetMinimum(pt);
       const_cast< BoundingBoxType * >( this->GetBounds() )->SetMaximum(pt);
       it++;
@@ -108,7 +108,7 @@ LineSpatialObject< TDimension >
       while ( it != end )
         {
         pt = this->GetIndexToWorldTransform()->TransformPoint(
-          ( *it ).GetPosition() );
+            ( *it ).GetPosition() );
         const_cast< BoundingBoxType * >( this->GetBounds() )->ConsiderPoint(pt);
         it++;
         }
@@ -215,6 +215,7 @@ LineSpatialObject< TDimension >
   value = this->GetDefaultOutsideValue();
   return false;
 }
+
 } // end namespace itk
 
 #endif

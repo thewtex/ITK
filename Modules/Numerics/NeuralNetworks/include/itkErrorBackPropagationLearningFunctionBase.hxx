@@ -41,17 +41,17 @@ ErrorBackPropagationLearningFunctionBase<LayerType,TTargetVector>
   typename LayerInterfaceType::ValuePointer currentdeltavalues = inputweightset->GetTotalDeltaValues();
 
   vnl_matrix<ValueType> DW_temp(currentdeltavalues,inputweightset->GetNumberOfOutputNodes(),
-                                           inputweightset->GetNumberOfInputNodes());
+                                inputweightset->GetNumberOfInputNodes() );
 
   DW_temp *= lr;
-  inputweightset->SetDWValues(DW_temp.data_block());
+  inputweightset->SetDWValues(DW_temp.data_block() );
   typename LayerType::LayerInterfaceType::ValuePointer DBValues = inputweightset->GetDeltaBValues();
   vnl_vector<ValueType> DB;
-  DB.set_size(inputweightset->GetNumberOfOutputNodes());
+  DB.set_size(inputweightset->GetNumberOfOutputNodes() );
   DB.fill(0);
   DB.copy_in(DBValues);
   DB *= lr;
-  inputweightset->SetDBValues(DB.data_block());
+  inputweightset->SetDBValues(DB.data_block() );
 }
 
 template<typename LayerType, typename TTargetVector>
@@ -73,6 +73,5 @@ ErrorBackPropagationLearningFunctionBase<LayerType,TTargetVector>
 
 } // end namespace Statistics
 } // end namespace itk
-
 
 #endif

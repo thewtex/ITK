@@ -40,6 +40,7 @@ TikhonovDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInte
   // Create a process accumulator for tracking the progress of this
   // minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+
   progress->SetMiniPipelineFilter( this );
 
   typename InputImageType::Pointer localInput = InputImageType::New();
@@ -53,11 +54,11 @@ TikhonovDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInte
   this->PrepareInputs( localInput, kernelImage, input, kernel, progress, 0.7 );
 
   typedef Functor::TikhonovDeconvolutionFunctor< InternalComplexType,
-                         InternalComplexType,
-                         InternalComplexType> FunctorType;
+                                                 InternalComplexType,
+                                                 InternalComplexType> FunctorType;
   typedef BinaryFunctorImageFilter< InternalComplexImageType,
-                               InternalComplexImageType,
-                               InternalComplexImageType, FunctorType > TikhonovFilterType;
+                                    InternalComplexImageType,
+                                    InternalComplexImageType, FunctorType > TikhonovFilterType;
   typename TikhonovFilterType::Pointer tikhonovFilter = TikhonovFilterType::New();
   tikhonovFilter->SetInput1( input );
   tikhonovFilter->SetInput2( kernel );

@@ -23,7 +23,8 @@
 #include "itkFEMElement3DC0LinearHexahedronStrain.h"
 
 //
-int itkFEMGenerateMeshTest(int, char *[])
+int
+itkFEMGenerateMeshTest(int, char *[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types
@@ -32,7 +33,11 @@ int itkFEMGenerateMeshTest(int, char *[])
   itk::FEMFactoryBase::GetFactory()->RegisterDefaultTypes();
 
   //
+  //
+  //
   // Generate2DRectilinearMesh(m_Element,mySolver,MeshOriginV,MeshSizeV,ElementsPerDim);
+  //
+  //
   //
   // Generate3DRectilinearMesh(m_Element,mySolver,MeshOriginV,MeshSizeV,ElementsPerDim);
 

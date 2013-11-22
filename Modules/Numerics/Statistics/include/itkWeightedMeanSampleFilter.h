@@ -82,7 +82,8 @@ public:
 
 protected:
   WeightedMeanSampleFilter();
-  virtual ~WeightedMeanSampleFilter();
+  virtual
+  ~WeightedMeanSampleFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
@@ -96,6 +97,7 @@ protected:
 private:
   WeightedMeanSampleFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };                                        // end of class
 } // end of namespace Statistics
 } // end of namespace itk

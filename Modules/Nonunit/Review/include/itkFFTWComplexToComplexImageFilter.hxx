@@ -26,7 +26,6 @@
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
 
-
 /*
  *
  * This code was contributed in the Insight Journal paper:
@@ -68,7 +67,8 @@ BeforeThreadedGenerateData()
     inputPtr->GetLargestPossibleRegion().GetSize();
 
   // figure out sizes
-  // size of input and output aren't the same which is handled in the superclass,
+  // size of input and output aren't the same which is handled in the
+  // superclass,
   // sort of.
   // the input size and output size only differ in the fastest moving dimension
   unsigned int total_outputSize = 1;
@@ -87,8 +87,8 @@ BeforeThreadedGenerateData()
     }
 
   typename FFTWProxyType::PlanType plan;
-  typename FFTWProxyType::ComplexType * in = (typename FFTWProxyType::ComplexType*) inputPtr->GetBufferPointer();
-  typename FFTWProxyType::ComplexType * out = (typename FFTWProxyType::ComplexType*) outputPtr->GetBufferPointer();
+  typename FFTWProxyType::ComplexType * in = (typename FFTWProxyType::ComplexType*)inputPtr->GetBufferPointer();
+  typename FFTWProxyType::ComplexType * out = (typename FFTWProxyType::ComplexType*)outputPtr->GetBufferPointer();
   int flags = m_PlanRigor;
   if( !m_CanUseDestructiveAlgorithm )
     {
@@ -105,11 +105,11 @@ BeforeThreadedGenerateData()
     }
 
   plan = FFTWProxyType::Plan_dft(ImageDimension,sizes,
-                                    in,
-                                    out,
-                                    transformDirection,
-                                    flags,
-                                    this->GetNumberOfThreads());
+                                 in,
+                                 out,
+                                 transformDirection,
+                                 flags,
+                                 this->GetNumberOfThreads() );
   delete[] sizes;
 
   FFTWProxyType::Execute(plan);
@@ -126,9 +126,9 @@ ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadI
   //
   if ( this->GetTransformDirection() == Superclass::INVERSE )
     {
-    typedef ImageRegionIterator< OutputImageType >   IteratorType;
+    typedef ImageRegionIterator< OutputImageType > IteratorType;
     unsigned long total_outputSize = this->GetOutput()->GetRequestedRegion().GetNumberOfPixels();
-    IteratorType it(this->GetOutput(), outputRegionForThread);
+    IteratorType  it(this->GetOutput(), outputRegionForThread);
     while( !it.IsAtEnd() )
       {
       PixelType val = it.Value();
@@ -145,7 +145,6 @@ FFTWComplexToComplexImageFilter< TImage >::FullMatrix()
 {
   return false;
 }
-
 
 template< typename TImage >
 void
@@ -166,7 +165,8 @@ FFTWComplexToComplexImageFilter< TImage >
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName(m_PlanRigor) << " (" << m_PlanRigor << ")" << std::endl;
+  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName(m_PlanRigor) << " (" << m_PlanRigor <<
+    ")" << std::endl;
 }
 
 } // namespace itk

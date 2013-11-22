@@ -37,7 +37,8 @@ VoronoiSegmentationImageFilter< TInputImage, TOutputImage, TBinaryPriorImage >
 template< typename TInputImage, typename TOutputImage, typename TBinaryPriorImage >
 VoronoiSegmentationImageFilter< TInputImage, TOutputImage, TBinaryPriorImage >
 ::~VoronoiSegmentationImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage, typename TBinaryPriorImage >
 void
@@ -225,6 +226,7 @@ VoronoiSegmentationImageFilter< TInputImage, TOutputImage, TBinaryPriorImage >
   os << indent << "STDTolerance = " << m_STDTolerance << std::endl;
   os << indent << "STDPercentError = " << m_STDPercentError << std::endl;
 }
+
 } //end namespace
 
 #endif

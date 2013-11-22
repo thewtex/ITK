@@ -37,7 +37,7 @@ GridImageSource< TOutputImage >
   this->m_Scale = 255.0;
 
   this->m_KernelFunction  = dynamic_cast< KernelFunctionType * >(
-    GaussianKernelFunction<double>::New().GetPointer() );
+      GaussianKernelFunction<double>::New().GetPointer() );
 }
 
 template< typename TOutputImage >
@@ -67,7 +67,7 @@ GridImageSource< TOutputImage >
       /** Add two extra functions in the front and one in the back to ensure
         coverage */
       unsigned int numberOfGaussians = Math::Ceil< unsigned int >(
-        this->GetSize()[i] * output->GetSpacing()[i] / this->m_GridSpacing[i]) + 4u;
+          this->GetSize()[i] * output->GetSpacing()[i] / this->m_GridSpacing[i]) + 4u;
       for ( It.GoToBegin(); !It.IsAtEndOfLine(); ++It )
         {
         typename ImageType::IndexType index = It.GetIndex();

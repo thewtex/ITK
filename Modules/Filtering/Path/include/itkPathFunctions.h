@@ -29,9 +29,10 @@ namespace itk
  * through only one dimension at a time; for 2D paths this results in an
  * 8-connected chain code. */
 template< typename TChainCodePath, typename TPathInput >
-void MakeChainCodeTracePath(TChainCodePath & chainPath,
-                            const TPathInput & inPath,
-                            bool restrictMovement = false)
+void
+MakeChainCodeTracePath(TChainCodePath & chainPath,
+                       const TPathInput & inPath,
+                       bool restrictMovement = false)
 {
   typedef typename TChainCodePath::OffsetType OffsetType;
   typedef typename TChainCodePath::InputType  ChainInputType;
@@ -77,9 +78,10 @@ void MakeChainCodeTracePath(TChainCodePath & chainPath,
  * as possible (chainPath->NumberOfSteps()/2) will be calculated.  No fewer than
  * 2 harmonics will be calcualted. */
 template< typename TFourierSeriesPath, typename TChainCodePath >
-void MakeFourierSeriesPathTraceChainCode(TFourierSeriesPath & FSPath,
-                                         const TChainCodePath & chainPath,
-                                         unsigned int numHarmonics = 8)
+void
+MakeFourierSeriesPathTraceChainCode(TFourierSeriesPath & FSPath,
+                                    const TChainCodePath & chainPath,
+                                    unsigned int numHarmonics = 8)
 {
   typedef typename TFourierSeriesPath::IndexType  IndexType;
   typedef typename TFourierSeriesPath::OffsetType OffsetType;
@@ -135,6 +137,7 @@ void MakeFourierSeriesPathTraceChainCode(TFourierSeriesPath & FSPath,
     FSPath.AddHarmonic(cosCoefficient, sinCoefficient);
     }
 }
+
 } // end namespace itk
 
 #endif

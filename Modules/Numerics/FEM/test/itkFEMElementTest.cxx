@@ -19,7 +19,8 @@
 #include "itkFEMElementTest.h"
 #include "itksys/SystemTools.hxx"
 
-int itkFEMElementTest(int ac, char *av[])
+int
+itkFEMElementTest(int ac, char *av[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types
@@ -467,12 +468,14 @@ int itkFEMElementTest(int ac, char *av[])
 
 #if DEBUG_FEM_TESTS
 
-void PrintK(itk::fem::Solver & S, int s, char)
+void
+PrintK(itk::fem::Solver & S, int s, char)
 // Print K - the global stiffness matrix
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S.GetLinearSystemWrapper();
 
   std::cout << std::endl << "k" << s << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     if( IDL_OUTPUT )
@@ -506,7 +509,7 @@ void PrintK(itk::fem::Solver & S, int s, char)
   std::cout << "];" << std::endl;
 
   vnl_matrix<Float> debugMatrix;
-  debugMatrix.set_size(lsw->GetSystemOrder(),lsw->GetSystemOrder());
+  debugMatrix.set_size(lsw->GetSystemOrder(),lsw->GetSystemOrder() );
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     for( unsigned int k = 0; k < lsw->GetSystemOrder(); k++ )
@@ -514,17 +517,19 @@ void PrintK(itk::fem::Solver & S, int s, char)
       debugMatrix(j,k) = lsw->GetMatrixValue(j, k);
       }
     }
-   vnl_matlab_filewrite writer("/tmp/k0.mat", "k0");
-   writer.write(debugMatrix,"k0");
+  vnl_matlab_filewrite writer("/tmp/k0.mat", "k0");
+  writer.write(debugMatrix,"k0");
 
 }
 
-void PrintF(itk::fem::Solver & S, int s, char)
+void
+PrintF(itk::fem::Solver & S, int s, char)
 // Print F - the global load vector
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S.GetLinearSystemWrapper();
 
   std::cout << std::endl << "f" << s << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     if( j > 0 )
@@ -536,12 +541,14 @@ void PrintF(itk::fem::Solver & S, int s, char)
   std::cout << "];" << std::endl;
 }
 
-void PrintNodalCoordinates(itk::fem::Solver & S, int w, char comment)
+void
+PrintNodalCoordinates(itk::fem::Solver & S, int w, char comment)
 // Print the nodal coordinates
 {
   std::cout << std::endl << comment << "Nodal coordinates: " << std::endl;
 
   std::cout << "xyz" << w << "=[";
+
   // changes made - kiran
   // for ( itk::fem::Solver::NodeArray::iterator n = S.node.begin(); n !=
   // S.node.end(); n++) {
@@ -577,11 +584,13 @@ void PrintNodalCoordinates(itk::fem::Solver & S, int w, char comment)
   std::cout << "];" << std::endl;
 }
 
-void PrintU(itk::fem::Solver & S, int s, char comment)
+void
+PrintU(itk::fem::Solver & S, int s, char comment)
 // Prints the components of the problem for debugging/reporting purposes
 {
   std::cout << std::endl << comment << "Displacements: " << std::endl;
   std::cout << "u" << s << "=[";
+
   // changes made - kiran
   // for( ::itk::fem::Solver::NodeArray::iterator n = S.node.begin();
   // n!=S.node.end(); n++) {
@@ -625,7 +634,8 @@ void PrintU(itk::fem::Solver & S, int s, char comment)
   std::cout << "];" << std::endl;
 }
 
-bool CheckDisplacements(itk::fem::Solver & S, int s, char comment, double *expectedResults, double tolerance)
+bool
+CheckDisplacements(itk::fem::Solver & S, int s, char comment, double *expectedResults, double tolerance)
 // Prints the components of the problem for debugging/reporting purposes
 {
   std::cout << std::endl << comment << "Check Displacements: " << std::endl;
@@ -633,6 +643,7 @@ bool CheckDisplacements(itk::fem::Solver & S, int s, char comment, double *expec
   bool foundError = false;
 
   std::cout << std::endl << comment << "NodeArray: " << std::endl;
+
   for( ::itk::fem::Solver::NodeArray::iterator n = S.GetNodeArray().begin(); n != S.GetNodeArray().end(); ++n )
     {
     for( unsigned int d = 0, dof;

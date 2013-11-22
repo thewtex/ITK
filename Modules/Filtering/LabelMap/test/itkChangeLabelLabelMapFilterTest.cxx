@@ -25,7 +25,8 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkTestingMacros.h"
 
-int itkChangeLabelLabelMapFilterTest( int argc, char * argv [] )
+int
+itkChangeLabelLabelMapFilterTest( int argc, char * argv [] )
 {
   if( argc < 5 )
     {
@@ -40,13 +41,13 @@ int itkChangeLabelLabelMapFilterTest( int argc, char * argv [] )
 
   const unsigned int Dimension = 2;
 
-  typedef unsigned char    ImagePixelType;
-  typedef unsigned char    LabelPixelType;
+  typedef unsigned char ImagePixelType;
+  typedef unsigned char LabelPixelType;
 
   typedef itk::Image< ImagePixelType, Dimension > ImageType;
 
-  typedef itk::LabelObject< LabelPixelType, Dimension >  LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType >               LabelMapType;
+  typedef itk::LabelObject< LabelPixelType, Dimension > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType >              LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
@@ -64,12 +65,12 @@ int itkChangeLabelLabelMapFilterTest( int argc, char * argv [] )
   const unsigned int numberOfArgumentsBeforeLabels = 3;
   const unsigned int numberOfArguments = argc;
 
-  typedef itk::NumericTraits< LabelPixelType >::PrintType   LabelPrintType;
+  typedef itk::NumericTraits< LabelPixelType >::PrintType LabelPrintType;
 
   for( unsigned int i = numberOfArgumentsBeforeLabels; i < numberOfArguments; i += 2 )
     {
-    const LabelPixelType  oldLabel = atoi( argv[i]   );
-    const LabelPixelType  newLabel = atoi( argv[i+1] );
+    const LabelPixelType oldLabel = atoi( argv[i]   );
+    const LabelPixelType newLabel = atoi( argv[i+1] );
 
     std::cout << "Label pair : ";
     std::cout << static_cast< LabelPrintType >( oldLabel ) << " -> ";

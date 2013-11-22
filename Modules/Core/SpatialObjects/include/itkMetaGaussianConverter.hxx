@@ -26,15 +26,16 @@ namespace itk
 template< unsigned int NDimensions >
 MetaGaussianConverter< NDimensions >
 ::MetaGaussianConverter()
-{}
+{
+}
 
 template< unsigned int NDimensions >
 typename MetaGaussianConverter< NDimensions >::MetaObjectType *
 MetaGaussianConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new GaussianMetaObjectType);
-}
+  }
 
 /** Convert a metaGaussian into a gaussian SpatialObject  */
 template< unsigned int NDimensions >
@@ -44,6 +45,7 @@ MetaGaussianConverter< NDimensions >
 {
   const GaussianMetaObjectType *gaussian =
     dynamic_cast<const GaussianMetaObjectType *>(mo);
+
   if(gaussian == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaGaussian" );
@@ -64,11 +66,12 @@ template< unsigned int NDimensions >
 typename MetaGaussianConverter< NDimensions >::MetaObjectType *
 MetaGaussianConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   GaussianSpatialObjectConstPointer gaussianSO =
     dynamic_cast<const GaussianSpatialObjectType *>(so);
   GaussianMetaObjectType *gaussian = new GaussianMetaObjectType;
-  if(gaussianSO.IsNull())
+
+  if(gaussianSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to GaussianSpatialObject");
     }
@@ -82,7 +85,7 @@ MetaGaussianConverter< NDimensions >
   gaussian->ID( gaussianSO->GetId() );
   gaussian->BinaryData(true);
   return gaussian;
-}
+  }
 
 } // end namespace itk
 

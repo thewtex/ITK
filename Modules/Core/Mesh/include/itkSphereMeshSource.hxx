@@ -53,8 +53,8 @@ SphereMeshSource< TOutputMesh >
 ::GenerateData()
 {
   IdentifierType i, j, jn, p, numpts;
-  double        ustep, vstep, ubeg, vbeg, u, v;
-  int           signu, signv;
+  double         ustep, vstep, ubeg, vbeg, u, v;
+  int            signu, signv;
 
   // calculate the number os cells and points
   numpts = m_ResolutionX * m_ResolutionY + 2;
@@ -108,7 +108,7 @@ SphereMeshSource< TOutputMesh >
           }
 
         p1[0] = m_Scale[0] * signu * ( vcl_pow( (float)( vcl_fabs( vcl_cos(u) ) ), (float)m_Squareness1 ) ) * signv
-                * ( vcl_pow( (float)( vcl_fabs( vcl_cos(v) ) ), (float)m_Squareness2 ) ) + m_Center[0];
+          * ( vcl_pow( (float)( vcl_fabs( vcl_cos(v) ) ), (float)m_Squareness2 ) ) + m_Center[0];
 
         if ( vcl_sin(v) > 0 )
           {
@@ -120,7 +120,7 @@ SphereMeshSource< TOutputMesh >
           }
 
         p1[1] = m_Scale[1] * signu * ( vcl_pow( (float)( vcl_fabs( vcl_cos(u) ) ), (float)m_Squareness1 ) ) * signv
-                * ( vcl_pow( (float)( vcl_fabs( vcl_sin(v) ) ), (float)m_Squareness2 ) ) + m_Center[1];
+          * ( vcl_pow( (float)( vcl_fabs( vcl_sin(v) ) ), (float)m_Squareness2 ) ) + m_Center[1];
 
         if ( vcl_sin(u) > 0 )
           {
@@ -132,7 +132,7 @@ SphereMeshSource< TOutputMesh >
           }
 
         p1[2] = m_Scale[2] * signu * ( vcl_pow( (float)( vcl_fabs( vcl_sin(u) ) ), (float)m_Squareness1 ) )
-                + m_Center[2];
+          + m_Center[2];
 
         point.Value() = p1;
         ++point;
@@ -232,6 +232,7 @@ SphereMeshSource< TOutputMesh >
   os << indent << "Squareness1: " << m_Squareness1 << std::endl;
   os << indent << "Squareness2: " << m_Squareness2 << std::endl;
 }
+
 } // end namespace itk
 
 #endif

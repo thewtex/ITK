@@ -22,15 +22,16 @@
 
 #include "itkInvertIntensityImageFilter.h"
 
-int itkInvertIntensityImageFilterTest(int argc, char * argv[])
+int
+itkInvertIntensityImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
-  {
+    {
     std::cerr << "Missing Arguments" << std::endl;
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << " inputImage outputImage " << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   const int dim = 2;
 
@@ -42,10 +43,10 @@ int itkInvertIntensityImageFilterTest(int argc, char * argv[])
   reader->SetFileName( argv[1] );
 
   typedef itk::InvertIntensityImageFilter< IType, IType > FilterType;
-  FilterType::Pointer filter = FilterType::New();
+  FilterType::Pointer      filter = FilterType::New();
   itk::SimpleFilterWatcher watcher(filter);
 
-  filter->SetFunctor(filter->GetFunctor());
+  filter->SetFunctor(filter->GetFunctor() );
 
   filter->SetInput( reader->GetOutput() );
 
@@ -56,7 +57,7 @@ int itkInvertIntensityImageFilterTest(int argc, char * argv[])
 
   try
     {
-  writer->Update();
+    writer->Update();
     }
   catch( itk::ExceptionObject & excp )
     {

@@ -22,7 +22,8 @@
 #include "itkRelabelComponentImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkScalarImageKmeansImageFilterTest(int argc, char* argv [] )
+int
+itkScalarImageKmeansImageFilterTest(int argc, char* argv [] )
 {
   if( argc < 5 )
     {
@@ -32,8 +33,8 @@ int itkScalarImageKmeansImageFilterTest(int argc, char* argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef unsigned char       PixelType;
-  const unsigned int          Dimension = 2;
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image<PixelType, Dimension > ImageType;
 
@@ -53,7 +54,6 @@ int itkScalarImageKmeansImageFilterTest(int argc, char* argv [] )
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   typedef itk::ScalarImageKmeansImageFilter< ImageType > KMeansFilterType;
 
@@ -78,12 +78,10 @@ int itkScalarImageKmeansImageFilterTest(int argc, char* argv [] )
   // before we add any mean check that an expection is thrown
   TRY_EXPECT_EXCEPTION( kmeansFilter->Update() );
 
-
   for(unsigned k=0; k<numberOfInitialClasses; k++)
     {
     kmeansFilter->AddClassWithInitialMean( atof( argv[k+numberOfArgumentsBeforeMeans] ) );
     }
-
 
   try
     {
@@ -106,12 +104,11 @@ int itkScalarImageKmeansImageFilterTest(int argc, char* argv [] )
     std::cout << "    estimated mean : " << estimatedMeans[i] << std::endl;
     }
 
-  typedef KMeansFilterType::OutputImageType  OutputImageType;
+  typedef KMeansFilterType::OutputImageType OutputImageType;
 
   typedef itk::RelabelComponentImageFilter<
-                                OutputImageType,
-                                OutputImageType > RelabelFilterType;
-
+      OutputImageType,
+      OutputImageType > RelabelFilterType;
 
   RelabelFilterType::Pointer relabeler = RelabelFilterType::New();
 
@@ -133,10 +130,9 @@ int itkScalarImageKmeansImageFilterTest(int argc, char* argv [] )
     return EXIT_FAILURE;
     }
 
+  typedef RelabelFilterType::ObjectSizeInPixelsContainerType SizesType;
 
-  typedef RelabelFilterType::ObjectSizeInPixelsContainerType  SizesType;
-
-  const SizesType &  sizes = relabeler->GetSizeOfObjectsInPixels();
+  const SizesType & sizes = relabeler->GetSizeOfObjectsInPixels();
 
   SizesType::const_iterator sizeItr = sizes.begin();
   SizesType::const_iterator sizeEnd = sizes.end();

@@ -22,7 +22,8 @@
 #include "itkBinaryReconstructionByDilationImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkBinaryReconstructionByDilationImageFilterTest(int argc, char * argv[])
+int
+itkBinaryReconstructionByDilationImageFilterTest(int argc, char * argv[])
 {
   if( argc != 6 )
     {

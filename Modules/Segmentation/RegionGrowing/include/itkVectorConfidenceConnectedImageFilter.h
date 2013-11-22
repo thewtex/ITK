@@ -56,7 +56,7 @@ namespace itk
  * \ingroup ITKRegionGrowing
  */
 template< typename TInputImage, typename TOutputImage >
-class VectorConfidenceConnectedImageFilter:
+class VectorConfidenceConnectedImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -88,8 +88,8 @@ public:
   typedef std::vector< IndexType > SeedsContainerType;
 
   typedef MahalanobisDistanceThresholdImageFunction<
-    InputImageType >
-  DistanceThresholdFunctionType;
+      InputImageType >
+    DistanceThresholdFunctionType;
 
   typedef typename DistanceThresholdFunctionType::CovarianceMatrixType CovarianceMatrixType;
   typedef typename DistanceThresholdFunctionType::MeanVectorType       MeanVectorType;
@@ -133,7 +133,6 @@ public:
 
   /** Method to access seed container */
   virtual const SeedsContainerType &GetSeeds() const;
-
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking

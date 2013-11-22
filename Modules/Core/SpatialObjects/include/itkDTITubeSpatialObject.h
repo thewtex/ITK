@@ -39,7 +39,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class DTITubeSpatialObject:
+class DTITubeSpatialObject :
   public TubeSpatialObject< TDimension,
                             DTITubeSpatialObjectPoint< TDimension >  >
 {
@@ -70,7 +70,8 @@ public:
 protected:
 
   DTITubeSpatialObject();
-  virtual ~DTITubeSpatialObject();
+  virtual
+  ~DTITubeSpatialObject();
 
   /** Method to print the object.*/
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -78,6 +79,7 @@ protected:
 private:
   DTITubeSpatialObject(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

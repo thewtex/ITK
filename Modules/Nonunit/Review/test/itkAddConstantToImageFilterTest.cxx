@@ -19,34 +19,33 @@
 #include "itkAddImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
-int itkAddConstantToImageFilterTest(int, char* [] )
+int
+itkAddConstantToImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int ImageDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, ImageDimension>  InputImageType;
-  typedef itk::Image<float, ImageDimension>  OutputImageType;
-  typedef float                              FactorType;
+  typedef itk::Image<float, ImageDimension> InputImageType;
+  typedef itk::Image<float, ImageDimension> OutputImageType;
+  typedef float                             FactorType;
 
   // Declare Iterator types apropriated for each image
   typedef itk::ImageRegionIteratorWithIndex<
-                                  InputImageType>  InputIteratorType;
+      InputImageType>  InputIteratorType;
 
   typedef itk::ImageRegionIteratorWithIndex<
-                                  OutputImageType>  OutputIteratorType;
-
+      OutputImageType>  OutputIteratorType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<ImageDimension>         IndexType;
+  typedef itk::Index<ImageDimension> IndexType;
 
   // Declare the type of the size
-  typedef itk::Size<ImageDimension>          SizeType;
+  typedef itk::Size<ImageDimension> SizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<ImageDimension>   RegionType;
+  typedef itk::ImageRegion<ImageDimension> RegionType;
 
   // Create two images
   InputImageType::Pointer inputImage  = InputImageType::New();
@@ -87,8 +86,7 @@ int itkAddConstantToImageFilterTest(int, char* [] )
 
   // Declare the type for the Log filter
   typedef itk::AddImageFilter<
-    InputImageType, InputImageType, OutputImageType  >   FilterType;
-
+      InputImageType, InputImageType, OutputImageType  >   FilterType;
 
   // Create an ADD Filter
   FilterType::Pointer filter = FilterType::New();
@@ -108,7 +106,7 @@ int itkAddConstantToImageFilterTest(int, char* [] )
   filter->Print(std::cout);
 
   // Create an iterator for going through the image output
-  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion());
+  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion() );
 
   //  Check the content of the result image
   std::cout << "Verification of the output " << std::endl;
@@ -120,7 +118,7 @@ int itkAddConstantToImageFilterTest(int, char* [] )
     {
     const InputImageType::PixelType  input  = it.Get();
     const OutputImageType::PixelType output = ot.Get();
-    const float expectedValue = factor + input;
+    const float                      expectedValue = factor + input;
     std::cout << output << " = ";
     std::cout << expectedValue  << std::endl;
     if( vnl_math_abs( expectedValue - output ) > epsilon )

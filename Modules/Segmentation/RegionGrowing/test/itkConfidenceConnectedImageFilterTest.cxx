@@ -23,10 +23,11 @@
 #include "itkTextOutput.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkConfidenceConnectedImageFilterTest(int ac, char* av[] )
+int
+itkConfidenceConnectedImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 5)
     {
@@ -44,10 +45,10 @@ int itkConfidenceConnectedImageFilterTest(int ac, char* av[] )
   // Create a filter
   typedef itk::ConfidenceConnectedImageFilter<myImage,myImage> FilterType;
 
-  FilterType::Pointer filter = FilterType::New();
+  FilterType::Pointer      filter = FilterType::New();
   itk::SimpleFilterWatcher filterWatch(filter);
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
   filter->SetInitialNeighborhoodRadius( 3 ); // measured in pixels
 
   FilterType::IndexType seed; seed[0] = atoi(av[3]); seed[1] = atoi(av[4]);
@@ -119,6 +120,5 @@ int itkConfidenceConnectedImageFilterTest(int ac, char* av[] )
   // Exercise AddSeed() method
   filter->AddSeed( seed );
 
-
-    return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

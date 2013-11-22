@@ -20,10 +20,10 @@
 
 #include <fstream>
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkStimulateImageIOTest2( int argc, char* argv[] )
+int
+itkStimulateImageIOTest2( int argc, char* argv[] )
 {
   // This test is usually run with the data file
   // Insight/Testing/Data/Input/BigEndian.spr
@@ -40,7 +40,7 @@ int itkStimulateImageIOTest2( int argc, char* argv[] )
   io = itk::StimulateImageIO::New();
 
   itk::ImageFileReader<myImage>::Pointer reader
-                                  = itk::ImageFileReader<myImage>::New();
+    = itk::ImageFileReader<myImage>::New();
 
   std::cout << "Filename: " << argv[1] << std::endl;
   reader->SetFileName(argv[1]);
@@ -64,7 +64,6 @@ int itkStimulateImageIOTest2( int argc, char* argv[] )
 
   // This is where we call all of the Get Functions to increase coverage.
   std::cout << "Display Range " << io->GetDisplayRange() << std::endl;
-
 
   return EXIT_SUCCESS;
 

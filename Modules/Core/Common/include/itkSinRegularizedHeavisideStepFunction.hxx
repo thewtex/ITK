@@ -26,13 +26,14 @@ namespace itk
 template< typename TInput, typename TOutput >
 SinRegularizedHeavisideStepFunction< TInput, TOutput >
 ::SinRegularizedHeavisideStepFunction() : Superclass()
-{}
+{
+}
 
 template< typename TInput, typename TOutput >
 SinRegularizedHeavisideStepFunction< TInput, TOutput >
 ::~SinRegularizedHeavisideStepFunction()
-{}
-
+{
+}
 
 template< typename TInput, typename TOutput >
 typename SinRegularizedHeavisideStepFunction< TInput, TOutput >::OutputType

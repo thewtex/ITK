@@ -49,7 +49,8 @@ const char *const ROI_NUM_SEGMENTS = "ROI_NUM_SEGMENTS";
 const char *const ROI_PLANE = "ROI_PLANE";
 const char *const ROI_SCAN_ID = "ROI_SCAN_ID";
 
-std::string IOCommon
+std::string
+IOCommon
 ::AtomicPixelTypeToString(const AtomicPixelType pixelType)
 {
   switch ( pixelType )
@@ -90,7 +91,8 @@ std::string IOCommon
     }
 }
 
-unsigned int IOCommon
+unsigned int
+IOCommon
 ::ComputeSizeOfAtomicPixelType(const AtomicPixelType pixelType)
 {
   switch ( pixelType )
@@ -130,4 +132,5 @@ unsigned int IOCommon
       break;
     }
 }
+
 } // namespace itk

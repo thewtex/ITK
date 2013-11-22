@@ -58,7 +58,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class AmoebaOptimizer:
+class AmoebaOptimizer :
   public SingleValuedNonLinearVnlOptimizer
 {
 public:
@@ -120,6 +120,7 @@ public:
    * when AutomaticInitialSimplex is off. */
   void SetInitialSimplexDelta(ParametersType initialSimplexDelta,
                               bool automaticInitialSimplex = false);
+
   itkGetConstMacro(InitialSimplexDelta, ParametersType);
 
   /** The optimization algorithm will terminate when the simplex
@@ -147,7 +148,8 @@ public:
 
 protected:
   AmoebaOptimizer();
-  virtual ~AmoebaOptimizer();
+  virtual
+  ~AmoebaOptimizer();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;
@@ -155,18 +157,19 @@ protected:
 private:
   /**Check that the settings are valid. If not throw an exception.*/
   void ValidateSettings();
+
   //purposely not implemented
   AmoebaOptimizer(const Self &);
   //purposely not implemented
   void operator=(const Self &);
 
-  NumberOfIterationsType          m_MaximumNumberOfIterations;
-  ParametersType::ValueType       m_ParametersConvergenceTolerance;
-  CostFunctionType::MeasureType   m_FunctionConvergenceTolerance;
-  bool                            m_AutomaticInitialSimplex;
-  ParametersType                  m_InitialSimplexDelta;
-  bool                            m_OptimizeWithRestarts;
-  vnl_amoeba *                    m_VnlOptimizer;
+  NumberOfIterationsType        m_MaximumNumberOfIterations;
+  ParametersType::ValueType     m_ParametersConvergenceTolerance;
+  CostFunctionType::MeasureType m_FunctionConvergenceTolerance;
+  bool                          m_AutomaticInitialSimplex;
+  ParametersType                m_InitialSimplexDelta;
+  bool                          m_OptimizeWithRestarts;
+  vnl_amoeba *                  m_VnlOptimizer;
 
   std::ostringstream m_StopConditionDescription;
 };

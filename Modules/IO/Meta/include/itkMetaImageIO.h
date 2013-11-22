@@ -18,7 +18,6 @@
 #ifndef __itkMetaImageIO_h
 #define __itkMetaImageIO_h
 
-
 #include <fstream>
 #include "itkImageIOBase.h"
 #include "metaObject.h"
@@ -36,7 +35,7 @@ namespace itk
  *  \ingroup IOFilters
  * \ingroup ITKIOMeta
  */
-class MetaImageIO:public ImageIOBase
+class MetaImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -55,7 +54,8 @@ public:
    * while others can support 2D, 3D, or even n-D. This method returns
    * true/false as to whether the ImageIO can support the dimension
    * indicated. */
-  virtual bool SupportsDimension(unsigned long)
+  virtual bool
+  SupportsDimension(unsigned long)
   {
     return true;
   }
@@ -94,7 +94,8 @@ public:
 
   /** set the precision in the MetaImage member
    */
-  virtual void SetDoublePrecision(unsigned int precision)
+  virtual void
+  SetDoublePrecision(unsigned int precision)
   {
     m_MetaImage.SetDoublePrecision(precision);
   }
@@ -120,7 +121,8 @@ public:
   /** Determine if the ImageIO can stream reading from this
    *  file. Only time cannot stream read/write is if compression is used.
    *  CanRead must be called prior to this function. */
-  virtual bool CanStreamRead()
+  virtual bool
+  CanStreamRead()
   {
     if ( m_MetaImage.CompressedData() )
       {
@@ -134,7 +136,8 @@ public:
    *  Assumes file passes a CanRead call and its pixels are of the same
    *  type as the template of the writer. Can verify by first calling
    *  CanRead and then CanStreamRead prior to calling CanStreamWrite. */
-  virtual bool CanStreamWrite()
+  virtual bool
+  CanStreamWrite()
   {
     if ( this->GetUseCompression() )
       {

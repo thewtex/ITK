@@ -50,17 +50,17 @@ namespace itk
  * \ingroup ITKDisplacementField
  */
 template<typename TTimeVaryingVelocityField, typename TDisplacementField =
- Image<typename TTimeVaryingVelocityField::PixelType,
- TTimeVaryingVelocityField::ImageDimension - 1> >
+           Image<typename TTimeVaryingVelocityField::PixelType,
+                 TTimeVaryingVelocityField::ImageDimension - 1> >
 class TimeVaryingVelocityFieldIntegrationImageFilter :
   public ImageToImageFilter<TTimeVaryingVelocityField, TDisplacementField>
 {
 public:
-  typedef TimeVaryingVelocityFieldIntegrationImageFilter  Self;
+  typedef TimeVaryingVelocityFieldIntegrationImageFilter Self;
   typedef ImageToImageFilter
     <TTimeVaryingVelocityField, TDisplacementField>       Superclass;
-  typedef SmartPointer<Self>                              Pointer;
-  typedef SmartPointer<const Self>                        ConstPointer;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -72,29 +72,30 @@ public:
    * Dimensionality of input data is assumed to be one more than the output
    * data the same. */
   itkStaticConstMacro( InputImageDimension, unsigned int,
-    TTimeVaryingVelocityField::ImageDimension );
+                       TTimeVaryingVelocityField::ImageDimension );
 
   itkStaticConstMacro( OutputImageDimension, unsigned int,
-    TDisplacementField::ImageDimension );
+                       TDisplacementField::ImageDimension );
 
-  typedef TTimeVaryingVelocityField                   TimeVaryingVelocityFieldType;
-  typedef TDisplacementField                          DisplacementFieldType;
-  typedef typename DisplacementFieldType::Pointer     DisplacementFieldPointer;
-  typedef typename DisplacementFieldType::PixelType   VectorType;
-  typedef typename VectorType::RealValueType          RealType;
-  typedef typename VectorType::ValueType              ScalarType;
-  typedef typename DisplacementFieldType::PointType   PointType;
-  typedef typename DisplacementFieldType::RegionType  OutputRegionType;
+  typedef TTimeVaryingVelocityField                  TimeVaryingVelocityFieldType;
+  typedef TDisplacementField                         DisplacementFieldType;
+  typedef typename DisplacementFieldType::Pointer    DisplacementFieldPointer;
+  typedef typename DisplacementFieldType::PixelType  VectorType;
+  typedef typename VectorType::RealValueType         RealType;
+  typedef typename VectorType::ValueType             ScalarType;
+  typedef typename DisplacementFieldType::PointType  PointType;
+  typedef typename DisplacementFieldType::RegionType OutputRegionType;
 
   typedef VectorInterpolateImageFunction
     <TimeVaryingVelocityFieldType, ScalarType>    VelocityFieldInterpolatorType;
   typedef typename VelocityFieldInterpolatorType::Pointer
-                                                  VelocityFieldInterpolatorPointer;
+    VelocityFieldInterpolatorPointer;
 
-  typedef VectorInterpolateImageFunction<DisplacementFieldType, ScalarType>   DisplacementFieldInterpolatorType;
-  typedef typename DisplacementFieldInterpolatorType::Pointer                 DisplacementFieldInterpolatorPointer;
+  typedef VectorInterpolateImageFunction<DisplacementFieldType, ScalarType> DisplacementFieldInterpolatorType;
+  typedef typename DisplacementFieldInterpolatorType::Pointer               DisplacementFieldInterpolatorPointer;
 
-  /** Get/Set the time-varying velocity field interpolator.  Default = linear. */
+  /** Get/Set the time-varying velocity field interpolator.  Default = linear.
+    */
   itkSetObjectMacro( VelocityFieldInterpolator, VelocityFieldInterpolatorType );
   itkGetModifiableObjectMacro(VelocityFieldInterpolator, VelocityFieldInterpolatorType );
 
@@ -159,24 +160,30 @@ protected:
 
   virtual void ThreadedGenerateData( const OutputRegionType &, ThreadIdType );
 
-  VectorType IntegrateVelocityAtPoint( const PointType &initialSpatialPoint, const TimeVaryingVelocityFieldType * inputField );
+  VectorType IntegrateVelocityAtPoint( const PointType &initialSpatialPoint,
+                                       const TimeVaryingVelocityFieldType * inputField );
 
-  RealType                                  m_LowerTimeBound;
-  RealType                                  m_UpperTimeBound;
+  RealType m_LowerTimeBound;
+  RealType m_UpperTimeBound;
 
-  DisplacementFieldPointer                  m_InitialDiffeomorphism;
+  DisplacementFieldPointer m_InitialDiffeomorphism;
 
-  unsigned int                              m_NumberOfIntegrationSteps;
+  unsigned int m_NumberOfIntegrationSteps;
 
-  unsigned int                              m_NumberOfTimePoints;
+  unsigned int m_NumberOfTimePoints;
 
-  DisplacementFieldInterpolatorPointer      m_DisplacementFieldInterpolator;
+  DisplacementFieldInterpolatorPointer m_DisplacementFieldInterpolator;
 
 private:
-  TimeVaryingVelocityFieldIntegrationImageFilter( const Self & ); //purposely not implemented
-  void operator=( const Self & );         //purposely not implemented
+  TimeVaryingVelocityFieldIntegrationImageFilter( const Self & ); //purposely
+                                                                  // not
+                                                                  // implemented
+  void operator=( const Self & );                                 //purposely
 
-  VelocityFieldInterpolatorPointer          m_VelocityFieldInterpolator;
+  // not
+  // implemented
+
+  VelocityFieldInterpolatorPointer m_VelocityFieldInterpolator;
 };
 }
 

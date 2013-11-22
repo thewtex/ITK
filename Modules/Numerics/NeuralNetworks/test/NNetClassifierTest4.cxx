@@ -20,7 +20,7 @@
 #include "itkListSample.h"
 #include <fstream>
 
-#define ROUND(x) (floor(x+0.5))
+#define ROUND(x) (floor(x+0.5) )
 
 int
 NNetClassifierTest4(int argc, char* argv[])
@@ -48,11 +48,11 @@ NNetClassifierTest4(int argc, char* argv[])
   typedef itk::Statistics::ListSample<MeasurementVectorType> SampleType;
   typedef itk::Statistics::ListSample<TargetVectorType>      TargetType;
   typedef itk::Statistics::BatchSupervisedTrainingFunction<SampleType, TargetType, double>
-                                                             TrainingFcnType;
+    TrainingFcnType;
 
   MeasurementVectorType mv;
-  TargetVectorType tv;
-  TargetVectorType ov;
+  TargetVectorType      tv;
+  TargetVectorType      ov;
   ov.Fill(0.0);
 
   SampleType::Pointer trainsample = SampleType::New();
@@ -66,7 +66,7 @@ NNetClassifierTest4(int argc, char* argv[])
 
   std::ifstream infile1;
   infile1.open(trainFileName, std::ios::in);
-  if (infile1.fail())
+  if (infile1.fail() )
     {
     std::cout << argv[0] << " Cannot open training file for reading: "
               << trainFileName << std::endl;
@@ -87,7 +87,7 @@ NNetClassifierTest4(int argc, char* argv[])
 
   std::ifstream infile2;
   infile2.open(testFileName, std::ios::in);
-  if (infile2.fail())
+  if (infile2.fail() )
     {
     std::cout << argv[0] << " Cannot open test file for reading: "
               << testFileName << std::endl;
@@ -106,7 +106,9 @@ NNetClassifierTest4(int argc, char* argv[])
     }
   infile2.close();
 
-  typedef itk::Statistics::TwoHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> TwoHiddenLayerBackPropagationNeuralNetworkType;
+  typedef itk::Statistics::TwoHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                      TargetVectorType>
+    TwoHiddenLayerBackPropagationNeuralNetworkType;
   TwoHiddenLayerBackPropagationNeuralNetworkType::Pointer net1 = TwoHiddenLayerBackPropagationNeuralNetworkType::New();
   net1->SetNumOfInputNodes(num_input_nodes);
   net1->SetNumOfFirstHiddenNodes(num_hidden1_nodes);
@@ -127,16 +129,16 @@ NNetClassifierTest4(int argc, char* argv[])
   std::cout << "Network Simulation" << std::endl;
   SampleType::ConstIterator iter1 = testsample->Begin();
   TargetType::ConstIterator iter2 = testtargets->Begin();
-  unsigned int error1 = 0;
-  unsigned int error2 = 0;
-  int flag;
-  std::ofstream outfile;
+  unsigned int              error1 = 0;
+  unsigned int              error2 = 0;
+  int                       flag;
+  std::ofstream             outfile;
   outfile.open("out1.txt",std::ios::out);
-  while (iter1 != testsample->End())
+  while (iter1 != testsample->End() )
     {
     mv = iter1.GetMeasurementVector();
     tv = iter2.GetMeasurementVector();
-    ov.SetVnlVector(net1->GenerateOutput(mv));
+    ov.SetVnlVector(net1->GenerateOutput(mv) );
     flag=0;
     if (vcl_fabs(tv[0]-ov[0])>0.2)
       {

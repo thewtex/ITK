@@ -18,7 +18,6 @@
 #ifndef __itkHoughTransform2DLinesImageFilter_h
 #define __itkHoughTransform2DLinesImageFilter_h
 
-
 #include "itkImageToImageFilter.h"
 #include "itkLineSpatialObject.h"
 
@@ -59,7 +58,7 @@ namespace itk
  */
 
 template< typename TInputPixelType, typename TOutputPixelType >
-class HoughTransform2DLinesImageFilter:
+class HoughTransform2DLinesImageFilter :
   public ImageToImageFilter< Image< TInputPixelType, 2 >, Image< TOutputPixelType, 2 > >
 {
 public:
@@ -160,7 +159,9 @@ public:
 protected:
 
   HoughTransform2DLinesImageFilter();
-  virtual ~HoughTransform2DLinesImageFilter() {}
+  virtual
+  ~HoughTransform2DLinesImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

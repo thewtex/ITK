@@ -99,7 +99,7 @@ ImageToVectorImageFilter< TInputImage >
       static_cast< InputImageType * >( this->ProcessObject::GetInput(i) );
 
     InputIteratorType *iit = new InputIteratorType(
-      inputImagePointer, outputRegionForThread);
+        inputImagePointer, outputRegionForThread);
     iit->GoToBegin();
     inputItContainer.push_back(iit);
     }
@@ -121,6 +121,7 @@ ImageToVectorImageFilter< TInputImage >
     delete inputItContainer[i];
     }
 }
+
 } // end namespace itk
 
 #endif

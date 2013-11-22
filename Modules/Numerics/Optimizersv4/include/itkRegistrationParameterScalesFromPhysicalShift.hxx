@@ -34,7 +34,7 @@ void
 RegistrationParameterScalesFromPhysicalShift< TMetric >
 ::ComputeSampleShifts(const ParametersType &deltaParameters, ScalesType &sampleShifts)
 {
-  if (this->GetTransformForward())
+  if (this->GetTransformForward() )
     {
     this->ComputeSampleShiftsInternal<MovingTransformType>(deltaParameters, sampleShifts);
     }
@@ -54,12 +54,13 @@ RegistrationParameterScalesFromPhysicalShift< TMetric >
 
   // We save the old parameters and apply the delta parameters to calculate the
   // voxel shift. After it is done, we will reset to the old parameters.
-  TransformBaseTemplate<typename TMetric::MeasureType> *transform = const_cast<TransformBaseTemplate<typename TMetric::MeasureType> *>(this->GetTransform());
+  TransformBaseTemplate<typename TMetric::MeasureType> *transform =
+    const_cast<TransformBaseTemplate<typename TMetric::MeasureType> *>(this->GetTransform() );
   const ParametersType oldParameters = transform->GetParameters();
 
   const SizeValueType numSamples = this->m_SamplePoints.size();
 
-  VirtualPointType point;
+  VirtualPointType    point;
   TransformOutputType newMappedVoxel;
 
   // store the old mapped indices to reduce calls to Transform::SetParameters()
@@ -84,7 +85,7 @@ RegistrationParameterScalesFromPhysicalShift< TMetric >
 
     // find the local shift for each sample point
     sampleShifts[c] = newMappedVoxel.EuclideanDistanceTo(oldMappedVoxels[c]);
-  }
+    }
 
   // restore the parameters in the transform
   transform->SetParameters(oldParameters);

@@ -52,12 +52,12 @@ public:
   typedef VideoIOBase          Self;
   typedef ImageIOBase          Superclass;
   typedef SmartPointer< Self > Pointer;
-  typedef ::itk::SizeValueType SizeValueType;
+  typedef::itk::SizeValueType  SizeValueType;
 
   /** Frame offset typedefs */
-  typedef double               TemporalOffsetType;
-  typedef SizeValueType        FrameOffsetType;
-  typedef double               TemporalRatioType;
+  typedef double        TemporalOffsetType;
+  typedef SizeValueType FrameOffsetType;
+  typedef double        TemporalRatioType;
 
   /** Video-specific typedefs */
   typedef SizeValueType CameraIDType;
@@ -80,7 +80,8 @@ public:
   virtual void SetReadFromCamera() = 0;
 
   /** Get the current read type */
-  ReadType GetReadType() {
+  ReadType
+  GetReadType() {
     return this->m_ReadType;
   }
 
@@ -94,10 +95,15 @@ public:
 
   /** Virtual accessor functions to be implemented in each derived class */
   virtual TemporalOffsetType GetPositionInMSec() const = 0;
+
   virtual TemporalRatioType GetRatio() const = 0;
+
   virtual FrameOffsetType GetFrameTotal() const = 0;
+
   virtual TemporalRatioType GetFramesPerSecond() const = 0;
+
   virtual FrameOffsetType GetCurrentFrame() const = 0;
+
   virtual FrameOffsetType GetLastIFrame() const = 0;
 
   /*-------- This part of the interfaces deals with writing data. ----- */
@@ -112,7 +118,8 @@ public:
 protected:
 
   VideoIOBase();
-  virtual ~VideoIOBase();
+  virtual
+  ~VideoIOBase();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

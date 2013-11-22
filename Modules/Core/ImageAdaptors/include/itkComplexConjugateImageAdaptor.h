@@ -38,15 +38,18 @@ public:
   typedef TComplexType ExternalType;
   typedef TComplexType InternalType;
 
-  static inline void Set(TComplexType & output, const TComplexType & input)
+  static inline void
+  Set(TComplexType & output, const TComplexType & input)
   {
     output = std::conj( input );
   }
 
-  static inline TComplexType Get(const TComplexType & input)
+  static inline TComplexType
+  Get(const TComplexType & input)
   {
     return std::conj( input );
   }
+
 };
 } // end namespace Accessor
 
@@ -57,7 +60,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage >
-class ComplexConjugateImageAdaptor:public
+class ComplexConjugateImageAdaptor : public
   ImageAdaptor< TImage,
                 Accessor::ComplexConjugatePixelAccessor< typename TImage::PixelType > >
 {
@@ -81,17 +84,22 @@ public:
   itkConceptMacro( InputConvertibleToComplex,
                    ( Concept::Convertible<
                        std::complex< typename NumericTraits< typename TImage::PixelType >::ValueType >,
-                     typename TImage::PixelType > ) );
+                       typename TImage::PixelType > ) );
   // End concept checking. */
 #endif
 
 protected:
-  ComplexConjugateImageAdaptor() {}
-  virtual ~ComplexConjugateImageAdaptor() {}
+  ComplexConjugateImageAdaptor() {
+  }
+
+  virtual
+  ~ComplexConjugateImageAdaptor() {
+  }
 
 private:
   ComplexConjugateImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace itk
 

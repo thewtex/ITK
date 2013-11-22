@@ -55,9 +55,11 @@ public:
     m_BackgroundValue = NumericTraits< TLabel >::Zero;
   }
 
-  inline TRGBPixel operator()(const TInputPixel & p1, const TLabel & p2) const
+  inline TRGBPixel
+  operator()(const TInputPixel & p1, const TLabel & p2) const
   {
     TRGBPixel rgbPixel;
+
     NumericTraits<TRGBPixel>::SetLength(rgbPixel, 3);
 
     if ( p2 == m_BackgroundValue )
@@ -85,33 +87,39 @@ public:
     return rgbPixel;
   }
 
-  bool operator!=(const LabelOverlayFunctor & l) const
+  bool
+  operator!=(const LabelOverlayFunctor & l) const
   {
     bool value = l.m_Opacity != m_Opacity
-                 || m_BackgroundValue != l.m_BackgroundValue;
+      || m_BackgroundValue != l.m_BackgroundValue;
 
     return value;
   }
 
-  ~LabelOverlayFunctor() {}
+  ~LabelOverlayFunctor() {
+  }
 
-  void SetOpacity(double opacity)
+  void
+  SetOpacity(double opacity)
   {
     m_Opacity = opacity;
   }
 
-  void SetBackgroundValue(TLabel v)
+  void
+  SetBackgroundValue(TLabel v)
   {
     m_BackgroundValue = v;
     m_RGBFunctor.SetBackgroundValue(v);
   }
 
-  void ResetColors()
+  void
+  ResetColors()
   {
     m_RGBFunctor.ResetColors();
   }
 
-  unsigned int GetNumberOfColors() const
+  unsigned int
+  GetNumberOfColors() const
   {
     return m_RGBFunctor.GetNumberOfColors();
   }
@@ -119,7 +127,8 @@ public:
   /** type of the color component */
   typedef typename TRGBPixel::ComponentType ComponentType;
 
-  void AddColor(ComponentType r, ComponentType g, ComponentType b)
+  void
+  AddColor(ComponentType r, ComponentType g, ComponentType b)
   {
     m_RGBFunctor.AddColor(r, g, b);
   }

@@ -85,13 +85,13 @@ NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType >
                        ThreadIdType threadId)
 {
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< InputImageType >
-  BFC;
+    BFC;
 
   typedef typename BFC::FaceListType FaceListType;
 
   NeighborhoodInnerProduct< InputImageType, OperatorValueType, ComputingPixelType > smartInnerProduct;
-  BFC                                                           faceCalculator;
-  FaceListType                                                  faceList;
+  BFC                                                                               faceCalculator;
+  FaceListType                                                                      faceList;
 
   // Allocate output
   OutputImageType *output = this->GetOutput();
@@ -132,6 +132,7 @@ NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

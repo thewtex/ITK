@@ -52,20 +52,20 @@ class RegionConstrainedSubsampler : public SubsamplerBase<TSample>
 {
 public:
   /** Standard class typedefs */
-  typedef RegionConstrainedSubsampler<TSample, TRegion>  Self;
-  typedef SubsamplerBase<TSample>                        Superclass;
-  typedef typename Superclass::Baseclass                 Baseclass;
-  typedef SmartPointer<Self>                             Pointer;
-  typedef SmartPointer<const Self>                       ConstPointer;
+  typedef RegionConstrainedSubsampler<TSample, TRegion> Self;
+  typedef SubsamplerBase<TSample>                       Superclass;
+  typedef typename Superclass::Baseclass                Baseclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(RegionConstrainedSubsampler, SubsamplerBase);
 
   /** typedef alias for the source data container */
-  typedef TSample                                          SampleType;
-  typedef typename SampleType::ConstPointer                SampleConstPointer;
-  typedef typename TSample::MeasurementVectorType          MeasurementVectorType;
-  typedef typename TSample::InstanceIdentifier             InstanceIdentifier;
+  typedef TSample                                 SampleType;
+  typedef typename SampleType::ConstPointer       SampleConstPointer;
+  typedef typename TSample::MeasurementVectorType MeasurementVectorType;
+  typedef typename TSample::InstanceIdentifier    InstanceIdentifier;
 
   typedef Subsample<TSample>                               SubsampleType;
   typedef typename SubsampleType::Pointer                  SubsamplePointer;
@@ -73,10 +73,10 @@ public:
   typedef typename SubsampleType::InstanceIdentifierHolder InstanceIdentifierHolder;
 
   /** typedefs related to image region */
-  typedef TRegion                              RegionType;
-  typedef typename RegionType::IndexType       IndexType;
-  typedef typename IndexType::IndexValueType   IndexValueType;
-  typedef typename RegionType::SizeType        SizeType;
+  typedef TRegion                            RegionType;
+  typedef typename RegionType::IndexType     IndexType;
+  typedef typename IndexType::IndexValueType IndexValueType;
+  typedef typename RegionType::SizeType      SizeType;
 
   /** Method to set the sample domain.
    * This should correspond to the entire region of the input sample. */
@@ -85,7 +85,8 @@ public:
   /** Method to get the sample domain. */
   itkGetConstReferenceMacro( SampleRegion, RegionType );
 
-  /** Method to get the flag indicating that the sample region has been initialized */
+  /** Method to get the flag indicating that the sample region has been
+    initialized */
   itkGetConstReferenceMacro(SampleRegionInitialized, bool);
 
   /** Method to set the region constraint.
@@ -95,7 +96,8 @@ public:
   /** Method to get the region constraint. */
   itkGetConstReferenceMacro( RegionConstraint, RegionType );
 
-  /** Method to get the flag indicating that the region constraint has been initialized */
+  /** Method to get the flag indicating that the region constraint has been
+    initialized */
   itkGetConstReferenceMacro(RegionConstraintInitialized, bool);
 
   /** Main Search method that MUST be implemented by each subclass
@@ -115,7 +117,9 @@ protected:
   virtual typename LightObject::Pointer InternalClone() const;
 
   RegionConstrainedSubsampler();
-  virtual ~RegionConstrainedSubsampler() {};
+  virtual
+  ~RegionConstrainedSubsampler() {
+  }
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
@@ -126,9 +130,9 @@ protected:
 
 private:
   RegionConstrainedSubsampler(const Self&); // purposely not implemented
-  void operator=(const Self&); // purposely not implemented
+  void operator=(const Self&);              // purposely not implemented
 
-}; // end of class RegionConstrainedSubsampler
+};  // end of class RegionConstrainedSubsampler
 
 } // end of namespace Statistics
 } // end of namespace itk

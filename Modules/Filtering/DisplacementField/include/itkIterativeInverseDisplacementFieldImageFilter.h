@@ -18,7 +18,6 @@
 #ifndef __itkIterativeInverseDisplacementFieldImageFilter_h
 #define __itkIterativeInverseDisplacementFieldImageFilter_h
 
-
 #include "itkWarpVectorImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkTimeProbe.h"
@@ -49,7 +48,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class IterativeInverseDisplacementFieldImageFilter:
+class IterativeInverseDisplacementFieldImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -113,7 +112,8 @@ public:
 
 protected:
   IterativeInverseDisplacementFieldImageFilter();
-  ~IterativeInverseDisplacementFieldImageFilter() {}
+  ~IterativeInverseDisplacementFieldImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -125,8 +125,12 @@ protected:
   double m_Time;
 
 private:
-  IterativeInverseDisplacementFieldImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                              //purposely not implemented
+  IterativeInverseDisplacementFieldImageFilter(const Self &); //purposely not
+                                                              // implemented
+  void operator=(const Self &);                               //purposely not
+
+  // implemented
+
 };
 } // end namespace itk
 

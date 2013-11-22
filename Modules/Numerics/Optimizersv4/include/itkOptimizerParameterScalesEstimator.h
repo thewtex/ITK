@@ -39,20 +39,20 @@ class OptimizerParameterScalesEstimatorTemplate : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef OptimizerParameterScalesEstimatorTemplate     Self;
-  typedef Object                                        Superclass;
-  typedef SmartPointer<Self>                            Pointer;
-  typedef SmartPointer<const Self>                      ConstPointer;
+  typedef OptimizerParameterScalesEstimatorTemplate Self;
+  typedef Object                                    Superclass;
+  typedef SmartPointer<Self>                        Pointer;
+  typedef SmartPointer<const Self>                  ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( OptimizerParameterScalesEstimatorTemplate, Object );
 
   /** Type of scales */
-  typedef typename ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>::ScalesType        ScalesType;
+  typedef typename ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>::ScalesType ScalesType;
   /** Type of parameters of the optimizer */
-  typedef typename ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>::ParametersType    ParametersType;
+  typedef typename ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>::ParametersType ParametersType;
   /** Type of float */
-  typedef TInternalComputationValueType                                                                  FloatType;
+  typedef TInternalComputationValueType FloatType;
 
   /** Estimate parameter scales. */
   virtual void EstimateScales(ScalesType &scales) = 0;
@@ -62,23 +62,30 @@ public:
 
   /** Estimate the scales of local steps. */
   virtual void EstimateLocalStepScales(const ParametersType &step,
-    ScalesType &localStepScales) = 0;
+                                       ScalesType &localStepScales) = 0;
 
   /** Estimate the maximum size for steps. */
   virtual FloatType EstimateMaximumStepSize() = 0;
 
 protected:
-  OptimizerParameterScalesEstimatorTemplate(){};
-  ~OptimizerParameterScalesEstimatorTemplate(){};
+  OptimizerParameterScalesEstimatorTemplate(){
+  }
 
-  void PrintSelf(std::ostream &os, Indent indent) const
-    {
+  ~OptimizerParameterScalesEstimatorTemplate(){
+  }
+
+  void
+  PrintSelf(std::ostream &os, Indent indent) const
+  {
     Superclass::PrintSelf(os,indent);
-    }
+  }
 
 private:
-  OptimizerParameterScalesEstimatorTemplate(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  OptimizerParameterScalesEstimatorTemplate(const Self&); //purposely not
+                                                          // implemented
+  void operator=(const Self&);                            //purposely not
+
+  // implemented
 
 }; //class OptimizerParameterScalesEstimatorTemplate
 

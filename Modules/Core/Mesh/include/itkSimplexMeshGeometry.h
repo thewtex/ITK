@@ -18,7 +18,6 @@
 #ifndef __itkSimplexMeshGeometry_h
 #define __itkSimplexMeshGeometry_h
 
-
 #include "itkIntTypes.h"
 #include "itkPoint.h"
 #include "itkCovariantVector.h"
@@ -44,12 +43,12 @@ class SimplexMeshGeometry
 {
 public:
 
-  typedef itk::Point< double, 3 >               PointType;
-  typedef itk::Vector< double, 3 >              VectorType;
-  typedef itk::CovariantVector< double, 3 >     CovariantVectorType;
-  typedef itk::FixedArray< IdentifierType, 3 >  IndexArray;
-  typedef itk::FixedArray< PointType, 3 >       PointArray;
-  typedef std::set< IdentifierType >            NeighborSetType;
+  typedef itk::Point< double, 3 >              PointType;
+  typedef itk::Vector< double, 3 >             VectorType;
+  typedef itk::CovariantVector< double, 3 >    CovariantVectorType;
+  typedef itk::FixedArray< IdentifierType, 3 > IndexArray;
+  typedef itk::FixedArray< PointType, 3 >      PointArray;
+  typedef std::set< IdentifierType >           NeighborSetType;
 
   SimplexMeshGeometry();
 

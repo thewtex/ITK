@@ -20,11 +20,12 @@
 #include "itkGaussianImageSource.h"
 #include "itkTranslationTransform.h"
 
-
-int itkGradientDifferenceImageToImageMetricTest(int , char*[] )
+int
+itkGradientDifferenceImageToImageMetricTest(int , char*[] )
 {
   // Create two simple images.
   const unsigned int ImageDimension = 2;
+
   typedef double PixelType;
   typedef double CoordinateRepresentationType;
 
@@ -39,18 +40,18 @@ int itkGradientDifferenceImageToImageMetricTest(int , char*[] )
   typedef FixedImageSourceType::Pointer             FixedImageSourcePointer;
 
   // Note: the following declarations are classical arrays
-  FixedImageType::SizeValueType fixedImageSize[] = {100,  100};
+  FixedImageType::SizeValueType  fixedImageSize[] = {100,  100};
   MovingImageType::SizeValueType movingImageSize[] = {100,  100};
 
-  FixedImageType::SpacingValueType fixedImageSpacing[]  = {1.0f, 1.0f};
+  FixedImageType::SpacingValueType  fixedImageSpacing[]  = {1.0f, 1.0f};
   MovingImageType::SpacingValueType movingImageSpacing[] = {1.0f, 1.0f};
 
-  FixedImageType::PointValueType fixedImageOrigin[] = {0.0f, 0.0f};
+  FixedImageType::PointValueType  fixedImageOrigin[] = {0.0f, 0.0f};
   MovingImageType::PointValueType movingImageOrigin[] = {0.0f, 0.0f};
 
   MovingImageSourceType::Pointer movingImageSource =
     MovingImageSourceType::New();
-  FixedImageSourceType::Pointer  fixedImageSource  =
+  FixedImageSourceType::Pointer fixedImageSource  =
     FixedImageSourceType::New();
 
   movingImageSource->SetSize(movingImageSize);
@@ -73,8 +74,8 @@ int itkGradientDifferenceImageToImageMetricTest(int , char*[] )
 
   // Set up the metric.
   typedef itk::GradientDifferenceImageToImageMetric<
-                                            FixedImageType,
-                                            MovingImageType> MetricType;
+      FixedImageType,
+      MovingImageType> MetricType;
 
   typedef MetricType::TransformType         TransformBaseType;
   typedef MetricType::DerivativeType        DerivativeType;
@@ -88,21 +89,21 @@ int itkGradientDifferenceImageToImageMetricTest(int , char*[] )
 
   // Set up a transform.
   typedef itk::TranslationTransform<CoordinateRepresentationType,
-    ImageDimension> TransformType;
+                                    ImageDimension> TransformType;
 
   TransformType::Pointer transform = TransformType::New();
-  metric->SetTransform(transform.GetPointer());
+  metric->SetTransform(transform.GetPointer() );
 
   // Set up an interpolator.
   typedef itk::LinearInterpolateImageFunction<MovingImageType,
-    double> InterpolatorType;
+                                              double> InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-  interpolator->SetInputImage(movingImage.GetPointer());
-  metric->SetInterpolator(interpolator.GetPointer());
+  interpolator->SetInputImage(movingImage.GetPointer() );
+  metric->SetInterpolator(interpolator.GetPointer() );
 
   // Define the region over which the metric will be computed.
-  metric->SetFixedImageRegion(fixedImage->GetBufferedRegion());
+  metric->SetFixedImageRegion(fixedImage->GetBufferedRegion() );
 
   // Set up transform parameters.
   const unsigned int numberOfParameters = transform->GetNumberOfParameters();
@@ -113,14 +114,13 @@ int itkGradientDifferenceImageToImageMetricTest(int , char*[] )
     parameters[k] = 0.0;
     }
 
-
   try
     {
     // Initialize the metric.
     metric->Initialize();
 
     // Do some work
-    DerivativeType derivatives( numberOfParameters );
+    DerivativeType          derivatives( numberOfParameters );
     MetricType::MeasureType value;
     for (double y = -10.0; y <= 10.0; y += 5.0)
       {

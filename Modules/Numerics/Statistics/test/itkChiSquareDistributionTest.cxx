@@ -19,7 +19,8 @@
 #include "itkChiSquareDistribution.h"
 #include "itkTestingMacros.h"
 
-int itkChiSquareDistributionTest(int, char* [] )
+int
+itkChiSquareDistributionTest(int, char* [] )
 {
   std::cout << "itkChiSquareDistribution Test \n \n";
 
@@ -34,7 +35,7 @@ int itkChiSquareDistributionTest(int, char* [] )
 
   distributionFunction->Print( std::cout );
 
-  int i;
+  int    i;
   double x;
   double value;
   double diff;
@@ -52,7 +53,6 @@ int itkChiSquareDistributionTest(int, char* [] )
                         9.167354833364458e-001,
                         9.544997361036416e-001,
                         9.746526813225318e-001};
-
 
   std::cout << "Testing distribution with 1 degree of freedom" << std::endl;
 
@@ -108,7 +108,7 @@ int itkChiSquareDistributionTest(int, char* [] )
 
     value = distributionFunction->EvaluateInverseCDF( expected1[i] );
 
-    diff = vcl_fabs(value - double(i));
+    diff = vcl_fabs(value - double(i) );
 
     std::cout << "Chi-Square cdf at ";
     std::cout.width(20);
@@ -135,7 +135,6 @@ int itkChiSquareDistributionTest(int, char* [] )
       }
     }
   std::cout << std::endl;
-
 
   // expected values for Chi-Square cdf with 11 degrees of freedom at
   // values of 0:2:20
@@ -207,7 +206,7 @@ int itkChiSquareDistributionTest(int, char* [] )
 
     value = distributionFunction->EvaluateInverseCDF( expected11[i] );
 
-    diff = vcl_fabs(value - double(2*i));
+    diff = vcl_fabs(value - double(2*i) );
 
     std::cout << "Chi-Square cdf at ";
     std::cout.width(20);
@@ -233,7 +232,6 @@ int itkChiSquareDistributionTest(int, char* [] )
       status = EXIT_FAILURE;
       }
     }
-
 
   // expected values for Chi-Square cdf with 100 degrees of freedom at
   // values of 50:20:150
@@ -300,7 +298,7 @@ int itkChiSquareDistributionTest(int, char* [] )
 
     value = distributionFunction->EvaluateInverseCDF( expected100[i] );
 
-    diff = vcl_fabs(value - double(50+20*i));
+    diff = vcl_fabs(value - double(50+20*i) );
 
     std::cout << "Chi-Square cdf at ";
     std::cout.width(20);
@@ -326,7 +324,6 @@ int itkChiSquareDistributionTest(int, char* [] )
       status = EXIT_FAILURE;
       }
     }
-
 
   std::cout << "-----------------------------------------------"
             << std::endl << std::endl;
@@ -388,7 +385,7 @@ int itkChiSquareDistributionTest(int, char* [] )
 
     value = distributionFunction->EvaluateInverseCDF( expected100[i], params );
 
-    diff = vcl_fabs(value - double(50+20*i));
+    diff = vcl_fabs(value - double(50+20*i) );
 
     std::cout << "Chi-Square cdf at ";
     std::cout.width(20);
@@ -470,9 +467,9 @@ int itkChiSquareDistributionTest(int, char* [] )
     {
 
     value = distributionFunction->EvaluateInverseCDF(
-      expected100[i], (long)params[0] );
+        expected100[i], (long)params[0] );
 
-    diff = vcl_fabs(value - double(50+20*i));
+    diff = vcl_fabs(value - double(50+20*i) );
 
     std::cout << "Chi-Square cdf at ";
     std::cout.width(20);
@@ -499,7 +496,6 @@ int itkChiSquareDistributionTest(int, char* [] )
       }
     }
 
-
   DistributionType::ParametersType parameters( distributionFunction->GetNumberOfParameters() );
   parameters[0] = 1.0;
 
@@ -520,8 +516,7 @@ int itkChiSquareDistributionTest(int, char* [] )
   std::cout << "GetMean() = " <<  distributionFunction->GetMean() << std::endl;
   std::cout << "GetVariance() = " <<  distributionFunction->GetVariance() << std::endl;
 
-
-  const unsigned int wrongNumberOfParameters =  distributionFunction->GetNumberOfParameters() * 42;
+  const unsigned int               wrongNumberOfParameters =  distributionFunction->GetNumberOfParameters() * 42;
   DistributionType::ParametersType wrongParameters( wrongNumberOfParameters );
   wrongParameters.Fill(1.0);
 

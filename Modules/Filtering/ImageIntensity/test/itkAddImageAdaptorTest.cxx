@@ -20,26 +20,27 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkSubtractImageFilter.h"
 
-int itkAddImageAdaptorTest(int, char* [] )
+int
+itkAddImageAdaptorTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int Dimension = 3;
 
   // Declare the pixel type
-  typedef int  PixelType;
+  typedef int PixelType;
 
   // Declare the types of the image
-  typedef itk::Image<PixelType, Dimension>    ImageType;
+  typedef itk::Image<PixelType, Dimension> ImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<Dimension>         IndexType;
+  typedef itk::Index<Dimension> IndexType;
 
   // Declare the type of the size
-  typedef itk::Size<Dimension>          SizeType;
+  typedef itk::Size<Dimension> SizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<Dimension>   RegionType;
+  typedef itk::ImageRegion<Dimension> RegionType;
 
   // Create input image
   ImageType::Pointer inputImage  = ImageType::New();
@@ -66,7 +67,7 @@ int itkAddImageAdaptorTest(int, char* [] )
   inputImage->Allocate();
 
   // Declare Iterator type apropriated for this image
-  typedef itk::ImageRegionIteratorWithIndex<ImageType>  IteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<ImageType> IteratorType;
 
   // Create one iterator for Image A.
   IteratorType it1( inputImage, inputImage->GetBufferedRegion() );
@@ -75,18 +76,18 @@ int itkAddImageAdaptorTest(int, char* [] )
   std::cout << "First operand " << std::endl;
   PixelType value = 13;
   while( !it1.IsAtEnd() )
-  {
+    {
     it1.Set( value );
     value += 1;
     std::cout << it1.Get() << std::endl;
     ++it1;
-  }
+    }
 
   //---------------------------------------
   // This section tests for AddImageAdaptor
   //---------------------------------------
 
-  typedef itk::AddImageAdaptor< ImageType >  AdaptorType;
+  typedef itk::AddImageAdaptor< ImageType > AdaptorType;
 
   AdaptorType::Pointer addAdaptor = AdaptorType::New();
 
@@ -96,9 +97,9 @@ int itkAddImageAdaptorTest(int, char* [] )
   addAdaptor->SetValue( additiveConstant );
 
   typedef itk::SubtractImageFilter<
-                        AdaptorType,
-                        ImageType,
-                        ImageType   > DiffFilterType;
+      AdaptorType,
+      ImageType,
+      ImageType   > DiffFilterType;
 
   DiffFilterType::Pointer diffFilter = DiffFilterType::New();
 
@@ -115,9 +116,9 @@ int itkAddImageAdaptorTest(int, char* [] )
   std::cout << "Verification of the output " << std::endl;
 
   // Create an iterator for going through the image output
-  IteratorType dt(diffImage, diffImage->GetBufferedRegion());
+  IteratorType dt(diffImage, diffImage->GetBufferedRegion() );
 
-  typedef itk::NumericTraits< PixelType >::RealType  RealPixelType;
+  typedef itk::NumericTraits< PixelType >::RealType RealPixelType;
 
   dt.GoToBegin();
 
@@ -148,7 +149,7 @@ int itkAddImageAdaptorTest(int, char* [] )
   index[1] = 1;
   index[2] = 1;
 
-  PixelType  p1 = addAdaptor->GetPixel( index );
+  PixelType p1 = addAdaptor->GetPixel( index );
 
   std::cout << " Pixel " << index << " had value = " << p1 << std::endl;
 
@@ -157,7 +158,7 @@ int itkAddImageAdaptorTest(int, char* [] )
   std::cout << " We set Pixel " << index << " to value = " << newValue << std::endl;
   addAdaptor->SetPixel( index, newValue );
 
-  PixelType  p2 = addAdaptor->GetPixel( index );
+  PixelType p2 = addAdaptor->GetPixel( index );
   std::cout << " Now Pixel " << index << " has value = " << p2 << std::endl;
 
   if( p2 != newValue )

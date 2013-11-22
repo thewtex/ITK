@@ -172,7 +172,8 @@ GPUNeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueTyp
   typename GPUInputImage::Pointer  inPtr =  dynamic_cast< GPUInputImage * >( this->ProcessObject::GetInput(0) );
   typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->ProcessObject::GetOutput(0) );
 
-  //typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
+  //typename GPUOutputImage::SizeType outSize =
+  // otPtr->GetLargestPossibleRegion().GetSize();
   typename GPUOutputImage::SizeType outSize = otPtr->GetBufferedRegion().GetSize();
 
   int radius[3];
@@ -194,9 +195,17 @@ GPUNeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueTyp
   for(int i=0; i<ImageDim; i++)
     {
     globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             //
+                                                                                             //
                                                                                              // total
+                                                                                             //
+                                                                                             //
                                                                                              // #
+                                                                                             //
+                                                                                             //
                                                                                              // of
+                                                                                             //
+                                                                                             //
                                                                                              // threads
     }
 
@@ -215,7 +224,8 @@ GPUNeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueTyp
 
   //for(int i=0; i<(int)TInputImage::ImageDimension; i++)
   //  {
-  //  this->m_GPUKernelManager->SetKernelArg(kHd, argidx++, sizeof(int), &(imgSize[i]) );
+  //  this->m_GPUKernelManager->SetKernelArg(kHd, argidx++, sizeof(int),
+  // &(imgSize[i]) );
   //  }
 
   // launch kernel

@@ -82,7 +82,7 @@ OtsuThresholdImageCalculator< TInputImage >
     }
 
   double binMultiplier = (double)m_NumberOfHistogramBins
-                         / (double)( imageMax - imageMin );
+    / (double)( imageMax - imageMin );
 
   typedef ImageRegionConstIteratorWithIndex< TInputImage > Iterator;
   Iterator iter(m_Image, m_Region);
@@ -124,7 +124,7 @@ OtsuThresholdImageCalculator< TInputImage >
   double meanRight = ( totalMean - freqLeft ) / ( 1.0 - freqLeft );
 
   double maxVarBetween = freqLeft * ( 1.0 - freqLeft )
-                         * vnl_math_sqr(meanLeft - meanRight);
+    * vnl_math_sqr(meanLeft - meanRight);
   int maxBinNumber = 0;
 
   double freqLeftOld = freqLeft;
@@ -142,10 +142,10 @@ OtsuThresholdImageCalculator< TInputImage >
     else
       {
       meanRight = ( totalMean - meanLeft * freqLeft )
-                  / ( 1.0 - freqLeft );
+        / ( 1.0 - freqLeft );
       }
     double varBetween = freqLeft * ( 1.0 - freqLeft )
-                        * vnl_math_sqr(meanLeft - meanRight);
+      * vnl_math_sqr(meanLeft - meanRight);
 
     if ( varBetween > maxVarBetween )
       {
@@ -182,6 +182,7 @@ OtsuThresholdImageCalculator< TInputImage >
   os << indent << "NumberOfHistogramBins: " << m_NumberOfHistogramBins << std::endl;
   os << indent << "Image: " << m_Image.GetPointer() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

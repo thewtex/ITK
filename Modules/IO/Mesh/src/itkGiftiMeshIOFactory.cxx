@@ -25,21 +25,23 @@ namespace itk
 void
 GiftiMeshIOFactory
 ::PrintSelf(std::ostream &, Indent) const
-{}
+{
+}
 
 GiftiMeshIOFactory
 ::GiftiMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkGiftiMeshIO",
-                         "Gifti Mesh IO",
-                         1,
-                         CreateObjectFunction< GiftiMeshIO >::New() );
+                          "itkGiftiMeshIO",
+                          "Gifti Mesh IO",
+                          1,
+                          CreateObjectFunction< GiftiMeshIO >::New() );
 }
 
 GiftiMeshIOFactory
 ::~GiftiMeshIOFactory()
-{}
+{
+}
 
 const char *
 GiftiMeshIOFactory
@@ -54,4 +56,5 @@ GiftiMeshIOFactory
 {
   return "Gifti MeshIO Factory, allows the loading of Gifti meshs into insight";
 }
+
 } // end namespace itk

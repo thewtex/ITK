@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TImage >
-class VectorAnisotropicDiffusionFunction:
+class VectorAnisotropicDiffusionFunction :
   public AnisotropicDiffusionFunction< TImage >
 {
 public:
@@ -80,14 +80,22 @@ public:
   virtual void CalculateAverageGradientMagnitudeSquared(TImage *);
 
 protected:
-  VectorAnisotropicDiffusionFunction() {}
-  ~VectorAnisotropicDiffusionFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  VectorAnisotropicDiffusionFunction() {
+  }
+
+  ~VectorAnisotropicDiffusionFunction() {
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   VectorAnisotropicDiffusionFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -33,7 +33,8 @@
  *
  */
 
-int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
+int
+itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
 {
 
 //------------------------------------------------------------
@@ -41,15 +42,15 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
 //------------------------------------------------------------
 
   //Allocate Images
-  typedef itk::Image<unsigned char,2>           MovingImageType;
-  typedef itk::Image<unsigned char,2>           FixedImageType;
-  typedef itk::Image<unsigned char,2>           TrainingMovingImageType;
-  typedef itk::Image<unsigned char,2>           TrainingFixedImageType;
+  typedef itk::Image<unsigned char,2> MovingImageType;
+  typedef itk::Image<unsigned char,2> FixedImageType;
+  typedef itk::Image<unsigned char,2> TrainingMovingImageType;
+  typedef itk::Image<unsigned char,2> TrainingFixedImageType;
 
   enum { ImageDimension = MovingImageType::ImageDimension };
 
-  MovingImageType::SizeType size = {{100,100}};
-  MovingImageType::IndexType index = {{0,0}};
+  MovingImageType::SizeType   size = {{100,100}};
+  MovingImageType::IndexType  index = {{0,0}};
   MovingImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
@@ -104,13 +105,13 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
   displacement[0] = 5;
   displacement[1] = 0;
 
-  ReferenceIteratorType ri(imgMoving,region);
-  TargetIteratorType ti(imgFixed,region);
+  ReferenceIteratorType         ri(imgMoving,region);
+  TargetIteratorType            ti(imgFixed,region);
   TrainingReferenceIteratorType gri(imgTrainingMoving,region);
-  TrainingTargetIteratorType gti(imgTrainingFixed,region);
+  TrainingTargetIteratorType    gti(imgTrainingFixed,region);
 
   ri.GoToBegin();
-  while(!ri.IsAtEnd())
+  while(!ri.IsAtEnd() )
     {
     p[0] = ri.GetIndex()[0];
     p[1] = ri.GetIndex()[1];
@@ -118,26 +119,26 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
     d += displacement;
     const double x = d[0];
     const double y = d[1];
-    ri.Set( (unsigned char) ( mag * vcl_exp( - ( x*x + y*y )/(s*s) ) ) );
+    ri.Set( (unsigned char) ( mag * vcl_exp( -( x*x + y*y )/(s*s) ) ) );
     ++ri;
     }
 
   ti.GoToBegin();
-  while(!ti.IsAtEnd())
+  while(!ti.IsAtEnd() )
     {
     p[0] = ti.GetIndex()[0];
     p[1] = ti.GetIndex()[1];
     d = p-center;
     const double x = d[0];
     const double y = d[1];
-    ti.Set( (unsigned char) ( mag * vcl_exp( - ( x*x + y*y )/(s*s) ) ) );
+    ti.Set( (unsigned char) ( mag * vcl_exp( -( x*x + y*y )/(s*s) ) ) );
     ++ti;
     }
 
   vnl_sample_reseed(2334237);
 
   gri.GoToBegin();
-  while(!gri.IsAtEnd())
+  while(!gri.IsAtEnd() )
     {
     p[0] = gri.GetIndex()[0];
     p[1] = gri.GetIndex()[1];
@@ -145,21 +146,21 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
     //    d += displacement;
     const double x = d[0];
     const double y = d[1];
-    gri.Set( (unsigned char) (( mag * vcl_exp( - ( x*x + y*y )/(s*s) ) )  +
-      vnl_sample_normal(0.0, noisemag)));
+    gri.Set( (unsigned char) ( ( mag * vcl_exp( -( x*x + y*y )/(s*s) ) )  +
+                               vnl_sample_normal(0.0, noisemag) ) );
     ++gri;
     }
 
   gti.GoToBegin();
-  while(!gti.IsAtEnd())
+  while(!gti.IsAtEnd() )
     {
     p[0] = gti.GetIndex()[0];
     p[1] = gti.GetIndex()[1];
     d = p-center;
     const double x = d[0];
     const double y = d[1];
-    gti.Set( (unsigned char) (( mag * vcl_exp( - ( x*x + y*y )/(s*s) ) )  +
-      vnl_sample_normal(0.0, noisemag)));
+    gti.Set( (unsigned char) ( ( mag * vcl_exp( -( x*x + y*y )/(s*s) ) )  +
+                               vnl_sample_normal(0.0, noisemag) ) );
     ++gti;
     }
 
@@ -187,7 +188,7 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
 // Set up the metric
 //------------------------------------------------------------
   typedef itk::KullbackLeiblerCompareHistogramImageToImageMetric<
-    FixedImageType, MovingImageType > MetricType;
+      FixedImageType, MovingImageType > MetricType;
 
   MetricType::Pointer metric = MetricType::New();
 
@@ -208,7 +209,7 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
   // set the number of samples to use
   // metric->SetNumberOfSpatialSamples( 100 );
 
-  unsigned int nBins = 64;
+  unsigned int                        nBins = 64;
   MetricType::HistogramType::SizeType histSize;
   histSize.SetSize(2);
   histSize[0] = nBins;
@@ -217,9 +218,9 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
 
   // Set scales for derivative calculation.
   typedef MetricType::ScalesType ScalesType;
-  ScalesType scales(transformer->GetNumberOfParameters());
+  ScalesType scales(transformer->GetNumberOfParameters() );
 
-  for (unsigned int k = 0; k < transformer ->GetNumberOfParameters(); k++)
+  for (unsigned int k = 0; k < transformer->GetNumberOfParameters(); k++)
     scales[k] = 1;
 
   metric->SetDerivativeStepLengthScales(scales);
@@ -243,13 +244,13 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
 //------------------------------------------------------------
 // Set up a affine transform parameters
 //------------------------------------------------------------
-  unsigned int numberOfParameters = transformer->GetNumberOfParameters();
+  unsigned int   numberOfParameters = transformer->GetNumberOfParameters();
   ParametersType parameters( numberOfParameters );
 
   // set the parameters to the identity
   unsigned long count = 0;
 
-     // initialize the linear/matrix part
+  // initialize the linear/matrix part
   for( unsigned int row = 0; row < ImageDimension; row++ )
     {
     for( unsigned int col = 0; col < ImageDimension; col++ )
@@ -263,7 +264,7 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
       }
     }
 
-     // initialize the offset/vector part
+  // initialize the offset/vector part
   for( unsigned int k = 0; k < ImageDimension; k++ )
     {
     parameters[count] = 0;
@@ -275,10 +276,10 @@ int itkKullbackLeiblerCompareHistogramImageToImageMetricTest(int, char* [] )
 // for parameters[4] = {-10,10}
 //---------------------------------------------------------
 
-  MetricType::MeasureType measure;
+  MetricType::MeasureType    measure;
   MetricType::DerivativeType derivative( numberOfParameters );
 
-  itk::TimeProbesCollectorBase   collector;
+  itk::TimeProbesCollectorBase collector;
   collector.Start("Loop");
 
   std::cout << "param[4]\tKullbackLeibler\tdKullbackLeibler/dparam[4]" << std::endl;

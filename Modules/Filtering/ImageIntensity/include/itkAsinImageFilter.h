@@ -34,26 +34,34 @@ template< typename TInput, typename TOutput >
 class Asin
 {
 public:
-  Asin() {}
-  ~Asin() {}
-  bool operator!=(const Asin &) const
+  Asin() {
+  }
+
+  ~Asin() {
+  }
+
+  bool
+  operator!=(const Asin &) const
   {
     return false;
   }
 
-  bool operator==(const Asin & other) const
+  bool
+  operator==(const Asin & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >(
-             vcl_asin(
-               static_cast< double >( A )
-               )
-             );
+      vcl_asin(
+        static_cast< double >( A )
+        )
+      );
   }
+
 };
 }
 /** \class AsinImageFilter
@@ -79,7 +87,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class AsinImageFilter:
+class AsinImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Asin<
@@ -115,12 +123,17 @@ public:
 #endif
 
 protected:
-  AsinImageFilter() {}
-  virtual ~AsinImageFilter() {}
+  AsinImageFilter() {
+  }
+
+  virtual
+  ~AsinImageFilter() {
+  }
 
 private:
   AsinImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

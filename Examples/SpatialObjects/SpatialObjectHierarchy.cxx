@@ -29,7 +29,8 @@
 #include "itkSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 
 // Software Guide : BeginLatex
@@ -42,10 +43,10 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   typedef itk::SpatialObject<3> SpatialObjectType;
 
-  SpatialObjectType::Pointer object1 = SpatialObjectType ::New();
+  SpatialObjectType::Pointer object1 = SpatialObjectType::New();
   object1->GetProperty()->SetName("First Object");
 
-  SpatialObjectType::Pointer object2 = SpatialObjectType ::New();
+  SpatialObjectType::Pointer object2 = SpatialObjectType::New();
   object2->GetProperty()->SetName("Second Object");
 // Software Guide : EndCodeSnippet
 // Software Guide : BeginLatex
@@ -70,7 +71,7 @@ int main( int , char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  if(object2->HasParent())
+  if(object2->HasParent() )
     {
     std::cout << "Name of the parent of the object2: ";
     std::cout << object2->GetParent()->GetProperty()->GetName() << std::endl;
@@ -89,8 +90,8 @@ int main( int , char *[] )
   std::cout << "object1 has " << childrenList->size() << " child" << std::endl;
 
   SpatialObjectType::ChildrenListType::const_iterator it
-                                                      = childrenList->begin();
-  while(it != childrenList->end())
+    = childrenList->begin();
+  while(it != childrenList->end() )
     {
     std::cout << "Name of the child of the object 1: ";
     std::cout << (*it)->GetProperty()->GetName() << std::endl;
@@ -99,7 +100,8 @@ int main( int , char *[] )
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
-// Do NOT forget to delete the list of children since the \code{GetChildren()} function
+// Do NOT forget to delete the list of children since the \code{GetChildren()}
+// function
 // creates an internal list.
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet

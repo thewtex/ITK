@@ -48,6 +48,7 @@ BinaryMinMaxCurvatureFlowImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Threshold: " << m_Threshold << std::endl;
 }
 
@@ -74,6 +75,7 @@ BinaryMinMaxCurvatureFlowImageFilter< TInputImage, TOutputImage >
 
   this->Superclass::InitializeIteration();
 }
+
 } // end namespace itk
 
 #endif

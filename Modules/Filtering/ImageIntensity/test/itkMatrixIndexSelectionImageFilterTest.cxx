@@ -20,7 +20,8 @@
 #include "itkMatrixIndexSelectionImageFilter.h"
 #include "itkImageFileWriter.h"
 
-int itkMatrixIndexSelectionImageFilterTest(int argc, char* argv[] )
+int
+itkMatrixIndexSelectionImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 1 )
     {
@@ -38,10 +39,10 @@ int itkMatrixIndexSelectionImageFilterTest(int argc, char* argv[] )
   typedef itk::Image<OutputPixelType, Dimension> OutputImageType;
 
   // create a matrix image
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer    image = ImageType::New();
   ImageType::RegionType region;
-  ImageType::SizeType size; size.Fill(100);
-  ImageType::IndexType index; index.Fill(0);
+  ImageType::SizeType   size; size.Fill(100);
+  ImageType::IndexType  index; index.Fill(0);
 
   region.SetSize(size);
   region.SetIndex(index);
@@ -60,53 +61,53 @@ int itkMatrixIndexSelectionImageFilterTest(int argc, char* argv[] )
   index[1] = 0;
   region.SetSize(size);
   region.SetIndex(index);
-  {
-  PixelType pixel;
-  pixel[0][0] = 128;  pixel[0][1] = 192;
-  pixel[1][0] =   0;  pixel[1][1] =  64;
-  std::cout << "pixel: " << pixel << std::endl;
-  itk::ImageRegionIterator<ImageType> it(image, region);
-  std::cout << region;
-  it.GoToBegin();
-  while (!it.IsAtEnd())
     {
-    it.Set(pixel);
-    ++it;
+    PixelType pixel;
+    pixel[0][0] = 128;  pixel[0][1] = 192;
+    pixel[1][0] =   0;  pixel[1][1] =  64;
+    std::cout << "pixel: " << pixel << std::endl;
+    itk::ImageRegionIterator<ImageType> it(image, region);
+    std::cout << region;
+    it.GoToBegin();
+    while (!it.IsAtEnd() )
+      {
+      it.Set(pixel);
+      ++it;
+      }
     }
-  }
 
   // populate lower half of image
   index[0] = 0;
   index[1] = height / 2;
   region.SetSize(size);
   region.SetIndex(index);
-  {
-  PixelType pixel;
-  pixel[0][0] =  64; pixel[0][1] =  16;
-  pixel[1][0] = 255; pixel[1][1] = 192;
-  std::cout << "pixel: " << pixel << std::endl;
-  std::cout << region;
-  itk::ImageRegionIterator<ImageType> it(image, region);
-  it.GoToBegin();
-  while (!it.IsAtEnd())    {
-    it.Set(pixel);
-    ++it;
+    {
+    PixelType pixel;
+    pixel[0][0] =  64; pixel[0][1] =  16;
+    pixel[1][0] = 255; pixel[1][1] = 192;
+    std::cout << "pixel: " << pixel << std::endl;
+    std::cout << region;
+    itk::ImageRegionIterator<ImageType> it(image, region);
+    it.GoToBegin();
+    while (!it.IsAtEnd() )    {
+      it.Set(pixel);
+      ++it;
+      }
     }
-  }
 
   typedef itk::MatrixIndexSelectionImageFilter<ImageType,OutputImageType> SelectionFilterType;
 
   SelectionFilterType::Pointer filter = SelectionFilterType::New();
   filter->SetInput(image);
   filter->SetIndices(0,1);
-  filter->SetFunctor(filter->GetFunctor());
+  filter->SetFunctor(filter->GetFunctor() );
 
   typedef itk::ImageFileWriter<OutputImageType> WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   try
     {
-    writer->SetInput(filter->GetOutput());
+    writer->SetInput(filter->GetOutput() );
     writer->SetFileName(argv[1]);
     writer->Update();
     }

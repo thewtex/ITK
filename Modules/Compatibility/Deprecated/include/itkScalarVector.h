@@ -81,30 +81,48 @@ public:
   typedef vnl_vector_fixed< TVector, TVectorDimension > VectorType;
 
   /** Get the scalar value. \sa SetScalar() */
-  TScalar GetScalar() const
-  { return m_Scalar; }
+  TScalar
+  GetScalar() const
+  {
+    return m_Scalar;
+  }
 
   /** Set the scalar value. \sa GetScalar() */
-  void SetScalar(const TScalar & val)
-  { m_Scalar = val; }
+  void
+  SetScalar(const TScalar & val)
+  {
+    m_Scalar = val;
+  }
 
   /** Get the dimension (size) of the vector. */
-  static unsigned int GetVectorDimension()
-  { return TVectorDimension; }
+  static unsigned int
+  GetVectorDimension()
+  {
+    return TVectorDimension;
+  }
 
   /** Get the vector. This provides a read only reference to the vector.
    * \sa SetVector(). */
-  const VectorType & GetVector() const
-  { return m_Vector; }
+  const VectorType &
+  GetVector() const
+  {
+    return m_Vector;
+  }
 
   /** Get the vector. This provides a read/write reference to the vector.
    * \sa SetVector */
-  VectorType & GetVector()
-  { return m_Vector; }
+  VectorType &
+  GetVector()
+  {
+    return m_Vector;
+  }
 
   /** Set the vector. \sa GetVector */
-  void SetVector(const VectorType & vec)
-  { m_Vector = vec; }
+  void
+  SetVector(const VectorType & vec)
+  {
+    m_Vector = vec;
+  }
 
 private:
   TScalar    m_Scalar;

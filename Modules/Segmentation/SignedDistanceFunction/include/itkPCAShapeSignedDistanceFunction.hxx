@@ -218,12 +218,13 @@ PCAShapeSignedDistanceFunction< TCoordRep, VSpaceDimension, TImage >
   for ( unsigned int i = 0; i < m_NumberOfPrincipalComponents; i++ )
     {
     output += m_Selectors[i + 1]->Evaluate(mappedPoint)
-              * m_PrincipalComponentStandardDeviations[i]
-              * m_WeightOfPrincipalComponents[i];
+      * m_PrincipalComponentStandardDeviations[i]
+      * m_WeightOfPrincipalComponents[i];
     }
 
   return output;
 }
+
 } // end namespace itk
 
 #endif

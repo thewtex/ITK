@@ -24,24 +24,24 @@
 
 namespace itk
 {
-  /** \class TransformFileWriterTemplate
-   *
-   * \brief TODO
-   * \ingroup ITKIOTransformBase
-   *
-   * \wiki
-   * \wikiexample{IO/TransformFileWriter,Write a transform to a file}
-   * \endwiki
-   */
+/** \class TransformFileWriterTemplate
+ *
+ * \brief TODO
+ * \ingroup ITKIOTransformBase
+ *
+ * \wiki
+ * \wikiexample{IO/TransformFileWriter,Write a transform to a file}
+ * \endwiki
+ */
 template<typename ScalarType>
-class TransformFileWriterTemplate:public LightProcessObject
+class TransformFileWriterTemplate : public LightProcessObject
 {
 public:
 
   /** SmartPointer typedef support */
-  typedef TransformFileWriterTemplate  Self;
-  typedef LightProcessObject           Superclass;
-  typedef SmartPointer< Self >         Pointer;
+  typedef TransformFileWriterTemplate Self;
+  typedef LightProcessObject          Superclass;
+  typedef SmartPointer< Self >        Pointer;
 
   typedef TransformBaseTemplate<ScalarType>                                    TransformType;
   typedef typename TransformIOBaseTemplate<ScalarType>::TransformPointer       TransformPointer;
@@ -83,14 +83,17 @@ public:
 protected:
 
   TransformFileWriterTemplate(const Self &); //purposely not implemented
-  void operator=(const Self &);      //purposely not implemented
+  void operator=(const Self &);              //purposely not implemented
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   TransformFileWriterTemplate();
-  virtual ~TransformFileWriterTemplate();
+  virtual
+  ~TransformFileWriterTemplate();
 
 private:
   void PushBackTransformList(const Object *transObj);
+
   void OpenStream(std::ofstream & out, bool binary);
 
   std::string            m_FileName;

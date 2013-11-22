@@ -27,17 +27,18 @@ template <typename TSample>
 class MixtureModelComponentBaseTestHelper : public MixtureModelComponentBase<TSample>
 {
 public:
-  typedef MixtureModelComponentBaseTestHelper   Self;
-  typedef MixtureModelComponentBase<TSample>    Superclass;
-  typedef SmartPointer<Self>                    Pointer;
-  typedef SmartPointer<const Self>              ConstPointer;
+  typedef MixtureModelComponentBaseTestHelper Self;
+  typedef MixtureModelComponentBase<TSample>  Superclass;
+  typedef SmartPointer<Self>                  Pointer;
+  typedef SmartPointer<const Self>            ConstPointer;
 
   itkTypeMacro(MixtureModelComponentBaseTestHelper, MixtureModelComponentBase );
 
   itkNewMacro(Self);
 
-  void RunTests()
-    {
+  void
+  RunTests()
+  {
     std::cout << "Superclass Name " << this->Superclass::GetNameOfClass() << std::endl;
     std::cout << "This class Name " << this->GetNameOfClass() << std::endl;
 
@@ -46,24 +47,27 @@ public:
 
     std::cout << "Full Parameters = " << this->Superclass::GetFullParameters() << std::endl;
     std::cout << "Minimal change  = " << this->Superclass::GetMinimalParametersChange() << std::endl;
-    }
+  }
 
 protected:
-  virtual void GenerateData()
-    {
+  virtual void
+  GenerateData()
+  {
     std::cout << "Executing GenerateData() " << std::endl;
-    }
+  }
+
 };
 
 }
 }
 
-int itkMixtureModelComponentBaseTest( int , char* [] )
+int
+itkMixtureModelComponentBaseTest( int , char* [] )
 {
-  typedef itk::Array< double > MeasurementVectorType;
+  typedef itk::Array< double >                                 MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
-  typedef itk::Statistics::MixtureModelComponentBaseTestHelper<SampleType>  ComponentType;
+  typedef itk::Statistics::MixtureModelComponentBaseTestHelper<SampleType> ComponentType;
 
   ComponentType::Pointer component = ComponentType::New();
   std::cout << "component->GetWeights(): " << component->GetWeights() << std::endl;

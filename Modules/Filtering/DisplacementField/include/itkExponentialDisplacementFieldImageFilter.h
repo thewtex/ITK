@@ -59,7 +59,7 @@ namespace itk
  * \ingroup ITKDisplacementField
  */
 template< typename TInputImage, typename TOutputImage >
-class ExponentialDisplacementFieldImageFilter:
+class ExponentialDisplacementFieldImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -132,7 +132,9 @@ public:
 
 protected:
   ExponentialDisplacementFieldImageFilter();
-  virtual ~ExponentialDisplacementFieldImageFilter() {}
+  virtual
+  ~ExponentialDisplacementFieldImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -144,22 +146,22 @@ protected:
   typedef typename InputImageType::RegionType RegionType;
 
   typedef DivideImageFilter<
-    InputImageType,
-    itk::Image<InputPixelRealValueType, ImageDimension>,
-    OutputImageType >                                   DivideByConstantType;
+      InputImageType,
+      itk::Image<InputPixelRealValueType, ImageDimension>,
+      OutputImageType >                                   DivideByConstantType;
 
   typedef CastImageFilter<
-    InputImageType, OutputImageType >                   CasterType;
+      InputImageType, OutputImageType >                   CasterType;
 
   typedef WarpVectorImageFilter<
-    OutputImageType,
-    OutputImageType, OutputImageType >                  VectorWarperType;
+      OutputImageType,
+      OutputImageType, OutputImageType >                  VectorWarperType;
 
   typedef VectorLinearInterpolateNearestNeighborExtrapolateImageFunction<
-    OutputImageType, double >                            FieldInterpolatorType;
+      OutputImageType, double >                            FieldInterpolatorType;
 
   typedef AddImageFilter<
-    OutputImageType, OutputImageType, OutputImageType > AdderType;
+      OutputImageType, OutputImageType, OutputImageType > AdderType;
 
   typedef typename DivideByConstantType::Pointer     DivideByConstantPointer;
   typedef typename CasterType::Pointer               CasterPointer;
@@ -170,9 +172,10 @@ protected:
 
 private:
   ExponentialDisplacementFieldImageFilter(const Self &); //purposely not
-                                                        // implemented
-  void operator=(const Self &);                         //purposely not
-                                                        // implemented
+                                                         // implemented
+  void operator=(const Self &);                          //purposely not
+
+  // implemented
 
   bool         m_AutomaticNumberOfIterations;
   unsigned int m_MaximumNumberOfIterations;

@@ -31,7 +31,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkListSample.h"
 #include "itkMembershipSample.h"
@@ -47,7 +46,8 @@
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   // The following code snippet will create a \code{ListSample} object
@@ -56,9 +56,9 @@ int main()
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Vector< float, 3 > MeasurementVectorType;
+  typedef itk::Vector< float, 3 >                              MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
-  SampleType::Pointer sample = SampleType::New();
+  SampleType::Pointer   sample = SampleType::New();
   MeasurementVectorType mv;
 
   mv[0] = 1.0;
@@ -115,7 +115,6 @@ int main()
   membershipSample->AddInstance(1U, 2UL );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   // The \code{Size()} and \code{GetTotalFrequency()} returns the same
   // values as the \code{sample} does.
@@ -150,7 +149,6 @@ int main()
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   // To see the numbers of instances in each class subsample, we use
   // the \code{GetClassSampleSize(class label)} method.
@@ -162,7 +160,6 @@ int main()
   std::cout << "class label = 1 sample size = "
             << membershipSample->GetClassSampleSize(0) << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   // We call the \code{GetClassSample(class label)} method to get the

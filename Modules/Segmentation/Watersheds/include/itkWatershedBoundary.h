@@ -18,7 +18,6 @@
 #ifndef __itkWatershedBoundary_h
 #define __itkWatershedBoundary_h
 
-
 #include <list>
 #include <vector>
 #include "itkImage.h"
@@ -51,7 +50,7 @@ namespace watershed
  * \ingroup ITKWatersheds
  */
 template< typename TScalar, unsigned int TDimension >
-class Boundary:public DataObject
+class Boundary : public DataObject
 {
 public:
   /** The dimensionality of this boundary.  For example, if the boundary
@@ -89,7 +88,7 @@ public:
 
     /** The label associated with this pixel.     */
     IdentifierType label;
-  };
+    };
 
   /**    */
   struct flat_region_t {
@@ -108,7 +107,7 @@ public:
 
     /** The value of this flat region     */
     ScalarType value;
-  };
+    };
 
   /** The face data structure.  This is just an Image of face pixel
       types. */
@@ -117,7 +116,7 @@ public:
   /** A hash table holding flat region data structures.   */
   typedef itksys::hash_map< IdentifierType, flat_region_t,
                             itksys::hash< IdentifierType > > flat_hash_t;
-  typedef typename flat_hash_t::value_type                   FlatHashValueType;
+  typedef typename flat_hash_t::value_type FlatHashValueType;
 
   /** Itk typedefs and macros defining smart pointer and type identification.
    */
@@ -132,22 +131,30 @@ public:
   typedef typename face_t::Pointer FacePointer;
 
   /** Returns the face at the specified index  */
-  FacePointer GetFace(const IndexType & idx)
-  {      return this->GetFace(idx.first, idx.second);    }
+  FacePointer
+  GetFace(const IndexType & idx)
+  {
+    return this->GetFace(idx.first, idx.second);
+  }
 
   /** Returns the face at the specified index, where dimension is
    * the number of the axial dimension and highlow is 0 for the LOW
    * face and 1 for the HIGH face.   */
-  FacePointer GetFace(unsigned dimension, unsigned highlow)
+  FacePointer
+  GetFace(unsigned dimension, unsigned highlow)
   {
     if ( highlow == 0 ) { return m_Faces[dimension].first; }
     else { return m_Faces[dimension].second; }
   }
 
-  void SetFace(FacePointer f, const IndexType & idx)
-  { this->SetFace(f, idx.first, idx.second); }
+  void
+  SetFace(FacePointer f, const IndexType & idx)
+  {
+    this->SetFace(f, idx.first, idx.second);
+  }
 
-  void SetFace(FacePointer f, unsigned dimension, unsigned highlow)
+  void
+  SetFace(FacePointer f, unsigned dimension, unsigned highlow)
   {
     if ( highlow == 0 ) { m_Faces[dimension].first = f; }
     else { m_Faces[dimension].second = f; }
@@ -155,18 +162,28 @@ public:
   }
 
   /** Get/Set the table of flat region connections specified by the index. */
-  flat_hash_t * GetFlatHash(const IndexType & idx)
-  { return this->GetFlatHash(idx.first, idx.second); }
-  flat_hash_t * GetFlatHash(unsigned dimension, unsigned highlow)
+  flat_hash_t *
+  GetFlatHash(const IndexType & idx)
+  {
+    return this->GetFlatHash(idx.first, idx.second);
+  }
+
+  flat_hash_t *
+  GetFlatHash(unsigned dimension, unsigned highlow)
   {
     if ( highlow == 0 ) { return &( m_FlatHashes[dimension].first ); }
     else { return &( m_FlatHashes[dimension].second ); }
   }
 
-  void SetFlatHash(flat_hash_t & l, const IndexType & idx)
-  { this->SetFlatHash(l, idx.first, idx.second); }
-  void SetFlatHash(flat_hash_t & l, unsigned dimension,
-                   unsigned highlow)
+  void
+  SetFlatHash(flat_hash_t & l, const IndexType & idx)
+  {
+    this->SetFlatHash(l, idx.first, idx.second);
+  }
+
+  void
+  SetFlatHash(flat_hash_t & l, unsigned dimension,
+              unsigned highlow)
   {
     if ( highlow == 0 ) { m_FlatHashes[dimension].first = l; }
     else { m_FlatHashes[dimension].second = l; }
@@ -177,19 +194,29 @@ public:
    * invalid (false).  A valid face is assumed to be initialized
    * and contain information.  No assumptions are made about an
    * invalid face.   */
-  void SetValid(bool & l, const IndexType & idx)
-  { this->SetValid(l, idx.first, idx.second); }
-  void SetValid(bool b, unsigned dimension,
-                unsigned highlow)
+  void
+  SetValid(bool & l, const IndexType & idx)
+  {
+    this->SetValid(l, idx.first, idx.second);
+  }
+
+  void
+  SetValid(bool b, unsigned dimension,
+           unsigned highlow)
   {
     if ( highlow == 0 ) { m_Valid[dimension].first = b; }
     else { m_Valid[dimension].second = b; }
     this->Modified();
   }
 
-  bool GetValid(const IndexType & idx) const
-  { return this->GetValid(idx.first, idx.second); }
-  bool GetValid(unsigned dimension, unsigned highlow) const
+  bool
+  GetValid(const IndexType & idx) const
+  {
+    return this->GetValid(idx.first, idx.second);
+  }
+
+  bool
+  GetValid(unsigned dimension, unsigned highlow) const
   {
     if ( highlow == 0 ) { return m_Valid[dimension].first; }
     else { return m_Valid[dimension].second; }
@@ -197,9 +224,17 @@ public:
 
 protected:
   Boundary();
-  virtual ~Boundary() {}
-  Boundary(const Self &) {}
-  void operator=(const Self &) {}
+  virtual
+  ~Boundary() {
+  }
+
+  Boundary(const Self &) {
+  }
+
+  void
+  operator=(const Self &) {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** The Nx2 matrix of faces of this boundary.   */

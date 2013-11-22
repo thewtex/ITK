@@ -38,7 +38,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutput >
-class NeighborhoodOperatorImageFunction:
+class NeighborhoodOperatorImageFunction :
   public ImageFunction< TInputImage, TOutput >
 {
 public:
@@ -80,7 +80,8 @@ public:
   /** Sets the operator that is used to filter the image. Note
    * that the operator is stored as an internal COPY (it
    * is not part of the pipeline). */
-  void SetOperator(const NeighborhoodType & p) const
+  void
+  SetOperator(const NeighborhoodType & p) const
   {
     m_Operator = p;
     this->Modified();
@@ -88,10 +89,12 @@ public:
 
   /** Evalutate the  in the given dimension at specified point
    *  Subclasses should override this method. */
-  virtual TOutput Evaluate(const PointType &) const
+  virtual TOutput
+  Evaluate(const PointType &) const
   {
     std::cout << "NeighborhoodOperatorImageFunction::Evaluate(): Not implemented!" << std::endl;
     TOutput out;
+
     out = 0;
     return out;
   }
@@ -101,22 +104,29 @@ public:
 
   /** Evaluate the function at specified ContinousIndex position.
    * Subclasses should override this method. */
-  virtual TOutput EvaluateAtContinuousIndex(
+  virtual TOutput
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType &) const
   {
     std::cout << "NeighborhoodOperatorImageFunction::EvaluateAtContinuousIndex():Not implemented!" << std::endl;
     TOutput out;
+
     out = 0;
     return out;
   }
 
 protected:
   NeighborhoodOperatorImageFunction();
-  NeighborhoodOperatorImageFunction(const Self &){}
+  NeighborhoodOperatorImageFunction(const Self &){
+  }
 
-  ~NeighborhoodOperatorImageFunction(){}
+  ~NeighborhoodOperatorImageFunction(){
+  }
 
-  void operator=(const Self &){}
+  void
+  operator=(const Self &){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

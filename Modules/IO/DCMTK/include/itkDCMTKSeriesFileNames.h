@@ -47,7 +47,7 @@ namespace itk
  *
  * \ingroup ITKIODCMTK
  */
-class DCMTKSeriesFileNames:public ProcessObject
+class DCMTKSeriesFileNames : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -73,7 +73,8 @@ public:
   void SetInputDirectory(std::string const & name);
 
   /** Set the directory that contains the DICOM series. */
-  void SetDirectory(std::string const & name)
+  void
+  SetDirectory(std::string const & name)
   {
     SetInputDirectory(name);
   }
@@ -84,7 +85,8 @@ public:
   const FilenamesContainer & GetInputFileNames();
 
   /** Set the directory where the output DICOM serie should be written. */
-  void SetOutputDirectory(std::string const & name)
+  void
+  SetOutputDirectory(std::string const & name)
   {
     m_OutputDirectory = name;
     this->Modified();
@@ -127,7 +129,8 @@ public:
    *   and SeriesName to identify when a single SeriesUID contains
    *   multiple 3D volumes - as can occur with perfusion and DTI imaging
    */
-  bool GetUseSeriesDetails(void)
+  bool
+  GetUseSeriesDetails(void)
   {
     return m_UseSeriesDetails;
   }
@@ -138,7 +141,8 @@ public:
    * series. Format for tag is "group|element" of a DICOM tag.
    * \warning User need to set SetUseSeriesDetails(true)
    */
-  void AddSeriesRestriction(const std::string & /* tag */)
+  void
+  AddSeriesRestriction(const std::string & /* tag */)
   {
     // m_SerieHelper->AddRestriction(tag);
   }
@@ -158,6 +162,7 @@ public:
   itkSetMacro(LoadPrivateTags, bool);
   itkGetConstMacro(LoadPrivateTags, bool);
   itkBooleanMacro(LoadPrivateTags);
+
 protected:
   DCMTKSeriesFileNames();
   ~DCMTKSeriesFileNames();
@@ -165,10 +170,11 @@ protected:
 
 private:
   DCMTKSeriesFileNames(const Self &); //purposely not implemented
-  void operator=(const Self &);      //purposely not implemented
+  void operator=(const Self &);       //purposely not implemented
 
   /** internal method for reading out filenames and UID lists */
   void GetDicomData(const std::string &series, bool saveFileNames);
+
   /** Contains the input directory where the DICOM serie is found */
   std::string m_InputDirectory;
 

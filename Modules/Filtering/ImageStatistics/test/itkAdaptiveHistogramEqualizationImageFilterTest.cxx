@@ -22,7 +22,8 @@
 #include "itkAdaptiveHistogramEqualizationImageFilter.h"
 #include "itkFilterWatcher.h"
 
-int itkAdaptiveHistogramEqualizationImageFilterTest( int argc, char * argv[] )
+int
+itkAdaptiveHistogramEqualizationImageFilterTest( int argc, char * argv[] )
 
 {
   if( argc < 6 )
@@ -32,16 +33,15 @@ int itkAdaptiveHistogramEqualizationImageFilterTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
   static const int ImageDimension=2;
 
-  typedef itk::Image< InputPixelType,  ImageDimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, ImageDimension >   OutputImageType;
-  typedef itk::ImageFileReader< InputImageType >          ReaderType;
+  typedef itk::Image< InputPixelType,  ImageDimension > InputImageType;
+  typedef itk::Image< OutputPixelType, ImageDimension > OutputImageType;
+  typedef itk::ImageFileReader< InputImageType >        ReaderType;
   typedef itk::AdaptiveHistogramEqualizationImageFilter<
-               InputImageType >                           FilterType;
+      InputImageType >                           FilterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
@@ -50,7 +50,7 @@ int itkAdaptiveHistogramEqualizationImageFilterTest( int argc, char * argv[] )
   radius.Fill( atoi(argv[3]) );
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter);
+  FilterWatcher       watcher(filter);
 
   filter->SetInput( reader->GetOutput() );
   filter->SetRadius( radius );
@@ -68,15 +68,14 @@ int itkAdaptiveHistogramEqualizationImageFilterTest( int argc, char * argv[] )
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-               InputImageType, WriteImageType > RescaleFilterType;
+      InputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
   rescaler->SetInput( filter->GetOutput() );
 
-
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );

@@ -26,7 +26,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkLabelMapToAttributeImageFilterTest1(int argc, char * argv[])
+int
+itkLabelMapToAttributeImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 3)
@@ -41,8 +42,8 @@ int itkLabelMapToAttributeImageFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::ShapeLabelObject< PixelType, dim >           ShapeLabelObjectType;
-  typedef itk::LabelMap< ShapeLabelObjectType >             LabelMapType;
+  typedef itk::ShapeLabelObject< PixelType, dim > ShapeLabelObjectType;
+  typedef itk::LabelMap< ShapeLabelObjectType >   LabelMapType;
 
   //Reading Image File
   typedef itk::ImageFileReader< ImageType > ReaderType;
@@ -55,7 +56,9 @@ int itkLabelMapToAttributeImageFilterTest1(int argc, char * argv[])
   i2l->SetInput( reader->GetOutput() );
 
   typedef itk::LabelMapToAttributeImageFilter< LabelMapType, ImageType,
-     itk::Functor::NumberOfPixelsLabelObjectAccessor<LabelMapType::LabelObjectType> > L2ImageType;
+                                               itk::Functor::NumberOfPixelsLabelObjectAccessor<LabelMapType::
+                                                                                               LabelObjectType> >
+    L2ImageType;
   L2ImageType::Pointer l2i = L2ImageType::New();
   l2i->SetInput( i2l->GetOutput() );
   itk::SimpleFilterWatcher watcher(l2i, "filter");

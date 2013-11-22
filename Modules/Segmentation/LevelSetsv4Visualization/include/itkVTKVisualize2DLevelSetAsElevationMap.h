@@ -34,7 +34,7 @@ namespace itk
 
 template< typename TInputImage, typename TLevelSet >
 class VTKVisualize2DLevelSetAsElevationMap :
-    public VTKVisualizeImageLevelSet< TInputImage, ImageToVTKImageFilter< TInputImage > >
+  public VTKVisualizeImageLevelSet< TInputImage, ImageToVTKImageFilter< TInputImage > >
 {
 public:
   typedef VTKVisualize2DLevelSetAsElevationMap                                           Self;
@@ -47,12 +47,12 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(itkVTKVisualize2DLevelSetAsElevationMap, VTKVisualizeImageLevelSet);
 
-  typedef typename Superclass::InputImageType     InputImageType;
-  typedef typename InputImageType::SizeType       InputImageSizeType;
-  typedef typename InputImageType::SizeValueType  InputImageSizeValueType;
+  typedef typename Superclass::InputImageType    InputImageType;
+  typedef typename InputImageType::SizeType      InputImageSizeType;
+  typedef typename InputImageType::SizeValueType InputImageSizeValueType;
 
-  typedef TLevelSet                         LevelSetType;
-  typedef typename LevelSetType::Pointer    LevelSetPointer;
+  typedef TLevelSet                      LevelSetType;
+  typedef typename LevelSetType::Pointer LevelSetPointer;
 
   void SetLevelSet( LevelSetType * levelSet );
 
@@ -62,41 +62,50 @@ public:
 #endif
 
   /* Set the height scaling for visualization */
-  void SetHeightScaling( const double c )
-    {
+  void
+  SetHeightScaling( const double c )
+  {
     m_HeightScaling = c;
-    }
+  }
 
   /* Get the height scaling for visualization */
-  double GetHeightScaling() const
-    {
+  double
+  GetHeightScaling() const
+  {
     return m_HeightScaling;
-    }
+  }
 
   /* Get the surface mesh*/
-  vtkPolyData* GetElevationMapMesh() const
-    {
+  vtkPolyData*
+  GetElevationMapMesh() const
+  {
     return m_Mesh;
-    }
+  }
 
 protected:
   VTKVisualize2DLevelSetAsElevationMap();
-  virtual ~VTKVisualize2DLevelSetAsElevationMap();
+  virtual
+  ~VTKVisualize2DLevelSetAsElevationMap();
 
   virtual void PrepareVTKPipeline();
 
   void GenerateElevationMap();
 
 private:
-  VTKVisualize2DLevelSetAsElevationMap( const Self & ); // purposely not implemented
-  void operator=( const VTKVisualize2DLevelSetAsElevationMap & ); // purposely not implemented
+  VTKVisualize2DLevelSetAsElevationMap( const Self & );           // purposely
+                                                                  // not
+                                                                  // implemented
+  void operator=( const VTKVisualize2DLevelSetAsElevationMap & ); // purposely
 
-  LevelSetPointer           m_LevelSet;
+  // not
+  // implemented
 
-  vtkSmartPointer< vtkPolyData >          m_Mesh;
-  vtkSmartPointer< vtkScalarBarActor >    m_ScalarBarActor;
-  vtkSmartPointer< vtkPolyDataMapper >    m_MeshMapper;
-  vtkSmartPointer< vtkActor >             m_SurfaceActor;
+  LevelSetPointer m_LevelSet;
+
+  vtkSmartPointer< vtkPolyData >       m_Mesh;
+  vtkSmartPointer< vtkScalarBarActor > m_ScalarBarActor;
+  vtkSmartPointer< vtkPolyDataMapper > m_MeshMapper;
+  vtkSmartPointer< vtkActor >          m_SurfaceActor;
 
   InputImageSizeType m_NumberOfSamples;
 
@@ -104,7 +113,7 @@ private:
   double m_MinValue;
   double m_MaxValue;
 
-  bool   m_ColorValue;
+  bool m_ColorValue;
 
 };
 

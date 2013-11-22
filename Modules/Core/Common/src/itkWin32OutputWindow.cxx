@@ -30,7 +30,7 @@
 namespace itk
 {
 /** */
-HWND Win32OutputWindow:: m_OutputWindow = 0;
+HWND Win32OutputWindow::m_OutputWindow = 0;
 
 Win32OutputWindow
 ::~Win32OutputWindow()
@@ -178,10 +178,10 @@ Win32OutputWindow
 
   /** create parent container window */
   HWND win = CreateWindow(
-    "OutputWindow", "OutputWindow",
-    WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
-    0, 0, 512, 512,
-    NULL, NULL, GetModuleHandle(NULL), NULL);
+      "OutputWindow", "OutputWindow",
+      WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+      0, 0, 512, 512,
+      NULL, NULL, GetModuleHandle(NULL), NULL);
 
   /** Now create child window with text display box */
   CREATESTRUCT lpParam;
@@ -193,8 +193,8 @@ Win32OutputWindow
   lpParam.x = 0;
   lpParam.y = 0;
   lpParam.style = ES_MULTILINE | ES_READONLY | WS_CHILD
-                  | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VISIBLE | WS_MAXIMIZE
-                  | WS_VSCROLL | WS_HSCROLL;
+    | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VISIBLE | WS_MAXIMIZE
+    | WS_VSCROLL | WS_HSCROLL;
 
   lpParam.lpszName = "Output Control";
   lpParam.lpszClass = "EDIT";  // use the RICHEDIT control widget
@@ -202,18 +202,18 @@ Win32OutputWindow
 
   /**Create the EDIT window as a child of win */
   Win32OutputWindow::m_OutputWindow = CreateWindow(
-    lpParam.lpszClass,  // pointer to registered class name
-    "",                 // pointer to window name
-    lpParam.style,      // window style
-    lpParam.x,          // horizontal position of window
-    lpParam.y,          // vertical position of window
-    lpParam.cx,         // window width
-    lpParam.cy,         // window height
-    lpParam.hwndParent, // handle to parent or owner window
-    NULL,               // handle to menu or child-window identifier
-    lpParam.hInstance,  // handle to application instance
-    &lpParam            // pointer to window-creation data
-    );
+      lpParam.lpszClass,  // pointer to registered class name
+      "",                 // pointer to window name
+      lpParam.style,      // window style
+      lpParam.x,          // horizontal position of window
+      lpParam.y,          // vertical position of window
+      lpParam.cx,         // window width
+      lpParam.cy,         // window height
+      lpParam.hwndParent, // handle to parent or owner window
+      NULL,               // handle to menu or child-window identifier
+      lpParam.hInstance,  // handle to application instance
+      &lpParam            // pointer to window-creation data
+      );
   const int maxsize = 5242880;
 
   SendMessage(Win32OutputWindow::m_OutputWindow,
@@ -238,4 +238,5 @@ Win32OutputWindow
     Object::GlobalWarningDisplayOff();
     }
 }
+
 } // end namespace itk

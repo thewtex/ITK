@@ -66,7 +66,7 @@ namespace itk
  */
 
 template< unsigned int VImageDimension >
-class ImageRegionSplitter:public ImageRegionSplitterBase
+class ImageRegionSplitter : public ImageRegionSplitterBase
 {
 public:
   /** Standard class typedefs. */
@@ -85,11 +85,14 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
   /** Dimension of the image available at run time. */
-  static unsigned int GetImageDimension()
-  { return VImageDimension; }
+  static unsigned int
+  GetImageDimension()
+  {
+    return VImageDimension;
+  }
 
   /** Index typedef support. An index is used to access pixel values. */
-  typedef Index< VImageDimension >           IndexType;
+  typedef Index< VImageDimension > IndexType;
 
   /** Size typedef support. A size is used to define region bounds. */
   typedef Size< VImageDimension >          SizeType;
@@ -107,7 +110,6 @@ public:
   virtual unsigned int GetNumberOfSplits(const RegionType & region,
                                          unsigned int requestedNumber);
 
-
   /** Get a region definition that represents the ith piece a specified region.
    * The "numberOfPieces" must be equal to what
    * GetNumberOfSplits() returns. */
@@ -115,17 +117,22 @@ public:
                               const RegionType & region);
 
 protected:
-  ImageRegionSplitter() {}
-  ~ImageRegionSplitter() {}
+  ImageRegionSplitter() {
+  }
 
-  virtual unsigned int GetNumberOfSplitsInternal(unsigned int,
-                                         const IndexValueType regionIndex[],
-                                         const SizeValueType regionSize[],
-                                         unsigned int requestedNumber) const
+  ~ImageRegionSplitter() {
+  }
+
+  virtual unsigned int
+  GetNumberOfSplitsInternal(unsigned int,
+                            const IndexValueType regionIndex[],
+                            const SizeValueType regionSize[],
+                            unsigned int requestedNumber) const
   {
     // this function adapts the legecy method, defined in this class
     // be used by the ImageRegionSplitterBase.
     IndexType idx;
+
     idx.SetIndex( regionIndex );
     SizeType sz;
     sz.SetSize( regionSize );
@@ -136,15 +143,17 @@ protected:
 
   }
 
-  virtual unsigned int GetSplitInternal(unsigned int dim,
-                                unsigned int i,
-                                unsigned int numberOfPieces,
-                                IndexValueType regionIndex[],
-                                SizeValueType regionSize[]) const
+  virtual unsigned int
+  GetSplitInternal(unsigned int dim,
+                   unsigned int i,
+                   unsigned int numberOfPieces,
+                   IndexValueType regionIndex[],
+                   SizeValueType regionSize[]) const
   {
     // this function adapts the legecy method, defined in this class
     // be used by the ImageRegionSplitterBase.
     IndexType idx;
+
     idx.SetIndex( regionIndex );
     SizeType sz;
     sz.SetSize( regionSize );
@@ -166,6 +175,7 @@ protected:
 private:
   ImageRegionSplitter(const ImageRegionSplitter &); //purposely not implemented
   void operator=(const ImageRegionSplitter &);      //purposely not implemented
+
 };
 } // end namespace itk
 

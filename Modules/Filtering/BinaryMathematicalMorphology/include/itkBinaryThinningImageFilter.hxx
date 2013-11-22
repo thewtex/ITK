@@ -47,10 +47,10 @@ typename BinaryThinningImageFilter<
   TInputImage, TOutputImage >::OutputImageType *
 BinaryThinningImageFilter< TInputImage, TOutputImage >
 ::GetThinning(void)
-{
+  {
   return dynamic_cast< OutputImageType * >(
-           this->ProcessObject::GetOutput(0) );
-}
+    this->ProcessObject::GetOutput(0) );
+  }
 
 /**
  *  Prepare data for computation
@@ -201,17 +201,17 @@ BinaryThinningImageFilter< TInputImage, TOutputImage >
           // First find the total number of transitions, and then
           // divide by 2.
           const PixelType transitions = (
-            vcl_abs( static_cast< int >( p3
-                                         - p2 ) )
-            + vcl_abs( static_cast< int >( p4
-                                           - p3 ) )
-            + vcl_abs( static_cast< int >( p5 - p4 ) ) + vcl_abs( static_cast< int >( p6 - p5 ) )
-            + vcl_abs( static_cast< int >( p7
-                                           - p6 ) )
-            + vcl_abs( static_cast< int >( p8
-                                           - p7 ) )
-            + vcl_abs( static_cast< int >( p9 - p8 ) ) + vcl_abs( static_cast< int >( p2 - p9 ) )
-            ) / 2;
+              vcl_abs( static_cast< int >( p3
+                                           - p2 ) )
+              + vcl_abs( static_cast< int >( p4
+                                             - p3 ) )
+              + vcl_abs( static_cast< int >( p5 - p4 ) ) + vcl_abs( static_cast< int >( p6 - p5 ) )
+              + vcl_abs( static_cast< int >( p7
+                                             - p6 ) )
+              + vcl_abs( static_cast< int >( p8
+                                             - p7 ) )
+              + vcl_abs( static_cast< int >( p9 - p8 ) ) + vcl_abs( static_cast< int >( p2 - p9 ) )
+              ) / 2;
 
           if ( transitions == 1 )
             {
@@ -310,6 +310,7 @@ BinaryThinningImageFilter< TInputImage, TOutputImage >
   itkDebugMacro(<< "GenerateData: Computing Thinning Image");
   this->ComputeThinImage();
 } // end GenerateData()
+
 } // end namespace itk
 
 #endif

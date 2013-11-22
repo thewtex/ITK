@@ -39,14 +39,14 @@ namespace Statistics
  */
 
 template< typename TImage, typename TMaskImage >
-class MaskedImageToHistogramFilter:public ImageToHistogramFilter<TImage>
+class MaskedImageToHistogramFilter : public ImageToHistogramFilter<TImage>
 {
 public:
   /** Standard typedefs */
-  typedef MaskedImageToHistogramFilter     Self;
-  typedef ImageToHistogramFilter<TImage>   Superclass;
-  typedef SmartPointer< Self >             Pointer;
-  typedef SmartPointer< const Self >       ConstPointer;
+  typedef MaskedImageToHistogramFilter   Self;
+  typedef ImageToHistogramFilter<TImage> Superclass;
+  typedef SmartPointer< Self >           Pointer;
+  typedef SmartPointer< const Self >     ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(MaskedImageToHistogramFilter, ImageToHistogramFilter);
@@ -67,8 +67,8 @@ public:
   typedef typename HistogramType::MeasurementType       HistogramMeasurementType;
   typedef typename HistogramType::MeasurementVectorType HistogramMeasurementVectorType;
 
-  typedef TMaskImage                                     MaskImageType;
-  typedef typename MaskImageType::PixelType              MaskPixelType;
+  typedef TMaskImage                        MaskImageType;
+  typedef typename MaskImageType::PixelType MaskPixelType;
 
   /** Method to set/get the mask */
   itkSetInputMacro(MaskImage, MaskImageType);
@@ -81,14 +81,19 @@ public:
 
 protected:
   MaskedImageToHistogramFilter();
-  virtual ~MaskedImageToHistogramFilter() {}
+  virtual
+  ~MaskedImageToHistogramFilter() {
+  }
 
-  virtual void ThreadedComputeMinimumAndMaximum( const RegionType & inputRegionForThread, ThreadIdType threadId, ProgressReporter & progress );
-  virtual void ThreadedComputeHistogram( const RegionType & inputRegionForThread, ThreadIdType threadId, ProgressReporter & progress );
+  virtual void ThreadedComputeMinimumAndMaximum( const RegionType & inputRegionForThread, ThreadIdType threadId,
+                                                 ProgressReporter & progress );
+
+  virtual void ThreadedComputeHistogram( const RegionType & inputRegionForThread, ThreadIdType threadId,
+                                         ProgressReporter & progress );
 
 private:
   MaskedImageToHistogramFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);         //purposely not implemented
+  void operator=(const Self &);               //purposely not implemented
 
 };
 } // end of namespace Statistics

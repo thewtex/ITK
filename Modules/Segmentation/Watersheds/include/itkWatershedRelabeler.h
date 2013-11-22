@@ -61,7 +61,7 @@ namespace watershed
  * \ingroup ITKWatersheds
  */
 template< typename TScalar, unsigned int TImageDimension >
-class Relabeler:
+class Relabeler :
   public ProcessObject
 {
 public:
@@ -91,39 +91,45 @@ public:
   virtual DataObjectPointer MakeOutput(DataObjectPointerArraySizeType idx);
 
   /** Set/Get the input image */
-  void SetInputImage(ImageType *img)
+  void
+  SetInputImage(ImageType *img)
   {
     this->ProcessObject::SetNthInput(0, img);
   }
 
-  ImageType * GetInputImage(void)
+  ImageType *
+  GetInputImage(void)
   {
     return itkDynamicCastInDebugMode< ImageType * >
-           ( this->ProcessObject::GetInput(0) );
+             ( this->ProcessObject::GetInput(0) );
   }
 
   /** Set/Get the output image */
-  void SetOutputImage(ImageType *img)
+  void
+  SetOutputImage(ImageType *img)
   {
     this->ProcessObject::SetNthOutput(0, img);
   }
 
-  ImageType * GetOutputImage(void)
+  ImageType *
+  GetOutputImage(void)
   {
     return itkDynamicCastInDebugMode< ImageType * >
-           ( this->ProcessObject::GetOutput(0) );
+             ( this->ProcessObject::GetOutput(0) );
   }
 
   /** Set/Get the input tree that defines segment merges */
-  void SetInputSegmentTree(SegmentTreeType *et)
+  void
+  SetInputSegmentTree(SegmentTreeType *et)
   {
     this->ProcessObject::SetNthInput(1, et);
   }
 
-  SegmentTreeType * GetInputSegmentTree(void)
+  SegmentTreeType *
+  GetInputSegmentTree(void)
   {
     return itkDynamicCastInDebugMode< SegmentTreeType * >
-           ( this->ProcessObject::GetInput(1) );
+             ( this->ProcessObject::GetInput(1) );
   }
 
   /** Standard non-threaded pipeline method */
@@ -141,15 +147,24 @@ public:
 
 protected:
   Relabeler();
-  virtual ~Relabeler() {}
-  Relabeler(const Self &) {}
-  void operator=(const Self &) {}
+  virtual
+  ~Relabeler() {
+  }
+
+  Relabeler(const Self &) {
+  }
+
+  void
+  operator=(const Self &) {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   double m_FloodLevel;
   void GenerateOutputRequestedRegion(DataObject *output);
 
   void GenerateInputRequestedRegion();
+
 };
 } // end namespace watershed
 } // end namespace itk

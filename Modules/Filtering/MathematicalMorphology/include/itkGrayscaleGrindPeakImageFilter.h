@@ -67,7 +67,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class GrayscaleGrindPeakImageFilter:
+class GrayscaleGrindPeakImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -121,7 +121,9 @@ public:
 
 protected:
   GrayscaleGrindPeakImageFilter();
-  ~GrayscaleGrindPeakImageFilter() {}
+  ~GrayscaleGrindPeakImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GrayscaleGrindPeakImageFilter needs the entire input be

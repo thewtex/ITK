@@ -19,7 +19,8 @@
 //  Software Guide : BeginLatex
 //
 //  This example illustrates how to save an image using the
-//  \doxygen{ImageSeriesWriter}. This class enables the saving of a 3D volume as a set
+//  \doxygen{ImageSeriesWriter}. This class enables the saving of a 3D volume as
+// a set
 //  of files containing one 2D slice per file.
 //
 //  \index{itk::ImageFileReader!header}
@@ -27,13 +28,13 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageSeriesWriter.h"
 #include "itkNumericSeriesFileNames.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if (argc < 4 )
     {
@@ -49,8 +50,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< unsigned char, 3 >      ImageType;
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
+  typedef itk::Image< unsigned char, 3 >    ImageType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -69,14 +70,16 @@ int main( int argc, char *argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The type of the series writer must be instantiated taking into account that
+  //  The type of the series writer must be instantiated taking into account
+  // that
   //  the input file is a 3D volume and the output files are 2D images.
-  //  Additionally, the output of the reader is connected as input to the writer.
+  //  Additionally, the output of the reader is connected as input to the
+  // writer.
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< unsigned char, 2 >     Image2DType;
+  typedef itk::Image< unsigned char, 2 > Image2DType;
 
   typedef itk::ImageSeriesWriter< ImageType, Image2DType > WriterType;
 
@@ -94,7 +97,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::NumericSeriesFileNames    NameGeneratorType;
+  typedef itk::NumericSeriesFileNames NameGeneratorType;
 
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
   // Software Guide : EndCodeSnippet
@@ -157,7 +160,8 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginLatex
   //
   // With this information we can find the number that will identify the first
-  // and last slices of the 3D data set. This numerical values are then passed to
+  // and last slices of the 3D data set. This numerical values are then passed
+  // to
   // the filenames generator object that will compose the names of the files
   // where the slices are going to be stored.
   //
@@ -174,7 +178,8 @@ int main( int argc, char *argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The list of filenames is taken from the names generator and it is passed to
+  //  The list of filenames is taken from the names generator and it is passed
+  // to
   //  the series writer.
   //
   //  Software Guide : EndLatex
@@ -187,7 +192,8 @@ int main( int argc, char *argv[] )
   //
   //  Finally we trigger the execution of the pipeline with the Update() method
   //  on the writer. At this point the slices of the image will be saved in
-  //  individual files containing a single slice per file. The filenames used for
+  //  individual files containing a single slice per file. The filenames used
+  // for
   //  these slices are those produced by the filenames generator.
   //
   //  Software Guide : EndLatex

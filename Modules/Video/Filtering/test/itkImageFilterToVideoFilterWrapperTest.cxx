@@ -30,7 +30,8 @@
 /**
  * Main test
  */
-int itkImageFilterToVideoFilterWrapperTest( int argc, char* argv[] )
+int
+itkImageFilterToVideoFilterWrapperTest( int argc, char* argv[] )
 {
   // Check parameters
   if (argc < 3)
@@ -42,7 +43,7 @@ int itkImageFilterToVideoFilterWrapperTest( int argc, char* argv[] )
   // Get the lists of input and output files
   std::vector<std::string> inputFiles = itk::FileListVideoIO::SplitFileNames(argv[1]);
   std::vector<std::string> outputFiles = itk::FileListVideoIO::SplitFileNames(argv[2]);
-  if (inputFiles.size() != outputFiles.size())
+  if (inputFiles.size() != outputFiles.size() )
     {
     std::cerr << "Must specify the same number of input and output frames" << std::endl;
     return EXIT_FAILURE;
@@ -57,7 +58,8 @@ int itkImageFilterToVideoFilterWrapperTest( int argc, char* argv[] )
   typedef itk::VideoFileReader< VideoType >                               VideoReaderType;
   typedef itk::VideoFileWriter< VideoType >                               VideoWriterType;
 
-  // Register FileListIO with the factory -- shouldn't have to do this. Needs fixing
+  // Register FileListIO with the factory -- shouldn't have to do this. Needs
+  // fixing
   itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
 
   // Set up reader and writer
@@ -75,8 +77,8 @@ int itkImageFilterToVideoFilterWrapperTest( int argc, char* argv[] )
   vidGauss->SetImageFilter(imgGauss);
 
   // String the pipeline together
-  vidGauss->SetInput(reader->GetOutput());
-  writer->SetInput(vidGauss->GetOutput());
+  vidGauss->SetInput(reader->GetOutput() );
+  writer->SetInput(vidGauss->GetOutput() );
 
   // Run the pipeline
   writer->Update();
@@ -84,15 +86,15 @@ int itkImageFilterToVideoFilterWrapperTest( int argc, char* argv[] )
   //
   // Check output
   //
-  typedef itk::ImageFileReader< FrameType > ImageReaderType;
+  typedef itk::ImageFileReader< FrameType >                           ImageReaderType;
   typedef itk::Testing::ComparisonImageFilter< FrameType, FrameType > DifferenceFilterType;
-  ImageReaderType::Pointer imReader1 = ImageReaderType::New();
-  ImageReaderType::Pointer imReader2 = ImageReaderType::New();
+  ImageReaderType::Pointer      imReader1 = ImageReaderType::New();
+  ImageReaderType::Pointer      imReader2 = ImageReaderType::New();
   DifferenceFilterType::Pointer differ = DifferenceFilterType::New();
 
-  imgGauss->SetInput(imReader1->GetOutput());
-  differ->SetValidInput(imgGauss->GetOutput());
-  differ->SetTestInput(imReader2->GetOutput());
+  imgGauss->SetInput(imReader1->GetOutput() );
+  differ->SetValidInput(imgGauss->GetOutput() );
+  differ->SetTestInput(imReader2->GetOutput() );
 
   for (unsigned int i = 0; i < inputFiles.size(); ++i)
     {

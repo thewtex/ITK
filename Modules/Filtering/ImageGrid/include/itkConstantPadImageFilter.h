@@ -45,7 +45,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class ConstantPadImageFilter:
+class ConstantPadImageFilter :
   public PadImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -82,7 +82,8 @@ public:
                       TOutputImage::ImageDimension);
 
   /** Set/Get the pad value.  Default is Zero. */
-  void SetConstant( OutputImagePixelType constant )
+  void
+  SetConstant( OutputImagePixelType constant )
   {
     if ( constant != m_InternalBoundaryCondition.GetConstant() )
       {
@@ -90,7 +91,9 @@ public:
       this->Modified();
       }
   }
-  OutputImagePixelType GetConstant() const
+
+  OutputImagePixelType
+  GetConstant() const
   {
     return m_InternalBoundaryCondition.GetConstant();
   }
@@ -110,7 +113,9 @@ public:
 
 protected:
   ConstantPadImageFilter();
-  ~ConstantPadImageFilter() {}
+  ~ConstantPadImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

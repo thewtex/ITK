@@ -34,10 +34,8 @@
 #include "itkImageAdaptor.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageFileReader.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -54,7 +52,6 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 class CastPixelAccessor
 {
@@ -62,18 +59,20 @@ public:
   typedef unsigned char InternalType;
   typedef float         ExternalType;
 
-  static void Set(InternalType & output, const ExternalType & input)
-    {
+  static void
+  Set(InternalType & output, const ExternalType & input)
+  {
     output = static_cast<InternalType>( input );
-    }
+  }
 
-  static ExternalType Get( const InternalType & input )
-    {
+  static ExternalType
+  Get( const InternalType & input )
+  {
     return static_cast<ExternalType>( input );
-    }
+  }
+
 };
 // Software Guide : EndCodeSnippet
-
 
 //-------------------------
 //
@@ -81,7 +80,8 @@ public:
 //
 //-------------------------
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 2 )
     {
@@ -89,7 +89,6 @@ int main( int argc, char *argv[] )
     std::cerr << "ImageAdaptor1   inputFileName" << std::endl;
     return -1;
     }
-
 
 //  Software Guide : BeginLatex
 //
@@ -100,11 +99,10 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef unsigned char  InputPixelType;
-  const   unsigned int   Dimension = 2;
-  typedef itk::Image< InputPixelType, Dimension >   ImageType;
+  typedef unsigned char InputPixelType;
+  const   unsigned int Dimension = 2;
+  typedef itk::Image< InputPixelType, Dimension > ImageType;
 
   typedef itk::ImageAdaptor< ImageType, CastPixelAccessor > ImageAdaptorType;
   ImageAdaptorType::Pointer adaptor = ImageAdaptorType::New();
@@ -117,16 +115,13 @@ int main( int argc, char *argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
 // Software Guide : EndCodeSnippet
 
-
   reader->SetFileName( argv[1] );
   reader->Update();
-
 
 //  Software Guide : BeginLatex
 //
@@ -135,11 +130,9 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   adaptor->SetImage( reader->GetOutput() );
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -149,10 +142,9 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageRegionIteratorWithIndex< ImageAdaptorType >  IteratorType;
-  IteratorType  it( adaptor, adaptor->GetBufferedRegion() );
+  typedef itk::ImageRegionIteratorWithIndex< ImageAdaptorType > IteratorType;
+  IteratorType it( adaptor, adaptor->GetBufferedRegion() );
 
   double sum = 0.0;
   it.GoToBegin();
@@ -164,13 +156,12 @@ int main( int argc, char *argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   std::cout << "Sum of pixels is: " << sum << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
-  // Although in this example, we are just performing a simple summation, the key
+  // Although in this example, we are just performing a simple summation, the
+  // key
   // concept is that access to pixels is performed as if the pixel is of type
   //  \code{float}. Additionally, it should be noted that the adaptor is used
   // as if it was an actual image and not as a filter. ImageAdaptors conform

@@ -93,14 +93,14 @@ namespace Statistics
 
 template< typename TImageType,
           typename THistogramFrequencyContainer = DenseFrequencyContainer2 >
-class ScalarImageToRunLengthFeaturesFilter:public ProcessObject
+class ScalarImageToRunLengthFeaturesFilter : public ProcessObject
 {
 public:
   /** Standard typedefs */
-  typedef ScalarImageToRunLengthFeaturesFilter  Self;
-  typedef ProcessObject                         Superclass;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef SmartPointer< const Self >            ConstPointer;
+  typedef ScalarImageToRunLengthFeaturesFilter Self;
+  typedef ProcessObject                        Superclass;
+  typedef SmartPointer< Self >                 Pointer;
+  typedef SmartPointer< const Self >           ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ScalarImageToRunLengthFeaturesFilter, ProcessObject);
@@ -119,17 +119,17 @@ public:
   typedef typename OffsetVector::ConstPointer          OffsetVectorConstPointer;
 
   typedef ScalarImageToRunLengthMatrixFilter<
-    ImageType, FrequencyContainerType >               RunLengthMatrixFilterType;
+      ImageType, FrequencyContainerType >               RunLengthMatrixFilterType;
 
   typedef typename RunLengthMatrixFilterType::HistogramType
-  HistogramType;
+    HistogramType;
 
   typedef HistogramToRunLengthFeaturesFilter< HistogramType >
-  RunLengthFeaturesFilterType;
+    RunLengthFeaturesFilterType;
 
-  typedef short                                    RunLengthFeatureName;
+  typedef short RunLengthFeatureName;
   typedef VectorContainer<unsigned char,
-    RunLengthFeatureName>                          FeatureNameVector;
+                          RunLengthFeatureName>                          FeatureNameVector;
   typedef typename FeatureNameVector::Pointer      FeatureNameVectorPointer;
   typedef typename FeatureNameVector::ConstPointer FeatureNameVectorConstPointer;
   typedef VectorContainer< unsigned char, double > FeatureValueVector;
@@ -140,12 +140,12 @@ public:
 
   /** Type of DataObjects used for scalar outputs */
   typedef DataObjectDecorator< FeatureValueVector >
-  FeatureValueVectorDataObjectType;
+    FeatureValueVectorDataObjectType;
 
   const FeatureValueVectorDataObjectType * GetFeatureMeansOutput() const;
 
   const FeatureValueVectorDataObjectType * GetFeatureStandardDeviationsOutput()
-    const;
+  const;
 
   /** Connects the input image for which the features are going to be computed
     */
@@ -195,7 +195,10 @@ public:
 
 protected:
   ScalarImageToRunLengthFeaturesFilter();
-  virtual ~ScalarImageToRunLengthFeaturesFilter() {}
+  virtual
+  ~ScalarImageToRunLengthFeaturesFilter() {
+  }
+
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
   void FastCompute();

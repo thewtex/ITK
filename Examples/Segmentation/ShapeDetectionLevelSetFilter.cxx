@@ -69,8 +69,10 @@
 //
 // \begin{figure} \center
 // \includegraphics[width=\textwidth]{ShapeDetectionCollaborationDiagram1}
-// \itkcaption[ShapeDetectionLevelSetImageFilter collaboration diagram]{Collaboration
-// diagram for the ShapeDetectionLevelSetImageFilter applied to a segmentation task.}
+// \itkcaption[ShapeDetectionLevelSetImageFilter collaboration
+// diagram]{Collaboration
+// diagram for the ShapeDetectionLevelSetImageFilter applied to a segmentation
+// task.}
 // \label{fig:ShapeDetectionCollaborationDiagram}
 // \end{figure}
 //
@@ -111,7 +113,6 @@
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  We will need the Image class, the FastMarchingImageFilter class and the
@@ -124,7 +125,6 @@
 #include "itkFastMarchingImageFilter.h"
 #include "itkShapeDetectionLevelSetImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -139,20 +139,18 @@
 #include "itkBinaryThresholdImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Reading and writing images will be done with the \doxygen{ImageFileReader}
 //  and \doxygen{ImageFileWriter}.
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 //  The RescaleIntensityImageFilter is used to renormailize the output
 //  of filters before sending them to files.
 #include "itkRescaleIntensityImageFilter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 11 )
     {
@@ -165,7 +163,6 @@ int main( int argc, char *argv[] )
     return 1;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  We now define the image type using a particular pixel type and a
@@ -175,11 +172,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -191,7 +187,6 @@ int main( int argc, char *argv[] )
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -205,7 +200,6 @@ int main( int argc, char *argv[] )
     ThresholdingFilterType;
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -225,7 +219,6 @@ int main( int argc, char *argv[] )
   thresholder->SetInsideValue(  255 );
   // Software Guide : EndCodeSnippet
 
-
   // We instantiate reader and writer types in the following lines.
   //
   typedef  itk::ImageFileReader< InternalImageType > ReaderType;
@@ -236,7 +229,6 @@ int main( int argc, char *argv[] )
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  The RescaleIntensityImageFilter type is declared below. This filter will
   //  renormalize image before sending them to writers.
@@ -253,10 +245,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef   itk::CurvatureAnisotropicDiffusionImageFilter<
-                               InternalImageType,
-                               InternalImageType >  SmoothingFilterType;
+      InternalImageType,
+      InternalImageType >  SmoothingFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -269,7 +260,6 @@ int main( int argc, char *argv[] )
   SmoothingFilterType::Pointer smoothing = SmoothingFilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The types of the GradientMagnitudeRecursiveGaussianImageFilter and
@@ -280,14 +270,13 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef   itk::GradientMagnitudeRecursiveGaussianImageFilter<
-                               InternalImageType,
-                               InternalImageType >  GradientFilterType;
+      InternalImageType,
+      InternalImageType >  GradientFilterType;
 
   typedef   itk::SigmoidImageFilter<
-                               InternalImageType,
-                               InternalImageType >  SigmoidFilterType;
+      InternalImageType,
+      InternalImageType >  SigmoidFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -297,10 +286,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  GradientFilterType::Pointer  gradientMagnitude = GradientFilterType::New();
-  SigmoidFilterType::Pointer sigmoid = SigmoidFilterType::New();
+  GradientFilterType::Pointer gradientMagnitude = GradientFilterType::New();
+  SigmoidFilterType::Pointer  sigmoid = SigmoidFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -319,7 +307,6 @@ int main( int argc, char *argv[] )
   sigmoid->SetOutputMaximum(  1.0  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We now declare the type of the FastMarchingImageFilter that
@@ -333,7 +320,6 @@ int main( int argc, char *argv[] )
     FastMarchingFilterType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Next we construct one filter of this class using the \code{New()}
@@ -342,10 +328,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  FastMarchingFilterType::Pointer  fastMarching
-                                              = FastMarchingFilterType::New();
+  FastMarchingFilterType::Pointer fastMarching
+    = FastMarchingFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -357,11 +342,10 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef  itk::ShapeDetectionLevelSetImageFilter< InternalImageType,
-                              InternalImageType >    ShapeDetectionFilterType;
+                                                   InternalImageType >    ShapeDetectionFilterType;
   ShapeDetectionFilterType::Pointer
     shapeDetection = ShapeDetectionFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -384,7 +368,6 @@ int main( int argc, char *argv[] )
   writer->SetInput( thresholder->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The CurvatureAnisotropicDiffusionImageFilter requires a couple
@@ -401,7 +384,6 @@ int main( int argc, char *argv[] )
   smoothing->SetConductanceParameter( 9.0 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The GradientMagnitudeRecursiveGaussianImageFilter performs the
@@ -410,7 +392,10 @@ int main( int argc, char *argv[] )
   //  the range of influence of the image edges. This filter has been discussed
   //  in Section~\ref{sec:GradientMagnitudeRecursiveGaussianImageFilter}
   //
-  //  \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!SetSigma()}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!SetSigma()}
   //
   //  Software Guide : EndLatex
 
@@ -419,7 +404,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   gradientMagnitude->SetSigma(  sigma  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -437,7 +421,6 @@ int main( int argc, char *argv[] )
   sigmoid->SetAlpha( alpha );
   sigmoid->SetBeta(  beta  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -461,17 +444,15 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   //  Software Guide : BeginCodeSnippet
-  typedef FastMarchingFilterType::NodeContainer           NodeContainer;
-  typedef FastMarchingFilterType::NodeType                NodeType;
+  typedef FastMarchingFilterType::NodeContainer NodeContainer;
+  typedef FastMarchingFilterType::NodeType      NodeType;
   NodeContainer::Pointer seeds = NodeContainer::New();
   //  Software Guide : EndCodeSnippet
 
-
-  InternalImageType::IndexType  seedPosition;
+  InternalImageType::IndexType seedPosition;
 
   seedPosition[0] = atoi( argv[3] );
   seedPosition[1] = atoi( argv[4] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -493,13 +474,12 @@ int main( int argc, char *argv[] )
   const double initialDistance = atof( argv[5] );
 
   // Software Guide : BeginCodeSnippet
-  NodeType node;
-  const double seedValue = - initialDistance;
+  NodeType     node;
+  const double seedValue = -initialDistance;
 
   node.SetValue( seedValue );
   node.SetIndex( seedPosition );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -512,7 +492,6 @@ int main( int argc, char *argv[] )
   seeds->Initialize();
   seeds->InsertElement( 0, node );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -527,7 +506,6 @@ int main( int argc, char *argv[] )
   fastMarching->SetTrialPoints(  seeds  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Since the FastMarchingImageFilter is used here only as a distance map
@@ -540,7 +518,6 @@ int main( int argc, char *argv[] )
   //  Software Guide : BeginCodeSnippet
   fastMarching->SetSpeedConstant( 1.0 );
   //  Software Guide : EndCodeSnippet
-
 
   //  Here we configure all the writers required to see the intermediate
   //  outputs of the pipeline. This is added here only for
@@ -586,7 +563,6 @@ int main( int argc, char *argv[] )
   caster4->SetOutputMinimum(   0 );
   caster4->SetOutputMaximum( 255 );
 
-
   //  Software Guide : BeginLatex
   //
   //  The FastMarchingImageFilter requires the user to specify the
@@ -600,9 +576,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   fastMarching->SetOutputSize(
-           reader->GetOutput()->GetBufferedRegion().GetSize() );
+    reader->GetOutput()->GetBufferedRegion().GetSize() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -617,9 +592,18 @@ int main( int argc, char *argv[] )
   //  set too large, as it will draw the contour away from the shape
   //  boundaries.
   //
-  //  \index{itk::Shape\-Detection\-LevelSet\-Image\-Filter!SetPropagationScaling()}
-  //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
-  //  \index{itk::Shape\-Detection\-Level\-Set\-Image\-Filter!SetCurvatureScaling()}
+  //
+  //
+  //
+  // \index{itk::Shape\-Detection\-LevelSet\-Image\-Filter!SetPropagationScaling()}
+  //
+  //
+  //
+  // \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
+  //
+  //
+  //
+  // \index{itk::Shape\-Detection\-Level\-Set\-Image\-Filter!SetCurvatureScaling()}
   //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetCurvatureScaling()}
   //
   //  Software Guide : EndLatex
@@ -631,7 +615,6 @@ int main( int argc, char *argv[] )
   shapeDetection->SetPropagationScaling(  propagationScaling );
   shapeDetection->SetCurvatureScaling( curvatureScaling );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -647,10 +630,19 @@ int main( int argc, char *argv[] )
   //  low gradient in the contour of the anatomical structure to be
   //  segmented.
   //
-  //  \index{itk::Shape\-Detection\-Level\-Set\-Image\-Filter!SetMaximumRMSError()}
-  //  \index{itk::Shape\-Detection\-Level\-Set\-Image\-Filter!SetNumberOfIterations()}
+  //
+  //
+  //
+  // \index{itk::Shape\-Detection\-Level\-Set\-Image\-Filter!SetMaximumRMSError()}
+  //
+  //
+  //
+  // \index{itk::Shape\-Detection\-Level\-Set\-Image\-Filter!SetNumberOfIterations()}
   //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetMaximumRMSError()}
-  //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetNumberOfIterations()}
+  //
+  //
+  //
+  // \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetNumberOfIterations()}
   //
   //  Software Guide : EndLatex
 
@@ -658,7 +650,6 @@ int main( int argc, char *argv[] )
   shapeDetection->SetMaximumRMSError( 0.02 );
   shapeDetection->SetNumberOfIterations( 800 );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -690,7 +681,6 @@ int main( int argc, char *argv[] )
 
   writer4->Update();
 
-
   // The following writer type is used to save the output of the time-crossing
   // map in a file with apropiate pixel representation. The advantage of saving
   // this image in native format is that it can be used with a viewer to help
@@ -714,7 +704,6 @@ int main( int argc, char *argv[] )
   gradientWriter->SetFileName("ShapeDetectionLevelSetFilterOutput2.mha");
   gradientWriter->Update();
 
-
   //  Software Guide : BeginLatex
   //
   //  Let's now run this example using as input the image
@@ -730,11 +719,16 @@ int main( int argc, char *argv[] )
   //  \begin{center}
   //  \begin{tabular}{|l|c|c|c|c|c|c|}
   //  \hline
-  //  Structure    & Seed Index & Distance & $\sigma$ & $\alpha$ & $\beta$ & Output Image \\ \hline
-  //  Left Ventricle  & $(81,114)$ & 5.0 & 1.0 & -0.5 & 3.0  & First  in Figure \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
-  //  Right Ventricle & $(99,114)$ & 5.0 & 1.0 & -0.5 & 3.0  & Second in Figure \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
-  //  White matter    & $(56, 92)$ & 5.0 & 1.0 & -0.3 & 2.0  & Third  in Figure \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
-  //  Gray matter     & $(40, 90)$ & 5.0 & 0.5 & -0.3 & 2.0  & Fourth in Figure \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
+  //  Structure    & Seed Index & Distance & $\sigma$ & $\alpha$ & $\beta$ &
+  // Output Image \\ \hline
+  //  Left Ventricle  & $(81,114)$ & 5.0 & 1.0 & -0.5 & 3.0  & First  in Figure
+  // \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
+  //  Right Ventricle & $(99,114)$ & 5.0 & 1.0 & -0.5 & 3.0  & Second in Figure
+  // \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
+  //  White matter    & $(56, 92)$ & 5.0 & 1.0 & -0.3 & 2.0  & Third  in Figure
+  // \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
+  //  Gray matter     & $(40, 90)$ & 5.0 & 0.5 & -0.3 & 2.0  & Fourth in Figure
+  // \ref{fig:ShapeDetectionLevelSetFilterOutput2} \\  \hline
   //  \end{tabular}
   //  \end{center}
   //  \itkcaption[ShapeDetection example parameters]{Parameters used for
@@ -761,12 +755,21 @@ int main( int argc, char *argv[] )
   //
   // \begin{figure} \center
   // \includegraphics[height=0.40\textheight]{BrainProtonDensitySlice}
+  //
+  //
   // \includegraphics[height=0.40\textheight]{ShapeDetectionLevelSetFilterOutput1}
+  //
+  //
   // \includegraphics[height=0.40\textheight]{ShapeDetectionLevelSetFilterOutput2}
+  //
+  //
   // \includegraphics[height=0.40\textheight]{ShapeDetectionLevelSetFilterOutput3}
-  // \itkcaption[ShapeDetectionLevelSetImageFilter intermediate output]{Images generated by
-  // the segmentation process based on the ShapeDetectionLevelSetImageFilter. From left
-  // to right and top to bottom: input image to be segmented, image smoothed with an
+  // \itkcaption[ShapeDetectionLevelSetImageFilter intermediate output]{Images
+  // generated by
+  // the segmentation process based on the ShapeDetectionLevelSetImageFilter.
+  // From left
+  // to right and top to bottom: input image to be segmented, image smoothed
+  // with an
   // edge-preserving smoothing filter, gradient magnitude of the smoothed
   // image, sigmoid of the gradient magnitude. This last image, the sigmoid, is
   // used to compute the speed term for the front propagation.}
@@ -787,8 +790,10 @@ int main( int argc, char *argv[] )
   // \includegraphics[width=0.24\textwidth]{ShapeDetectionLevelSetFilterOutput6}
   // \includegraphics[width=0.24\textwidth]{ShapeDetectionLevelSetFilterOutput7}
   // \includegraphics[width=0.24\textwidth]{ShapeDetectionLevelSetFilterOutput8}
-  // \itkcaption[ShapeDetectionLevelSetImageFilter segmentations]{Images generated by the
-  // segmentation process based on the ShapeDetectionLevelSetImageFilter. From left to
+  // \itkcaption[ShapeDetectionLevelSetImageFilter segmentations]{Images
+  // generated by the
+  // segmentation process based on the ShapeDetectionLevelSetImageFilter. From
+  // left to
   // right: segmentation of the left ventricle, segmentation of the right
   // ventricle, segmentation of the white matter, attempt of segmentation of
   // the gray matter.}

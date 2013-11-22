@@ -34,20 +34,30 @@ template< typename TInput, typename TOutput >
 class Tan
 {
 public:
-  Tan() {}
-  ~Tan() {}
-  bool operator!=(const Tan &) const
+  Tan() {
+  }
+
+  ~Tan() {
+  }
+
+  bool
+  operator!=(const Tan &) const
   {
     return false;
   }
 
-  bool operator==(const Tan & other) const
+  bool
+  operator==(const Tan & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
-  { return (TOutput)vcl_tan( (double)A ); }
+  inline TOutput
+  operator()(const TInput & A) const
+  {
+    return (TOutput)vcl_tan( (double)A );
+  }
+
 };
 }
 /** \class TanImageFilter
@@ -60,19 +70,19 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class TanImageFilter:
+class TanImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Tan< typename TInputImage::PixelType,
-                                          typename TOutputImage::PixelType >   >
+                                         typename TOutputImage::PixelType >   >
 {
 public:
   /** Standard class typedefs. */
   typedef TanImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Tan< typename TInputImage::PixelType,
-                  typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Tan< typename TInputImage::PixelType,
+                    typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -94,12 +104,17 @@ public:
 #endif
 
 protected:
-  TanImageFilter() {}
-  virtual ~TanImageFilter() {}
+  TanImageFilter() {
+  }
+
+  virtual
+  ~TanImageFilter() {
+  }
 
 private:
   TanImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

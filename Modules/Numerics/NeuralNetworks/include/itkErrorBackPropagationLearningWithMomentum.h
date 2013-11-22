@@ -39,14 +39,15 @@ namespace Statistics
  */
 
 template<typename LayerType, typename TTargetVector>
-class ErrorBackPropagationLearningWithMomentum : public LearningFunctionBase<typename LayerType::LayerInterfaceType, TTargetVector>
+class ErrorBackPropagationLearningWithMomentum : public LearningFunctionBase<typename LayerType::LayerInterfaceType,
+                                                                             TTargetVector>
 {
 public:
   typedef ErrorBackPropagationLearningWithMomentum Self;
   typedef LearningFunctionBase<typename LayerType::LayerInterfaceType, TTargetVector>
-                                                   Superclass;
-  typedef SmartPointer<Self>                       Pointer;
-  typedef SmartPointer<const Self>                 ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkTypeMacro(ErrorBackPropagationLearningWithMomentum, LearningFunctionBase);
@@ -54,15 +55,18 @@ public:
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
-  typedef typename Superclass::ValueType           ValueType;
-  typedef typename LayerType::LayerInterfaceType   LayerInterfaceType;
+  typedef typename Superclass::ValueType         ValueType;
+  typedef typename LayerType::LayerInterfaceType LayerInterfaceType;
 
   virtual void Learn( LayerInterfaceType * layer, ValueType learningrate );
+
   virtual void Learn( LayerInterfaceType * layer, TTargetVector errors, ValueType learningrate );
 
 protected:
   ErrorBackPropagationLearningWithMomentum();
-  virtual ~ErrorBackPropagationLearningWithMomentum() {};
+  virtual
+  ~ErrorBackPropagationLearningWithMomentum() {
+  }
 
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
@@ -73,7 +77,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkErrorBackPropagationLearningWithMomentum.hxx"
+#include "itkErrorBackPropagationLearningWithMomentum.hxx"
 #endif
 
 #endif

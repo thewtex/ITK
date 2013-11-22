@@ -49,18 +49,26 @@ class ImageToImageMetricv4GetValueAndDerivativeThreader
  * \ingroup ITKMetricsv4
  * */
 template < typename TImageToImageMetricv4 >
-class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< TImageToImageMetricv4::VirtualImageDimension >, TImageToImageMetricv4 >
-  : public ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< TImageToImageMetricv4::VirtualImageDimension >, TImageToImageMetricv4 >
+class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< TImageToImageMetricv4::
+                                                                                         VirtualImageDimension >,
+                                                         TImageToImageMetricv4 >
+  : public ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< TImageToImageMetricv4
+                                                                                                  ::
+                                                                                                  VirtualImageDimension >,
+                                                                  TImageToImageMetricv4 >
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageToImageMetricv4GetValueAndDerivativeThreader      Self;
-  typedef ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< TImageToImageMetricv4::VirtualImageDimension >, TImageToImageMetricv4 >
-                                                                 Superclass;
-  typedef SmartPointer< Self >                                   Pointer;
-  typedef SmartPointer< const Self >                             ConstPointer;
+  typedef ImageToImageMetricv4GetValueAndDerivativeThreader Self;
+  typedef ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< TImageToImageMetricv4::
+                                                                                                 VirtualImageDimension >,
+                                                                 TImageToImageMetricv4 >
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  itkTypeMacro( ImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreaderBase );
+  itkTypeMacro( ImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreaderBase );
 
   /** Superclass types. */
   typedef typename Superclass::DomainType    DomainType;
@@ -78,15 +86,15 @@ public:
   typedef typename Superclass::MovingImagePixelType    MovingImagePixelType;
   typedef typename Superclass::MovingImageGradientType MovingImageGradientType;
 
-  typedef typename Superclass::FixedTransformType      FixedTransformType;
-  typedef typename Superclass::FixedOutputPointType    FixedOutputPointType;
-  typedef typename Superclass::MovingTransformType     MovingTransformType;
-  typedef typename Superclass::MovingOutputPointType   MovingOutputPointType;
+  typedef typename Superclass::FixedTransformType    FixedTransformType;
+  typedef typename Superclass::FixedOutputPointType  FixedOutputPointType;
+  typedef typename Superclass::MovingTransformType   MovingTransformType;
+  typedef typename Superclass::MovingOutputPointType MovingOutputPointType;
 
-  typedef typename Superclass::MeasureType             MeasureType;
-  typedef typename Superclass::DerivativeType          DerivativeType;
-  typedef typename Superclass::DerivativeValueType     DerivativeValueType;
-  typedef typename Superclass::JacobianType            JacobianType;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::DerivativeValueType DerivativeValueType;
+  typedef typename Superclass::JacobianType        JacobianType;
 
   typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
   typedef typename Superclass::NumberOfParametersType       NumberOfParametersType;
@@ -94,7 +102,8 @@ public:
 
 protected:
   /** Constructor. */
-  ImageToImageMetricv4GetValueAndDerivativeThreader() {}
+  ImageToImageMetricv4GetValueAndDerivativeThreader() {
+  }
 
   /** Walk through the given virtual image domain, and call \c ProcessVirtualPoint on every
    * point. */
@@ -104,18 +113,31 @@ protected:
   /** Get cached values for efficiency. Only valid once threading has started.
    *  These methods should be used in tight loops (inlining helps measurably).
    *  Put these methods here so derived threaders can access them directly. */
-  inline NumberOfParametersType GetCachedNumberOfParameters() const
+  inline NumberOfParametersType
+  GetCachedNumberOfParameters() const
   {
     return this->m_CachedNumberOfParameters;
   }
-  inline NumberOfParametersType GetCachedNumberOfLocalParameters() const
+
+  inline NumberOfParametersType
+  GetCachedNumberOfLocalParameters() const
   {
     return this->m_CachedNumberOfLocalParameters;
   }
 
 private:
-  ImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  ImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); //
+                                                                     //
+                                                                     // purposely
+                                                                     // not
+                                                                     //
+                                                                     // implemented
+  void operator=( const Self & );                                    //
+
+  // purposely
+  // not
+  // implemented
+
 };
 
 /** \class ImageToImageMetricv4GetValueAndDerivativeThreader
@@ -124,17 +146,20 @@ private:
  * */
 template < typename TImageToImageMetricv4 >
 class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, TImageToImageMetricv4 >
-  : public ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedIndexedContainerPartitioner, TImageToImageMetricv4 >
+  : public ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedIndexedContainerPartitioner,
+                                                                  TImageToImageMetricv4 >
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageToImageMetricv4GetValueAndDerivativeThreader      Self;
-  typedef ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedIndexedContainerPartitioner, TImageToImageMetricv4 >
-                                                                 Superclass;
-  typedef SmartPointer< Self >                                   Pointer;
-  typedef SmartPointer< const Self >                             ConstPointer;
+  typedef ImageToImageMetricv4GetValueAndDerivativeThreader Self;
+  typedef ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedIndexedContainerPartitioner,
+                                                                 TImageToImageMetricv4 >
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  itkTypeMacro( ImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreaderBase );
+  itkTypeMacro( ImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreaderBase );
 
   /** Superclass types. */
   typedef typename Superclass::DomainType    DomainType;
@@ -152,22 +177,23 @@ public:
   typedef typename Superclass::MovingImagePixelType     MovingImagePixelType;
   typedef typename Superclass::MovingImageGradientType  MovingImageGradientType;
 
-  typedef typename Superclass::FixedTransformType      FixedTransformType;
-  typedef typename Superclass::FixedOutputPointType    FixedOutputPointType;
-  typedef typename Superclass::MovingTransformType     MovingTransformType;
-  typedef typename Superclass::MovingOutputPointType   MovingOutputPointType;
+  typedef typename Superclass::FixedTransformType    FixedTransformType;
+  typedef typename Superclass::FixedOutputPointType  FixedOutputPointType;
+  typedef typename Superclass::MovingTransformType   MovingTransformType;
+  typedef typename Superclass::MovingOutputPointType MovingOutputPointType;
 
-  typedef typename Superclass::MeasureType             MeasureType;
-  typedef typename Superclass::DerivativeType          DerivativeType;
-  typedef typename Superclass::DerivativeValueType     DerivativeValueType;
-  typedef typename Superclass::JacobianType            JacobianType;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::DerivativeValueType DerivativeValueType;
+  typedef typename Superclass::JacobianType        JacobianType;
 
   typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
   typedef typename Superclass::NumberOfParametersType       NumberOfParametersType;
 
 protected:
   /** Constructor. */
-  ImageToImageMetricv4GetValueAndDerivativeThreader() {}
+  ImageToImageMetricv4GetValueAndDerivativeThreader() {
+  }
 
   /** Walk through the given virtual image domain, and call \c ProcessVirtualPoint on every
    * point. */
@@ -177,18 +203,31 @@ protected:
   /** Get cached values for efficiency. Only valid once threading has started.
    *  These methods should be used in tight loops (inlining helps measurably).
    *  Put these methods here so derived threaders can access them directly. */
-  inline NumberOfParametersType GetCachedNumberOfParameters() const
+  inline NumberOfParametersType
+  GetCachedNumberOfParameters() const
   {
     return this->m_CachedNumberOfParameters;
   }
-  inline NumberOfParametersType GetCachedNumberOfLocalParameters() const
+
+  inline NumberOfParametersType
+  GetCachedNumberOfLocalParameters() const
   {
     return this->m_CachedNumberOfLocalParameters;
   }
 
 private:
-  ImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  ImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); //
+                                                                     //
+                                                                     // purposely
+                                                                     // not
+                                                                     //
+                                                                     // implemented
+  void operator=( const Self & );                                    //
+
+  // purposely
+  // not
+  // implemented
+
 };
 
 } // end namespace itk

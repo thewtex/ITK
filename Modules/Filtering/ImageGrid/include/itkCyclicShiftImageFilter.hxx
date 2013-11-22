@@ -43,6 +43,7 @@ CyclicShiftImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
     {
     return;
@@ -58,7 +59,6 @@ CyclicShiftImageFilter< TInputImage, TOutputImage >
 {
   // Setup the progress reporter.
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
-
 
   const InputImageType * inputImage = this->GetInput();
 

@@ -59,7 +59,7 @@ namespace itk
  */
 template< typename TInputImage, typename TOutputImage =
             LabelMap< ShapeLabelObject< SizeValueType, TInputImage::ImageDimension > > >
-class BinaryImageToShapeLabelMapFilter:
+class BinaryImageToShapeLabelMapFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -90,7 +90,7 @@ public:
 
   typedef BinaryImageToLabelMapFilter< InputImageType, OutputImageType > LabelizerType;
   typedef Image< typename OutputImageType::PixelType, itkGetStaticConstMacro(OutputImageDimension) >
-  ShapeLabelFilterOutput;
+    ShapeLabelFilterOutput;
   typedef ShapeLabelMapFilter< TOutputImage, ShapeLabelFilterOutput > LabelObjectValuatorType;
 
   /** Standard New method. */
@@ -151,7 +151,9 @@ public:
 
 protected:
   BinaryImageToShapeLabelMapFilter();
-  ~BinaryImageToShapeLabelMapFilter() {}
+  ~BinaryImageToShapeLabelMapFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** BinaryImageToShapeLabelMapFilter needs the entire input be available.

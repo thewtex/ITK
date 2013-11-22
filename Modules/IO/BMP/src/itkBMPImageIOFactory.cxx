@@ -31,7 +31,8 @@ BMPImageIOFactory::BMPImageIOFactory()
 }
 
 BMPImageIOFactory::~BMPImageIOFactory()
-{}
+{
+}
 
 const char *
 BMPImageIOFactory::GetITKSourceVersion(void) const
@@ -50,9 +51,10 @@ BMPImageIOFactory::GetDescription() const
 
 static bool BMPImageIOFactoryHasBeenRegistered;
 
-void ITKIOBMP_EXPORT BMPImageIOFactoryRegister__Private(void)
+void ITKIOBMP_EXPORT
+BMPImageIOFactoryRegister__Private(void)
 {
-  if( ! BMPImageIOFactoryHasBeenRegistered )
+  if( !BMPImageIOFactoryHasBeenRegistered )
     {
     BMPImageIOFactoryHasBeenRegistered = true;
     BMPImageIOFactory::RegisterOneFactory();

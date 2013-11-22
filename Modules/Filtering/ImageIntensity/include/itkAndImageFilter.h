@@ -34,22 +34,30 @@ template< typename TInput1, typename TInput2 = TInput1, typename TOutput = TInpu
 class AND
 {
 public:
-  AND() {}
-  ~AND() {}
-  bool operator!=(const AND &) const
+  AND() {
+  }
+
+  ~AND() {
+  }
+
+  bool
+  operator!=(const AND &) const
   {
     return false;
   }
 
-  bool operator==(const AND & other) const
+  bool
+  operator==(const AND & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     return static_cast< TOutput >( A & B );
   }
+
 };
 }
 /** \class AndImageFilter
@@ -78,7 +86,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class AndImageFilter:
+class AndImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::AND<
@@ -115,12 +123,17 @@ public:
 #endif
 
 protected:
-  AndImageFilter() {}
-  virtual ~AndImageFilter() {}
+  AndImageFilter() {
+  }
+
+  virtual
+  ~AndImageFilter() {
+  }
 
 private:
   AndImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

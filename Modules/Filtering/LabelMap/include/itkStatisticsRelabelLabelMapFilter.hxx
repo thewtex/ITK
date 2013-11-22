@@ -44,5 +44,6 @@ StatisticsRelabelLabelMapFilter< TImage >
       break;
     }
 }
+
 } // end namespace itk
 #endif

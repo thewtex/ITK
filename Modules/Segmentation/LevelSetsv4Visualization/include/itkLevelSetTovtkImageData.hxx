@@ -44,28 +44,29 @@ LevelSetTovtkImageData< LevelSetDenseImage< TImage > >
 template< typename TImage >
 LevelSetTovtkImageData< LevelSetDenseImage< TImage > >
 ::~LevelSetTovtkImageData()
-{}
+{
+}
 
 template< typename TImage >
 vtkImageData*
 LevelSetTovtkImageData< LevelSetDenseImage< TImage > >
 ::GetOutput() const
-  {
+{
   return this->m_Converter->GetOutput();
-  }
+}
 
 template< typename TImage >
 void
 LevelSetTovtkImageData< LevelSetDenseImage< TImage > >
 ::GenerateData()
-  {
+{
   if( !this->m_LevelSet->GetImage() )
     {
     itkGenericExceptionMacro( <<"this->m_LevelSet->GetImage() is NULL" );
     }
   this->m_Converter->SetInput( this->m_LevelSet->GetImage() );
   this->m_Converter->Update();
-  }
+}
 
 // -----------------------------------------------------------------------------
 template< typename TOutput, unsigned int VDimension >
@@ -79,21 +80,22 @@ LevelSetTovtkImageData< WhitakerSparseLevelSetImage< TOutput, VDimension > >
 template< typename TOutput, unsigned int VDimension >
 LevelSetTovtkImageData< WhitakerSparseLevelSetImage< TOutput, VDimension > >
 ::~LevelSetTovtkImageData()
-{}
+{
+}
 
 template< typename TOutput, unsigned int VDimension >
 vtkImageData*
 LevelSetTovtkImageData< WhitakerSparseLevelSetImage< TOutput, VDimension > >
 ::GetOutput() const
-  {
+{
   return m_Converter->GetOutput();
-  }
+}
 
 template< typename TOutput, unsigned int VDimension >
 void
 LevelSetTovtkImageData< WhitakerSparseLevelSetImage< TOutput, VDimension > >
 ::GenerateData()
-  {
+{
   if( this->m_LevelSet->GetLabelMap() == NULL )
     {
     itkGenericExceptionMacro( <<"this->m_LevelSet->GetLabelMap() is NULL" );
@@ -124,8 +126,7 @@ LevelSetTovtkImageData< WhitakerSparseLevelSetImage< TOutput, VDimension > >
 
   this->m_Converter->SetInput( this->m_InternalImage );
   this->m_Converter->Update();
-  }
-
+}
 
 // -----------------------------------------------------------------------------
 template< unsigned int VDimension >
@@ -139,21 +140,22 @@ LevelSetTovtkImageData< ShiSparseLevelSetImage< VDimension > >
 template< unsigned int VDimension >
 LevelSetTovtkImageData< ShiSparseLevelSetImage< VDimension > >
 ::~LevelSetTovtkImageData()
-  {}
+{
+}
 
 template< unsigned int VDimension >
 vtkImageData*
 LevelSetTovtkImageData< ShiSparseLevelSetImage< VDimension > >
 ::GetOutput() const
-  {
+{
   return this->m_Converter->GetOutput();
-  }
+}
 
 template< unsigned int VDimension >
 void
 LevelSetTovtkImageData< ShiSparseLevelSetImage< VDimension > >
 ::GenerateData()
-  {
+{
   if( this->m_LevelSet->GetLabelMap() == NULL )
     {
     itkGenericExceptionMacro( <<"this->m_LevelSet->GetLabelMap() is NULL" );
@@ -168,35 +170,36 @@ LevelSetTovtkImageData< ShiSparseLevelSetImage< VDimension > >
   this->m_Converter->SetInput( m_LabelMapToLabelImageFilter->GetOutput() );
   this->m_Converter->Modified();
   this->m_Converter->Update();
-  }
+}
 
 // -----------------------------------------------------------------------------
 template< unsigned int VDimension >
 LevelSetTovtkImageData< MalcolmSparseLevelSetImage< VDimension > >
 ::LevelSetTovtkImageData()
-  {
+{
   m_LabelMapToLabelImageFilter = LabelMapToLabelImageFilterType::New();
   m_Converter = ConverterType::New();
-  }
+}
 
 template< unsigned int VDimension >
 LevelSetTovtkImageData< MalcolmSparseLevelSetImage< VDimension > >
 ::~LevelSetTovtkImageData()
-  {}
+{
+}
 
 template< unsigned int VDimension >
 vtkImageData*
 LevelSetTovtkImageData< MalcolmSparseLevelSetImage< VDimension > >
 ::GetOutput() const
-  {
+{
   return this->m_Converter->GetOutput();
-  }
+}
 
 template< unsigned int VDimension >
 void
 LevelSetTovtkImageData< MalcolmSparseLevelSetImage< VDimension > >
 ::GenerateData()
-  {
+{
   if( this->m_LevelSet->GetLabelMap() == NULL )
     {
     itkGenericExceptionMacro( <<"this->m_LevelSet->GetLabelMap() is NULL" );
@@ -211,7 +214,8 @@ LevelSetTovtkImageData< MalcolmSparseLevelSetImage< VDimension > >
   this->m_Converter->SetInput( m_LabelMapToLabelImageFilter->GetOutput() );
   this->m_Converter->Modified();
   this->m_Converter->Update();
-  }
+}
+
 }
 
 #endif // __itkLevelSetTovtkImageData_h

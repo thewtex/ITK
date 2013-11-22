@@ -53,12 +53,12 @@ OrthogonallyCorrected2DParametricPath
   // Find the linearly interpolated offset error value for this exact time.
   softOrthogonalCorrectionTableIndex = normalizedInput * numOrthogonalCorrections;
   Correction1 = m_OrthogonalCorrectionTable->ElementAt(
-    int(softOrthogonalCorrectionTableIndex) );
+      int(softOrthogonalCorrectionTableIndex) );
   Correction2 = m_OrthogonalCorrectionTable->ElementAt(
-    int(softOrthogonalCorrectionTableIndex + 1) % numOrthogonalCorrections);
+      int(softOrthogonalCorrectionTableIndex + 1) % numOrthogonalCorrections);
   Correction = Correction1 + ( Correction2 - Correction1 )
-               * ( softOrthogonalCorrectionTableIndex
-                   - int(softOrthogonalCorrectionTableIndex) );
+    * ( softOrthogonalCorrectionTableIndex
+        - int(softOrthogonalCorrectionTableIndex) );
 
   // Find the direction of the offset
   originalDerivative = m_OriginalPath->EvaluateDerivative(input);
@@ -103,7 +103,9 @@ OrthogonallyCorrected2DParametricPath
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Original Path:  " << m_OriginalPath << std::endl;
   os << indent << "Correction Table:  " << m_OrthogonalCorrectionTable << std::endl;
 }
+
 } // end namespaceitk

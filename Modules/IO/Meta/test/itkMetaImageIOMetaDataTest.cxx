@@ -22,12 +22,12 @@
 #include "itkMetaDataObject.h"
 #include "itkMetaImageIO.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
 /** read an image using ITK -- image-based template */
 template <typename TImage>
-typename TImage::Pointer ReadImage( const std::string &fileName )
+typename TImage::Pointer
+ReadImage( const std::string &fileName )
 {
   typename TImage::Pointer image;
   typedef itk::ImageFileReader<TImage> ReaderType;
@@ -95,11 +95,14 @@ Equal(TValueType &a, TValueType &b)
 {
   return a == b;
 }
+
 template <>
 bool
-Equal<double>(double &a, double &b)
+Equal<double
+      >(double &a, double &b)
 {
-  double diff(vnl_math_abs(a - b));
+  double diff(vnl_math_abs(a - b) );
+
   if(diff == 0.0)
     {
     return true;
@@ -116,9 +119,11 @@ Equal<double>(double &a, double &b)
 
 template <>
 bool
-Equal<float>(float &a, float &b)
+Equal<float
+      >(float &a, float &b)
 {
   double _a(a); double _b(b);
+
   return Equal(_a,_b);
 }
 
@@ -129,8 +134,9 @@ TestMatch(itk::MetaDataDictionary &dict,
           TValueType expectedValue)
 {
   std::istringstream is;
-  std::string stringValue;
-  if(!itk::ExposeMetaData<std::string>(dict,key,stringValue))
+  std::string        stringValue;
+
+  if(!itk::ExposeMetaData<std::string>(dict,key,stringValue) )
     {
     std::cerr << "Key " << key << " not found" << std::endl;
     return false;
@@ -138,15 +144,15 @@ TestMatch(itk::MetaDataDictionary &dict,
   TValueType nativeValue;
   is.str(stringValue);
   is >> nativeValue;
-  if(!Equal<TValueType>(nativeValue,expectedValue))
+  if(!Equal<TValueType>(nativeValue,expectedValue) )
     {
     std::cerr << "Key " << key << " found with unexpected value "
               << nativeValue << std::endl;
     return false;
     }
-    std::cout << "Key " << key << " found with expected value "
-              << nativeValue << std::endl;
-    return true;
+  std::cout << "Key " << key << " found with expected value "
+            << nativeValue << std::endl;
+  return true;
 }
 
 int
@@ -165,72 +171,72 @@ itkMetaImageIOMetaDataTest(int argc, char * argv [] )
   typedef itk::Image<PixelType,Dim>         ImageType;
   typedef itk::RandomImageSource<ImageType> SourceType;
 
-  SourceType::Pointer source = SourceType::New();
+  SourceType::Pointer      source = SourceType::New();
   ImageType::SizeValueType size[Dim] = { 32,32 };
   source->SetSize(size);
-  source->SetMin(itk::NumericTraits<PixelType>::min());
-  source->SetMax(itk::NumericTraits<PixelType>::max());
+  source->SetMin(itk::NumericTraits<PixelType>::min() );
+  source->SetMax(itk::NumericTraits<PixelType>::max() );
   source->Update();
 
-  ImageType::Pointer randImage(source->GetOutput());
-  itk::MetaDataDictionary &dict(randImage->GetMetaDataDictionary());
+  ImageType::Pointer       randImage(source->GetOutput() );
+  itk::MetaDataDictionary &dict(randImage->GetMetaDataDictionary() );
   //
   // add an arbitrary key to check whether it persists with the image
   //
-  {
-  // Add string key
-  std::string key("hello"); std::string value("world");
-  itk::EncapsulateMetaData<std::string>(dict,key,value);
-  }
-  {
-  // Add double
-  std::string key("double"); double value(7.891011);
-  itk::EncapsulateMetaData<double>(dict,key,value);
-  }
-  {
-  // Add float
-  std::string key("float"); float value(1.23456);
-  itk::EncapsulateMetaData<float>(dict,key,value);
-  }
-  {
-  // Add long
-  std::string key("long"); long value(-31415926);
-  itk::EncapsulateMetaData<int>(dict,key,value);
-  }
-  {
-  // Add unsigned long
-  std::string key("unsigned_long"); unsigned long value(27182818);
-  itk::EncapsulateMetaData<unsigned long>(dict,key,value);
-  }
-  {
-  // Add int
-  std::string key("int"); int value(-3141592);
-  itk::EncapsulateMetaData<int>(dict,key,value);
-  }
-  {
-  // Add unsigned int
-  std::string key("unsigned_int"); unsigned int value(2718281);
-  itk::EncapsulateMetaData<unsigned int>(dict,key,value);
-  }
-  {
-  // Add short
-  std::string key("short"); short value(-16384);
-  itk::EncapsulateMetaData<short>(dict,key,value);
-  }
-  {
-  // Add short
-  std::string key("unsigned_short"); unsigned value(8192);
-  itk::EncapsulateMetaData<unsigned short>(dict,key,value);
-  }
-  {
-  // Add char
-  std::string key("char"); char value('c');
-  itk::EncapsulateMetaData<char>(dict,key,value);
-  }
-  {
-  std::string key("bool"); bool value(true);
-  itk::EncapsulateMetaData<bool>(dict,key,value);
-  }
+    {
+    // Add string key
+    std::string key("hello"); std::string value("world");
+    itk::EncapsulateMetaData<std::string>(dict,key,value);
+    }
+    {
+    // Add double
+    std::string key("double"); double value(7.891011);
+    itk::EncapsulateMetaData<double>(dict,key,value);
+    }
+    {
+    // Add float
+    std::string key("float"); float value(1.23456);
+    itk::EncapsulateMetaData<float>(dict,key,value);
+    }
+    {
+    // Add long
+    std::string key("long"); long value(-31415926);
+    itk::EncapsulateMetaData<int>(dict,key,value);
+    }
+    {
+    // Add unsigned long
+    std::string key("unsigned_long"); unsigned long value(27182818);
+    itk::EncapsulateMetaData<unsigned long>(dict,key,value);
+    }
+    {
+    // Add int
+    std::string key("int"); int value(-3141592);
+    itk::EncapsulateMetaData<int>(dict,key,value);
+    }
+    {
+    // Add unsigned int
+    std::string key("unsigned_int"); unsigned int value(2718281);
+    itk::EncapsulateMetaData<unsigned int>(dict,key,value);
+    }
+    {
+    // Add short
+    std::string key("short"); short value(-16384);
+    itk::EncapsulateMetaData<short>(dict,key,value);
+    }
+    {
+    // Add short
+    std::string key("unsigned_short"); unsigned value(8192);
+    itk::EncapsulateMetaData<unsigned short>(dict,key,value);
+    }
+    {
+    // Add char
+    std::string key("char"); char value('c');
+    itk::EncapsulateMetaData<char>(dict,key,value);
+    }
+    {
+    std::string key("bool"); bool value(true);
+    itk::EncapsulateMetaData<bool>(dict,key,value);
+    }
 
   WriteImage<ImageType>(randImage,argv[1]);
 
@@ -242,57 +248,57 @@ itkMetaImageIOMetaDataTest(int argc, char * argv [] )
   dict = randImage2->GetMetaDataDictionary();
 
   std::string value("world");
-  if(!TestMatch<std::string>(dict,"hello",value))
+  if(!TestMatch<std::string>(dict,"hello",value) )
     {
     return 1; // error
     }
   // Add double
-  if(!TestMatch< double >(dict,"double",7.891011))
+  if(!TestMatch< double >(dict,"double",7.891011) )
     {
     return 1; // error
     }
   // Add float
-  if(!TestMatch< float >(dict,"float",1.23456))
+  if(!TestMatch< float >(dict,"float",1.23456) )
     {
     return 1; // error
     }
   // Add long
-  if(!TestMatch< long >(dict,"long",-31415926))
+  if(!TestMatch< long >(dict,"long",-31415926) )
     {
     return 1; // error
     }
   // Add unsigned long
-  if(!TestMatch< unsigned long >(dict,"unsigned_long",27182818))
+  if(!TestMatch< unsigned long >(dict,"unsigned_long",27182818) )
     {
     return 1; // error
     }
   // Add int
-  if(!TestMatch< int >(dict,"int",-3141592))
+  if(!TestMatch< int >(dict,"int",-3141592) )
     {
     return 1; // error
     }
   // Add unsigned int
-  if(!TestMatch< unsigned int >(dict,"unsigned_int",2718281))
+  if(!TestMatch< unsigned int >(dict,"unsigned_int",2718281) )
     {
     return 1; // error
     }
   // Add short
-  if(!TestMatch< short >(dict,"short",-16384))
+  if(!TestMatch< short >(dict,"short",-16384) )
     {
     return 1; // error
     }
   // Add short
-  if(!TestMatch< unsigned >(dict,"unsigned_short",8192))
+  if(!TestMatch< unsigned >(dict,"unsigned_short",8192) )
     {
     return 1; // error
     }
   // Add char
-  if(!TestMatch< char >(dict,"char",'c'))
+  if(!TestMatch< char >(dict,"char",'c') )
     {
     return 1; // error
     }
   // Add unsigned char
-  if(!TestMatch<bool >(dict,"bool",true))
+  if(!TestMatch<bool >(dict,"bool",true) )
     {
     return 1; // error
     }

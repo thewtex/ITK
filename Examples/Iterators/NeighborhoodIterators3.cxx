@@ -58,7 +58,8 @@
 #include "itkNeighborhoodAlgorithm.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
@@ -91,7 +92,7 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
   itk::SobelOperator<PixelType, 2> sobelOperator;
@@ -104,7 +105,8 @@ int main( int argc, char ** argv )
   //
   // First we load the input image and create the output image and inner product
   // function as in the previous examples.  The image iterators will be created
-  // in a later step.  Next we create a face calculator object.  An empty list is
+  // in a later step.  Next we create a face calculator object.  An empty list
+  // is
   // created to hold the regions that will later on be returned by the face
   // calculator.
   //
@@ -114,7 +116,7 @@ int main( int argc, char ** argv )
   typedef itk::NeighborhoodAlgorithm
     ::ImageBoundaryFacesCalculator< ImageType > FaceCalculatorType;
 
-  FaceCalculatorType faceCalculator;
+  FaceCalculatorType               faceCalculator;
   FaceCalculatorType::FaceListType faceList;
   // Software Guide : EndCodeSnippet
 
@@ -123,14 +125,17 @@ int main( int argc, char ** argv )
   // The face calculator function is invoked by passing it an image pointer, an
   // image region, and a neighborhood radius.  The image pointer is the same
   // image used to initialize the neighborhood iterator, and the image region is
-  // the region that the algorithm is going to process.  The radius is the radius
+  // the region that the algorithm is going to process.  The radius is the
+  // radius
   // of the iterator.
   //
   // Notice that in this case the image region is given as the region of the
   // \emph{output} image and the image pointer is given as that of the
-  // \emph{input} image.  This is important if the input and output images differ
+  // \emph{input} image.  This is important if the input and output images
+  // differ
   // in size, i.e. the input image is larger than the output image.  ITK image
-  // filters, for example, operate on data from the input image but only generate
+  // filters, for example, operate on data from the input image but only
+  // generate
   // results in the \code{RequestedRegion} of the output image, which may be
   // smaller than the full extent of the input.
   //
@@ -138,12 +143,13 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   faceList = faceCalculator(reader->GetOutput(), output->GetRequestedRegion(),
-                            sobelOperator.GetRadius());
+                            sobelOperator.GetRadius() );
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
   //
-  // The face calculator has returned a list of $2N+1$ regions. The first element
+  // The face calculator has returned a list of $2N+1$ regions. The first
+  // element
   // in the list is always the inner region, which may or may not be important
   // depending on the application.  For our purposes it does not matter because
   // all regions are processed the same way.  We use an iterator to traverse the
@@ -157,7 +163,8 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginLatex
   //
-  // We now rewrite the main loop of the previous example so that each region in the
+  // We now rewrite the main loop of the previous example so that each region in
+  // the
   // list is processed by a separate iterator.  The iterators \code{it} and
   // \code{out} are reinitialized over each region in turn.  Bounds checking is
   // automatically enabled for those regions that require it, and disabled for
@@ -166,22 +173,21 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  IteratorType out;
+  IteratorType             out;
   NeighborhoodIteratorType it;
 
   for ( fit=faceList.begin(); fit != faceList.end(); ++fit)
     {
     it = NeighborhoodIteratorType( sobelOperator.GetRadius(),
-                                  reader->GetOutput(), *fit );
+                                   reader->GetOutput(), *fit );
     out = IteratorType( output, *fit );
 
-    for (it.GoToBegin(), out.GoToBegin(); ! it.IsAtEnd(); ++it, ++out)
+    for (it.GoToBegin(), out.GoToBegin(); !it.IsAtEnd(); ++it, ++out)
       {
       out.Set( innerProduct(it, sobelOperator) );
       }
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -200,7 +206,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter<
-    ImageType, WriteImageType > RescaleFilterType;
+      ImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 

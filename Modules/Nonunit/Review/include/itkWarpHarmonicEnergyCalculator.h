@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage >
-class WarpHarmonicEnergyCalculator:public Object
+class WarpHarmonicEnergyCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -91,7 +91,8 @@ public:
   /** Set the derivative weights according to the spacing of the input image
    *  (1/spacing). Use this option if you want to calculate the Jacobian
    *  determinant in the space in which the data was acquired. */
-  void SetUseImageSpacingOn()
+  void
+  SetUseImageSpacingOn()
   {
     this->SetUseImageSpacing(true);
   }
@@ -99,7 +100,8 @@ public:
   /** Reset the derivative weights to ignore image spacing.  Use this option if
    *  you want to calculate the Jacobian determinant in the image space.
    *  Default is ImageSpacingOn. */
-  void SetUseImageSpacingOff()
+  void
+  SetUseImageSpacingOff()
   {
     this->SetUseImageSpacing(false);
   }
@@ -131,7 +133,10 @@ public:
 
 protected:
   WarpHarmonicEnergyCalculator();
-  virtual ~WarpHarmonicEnergyCalculator() {}
+  virtual
+  ~WarpHarmonicEnergyCalculator() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Get/Set the neighborhood radius used for gradient computation */

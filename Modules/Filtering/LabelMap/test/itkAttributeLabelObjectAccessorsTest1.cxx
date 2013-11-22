@@ -21,8 +21,8 @@
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkTestingMacros.h"
 
-
-int itkAttributeLabelObjectAccessorsTest1(int argc, char * argv[])
+int
+itkAttributeLabelObjectAccessorsTest1(int argc, char * argv[])
 {
 
   if( argc != 3 )
@@ -62,26 +62,29 @@ int itkAttributeLabelObjectAccessorsTest1(int argc, char * argv[])
 
   IType *reader2Output = reader2->GetOutput();
 
-  // Now we will valuate the attributes. The attribute will be the mean of the pixels
-  // values in the 2nd image. The StatisticsLabelObject can give us that value, without
+  // Now we will valuate the attributes. The attribute will be the mean of the
+  // pixels
+  // values in the 2nd image. The StatisticsLabelObject can give us that value,
+  // without
   // having to code that by hand - that's an example.
 
   LabelMapType::Pointer labelMap = i2l->GetOutput();
   for( LabelMapType::Iterator it(labelMap); !it.IsAtEnd(); ++it )
     {
-    // the label is there if we need it, but it can also be found at labelObject->GetLabel().
+    // the label is there if we need it, but it can also be found at
+    // labelObject->GetLabel().
     // const PType & label = it->first;
 
     // the label object
     LabelObjectType * labelObject = it.GetLabelObject();
 
     // init the vars
-    double mean = 0;
+    double        mean = 0;
     unsigned long size = 0;
 
     // the iterator for the indexes
     LabelObjectType::ConstIndexIterator it2( labelObject );
-    while( ! it2.IsAtEnd() )
+    while( !it2.IsAtEnd() )
       {
       mean += reader2Output->GetPixel( it2.GetIndex() );
       size++;
@@ -93,7 +96,8 @@ int itkAttributeLabelObjectAccessorsTest1(int argc, char * argv[])
     labelObject->SetAttribute( mean );
     // make sure that we get the same value
     TEST_SET_GET_VALUE( mean, labelObject->GetAttribute() );
-    // make sure that the accessor provide the same values than the GetAttribute() method
+    // make sure that the accessor provide the same values than the
+    // GetAttribute() method
     itk::Functor::AttributeLabelObjectAccessor<LabelObjectType> accessor;
     TEST_SET_GET_VALUE( accessor(labelObject), labelObject->GetAttribute() );
     // exercise the print self method

@@ -22,7 +22,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkBioRadImageIOTest(int argc, char* argv[])
+int
+itkBioRadImageIOTest(int argc, char* argv[])
 {
   if(argc < 3)
     {
@@ -57,7 +58,7 @@ int itkBioRadImageIOTest(int argc, char* argv[])
     }
 
   //
-  typedef itk::ImageFileWriter< InputImageType >  WriterType;
+  typedef itk::ImageFileWriter< InputImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetImageIO( bioradImageIO );
   writer->SetFileName( outfilename );

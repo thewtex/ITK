@@ -21,10 +21,10 @@
 #include "itkImageFileWriter.h"
 #include "itkMetaImageIO.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkMetaImageIOTest(int ac, char* av[])
+int
+itkMetaImageIOTest(int ac, char* av[])
 {
   if(ac < 3)
     {
@@ -47,7 +47,7 @@ int itkMetaImageIOTest(int ac, char* av[])
   reader->SetImageIO(metaIn);
 
   // check usability of dimension (for coverage)
-  if (!metaIn->SupportsDimension(3))
+  if (!metaIn->SupportsDimension(3) )
     {
     std::cerr << "Did not support dimension 3" << std::endl;
     return EXIT_FAILURE;

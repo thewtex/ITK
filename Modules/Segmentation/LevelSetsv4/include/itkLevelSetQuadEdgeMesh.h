@@ -33,23 +33,23 @@ namespace itk
  */
 template< typename TMesh >
 class LevelSetQuadEdgeMesh :
-    public LevelSetBase<
-      typename TMesh::PointIdentifier,
-      TMesh::PointDimension,
-      typename TMesh::PixelType,
-      TMesh >
+  public LevelSetBase<
+    typename TMesh::PointIdentifier,
+    TMesh::PointDimension,
+    typename TMesh::PixelType,
+    TMesh >
 {
 public:
   typedef TMesh                   MeshType;
   typedef typename TMesh::Pointer MeshPointer;
 
-  typedef LevelSetQuadEdgeMesh            Self;
-  typedef SmartPointer< Self >            Pointer;
-  typedef SmartPointer< const Self >      ConstPointer;
+  typedef LevelSetQuadEdgeMesh       Self;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
   typedef LevelSetBase< typename MeshType::PointIdentifier,
-    MeshType::PointDimension,
-    typename MeshType::PixelType,
-    MeshType                    >         Superclass;
+                        MeshType::PointDimension,
+                        typename MeshType::PixelType,
+                        MeshType                    >         Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro ( Self );
@@ -78,7 +78,6 @@ public:
    * \todo to be implemented */
   virtual HessianType EvaluateHessian( const InputType& iP ) const;
 
-
   /** Returns the value of the level set function at a given location iP
    * as part of the LevelSetDataType*/
   virtual void Evaluate( const InputType& iP, LevelSetDataType& ioData ) const;
@@ -104,11 +103,12 @@ public:
 
 protected:
   LevelSetQuadEdgeMesh();
-  virtual ~LevelSetQuadEdgeMesh();
+  virtual
+  ~LevelSetQuadEdgeMesh();
 
 private:
   LevelSetQuadEdgeMesh( const Self& );  // purposely not implemented
-  void operator = ( const Self& );          // purposely not implemented
+  void operator =( const Self& );       // purposely not implemented
 
   MeshPointer m_Mesh;
 };

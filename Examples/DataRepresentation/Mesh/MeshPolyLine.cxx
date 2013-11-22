@@ -25,7 +25,6 @@
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  A PolyLine only involves zero and one dimensional cells, which are
@@ -36,14 +35,13 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkMesh.h"
 #include "itkLineCell.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -56,10 +54,9 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float                             PixelType;
-  typedef itk::Mesh< PixelType, 2 >         MeshType;
+  typedef float                     PixelType;
+  typedef itk::Mesh< PixelType, 2 > MeshType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -72,11 +69,10 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellType                CellType;
-  typedef itk::VertexCell< CellType >       VertexType;
-  typedef itk::LineCell< CellType >         LineType;
+  typedef MeshType::CellType          CellType;
+  typedef itk::VertexCell< CellType > VertexType;
+  typedef itk::LineCell< CellType >   LineType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -103,12 +99,12 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
 
-  MeshType::PointType   point0;
-  MeshType::PointType   point1;
-  MeshType::PointType   point2;
-  MeshType::PointType   point3;
+  MeshType::PointType point0;
+  MeshType::PointType point1;
+  MeshType::PointType point2;
+  MeshType::PointType point3;
 
   point0[0] = -1; point0[1] = -1;
   point1[0] =  1; point1[1] = -1;
@@ -120,7 +116,6 @@ int main(int, char *[])
   mesh->SetPoint( 2, point2 );
   mesh->SetPoint( 3, point3 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -155,7 +150,6 @@ int main(int, char *[])
   mesh->SetCell( 2, cellpointer );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally the zero dimensional cells represented by the
@@ -181,11 +175,9 @@ int main(int, char *[])
   mesh->SetCell( 6, cellpointer );
   // Software Guide : EndCodeSnippet
 
-
   // Print out the number of points and the number of cells.
   std::cout << "# Points= " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "# Cell  = " << mesh->GetNumberOfCells() << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -201,7 +193,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::PointsContainer::ConstIterator  PointIterator;
+  typedef MeshType::PointsContainer::ConstIterator PointIterator;
   PointIterator pointIterator = mesh->GetPoints()->Begin();
   PointIterator pointEnd      = mesh->GetPoints()->End();
 
@@ -211,7 +203,6 @@ int main(int, char *[])
     ++pointIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -226,7 +217,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellsContainer::ConstIterator  CellIterator;
+  typedef MeshType::CellsContainer::ConstIterator CellIterator;
 
   CellIterator cellIterator = mesh->GetCells()->Begin();
   CellIterator cellEnd      = mesh->GetCells()->End();
@@ -238,7 +229,6 @@ int main(int, char *[])
     ++cellIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -274,7 +264,7 @@ int main(int, char *[])
     std::cout << " points   " << std::endl;
 
     // Software Guide : BeginCodeSnippet
-    typedef CellType::PointIdIterator     PointIdIterator;
+    typedef CellType::PointIdIterator PointIdIterator;
 
     PointIdIterator pointIditer = cell->PointIdsBegin();
     PointIdIterator pointIdend  = cell->PointIdsEnd();
@@ -289,7 +279,6 @@ int main(int, char *[])
     ++cellIterator;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that the point-identifier is obtained from the iterator using the
@@ -297,7 +286,6 @@ int main(int, char *[])
   //  notation used by cell-iterators.
   //
   //  Software Guide : EndLatex
-
 
   return 0;
 }

@@ -52,10 +52,12 @@ public:
   typedef Neighborhood< InternalPixelType *, Self::ImageDimension > NeighborhoodType;
 
   typedef ImageBoundaryCondition< ImageType > const *
-  ImageBoundaryConditionConstPointerType;
+    ImageBoundaryConditionConstPointerType;
 
   /** Set the pointer index to the start of the buffer. */
-  inline void SetBegin(const InternalPixelType *) {}
+  inline void
+  SetBegin(const InternalPixelType *) {
+  }
 
   /** Method to dereference a pixel pointer. This is used from the
    * ConstNeighborhoodIterator as the equivalent operation to (*it).
@@ -63,18 +65,21 @@ public:
    * The reason is that dereferencing a pointer to a location of
    * VectorImage pixel involves a different operation that simply
    * dereferencing the pointer.  */
-  inline PixelType Get(const InternalPixelType *pixelPointer) const
+  inline PixelType
+  Get(const InternalPixelType *pixelPointer) const
   {
     return ( *pixelPointer );
   }
 
   /** Method to set the pixel value at a certain pixel pointer */
-  inline void Set(InternalPixelType * & pixelPointer, const PixelType & p) const
+  inline void
+  Set(InternalPixelType * & pixelPointer, const PixelType & p) const
   {
     *pixelPointer = p;
   }
 
-  inline PixelType BoundaryCondition(
+  inline PixelType
+  BoundaryCondition(
     const OffsetType & point_index,
     const OffsetType & boundary_offset,
     const NeighborhoodType *data,
@@ -83,14 +88,24 @@ public:
     return boundaryCondition->operator()(point_index, boundary_offset, data);
   }
 
-  void SetVectorLength(VectorLengthType) {}
-  VectorLengthType SetVectorLength() { return 0; }
+  void
+  SetVectorLength(VectorLengthType) {
+  }
+
+  VectorLengthType
+  SetVectorLength() {
+    return 0;
+  }
 
   /** Constructor */
-  NeighborhoodAccessorFunctor() {}
+  NeighborhoodAccessorFunctor() {
+  }
 
   /** Destructor */
-  virtual ~NeighborhoodAccessorFunctor() {}
+  virtual
+  ~NeighborhoodAccessorFunctor() {
+  }
+
 };
 } // end namespace itk
 

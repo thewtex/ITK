@@ -23,10 +23,10 @@
 
 #include <fstream>
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkGDCMImageIOTest(int ac, char* av[])
+int
+itkGDCMImageIOTest(int ac, char* av[])
 {
 
   if(ac < 5)
@@ -35,12 +35,11 @@ int itkGDCMImageIOTest(int ac, char* av[])
     return EXIT_FAILURE;
     }
 
+  typedef short                                  InputPixelType;
+  typedef itk::Image< InputPixelType, 2 >        InputImageType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
-  typedef short                                   InputPixelType;
-  typedef itk::Image< InputPixelType, 2 >         InputImageType;
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
-  typedef itk::GDCMImageIO                        ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
   ImageIOType::Pointer gdcmImageIO = ImageIOType::New();
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -60,25 +59,25 @@ int itkGDCMImageIOTest(int ac, char* av[])
 
   // Exercise the get methods
   std::cout << "InternalComponentType: "
-    << gdcmImageIO->GetInternalComponentType() << std::endl;
+            << gdcmImageIO->GetInternalComponentType() << std::endl;
   std::cout << "RescaleSlope: "
-    << gdcmImageIO->GetRescaleSlope() << std::endl;
+            << gdcmImageIO->GetRescaleSlope() << std::endl;
   std::cout << "RescaleIntercept: "
-    << gdcmImageIO->GetRescaleIntercept() << std::endl;
+            << gdcmImageIO->GetRescaleIntercept() << std::endl;
   std::cout << "UIDPrefix: "
-    << gdcmImageIO->GetUIDPrefix() << std::endl;
+            << gdcmImageIO->GetUIDPrefix() << std::endl;
   std::cout << "StudyInstanceUID: "
-    << gdcmImageIO->GetStudyInstanceUID() << std::endl;
+            << gdcmImageIO->GetStudyInstanceUID() << std::endl;
   std::cout << "SeriesInstanceUID: "
-    << gdcmImageIO->GetSeriesInstanceUID() << std::endl;
+            << gdcmImageIO->GetSeriesInstanceUID() << std::endl;
   std::cout << "FrameOfReferenceInstanceUID: "
-    << gdcmImageIO->GetFrameOfReferenceInstanceUID() << std::endl;
+            << gdcmImageIO->GetFrameOfReferenceInstanceUID() << std::endl;
   std::cout << "KeepOriginalUID: "
-    << gdcmImageIO->GetKeepOriginalUID() << std::endl;
+            << gdcmImageIO->GetKeepOriginalUID() << std::endl;
   std::cout << "LoadPrivateTags: "
-    << gdcmImageIO->GetLoadPrivateTags() << std::endl;
+            << gdcmImageIO->GetLoadPrivateTags() << std::endl;
   std::cout << "CompressionType: "
-    << gdcmImageIO->GetCompressionType() << std::endl;
+            << gdcmImageIO->GetCompressionType() << std::endl;
 
   // Test itk::GDCMImageIO::GetValueFromTag with upper and lower case tagkeys
   std::string tagkeyLower = "0008|103e"; // Series Description
@@ -91,13 +90,14 @@ int itkGDCMImageIOTest(int ac, char* av[])
   // baseline, as this test is run multiple times with different input images
   if(valueFromLower != valueFromUpper)
     {
-    std::cerr << "itk::GDCMImageIO::GetValueFromTag produces different values for upper and lowercase tags" << std::endl;
+    std::cerr << "itk::GDCMImageIO::GetValueFromTag produces different values for upper and lowercase tags" <<
+      std::endl;
     return EXIT_FAILURE;
     }
 
   // Rewrite the image in DICOM format
   //
-  typedef itk::ImageFileWriter< InputImageType >  Writer1Type;
+  typedef itk::ImageFileWriter< InputImageType > Writer1Type;
   Writer1Type::Pointer writer1 = Writer1Type::New();
   writer1->SetFileName( av[2] );
   writer1->SetInput( reader->GetOutput() );
@@ -119,14 +119,14 @@ int itkGDCMImageIOTest(int ac, char* av[])
   typedef unsigned char                   WritePixelType;
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::RescaleIntensityImageFilter<
-    InputImageType, WriteImageType >      RescaleFilterType;
+      InputImageType, WriteImageType >      RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
   rescaler->SetInput( reader->GetOutput() );
 
-  typedef itk::ImageFileWriter< WriteImageType >  Writer2Type;
+  typedef itk::ImageFileWriter< WriteImageType > Writer2Type;
   Writer2Type::Pointer writer2 = Writer2Type::New();
   writer2->SetFileName( av[3] );
   writer2->SetInput( rescaler->GetOutput() );
@@ -144,7 +144,7 @@ int itkGDCMImageIOTest(int ac, char* av[])
 
   // Rewrite the image in DICOM format but using less bits per pixel
   //
-  typedef itk::ImageFileWriter< WriteImageType >  Writer3Type;
+  typedef itk::ImageFileWriter< WriteImageType > Writer3Type;
 
   Writer3Type::Pointer writer3 = Writer3Type::New();
   writer3->SetFileName( av[4] );

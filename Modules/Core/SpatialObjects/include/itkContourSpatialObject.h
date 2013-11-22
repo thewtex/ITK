@@ -36,7 +36,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class ContourSpatialObject:
+class ContourSpatialObject :
   public PointBasedSpatialObject<  TDimension >
 {
 public:
@@ -74,16 +74,25 @@ public:
   void SetControlPoints(ControlPointListType & newPoints);
 
   /** Return a control point in the list given the index */
-  const ControlPointType * GetControlPoint(IdentifierType id) const
-  { return &( m_ControlPoints[id] ); }
+  const ControlPointType *
+  GetControlPoint(IdentifierType id) const
+  {
+    return &( m_ControlPoints[id] );
+  }
 
   /** Return a control point in the list given the index */
-  ControlPointType * GetControlPoint(IdentifierType id)
-  { return &( m_ControlPoints[id] ); }
+  ControlPointType *
+  GetControlPoint(IdentifierType id)
+  {
+    return &( m_ControlPoints[id] );
+  }
 
   /** Return the number of control points in the list */
-  SizeValueType GetNumberOfControlPoints(void) const
-  { return m_ControlPoints.size(); }
+  SizeValueType
+  GetNumberOfControlPoints(void) const
+  {
+    return m_ControlPoints.size();
+  }
 
   /** Returns a reference to the list of the interpolated points. */
   InterpolatedPointListType & GetInterpolatedPoints(void);
@@ -95,26 +104,42 @@ public:
   void SetInterpolatedPoints(InterpolatedPointListType & newPoints);
 
   /** Return a interpolated point in the list given the index */
-  const InterpolatedPointType * GetInterpolatedPoint(IdentifierType id) const
-  { return &( m_InterpolatedPoints[id] ); }
+  const InterpolatedPointType *
+  GetInterpolatedPoint(IdentifierType id) const
+  {
+    return &( m_InterpolatedPoints[id] );
+  }
 
   /** Return a interpolated point in the list given the index */
-  InterpolatedPointType * GetInterpolatedPoint(IdentifierType id)
-  { return &( m_InterpolatedPoints[id] ); }
+  InterpolatedPointType *
+  GetInterpolatedPoint(IdentifierType id)
+  {
+    return &( m_InterpolatedPoints[id] );
+  }
 
   /** Return the number of interpolated points in the list */
-  SizeValueType GetNumberOfInterpolatedPoints(void) const
-  { return m_InterpolatedPoints.size(); }
+  SizeValueType
+  GetNumberOfInterpolatedPoints(void) const
+  {
+    return m_InterpolatedPoints.size();
+  }
 
   enum InterpolationType { NO_INTERPOLATION = 0,
                            EXPLICIT_INTERPOLATION, BEZIER_INTERPOLATION,
                            LINEAR_INTERPOLATION };
 
   /** Set/Get the interpolation type */
-  InterpolationType GetInterpolationType() const
-  { return m_InterpolationType; }
-  void SetInterpolationType(InterpolationType interpolation)
-  { m_InterpolationType = interpolation; }
+  InterpolationType
+  GetInterpolationType() const
+  {
+    return m_InterpolationType;
+  }
+
+  void
+  SetInterpolationType(InterpolationType interpolation)
+  {
+    m_InterpolationType = interpolation;
+  }
 
   /** Set/Get if the contour is closed */
   itkSetMacro(Closed, bool);
@@ -168,10 +193,12 @@ protected:
   int                       m_AttachedToSlice;
 
   ContourSpatialObject();
-  virtual ~ContourSpatialObject();
+  virtual
+  ~ContourSpatialObject();
 
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

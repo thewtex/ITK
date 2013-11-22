@@ -23,7 +23,8 @@
 #include "itkDefaultDynamicMeshTraits.h"
 #include "itkTriangleMeshToSimplexMeshFilter.h"
 
-int itkSimplexMeshVolumeCalculatorTest(int , char *[] )
+int
+itkSimplexMeshVolumeCalculatorTest(int , char *[] )
 {
   // Declare the type of the input and output mesh
   typedef itk::DefaultDynamicMeshTraits<double, 3, 3, double, double, double> MeshTraits;
@@ -31,19 +32,18 @@ int itkSimplexMeshVolumeCalculatorTest(int , char *[] )
   typedef itk::Mesh<double,3,MeshTraits>        TriangleMeshType;
   typedef itk::SimplexMesh<double,3,MeshTraits> SimplexMeshType;
 
-
   // declare triangle mesh source
   typedef itk::RegularSphereMeshSource<TriangleMeshType> SphereMeshSourceType;
   typedef SphereMeshSourceType::PointType                PointType;
   typedef SphereMeshSourceType::VectorType               VectorType;
 
   // Declare the type of the gradient image
-  typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType>  SimplexFilterType;
+  typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType> SimplexFilterType;
 
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
-  PointType center; center.Fill(0);
-  PointType::ValueType scaleInit[3] = {10,10,10};
-  VectorType scale = scaleInit;
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
+  PointType                     center; center.Fill(0);
+  PointType::ValueType          scaleInit[3] = {10,10,10};
+  VectorType                    scale = scaleInit;
 
   mySphereMeshSource->SetCenter(center);
   mySphereMeshSource->SetScale(scale);
@@ -52,8 +52,7 @@ int itkSimplexMeshVolumeCalculatorTest(int , char *[] )
   simplexFilter->SetInput( mySphereMeshSource->GetOutput() );
 
   typedef itk::SimplexMeshVolumeCalculator<
-                 SimplexMeshType > VolumeCalculatorType;
-
+      SimplexMeshType > VolumeCalculatorType;
 
   VolumeCalculatorType::Pointer calculator = VolumeCalculatorType::New();
 
@@ -86,7 +85,6 @@ int itkSimplexMeshVolumeCalculatorTest(int , char *[] )
     std::cerr << "But we got  " << volume << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "[TEST DONE]" << std::endl;
   return EXIT_SUCCESS;

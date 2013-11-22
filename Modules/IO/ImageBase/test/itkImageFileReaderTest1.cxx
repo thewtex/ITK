@@ -18,8 +18,8 @@
 
 #include "itkImageFileReader.h"
 
-
-int itkImageFileReaderTest1(int ac, char* av[])
+int
+itkImageFileReaderTest1(int ac, char* av[])
 {
 
   if (ac < 1)
@@ -49,7 +49,6 @@ int itkImageFileReaderTest1(int ac, char* av[])
     std::cout << "Failed to catch expected exception." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Now try a read with an image that doesn't exist
   status = 1;
@@ -91,7 +90,6 @@ int itkImageFileReaderTest1(int ac, char* av[])
     std::cout << "Failed to catch expected exception." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

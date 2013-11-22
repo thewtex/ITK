@@ -19,12 +19,13 @@
 #include "itkInvertDisplacementFieldImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-int itkInvertDisplacementFieldImageFilterTest( int, char * [] )
+int
+itkInvertDisplacementFieldImageFilterTest( int, char * [] )
 {
-  const unsigned int   ImageDimension = 2;
+  const unsigned int ImageDimension = 2;
 
-  typedef itk::Vector<float, ImageDimension>       VectorType;
-  typedef itk::Image<VectorType, ImageDimension>   DisplacementFieldType;
+  typedef itk::Vector<float, ImageDimension>     VectorType;
+  typedef itk::Image<VectorType, ImageDimension> DisplacementFieldType;
 
   // Create a displacement field
   DisplacementFieldType::PointType     origin;
@@ -53,13 +54,13 @@ int itkInvertDisplacementFieldImageFilterTest( int, char * [] )
   float weight1 = 1.0;
 
   const DisplacementFieldType::RegionType region = field->GetLargestPossibleRegion();
-  const DisplacementFieldType::IndexType startIndex = region.GetIndex();
+  const DisplacementFieldType::IndexType  startIndex = region.GetIndex();
 
   itk::ImageRegionIteratorWithIndex<DisplacementFieldType> ItF( field, field->GetLargestPossibleRegion() );
   for( ItF.GoToBegin(); !ItF.IsAtEnd(); ++ItF )
     {
     DisplacementFieldType::IndexType index = ItF.GetIndex();
-    bool isOnBoundary = false;
+    bool                             isOnBoundary = false;
     for ( unsigned int d = 0; d < ImageDimension; d++ )
       {
       if( index[d] == startIndex[d] || index[d] == static_cast<int>( size[d] ) - startIndex[d] - 1 )
@@ -116,7 +117,7 @@ int itkInvertDisplacementFieldImageFilterTest( int, char * [] )
     }
 
   if( inverter->GetMeanErrorNorm() > inverter->GetMeanErrorToleranceThreshold() &&
-    inverter->GetMaxErrorNorm() > inverter->GetMaxErrorToleranceThreshold() )
+      inverter->GetMaxErrorNorm() > inverter->GetMaxErrorToleranceThreshold() )
     {
     std::cerr << "Failed to converge properly." << std::endl;
     return EXIT_FAILURE;

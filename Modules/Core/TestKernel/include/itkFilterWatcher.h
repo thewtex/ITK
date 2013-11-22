@@ -54,9 +54,9 @@ public:
     progressFilterCommand->SetCallbackFunction(this,
                                                &FilterWatcher::ShowProgress);
     iterationFilterCommand->SetCallbackFunction(this,
-                                               &FilterWatcher::ShowIteration);
+                                                &FilterWatcher::ShowIteration);
     abortFilterCommand->SetCallbackFunction(this,
-                                               &FilterWatcher::ShowAbort);
+                                            &FilterWatcher::ShowAbort);
     m_Process->AddObserver(itk::StartEvent(), startFilterCommand);
     m_Process->AddObserver(itk::EndEvent(), endFilterCommand);
     m_Process->AddObserver(itk::ProgressEvent(), progressFilterCommand);
@@ -64,15 +64,18 @@ public:
     m_Process->AddObserver(itk::AbortEvent(), abortFilterCommand);
   }
 
-  virtual ~FilterWatcher() {}
+  virtual
+  ~FilterWatcher() {
+  }
 
-  virtual void ShowProgress()
+  virtual void
+  ShowProgress()
   {
     m_Steps++;
     if (!m_Quiet)
       {
       std::cout << " | " << m_Process->GetProgress() << std::flush;
-      if ((m_Steps % 10) == 0)
+      if ( (m_Steps % 10) == 0)
         {
         std::cout << std::endl;
         }
@@ -85,16 +88,23 @@ public:
         }
       }
   }
-  virtual void ShowAbort()
+
+  virtual void
+  ShowAbort()
   {
     std::cout << std::endl << "      ABORT" << std::endl << std::flush;
   }
-  virtual void ShowIteration()
+
+  virtual void
+  ShowIteration()
   {
     std::cout << " # " << std::flush;
+
     m_Iterations++;
   }
-  virtual void StartFilter()
+
+  virtual void
+  StartFilter()
   {
     m_Steps = 0;
     m_Iterations = 0;
@@ -104,9 +114,15 @@ public:
               << m_Process
               << (m_Quiet ? "Progress Quiet " : "Progress ")
               << std::flush;
-    }
-  const char *GetNameOfClass () {return m_Process->GetNameOfClass();}
-  virtual void EndFilter()
+  }
+
+  const char *
+  GetNameOfClass() {
+    return m_Process->GetNameOfClass();
+  }
+
+  virtual void
+  EndFilter()
   {
     m_End = ::clock();
     std::cout << std::endl << "Filter took "
@@ -120,12 +136,27 @@ public:
       {
       itkExceptionMacro ("Filter does not have progress.");
       }
-    }
+  }
 
-  void QuietOn() {m_Quiet = true;}
-  void QuietOff() {m_Quiet = false;}
-  void TestAbortOn() {m_TestAbort = true;}
-  void TestAbortOff() {m_TestAbort = false;}
+  void
+  QuietOn() {
+    m_Quiet = true;
+  }
+
+  void
+  QuietOff() {
+    m_Quiet = false;
+  }
+
+  void
+  TestAbortOn() {
+    m_TestAbort = true;
+  }
+
+  void
+  TestAbortOff() {
+    m_TestAbort = false;
+  }
 
 protected:
   clock_t m_Start;

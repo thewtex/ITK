@@ -25,41 +25,46 @@ const unsigned int WIDTH  = (128);
 #define RADIUS (vnl_math_min(HEIGHT, WIDTH)/4)
 
 // Distance transform function for square
-float square(unsigned x, unsigned y)
+float
+square(unsigned x, unsigned y)
 {
-    float X, Y;
-    X = vnl_math_abs(x - (float)WIDTH/2.0);
-    Y = vnl_math_abs(y - (float)HEIGHT/2.0);
-    float dis;
-    if (!((X > RADIUS)&&(Y > RADIUS)))
-      {
-      dis = RADIUS - vnl_math_max(X, Y);
-      }
-    else
-      {
-      dis = -vcl_sqrt((X - RADIUS)*(X - RADIUS) +  (Y - RADIUS)*(Y - RADIUS));
-      }
-    return(dis);
+  float X, Y;
+
+  X = vnl_math_abs(x - (float)WIDTH/2.0);
+  Y = vnl_math_abs(y - (float)HEIGHT/2.0);
+  float dis;
+  if (!( (X > RADIUS)&&(Y > RADIUS) ) )
+    {
+    dis = RADIUS - vnl_math_max(X, Y);
+    }
+  else
+    {
+    dis = -vcl_sqrt( (X - RADIUS)*(X - RADIUS) +  (Y - RADIUS)*(Y - RADIUS) );
+    }
+  return(dis);
 }
 
 // Evaluates a function at each pixel in the itk image
-void evaluate_function(itk::Image<float, 2> *im,
-                       float (*f)(unsigned int, unsigned int) )
+void
+evaluate_function(itk::Image<float, 2> *im,
+                  float (*f)(unsigned int, unsigned int) )
 
 {
   itk::Image<float, 2>::IndexType idx;
+
   for (unsigned int x = 0; x < WIDTH; ++x)
     {
-      idx[0] = x;
-      for (unsigned int y = 0; y < HEIGHT; ++y)
-        {
-          idx[1] = y;
-          im->SetPixel(idx, f(x, y) );
-        }
+    idx[0] = x;
+    for (unsigned int y = 0; y < HEIGHT; ++y)
+      {
+      idx[1] = y;
+      im->SetPixel(idx, f(x, y) );
+      }
     }
 }
 
-int itkUnsharpMaskLevelSetImageFilterTest(int, char* [] )
+int
+itkUnsharpMaskLevelSetImageFilterTest(int, char* [] )
 {
   typedef itk::Image<float, 2> ImageType;
 
@@ -78,13 +83,13 @@ int itkUnsharpMaskLevelSetImageFilterTest(int, char* [] )
 
   evaluate_function(im_init, square);
   typedef itk::UnsharpMaskLevelSetImageFilter<ImageType,
-    ImageType> FilterType;
+                                              ImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetMaxFilterIteration (99);
   filter->SetNormalProcessUnsharpWeight(1);
 
   filter->SetInput(im_init);
-  std::cout<<"max iteration = "<<(filter->GetMaxFilterIteration())<<"\n";
+  std::cout<<"max iteration = "<<(filter->GetMaxFilterIteration() )<<"\n";
   std::cout<<"Starting processing.\n";
   filter->Update();
   filter->Print(std::cout);

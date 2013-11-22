@@ -63,7 +63,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename T >
-class SimpleDataObjectDecorator:public DataObject
+class SimpleDataObjectDecorator : public DataObject
 {
 public:
   /** Standard typedefs. */
@@ -85,8 +85,15 @@ public:
   virtual void Set(const T & val);
 
   /** Get the contained object */
-  virtual T &       Get() { return m_Component; }
-  virtual const T & Get() const { return m_Component; }
+  virtual T &
+  Get() {
+    return m_Component;
+  }
+
+  virtual const T &
+  Get() const {
+    return m_Component;
+  }
 
 protected:
   SimpleDataObjectDecorator();

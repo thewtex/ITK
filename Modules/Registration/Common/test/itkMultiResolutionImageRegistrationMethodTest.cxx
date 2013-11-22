@@ -23,7 +23,6 @@
 
 #include "itkTextOutput.h"
 
-
 /**
  *  This program test one instantiation of the
  *  itk::MultiResolutionImageRegistrationMethod class
@@ -31,66 +30,65 @@
  *  This file tests initialization errors.
  */
 
-int itkMultiResolutionImageRegistrationMethodTest(int, char* [] )
+int
+itkMultiResolutionImageRegistrationMethodTest(int, char* [] )
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   bool pass;
 
   const unsigned int dimension = 3;
 
   // Fixed Image Type
-  typedef itk::Image<float,dimension>                    FixedImageType;
+  typedef itk::Image<float,dimension> FixedImageType;
 
   // Moving Image Type
 //  typedef itk::Image<char,dimension>                     MovingImageType;
-  typedef itk::Image<float,dimension>                     MovingImageType;
+  typedef itk::Image<float,dimension> MovingImageType;
 
   // Transform Type
   typedef itk::TranslationTransform< double, dimension > TransformType;
 
   // Optimizer Type
-  typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
 
   // Metric Type
   typedef itk::MeanSquaresImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
   // Interpolation technique
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
 
   // Fixed Image Pyramid Type
   typedef itk::RecursiveMultiResolutionPyramidImageFilter<
-                                    FixedImageType,
-                                    FixedImageType  >    FixedImagePyramidType;
+      FixedImageType,
+      FixedImageType  >    FixedImagePyramidType;
 
   // Moving Image Pyramid Type
   typedef itk::RecursiveMultiResolutionPyramidImageFilter<
-                                    MovingImageType,
-                                    MovingImageType  >   MovingImagePyramidType;
-
+      MovingImageType,
+      MovingImageType  >   MovingImagePyramidType;
 
   // Registration Method
   typedef itk::MultiResolutionImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
-
-  MetricType::Pointer         metric        = MetricType::New();
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  FixedImageType::Pointer     fixedImage    = FixedImageType::New();
-  MovingImageType::Pointer    movingImage   = MovingImageType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
+  MetricType::Pointer            metric        = MetricType::New();
+  TransformType::Pointer         transform     = TransformType::New();
+  OptimizerType::Pointer         optimizer     = OptimizerType::New();
+  FixedImageType::Pointer        fixedImage    = FixedImageType::New();
+  MovingImageType::Pointer       movingImage   = MovingImageType::New();
+  InterpolatorType::Pointer      interpolator  = InterpolatorType::New();
   FixedImagePyramidType::Pointer fixedImagePyramid =
     FixedImagePyramidType::New();
   MovingImagePyramidType::Pointer movingImagePyramid =
     MovingImagePyramidType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   FixedImageType::SizeType size;
   size.Fill( 8 );
@@ -124,7 +122,6 @@ int itkMultiResolutionImageRegistrationMethodTest(int, char* [] )
 
   registration->Print( std::cout );
 
-
   // Exercise Get methods
   std::cout << "metric: " << registration->GetMetric() << std::endl;
   std::cout << "optimizer: " << registration->GetOptimizer() << std::endl;
@@ -141,7 +138,6 @@ int itkMultiResolutionImageRegistrationMethodTest(int, char* [] )
 
   std::cout << "no. levels: " << registration->GetNumberOfLevels() << std::endl;
   std::cout << "current level: " << registration->GetCurrentLevel() << std::endl;
-
 
   /****************************************************
    * Test out initialization errors
@@ -177,11 +173,9 @@ int itkMultiResolutionImageRegistrationMethodTest(int, char* [] )
   TEST_INITIALIZATION_ERROR( FixedImagePyramid, NULL, fixedImagePyramid );
   TEST_INITIALIZATION_ERROR( MovingImagePyramid, NULL, movingImagePyramid );
   TEST_INITIALIZATION_ERROR( InitialTransformParameters, ParametersType(1),
-                                                         initialParameters );
-
+                             initialParameters );
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

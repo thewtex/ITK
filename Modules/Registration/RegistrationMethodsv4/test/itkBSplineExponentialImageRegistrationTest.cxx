@@ -33,36 +33,44 @@ template<typename TFilter>
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef CommandIterationUpdate   Self;
-  typedef itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>  Pointer;
+  typedef CommandIterationUpdate  Self;
+  typedef itk::Command            Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *) caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     const TFilter * filter =
       dynamic_cast< const TFilter * >( object );
+
     if( typeid( event ) != typeid( itk::IterationEvent ) )
-      { return; }
+                { return; }
 
     unsigned int currentLevel = filter->GetCurrentLevel();
-    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension( currentLevel );
+    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension(
+        currentLevel );
     typename TFilter::SmoothingSigmasArrayType smoothingSigmas = filter->GetSmoothingSigmasPerLevel();
-    typename TFilter::TransformParametersAdaptorsContainerType adaptors = filter->GetTransformParametersAdaptorsPerLevel();
+    typename TFilter::TransformParametersAdaptorsContainerType adaptors =
+      filter->GetTransformParametersAdaptorsPerLevel();
 
-    typename itk::ObjectToObjectOptimizerBase::Pointer optimizerBase = (const_cast<TFilter*>(filter))->GetModifiableOptimizer();
+    typename itk::ObjectToObjectOptimizerBase::Pointer optimizerBase =
+      (const_cast<TFilter*>(filter) )->GetModifiableOptimizer();
     typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
-    typename GradientDescentOptimizerv4Type::Pointer optimizer = dynamic_cast<GradientDescentOptimizerv4Type *>(optimizerBase.GetPointer());
+    typename GradientDescentOptimizerv4Type::Pointer optimizer =
+      dynamic_cast<GradientDescentOptimizerv4Type *>(optimizerBase.GetPointer() );
     if( !optimizer )
       {
       itkGenericExceptionMacro( "Error dynamic_cast failed" );
@@ -97,15 +105,19 @@ public:
         }
       }
     std::cout << std::endl;
-    }
+  }
+
 };
 
 template <unsigned int VImageDimension>
-int PerformBSplineExpImageRegistration( int argc, char *argv[] )
+int
+PerformBSplineExpImageRegistration( int argc, char *argv[] )
 {
   if( argc < 6 )
     {
-    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" << std::endl;
+    std::cout << argv[0] <<
+      " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" <<
+      std::endl;
     exit( 1 );
     }
 
@@ -129,23 +141,25 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
   movingImage->Update();
   movingImage->DisconnectPipeline();
 
-  typedef itk::AffineTransform<double, VImageDimension> AffineTransformType;
+  typedef itk::AffineTransform<double, VImageDimension>                                        AffineTransformType;
   typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, AffineTransformType> AffineRegistrationType;
-  typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
+  typedef itk::GradientDescentOptimizerv4
+    GradientDescentOptimizerv4Type;
   typename AffineRegistrationType::Pointer affineSimple = AffineRegistrationType::New();
   affineSimple->SetFixedImage( fixedImage );
   affineSimple->SetMovingImage( movingImage );
 
-  // Smooth by specified gaussian sigmas for each level.  These values are specified in
+  // Smooth by specified gaussian sigmas for each level.  These values are
+  // specified in
   // physical units. Sigmas of zero cause inconsistency between some platforms.
-  {
-  typename AffineRegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
-  smoothingSigmasPerLevel.SetSize( 3 );
-  smoothingSigmasPerLevel[0] = 2;
-  smoothingSigmasPerLevel[1] = 1;
-  smoothingSigmasPerLevel[2] = 1; //0;
-  affineSimple->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
-  }
+    {
+    typename AffineRegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
+    smoothingSigmasPerLevel.SetSize( 3 );
+    smoothingSigmasPerLevel[0] = 2;
+    smoothingSigmasPerLevel[1] = 1;
+    smoothingSigmasPerLevel[2] = 1; //0;
+    affineSimple->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
+    }
 
   typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
   typename GradientDescentOptimizerv4Type::Pointer affineOptimizer =
@@ -167,12 +181,13 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
   typename AffineCommandType::Pointer affineObserver = AffineCommandType::New();
   affineSimple->AddObserver( itk::IterationEvent(), affineObserver );
 
-  {
-  typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
-  typename ImageMetricType::Pointer imageMetric = dynamic_cast<ImageMetricType*>( affineSimple->GetModifiableMetric() );
-  //imageMetric->SetUseFloatingPointCorrection(true);
-  imageMetric->SetFloatingPointCorrectionResolution(1e4);
-  }
+    {
+    typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
+    typename ImageMetricType::Pointer imageMetric =
+      dynamic_cast<ImageMetricType*>( affineSimple->GetModifiableMetric() );
+    //imageMetric->SetUseFloatingPointCorrection(true);
+    imageMetric->SetFloatingPointCorrectionResolution(1e4);
+    }
 
   try
     {
@@ -185,17 +200,18 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  {
-  typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
-  typename ImageMetricType::Pointer imageMetric = dynamic_cast<ImageMetricType*>( affineOptimizer->GetModifiableMetric() );
-  std::cout << "Affine parameters after registration: " << std::endl
-            << affineOptimizer->GetCurrentPosition() << std::endl
-            << "Last LearningRate: " << affineOptimizer->GetLearningRate() << std::endl
-            << "Use FltPtCorrex: " << imageMetric->GetUseFloatingPointCorrection() << std::endl
-            << "FltPtCorrexRes: " << imageMetric->GetFloatingPointCorrectionResolution() << std::endl
-            << "Number of threads used: metric: " << imageMetric->GetNumberOfThreadsUsed()
-            << std::endl << " optimizer: " << affineOptimizer->GetNumberOfThreads() << std::endl;
-  }
+    {
+    typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
+    typename ImageMetricType::Pointer imageMetric =
+      dynamic_cast<ImageMetricType*>( affineOptimizer->GetModifiableMetric() );
+    std::cout << "Affine parameters after registration: " << std::endl
+              << affineOptimizer->GetCurrentPosition() << std::endl
+              << "Last LearningRate: " << affineOptimizer->GetLearningRate() << std::endl
+              << "Use FltPtCorrex: " << imageMetric->GetUseFloatingPointCorrection() << std::endl
+              << "FltPtCorrexRes: " << imageMetric->GetFloatingPointCorrectionResolution() << std::endl
+              << "Number of threads used: metric: " << imageMetric->GetNumberOfThreadsUsed()
+              << std::endl << " optimizer: " << affineOptimizer->GetNumberOfThreads() << std::endl;
+    }
   //
   // Now do the displacement field transform with gaussian smoothing using
   // the composite transform.
@@ -205,7 +221,8 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
 
   typedef itk::CompositeTransform<RealType, VImageDimension> CompositeTransformType;
   typename CompositeTransformType::Pointer compositeTransform = CompositeTransformType::New();
-  compositeTransform->AddTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->GetOutput()->Get() ) );
+  compositeTransform->AddTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->
+                                                                                                        GetOutput()->Get() ) );
 
   typedef itk::Vector<RealType, VImageDimension> VectorType;
   VectorType zeroVector( 0.0 );
@@ -218,10 +235,13 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
 
   typedef itk::BSplineExponentialDiffeomorphicTransform<RealType, VImageDimension> DisplacementFieldTransformType;
 
-  typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, DisplacementFieldTransformType> DisplacementFieldRegistrationType;
-  typename DisplacementFieldRegistrationType::Pointer displacementFieldSimple = DisplacementFieldRegistrationType::New();
+  typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType,
+                                         DisplacementFieldTransformType> DisplacementFieldRegistrationType;
+  typename DisplacementFieldRegistrationType::Pointer displacementFieldSimple =
+    DisplacementFieldRegistrationType::New();
 
-  typename DisplacementFieldTransformType::Pointer fieldTransform = const_cast<DisplacementFieldTransformType *>( displacementFieldSimple->GetOutput()->Get() );
+  typename DisplacementFieldTransformType::Pointer fieldTransform =
+    const_cast<DisplacementFieldTransformType *>( displacementFieldSimple->GetOutput()->Get() );
 
   typename DisplacementFieldTransformType::ArrayType updateControlPoints;
   updateControlPoints.Fill( 10 );
@@ -269,7 +289,8 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
   displacementFieldSimple->SetMetric( correlationMetric );
   displacementFieldSimple->SetOptimizer( optimizer );
 
-  // Shrink the virtual domain by specified factors for each level.  See documentation
+  // Shrink the virtual domain by specified factors for each level.  See
+  // documentation
   // for the itkShrinkImageFilter for more detailed behavior.
   typename DisplacementFieldRegistrationType::ShrinkFactorsArrayType shrinkFactorsPerLevel;
   shrinkFactorsPerLevel.SetSize( 3 );
@@ -278,7 +299,8 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
   shrinkFactorsPerLevel[2] = 1;
   displacementFieldSimple->SetShrinkFactorsPerLevel( shrinkFactorsPerLevel );
 
-  // Smooth by specified gaussian sigmas for each level.  These values are specified in
+  // Smooth by specified gaussian sigmas for each level.  These values are
+  // specified in
   // physical units.
   typename DisplacementFieldRegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
   smoothingSigmasPerLevel.SetSize( 3 );
@@ -287,14 +309,17 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
   smoothingSigmasPerLevel[2] = 1;
   displacementFieldSimple->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
 
-  typedef itk::BSplineExponentialDiffeomorphicTransformParametersAdaptor<DisplacementFieldTransformType> DisplacementFieldTransformAdaptorType;
+  typedef itk::BSplineExponentialDiffeomorphicTransformParametersAdaptor<DisplacementFieldTransformType>
+    DisplacementFieldTransformAdaptorType;
 
   typename DisplacementFieldRegistrationType::TransformParametersAdaptorsContainerType adaptors;
 
   for( unsigned int level = 0; level < shrinkFactorsPerLevel.Size(); level++ )
     {
-    // We use the shrink image filter to calculate the fixed parameters of the virtual
-    // domain at each level.  To speed up calculation and avoid unnecessary memory
+    // We use the shrink image filter to calculate the fixed parameters of the
+    // virtual
+    // domain at each level.  To speed up calculation and avoid unnecessary
+    // memory
     // usage, we could calculate these fixed parameters directly.
 
     typedef itk::ShrinkImageFilter<DisplacementFieldType, DisplacementFieldType> ShrinkFilterType;
@@ -303,7 +328,8 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
     shrinkFilter->SetInput( displacementField );
     shrinkFilter->Update();
 
-    typename DisplacementFieldTransformAdaptorType::Pointer fieldTransformAdaptor = DisplacementFieldTransformAdaptorType::New();
+    typename DisplacementFieldTransformAdaptorType::Pointer fieldTransformAdaptor =
+      DisplacementFieldTransformAdaptorType::New();
     fieldTransformAdaptor->SetRequiredSpacing( shrinkFilter->GetOutput()->GetSpacing() );
     fieldTransformAdaptor->SetRequiredSize( shrinkFilter->GetOutput()->GetBufferedRegion().GetSize() );
     fieldTransformAdaptor->SetRequiredDirection( shrinkFilter->GetOutput()->GetDirection() );
@@ -314,7 +340,8 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
   displacementFieldSimple->SetTransformParametersAdaptorsPerLevel( adaptors );
 
   typedef CommandIterationUpdate<DisplacementFieldRegistrationType> DisplacementFieldRegistrationCommandType;
-  typename DisplacementFieldRegistrationCommandType::Pointer displacementFieldObserver = DisplacementFieldRegistrationCommandType::New();
+  typename DisplacementFieldRegistrationCommandType::Pointer displacementFieldObserver =
+    DisplacementFieldRegistrationCommandType::New();
   displacementFieldSimple->AddObserver( itk::IterationEvent(), displacementFieldObserver );
 
   try
@@ -328,7 +355,8 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  compositeTransform->AddTransform( const_cast<DisplacementFieldTransformType *>( displacementFieldSimple->GetOutput()->Get() ) );
+  compositeTransform->AddTransform( const_cast<DisplacementFieldTransformType *>( displacementFieldSimple->GetOutput()->
+                                                                                  Get() ) );
 
   std::cout << "After displacement registration: " << std::endl
             << "Last LearningRate: " << optimizer->GetLearningRate() << std::endl
@@ -387,25 +415,28 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkBSplineExponentialImageRegistrationTest( int argc, char *argv[] )
+int
+itkBSplineExponentialImageRegistrationTest( int argc, char *argv[] )
 {
   if( argc < 6 )
     {
-    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" << std::endl;
+    std::cout << argv[0] <<
+      " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" <<
+      std::endl;
     exit( 1 );
     }
 
   switch( atoi( argv[1] ) )
-   {
-   case 2:
-     PerformBSplineExpImageRegistration<2>( argc, argv );
-     break;
-   case 3:
-     PerformBSplineExpImageRegistration<3>( argc, argv );
-     break;
-   default:
+    {
+    case 2:
+      PerformBSplineExpImageRegistration<2>( argc, argv );
+      break;
+    case 3:
+      PerformBSplineExpImageRegistration<3>( argc, argv );
+      break;
+    default:
       std::cerr << "Unsupported dimension" << std::endl;
       exit( EXIT_FAILURE );
-   }
+    }
   return EXIT_SUCCESS;
 }

@@ -20,8 +20,8 @@
 
 #include "itkArray2D.h"
 
-
-int itkArray2DTest(int, char* [] )
+int
+itkArray2DTest(int, char* [] )
 {
   typedef itk::Array2D< double > ArrayType;
 
@@ -30,7 +30,7 @@ int itkArray2DTest(int, char* [] )
   const unsigned int rows = 3;
   const unsigned int cols = 4;
 
-  ArrayType a( rows, cols);
+  ArrayType     a( rows, cols);
   VnlMatrixType vm( rows, cols );
 
   for( unsigned int r=0; r<rows; r++)

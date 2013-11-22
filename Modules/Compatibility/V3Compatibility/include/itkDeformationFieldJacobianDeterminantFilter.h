@@ -23,7 +23,8 @@
 #include "vnl/vnl_det.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
 #endif
 
 //This class now inherits from itkDisplacementFieldJacobianDeterminantFilter
@@ -79,14 +80,14 @@ template< typename TInputImage,
           typename TOutputImage = Image< TRealType,
                                          TInputImage::ImageDimension >
           >
-class DeformationFieldJacobianDeterminantFilter:
+class DeformationFieldJacobianDeterminantFilter :
   public DisplacementFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
   typedef DeformationFieldJacobianDeterminantFilter Self;
   typedef DisplacementFieldJacobianDeterminantFilter<
-    TInputImage, TRealType, TOutputImage > Superclass;
+      TInputImage, TRealType, TOutputImage > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -119,10 +120,10 @@ public:
   /** Define the data type and the vector of data type used in calculations. */
   typedef TRealType RealType;
   typedef Vector< TRealType, InputPixelType::Dimension >
-                    RealVectorType;
+    RealVectorType;
   typedef Image<
-    RealVectorType, TInputImage::ImageDimension >
-                    RealVectorImageType;
+      RealVectorType, TInputImage::ImageDimension >
+    RealVectorImageType;
 
   /** Type of the iterator that will be used to move through the image.  Also
       the type which will be passed to the evaluate function */
@@ -138,7 +139,9 @@ public:
 
 protected:
   DeformationFieldJacobianDeterminantFilter();
-  virtual ~DeformationFieldJacobianDeterminantFilter() {}
+  virtual
+  ~DeformationFieldJacobianDeterminantFilter() {
+  }
 
 private:
   DeformationFieldJacobianDeterminantFilter(const Self &); //purposely not

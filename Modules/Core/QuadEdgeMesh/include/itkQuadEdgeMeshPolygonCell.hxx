@@ -109,7 +109,8 @@ QuadEdgeMeshPolygonCell< TCellInterface >
 
 // ---------------------------------------------------------------------
 template< typename TCellInterface >
-void QuadEdgeMeshPolygonCell< TCellInterface >
+void
+QuadEdgeMeshPolygonCell< TCellInterface >
 ::Accept(CellIdentifier cellId, MultiVisitor *mv)
 {
   typedef CellInterfaceVisitor< PixelType, CellTraits > IntVis;
@@ -122,7 +123,8 @@ void QuadEdgeMeshPolygonCell< TCellInterface >
 
 // ---------------------------------------------------------------------
 template< typename TCellInterface >
-unsigned int QuadEdgeMeshPolygonCell< TCellInterface >
+unsigned int
+QuadEdgeMeshPolygonCell< TCellInterface >
 ::GetNumberOfPoints() const
 {
   // The constructor creates one edge by default
@@ -165,7 +167,8 @@ QuadEdgeMeshPolygonCell< TCellInterface >
 
 // ---------------------------------------------------------------------
 template< typename TCellInterface >
-bool QuadEdgeMeshPolygonCell< TCellInterface >
+bool
+QuadEdgeMeshPolygonCell< TCellInterface >
 ::GetBoundaryFeature(int dimension, CellFeatureIdentifier cellId, CellAutoPointer & cell)
 {
   /// \todo
@@ -219,7 +222,8 @@ QuadEdgeMeshPolygonCell< TCellInterface >
 
 // ---------------------------------------------------------------------
 template< typename TCellInterface >
-void QuadEdgeMeshPolygonCell< TCellInterface >
+void
+QuadEdgeMeshPolygonCell< TCellInterface >
 ::SetPointIds(PointIdConstIterator first,
               PointIdConstIterator last)
 {
@@ -237,7 +241,8 @@ void QuadEdgeMeshPolygonCell< TCellInterface >
 
 // ---------------------------------------------------------------------
 template< typename TCellInterface >
-void QuadEdgeMeshPolygonCell< TCellInterface >
+void
+QuadEdgeMeshPolygonCell< TCellInterface >
 ::InternalSetPointIds(PointIdInternalConstIterator first,
                       PointIdInternalConstIterator last)
 {
@@ -255,7 +260,8 @@ void QuadEdgeMeshPolygonCell< TCellInterface >
 
 // ---------------------------------------------------------------------
 template< typename TCellInterface >
-void QuadEdgeMeshPolygonCell< TCellInterface >
+void
+QuadEdgeMeshPolygonCell< TCellInterface >
 ::SetPointId(int localId, PointIdentifier pId)
 {
   int                     n = 0;
@@ -348,6 +354,7 @@ QuadEdgeMeshPolygonCell< TCellInterface >
 
   return iterator;
 }
+
 } // end namespace itk
 
 #endif

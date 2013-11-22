@@ -42,6 +42,7 @@ NarrowBandCurvesLevelSetImageFilter< TInputImage, TFeatureImage, TOutputType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "CurvesFunction: " << m_CurvesFunction.GetPointer();
 }
 
@@ -62,6 +63,7 @@ NarrowBandCurvesLevelSetImageFilter< TInputImage, TFeatureImage, TOutputType >
   // Continue with Superclass implementation
   Superclass::GenerateData();
 }
+
 } // end namespace itk
 
 #endif

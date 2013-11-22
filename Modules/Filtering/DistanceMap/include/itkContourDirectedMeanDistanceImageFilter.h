@@ -60,7 +60,7 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TInputImage1, typename TInputImage2 >
-class ContourDirectedMeanDistanceImageFilter:
+class ContourDirectedMeanDistanceImageFilter :
   public ImageToImageFilter< TInputImage1, TInputImage1 >
 {
 public:
@@ -126,7 +126,9 @@ public:
 
 protected:
   ContourDirectedMeanDistanceImageFilter();
-  ~ContourDirectedMeanDistanceImageFilter(){}
+  ~ContourDirectedMeanDistanceImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Pass the input through unmodified. Do this by Grafting in the

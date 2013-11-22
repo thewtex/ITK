@@ -38,8 +38,9 @@ namespace itk
 // loop - it is too messy.
 
 template< typename PixelType, typename TFunction >
-void FillForwardExt(std::vector<PixelType> & pixbuffer, std::vector<PixelType> & fExtBuffer,
-                    const unsigned int KernLen, unsigned len)
+void
+FillForwardExt(std::vector<PixelType> & pixbuffer, std::vector<PixelType> & fExtBuffer,
+               const unsigned int KernLen, unsigned len)
 {
   unsigned  size = len;
   unsigned  blocks = size / KernLen;
@@ -74,13 +75,14 @@ void FillForwardExt(std::vector<PixelType> & pixbuffer, std::vector<PixelType> &
 }
 
 template< typename PixelType, typename TFunction >
-void FillReverseExt(std::vector<PixelType> & pixbuffer, std::vector<PixelType> & rExtBuffer,
-                    const unsigned int KernLen, unsigned len)
+void
+FillReverseExt(std::vector<PixelType> & pixbuffer, std::vector<PixelType> & rExtBuffer,
+               const unsigned int KernLen, unsigned len)
 {
-  IndexValueType      size = (IndexValueType)( len );
-  IndexValueType      blocks = size / (int)KernLen;
-  IndexValueType      i = size - 1;
-  TFunction m_TF;
+  IndexValueType size = (IndexValueType)( len );
+  IndexValueType blocks = size / (int)KernLen;
+  IndexValueType i = size - 1;
+  TFunction      m_TF;
 
   if ( ( i > ( blocks * (int)KernLen - 1 ) ) )
     {
@@ -108,17 +110,18 @@ void FillReverseExt(std::vector<PixelType> & pixbuffer, std::vector<PixelType> &
 }
 
 template< typename TImage, typename TBres, typename TFunction, typename TLine >
-void DoFace(typename TImage::ConstPointer input,
-            typename TImage::Pointer output,
-            typename TImage::PixelType border,
-            TLine line,
-            const typename TBres::OffsetArray LineOffsets,
-            const unsigned int KernLen,
-            std::vector<typename TImage::PixelType> & pixbuffer,
-            std::vector<typename TImage::PixelType> & fExtBuffer,
-            std::vector<typename TImage::PixelType> & rExtBuffer,
-            const typename TImage::RegionType AllImage,
-            const typename TImage::RegionType face)
+void
+DoFace(typename TImage::ConstPointer input,
+       typename TImage::Pointer output,
+       typename TImage::PixelType border,
+       TLine line,
+       const typename TBres::OffsetArray LineOffsets,
+       const unsigned int KernLen,
+       std::vector<typename TImage::PixelType> & pixbuffer,
+       std::vector<typename TImage::PixelType> & fExtBuffer,
+       std::vector<typename TImage::PixelType> & rExtBuffer,
+       const typename TImage::RegionType AllImage,
+       const typename TImage::RegionType face)
 {
   // iterate over the face
 

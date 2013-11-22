@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKRegionGrowing
  */
 template< typename TInputImage, typename TOutputImage >
-class ConnectedThresholdImageFilter:
+class ConnectedThresholdImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -141,7 +141,9 @@ public:
 
 protected:
   ConnectedThresholdImageFilter();
-  ~ConnectedThresholdImageFilter(){}
+  ~ConnectedThresholdImageFilter(){
+  }
+
   SeedContainerType m_Seeds;
 
   InputImagePixelType m_Lower;
@@ -163,6 +165,7 @@ protected:
 private:
   ConnectedThresholdImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
+
 };
 } // end namespace itk
 

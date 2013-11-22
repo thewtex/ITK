@@ -24,15 +24,18 @@
 
 namespace itk
 {
-SpatialObjectFactoryBase *SpatialObjectFactoryBase:: m_Factory = 0;
+SpatialObjectFactoryBase *SpatialObjectFactoryBase::m_Factory = 0;
 
 SpatialObjectFactoryBase::SpatialObjectFactoryBase()
-{}
+{
+}
 
 SpatialObjectFactoryBase::~SpatialObjectFactoryBase()
-{}
+{
+}
 
-void SpatialObjectFactoryBase::RegisterDefaultSpatialObjects()
+void
+SpatialObjectFactoryBase::RegisterDefaultSpatialObjects()
 {
   if ( !m_Factory )
     {
@@ -57,4 +60,5 @@ SpatialObjectFactoryBase::GetDescription() const
 {
   return "SpatialObject FactoryBase";
 }
+
 } // end namespace itk

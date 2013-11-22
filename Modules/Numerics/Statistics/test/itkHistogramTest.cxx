@@ -18,11 +18,11 @@
 
 #include "itkHistogram.h"
 
-
-int itkHistogramTest(int, char* [] )
+int
+itkHistogramTest(int, char* [] )
 {
   std::cout << "Histogram Test \n \n";
-  bool pass = true;
+  bool        pass = true;
   std::string whereFail = "";
 
   typedef float MeasurementType;
@@ -30,7 +30,7 @@ int itkHistogramTest(int, char* [] )
 
   // create a histogram with 3 components measurement vectors
   typedef itk::Statistics::Histogram< MeasurementType,
-          itk::Statistics::DenseFrequencyContainer2 > HistogramType;
+                                      itk::Statistics::DenseFrequencyContainer2 > HistogramType;
   HistogramType::Pointer histogram = HistogramType::New();
 
   typedef HistogramType::MeasurementVectorType MeasurementVectorType;
@@ -65,7 +65,6 @@ int itkHistogramTest(int, char* [] )
     std::cout << excp << std::endl;
     }
 
-
   //
   // Now call SetMeasurementVectorSize() correctly
   //
@@ -95,7 +94,7 @@ int itkHistogramTest(int, char* [] )
   IndexType index( numberOfComponents );
   IndexType ind( numberOfComponents );
   index.Fill(32);
-  if(histogram->GetIndex(measurements,ind))
+  if(histogram->GetIndex(measurements,ind) )
     {
     if(index != ind)
       {
@@ -110,7 +109,7 @@ int itkHistogramTest(int, char* [] )
     }
 
   InstanceIdentifier id = histogram->GetInstanceIdentifier(index);
-  if (index != histogram->GetIndex(id))
+  if (index != histogram->GetIndex(id) )
     {
     pass = false;
     whereFail = "GetIndex(InstanceIdentifier&)";
@@ -124,7 +123,6 @@ int itkHistogramTest(int, char* [] )
     pass = false;
     whereFail = "IsIndexOutOfBounds(IndexType)";
     }
-
 
   index.Fill(32); // test for inside
 
@@ -144,13 +142,13 @@ int itkHistogramTest(int, char* [] )
     whereFail = "IsIndexOutOfBounds(IndexType)";
     }
 
-  if (totalSize != histogram->Size())
+  if (totalSize != histogram->Size() )
     {
     pass = false;
     whereFail = "Size()";
     }
 
-  if (size != histogram->GetSize())
+  if (size != histogram->GetSize() )
     {
     pass = false;
     whereFail = "GetSize()";
@@ -158,13 +156,13 @@ int itkHistogramTest(int, char* [] )
 
   // Query the bounds of the bin using the index of the bin.
 
-  if ((lowerBound[0] + interval * 31) != histogram->GetBinMin(0,31))
+  if ( (lowerBound[0] + interval * 31) != histogram->GetBinMin(0,31) )
     {
     pass = false;
     whereFail = "GetBinMin(Dimension, nthBin)";
     }
 
-  if ((lowerBound[0] + interval * 32) != histogram->GetBinMax(0,31))
+  if ( (lowerBound[0] + interval * 32) != histogram->GetBinMax(0,31) )
     {
     pass = false;
     whereFail = "GetBinMax(Dimension, nthBin)";
@@ -172,30 +170,34 @@ int itkHistogramTest(int, char* [] )
 
   // Query the histogram bin extremes using a value within the bin
 
-  if ((lowerBound[0] + interval * 31         ) != histogram->GetBinMinFromValue(0, lowerBound[0] + interval * 31.5 )
-   || (lowerBound[0]                         ) != histogram->GetBinMinFromValue(0, itk::NumericTraits< float >::min()   )
-   || (lowerBound[0] + interval * (size[0]-1)) != histogram->GetBinMinFromValue(0, itk::NumericTraits< float >::max() ) )
+  if ( (lowerBound[0] + interval * 31         ) != histogram->GetBinMinFromValue(0, lowerBound[0] + interval * 31.5 )
+       || (lowerBound[0]                         ) !=
+       histogram->GetBinMinFromValue(0, itk::NumericTraits< float >::min()   )
+       || (lowerBound[0] + interval * (size[0]-1) ) !=
+       histogram->GetBinMinFromValue(0, itk::NumericTraits< float >::max() ) )
     {
     pass = false;
     whereFail = "GetBinMinFromValue(Dimension, A Value Within The Nth Bin)";
     }
 
-  if ((lowerBound[0] + interval * 32         ) != histogram->GetBinMaxFromValue(0, lowerBound[0] + interval * 31.5 )
-   || (lowerBound[0] + interval              ) != histogram->GetBinMaxFromValue(0, itk::NumericTraits< float >::min()   )
-   || (upperBound[0]                         ) != histogram->GetBinMaxFromValue(0, itk::NumericTraits< float >::max() ) )
+  if ( (lowerBound[0] + interval * 32         ) != histogram->GetBinMaxFromValue(0, lowerBound[0] + interval * 31.5 )
+       || (lowerBound[0] + interval              ) !=
+       histogram->GetBinMaxFromValue(0, itk::NumericTraits< float >::min()   )
+       || (upperBound[0]                         ) !=
+       histogram->GetBinMaxFromValue(0, itk::NumericTraits< float >::max() ) )
     {
     pass = false;
     whereFail = "GetBinMaxFromValue(Dimension, A Value Within The Nth Bin)";
     }
 
   index.Fill(31);
-  if ((lowerBound[0] + interval * 31) != histogram->GetHistogramMinFromIndex(index)[0])
+  if ( (lowerBound[0] + interval * 31) != histogram->GetHistogramMinFromIndex(index)[0])
     {
     pass = false;
     whereFail = "GetHistogramMinFromIndex(Dimension, nthBin)";
     }
 
-  if ((lowerBound[0] + interval * 32) != histogram->GetHistogramMaxFromIndex(index)[0])
+  if ( (lowerBound[0] + interval * 32) != histogram->GetHistogramMaxFromIndex(index)[0])
     {
     pass = false;
     whereFail = "GetHistogramMaxFromIndex(Dimension, nthBin)";
@@ -239,17 +241,15 @@ int itkHistogramTest(int, char* [] )
     whereFail = "Quantile(Dimension, percent)";
     }
 
-
   if( !pass )
     {
     std::cerr << "Test failed in " << whereFail << "." << std::endl;
     return EXIT_FAILURE;
     }
 
-
   // Histogram with SparseFrequencyContainer2
   typedef itk::Statistics::Histogram< MeasurementType,
-    itk::Statistics::SparseFrequencyContainer2 > SparseHistogramType;
+                                      itk::Statistics::SparseFrequencyContainer2 > SparseHistogramType;
   SparseHistogramType::Pointer sparseHistogram = SparseHistogramType::New();
 
   sparseHistogram->SetMeasurementVectorSize( numberOfComponents );
@@ -271,7 +271,7 @@ int itkHistogramTest(int, char* [] )
     }
 
   id = sparseHistogram->GetInstanceIdentifier(index);
-  if (index != sparseHistogram->GetIndex(id))
+  if (index != sparseHistogram->GetIndex(id) )
     {
     pass = false;
     whereFail = "Sparse Histogram: GetIndex(InstanceIdentifier&)";
@@ -279,36 +279,35 @@ int itkHistogramTest(int, char* [] )
 
   index.Fill(100);
 
-  if (!sparseHistogram->IsIndexOutOfBounds(index))
+  if (!sparseHistogram->IsIndexOutOfBounds(index) )
     {
     pass = false;
     whereFail = "Sparse Histogram: IsIndexOutOfBounds(IndexType)";
     }
 
-  if (totalSize != sparseHistogram->Size())
+  if (totalSize != sparseHistogram->Size() )
     {
     pass = false;
     whereFail = "Sparse Histogram: Size()";
     }
 
-  if (size != sparseHistogram->GetSize())
+  if (size != sparseHistogram->GetSize() )
     {
     pass = false;
     whereFail = "Sparse Histogram: GetSize()";
     }
 
-  if ((lowerBound[0] + interval * 31) != sparseHistogram->GetBinMin(0,31))
+  if ( (lowerBound[0] + interval * 31) != sparseHistogram->GetBinMin(0,31) )
     {
     pass = false;
     whereFail = "Sparse Histogram: GetBinMin(Dimension, nthBin)";
     }
 
-  if ((lowerBound[0] + interval * 32) != sparseHistogram->GetBinMax(0,31))
+  if ( (lowerBound[0] + interval * 32) != sparseHistogram->GetBinMax(0,31) )
     {
     pass = false;
     whereFail = "Sparse Histogram: GetBinMax(Dimension, nthBin)";
     }
-
 
   for (id = 0;
        id < static_cast< SparseHistogramType::InstanceIdentifier >(totalSize);
@@ -342,12 +341,11 @@ int itkHistogramTest(int, char* [] )
       }
     }
 
-  if (pass && (sparseHistogram->Quantile(0, 0.5) != 512.0))
+  if (pass && (sparseHistogram->Quantile(0, 0.5) != 512.0) )
     {
     pass = false;
     whereFail = "Sparse Histogram: Quantile(Dimension, percent)";
     }
-
 
   histogram->SetClipBinsAtEnds( true );
   if( !histogram->GetClipBinsAtEnds() )
@@ -439,7 +437,7 @@ int itkHistogramTest(int, char* [] )
   histogram->SetClipBinsAtEnds( false );
 
   IndexType index1( numberOfComponents );
-  bool getindex1 = histogram->GetIndex( outOfLowerRange, index1 );
+  bool      getindex1 = histogram->GetIndex( outOfLowerRange, index1 );
 
   std::cout << "GetIndex() with SetClipBinsAtEnds() = false " << std::endl;
   std::cout << "Boolean " << getindex1 << " Index " << index1 << std::endl;
@@ -459,7 +457,6 @@ int itkHistogramTest(int, char* [] )
       }
     }
 
-
   histogram->SetClipBinsAtEnds( true );
 
   getindex1 = histogram->GetIndex( outOfLowerRange, index1 );
@@ -476,7 +473,7 @@ int itkHistogramTest(int, char* [] )
   histogram->SetClipBinsAtEnds( false );
 
   IndexType index2( numberOfComponents );
-  bool getindex2 = histogram->GetIndex( outOfUpperRange, index2 );
+  bool      getindex2 = histogram->GetIndex( outOfUpperRange, index2 );
 
   std::cout << "GetIndex() with SetClipBinsAtEnds() = false " << std::endl;
   std::cout << "Boolean " << getindex2 << " Index " << index2 << std::endl;
@@ -496,7 +493,6 @@ int itkHistogramTest(int, char* [] )
       }
     }
 
-
   histogram->SetClipBinsAtEnds( true );
 
   getindex2 = histogram->GetIndex( outOfUpperRange, index2 );
@@ -509,7 +505,6 @@ int itkHistogramTest(int, char* [] )
     pass = false;
     whereFail = "GetIndex() failed for outOfUpperRange";
     }
-
 
   // Testing GetIndex() for values that are above the median value of the Bin.
   IndexType pindex( numberOfComponents );
@@ -557,7 +552,7 @@ int itkHistogramTest(int, char* [] )
 
   // Testing GetIndex on the upper and lower bounds
   IndexType upperIndex( numberOfComponents );
-  bool upperIndexBool = histogram->GetIndex( upperBound, upperIndex );
+  bool      upperIndexBool = histogram->GetIndex( upperBound, upperIndex );
   if( !upperIndexBool )
     {
     pass = false;
@@ -574,7 +569,7 @@ int itkHistogramTest(int, char* [] )
     }
 
   IndexType lowerIndex( numberOfComponents );
-  bool lowerIndexBool = histogram->GetIndex( lowerBound, lowerIndex );
+  bool      lowerIndexBool = histogram->GetIndex( lowerBound, lowerIndex );
   if( !lowerIndexBool )
     {
     pass = false;
@@ -599,7 +594,7 @@ int itkHistogramTest(int, char* [] )
     }
 
   IndexType aboveUpperIndex( numberOfComponents );
-  bool aboveUpperIndexBool =
+  bool      aboveUpperIndexBool =
     histogram->GetIndex( measurementVectorAbove, aboveUpperIndex );
   if( !aboveUpperIndexBool )
     {
@@ -629,7 +624,6 @@ int itkHistogramTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   //
   // Exercise GetIndex() method in the iterator.
   //
@@ -643,12 +637,11 @@ int itkHistogramTest(int, char* [] )
     std::cout << itr.GetIndex() <<  " : " << itr.GetFrequency() << std::endl;
     }
 
-
   //
   // Exercise GetMin / GetMax methods
   //
     {
-    const double epsilon = 1e-6;
+    const double            epsilon = 1e-6;
     HistogramType::SizeType size2 = histogram->GetSize();
 
     HistogramType::BinMinContainerType binMinimums = histogram->GetMins();
@@ -697,7 +690,6 @@ int itkHistogramTest(int, char* [] )
         }
       }
     }
-
 
   // Testing methods specific to Iterators
     {
@@ -807,14 +799,13 @@ int itkHistogramTest(int, char* [] )
       return EXIT_FAILURE;
       }
 
-    unsigned int counter = 0;
+    unsigned int      counter = 0;
     ConstIteratorType iter10( constHistogram );
     if( iter10 != constHistogram->Begin() )
       {
       std::cerr << "ConstIterator constructor from histogram failed" << std::endl;
       return EXIT_FAILURE;
       }
-
 
     while( iter10 != constHistogram->End() )
       {

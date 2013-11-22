@@ -37,10 +37,10 @@ class ParticleSwarmOptimizerSAXWriter : public XMLWriterBase<ParticleSwarmOptimi
 {
 public:
   /** Standard class typedefs. */
-  typedef ParticleSwarmOptimizerSAXWriter         Self;
-  typedef XMLWriterBase<ParticleSwarmOptimizer>   Superclass;
-  typedef SmartPointer< Self >                    Pointer;
-  typedef SmartPointer< const Self >              ConstPointer;
+  typedef ParticleSwarmOptimizerSAXWriter       Self;
+  typedef XMLWriterBase<ParticleSwarmOptimizer> Superclass;
+  typedef SmartPointer< Self >                  Pointer;
+  typedef SmartPointer< const Self >            ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -60,11 +60,13 @@ public:
   virtual int WriteFile();
 
 protected:
-  ParticleSwarmOptimizerSAXWriter() {}
+  ParticleSwarmOptimizerSAXWriter() {
+  }
 
 private:
   ParticleSwarmOptimizerSAXWriter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                  //purposely not implemented
+
 };
 
 } // namespace itk

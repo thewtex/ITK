@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class StatisticsRelabelLabelMapFilter:
+class StatisticsRelabelLabelMapFilter :
   public ShapeRelabelLabelMapFilter< TImage >
 {
 public:
@@ -86,13 +86,15 @@ public:
 
 protected:
   StatisticsRelabelLabelMapFilter();
-  ~StatisticsRelabelLabelMapFilter() {}
+  ~StatisticsRelabelLabelMapFilter() {
+  }
 
   void GenerateData();
 
 private:
   StatisticsRelabelLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };                                               // end of class
 } // end namespace itk
 

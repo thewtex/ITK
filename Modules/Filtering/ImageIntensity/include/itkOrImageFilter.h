@@ -34,22 +34,30 @@ template< typename TInput1, typename TInput2 = TInput1, typename TOutput = TInpu
 class OR
 {
 public:
-  OR() {}
-  ~OR() {}
-  bool operator!=(const OR &) const
+  OR() {
+  }
+
+  ~OR() {
+  }
+
+  bool
+  operator!=(const OR &) const
   {
     return false;
   }
 
-  bool operator==(const OR & other) const
+  bool
+  operator==(const OR & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     return static_cast< TOutput >( A | B );
   }
+
 };
 }
 /** \class OrImageFilter
@@ -80,7 +88,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class OrImageFilter:
+class OrImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::OR<
@@ -93,10 +101,10 @@ public:
   /** Standard class typedefs. */
   typedef OrImageFilter Self;
   typedef BinaryFunctorImageFilter<
-    TInputImage1, TInputImage2, TOutputImage,
-    Functor::OR< typename TInputImage1::PixelType,
-                 typename TInputImage2::PixelType,
-                 typename TOutputImage::PixelType > > Superclass;
+      TInputImage1, TInputImage2, TOutputImage,
+      Functor::OR< typename TInputImage1::PixelType,
+                   typename TInputImage2::PixelType,
+                   typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -118,12 +126,17 @@ public:
 #endif
 
 protected:
-  OrImageFilter() {}
-  virtual ~OrImageFilter() {}
+  OrImageFilter() {
+  }
+
+  virtual
+  ~OrImageFilter() {
+  }
 
 private:
   OrImageFilter(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

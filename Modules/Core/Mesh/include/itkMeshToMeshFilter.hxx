@@ -63,9 +63,9 @@ template< typename TInputMesh, typename TOutputMesh >
 const typename MeshToMeshFilter< TInputMesh, TOutputMesh >::InputMeshType *
 MeshToMeshFilter< TInputMesh, TOutputMesh >
 ::GetInput() const
-{
+  {
   return itkDynamicCastInDebugMode< const TInputMesh * >( this->GetPrimaryInput() );
-}
+  }
 
 /**
  *
@@ -74,10 +74,10 @@ template< typename TInputMesh, typename TOutputMesh >
 const typename MeshToMeshFilter< TInputMesh, TOutputMesh >::InputMeshType *
 MeshToMeshFilter< TInputMesh, TOutputMesh >
 ::GetInput(unsigned int idx) const
-{
+  {
   return dynamic_cast< const TInputMesh * >
          ( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 template< typename TInputMesh, typename TOutputMesh >
 void
@@ -258,6 +258,7 @@ MeshToMeshFilter< TInputMesh, TOutputMesh >
     outputMesh->SetCellData(outputCellData);
     }
 }
+
 } // end namespace itk
 
 #endif

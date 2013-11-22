@@ -25,7 +25,8 @@
 namespace itk
 {
 template < typename ImageType >
-void GPUImageDataManager< ImageType >::SetImagePointer( typename ImageType::Pointer img )
+void
+GPUImageDataManager< ImageType >::SetImagePointer( typename ImageType::Pointer img )
 {
   m_Image = img;
 
@@ -60,14 +61,15 @@ void GPUImageDataManager< ImageType >::SetImagePointer( typename ImageType::Poin
 }
 
 template < typename ImageType >
-void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
+void
+GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
 {
   if( m_Image.IsNotNull() )
     {
     m_Mutex.Lock();
 
     ModifiedTimeType gpu_time = this->GetMTime();
-    TimeStamp     cpu_time_stamp = m_Image->GetTimeStamp();
+    TimeStamp        cpu_time_stamp = m_Image->GetTimeStamp();
     ModifiedTimeType cpu_time = cpu_time_stamp.GetMTime();
 
     /* Why we check dirty flag and time stamp together?
@@ -99,14 +101,15 @@ void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
 }
 
 template < typename ImageType >
-void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
+void
+GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
 {
   if( m_Image.IsNotNull() )
     {
     m_Mutex.Lock();
 
     ModifiedTimeType gpu_time = this->GetMTime();
-    TimeStamp     cpu_time_stamp = m_Image->GetTimeStamp();
+    TimeStamp        cpu_time_stamp = m_Image->GetTimeStamp();
     ModifiedTimeType cpu_time = m_Image->GetMTime();
 
     /* Why we check dirty flag and time stamp together?
@@ -137,7 +140,8 @@ void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
 }
 
 template < typename ImageType >
-void GPUImageDataManager< ImageType >::Graft(const GPUDataManager* data)
+void
+GPUImageDataManager< ImageType >::Graft(const GPUDataManager* data)
 {
   //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : "
   // << m_Image->GetMTime() << std::endl;

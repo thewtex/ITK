@@ -49,7 +49,8 @@ public:
   itkTypeMacro(FileListVideoIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     FileListVideoIOFactory::Pointer FileListFactory = FileListVideoIOFactory::New();
 

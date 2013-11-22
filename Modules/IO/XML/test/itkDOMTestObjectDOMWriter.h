@@ -30,10 +30,10 @@ class DOMTestObjectDOMWriter : public DOMWriter<DOMTestObject>
 {
 public:
   /** Standard class typedefs. */
-  typedef DOMTestObjectDOMWriter      Self;
-  typedef DOMWriter<DOMTestObject>    Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef DOMTestObjectDOMWriter     Self;
+  typedef DOMWriter<DOMTestObject>   Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -42,7 +42,8 @@ public:
   itkTypeMacro(DOMTestObjectDOMWriter, DOMWriter);
 
 protected:
-  DOMTestObjectDOMWriter() {}
+  DOMTestObjectDOMWriter() {
+  }
 
   /**
    * This function is called automatically when update functions are performed.
@@ -52,7 +53,8 @@ protected:
 
 private:
   DOMTestObjectDOMWriter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
+
 };
 
 inline void
@@ -61,7 +63,7 @@ DOMTestObjectDOMWriter::GenerateData( DOMNodeType* outputdom, const void* ) cons
   const InputType* input = this->GetInput();
 
   std::ofstream ofs;
-  FancyString fn;
+  FancyString   fn;
 
   outputdom->SetName( "DOMTestObject" );
 

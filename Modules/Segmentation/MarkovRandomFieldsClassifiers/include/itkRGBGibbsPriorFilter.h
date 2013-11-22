@@ -44,8 +44,8 @@ namespace itk
  * \ingroup ITKMarkovRandomFieldsClassifiers
  */
 template< typename TInputImage, typename TClassifiedImage >
-class RGBGibbsPriorFilter:public MRFImageFilter< TInputImage,
-                                                            TClassifiedImage >
+class RGBGibbsPriorFilter : public MRFImageFilter< TInputImage,
+                                                   TClassifiedImage >
 {
 public:
   /** Standard "Self" typedef. */
@@ -106,8 +106,11 @@ public:
   void SetLabelledImage(LabelledImageType LabelledImage);
 
   /** Get the labelled image. */
-  LabelledImageType GetLabelledImage()
-  { return m_LabelledImage; }
+  LabelledImageType
+  GetLabelledImage()
+  {
+    return m_LabelledImage;
+  }
 
   /** Set the pointer to the classifer being used. */
   void SetClassifier(typename ClassifierType::Pointer ptrToClassifier);
@@ -193,22 +196,22 @@ private:
   InputImageConstPointer m_InputImage;                /** the input */
   TrainingImageType      m_TrainingImage;             /** image to train the
                                                         filter. */
-  LabelledImageType      m_LabelledImage;             /** output */
-  unsigned int           m_NumberOfClasses;           /** the number of class
+  LabelledImageType m_LabelledImage;                  /** output */
+  unsigned int      m_NumberOfClasses;                /** the number of class
                                                         need to be classified.
                                                         */
-  unsigned int           m_MaximumNumberOfIterations; /** number of the
+  unsigned int m_MaximumNumberOfIterations;           /** number of the
                                                         iteration. */
 
   typename ClassifierType::Pointer m_ClassifierPtr;
 
   unsigned int m_BoundaryGradient; /** the threshold for the existence of a
                                      boundary. */
-  double       m_BoundaryWeight;   /** weight for H_1 */
-  double       m_GibbsPriorWeight; /** weight for H_2 */
-  int          m_StartRadius;      /** define the start region of the object. */
-  int          m_RecursiveNumber;  /** number of SA iterations. */
-  LabelType *  m_LabelStatus;      /** array for the state of each pixel. */
+  double      m_BoundaryWeight;    /** weight for H_1 */
+  double      m_GibbsPriorWeight;  /** weight for H_2 */
+  int         m_StartRadius;       /** define the start region of the object. */
+  int         m_RecursiveNumber;   /** number of SA iterations. */
+  LabelType * m_LabelStatus;       /** array for the state of each pixel. */
 
   InputImagePointer m_MediumImage;    /** the medium image to store intermedium
                                         result */
@@ -216,10 +219,10 @@ private:
   unsigned int m_Temp;            /** for SA algo. */
   IndexType    m_StartPoint;      /** the seed of object */
 
-  unsigned int   m_ImageWidth;    /** image size. */
-  unsigned int   m_ImageHeight;
-  unsigned int   m_ImageDepth;
-  unsigned int   m_ClusterSize;  /** region size smaller than the threshold will
+  unsigned int m_ImageWidth;      /** image size. */
+  unsigned int m_ImageHeight;
+  unsigned int m_ImageDepth;
+  unsigned int m_ClusterSize;    /** region size smaller than the threshold will
                                    be erased. */
   LabelType      m_ObjectLabel;  /** the label for object region. */
   unsigned int   m_VecDim;       /** the channel number in the image. */

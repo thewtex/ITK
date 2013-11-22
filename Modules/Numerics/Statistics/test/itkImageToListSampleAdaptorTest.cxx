@@ -19,7 +19,8 @@
 #include "itkImageToListSampleAdaptor.h"
 #include "itkRandomImageSource.h"
 
-int itkImageToListSampleAdaptorTest(int, char* [] )
+int
+itkImageToListSampleAdaptorTest(int, char* [] )
 {
   std::cout << "ImageToListSampleAdaptor Test \n \n";
 
@@ -49,7 +50,8 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
   //Test if the methods throw exceptions if invoked before setting the image
   try
     {
-    // purposely call Size() method prematurely in order to trigger an exception.
+    // purposely call Size() method prematurely in order to trigger an
+    // exception.
     sample->Size();
     std::cerr << "Exception should have been thrown since the input image \
                   is not set yet" << std::endl;
@@ -60,7 +62,8 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
     }
   try
     {
-    // purposely call GetTotalFrequency() method prematurely in order to trigger an exception.
+    // purposely call GetTotalFrequency() method prematurely in order to trigger
+    // an exception.
     sample->GetTotalFrequency();
     std::cerr << "Exception should have been thrown since the input image \
                   is not set yet" << std::endl;
@@ -83,7 +86,7 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
 
   try
     {
-    ImageToListSampleAdaptorType::ImageConstPointer image = sample->GetImage( );
+    ImageToListSampleAdaptorType::ImageConstPointer image = sample->GetImage();
     std::cerr << "Exception should have been thrown since the input image \
                   is not set yet" << std::endl;
     }
@@ -94,7 +97,8 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
 
   try
     {
-    // purposely call GetFrequency() method prematurely in order to trigger an exception.
+    // purposely call GetFrequency() method prematurely in order to trigger an
+    // exception.
     sample->GetFrequency(0 );
     std::cerr << "Exception should have been thrown since the input image \
                   is not set yet" << std::endl;
@@ -104,25 +108,23 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
     std::cerr << "Caught expected exception: " << excp << std::endl;
     }
 
-
-  sample->SetImage(source->GetOutput());
+  sample->SetImage(source->GetOutput() );
 
   // tests begin
 
   //check size
-  if (totalSize != sample->Size())
+  if (totalSize != sample->Size() )
     {
     std::cerr << "Size() is not returning the correct size"<< std::endl;
     return EXIT_FAILURE;
     }
 
   //check frequency
-  if (totalSize != sample->GetTotalFrequency())
+  if (totalSize != sample->GetTotalFrequency() )
     {
     std::cerr << "GetTotalFrequency() is not returning the correct frequency"<< std::endl;
     return EXIT_FAILURE;
     }
-
 
   sample->Print( std::cout );
 
@@ -179,16 +181,16 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
       }
 
     ImageToListSampleAdaptorType::InstanceIdentifier iid2 = 0;
-    while (s_iter != sample->End())
+    while (s_iter != sample->End() )
       {
       if (sample->GetMeasurementVector(iid2) !=
-          s_iter.GetMeasurementVector())
+          s_iter.GetMeasurementVector() )
         {
         std::cerr << "Iterator::GetMeasurementVector (forward) failed"
                   << std::endl;
         return EXIT_FAILURE;
         }
-      if (iid2 != s_iter.GetInstanceIdentifier())
+      if (iid2 != s_iter.GetInstanceIdentifier() )
         {
         std::cerr << "Iterator::GetInstanceIdentifier (forward) failed"
                   << std::endl;
@@ -208,7 +210,7 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
       ++s_iter;
       }
 
-    if (s_iter != sample->End())
+    if (s_iter != sample->End() )
       {
       std::cerr << "Iterator::End (forward) failed" << std::endl;
       return EXIT_FAILURE;
@@ -220,7 +222,7 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
   std::cerr << "Const Iterators..." << std::endl;
     {
     // forward iterator
-    typedef ImageToListSampleAdaptorType::ConstIterator  ConstIteratorType;
+    typedef ImageToListSampleAdaptorType::ConstIterator ConstIteratorType;
 
     ConstIteratorType s_iter = sample->Begin();
 
@@ -244,7 +246,7 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
       }
 
     // copy from non-const iterator
-    ImageToListSampleAdaptorType::Iterator nonconst_iter = sample->Begin();
+    ImageToListSampleAdaptorType::Iterator      nonconst_iter = sample->Begin();
     ImageToListSampleAdaptorType::ConstIterator s2_iter(nonconst_iter);
     if (s2_iter != s_iter)
       {
@@ -261,16 +263,16 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
       }
 
     ImageToListSampleAdaptorType::InstanceIdentifier iid3 = 0;
-    while (s_iter != sample->End())
+    while (s_iter != sample->End() )
       {
       if (sample->GetMeasurementVector(iid3) !=
-          s_iter.GetMeasurementVector())
+          s_iter.GetMeasurementVector() )
         {
         std::cerr << "Iterator::GetMeasurementVector (forward) failed"
                   << std::endl;
         return EXIT_FAILURE;
         }
-      if (iid3 != s_iter.GetInstanceIdentifier())
+      if (iid3 != s_iter.GetInstanceIdentifier() )
         {
         std::cerr << "Iterator::GetInstanceIdentifier (forward) failed"
                   << std::endl;
@@ -285,7 +287,7 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
       ++s_iter;
       }
 
-    if (s_iter != sample->End())
+    if (s_iter != sample->End() )
       {
       std::cerr << "Iterator::End (forward) failed" << std::endl;
       return EXIT_FAILURE;

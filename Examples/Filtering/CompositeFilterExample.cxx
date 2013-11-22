@@ -63,7 +63,7 @@ namespace itk {
 
 template <class TImageType>
 class CompositeExampleImageFilter :
-    public ImageToImageFilter<TImageType, TImageType>
+  public ImageToImageFilter<TImageType, TImageType>
 {
 public:
 //  Software Guide : EndCodeSnippet
@@ -128,7 +128,7 @@ protected:
   typedef RescaleIntensityImageFilter< TImageType, TImageType >  RescalerType;
 //  Software Guide : EndCodeSnippet
 
-    void GenerateData();
+  void GenerateData();
 
 private:
 
@@ -154,7 +154,6 @@ private:
 } /* namespace itk */
 //  Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  The constructor sets up the pipeline, which involves creating the
@@ -177,11 +176,11 @@ CompositeExampleImageFilter<TImageType>
   m_RescaleFilter = RescalerType::New();
   m_RescaleFilter->SetInput( m_ThresholdFilter->GetOutput() );
   m_RescaleFilter->SetOutputMinimum(
-                                  NumericTraits<PixelType>::NonpositiveMin());
-  m_RescaleFilter->SetOutputMaximum(NumericTraits<PixelType>::max());
+    NumericTraits<PixelType>::NonpositiveMin() );
+  m_RescaleFilter->SetOutputMaximum(NumericTraits<PixelType>::max() );
 }
-//  Software Guide : EndCodeSnippet
 
+//  Software Guide : EndCodeSnippet
 
 //  Software Guide : BeginLatex
 //
@@ -210,6 +209,7 @@ GenerateData()
   m_RescaleFilter->Update();
   this->GraftOutput( m_RescaleFilter->GetOutput() );
 }
+
 //  Software Guide : EndCodeSnippet
 
 //  Software Guide : BeginLatex
@@ -252,7 +252,8 @@ PrintSelf( std::ostream& os, Indent indent ) const
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -261,9 +262,9 @@ int main( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::Image<short, 2>                        ImageType;
-  typedef itk::ImageFileReader<ImageType>             ReaderType;
-  typedef itk::ImageFileWriter<ImageType>             WriterType;
+  typedef itk::Image<short, 2>            ImageType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
+  typedef itk::ImageFileWriter<ImageType> WriterType;
 
   typedef itk::CompositeExampleImageFilter<ImageType> FilterType;
 

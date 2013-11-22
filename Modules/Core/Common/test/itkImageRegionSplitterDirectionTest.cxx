@@ -21,7 +21,8 @@
 #include "itkTestingMacros.h"
 #include <iostream>
 
-int itkImageRegionSplitterDirectionTest(int, char*[])
+int
+itkImageRegionSplitterDirectionTest(int, char*[])
 {
 
   itk::ImageRegionSplitterDirection::Pointer splitter = itk::ImageRegionSplitterDirection::New();
@@ -64,7 +65,6 @@ int itkImageRegionSplitterDirectionTest(int, char*[])
   splitter->GetSplit(1, 2, region);
   TEST_EXPECT_EQUAL(region.GetSize(0), 5);
   TEST_EXPECT_EQUAL(region.GetSize(1), 11);
-
 
   return EXIT_SUCCESS;
 }

@@ -31,6 +31,7 @@ PeriodicBoundaryCondition< TInputImage, TOutputImage >
 {
   const ConstNeighborhoodIterator< TInputImage > *iterator =
     dynamic_cast< const ConstNeighborhoodIterator< TInputImage > * >( data );
+
   typename TInputImage::PixelType * ptr;
   int          linear_index = 0;
   unsigned int i;
@@ -64,12 +65,12 @@ PeriodicBoundaryCondition< TInputImage, TOutputImage >
       if ( point_index[i] < static_cast< OffsetValueType >( iterator->GetRadius(i) ) )
         {
         ptr += iterator->GetImagePointer()->GetBufferedRegion().GetSize()[i]
-               * offset_table[i] - boundary_offset[i] * offset_table[i];
+          * offset_table[i] - boundary_offset[i] * offset_table[i];
         }
       else // wrap from the low side of the image
         {
         ptr -= iterator->GetImagePointer()->GetBufferedRegion().GetSize()[i]
-               * offset_table[i] + boundary_offset[i] * offset_table[i];
+          * offset_table[i] + boundary_offset[i] * offset_table[i];
         }
       }
     }
@@ -86,6 +87,7 @@ PeriodicBoundaryCondition< TInputImage, TOutputImage >
 {
   const ConstNeighborhoodIterator< TInputImage > *iterator =
     dynamic_cast< const ConstNeighborhoodIterator< TInputImage > * >( data );
+
   typename TInputImage::InternalPixelType * ptr;
   int          linear_index = 0;
   unsigned int i;
@@ -118,12 +120,12 @@ PeriodicBoundaryCondition< TInputImage, TOutputImage >
       if ( point_index[i] < static_cast< OffsetValueType >( iterator->GetRadius(i) ) )
         {
         ptr += iterator->GetImagePointer()->GetBufferedRegion().GetSize()[i]
-               * offset_table[i] - boundary_offset[i] * offset_table[i];
+          * offset_table[i] - boundary_offset[i] * offset_table[i];
         }
       else // wrap from the low side of the image
         {
         ptr -= iterator->GetImagePointer()->GetBufferedRegion().GetSize()[i]
-               * offset_table[i] + boundary_offset[i] * offset_table[i];
+          * offset_table[i] + boundary_offset[i] * offset_table[i];
         }
       }
     }
@@ -131,15 +133,14 @@ PeriodicBoundaryCondition< TInputImage, TOutputImage >
   return static_cast< OutputPixelType >( neighborhoodAccessorFunctor.Get(ptr) );
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 typename PeriodicBoundaryCondition< TInputImage, TOutputImage >::RegionType
 PeriodicBoundaryCondition< TInputImage, TOutputImage >
 ::GetInputRequestedRegion( const RegionType & inputLargestPossibleRegion,
                            const RegionType & outputRequestedRegion ) const
 {
-  IndexType  imageIndex = inputLargestPossibleRegion.GetIndex();
-  SizeType   imageSize  = inputLargestPossibleRegion.GetSize();
+  IndexType imageIndex = inputLargestPossibleRegion.GetIndex();
+  SizeType  imageSize  = inputLargestPossibleRegion.GetSize();
 
   IndexType outputIndex = outputRequestedRegion.GetIndex();
   SizeType  outputSize  = outputRequestedRegion.GetSize();
@@ -177,7 +178,6 @@ PeriodicBoundaryCondition< TInputImage, TOutputImage >
 
   return inputRequestedRegion;
 }
-
 
 template< typename TInputImage, typename TOutputImage >
 typename PeriodicBoundaryCondition< TInputImage, TOutputImage >::OutputPixelType

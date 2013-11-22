@@ -60,7 +60,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class ConfidenceConnectedImageFilter:
+class ConfidenceConnectedImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -92,7 +92,7 @@ public:
   typedef std::vector< IndexType > SeedsContainerType;
 
   typedef typename NumericTraits<
-    InputImagePixelType >::RealType InputRealType;
+      InputImagePixelType >::RealType InputRealType;
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -147,7 +147,8 @@ public:
 
 protected:
   ConfidenceConnectedImageFilter();
-  ~ConfidenceConnectedImageFilter(){}
+  ~ConfidenceConnectedImageFilter(){
+  }
 
   // Override since the filter needs all the data for the algorithm
   void GenerateInputRequestedRegion();

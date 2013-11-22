@@ -44,7 +44,7 @@ template< typename TPixelType, unsigned int VDimension = 3,
           typename TMeshTraits =
             DefaultStaticMeshTraits< TPixelType, VDimension, VDimension, TPixelType, TPixelType, TPixelType >
           >
-class SimplexMesh:public Mesh< TPixelType, VDimension, TMeshTraits >
+class SimplexMesh : public Mesh< TPixelType, VDimension, TMeshTraits >
 {
 public:
   /** Standard typedefs. */
@@ -99,8 +99,8 @@ public:
   typedef typename GeometryMapType::Pointer GeometryMapPointer;
 
   /** iterator definition for iterating over a geometry map */
-  typedef typename GeometryMapType::Iterator        GeometryMapIterator;
-  typedef typename GeometryMapType::ConstIterator   GeometryMapConstIterator;
+  typedef typename GeometryMapType::Iterator      GeometryMapIterator;
+  typedef typename GeometryMapType::ConstIterator GeometryMapConstIterator;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -260,7 +260,8 @@ public:
 protected:
   //  /** Constructor for use by New() method. */
   SimplexMesh();
-  virtual ~SimplexMesh();
+  virtual
+  ~SimplexMesh();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**

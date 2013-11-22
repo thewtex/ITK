@@ -36,9 +36,9 @@
 #include "itkVolumeSplineKernelTransform.h"
 #include "itkIntTypes.h"
 
-
 // Generic Kernel Transform Tester
-template<typename KernelType> int TestKernelTransform(const char *name, KernelType *)
+template<typename KernelType> int
+TestKernelTransform(const char *name, KernelType *)
 {
   std::cout << name << std::flush;
 
@@ -54,25 +54,25 @@ template<typename KernelType> int TestKernelTransform(const char *name, KernelTy
   sourceLandmarks->GetPoints()->Reserve( 4 );
 
   // Generate some random coordinates
-  typedef itk::PointSet<float>              PointSet;
-  typedef typename PointSet::PointType      PointType;
+  typedef itk::PointSet<float>         PointSet;
+  typedef typename PointSet::PointType PointType;
   typename KernelPointSetType::CoordRepType randomCoords[3];
   for(int i=0; i < 4; ++i)
     {
     randomCoords[0] = (typename KernelPointSetType::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
+      vnl_sample_uniform( (double)-1.0,(double)1.0);
     randomCoords[1] = (typename KernelPointSetType::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
+      vnl_sample_uniform( (double)-1.0,(double)1.0);
     randomCoords[2] = (typename KernelPointSetType::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
+      vnl_sample_uniform( (double)-1.0,(double)1.0);
     targetLandmarks->GetPoints()->SetElement(i, randomCoords);
 
     randomCoords[0] = (typename KernelPointSetType::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
+      vnl_sample_uniform( (double)-1.0,(double)1.0);
     randomCoords[1] = (typename KernelPointSetType::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
+      vnl_sample_uniform( (double)-1.0,(double)1.0);
     randomCoords[2] = (typename KernelPointSetType::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
+      vnl_sample_uniform( (double)-1.0,(double)1.0);
     sourceLandmarks->GetPoints()->SetElement(i, randomCoords);
     }
 
@@ -99,18 +99,18 @@ template<typename KernelType> int TestKernelTransform(const char *name, KernelTy
 }
 
 // Main Program
-int itkTransformsSetParametersTest( int , char *[] )
+int
+itkTransformsSetParametersTest( int , char *[] )
 {
-
 
   unsigned int beginMTime;
   unsigned int endMTime;
-
 
   std::cout << "Begin testing of SetParameters() method for all itkTransforms"
             << std::endl << std::endl;
 
   std::cout << "AffineTransform->SetParameters() - " << std::flush;
+
   typedef itk::AffineTransform< double, 3 > Affine;
   Affine::Pointer affine = Affine::New();
   beginMTime = affine->GetMTime();
@@ -122,7 +122,6 @@ int itkTransformsSetParametersTest( int , char *[] )
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
-
 
   std::cout << "CenteredAffineTransform->SetParameters() - " << std::flush;
   typedef itk::CenteredAffineTransform< double, 3 > CenteredAffine;
@@ -229,7 +228,6 @@ int itkTransformsSetParametersTest( int , char *[] )
   else
     std::cout << "FAIL" << std::endl;
 
-
   std::cout << "QuaternionRigidTransform->SetParameters() - " << std::flush;
   typedef itk::QuaternionRigidTransform< double > QuaternionRigid;
   QuaternionRigid::Pointer quaternionRigid =
@@ -259,7 +257,6 @@ int itkTransformsSetParametersTest( int , char *[] )
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
-
 
   std::cout << "Rigid3DPerspectiveTransform->SetParameters() - " << std::flush;
   typedef itk::Rigid3DPerspectiveTransform< double > Rigid3DPerspective;
@@ -428,14 +425,14 @@ int itkTransformsSetParametersTest( int , char *[] )
   else
     std::cout << "FAIL" << std::endl;
 
-
   std::cout << "BSplineTransform->SetParameters() - Not Tested (manual check indicates PASS)"
             << std::endl;
 //    typedef itk::BSplineTransform< double > BSplineDeformable;
 //    BSplineDeformable::Pointer bSplineDeformable = BSplineDeformable::New();
 //    beginMTime = bSplineDeformable->GetMTime();
 //    bSplineDeformable->SetIdentity();
-//    BSplineDeformable::ParametersType bSplineDeformableParams; = bSplineDeformable->GetParameters();
+//    BSplineDeformable::ParametersType bSplineDeformableParams; =
+// bSplineDeformable->GetParameters();
 //    bSplineDeformableParams[0] = 1.0;
 //    bSplineDeformable->SetParameters( bSplineDeformableParams );
 //   endMTime = bSplineDeformable->GetMTime();
@@ -446,26 +443,26 @@ int itkTransformsSetParametersTest( int , char *[] )
 
   TestKernelTransform
     ("ElasticBodyReciprocalSplineKernelTransform->SetParameters() -",
-     static_cast<itk::ElasticBodyReciprocalSplineKernelTransform<double,3> *>(0));
+    static_cast<itk::ElasticBodyReciprocalSplineKernelTransform<double,3> *>(0) );
   TestKernelTransform
     ("ElasticBodySplineKernelTransform->SetParameters() - ",
-     static_cast<itk::ElasticBodySplineKernelTransform< double, 3 > *>(0));
+    static_cast<itk::ElasticBodySplineKernelTransform< double, 3 > *>(0) );
 
   TestKernelTransform
     ("KernelTransform->SetParameters() - ",
-     static_cast<itk::KernelTransform< double, 3 > *>(0));
+    static_cast<itk::KernelTransform< double, 3 > *>(0) );
 
   TestKernelTransform
     ("ThinPlateR2LogRSplineKernelTransform->SetParameters() - ",
-     static_cast<itk::ThinPlateR2LogRSplineKernelTransform< double, 3 > *>(0));
+    static_cast<itk::ThinPlateR2LogRSplineKernelTransform< double, 3 > *>(0) );
 
   TestKernelTransform
     ("ThinPlateSplineKernelTransform->SetParameters() - ",
-     static_cast<itk::ThinPlateSplineKernelTransform< double, 3 > *>(0));
+    static_cast<itk::ThinPlateSplineKernelTransform< double, 3 > *>(0) );
 
   TestKernelTransform
     ("VolumeSplineKernelTransform->SetParameters() - ",
-     static_cast<itk::VolumeSplineKernelTransform< double, 3 > *>(0));
+    static_cast<itk::VolumeSplineKernelTransform< double, 3 > *>(0) );
 
   std::cout << std::endl << "Done." << std::endl;
 

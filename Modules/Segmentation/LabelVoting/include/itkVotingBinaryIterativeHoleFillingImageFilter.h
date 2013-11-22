@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKLabelVoting
  */
 template< typename TImage >
-class VotingBinaryIterativeHoleFillingImageFilter:
+class VotingBinaryIterativeHoleFillingImageFilter :
   public ImageToImageFilter< TImage, TImage >
 {
 public:
@@ -76,9 +76,9 @@ public:
   /** Type of the internal Voting filter that is going to be executed
     iteratively */
   typedef VotingBinaryHoleFillingImageFilter<
-    InputImageType,
-    OutputImageType
-    > VotingFilterType;
+      InputImageType,
+      OutputImageType
+      > VotingFilterType;
 
   /** Image typedef support. */
   typedef typename InputImageType::PixelType  InputPixelType;
@@ -140,7 +140,10 @@ public:
 
 protected:
   VotingBinaryIterativeHoleFillingImageFilter();
-  virtual ~VotingBinaryIterativeHoleFillingImageFilter() {}
+  virtual
+  ~VotingBinaryIterativeHoleFillingImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**

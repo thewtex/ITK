@@ -38,6 +38,7 @@ KernelImageFilter< TInputImage, TOutputImage, TKernel >
   // SetKernel() must be called, because it can be overloaded in a subclass
   // - MovingHistogramImageFilterBase for example.
   KernelType kernel;
+
   // the right version of the MakeKernel method should be called there
   this->MakeKernel( radius, kernel );
   this->SetKernel( kernel );
@@ -66,6 +67,7 @@ KernelImageFilter< TInputImage, TOutputImage, TKernel >
 
   os << indent << "Kernel: " << m_Kernel << std::endl;
 }
+
 }
 
 #endif

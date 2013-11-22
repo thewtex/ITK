@@ -127,7 +127,8 @@ BSplineTransformParametersAdaptor<TTransform>
   // set the mesh size parameters
   for( SizeValueType i = 0; i < SpaceDimension; i++ )
     {
-    this->m_RequiredTransformDomainMeshSize[i] = static_cast<SizeValueType>( this->m_RequiredFixedParameters[i] ) - TransformType::SplineOrder;
+    this->m_RequiredTransformDomainMeshSize[i] = static_cast<SizeValueType>( this->m_RequiredFixedParameters[i] ) -
+      TransformType::SplineOrder;
     }
 
   // Set the physical dimensions parameters
@@ -151,7 +152,6 @@ BSplineTransformParametersAdaptor<TTransform>
     this->m_RequiredTransformDomainOrigin[i] = origin[i] + this->m_RequiredFixedParameters[SpaceDimension + i];
     }
 }
-
 
 template<typename TTransform>
 void
@@ -183,7 +183,7 @@ BSplineTransformParametersAdaptor<TTransform>
   for( SizeValueType i = 0; i < SpaceDimension; i++ )
     {
     this->m_RequiredFixedParameters[SpaceDimension + i] = static_cast<ParametersValueType>(
-      origin[i] + this->m_RequiredTransformDomainOrigin[i] );
+        origin[i] + this->m_RequiredTransformDomainOrigin[i] );
     }
 
   // Set the spacing parameters
@@ -222,9 +222,9 @@ BSplineTransformParametersAdaptor<TTransform>
     return;
     }
 
-  SizeType newGridSize;
-  OriginType newGridOrigin;
-  SpacingType newGridSpacing;
+  SizeType      newGridSize;
+  OriginType    newGridOrigin;
+  SpacingType   newGridSpacing;
   DirectionType newGridDirection;
   for( SizeValueType i = 0; i < SpaceDimension; i++ )
     {
@@ -242,9 +242,9 @@ BSplineTransformParametersAdaptor<TTransform>
   IndexType newGridIndex = coefficientImageRegion.GetIndex();
 
   //  Resample the coefficient images
-  typedef BSplineResampleImageFunction<ImageType, ParametersValueType> CoefficientUpsampleFunctionType;
+  typedef BSplineResampleImageFunction<ImageType, ParametersValueType>   CoefficientUpsampleFunctionType;
   typedef ResampleImageFilter<ImageType, ImageType, ParametersValueType> UpsampleFilterType;
-  typedef BSplineDecompositionImageFilter<ImageType, ImageType> DecompositionFilterType;
+  typedef BSplineDecompositionImageFilter<ImageType, ImageType>          DecompositionFilterType;
 
   CoefficientImageArray newCoefficientImages;
 
@@ -295,7 +295,8 @@ BSplineTransformParametersAdaptor<TTransform>
 
   os << "Required transform domain origin: " << this->m_RequiredTransformDomainOrigin << std::endl;
   os << "Required transform domain direction: " << this->m_RequiredTransformDomainDirection << std::endl;
-  os << "Required transform domain physical dimensions: " << this->m_RequiredTransformDomainPhysicalDimensions << std::endl;
+  os << "Required transform domain physical dimensions: " << this->m_RequiredTransformDomainPhysicalDimensions <<
+    std::endl;
   os << "Required transform domain mesh size: " << this->m_RequiredTransformDomainMeshSize << std::endl;
 }
 

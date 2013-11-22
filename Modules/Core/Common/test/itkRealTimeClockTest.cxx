@@ -20,7 +20,8 @@
 #include "itkRealTimeClock.h"
 #include "vcl_cmath.h"
 
-int itkRealTimeClockTest( int, char * [] )
+int
+itkRealTimeClockTest( int, char * [] )
 {
   try
     {
@@ -60,7 +61,7 @@ int itkRealTimeClockTest( int, char * [] )
     itk::RealTimeStamp realStamp2 = clock->GetRealTimeStamp();
     std::cout << "Current Time " << realStamp2 << std::endl;
 
-    typedef itk::RealTimeStamp::TimeRepresentationType    TimeRepresentationType;
+    typedef itk::RealTimeStamp::TimeRepresentationType TimeRepresentationType;
 
     TimeRepresentationType tolerance = 1e6;
 
@@ -68,7 +69,7 @@ int itkRealTimeClockTest( int, char * [] )
       {
       realStamp1 = realStamp2;
       realStamp2 = clock->GetRealTimeStamp();
-      itk::RealTimeInterval difference = realStamp2 - realStamp1;
+      itk::RealTimeInterval                      difference = realStamp2 - realStamp1;
       itk::RealTimeStamp::TimeRepresentationType seconds1 = realStamp1.GetTimeInSeconds();
       itk::RealTimeStamp::TimeRepresentationType seconds2 = realStamp2.GetTimeInSeconds();
       itk::RealTimeStamp::TimeRepresentationType secondsD = difference.GetTimeInSeconds();

@@ -75,10 +75,11 @@ MutualInformationHistogramImageToImageMetric< TFixedImage, TMovingImage >
     }
 
   jointEntropy = -jointEntropy
-                 / static_cast< MeasureType >( totalFreq ) + vcl_log(totalFreq);
+    / static_cast< MeasureType >( totalFreq ) + vcl_log(totalFreq);
 
   return entropyX + entropyY - jointEntropy;
 }
+
 } // End namespace itk
 
 #endif // itkMutualInformationHistogramImageToImageMetric_hxx

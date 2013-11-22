@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 template< typename TInternalComputationValueType >
-class CostFunctionTemplate:public Object
+class CostFunctionTemplate : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -56,13 +56,19 @@ public:
   virtual unsigned int GetNumberOfParameters(void) const  = 0;
 
 protected:
-  CostFunctionTemplate() {}
-  virtual ~CostFunctionTemplate() {}
+  CostFunctionTemplate() {
+  }
+
+  virtual
+  ~CostFunctionTemplate() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  CostFunctionTemplate(const Self &);   //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  CostFunctionTemplate(const Self &); //purposely not implemented
+  void operator=(const Self &);       //purposely not implemented
+
 };
 
 /** This helps to meet backward compatibility */

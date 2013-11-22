@@ -119,44 +119,45 @@ typedef::size_t    uintptr_t;
 
 #endif // ITK_HAVE_STDINT_H
 
-#if !defined(ITKV3_COMPATIBILITY) && defined(ITK_USE_64BITS_IDS) && ((ULLONG_MAX != ULONG_MAX) || (LLONG_MAX != LONG_MAX))
+#if !defined(ITKV3_COMPATIBILITY) && defined(ITK_USE_64BITS_IDS) && ( (ULLONG_MAX != ULONG_MAX) || (LLONG_MAX != \
+                                                                                                    LONG_MAX) )
 
 /** Any count of number of items (number of pixels in an image, number of
  *  points) (it is unsigned) */
-typedef uint64_t      SizeValueType;
+typedef uint64_t SizeValueType;
 
 /** Same type as SizeValueType but when used as an Id (pointId, cellId,
  *  labelObjectId..)(it is unsigned) */
 typedef SizeValueType IdentifierType;
 
 /** The components of the Index array (they are signed) */
-typedef int64_t       IndexValueType;
+typedef int64_t IndexValueType;
 
 /** Differences between components of indexes, distance from one pointer
  *  to the origin of a buffer (it is signed) */
-typedef int64_t       OffsetValueType;
+typedef int64_t OffsetValueType;
 
 #else
 
 /** Any count of number of items (number of pixels in an image, number of
  *  points) (it is unsigned) */
-typedef unsigned long     SizeValueType;
+typedef unsigned long SizeValueType;
 
 /** Same type as SizeValueType but when used as an Id (pointId, cellId,
  *  labelObjectId..)(it is unsigned) */
 typedef SizeValueType IdentifierType;
 
 /** The components of the Index array (they are signed) */
-typedef signed long   IndexValueType;
+typedef signed long IndexValueType;
 
 /** Differences between components of indexes, distance from one pointer
  *  to the origin of a buffer (it is signed) */
-typedef signed long   OffsetValueType;
+typedef signed long OffsetValueType;
 
 #endif
 
 /** Type to count and reference number of threads */
-typedef unsigned int  ThreadIdType;
+typedef unsigned int ThreadIdType;
 
 /** Type to count and reference the modification time of objects.
  * May in the future be replaced by SizeValueType to avoid overflows.

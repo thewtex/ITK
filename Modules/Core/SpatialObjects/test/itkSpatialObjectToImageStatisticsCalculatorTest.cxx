@@ -22,7 +22,8 @@
 #include "itkEllipseSpatialObject.h"
 #include "itkImageSliceIteratorWithIndex.h"
 
-int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
+int
+itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
 {
   typedef unsigned char                PixelType;
   typedef itk::Image<PixelType,2>      ImageType;
@@ -30,7 +31,7 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
 
   // Image Definition
   ImageType::RegionType region;
-  ImageType::SizeType size;
+  ImageType::SizeType   size;
   size.Fill(50);
 
   // Circle definition
@@ -41,7 +42,6 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
   offset.Fill(25);
   ellipse->GetIndexToObjectTransform()->SetOffset(offset);
   ellipse->ComputeObjectToParentTransform();
-
 
   // Create a test image
   typedef itk::SpatialObjectToImageFilter<EllipseType,ImageType> ImageFilterType;
@@ -57,7 +57,6 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
   ellipse->GetIndexToObjectTransform()->SetOffset(offset);
   ellipse->ComputeObjectToParentTransform();
 
-
   typedef itk::SpatialObjectToImageStatisticsCalculator<ImageType,EllipseType> CalculatorType;
   CalculatorType::Pointer calculator = CalculatorType::New();
   calculator->SetImage(image);
@@ -69,8 +68,8 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
   std::cout << "Sample covariance = " << calculator->GetCovarianceMatrix();
 
   if(calculator->GetMean() != 255
-    || calculator->GetCovarianceMatrix()[0][0] != 0
-    )
+     || calculator->GetCovarianceMatrix()[0][0] != 0
+     )
     {
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -89,8 +88,8 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
   std::cout << "Sample covariance = " << calculator->GetCovarianceMatrix();
 
   if(  (vcl_fabs(calculator->GetMean()[0]-140.0)>1.0)
-    || (vcl_fabs(calculator->GetCovarianceMatrix()[0][0]-16141.0)>1.0)
-    )
+       || (vcl_fabs(calculator->GetCovarianceMatrix()[0][0]-16141.0)>1.0)
+       )
     {
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -110,8 +109,8 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
   std::cout << "Sample covariance = " << calculator->GetCovarianceMatrix();
 
   if( (vcl_fabs(calculator->GetMean()[0]-140.0)>1.0)
-    || (vcl_fabs(calculator->GetCovarianceMatrix()[0][0]-16141.0)>1.0)
-    )
+      || (vcl_fabs(calculator->GetCovarianceMatrix()[0][0]-16141.0)>1.0)
+      )
     {
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -147,31 +146,30 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
   typedef itk::ImageSliceIteratorWithIndex< Image3DType > SliceIteratorType;
   SliceIteratorType it( image3D, region3D );
 
-
   it.GoToBegin();
   it.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
   it.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
 
   unsigned int value = 0;
   while( !it.IsAtEnd() )
-  {
-    while( !it.IsAtEndOfSlice() )
     {
-      while( !it.IsAtEndOfLine() )
+    while( !it.IsAtEndOfSlice() )
       {
+      while( !it.IsAtEndOfLine() )
+        {
         it.Set( value );
         ++it;
-      }
+        }
       it.NextLine();
-    }
+      }
     it.NextSlice();
     value++;
-  }
+    }
 
   std::cout << "Allocating spatial object." << std::endl;
   typedef itk::EllipseSpatialObject<3> Ellipse3DType;
   Ellipse3DType::Pointer ellipse3D = Ellipse3DType::New();
-  double radius[3];
+  double                 radius[3];
   radius[0] = 10;
   radius[1] = 10;
   radius[2] = 0;
@@ -195,9 +193,9 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
   std::cout << "Sample covariance = " << calculator3D->GetCovarianceMatrix();
 
   if(  (vcl_fabs(calculator3D->GetMean()[0]-0.0)>1.0)
-    || (vcl_fabs(calculator3D->GetMean()[1]-1.0)>1.0)
-    || (vcl_fabs(calculator3D->GetMean()[2]-2.0)>1.0)
-    )
+       || (vcl_fabs(calculator3D->GetMean()[1]-1.0)>1.0)
+       || (vcl_fabs(calculator3D->GetMean()[2]-2.0)>1.0)
+       )
     {
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -205,17 +203,17 @@ int itkSpatialObjectToImageStatisticsCalculatorTest(int, char * [] )
 
   std::cout << "Number of pixels = " << calculator3D->GetNumberOfPixels() << std::endl;
   if(calculator3D->GetNumberOfPixels() != 305)
-     {
-     std::cout << "[FAILED]" << std::endl;
-     return EXIT_FAILURE;
-     }
+    {
+    std::cout << "[FAILED]" << std::endl;
+    return EXIT_FAILURE;
+    }
 
   std::cout << "Sum = " << calculator3D->GetSum() << std::endl;
   if(calculator3D->GetSum() != 915)
-     {
-     std::cout << "[FAILED]" << std::endl;
-     return EXIT_FAILURE;
-     }
+    {
+    std::cout << "[FAILED]" << std::endl;
+    return EXIT_FAILURE;
+    }
 
   std::cout << " [PASSED]" << std::endl;
   return EXIT_SUCCESS;

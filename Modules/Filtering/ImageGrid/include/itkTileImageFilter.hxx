@@ -44,7 +44,6 @@ TileImageFilter< TInputImage, TOutputImage >
 {
   typename TOutputImage::Pointer output = this->GetOutput();
 
-
   typedef Image< InputPixelType, OutputImageDimension > TempImageType;
 
   // Allocate the output and initialize to default value
@@ -58,7 +57,8 @@ TileImageFilter< TInputImage, TOutputImage >
     if ( it.Get().m_ImageNumber >= 0 )
       {
       typename PasteImageFilter< TOutputImage,
-                                 TempImageType >::Pointer paste = PasteImageFilter< TOutputImage, TempImageType >::New();
+                                 TempImageType >::Pointer paste =
+        PasteImageFilter< TOutputImage, TempImageType >::New();
       paste->SetDestinationImage(output);
       paste->InPlaceOn();
 
@@ -331,5 +331,6 @@ TileImageFilter< TInputImage, TOutputImage >
             << std::endl;
   std::cout << "Layout: " << m_Layout << std::endl;
 }
+
 } // end namespace itk
 #endif

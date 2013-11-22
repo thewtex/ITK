@@ -43,12 +43,13 @@ GeodesicActiveContourShapePriorLevelSetFunction< TImageType, TFeatureImageType >
  * Calculate the advection speed image
  */
 template< typename TImageType, typename TFeatureImageType >
-void GeodesicActiveContourShapePriorLevelSetFunction< TImageType, TFeatureImageType >
+void
+GeodesicActiveContourShapePriorLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateAdvectionImage()
 {
   /* compoute the gradient of the feature image. */
   typedef GradientRecursiveGaussianImageFilter< FeatureImageType, VectorImageType >
-  DerivativeFilterType;
+    DerivativeFilterType;
 
   typename DerivativeFilterType::Pointer derivative = DerivativeFilterType::New();
   derivative->SetInput( this->GetFeatureImage() );
@@ -71,6 +72,7 @@ void GeodesicActiveContourShapePriorLevelSetFunction< TImageType, TFeatureImageT
     ait.Set(v);
     }
 }
+
 } // end namespace itk
 
 #endif

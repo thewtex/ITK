@@ -30,7 +30,8 @@ so it is important to supply the correct input during the testing process.
 #include <iostream>
 #include "itkMacro.h"
 
-int itkDOMTest3( int argc, char* argv[] )
+int
+itkDOMTest3( int argc, char* argv[] )
 {
   if ( argc < 2 )
     {

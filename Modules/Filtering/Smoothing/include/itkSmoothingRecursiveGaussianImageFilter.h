@@ -48,7 +48,7 @@ namespace itk
  */
 template< typename TInputImage,
           typename TOutputImage = TInputImage >
-class SmoothingRecursiveGaussianImageFilter:
+class SmoothingRecursiveGaussianImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -81,26 +81,26 @@ public:
       RealType is usually 'double' in NumericTraits.
       Here we prefer float in order to save memory.  */
 
-  typedef typename NumericTraits< PixelType >::FloatType InternalRealType;
+  typedef typename NumericTraits< PixelType >::FloatType                   InternalRealType;
   typedef typename InputImageType::template Rebind<InternalRealType>::Type RealImageType;
 
   /**  The first in the pipeline  */
   typedef RecursiveGaussianImageFilter<
-    InputImageType,
-    RealImageType
-    >    FirstGaussianFilterType;
+      InputImageType,
+      RealImageType
+      >    FirstGaussianFilterType;
 
   /**  Smoothing filter type */
   typedef RecursiveGaussianImageFilter<
-    RealImageType,
-    RealImageType
-    >    InternalGaussianFilterType;
+      RealImageType,
+      RealImageType
+      >    InternalGaussianFilterType;
 
   /**  The last in the pipeline  */
   typedef CastImageFilter<
-    RealImageType,
-    OutputImageType
-    >    CastingFilterType;
+      RealImageType,
+      OutputImageType
+      >    CastingFilterType;
 
   /**  Pointer to a gaussian filter.  */
   typedef typename InternalGaussianFilterType::Pointer InternalGaussianFilterPointer;
@@ -122,9 +122,11 @@ public:
     use the method SetSigmaArray if you need different values along each
     axis. */
   void SetSigmaArray(const SigmaArrayType & sigmas);
+
   void SetSigma(ScalarRealType sigma);
 
   SigmaArrayType GetSigmaArray() const;
+
   ScalarRealType GetSigma() const;
 
   /** This method does not effect the output of this filter.
@@ -132,6 +134,7 @@ public:
    *  \sa  RecursiveGaussianImageFilter::SetNormalizeAcrossScale
    */
   void SetNormalizeAcrossScale(bool normalizeInScaleSpace);
+
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
   // See super class for doxygen documentation
@@ -152,7 +155,10 @@ public:
 
 protected:
   SmoothingRecursiveGaussianImageFilter();
-  virtual ~SmoothingRecursiveGaussianImageFilter() {}
+  virtual
+  ~SmoothingRecursiveGaussianImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */

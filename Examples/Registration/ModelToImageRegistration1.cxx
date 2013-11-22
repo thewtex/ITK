@@ -29,7 +29,6 @@
 //
 // Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  Let's look first at the classes required to support
@@ -48,7 +47,6 @@
 #include "itkGroupSpatialObject.h"
 //  Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  In order to generate the initial synthetic image of the ellipses, we use
@@ -64,9 +62,7 @@
 #include "itkSpatialObjectToImageFilter.h"
 //  Software Guide : EndCodeSnippet
 
-
 #include "itkImageToSpatialObjectRegistrationMethod.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -82,7 +78,6 @@
 //  Software Guide : BeginCodeSnippet
 //  Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  As in previous registration problems, we have to evaluate the image
@@ -97,7 +92,6 @@
 #include "itkLinearInterpolateImageFunction.h"
 //  Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  The SpatialObject is mapped from its own space into the image
@@ -109,7 +103,6 @@
 //  Software Guide : BeginCodeSnippet
 #include "itkEuler2DTransform.h"
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -126,14 +119,12 @@
 #include "itkOnePlusOneEvolutionaryOptimizer.h"
 //  Software Guide : EndCodeSnippet
 
-
 #include "itkDiscreteGaussianImageFilter.h"
 #include "itkNormalVariateGenerator.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkCastImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -163,23 +154,26 @@ public:
   itkNewMacro( Self );
 
   /** Type defining the optimizer. */
-  typedef    TOptimizer     OptimizerType;
+  typedef    TOptimizer OptimizerType;
 
   /** Method to specify the optimizer. */
-  void SetOptimizer( OptimizerType * optimizer )
-    {
+  void
+  SetOptimizer( OptimizerType * optimizer )
+  {
     m_Optimizer = optimizer;
     m_Optimizer->AddObserver( itk::IterationEvent(), this );
-    }
+  }
 
   /** Execute method will print data at each iteration */
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object *, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object *, const itk::EventObject & event)
+  {
     if( typeid( event ) == typeid( itk::StartEvent ) )
       {
       std::cout << std::endl << "Position              Value";
@@ -199,12 +193,15 @@ public:
       std::cout << "Solution is    = " << m_Optimizer->GetCurrentPosition();
       std::cout << std::endl;
       }
-    }
+  }
+
 //  Software Guide : EndCodeSnippet
 
 protected:
-  IterationCallback() {};
-  itk::WeakPointer<OptimizerType>   m_Optimizer;
+  IterationCallback() {
+  }
+
+  itk::WeakPointer<OptimizerType> m_Optimizer;
 };
 
 //  Software Guide : BeginLatex
@@ -213,7 +210,6 @@ protected:
 //  print out the current combination of transform parameters.
 //
 //  Software Guide : EndLatex
-
 
 //  Software Guide : BeginLatex
 //
@@ -243,11 +239,11 @@ class SimpleImageToSpatialObjectMetric :
 
 public:
   /** Standard class typedefs. */
-  typedef SimpleImageToSpatialObjectMetric  Self;
+  typedef SimpleImageToSpatialObjectMetric Self;
   typedef itk::ImageToSpatialObjectMetric<TFixedImage,TMovingSpatialObject>
-                                            Superclass;
-  typedef itk::SmartPointer<Self>           Pointer;
-  typedef itk::SmartPointer<const Self>     ConstPointer;
+    Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
 
   typedef itk::Point<double,2>                PointType;
   typedef std::list<PointType>                PointListType;
@@ -265,42 +261,47 @@ public:
   itkStaticConstMacro( ParametricSpaceDimension, unsigned int, 3 );
 
   /** Specify the moving spatial object. */
-  void SetMovingSpatialObject( const MovingSpatialObjectType * object)
-    {
-      if(!this->m_FixedImage)
+  void
+  SetMovingSpatialObject( const MovingSpatialObjectType * object)
+  {
+    if(!this->m_FixedImage)
+      {
+      std::cout << "Please set the image before the moving spatial object" << std::endl;
+      return;
+      }
+    this->m_MovingSpatialObject = object;
+    m_PointList.clear();
+    typedef itk::ImageRegionConstIteratorWithIndex<TFixedImage> myIteratorType;
+
+    myIteratorType it(this->m_FixedImage,this->m_FixedImage->GetBufferedRegion() );
+
+    itk::Point<double,2> point;
+
+    while( !it.IsAtEnd() )
+      {
+      this->m_FixedImage->TransformIndexToPhysicalPoint( it.GetIndex(), point );
+
+      if(this->m_MovingSpatialObject->IsInside(point,99999) )
         {
-        std::cout << "Please set the image before the moving spatial object" << std::endl;
-        return;
+        m_PointList.push_back( point );
         }
-      this->m_MovingSpatialObject = object;
-      m_PointList.clear();
-      typedef itk::ImageRegionConstIteratorWithIndex<TFixedImage> myIteratorType;
+      ++it;
+      }
 
-      myIteratorType it(this->m_FixedImage,this->m_FixedImage->GetBufferedRegion());
+    std::cout << "Number of points in the metric = " << static_cast<unsigned long>( m_PointList.size() ) << std::endl;
+  }
 
-      itk::Point<double,2> point;
-
-      while( !it.IsAtEnd() )
-        {
-        this->m_FixedImage->TransformIndexToPhysicalPoint( it.GetIndex(), point );
-
-        if(this->m_MovingSpatialObject->IsInside(point,99999))
-          {
-          m_PointList.push_back( point );
-          }
-        ++it;
-        }
-
-      std::cout << "Number of points in the metric = " << static_cast<unsigned long>( m_PointList.size() ) << std::endl;
-    }
-
-  unsigned int GetNumberOfParameters(void) const  {return ParametricSpaceDimension;}
+  unsigned int
+  GetNumberOfParameters(void) const  {
+    return ParametricSpaceDimension;
+  }
 
   /** Get the Derivatives of the Match Measure */
-  void GetDerivative( const ParametersType &, DerivativeType & ) const
-    {
-      return;
-    }
+  void
+  GetDerivative( const ParametersType &, DerivativeType & ) const
+  {
+    return;
+  }
 
   //  Software Guide : BeginLatex
   //
@@ -321,37 +322,40 @@ public:
 
   /** Get the value for SingleValue optimizers. */
   //  Software Guide : BeginCodeSnippet
-  MeasureType    GetValue( const ParametersType & parameters ) const
-    {
-      double value;
-      this->m_Transform->SetParameters( parameters );
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
+  {
+    double value;
 
-      value = 0;
-      for(PointListType::const_iterator it = m_PointList.begin();
-                                                it != m_PointList.end(); ++it)
-         {
-         PointType transformedPoint = this->m_Transform->TransformPoint(*it);
-         if( this->m_Interpolator->IsInsideBuffer( transformedPoint ) )
-           {
-           value += this->m_Interpolator->Evaluate( transformedPoint );
-           }
-         }
-      return value;
-    }
+    this->m_Transform->SetParameters( parameters );
+
+    value = 0;
+    for(PointListType::const_iterator it = m_PointList.begin();
+        it != m_PointList.end(); ++it)
+      {
+      PointType transformedPoint = this->m_Transform->TransformPoint(*it);
+      if( this->m_Interpolator->IsInsideBuffer( transformedPoint ) )
+        {
+        value += this->m_Interpolator->Evaluate( transformedPoint );
+        }
+      }
+    return value;
+  }
+
   //  Software Guide : EndCodeSnippet
 
   /** Get Value and Derivatives for MultipleValuedOptimizers */
-  void GetValueAndDerivative( const ParametersType & parameters,
-       MeasureType & Value, DerivativeType  & Derivative ) const
-    {
-      Value = this->GetValue(parameters);
-      this->GetDerivative(parameters,Derivative);
-    }
+  void
+  GetValueAndDerivative( const ParametersType & parameters,
+                         MeasureType & Value, DerivativeType  & Derivative ) const
+  {
+    Value = this->GetValue(parameters);
+    this->GetDerivative(parameters,Derivative);
+  }
 
 private:
   PointListType m_PointList;
 };
-
 
 //  Software Guide : BeginLatex
 //
@@ -360,8 +364,8 @@ private:
 //
 //  Software Guide : EndLatex
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc > 1 )
     {
@@ -382,10 +386,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   //  Software Guide : BeginCodeSnippet
-  typedef itk::GroupSpatialObject< 2 >     GroupType;
-  typedef itk::EllipseSpatialObject< 2 >   EllipseType;
+  typedef itk::GroupSpatialObject< 2 >   GroupType;
+  typedef itk::EllipseSpatialObject< 2 > EllipseType;
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -398,9 +401,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   //  Software Guide : BeginCodeSnippet
-  typedef itk::Image< float, 2 >      ImageType;
+  typedef itk::Image< float, 2 > ImageType;
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -416,7 +418,6 @@ int main( int argc, char *argv[] )
   EllipseType::Pointer ellipse2 = EllipseType::New();
   EllipseType::Pointer ellipse3 = EllipseType::New();
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -435,7 +436,6 @@ int main( int argc, char *argv[] )
   ellipse2->SetRadius(  10.0  );
   ellipse3->SetRadius(  10.0  );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -470,7 +470,6 @@ int main( int argc, char *argv[] )
   ellipse3->ComputeObjectToWorldTransform();
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that after a change has been made in the transform, the
@@ -503,7 +502,6 @@ int main( int argc, char *argv[] )
   group->AddSpatialObject( ellipse3 );
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Having the geometric model ready, we proceed to generate the binary
@@ -522,7 +520,6 @@ int main( int argc, char *argv[] )
     SpatialObjectToImageFilterType;
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  With the defined type, we construct a filter using the \code{New()}
@@ -538,7 +535,6 @@ int main( int argc, char *argv[] )
     SpatialObjectToImageFilterType::New();
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The GroupSpatialObject is passed as input to the filter.
@@ -550,7 +546,6 @@ int main( int argc, char *argv[] )
   //  Software Guide : BeginCodeSnippet
   imageFilter->SetInput(  group  );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -569,7 +564,6 @@ int main( int argc, char *argv[] )
   imageFilter->SetSize( size );
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally we trigger the execution of the filter by calling the
@@ -582,7 +576,6 @@ int main( int argc, char *argv[] )
   //  Software Guide : BeginCodeSnippet
   imageFilter->Update();
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -597,9 +590,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : BeginCodeSnippet
   typedef itk::DiscreteGaussianImageFilter< ImageType, ImageType >
     GaussianFilterType;
-  GaussianFilterType::Pointer   gaussianFilter =   GaussianFilterType::New();
+  GaussianFilterType::Pointer gaussianFilter =   GaussianFilterType::New();
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -611,7 +603,6 @@ int main( int argc, char *argv[] )
   //  Software Guide : BeginCodeSnippet
   gaussianFilter->SetInput(  imageFilter->GetOutput()  );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -627,7 +618,6 @@ int main( int argc, char *argv[] )
   gaussianFilter->Update();
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Below we instantiate the type of the
@@ -637,7 +627,9 @@ int main( int argc, char *argv[] )
   //  SpatialObject types. The spatial object in this case is the
   //  group of spatial objects.
   //
-  //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!Instantiation}
+  //
+  //
+  // \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!Instantiation}
   //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!New()}
   //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!Pointer}
   //
@@ -648,7 +640,6 @@ int main( int argc, char *argv[] )
     RegistrationType;
   RegistrationType::Pointer registration = RegistrationType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -665,7 +656,6 @@ int main( int argc, char *argv[] )
   MetricType::Pointer metric = MetricType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  An interpolator will be needed to evaluate the image at non-grid
@@ -679,7 +669,6 @@ int main( int argc, char *argv[] )
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The following lines instantiate the evolutionary optimizer.
@@ -689,10 +678,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::OnePlusOneEvolutionaryOptimizer  OptimizerType;
+  typedef itk::OnePlusOneEvolutionaryOptimizer OptimizerType;
   OptimizerType::Pointer optimizer  = OptimizerType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -706,7 +694,6 @@ int main( int argc, char *argv[] )
   typedef itk::Euler2DTransform<> TransformType;
   TransformType::Pointer transform = TransformType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -726,7 +713,6 @@ int main( int argc, char *argv[] )
     = itk::Statistics::NormalVariateGenerator::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The random number generator must be initialized with a seed.
@@ -738,7 +724,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   generator->Initialize(12345);
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -754,12 +739,12 @@ int main( int argc, char *argv[] )
   optimizer->SetMaximumIteration( 400 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  As in previous registration examples, we take care to normalize the
   //  dynamic range of the different transform parameters. In particular, the
-  //  we must compensate for the ranges of the angle and translations of the Euler2DTransform.
+  //  we must compensate for the ranges of the angle and translations of the
+  // Euler2DTransform.
   //  In order to achieve this goal, we provide an array
   //  of scales to the optimizer.
   //
@@ -777,7 +762,6 @@ int main( int argc, char *argv[] )
   optimizer->SetScales( parametersScale );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Here we instantiate the Command object that will act as an
@@ -789,11 +773,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef IterationCallback< OptimizerType >   IterationCallbackType;
+  typedef IterationCallback< OptimizerType > IterationCallbackType;
   IterationCallbackType::Pointer callback = IterationCallbackType::New();
   callback->SetOptimizer( optimizer );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -804,11 +787,26 @@ int main( int argc, char *argv[] )
   //  We provide the blurred version of the original synthetic binary
   //  image as the input image.
   //
-  //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetFixedImage()}
-  //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetMovingSpatialObject()}
-  //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetTransform()}
-  //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetInterpolator()}
-  //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetOptimizer()}
+  //
+  //
+  //
+  // \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetFixedImage()}
+  //
+  //
+  //
+  // \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetMovingSpatialObject()}
+  //
+  //
+  //
+  // \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetTransform()}
+  //
+  //
+  //
+  // \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetInterpolator()}
+  //
+  //
+  //
+  // \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetOptimizer()}
   //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!SetMetric()}
   //
   //  Software Guide : EndLatex
@@ -821,7 +819,6 @@ int main( int argc, char *argv[] )
   registration->SetOptimizer( optimizer );
   registration->SetMetric( metric );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -850,7 +847,8 @@ int main( int argc, char *argv[] )
   //  Due to the character of the metric used to evaluate the fitness
   //  between the spatial object and the image, we must tell the optimizer that
   //  we are interested in finding the maximum value of the metric. Some
-  //  metrics associate low numeric values with good matching, while others associate
+  //  metrics associate low numeric values with good matching, while others
+  // associate
   //  high numeric values with good matching. The \code{MaximizeOn()} and
   //  \code{MaximizeOff()} methods allow the user to deal with both types of
   //  metrics.
@@ -864,7 +862,6 @@ int main( int argc, char *argv[] )
   optimizer->MaximizeOn();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally, we trigger the execution of the registration process with the
@@ -875,7 +872,6 @@ int main( int argc, char *argv[] )
   //  \index{itk::Image\-To\-Spatial\-Object\-Registration\-Method!Update()}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   try
@@ -891,7 +887,6 @@ int main( int argc, char *argv[] )
     std::cerr << exp << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -913,12 +908,13 @@ int main( int argc, char *argv[] )
   std::cout << "Final Solution is : " << finalParameters << std::endl;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
   // \includegraphics[height=0.44\textwidth]{ModelToImageRegistrationTraceAngle}
+  //
+  //
   // \includegraphics[height=0.44\textwidth]{ModelToImageRegistrationTraceTranslations}
   // \itkcaption[SpatialObject to Image Registration results]{Plots of the
   // angle and translation parameters for a registration process between an

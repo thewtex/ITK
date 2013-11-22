@@ -21,23 +21,24 @@
 #include "itkRegularSphereMeshSource.h"
 #include "itkFastMarchingNumberOfElementsStoppingCriterion.h"
 
-int itkFastMarchingQuadEdgeMeshFilterWithNumberOfElementsTest( int , char * [] )
+int
+itkFastMarchingQuadEdgeMeshFilterWithNumberOfElementsTest( int , char * [] )
 {
-  typedef float   PixelType;
-  typedef double  CoordType;
+  typedef float  PixelType;
+  typedef double CoordType;
 
   const unsigned int Dimension = 3;
 
   typedef itk::QuadEdgeMeshExtendedTraits <
-    PixelType,  // type of data for vertices
-    Dimension,  // geometrical dimension of space
-    2,          // Mac topological dimension of a cell
-    CoordType,  // type for point coordinate
-    CoordType,  // type for interpolation weight
-    PixelType,  // type of data for cell
-    bool,       // type of data for primal edges
-    bool        // type of data for dual edges
-  > Traits;
+      PixelType, // type of data for vertices
+      Dimension, // geometrical dimension of space
+      2,         // Mac topological dimension of a cell
+      CoordType, // type for point coordinate
+      CoordType, // type for interpolation weight
+      PixelType, // type of data for cell
+      bool,      // type of data for primal edges
+      bool       // type of data for dual edges
+      > Traits;
 
   typedef itk::QuadEdgeMesh< PixelType, Dimension, Traits > MeshType;
 
@@ -55,7 +56,7 @@ int itkFastMarchingQuadEdgeMeshFilterWithNumberOfElementsTest( int , char * [] )
   MeshType::Pointer sphere_output = sphere_filter->GetOutput();
 
   MeshType::PointsContainerConstPointer points =
-      sphere_output->GetPoints();
+    sphere_output->GetPoints();
 
   MeshType::PointsContainerConstIterator p_it = points->Begin();
   MeshType::PointsContainerConstIterator p_end = points->End();
@@ -66,8 +67,8 @@ int itkFastMarchingQuadEdgeMeshFilterWithNumberOfElementsTest( int , char * [] )
     ++p_it;
     }
 
-  typedef FastMarchingType::NodeType      NodeType;
-  typedef FastMarchingType::NodePairType  NodePairType;
+  typedef FastMarchingType::NodeType     NodeType;
+  typedef FastMarchingType::NodePairType NodePairType;
 //  typedef FastMarchingType::NodeContainerType NodeContainerType;
   typedef FastMarchingType::NodePairContainerType NodePairContainerType;
 

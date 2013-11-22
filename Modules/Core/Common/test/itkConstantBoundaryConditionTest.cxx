@@ -32,7 +32,8 @@ typedef IteratorType::RadiusType                    RadiusType;
 typedef itk::VectorImage< int, 2 >                        VectorImageType;
 typedef itk::ConstNeighborhoodIterator< VectorImageType > VectorIteratorType;
 
-static bool TestPrintNeighborhood( IteratorType & p, VectorIteratorType & v )
+static bool
+TestPrintNeighborhood( IteratorType & p, VectorIteratorType & v )
 {
   bool success = true;
 
@@ -40,13 +41,14 @@ static bool TestPrintNeighborhood( IteratorType & p, VectorIteratorType & v )
     << "Output from operator()(const OffsetType &, const OffsetType &, const NeighborhoodType *) const"
     << std::endl;
   unsigned x, y, i=0;
+
   for (y = 0; y < p.GetSize()[1]; ++y)
     {
-      for (x = 0; x < p.GetSize()[0]; ++x, ++i)
-        {
-          std::cout << p.GetPixel(i) << " ";
-        }
-      std::cout << std::endl;
+    for (x = 0; x < p.GetSize()[0]; ++x, ++i)
+      {
+      std::cout << p.GetPixel(i) << " ";
+      }
+    std::cout << std::endl;
     }
 
   std::cout
@@ -57,11 +59,11 @@ static bool TestPrintNeighborhood( IteratorType & p, VectorIteratorType & v )
   i = 0;
   for (y = 0; y < v.GetSize()[1]; ++y)
     {
-      for (x = 0; x < v.GetSize()[0]; ++x, ++i)
-        {
-          std::cout << v.GetPixel(i)[0] << " ";
-        }
-      std::cout << std::endl;
+    for (x = 0; x < v.GetSize()[0]; ++x, ++i)
+      {
+      std::cout << v.GetPixel(i)[0] << " ";
+      }
+    std::cout << std::endl;
     }
 
   std::cout
@@ -85,7 +87,8 @@ static bool TestPrintNeighborhood( IteratorType & p, VectorIteratorType & v )
 
       std::cout << pixel1 << " ";
 
-      // Check agreement of output from three three methods of accessing pixel values.
+      // Check agreement of output from three three methods of accessing pixel
+      // values.
       if ( pixel1 != pixel2 || pixel2 != pixel3 )
         {
         success = false;
@@ -105,9 +108,10 @@ static bool TestPrintNeighborhood( IteratorType & p, VectorIteratorType & v )
   return success;
 }
 
-static bool CheckInputRequestedRegion( const RegionType & imageRegion,
-                                       const RegionType & requestedRegion,
-                                       const RegionType & expectedRegion )
+static bool
+CheckInputRequestedRegion( const RegionType & imageRegion,
+                           const RegionType & requestedRegion,
+                           const RegionType & expectedRegion )
 {
   if ( requestedRegion != expectedRegion )
     {
@@ -124,13 +128,15 @@ static bool CheckInputRequestedRegion( const RegionType & imageRegion,
   return true;
 }
 
-int itkConstantBoundaryConditionTest(int, char* [] )
+int
+itkConstantBoundaryConditionTest(int, char* [] )
 {
   // Test an image to cover one operator() method.
   ImageType::Pointer image = ImageType::New();
-  RegionType imageRegion;
-  SizeType imageSize = {{ 5, 5 }};
-  IndexType imageIndex = {{ 0, 0 }};
+  RegionType         imageRegion;
+  SizeType           imageSize = {{ 5, 5 }};
+  IndexType          imageIndex = {{ 0, 0 }};
+
   imageRegion.SetSize( imageSize );
   imageRegion.SetIndex( imageIndex );
   image->SetRegions( imageRegion );
@@ -153,16 +159,16 @@ int itkConstantBoundaryConditionTest(int, char* [] )
       vectorImage->SetPixel( pos, vectorPixel );
       std::cout << image->GetPixel(pos) << " ";
       }
-      std::cout << std::endl;
+    std::cout << std::endl;
     }
 
   RadiusType radius;
   RadiusType radiusTwo;
   radius[0] = radius[1] = 1;
-  IteratorType it( radius, image, image->GetRequestedRegion() );
+  IteratorType       it( radius, image, image->GetRequestedRegion() );
   VectorIteratorType vit( radius, vectorImage, vectorImage->GetRequestedRegion() );
 
-  itk::ConstantBoundaryCondition< ImageType > bc;
+  itk::ConstantBoundaryCondition< ImageType >       bc;
   itk::ConstantBoundaryCondition< VectorImageType > vbc;
 
   ImageType::PixelType constant = 3;
@@ -204,7 +210,7 @@ int itkConstantBoundaryConditionTest(int, char* [] )
     }
 
   radiusTwo[0] = radiusTwo[1] = 2;
-  IteratorType it2( radiusTwo, image, image->GetRequestedRegion() );
+  IteratorType       it2( radiusTwo, image, image->GetRequestedRegion() );
   VectorIteratorType vit2( radiusTwo, vectorImage, vectorImage->GetRequestedRegion() );
 
   it2.OverrideBoundaryCondition( &bc );

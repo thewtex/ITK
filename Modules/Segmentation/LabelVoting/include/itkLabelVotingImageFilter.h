@@ -72,7 +72,7 @@ namespace itk
  * \ingroup ITKLabelVoting
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class LabelVotingImageFilter:
+class LabelVotingImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -106,14 +106,15 @@ public:
   typedef typename InputImageType::ConstPointer InputImagePointer;
   typedef typename OutputImageType::Pointer     OutputImagePointer;
 
-  typedef unsigned long                         LabelCountType;
+  typedef unsigned long LabelCountType;
 
   /** Superclass typedefs. */
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
 
   /** Set label value for undecided pixels.
     */
-  void SetLabelForUndecidedPixels(const OutputPixelType l)
+  void
+  SetLabelForUndecidedPixels(const OutputPixelType l)
   {
     this->m_LabelForUndecidedPixels = l;
     this->m_HasLabelForUndecidedPixels = true;
@@ -126,14 +127,16 @@ public:
    * is overwritten when SetLabelForUndecidedPixels is called and the new
    * value only becomes effective upon the next filter update.
    */
-  OutputPixelType GetLabelForUndecidedPixels() const
+  OutputPixelType
+  GetLabelForUndecidedPixels() const
   {
     return this->m_LabelForUndecidedPixels;
   }
 
   /** Unset label value for undecided pixels and turn on automatic selection.
     */
-  void UnsetLabelForUndecidedPixels()
+  void
+  UnsetLabelForUndecidedPixels()
   {
     if ( this->m_HasLabelForUndecidedPixels )
       {
@@ -164,8 +167,13 @@ public:
 #endif
 
 protected:
-  LabelVotingImageFilter() { this->m_HasLabelForUndecidedPixels = false; }
-  virtual ~LabelVotingImageFilter() {}
+  LabelVotingImageFilter() {
+    this->m_HasLabelForUndecidedPixels = false;
+  }
+
+  virtual
+  ~LabelVotingImageFilter() {
+  }
 
   /** Determine maximum label value in all input images and initialize
    * global data. */

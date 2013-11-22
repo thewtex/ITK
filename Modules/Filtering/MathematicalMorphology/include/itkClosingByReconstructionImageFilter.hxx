@@ -28,7 +28,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage, typename TKernel >
 ClosingByReconstructionImageFilter< TInputImage, TOutputImage, TKernel >
-::ClosingByReconstructionImageFilter():
+::ClosingByReconstructionImageFilter() :
   m_Kernel()
 {
   m_FullyConnected = false;
@@ -45,6 +45,7 @@ ClosingByReconstructionImageFilter< TInputImage, TOutputImage, TKernel >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -150,5 +151,6 @@ ClosingByReconstructionImageFilter< TInputImage, TOutputImage, TKernel >
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
   os << indent << "PreserveIntensities: "  << m_PreserveIntensities << std::endl;
 }
+
 } // end namespace itk
 #endif

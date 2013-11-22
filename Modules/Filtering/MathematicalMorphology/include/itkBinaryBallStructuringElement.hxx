@@ -34,8 +34,9 @@ BinaryBallStructuringElement< TPixel, VDimension, TAllocator >
   SEType flatKernel = SEType::Ball( this->GetRadius() );
 
   // Copy the ellipsoid into the kernel
-  std::copy(flatKernel.Begin(),flatKernel.End(),this->Begin());
+  std::copy(flatKernel.Begin(),flatKernel.End(),this->Begin() );
 }
+
 } // namespace itk
 
 #endif

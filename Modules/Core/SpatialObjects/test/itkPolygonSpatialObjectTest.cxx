@@ -19,23 +19,25 @@
 #include "itkPolygonSpatialObject.h"
 #include <iostream>
 
-int itkPolygonSpatialObjectTest(int, char *[])
+int
+itkPolygonSpatialObjectTest(int, char *[])
 {
   bool failed = false;
-  typedef itk::PolygonSpatialObject<3>  PolygonType;
+
+  typedef itk::PolygonSpatialObject<3> PolygonType;
 
   //
   // create rectangle
   PolygonType::Pointer rectangle = PolygonType::New();
   rectangle->Print(std::cout);
 
-  double d1[3] = {0.0, 0.0, 0.0};
+  double                 d1[3] = {0.0, 0.0, 0.0};
   PolygonType::PointType p1(d1);
-  double d2[3] = {2.0, 0.0, 0.0};
+  double                 d2[3] = {2.0, 0.0, 0.0};
   PolygonType::PointType p2(d2);
-  double d3[3] = {2.0, 1.0, 0.0};
+  double                 d3[3] = {2.0, 1.0, 0.0};
   PolygonType::PointType p3(d3);
-  double d4[3] = {0.0, 1.0, 0.0};
+  double                 d4[3] = {0.0, 1.0, 0.0};
   PolygonType::PointType p4(d4);
   rectangle->AddPoint(p1);
   rectangle->AddPoint(p2);
@@ -100,7 +102,7 @@ int itkPolygonSpatialObjectTest(int, char *[])
   //
   // test number of points
   std::cout << "Testing closest point for rectangle: ";
-  double tp1[3] = {0.25, 0.0, 0.0};
+  double                 tp1[3] = {0.25, 0.0, 0.0};
   PolygonType::PointType testPoint1(tp1);
   PolygonType::PointType closestPoint = rectangle->ClosestPoint(testPoint1);
   if (closestPoint != p1)
@@ -116,7 +118,7 @@ int itkPolygonSpatialObjectTest(int, char *[])
   //
   // test number of points
   std::cout << "Testing closest point for rectangle (2): ";
-  double tp2[3] = {0.25, 5.0, 5.0};
+  double                 tp2[3] = {0.25, 5.0, 5.0};
   PolygonType::PointType testPoint2(tp2);
   closestPoint = rectangle->ClosestPoint(testPoint2);
   if (closestPoint != p4)

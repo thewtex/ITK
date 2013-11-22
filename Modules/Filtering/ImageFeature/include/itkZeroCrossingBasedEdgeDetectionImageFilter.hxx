@@ -78,6 +78,7 @@ ZeroCrossingBasedEdgeDetectionImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Variance: " << m_Variance << std::endl;
   os << indent << "MaximumError: " << m_MaximumError << std::endl;
   os << indent << "ForegroundValue: "
@@ -87,6 +88,7 @@ ZeroCrossingBasedEdgeDetectionImageFilter< TInputImage, TOutputImage >
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( m_BackgroundValue )
      << std::endl;
 }
+
 } //end of itk namespace
 
 #endif

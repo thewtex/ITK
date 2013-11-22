@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class WhiteTopHatImageFilter:
+class WhiteTopHatImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -97,7 +97,9 @@ public:
 
 protected:
   WhiteTopHatImageFilter();
-  ~WhiteTopHatImageFilter() {}
+  ~WhiteTopHatImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();

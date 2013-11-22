@@ -48,10 +48,13 @@ Region
 void
 Region
 ::PrintTrailer( std::ostream & itkNotUsed(os), Indent itkNotUsed(indent) ) const
-{}
+{
+}
 
 void
 Region
 ::PrintSelf(std::ostream &, Indent) const
-{}
+{
+}
+
 } // end namespace itk

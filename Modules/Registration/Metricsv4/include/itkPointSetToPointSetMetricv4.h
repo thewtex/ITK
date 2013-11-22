@@ -68,7 +68,7 @@ namespace itk
 
 template<typename TFixedPointSet,  typename TMovingPointSet>
 class PointSetToPointSetMetricv4
-: public ObjectToObjectMetric<TFixedPointSet::PointDimension, TMovingPointSet::PointDimension>
+  : public ObjectToObjectMetric<TFixedPointSet::PointDimension, TMovingPointSet::PointDimension>
 {
 public:
 
@@ -82,7 +82,7 @@ public:
   itkTypeMacro( PointSetToPointSetMetricv4, ObjectToObjectMetric );
 
   /**  Type of the measure. */
-  typedef typename Superclass::MeasureType            MeasureType;
+  typedef typename Superclass::MeasureType MeasureType;
 
   /**  Type of the parameters. */
   typedef typename Superclass::ParametersType         ParametersType;
@@ -90,44 +90,43 @@ public:
   typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
   /**  Type of the derivative. */
-  typedef typename Superclass::DerivativeType         DerivativeType;
+  typedef typename Superclass::DerivativeType DerivativeType;
 
   /** Transform types from Superclass*/
-  typedef typename Superclass::FixedTransformType            FixedTransformType;
-  typedef typename Superclass::FixedTransformPointer         FixedTransformPointer;
-  typedef typename Superclass::FixedInputPointType           FixedInputPointType;
-  typedef typename Superclass::FixedOutputPointType          FixedOutputPointType;
-  typedef typename Superclass::FixedTransformParametersType  FixedTransformParametersType;
+  typedef typename Superclass::FixedTransformType           FixedTransformType;
+  typedef typename Superclass::FixedTransformPointer        FixedTransformPointer;
+  typedef typename Superclass::FixedInputPointType          FixedInputPointType;
+  typedef typename Superclass::FixedOutputPointType         FixedOutputPointType;
+  typedef typename Superclass::FixedTransformParametersType FixedTransformParametersType;
 
-  typedef typename Superclass::MovingTransformType            MovingTransformType;
-  typedef typename Superclass::MovingTransformPointer         MovingTransformPointer;
-  typedef typename Superclass::MovingInputPointType           MovingInputPointType;
-  typedef typename Superclass::MovingOutputPointType          MovingOutputPointType;
-  typedef typename Superclass::MovingTransformParametersType  MovingTransformParametersType;
+  typedef typename Superclass::MovingTransformType           MovingTransformType;
+  typedef typename Superclass::MovingTransformPointer        MovingTransformPointer;
+  typedef typename Superclass::MovingInputPointType          MovingInputPointType;
+  typedef typename Superclass::MovingOutputPointType         MovingOutputPointType;
+  typedef typename Superclass::MovingTransformParametersType MovingTransformParametersType;
 
-  typedef typename Superclass::JacobianType                   JacobianType;
-  typedef typename Superclass::FixedTransformJacobianType     FixedTransformJacobianType;
-  typedef typename Superclass::MovingTransformJacobianType    MovingTransformJacobianType;
+  typedef typename Superclass::JacobianType                JacobianType;
+  typedef typename Superclass::FixedTransformJacobianType  FixedTransformJacobianType;
+  typedef typename Superclass::MovingTransformJacobianType MovingTransformJacobianType;
 
-  typedef typename Superclass::MovingDisplacementFieldTransformType  DisplacementFieldTransformType;
-
+  typedef typename Superclass::MovingDisplacementFieldTransformType DisplacementFieldTransformType;
 
   /** Dimension type */
-  typedef typename Superclass::DimensionType                  DimensionType;
+  typedef typename Superclass::DimensionType DimensionType;
 
   /**  Type of the fixed point set. */
-  typedef TFixedPointSet                               FixedPointSetType;
-  typedef typename TFixedPointSet::PointType           FixedPointType;
-  typedef typename TFixedPointSet::PixelType           FixedPixelType;
-  typedef typename TFixedPointSet::PointsContainer     FixedPointsContainer;
+  typedef TFixedPointSet                           FixedPointSetType;
+  typedef typename TFixedPointSet::PointType       FixedPointType;
+  typedef typename TFixedPointSet::PixelType       FixedPixelType;
+  typedef typename TFixedPointSet::PointsContainer FixedPointsContainer;
 
   itkStaticConstMacro( FixedPointDimension, DimensionType, Superclass::FixedDimension );
 
   /**  Type of the moving point set. */
-  typedef TMovingPointSet                              MovingPointSetType;
-  typedef typename TMovingPointSet::PointType          MovingPointType;
-  typedef typename TMovingPointSet::PixelType          MovingPixelType;
-  typedef typename TMovingPointSet::PointsContainer    MovingPointsContainer;
+  typedef TMovingPointSet                           MovingPointSetType;
+  typedef typename TMovingPointSet::PointType       MovingPointType;
+  typedef typename TMovingPointSet::PixelType       MovingPixelType;
+  typedef typename TMovingPointSet::PointsContainer MovingPointsContainer;
 
   itkStaticConstMacro( MovingPointDimension, DimensionType, Superclass::MovingDimension );
 
@@ -139,22 +138,22 @@ public:
    */
   itkStaticConstMacro( PointDimension, DimensionType, Superclass::FixedDimension );
 
-  typedef FixedPointType                               PointType;
-  typedef FixedPixelType                               PixelType;
-  typedef typename PointType::CoordRepType             CoordRepType;
-  typedef FixedPointsContainer                         PointsContainer;
-  typedef typename PointsContainer::ConstIterator      PointsConstIterator;
-  typedef typename PointsContainer::ElementIdentifier  PointIdentifier;
+  typedef FixedPointType                              PointType;
+  typedef FixedPixelType                              PixelType;
+  typedef typename PointType::CoordRepType            CoordRepType;
+  typedef FixedPointsContainer                        PointsContainer;
+  typedef typename PointsContainer::ConstIterator     PointsConstIterator;
+  typedef typename PointsContainer::ElementIdentifier PointIdentifier;
 
   /** Typedef for points locator class to speed up finding neighboring points */
   typedef PointsLocator< PointsContainer>                     PointsLocatorType;
   typedef typename PointsLocatorType::NeighborsIdentifierType NeighborsIdentifierType;
 
-  typedef PointSet<FixedPixelType, itkGetStaticConstMacro( PointDimension )>    FixedTransformedPointSetType;
-  typedef PointSet<MovingPixelType, itkGetStaticConstMacro( PointDimension )>   MovingTransformedPointSetType;
+  typedef PointSet<FixedPixelType, itkGetStaticConstMacro( PointDimension )>  FixedTransformedPointSetType;
+  typedef PointSet<MovingPixelType, itkGetStaticConstMacro( PointDimension )> MovingTransformedPointSetType;
 
-  typedef typename DerivativeType::ValueType                                          DerivativeValueType;
-  typedef FixedArray<DerivativeValueType, itkGetStaticConstMacro( PointDimension )>   LocalDerivativeType;
+  typedef typename DerivativeType::ValueType                                        DerivativeValueType;
+  typedef FixedArray<DerivativeValueType, itkGetStaticConstMacro( PointDimension )> LocalDerivativeType;
 
   /** Types for the virtual domain */
   typedef typename Superclass::VirtualImageType       VirtualImageType;
@@ -243,7 +242,8 @@ public:
    * may not be used.  See class description for further explanation.
    */
   virtual void GetLocalNeighborhoodValueAndDerivative( const PointType &,
-    MeasureType &, LocalDerivativeType &, const PixelType & pixel = 0 ) const = 0;
+                                                       MeasureType &, LocalDerivativeType &, const PixelType & pixel =
+                                                         0 ) const = 0;
 
   /**
    * Get the virtual point set, derived from the fixed point set.
@@ -257,7 +257,8 @@ public:
    */
   virtual void Initialize( void ) throw ( ExceptionObject );
 
-  virtual bool SupportsArbitraryVirtualDomainSamples( void ) const
+  virtual bool
+  SupportsArbitraryVirtualDomainSamples( void ) const
   {
     /* An arbitrary point in the virtual domain will not always
      * correspond to a point within either point set. */
@@ -266,7 +267,8 @@ public:
 
 protected:
   PointSetToPointSetMetricv4();
-  virtual ~PointSetToPointSetMetricv4();
+  virtual
+  ~PointSetToPointSetMetricv4();
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
   typename FixedPointSetType::ConstPointer                m_FixedPointSet;
@@ -280,7 +282,7 @@ protected:
   mutable typename PointsLocatorType::Pointer             m_MovingTransformedPointsLocator;
 
   /** Holds the fixed points after transformation into virtual domain. */
-  mutable VirtualPointSetPointer                          m_VirtualTransformedPointSet;
+  mutable VirtualPointSetPointer m_VirtualTransformedPointSet;
 
   /**
    * Bool set by derived classes on whether the point set data (i.e. \c PixelType)
@@ -339,7 +341,7 @@ protected:
 
 private:
   PointSetToPointSetMetricv4( const Self & ); //purposely not implemented
-  void operator=( const Self & );           //purposely not implemented
+  void operator=( const Self & );             //purposely not implemented
 
   mutable bool m_MovingTransformPointLocatorsNeedInitialization;
   mutable bool m_FixedTransformPointLocatorsNeedInitialization;

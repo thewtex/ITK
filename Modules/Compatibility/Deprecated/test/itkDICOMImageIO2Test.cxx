@@ -24,18 +24,17 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkDICOMImageIO2Factory.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkDICOMImageIO2Test(int ac, char* av[])
+int
+itkDICOMImageIO2Test(int ac, char* av[])
 {
 
   if(ac < 3)
-  {
+    {
     std::cerr << "Usage: " << av[0] << " DicomImage OutputImage\n";
     return EXIT_FAILURE;
-  }
-
+    }
 
   // ATTENTION THIS IS THE PIXEL TYPE FOR
   // THE RESULTING IMAGE
@@ -44,37 +43,36 @@ int itkDICOMImageIO2Test(int ac, char* av[])
   typedef itk::Image<PixelType, 2> myImage;
 
   itk::ImageFileReader<myImage>::Pointer reader
-                                  = itk::ImageFileReader<myImage>::New();
+    = itk::ImageFileReader<myImage>::New();
   // Register on factory capable of creating DicomImage readers
   itk::DICOMImageIO2Factory::RegisterOneFactory();
 
   reader->SetFileName(av[1]);
 
   try
-  {
+    {
     reader->Update();
-  }
+    }
   catch (itk::ExceptionObject & e)
-  {
+    {
     std::cerr << "exception in file reader " << std::endl;
     std::cerr << e << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   typedef unsigned char WritePixelType;
 
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-               myImage, WriteImageType > RescaleFilterType;
+      myImage, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 

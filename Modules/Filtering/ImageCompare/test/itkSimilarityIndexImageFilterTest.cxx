@@ -18,7 +18,8 @@
 
 #include "itkSimilarityIndexImageFilter.h"
 
-int itkSimilarityIndexImageFilterTest(int, char* [] )
+int
+itkSimilarityIndexImageFilterTest(int, char* [] )
 {
 
   typedef unsigned char Pixel1Type;
@@ -48,7 +49,7 @@ int itkSimilarityIndexImageFilterTest(int, char* [] )
 
   itk::ImageRegionIterator<Image1Type> it1( image1, image1->GetBufferedRegion() );
   itk::ImageRegionIterator<Image2Type> it2( image2, image2->GetBufferedRegion() );
-  unsigned long count = 0;
+  unsigned long                        count = 0;
 
   while( !it1.IsAtEnd() || !it2.IsAtEnd() )
     {
@@ -117,22 +118,22 @@ int itkSimilarityIndexImageFilterTest(int, char* [] )
     }
 
   // test case where both images are zero
- Image1Type::Pointer image3 = Image1Type::New();
- Image2Type::Pointer image4 = Image2Type::New();
+  Image1Type::Pointer image3 = Image1Type::New();
+  Image2Type::Pointer image4 = Image2Type::New();
 
- image3->SetRegions( image1->GetBufferedRegion() );
- image3->Allocate();
- image3->FillBuffer( 0 );
+  image3->SetRegions( image1->GetBufferedRegion() );
+  image3->Allocate();
+  image3->FillBuffer( 0 );
 
- image4->SetRegions( image2->GetBufferedRegion() );
- image4->Allocate();
- image4->FillBuffer( 0 );
+  image4->SetRegions( image2->GetBufferedRegion() );
+  image4->Allocate();
+  image4->FillBuffer( 0 );
 
- filter->SetInput1( image3 );
- filter->SetInput2( image4 );
- filter->Update();
+  filter->SetInput1( image3 );
+  filter->SetInput2( image4 );
+  filter->Update();
 
- if ( filter->GetSimilarityIndex() != 0 )
+  if ( filter->GetSimilarityIndex() != 0 )
     {
     std::cout << "Overlap: " << filter->GetSimilarityIndex() << std::endl;
     std::cout << "Zero overlap expected." << std::endl;

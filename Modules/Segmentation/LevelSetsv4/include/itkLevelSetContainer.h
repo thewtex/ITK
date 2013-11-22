@@ -23,7 +23,6 @@
 
 #include "itkLevelSetDenseImage.h"
 
-
 namespace itk
 {
 /**
@@ -37,7 +36,7 @@ namespace itk
  */
 template< typename TIdentifier, typename TLevelSet >
 class LevelSetContainer :
-public LevelSetContainerBase< TIdentifier, TLevelSet >
+  public LevelSetContainerBase< TIdentifier, TLevelSet >
 {
 public:
 
@@ -53,20 +52,20 @@ public:
 
   typedef typename Superclass::LevelSetIdentifierType LevelSetIdentifierType;
 
-  typedef typename Superclass::LevelSetType       LevelSetType;
-  typedef typename Superclass::LevelSetPointer    LevelSetPointer;
-  typedef typename Superclass::InputIndexType     InputIndexType;
-  typedef typename Superclass::OutputType         OutputPixelType;
-  typedef typename Superclass::OutputRealType     OutputRealType;
-  typedef typename Superclass::GradientType       GradientType;
-  typedef typename Superclass::HessianType        HessianType;
+  typedef typename Superclass::LevelSetType    LevelSetType;
+  typedef typename Superclass::LevelSetPointer LevelSetPointer;
+  typedef typename Superclass::InputIndexType  InputIndexType;
+  typedef typename Superclass::OutputType      OutputPixelType;
+  typedef typename Superclass::OutputRealType  OutputRealType;
+  typedef typename Superclass::GradientType    GradientType;
+  typedef typename Superclass::HessianType     HessianType;
 
   typedef typename Superclass::LevelSetContainerType              LevelSetContainerType;
   typedef typename Superclass::LevelSetContainerConstIteratorType LevelSetContainerConstIteratorType;
   typedef typename Superclass::LevelSetContainerIteratorType      LevelSetContainerIteratorType;
 
-  typedef typename Superclass::HeavisideType          HeavisideType;
-  typedef typename Superclass::HeavisideConstPointer  HeavisideConstPointer;
+  typedef typename Superclass::HeavisideType         HeavisideType;
+  typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
 
   itkStaticConstMacro ( Dimension, unsigned int, LevelSetType::Dimension );
 
@@ -76,17 +75,21 @@ public:
   typedef typename Superclass::CacheImageType           CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType DomainMapImageFilterType;
 
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
-  typedef typename Superclass::LevelSetDomainType           LevelSetDomainType;
-  typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::DomainMapImageFilterPointer DomainMapImageFilterPointer;
+  typedef typename Superclass::LevelSetDomainType          LevelSetDomainType;
+  typedef typename Superclass::DomainIteratorType          DomainIteratorType;
 
 protected:
-  LevelSetContainer() {}
-  ~LevelSetContainer() {}
+  LevelSetContainer() {
+  }
+
+  ~LevelSetContainer() {
+  }
 
 private:
   LevelSetContainer( const Self& ); // purposely not implemented
-  void operator = ( const Self& );  // purposely not implemented
+  void operator =( const Self& );   // purposely not implemented
+
 };
 
 /**
@@ -95,15 +98,15 @@ private:
  */
 template< typename TIdentifier, typename TImage >
 class LevelSetContainer< TIdentifier, LevelSetDenseImage< TImage > > :
-public LevelSetContainerBase< TIdentifier, LevelSetDenseImage< TImage > >
+  public LevelSetContainerBase< TIdentifier, LevelSetDenseImage< TImage > >
 {
 public:
-  typedef LevelSetDenseImage< TImage >  LevelSetType;
+  typedef LevelSetDenseImage< TImage > LevelSetType;
 
-  typedef LevelSetContainer                                   Self;
-  typedef LevelSetContainerBase< TIdentifier, LevelSetType >  Superclass;
-  typedef SmartPointer< Self >                                Pointer;
-  typedef SmartPointer< const Self >                          ConstPointer;
+  typedef LevelSetContainer                                  Self;
+  typedef LevelSetContainerBase< TIdentifier, LevelSetType > Superclass;
+  typedef SmartPointer< Self >                               Pointer;
+  typedef SmartPointer< const Self >                         ConstPointer;
 
   /** Method for creation through object factory */
   itkNewMacro ( Self );
@@ -112,19 +115,19 @@ public:
 
   typedef typename Superclass::LevelSetIdentifierType LevelSetIdentifierType;
 
-  typedef typename Superclass::LevelSetPointer    LevelSetPointer;
-  typedef typename Superclass::InputIndexType     InputIndexType;
-  typedef typename Superclass::OutputType         OutputPixelType;
-  typedef typename Superclass::OutputRealType     OutputRealType;
-  typedef typename Superclass::GradientType       GradientType;
-  typedef typename Superclass::HessianType        HessianType;
+  typedef typename Superclass::LevelSetPointer LevelSetPointer;
+  typedef typename Superclass::InputIndexType  InputIndexType;
+  typedef typename Superclass::OutputType      OutputPixelType;
+  typedef typename Superclass::OutputRealType  OutputRealType;
+  typedef typename Superclass::GradientType    GradientType;
+  typedef typename Superclass::HessianType     HessianType;
 
   typedef typename Superclass::LevelSetContainerType              LevelSetContainerType;
   typedef typename Superclass::LevelSetContainerConstIteratorType LevelSetContainerConstIteratorType;
   typedef typename Superclass::LevelSetContainerIteratorType      LevelSetContainerIteratorType;
 
-  typedef typename Superclass::HeavisideType          HeavisideType;
-  typedef typename Superclass::HeavisideConstPointer  HeavisideConstPointer;
+  typedef typename Superclass::HeavisideType         HeavisideType;
+  typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
 
   itkStaticConstMacro ( Dimension, unsigned int, LevelSetType::Dimension );
 
@@ -134,17 +137,19 @@ public:
   typedef typename Superclass::CacheImageType           CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType DomainMapImageFilterType;
 
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
-  typedef typename Superclass::LevelSetDomainType           LevelSetDomainType;
-  typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::DomainMapImageFilterPointer DomainMapImageFilterPointer;
+  typedef typename Superclass::LevelSetDomainType          LevelSetDomainType;
+  typedef typename Superclass::DomainIteratorType          DomainIteratorType;
 
   typedef typename LevelSetType::ImageType    LevelSetImageType;
   typedef typename LevelSetImageType::Pointer LevelSetImagePointer;
 
-  /** Compute information from data object and/or allocate new level set image */
-  void CopyInformationAndAllocate( const Self * iOther, const bool & iAllocate )
-    {
-    LevelSetContainerType internalContainer = iOther->GetContainer();
+  /** Compute information from data object and/or allocate new level set image
+    */
+  void
+  CopyInformationAndAllocate( const Self * iOther, const bool & iAllocate )
+  {
+    LevelSetContainerType              internalContainer = iOther->GetContainer();
     LevelSetContainerConstIteratorType it = internalContainer.begin();
 
     LevelSetContainerType newContainer;
@@ -155,7 +160,7 @@ public:
         {
         LevelSetPointer temp_ls = LevelSetType::New();
 
-        LevelSetImagePointer image = LevelSetImageType::New();
+        LevelSetImagePointer      image = LevelSetImageType::New();
         const LevelSetImageType * otherImage = (it->second)->GetImage();
 
         image->CopyInformation( otherImage );
@@ -178,15 +183,19 @@ public:
       }
 
     this->SetContainer( newContainer );
-    }
+  }
 
 protected:
-  LevelSetContainer() {}
-  ~LevelSetContainer() {}
+  LevelSetContainer() {
+  }
+
+  ~LevelSetContainer() {
+  }
 
 private:
   LevelSetContainer( const Self& ); // purposely not implemented
-  void operator = ( const Self& );  // purposely not implemented
+  void operator =( const Self& );   // purposely not implemented
+
 };
 
 }

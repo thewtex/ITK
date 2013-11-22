@@ -50,15 +50,14 @@
 #include "itkIsolatedConnectedImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 #include "itkCastImageFilter.h"
 #include "itkCurvatureFlowImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 7 )
     {
@@ -69,7 +68,6 @@ int main( int argc, char *argv[] )
     return 1;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  We define the image type using a pixel type and a particular
@@ -78,19 +76,17 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
-
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter< InternalImageType, OutputImageType >
-                                                   CastingFilterType;
+    CastingFilterType;
 
   CastingFilterType::Pointer caster = CastingFilterType::New();
-
 
   // We instantiate reader and writer types
   //
@@ -103,12 +99,10 @@ int main( int argc, char *argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   typedef itk::CurvatureFlowImageFilter< InternalImageType, InternalImageType >
     CurvatureFlowImageFilterType;
   CurvatureFlowImageFilterType::Pointer smoothing =
-                         CurvatureFlowImageFilterType::New();
-
+    CurvatureFlowImageFilterType::New();
 
   //  Software Guide : BeginLatex
   //
@@ -118,9 +112,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::IsolatedConnectedImageFilter<InternalImageType,
-                                       InternalImageType> ConnectedFilterType;
+                                            InternalImageType> ConnectedFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -131,7 +124,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   ConnectedFilterType::Pointer isolatedConnected = ConnectedFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -146,10 +138,8 @@ int main( int argc, char *argv[] )
   writer->SetInput( caster->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   smoothing->SetNumberOfIterations( 5 );
   smoothing->SetTimeStep( 0.125 );
-
 
   //  Software Guide : BeginLatex
   //
@@ -163,26 +153,23 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
-  InternalImageType::IndexType  indexSeed1;
+  InternalImageType::IndexType indexSeed1;
 
   indexSeed1[0] = atoi( argv[3] );
   indexSeed1[1] = atoi( argv[4] );
 
   const InternalPixelType lowerThreshold = atof( argv[5] );
 
-  InternalImageType::IndexType  indexSeed2;
+  InternalImageType::IndexType indexSeed2;
 
   indexSeed2[0] = atoi( argv[6] );
   indexSeed2[1] = atoi( argv[7] );
-
 
   // Software Guide : BeginCodeSnippet
   isolatedConnected->SetLower(  lowerThreshold  );
   isolatedConnected->SetSeed1( indexSeed1 );
   isolatedConnected->SetSeed2( indexSeed2 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -194,11 +181,9 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   isolatedConnected->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -219,7 +204,6 @@ int main( int argc, char *argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The intensity value allowing us to separate both regions can be
@@ -233,7 +217,6 @@ int main( int argc, char *argv[] )
   std::cout << "Isolated Value Found = ";
   std::cout << isolatedConnected->GetIsolatedValue()  << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -263,14 +246,19 @@ int main( int argc, char *argv[] )
   //  \begin{center}
   //  \begin{tabular}{|l|c|c|c|c|}
   //  \hline
-  //  Adjacent Structures & Seed1 & Seed2 & Lower & Isolated value found       \\ \hline
-  //  Gray matter vs White matter & $(61,140)$ & $(63,43)$ & $150$ & $183.31$  \\ \hline
+  //  Adjacent Structures & Seed1 & Seed2 & Lower & Isolated value found
+  //       \\ \hline
+  //  Gray matter vs White matter & $(61,140)$ & $(63,43)$ & $150$ & $183.31$
+  //  \\ \hline
   //  \end{tabular}
   //  \end{center}
   //  \itkcaption[IsolatedConnectedImageFilter example parameters]{Parameters
   //  used for separating white matter from gray matter in
   //  Figure~\ref{fig:IsolatedConnectedImageFilterOutput} using the
-  //  IsolatedConnectedImageFilter.\label{tab:IsolatedConnectedImageFilterOutput}}
+  //
+  //
+  //
+  // IsolatedConnectedImageFilter.\label{tab:IsolatedConnectedImageFilterOutput}}
   //  \end{table}
   //
   // \begin{figure} \center
@@ -284,7 +272,6 @@ int main( int argc, char *argv[] )
   //
   //
   //  Software Guide : EndLatex
-
 
   return 0;
 }

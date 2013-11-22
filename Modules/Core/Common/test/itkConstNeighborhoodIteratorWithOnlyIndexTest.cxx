@@ -20,37 +20,40 @@
 #include "itkConstNeighborhoodIteratorWithOnlyIndex.h"
 
 template <typename TImage>
-typename TImage::Pointer itkConstNeighborhoodIteratorWithOnlyIndexTestGetTestImage(int d1, int d2, int d3, int d4)
+typename TImage::Pointer
+itkConstNeighborhoodIteratorWithOnlyIndexTestGetTestImage(int d1, int d2, int d3, int d4)
 {
-  itk::Size<4>  sizeND;
-   sizeND[0] = d1;
-   sizeND[1] = d2;
-   sizeND[2] = d3;
-   sizeND[3] = d4;
+  itk::Size<4> sizeND;
+
+  sizeND[0] = d1;
+  sizeND[1] = d2;
+  sizeND[2] = d3;
+  sizeND[3] = d4;
 
   itk::Index<4> origND;
-   origND.Fill(0);
+  origND.Fill(0);
 
   itk::ImageRegion<4> RegionND;
-   RegionND.SetSize(sizeND);
-   RegionND.SetIndex(origND);
+  RegionND.SetSize(sizeND);
+  RegionND.SetIndex(origND);
 
   typename TImage::Pointer imageND = TImage::New();
-   imageND->SetLargestPossibleRegion(RegionND);
-   imageND->SetBufferedRegion(RegionND);
-   imageND->SetRequestedRegion(RegionND);
+  imageND->SetLargestPossibleRegion(RegionND);
+  imageND->SetBufferedRegion(RegionND);
+  imageND->SetRequestedRegion(RegionND);
 
-  return  imageND;
+  return imageND;
 }
 
 template< typename TImage >
-int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
+int
+itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
 {
   typename TImage::Pointer img = itkConstNeighborhoodIteratorWithOnlyIndexTestGetTestImage<TImage>(10, 10, 5, 3);
 
-  typedef TImage                                                    ImageType;
-  typedef itk::ConstNeighborhoodIteratorWithOnlyIndex< ImageType >  ConstNeighborhoodIteratorType;
-  typedef typename ConstNeighborhoodIteratorType::IndexType         IndexType;
+  typedef TImage                                                   ImageType;
+  typedef itk::ConstNeighborhoodIteratorWithOnlyIndex< ImageType > ConstNeighborhoodIteratorType;
+  typedef typename ConstNeighborhoodIteratorType::IndexType        IndexType;
 
   IndexType loc;
   loc[0] = 4; loc[1] = 4; loc[2] = 2; loc[3] = 1;
@@ -81,7 +84,8 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
   std::cout << "Test GetIndex( NeighborhoodIndex )" << std::endl;
   if( it.GetIndex( it.GetCenterNeighborhoodIndex() ) != loc )
     {
-    std::cerr << "Error getting index from center nhood index. Returned " << it.GetIndex( it.GetCenterNeighborhoodIndex() ) << std::endl;
+    std::cerr << "Error getting index from center nhood index. Returned " << it.GetIndex(
+      it.GetCenterNeighborhoodIndex() ) << std::endl;
     return EXIT_FAILURE;
     }
   IndexType truthIndex;
@@ -105,7 +109,7 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
 
   std::cout << "Testing IsAtBegin()" << std::endl;
   std::cout << it.IsAtBegin() << std::endl;
-  if( ! it.IsAtBegin() )
+  if( !it.IsAtBegin() )
     {
     std::cerr << "Error with IsAtBegin." << std::endl;
     return EXIT_FAILURE;
@@ -117,7 +121,7 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
 
   std::cout << "Testing IsAtEnd()" << std::endl;
   std::cout << it.IsAtEnd() << std::endl;
-  if( ! it.IsAtEnd() )
+  if( !it.IsAtEnd() )
     {
     std::cerr << "Error with either IsAtEnd or GoToEnd." << std::endl;
     return EXIT_FAILURE;
@@ -132,7 +136,7 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
     std::cerr << "Error with fwd iteration" << std::endl;
     return EXIT_FAILURE;
     }
-  while (! it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
     ++it;
     }
@@ -214,17 +218,17 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
   radius[0] = radius[1] = radius[2] = radius[3] = 1;
 
   std::cout << "Creating ConstNeighborhoodIterator" << std::endl;
-  ConstNeighborhoodIteratorType ra_it(radius, ra_img, ra_img->GetRequestedRegion());
+  ConstNeighborhoodIteratorType ra_it(radius, ra_img, ra_img->GetRequestedRegion() );
   ConstNeighborhoodIteratorType copy_it;
 
   std::cout << "Test copying." << std::endl;
   copy_it = ra_it;
-  if( copy_it != ra_it || ! (copy_it == ra_it) )
+  if( copy_it != ra_it || !(copy_it == ra_it) )
     {
     std::cerr << "Failure with copying or equality comparison." << std::endl;
     return EXIT_FAILURE;
     }
-  if( ! (copy_it >= ra_it) || ! (copy_it <= ra_it) )
+  if( !(copy_it >= ra_it) || !(copy_it <= ra_it) )
     {
     std::cerr << "Failure with copying or >= or <= comparison." << std::endl;
     return EXIT_FAILURE;
@@ -248,12 +252,12 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
     }
 
   std::cout << "Test iterator comparisons" << std::endl;
-  if( ! (copy_it < ra_it) || ! (copy_it <= ra_it) )
+  if( !(copy_it < ra_it) || !(copy_it <= ra_it) )
     {
     std::cerr << "Error with < or <=." << std::endl;
     return EXIT_FAILURE;
     }
-  if( ! (copy_it < ra_it) || ! (copy_it <= ra_it) )
+  if( !(copy_it < ra_it) || !(copy_it <= ra_it) )
     {
     std::cerr << "Error with < or <=." << std::endl;
     return EXIT_FAILURE;
@@ -315,7 +319,9 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
   if( ra_it < copy_it || ra_it <= copy_it || copy_it > ra_it || copy_it >= ra_it )
     {
     std::cerr << "Error with comparison after adding offset " << a_off << std::endl;
-    std::cerr << (ra_it < copy_it) << ", " << (ra_it <= copy_it) << ", " << (copy_it > ra_it) << ", " << (copy_it >= ra_it) << std::endl;
+    std::cerr <<
+      (ra_it <
+       copy_it) << ", " << (ra_it <= copy_it) << ", " << (copy_it > ra_it) << ", " << (copy_it >= ra_it) << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -349,7 +355,8 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
   //
   std::cout << "Testing IndexInBounds" << std::endl;
   int dims[4] = {13,11,9,7};
-  typename ImageType::Pointer iib_img = itkConstNeighborhoodIteratorWithOnlyIndexTestGetTestImage<TImage>(dims[0], dims[1], dims[2], dims[3]);
+  typename ImageType::Pointer iib_img =
+    itkConstNeighborhoodIteratorWithOnlyIndexTestGetTestImage<TImage>(dims[0], dims[1], dims[2], dims[3]);
   radius[0] = 4;
   radius[1] = 3;
   radius[2] = 2;
@@ -357,7 +364,7 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
 
   std::cout << "Creating ConstNeighborhoodIterator" << std::endl;
   typedef ConstNeighborhoodIteratorType IteratorType;
-  IteratorType iib_it(radius, iib_img, iib_img->GetRequestedRegion());
+  IteratorType iib_it(radius, iib_img, iib_img->GetRequestedRegion() );
   typename IteratorType::OffsetType resultOffset;
   typename IteratorType::OffsetType internalIndex;
 
@@ -378,12 +385,13 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
     {
     if( resultOffset[n] != static_cast<itk::OffsetValueType>( radius[n] ) )
       {
-      std::cerr << "IndexInBounds failed. Expected resultOffset of " << radius << ", but got " << resultOffset << std::endl;
+      std::cerr << "IndexInBounds failed. Expected resultOffset of " << radius << ", but got " << resultOffset <<
+        std::endl;
       return EXIT_FAILURE;
       }
     }
   inside = iib_it.IndexInBounds( iib_it.Size()-1, internalIndex, resultOffset );
-  if( ! inside )
+  if( !inside )
     {
     std::cerr << "IndexInBounds failed for index size-1, expected true." << std::endl;
     return EXIT_FAILURE;
@@ -406,7 +414,8 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
     iib_it.SetLocation( boundaryLoc );
     if( iib_it.IndexInBounds( 0, internalIndex, resultOffset ) )
       {
-      std::cerr << "IndexInBounds failed for min boundaryLoc: " << boundaryLoc << " and dimension: " << n << ". Expected false." << std::endl;
+      std::cerr << "IndexInBounds failed for min boundaryLoc: " << boundaryLoc << " and dimension: " << n <<
+        ". Expected false." << std::endl;
       result = EXIT_FAILURE;
       }
     }
@@ -419,7 +428,8 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
     iib_it.SetLocation( boundaryLoc );
     if( iib_it.IndexInBounds( iib_it.Size()-1, internalIndex, resultOffset ) )
       {
-      std::cerr << "IndexInBounds failed for max boundaryLoc: " << boundaryLoc << " and dimension: " << n << ". Expected false." << std::endl;
+      std::cerr << "IndexInBounds failed for max boundaryLoc: " << boundaryLoc << " and dimension: " << n <<
+        ". Expected false." << std::endl;
       result = EXIT_FAILURE;
       }
     }
@@ -427,7 +437,7 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
   // Test center
   iib_it.SetLocation( centerLoc );
   inside = iib_it.IndexInBounds( 0, internalIndex, resultOffset );
-  if( ! inside )
+  if( !inside )
     {
     std::cerr << "IndexInBounds failed for index 0, expected true." << std::endl;
     result = EXIT_FAILURE;
@@ -437,9 +447,11 @@ int itkConstNeighborhoodIteratorWithOnlyIndexTestRun()
 
 }
 
-int itkConstNeighborhoodIteratorWithOnlyIndexTest(int, char* [] )
+int
+itkConstNeighborhoodIteratorWithOnlyIndexTest(int, char* [] )
 {
   std::cout << "*** Testing with itk::Image" << std::endl << std::endl;
+
   if( itkConstNeighborhoodIteratorWithOnlyIndexTestRun< itk::Image<char,4> >() == EXIT_FAILURE )
     {
     std::cerr << "XXX Failed with itk::Image XXX" << std::endl;

@@ -31,21 +31,28 @@ class Compose3DCovariantVector
 {
 public:
   typedef CovariantVector< TInput, 3 > OutputType;
-  Compose3DCovariantVector() {}
-  ~Compose3DCovariantVector() {}
-  bool operator!=(const Compose3DCovariantVector &) const
+  Compose3DCovariantVector() {
+  }
+
+  ~Compose3DCovariantVector() {
+  }
+
+  bool
+  operator!=(const Compose3DCovariantVector &) const
   {
     return false;
   }
 
-  bool operator==(const Compose3DCovariantVector & other) const
+  bool
+  operator==(const Compose3DCovariantVector & other) const
   {
     return !( *this != other );
   }
 
-  inline OutputType operator()(const TInput & s1,
-                               const TInput & s2,
-                               const TInput & s3) const
+  inline OutputType
+  operator()(const TInput & s1,
+             const TInput & s2,
+             const TInput & s3) const
   {
     OutputType v;
 
@@ -54,6 +61,7 @@ public:
     v[2] = s3;
     return v;
   }
+
 };
 }
 
@@ -78,7 +86,7 @@ template< typename TInputImage,
           typename TOutputImage =
             Image< CovariantVector< typename TInputImage::PixelType, 3 >,
                    TInputImage::ImageDimension > >
-class Compose3DCovariantVectorImageFilter:
+class Compose3DCovariantVectorImageFilter :
   public
   TernaryFunctorImageFilter< TInputImage, TInputImage,
                              TInputImage, TOutputImage,
@@ -88,10 +96,10 @@ public:
   /** Standard class typedefs. */
   typedef Compose3DCovariantVectorImageFilter Self;
   typedef TernaryFunctorImageFilter<
-    TInputImage, TInputImage, TInputImage,
-    TOutputImage,
-    Functor::Compose3DCovariantVector<
-      typename TInputImage::PixelType > > Superclass;
+      TInputImage, TInputImage, TInputImage,
+      TOutputImage,
+      Functor::Compose3DCovariantVector<
+        typename TInputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -113,12 +121,17 @@ public:
 #endif
 
 protected:
-  Compose3DCovariantVectorImageFilter() {}
-  virtual ~Compose3DCovariantVectorImageFilter() {}
+  Compose3DCovariantVectorImageFilter() {
+  }
+
+  virtual
+  ~Compose3DCovariantVectorImageFilter() {
+  }
 
 private:
   Compose3DCovariantVectorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

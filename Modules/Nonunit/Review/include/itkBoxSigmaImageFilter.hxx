@@ -23,7 +23,6 @@
 #include "itkNumericTraits.h"
 #include "itkBoxUtilities.h"
 
-
 /*
  *
  * This code was contributed in the Insight Journal paper:
@@ -39,7 +38,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 BoxSigmaImageFilter< TInputImage, TOutputImage >
 ::BoxSigmaImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -79,5 +79,6 @@ BoxSigmaImageFilter< TInputImage, TOutputImage >
                                                              this->GetRadius(),
                                                              progress);
 }
+
 } // end namespace itk
 #endif

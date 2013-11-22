@@ -143,7 +143,7 @@ DiscreteGaussianDerivativeImageFilter< TInputImage, TOutputImage >
   typedef NeighborhoodOperatorImageFilter< InputImageType,
                                            OutputImageType, RealOutputPixelType > SingleFilterType;
   typedef StreamingImageFilter< OutputImageType, OutputImageType >
-  StreamingFilterType;
+    StreamingFilterType;
 
   typedef typename FirstFilterType::Pointer        FirstFilterPointer;
   typedef typename IntermediateFilterType::Pointer IntermediateFilterPointer;

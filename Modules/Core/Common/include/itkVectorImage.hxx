@@ -37,7 +37,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int VImageDimension >
 VectorImage< TPixel, VImageDimension >
-::VectorImage():
+::VectorImage() :
   m_VectorLength(0)
 {
   m_Buffer = PixelContainer::New();
@@ -185,6 +185,7 @@ VectorImage< TPixel, VImageDimension >
 
   // m_Origin and m_Spacing are printed in the Superclass
 }
+
 } // end namespace itk
 
 #endif

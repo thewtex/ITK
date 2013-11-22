@@ -30,11 +30,11 @@ namespace Statistics
  * \ingroup ITKNeuralNetworks
  */
 
- template<typename TMeasurementVector, typename TTargetVector>
+template<typename TMeasurementVector, typename TTargetVector>
 class CompletelyConnectedWeightSet : public WeightSetBase<TMeasurementVector, TTargetVector>
 {
 public:
-  #define MAX_SIZE 1000
+#define MAX_SIZE 1000
 
   typedef CompletelyConnectedWeightSet                     Self;
   typedef WeightSetBase<TMeasurementVector, TTargetVector> Superclass;
@@ -45,12 +45,15 @@ public:
   itkNewMacro(Self);
 
   void SetCompleteConnectivity();
+
   void SetRandomConnectivity(int[][MAX_SIZE]);
 
 protected:
 
   CompletelyConnectedWeightSet();
-  virtual ~CompletelyConnectedWeightSet(){};
+  virtual
+  ~CompletelyConnectedWeightSet(){
+  }
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;

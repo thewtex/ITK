@@ -185,6 +185,7 @@ ZeroCrossingImageFilter< TInputImage, TOutputImage >
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( m_BackgroundValue )
      << std::endl;
 }
+
 } //end of itk namespace
 
 #endif

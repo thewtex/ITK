@@ -18,7 +18,6 @@
 #ifndef __itkHDF5ImageIOFactory_h
 #define __itkHDF5ImageIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -30,7 +29,7 @@ namespace itk
    * factory.
    * \ingroup ITKIOHDF5
    */
-class HDF5ImageIOFactory:public ObjectFactoryBase
+class HDF5ImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -51,7 +50,8 @@ public:
   itkTypeMacro(HDF5ImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     HDF5ImageIOFactory::Pointer metaFactory = HDF5ImageIOFactory::New();
 
@@ -65,7 +65,8 @@ protected:
 
 private:
   HDF5ImageIOFactory(const Self &); //purposely not implemented
-  void operator=(const Self &);      //purposely not implemented
+  void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

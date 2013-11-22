@@ -20,24 +20,25 @@
 #include "itkListSample.h"
 #include "itkSubsample.h"
 
-int itkSubsampleTest3(int, char* [] )
+int
+itkSubsampleTest3(int, char* [] )
 {
   std::cout << "MeanSampleFilter test \n \n";
 
-  const unsigned int                  MeasurementVectorSize = 2;
-  const unsigned int                  numberOfMeasurementVectors = 5;
-  unsigned int                        counter;
+  const unsigned int MeasurementVectorSize = 2;
+  const unsigned int numberOfMeasurementVectors = 5;
+  unsigned int       counter;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >             MeasurementVectorType;
+      float, MeasurementVectorSize >             MeasurementVectorType;
   typedef itk::Statistics::ListSample<
-    MeasurementVectorType >                    SampleType;
+      MeasurementVectorType >                    SampleType;
 
   SampleType::Pointer sample = SampleType::New();
 
   sample->SetMeasurementVectorSize( MeasurementVectorSize );
 
-  MeasurementVectorType               measure;
+  MeasurementVectorType measure;
 
   //reset counter
   counter = 0;
@@ -52,7 +53,7 @@ int itkSubsampleTest3(int, char* [] )
     counter++;
     }
 
-  typedef itk::Statistics::Subsample< SampleType >  SubsampleType;
+  typedef itk::Statistics::Subsample< SampleType > SubsampleType;
 
   SubsampleType::Pointer subsample = SubsampleType::New();
 
@@ -78,7 +79,7 @@ int itkSubsampleTest3(int, char* [] )
     }
 
   const FilterType::MeasurementVectorDecoratedType * decorator = filter->GetOutput();
-  FilterType::MeasurementVectorType    meanOutput  = decorator->Get();
+  FilterType::MeasurementVectorType                  meanOutput  = decorator->Get();
 
   FilterType::MeasurementVectorType mean;
 
@@ -88,10 +89,10 @@ int itkSubsampleTest3(int, char* [] )
   std::cout << meanOutput[0] << " " << mean[0] << " "
             << meanOutput[1] << " " << mean[1] << " " << std::endl;
 
-  FilterType::MeasurementVectorType::ValueType    epsilon = 1e-6;
+  FilterType::MeasurementVectorType::ValueType epsilon = 1e-6;
 
   if ( ( vcl_abs( meanOutput[0] - mean[0]) > epsilon )  ||
-       ( vcl_abs( meanOutput[1] - mean[1]) > epsilon ))
+       ( vcl_abs( meanOutput[1] - mean[1]) > epsilon ) )
     {
     std::cerr << "The result is not what is expected" << std::endl;
     return EXIT_FAILURE;
@@ -103,7 +104,7 @@ int itkSubsampleTest3(int, char* [] )
   // add only the first half of instances of the sample
   for (SampleType::InstanceIdentifier id = 0;
        id < static_cast< SampleType::InstanceIdentifier >
-         (sample->Size() / 2);
+       (sample->Size() / 2);
        id++)
     {
     subsample->AddInstance(id);
@@ -130,7 +131,7 @@ int itkSubsampleTest3(int, char* [] )
             << meanOutput[1] << " " << mean[1] << " " << std::endl;
 
   if ( ( vcl_abs( meanOutput[0] - mean[0]) > epsilon )  ||
-       ( vcl_abs( meanOutput[1] - mean[1]) > epsilon ))
+       ( vcl_abs( meanOutput[1] - mean[1]) > epsilon ) )
     {
     std::cerr << "The result is not what is expected" << std::endl;
     return EXIT_FAILURE;

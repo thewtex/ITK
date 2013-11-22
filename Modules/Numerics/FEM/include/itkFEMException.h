@@ -52,7 +52,8 @@ public:
   FEMException(const char *file, unsigned int lineNumber, std::string location = "Unknown");
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMException()
+  virtual
+  ~FEMException()
   throw ( )
   {
   }
@@ -79,7 +80,8 @@ public:
   FEMExceptionIO(const char *file, unsigned int lineNumber, std::string location, std::string moreDescription);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionIO()
+  virtual
+  ~FEMExceptionIO()
   throw ( )
   {
   }
@@ -112,7 +114,8 @@ public:
   FEMExceptionWrongClass(const char *file, unsigned int lineNumber, std::string location);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionWrongClass()
+  virtual
+  ~FEMExceptionWrongClass()
   throw ( )
   {
   }
@@ -136,7 +139,8 @@ public:
                              int GN);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionObjectNotFound()
+  virtual
+  ~FEMExceptionObjectNotFound()
   throw ( )
   {
   }
@@ -170,7 +174,8 @@ public:
   FEMExceptionSolution(const char *file, unsigned int lineNumber, std::string location, std::string moreDescription);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionSolution()
+  virtual
+  ~FEMExceptionSolution()
   throw ( )
   {
   }

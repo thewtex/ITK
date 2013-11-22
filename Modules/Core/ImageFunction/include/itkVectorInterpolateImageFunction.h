@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = double >
-class VectorInterpolateImageFunction:
+class VectorInterpolateImageFunction :
   public ImageFunction<
     TInputImage,
     typename NumericTraits< typename TInputImage::PixelType >::RealType,
@@ -80,7 +80,7 @@ public:
   typedef typename Superclass::PointType PointType;
 
   /** Index typedef support. */
-  typedef typename Superclass::IndexType      IndexType;
+  typedef typename Superclass::IndexType IndexType;
 
   /** ContinuousIndex typedef support. */
   typedef typename Superclass::ContinuousIndexType ContinuousIndexType;
@@ -96,7 +96,8 @@ public:
    * The point is assume to lie within the image buffer.
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual OutputType Evaluate(const PointType & point) const
+  virtual OutputType
+  Evaluate(const PointType & point) const
   {
     ContinuousIndexType index;
 
@@ -124,13 +125,14 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual OutputType EvaluateAtIndex(const IndexType & index) const
+  virtual OutputType
+  EvaluateAtIndex(const IndexType & index) const
   {
     OutputType output;
     PixelType  input = this->GetInputImage()->GetPixel(index);
 
     for ( unsigned int k = 0;
-              k < this->GetInputImage()->GetNumberOfComponentsPerPixel(); k++ )
+          k < this->GetInputImage()->GetNumberOfComponentsPerPixel(); k++ )
       {
       output[k] = static_cast< double >( input[k] );
       }
@@ -138,14 +140,22 @@ public:
   }
 
 protected:
-  VectorInterpolateImageFunction() {}
-  ~VectorInterpolateImageFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  VectorInterpolateImageFunction() {
+  }
+
+  ~VectorInterpolateImageFunction() {
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   VectorInterpolateImageFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // end namespace itk
 

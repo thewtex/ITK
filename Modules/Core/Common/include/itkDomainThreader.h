@@ -63,7 +63,7 @@ namespace itk
  *  \ingroup ITKCommon
  */
 template< typename TDomainPartitioner, typename TAssociate >
-class DomainThreader: public Object
+class DomainThreader : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -103,11 +103,13 @@ public:
    * itk::MultiThreader::GetGlobalMaximumNumberOfThreads() and ITK_MAX_THREADS.
    * */
   ThreadIdType GetMaximumNumberOfThreads() const;
+
   void SetMaximumNumberOfThreads( const ThreadIdType threads );
 
 protected:
   DomainThreader();
-  virtual ~DomainThreader();
+  virtual
+  ~DomainThreader();
 
   /** This is evauated at the beginning of Execute() so that it can be used in
    * BeforeThreadedExecution(). */
@@ -116,7 +118,9 @@ protected:
   /** When \c Execute is run, this method is run singled-threaded before \c
    * ThreadedExecution.  Inside this method optional operations such as
    * creating instance variables needed per thread may be performed. */
-  virtual void BeforeThreadedExecution(){}
+  virtual void
+  BeforeThreadedExecution(){
+  }
 
   /** Do the threaded operation, somewhat like \c ThreadedGenerateData in an
    * ImageSource.
@@ -132,7 +136,9 @@ protected:
   /** When \c Execute in run, this method is run single-threaded after \c
    * ThreadedExecution.  Optionally collect results, etc. E.g. calculate the
    * global minimum from the minimums calculated per thread. */
-  virtual void AfterThreadedExecution(){}
+  virtual void
+  AfterThreadedExecution(){
+  }
 
   itkSetObjectMacro( MultiThreader, MultiThreader );
 
@@ -152,17 +158,17 @@ private:
   /** This contains the object passed to the threading library. */
   struct ThreadStruct
     {
-    DomainThreader     * domainThreader;
+    DomainThreader * domainThreader;
     };
 
   /** Store the actual number of threads used, which may be less than
    * the number allocated by the threader if the object does not split
    * well into that number.
    * This value is determined at the beginning of \c Execute(). */
-  ThreadIdType                             m_NumberOfThreadsUsed;
+  ThreadIdType m_NumberOfThreadsUsed;
   typename DomainPartitionerType::Pointer  m_DomainPartitioner;
-  DomainType                               m_CompleteDomain;
-  MultiThreader::Pointer                   m_MultiThreader;
+  DomainType             m_CompleteDomain;
+  MultiThreader::Pointer m_MultiThreader;
 };
 
 }

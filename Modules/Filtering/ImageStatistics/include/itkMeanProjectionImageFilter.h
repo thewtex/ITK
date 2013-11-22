@@ -49,7 +49,7 @@ template< typename TInputPixel, typename TAccumulate >
 class MeanAccumulator
 {
 public:
-  typedef typename NumericTraits< TInputPixel >::RealType       RealType;
+  typedef typename NumericTraits< TInputPixel >::RealType RealType;
 
   MeanAccumulator( SizeValueType size )
   {
@@ -61,17 +61,20 @@ public:
     m_Size = NumericTraits< SizeValueType >::Zero;
   }
 
-  inline void Initialize()
+  inline void
+  Initialize()
   {
     m_Sum = NumericTraits< TAccumulate >::Zero;
   }
 
-  inline void operator()(const TInputPixel & input)
+  inline void
+  operator()(const TInputPixel & input)
   {
     m_Sum = m_Sum + input;
   }
 
-  inline RealType GetValue()
+  inline RealType
+  GetValue()
   {
     return ( (RealType)m_Sum ) / m_Size;
   }
@@ -85,7 +88,7 @@ template< typename TInputImage, typename TOutputImage,
           typename TAccumulate =
             typename NumericTraits<
               typename TOutputImage::PixelType >::AccumulateType >
-class MeanProjectionImageFilter:public
+class MeanProjectionImageFilter : public
   ProjectionImageFilter< TInputImage, TOutputImage,
                          Functor::MeanAccumulator< typename TInputImage::PixelType, TAccumulate > >
 {
@@ -123,12 +126,17 @@ public:
 #endif
 
 protected:
-  MeanProjectionImageFilter() {}
-  virtual ~MeanProjectionImageFilter() {}
+  MeanProjectionImageFilter() {
+  }
+
+  virtual
+  ~MeanProjectionImageFilter() {
+  }
 
 private:
   MeanProjectionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };                                         // end MeanProjectionImageFilter
 } //end namespace itk
 

@@ -22,7 +22,8 @@
 #include "itkImageSource.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkTransformToDisplacementFieldSource.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkTransformToDisplacementFieldSource.h in ITKv4"
 #endif
 
 namespace itk
@@ -61,7 +62,7 @@ namespace itk
  */
 template< typename TOutputImage,
           typename TTransformPrecisionType = double >
-class TransformToDeformationFieldSource:
+class TransformToDeformationFieldSource :
   public ImageSource< TOutputImage >
 {
 public:
@@ -178,7 +179,8 @@ public:
 
 protected:
   TransformToDeformationFieldSource(void);
-  ~TransformToDeformationFieldSource(void) {}
+  ~TransformToDeformationFieldSource(void) {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

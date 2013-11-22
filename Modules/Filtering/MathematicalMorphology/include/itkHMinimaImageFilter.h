@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class HMinimaImageFilter:
+class HMinimaImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -117,7 +117,9 @@ public:
 
 protected:
   HMinimaImageFilter();
-  ~HMinimaImageFilter() {}
+  ~HMinimaImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** HMinimaImageFilter needs the entire input be

@@ -22,7 +22,8 @@
 #include <fstream>
 
 // Generate Weighed centroid Kd tree generator using FixedArray
-int itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
+int
+itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
 {
   if( argc < 4 )
     {
@@ -49,7 +50,7 @@ int itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
   //
   // Generate a sample of random points
   //
-  const unsigned int numberOfDataPoints = atoi( argv[1] );
+  const unsigned int    numberOfDataPoints = atoi( argv[1] );
   MeasurementVectorType mv;
   for (unsigned int i = 0; i < numberOfDataPoints; ++i )
     {
@@ -79,7 +80,7 @@ int itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
 
   MeasurementVectorType queryPoint;
 
-  unsigned int numberOfNeighbors = 1;
+  unsigned int                           numberOfNeighbors = 1;
   TreeType::InstanceIdentifierVectorType neighbors;
 
   MeasurementVectorType result;
@@ -95,11 +96,11 @@ int itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
   //  Check that for every point in the sample, its closest point is itself.
   //
   typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType > DistanceMetricType;
-  DistanceMetricType::Pointer distanceMetric = DistanceMetricType::New();
-  bool testFailed = false;
+  DistanceMetricType::Pointer    distanceMetric = DistanceMetricType::New();
+  bool                           testFailed = false;
   DistanceMetricType::OriginType origin;
   ::itk::NumericTraits<DistanceMetricType::OriginType>::SetLength( origin,
-    measurementVectorSize);
+                                                                   measurementVectorSize);
 
   for( unsigned int k = 0; k < sample->Size(); k++ )
     {
@@ -118,7 +119,7 @@ int itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
     for ( unsigned int i = 0; i < numberOfNeighbors; ++i )
       {
       const double distance =
-        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ));
+        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ) );
 
       if( distance > vnl_math::eps )
         {
@@ -162,11 +163,11 @@ int itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
     // Compute the distance to the "presumed" nearest neighbor
     //
     double result_dist = vcl_sqrt(
-          (result[0] - queryPoint[0]) *
-          (result[0] - queryPoint[0]) +
-          (result[1] - queryPoint[1]) *
-          (result[1] - queryPoint[1])
-          );
+        (result[0] - queryPoint[0]) *
+        (result[0] - queryPoint[0]) +
+        (result[1] - queryPoint[1]) *
+        (result[1] - queryPoint[1])
+        );
 
     //
     // Compute the distance to all other points, to verify
@@ -207,18 +208,17 @@ int itkWeightedCentroidKdTreeGeneratorTest8(int argc , char * argv [] )
 
     }
 
-
   if( argc > 4 )
     {
     //
-    // Plot out the tree structure to the console in the format used by Graphviz dot
+    // Plot out the tree structure to the console in the format used by Graphviz
+    // dot
     //
     std::ofstream plotFile;
     plotFile.open( argv[4] );
     tree->PlotTree( plotFile );
     plotFile.close();
     }
-
 
   if( numberOfFailedPoints )
     {

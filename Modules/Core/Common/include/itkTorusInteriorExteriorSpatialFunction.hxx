@@ -36,7 +36,8 @@ TorusInteriorExteriorSpatialFunction< VDimension, TInput >
 template< unsigned int VDimension, typename TInput >
 TorusInteriorExteriorSpatialFunction< VDimension, TInput >
 ::~TorusInteriorExteriorSpatialFunction()
-{}
+{
+}
 
 template< unsigned int VDimension, typename TInput >
 typename TorusInteriorExteriorSpatialFunction< VDimension, TInput >::OutputType
@@ -79,6 +80,7 @@ TorusInteriorExteriorSpatialFunction< VDimension, TInput >
 
   os << indent << "Minor radius: " << m_MinorRadius << std::endl;
 }
+
 } // end namespace itk
 
 #endif

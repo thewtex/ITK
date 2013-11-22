@@ -39,7 +39,8 @@
 
 #include <iomanip>
 
-int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
+int
+itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
 {
 
   if( argc < 4 )
@@ -64,13 +65,13 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   const unsigned int Dimension = 2;
   typedef double PixelType; //I assume png is unsigned short
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
   typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
 
-  FixedImageReaderType::Pointer fixedImageReader   = FixedImageReaderType::New();
+  FixedImageReaderType::Pointer  fixedImageReader   = FixedImageReaderType::New();
   MovingImageReaderType::Pointer movingImageReader = MovingImageReaderType::New();
 
   fixedImageReader->SetFileName( argv[1] );
@@ -78,26 +79,26 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
 
   //get the images
   fixedImageReader->Update();
-  FixedImageType::Pointer  fixedImage = fixedImageReader->GetOutput();
+  FixedImageType::Pointer fixedImage = fixedImageReader->GetOutput();
   movingImageReader->Update();
   MovingImageType::Pointer movingImage = movingImageReader->GetOutput();
 
-  /** define a resample filter that will ultimately be used to deform the image */
+  /** define a resample filter that will ultimately be used to deform the image
+    */
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
   ResampleFilterType::Pointer resample = ResampleFilterType::New();
 
-
   /** create a composite transform holder for other transforms  */
-  typedef itk::CompositeTransform<double, Dimension>    CompositeType;
-  typedef CompositeType::ScalarType                     ScalarType;
+  typedef itk::CompositeTransform<double, Dimension> CompositeType;
+  typedef CompositeType::ScalarType                  ScalarType;
 
   CompositeType::Pointer compositeTransform = CompositeType::New();
 
   //create an affine transform
   typedef itk::AffineTransform<double, Dimension>
-                                                    AffineTransformType;
+    AffineTransformType;
   AffineTransformType::Pointer affineTransform = AffineTransformType::New();
   affineTransform->SetIdentity();
   std::cout <<" affineTransform params prior to optimization " << affineTransform->GetParameters() << std::endl;
@@ -108,9 +109,9 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   identityTransform->SetIdentity();
 
   // The metric
-  typedef itk::MattesMutualInformationImageToImageMetricv4 < FixedImageType, MovingImageType >  MetricType;
-  typedef itk::MeanSquaresImageToImageMetricv4 < FixedImageType, MovingImageType >  MetricType2;
-  typedef MetricType::FixedSampledPointSetType                                                              PointSetType;
+  typedef itk::MattesMutualInformationImageToImageMetricv4 < FixedImageType, MovingImageType > MetricType;
+  typedef itk::MeanSquaresImageToImageMetricv4 < FixedImageType, MovingImageType >             MetricType2;
+  typedef MetricType::FixedSampledPointSetType                                                 PointSetType;
   MetricType::Pointer metric = MetricType::New();
   metric->SetNumberOfHistogramBins(20);
   MetricType2::Pointer metric2 = MetricType2::New();
@@ -122,21 +123,21 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
     }
   else
     {
-    typedef PointSetType::PointType     PointType;
-    PointSetType::Pointer               pset(PointSetType::New());
-    unsigned long ind=0,ct=0;
+    typedef PointSetType::PointType PointType;
+    PointSetType::Pointer                             pset(PointSetType::New() );
+    unsigned long                                     ind=0,ct=0;
     itk::ImageRegionIteratorWithIndex<FixedImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
     for( It.GoToBegin(); !It.IsAtEnd(); ++It )
       {
       // take every N^th point
       if ( ct % 20 == 0  )
         {
-          PointType pt;
-          fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
-          pset->SetPoint(ind, pt);
-          ind++;
+        PointType pt;
+        fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+        pset->SetPoint(ind, pt);
+        ind++;
         }
-        ct++;
+      ct++;
       }
     metric->SetFixedSampledPointSet( pset );
     metric->SetUseFixedSampledPointSet( true );
@@ -163,12 +164,13 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
 
   std::cout << "First do an affine registration " << std::endl;
   typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType > RegistrationParameterScalesFromShiftType;
-  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
-  RegistrationParameterScalesFromShiftType::ScalesType scales(affineTransform->GetNumberOfParameters());
+  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator =
+    RegistrationParameterScalesFromShiftType::New();
+  RegistrationParameterScalesFromShiftType::ScalesType scales(affineTransform->GetNumberOfParameters() );
   shiftScaleEstimator->SetMetric(metric);
   shiftScaleEstimator->EstimateScales(scales);
-  typedef itk::GradientDescentOptimizerv4  OptimizerType;
-  OptimizerType::Pointer  optimizer = OptimizerType::New();
+  typedef itk::GradientDescentOptimizerv4 OptimizerType;
+  OptimizerType::Pointer optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );
   optimizer->SetScales(scales);
   /** Set just 1 iteration for the sub-optimizer */
@@ -179,10 +181,11 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   std::cout << "now declare optimizer2  " << std::endl;
 
   typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType2 > RegistrationParameterScalesFromShiftType2;
-  RegistrationParameterScalesFromShiftType2::Pointer shiftScaleEstimator2 = RegistrationParameterScalesFromShiftType2::New();
+  RegistrationParameterScalesFromShiftType2::Pointer shiftScaleEstimator2 =
+    RegistrationParameterScalesFromShiftType2::New();
   shiftScaleEstimator2->SetMetric(metric2);
   shiftScaleEstimator2->EstimateScales(scales);
-  OptimizerType::Pointer  optimizer2 = OptimizerType::New();
+  OptimizerType::Pointer optimizer2 = OptimizerType::New();
   optimizer2->SetMetric( metric2 );
   optimizer2->SetScales(scales);
   /** Set just 1 iteration for the sub-optimizer */
@@ -191,8 +194,8 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   optimizer2->SetMaximumStepSizeInPhysicalUnits( 0.5 );
 
   std::cout << "now declare optimizer to combine the 2 sub-optimizers  " << std::endl;
-  typedef  itk::MultiGradientOptimizerv4  MOptimizerType;
-  MOptimizerType::Pointer  MOptimizer = MOptimizerType::New();
+  typedef  itk::MultiGradientOptimizerv4 MOptimizerType;
+  MOptimizerType::Pointer MOptimizer = MOptimizerType::New();
   MOptimizer->GetOptimizersList().push_back(optimizer);
   MOptimizer->GetOptimizersList().push_back(optimizer2);
   std::cout << "set the # of iterations " << std::endl;
@@ -212,14 +215,14 @@ int itkMultiGradientImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   std::cout << "GetNumberOfThreadsUsed: " << metric->GetNumberOfThreadsUsed() << std::endl;
 
   //write the warped image into a file
-  typedef double                                    OutputPixelType;
-  typedef itk::Image< OutputPixelType, Dimension >  OutputImageType;
+  typedef double                                   OutputPixelType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter<
-                        MovingImageType,
-                        OutputImageType >           CastFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >   WriterType;
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+      MovingImageType,
+      OutputImageType >           CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
   writer->SetFileName( argv[3] );
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput() );

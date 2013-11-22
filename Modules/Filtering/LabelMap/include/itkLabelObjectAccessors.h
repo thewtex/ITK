@@ -41,10 +41,12 @@ public:
   typedef TLabelObject                        LabelObjectType;
   typedef typename LabelObjectType::LabelType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetLabel();
   }
+
 };
 
 template< typename TLabelObject >
@@ -54,10 +56,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef int          AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetNumberOfLines();
   }
+
 };
 
 template< typename TLabelObject, typename TAttributeAccessor >
@@ -66,12 +70,15 @@ class LabelObjectComparator
 public:
   typedef TLabelObject       LabelObjectType;
   typedef TAttributeAccessor AttributeAccessorType;
-  bool operator()(const LabelObjectType *a, const LabelObjectType *b) const
+  bool
+  operator()(const LabelObjectType *a, const LabelObjectType *b) const
   {
     return m_Accessor(a) > m_Accessor(b);
   }
 
-  LabelObjectComparator() {}
+  LabelObjectComparator() {
+  }
+
   LabelObjectComparator(LabelObjectComparator const & from)
   {
     m_Accessor = from.m_Accessor;
@@ -87,12 +94,15 @@ class LabelObjectReverseComparator
 public:
   typedef TLabelObject       LabelObjectType;
   typedef TAttributeAccessor AttributeAccessorType;
-  bool operator()(const LabelObjectType *a, const LabelObjectType *b) const
+  bool
+  operator()(const LabelObjectType *a, const LabelObjectType *b) const
   {
     return m_Accessor(a) < m_Accessor(b);
   }
 
-  LabelObjectReverseComparator() {}
+  LabelObjectReverseComparator() {
+  }
+
   LabelObjectReverseComparator(LabelObjectReverseComparator const & from)
   {
     m_Accessor = from.m_Accessor;

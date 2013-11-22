@@ -48,6 +48,7 @@ BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
 ::SetMeshSizeForTheUpdateField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   numberOfControlPoints.Fill( 0 );
   for( unsigned int d = 0; d < SpaceDimension; d++ )
     {
@@ -68,6 +69,7 @@ BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
 ::SetMeshSizeForTheTotalField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   numberOfControlPoints.Fill( 0 );
   for( unsigned int d = 0; d < SpaceDimension; d++ )
     {
@@ -139,9 +141,9 @@ BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
 
   os << indent << "B-spline parameters: " << std::endl;
   os << indent << "  number of control points for the update field = "
-    << this->m_NumberOfControlPointsForTheUpdateField << std::endl;
+     << this->m_NumberOfControlPointsForTheUpdateField << std::endl;
   os << indent << "  number of control points for the total field = "
-    << this->m_NumberOfControlPointsForTheTotalField << std::endl;
+     << this->m_NumberOfControlPointsForTheTotalField << std::endl;
 }
 
 }  // namespace itk

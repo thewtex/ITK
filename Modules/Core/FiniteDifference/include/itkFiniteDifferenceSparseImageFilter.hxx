@@ -36,6 +36,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "PrecomputeFlag: " << m_PrecomputeFlag << std::endl;
 }
 
@@ -54,7 +55,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
 ::Initialize()
 {
   m_RegionList = ( this->GetOutput()->GetNodeList() )
-                 ->SplitRegions( this->GetNumberOfThreads() );
+    ->SplitRegions( this->GetNumberOfThreads() );
   // The active set of pixels in the sparse image is split into multi-threading
   // regions once here for computationally efficiency.
   // Later GetSplitRegions is used to access these partitions.
@@ -103,7 +104,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
   threadId = ( (MultiThreader::ThreadInfoStruct *)( arg ) )->ThreadID;
   threadCount = ( (MultiThreader::ThreadInfoStruct *)( arg ) )->NumberOfThreads;
   str = (FDThreadStruct *)
-        ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
 
   // Execute the actual method with appropriate output region
   // first find out how many pieces extent can be split into.
@@ -186,7 +187,6 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
   str.TimeStepList.resize(threadCount, false);
   str.ValidTimeStepList.resize(threadCount);
 
-
   // Multithread the execution
   this->GetMultiThreader()->SingleMethodExecute();
 
@@ -211,7 +211,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
   threadCount = ( (MultiThreader::ThreadInfoStruct *)( arg ) )->NumberOfThreads;
 
   str = (FDThreadStruct *)
-        ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
 
   // Execute the actual method with appropriate output region
   // first find out how many pieces extent can be split into.
@@ -242,7 +242,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
   threadCount = ( (MultiThreader::ThreadInfoStruct *)( arg ) )->NumberOfThreads;
 
   str = (FDThreadStruct *)
-        ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreader::ThreadInfoStruct *)( arg ) )->UserData );
 
   // Execute the actual method with appropriate output region
   // first find out how many pieces extent can be split into.
@@ -266,7 +266,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
 ::ThreadedCalculateChange(const ThreadRegionType & regionToProcess, ThreadIdType)
 {
   typedef typename FiniteDifferenceFunctionType::NeighborhoodType
-  NeighborhoodIteratorType;
+    NeighborhoodIteratorType;
 
   typename SparseOutputImageType::Pointer output = this->GetOutput();
 
@@ -289,7 +289,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
   for ( bandIt = regionToProcess.first; bandIt != regionToProcess.last; ++bandIt )
     {
     outputIt.SetLocation (bandIt->m_Index);
-    outputIt.GetCenterPixel()-> m_Update =
+    outputIt.GetCenterPixel()->m_Update =
       m_SparseFunction->ComputeSparseUpdate(outputIt, globalData);
     }
 
@@ -308,7 +308,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
 ::ThreadedPrecalculateChange(const ThreadRegionType & regionToProcess, ThreadIdType)
 {
   typedef typename FiniteDifferenceFunctionType::NeighborhoodType
-  NeighborhoodIteratorType;
+    NeighborhoodIteratorType;
 
   typename SparseOutputImageType::Pointer output = this->GetOutput();
 
@@ -327,6 +327,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
     m_SparseFunction->PrecomputeSparseUpdate(outputIt);
     }
 }
+
 } // end namespace itk
 
 #endif

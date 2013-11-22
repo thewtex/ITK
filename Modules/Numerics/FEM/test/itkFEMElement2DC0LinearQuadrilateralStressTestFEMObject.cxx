@@ -16,14 +16,14 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMElementBase.h"
 #include "itkFEMObject.h"
 
 #include <iostream>
 
 //  Example taken from 'Fundamentals of the Finite ELement Method' - Grandin
-int itkFEMElement2DC0LinearQuadrilateralStressTestFEMObject(int argc, char *argv[])
+int
+itkFEMElement2DC0LinearQuadrilateralStressTestFEMObject(int argc, char *argv[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types
@@ -43,25 +43,25 @@ int itkFEMElement2DC0LinearQuadrilateralStressTestFEMObject(int argc, char *argv
   pt[1] = 2.0;
   n1->SetCoordinates(pt);
 
-  femObject->AddNextNode(n1.GetPointer());
+  femObject->AddNextNode(n1.GetPointer() );
 
   n1 = itk::fem::Node::New();
   pt[0] = 8.0;
   pt[1] = 3.0;
   n1->SetCoordinates(pt);
-  femObject->AddNextNode(n1.GetPointer());
+  femObject->AddNextNode(n1.GetPointer() );
 
   n1 = itk::fem::Node::New();
   pt[0] = 8.0;
   pt[1] = 6.0;
   n1->SetCoordinates(pt);
-  femObject->AddNextNode(n1.GetPointer());
+  femObject->AddNextNode(n1.GetPointer() );
 
   n1 = itk::fem::Node::New();
   pt[0] = 2.0;
   pt[1] = 9.0;
   n1->SetCoordinates(pt);
-  femObject->AddNextNode(n1.GetPointer());
+  femObject->AddNextNode(n1.GetPointer() );
 
   femObject->RenumberNodeContainer();
 
@@ -72,7 +72,7 @@ int itkFEMElement2DC0LinearQuadrilateralStressTestFEMObject(int argc, char *argv
   m->SetPoissonsRatio(0.3);
   m->SetCrossSectionalArea(.0);   /* Crossection area */
   m->SetMomentOfInterita(1.0);    /* Momemt of inertia */
-  femObject->AddNextMaterial(m.GetPointer());
+  femObject->AddNextMaterial(m.GetPointer() );
 
   itk::fem::Element2DC0LinearQuadrilateralStress::Pointer e1;
 
@@ -85,7 +85,7 @@ int itkFEMElement2DC0LinearQuadrilateralStressTestFEMObject(int argc, char *argv
   e1->SetNode( 3, femObject->GetNode(3).GetPointer() );
 
   e1->SetMaterial( femObject->GetMaterial(0).GetPointer() );
-  femObject->AddNextElement( e1.GetPointer());
+  femObject->AddNextElement( e1.GetPointer() );
 
   itk::fem::LoadBC::Pointer l1;
   l1 = itk::fem::LoadBC::New();

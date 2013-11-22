@@ -36,16 +36,19 @@ StdStreamLogOutput::~StdStreamLogOutput()
 }
 
 /** Set file stream */
-void StdStreamLogOutput::SetStream(StreamType & Stream)
+void
+StdStreamLogOutput::SetStream(StreamType & Stream)
 {
   this->m_Stream = &Stream;
   this->m_Stream->precision(30);
 }
 
 /** flush a buffer */
-void StdStreamLogOutput::Flush()
+void
+StdStreamLogOutput::Flush()
 {
   StdStreamLogOutput::m_Mutex.Lock();
+
   if ( this->m_Stream )
     {
     this->m_Stream->flush();
@@ -54,9 +57,11 @@ void StdStreamLogOutput::Flush()
 }
 
 /** Write to a buffer */
-void StdStreamLogOutput::Write(double timestamp)
+void
+StdStreamLogOutput::Write(double timestamp)
 {
   StdStreamLogOutput::m_Mutex.Lock();
+
   if ( this->m_Stream )
     {
     ( *this->m_Stream ) << timestamp;
@@ -65,9 +70,11 @@ void StdStreamLogOutput::Write(double timestamp)
 }
 
 /** Write to a buffer */
-void StdStreamLogOutput::Write(std::string const & content)
+void
+StdStreamLogOutput::Write(std::string const & content)
 {
   StdStreamLogOutput::m_Mutex.Lock();
+
   if ( this->m_Stream )
     {
     ( *this->m_Stream ) << content;
@@ -76,9 +83,11 @@ void StdStreamLogOutput::Write(std::string const & content)
 }
 
 /** Write to a buffer */
-void StdStreamLogOutput::Write(std::string const & content, double timestamp)
+void
+StdStreamLogOutput::Write(std::string const & content, double timestamp)
 {
   StdStreamLogOutput::m_Mutex.Lock();
+
   if ( this->m_Stream )
     {
     ( *this->m_Stream ) << timestamp << "  :  " << content;
@@ -86,9 +95,12 @@ void StdStreamLogOutput::Write(std::string const & content, double timestamp)
   StdStreamLogOutput::m_Mutex.Unlock();
 }
 
-void StdStreamLogOutput::PrintSelf(std::ostream & os, Indent indent) const
+void
+StdStreamLogOutput::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Stream: " << m_Stream << std::endl;
 }
+
 }

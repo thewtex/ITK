@@ -35,6 +35,7 @@ public:
 
   /** Function to create a file, if it does not exist. */
   static void CreateFile( const char* fn );
+
 };
 
 } // namespace itk

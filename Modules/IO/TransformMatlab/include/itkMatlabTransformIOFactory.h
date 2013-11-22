@@ -18,7 +18,6 @@
 #ifndef __itkMatlabTransformIOFactory_h
 #define __itkMatlabTransformIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkTransformIOBase.h"
 
@@ -29,7 +28,7 @@ namespace itk
  *  object factory.
  * \ingroup ITKIOTransformMatlab
  */
-class MatlabTransformIOFactory:public ObjectFactoryBase
+class MatlabTransformIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -50,7 +49,8 @@ public:
   itkTypeMacro(MatlabTransformIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     MatlabTransformIOFactory::Pointer metaFactory =
       MatlabTransformIOFactory::New();
@@ -66,6 +66,7 @@ protected:
 private:
   MatlabTransformIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

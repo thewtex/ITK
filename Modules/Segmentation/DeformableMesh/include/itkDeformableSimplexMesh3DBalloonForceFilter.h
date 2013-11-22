@@ -49,8 +49,8 @@ namespace itk
   * \ingroup ITKDeformableMesh
   */
 template< typename TInputMesh, typename TOutputMesh >
-class DeformableSimplexMesh3DBalloonForceFilter:public DeformableSimplexMesh3DFilter< TInputMesh,
-                                                                                                 TOutputMesh >
+class DeformableSimplexMesh3DBalloonForceFilter : public DeformableSimplexMesh3DFilter< TInputMesh,
+                                                                                        TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -93,10 +93,13 @@ protected:
   DeformableSimplexMesh3DBalloonForceFilter();
   ~DeformableSimplexMesh3DBalloonForceFilter();
   DeformableSimplexMesh3DBalloonForceFilter(const Self &)
-  {}
+  {
+  }
 
-  void operator=(const Self &)
-  {}
+  void
+  operator=(const Self &)
+  {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

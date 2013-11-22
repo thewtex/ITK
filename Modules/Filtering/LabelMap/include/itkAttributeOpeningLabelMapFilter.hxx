@@ -21,7 +21,6 @@
 #include "itkAttributeOpeningLabelMapFilter.h"
 #include "itkProgressReporter.h"
 
-
 namespace itk {
 
 template <typename TImage, typename TAttributeAccessor>
@@ -32,9 +31,8 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
   m_ReverseOrdering = false;
   // create the output image for the removed objects
   this->SetNumberOfRequiredOutputs(2);
-  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer()));
+  this->SetNthOutput(1, static_cast<TImage*>(this->MakeOutput(1).GetPointer() ) );
 }
-
 
 template <typename TImage, typename TAttributeAccessor>
 void
@@ -47,7 +45,8 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
   ImageType * output = this->GetOutput();
   ImageType * output2 = this->GetOutput( 1 );
 
-  // set the background value for the second output - this is not done in the superclasses
+  // set the background value for the second output - this is not done in the
+  // superclasses
   output2->SetBackgroundValue( output->GetBackgroundValue() );
 
   AttributeAccessorType accessor;
@@ -55,15 +54,16 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
   ProgressReporter progress( this, 0, output->GetNumberOfLabelObjects() );
 
   typename ImageType::Iterator it( output );
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
     typename LabelObjectType::LabelType label = it.GetLabel();
     LabelObjectType * labelObject = it.GetLabelObject();
 
     if( ( !m_ReverseOrdering && accessor( labelObject ) < m_Lambda )
-      || ( m_ReverseOrdering && accessor( labelObject ) > m_Lambda ) )
+        || ( m_ReverseOrdering && accessor( labelObject ) > m_Lambda ) )
       {
-      // must increment the iterator before removing the object to avoid invalidating the iterator
+      // must increment the iterator before removing the object to avoid
+      // invalidating the iterator
       ++it;
       output2->AddLabelObject( labelObject );
       output->RemoveLabel( label );
@@ -77,7 +77,6 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
     }
 }
 
-
 template <typename TImage, typename TAttributeAccessor>
 void
 AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
@@ -86,8 +85,9 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
   Superclass::PrintSelf(os, indent);
 
   os << indent << "ReverseOrdering: "  << m_ReverseOrdering << std::endl;
-  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeValueType>::PrintType>(m_Lambda) << std::endl;
+  os << indent << "Lambda: "  << static_cast<typename NumericTraits<AttributeValueType>::PrintType>(m_Lambda) <<
+    std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

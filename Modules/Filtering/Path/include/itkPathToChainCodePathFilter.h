@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TInputPath, typename TOutputChainCodePath >
-class PathToChainCodePathFilter:public
+class PathToChainCodePathFilter : public
   PathToPathFilter< TInputPath, TOutputChainCodePath >
 {
 public:
@@ -67,7 +67,10 @@ public:
 
 protected:
   PathToChainCodePathFilter();
-  virtual ~PathToChainCodePathFilter() {}
+  virtual
+  ~PathToChainCodePathFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData(void);

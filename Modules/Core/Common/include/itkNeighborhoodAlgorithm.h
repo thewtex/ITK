@@ -69,7 +69,8 @@ struct ImageBoundaryFacesCalculator {
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
 
   FaceListType operator()(const TImage *, RegionType, RadiusType);
-};
+
+  };
 
 /** \class CalculateOutputWrapOffsetModifiers
  *  \brief Sets up itkNeighborhoodIterator output buffers.
@@ -84,7 +85,8 @@ template< typename TImage >
 struct CalculateOutputWrapOffsetModifiers {
   typedef Offset< TImage::ImageDimension > OffsetType;
   OffsetType operator()(TImage *, TImage *) const;
-};
+
+  };
 } // end namespace NeighborhoodAlgorithm
 } // end namespace itk
 

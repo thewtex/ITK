@@ -78,8 +78,11 @@ public:
                       TInputImage::ImageDimension);
 
 protected:
-  FullToHalfHermitianImageFilter() {}
-  ~FullToHalfHermitianImageFilter() {}
+  FullToHalfHermitianImageFilter() {
+  }
+
+  ~FullToHalfHermitianImageFilter() {
+  }
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
@@ -92,7 +95,8 @@ protected:
 
 private:
   FullToHalfHermitianImageFilter(const Self &); // purposely not implemented
-  void operator=(const Self &);           // purposely not implemented
+  void operator=(const Self &);                 // purposely not implemented
+
 };
 } // end namespace itk
 

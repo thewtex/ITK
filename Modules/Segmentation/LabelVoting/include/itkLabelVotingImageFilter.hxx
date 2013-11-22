@@ -32,6 +32,7 @@ LabelVotingImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_HasLabelForUndecidedPixels = "
      << this->m_HasLabelForUndecidedPixels << std::endl;
   os << indent << "m_LabelForUndecidedPixels = "
@@ -72,7 +73,7 @@ LabelVotingImageFilter< TInputImage, TOutputImage >
 
   // determine the maximum label in all input images
   this->m_TotalLabelCount =
-    static_cast<size_t>(this->ComputeMaximumInputValue()) + 1;
+    static_cast<size_t>(this->ComputeMaximumInputValue() ) + 1;
 
   if ( !this->m_HasLabelForUndecidedPixels )
     {
@@ -149,6 +150,7 @@ LabelVotingImageFilter< TInputImage, TOutputImage >
   delete[] it;
   delete[] votesByLabel;
 }
+
 } // end namespace itk
 
 #endif

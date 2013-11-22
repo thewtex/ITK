@@ -35,6 +35,7 @@ MomentsThresholdCalculator<THistogram, TOutput>
 ::GenerateData(void)
 {
   const HistogramType * histogram = this->GetInput();
+
   // histogram->Print(std::cout);
   if ( histogram->GetTotalFrequency() == 0 )
     {
@@ -51,11 +52,12 @@ MomentsThresholdCalculator<THistogram, TOutput>
   double total = histogram->GetTotalFrequency();
   double m0=1.0, m1=0.0, m2 =0.0, m3 =0.0, sum =0.0, p0=0.0;
   double cd, c0, c1, z0, z1;        /* auxiliary variables */
-  int threshold = -1;
+  int    threshold = -1;
 
   std::vector<double> histo(size);
   for (unsigned i=0; i<size; i++)
-    histo[i]=(double)(histogram->GetFrequency(i,0)/total); //normalised histogram
+    histo[i]=(double)(histogram->GetFrequency(i,0)/total); //normalised
+                                                           // histogram
 
   /* Calculate the first, second, and third order moments */
   for ( unsigned i = 0; i < size; i++ )
@@ -76,7 +78,8 @@ MomentsThresholdCalculator<THistogram, TOutput>
   c1 = ( m0 * -m3 + m2 * m1 ) / cd;
   z0 = 0.5 * ( -c1 - vcl_sqrt ( c1 * c1 - 4.0 * c0 ) );
   z1 = 0.5 * ( -c1 + vcl_sqrt ( c1 * c1 - 4.0 * c0 ) );
-  p0 = ( z1 - m1 ) / ( z1 - z0 );  /* Fraction of the object pixels in the target binary image */
+  p0 = ( z1 - m1 ) / ( z1 - z0 );  /* Fraction of the object pixels in the
+                                     target binary image */
 
   // The threshold is the gray-level closest
   // to the p0-tile of the normalized histogram

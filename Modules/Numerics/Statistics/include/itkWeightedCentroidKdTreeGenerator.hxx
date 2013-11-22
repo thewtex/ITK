@@ -27,7 +27,8 @@ namespace Statistics
 template< typename TSample >
 WeightedCentroidKdTreeGenerator< TSample >
 ::WeightedCentroidKdTreeGenerator()
-{}
+{
+}
 
 template< typename TSample >
 void
@@ -45,7 +46,7 @@ WeightedCentroidKdTreeGenerator< TSample >
                           MeasurementVectorType & lowerBound,
                           MeasurementVectorType & upperBound,
                           unsigned int level)
-{
+  {
   MeasurementType dimensionLowerBound;
   MeasurementType dimensionUpperBound;
   MeasurementType partitionValue;
@@ -69,7 +70,7 @@ WeightedCentroidKdTreeGenerator< TSample >
   // of all the associated instances.
   typename KdTreeNodeType::CentroidType weightedCentroid;
   NumericTraits<typename KdTreeNodeType::CentroidType>::SetLength( weightedCentroid,
-    this->GetMeasurementVectorSize() );
+                                                                   this->GetMeasurementVectorSize() );
   MeasurementVectorType tempVector;
   weightedCentroid.Fill(NumericTraits< MeasurementType >::Zero);
 
@@ -142,7 +143,7 @@ WeightedCentroidKdTreeGenerator< TSample >
     subsample->GetInstanceIdentifier(medianIndex) );
 
   return nonTerminalNode;
-}
+  }
 } // end of namespace Statistics
 } // end of namespace itk
 

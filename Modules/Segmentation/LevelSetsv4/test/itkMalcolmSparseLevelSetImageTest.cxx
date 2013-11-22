@@ -18,9 +18,11 @@
 
 #include "itkMalcolmSparseLevelSetImage.h"
 
-int itkMalcolmSparseLevelSetImageTest( int , char* [] )
+int
+itkMalcolmSparseLevelSetImageTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
+
   typedef itk::MalcolmSparseLevelSetImage< Dimension > SparseLevelSetType;
 
   typedef SparseLevelSetType::LabelMapType LabelMapType;
@@ -57,7 +59,6 @@ int itkMalcolmSparseLevelSetImageTest( int , char* [] )
     std::cout << index << ' ' << phi->Evaluate( index ) << " != -1" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

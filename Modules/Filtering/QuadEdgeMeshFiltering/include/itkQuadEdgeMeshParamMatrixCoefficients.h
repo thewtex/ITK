@@ -37,11 +37,16 @@ public:
   typedef typename InputMeshType::CoordRepType InputCoordRepType;
   typedef typename InputMeshType::QEType       InputQEType;
 
-  MatrixCoefficients(){}
-  virtual ~MatrixCoefficients() {}
+  MatrixCoefficients(){
+  }
+
+  virtual
+  ~MatrixCoefficients() {
+  }
 
   virtual InputCoordRepType operator()
     (const InputMeshType *iMesh, InputQEType *iEdge) const = 0;
+
 };
 
 /** \class OnesMatrixCoefficients
@@ -52,7 +57,7 @@ public:
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh >
-class OnesMatrixCoefficients:public MatrixCoefficients< TInputMesh >
+class OnesMatrixCoefficients : public MatrixCoefficients< TInputMesh >
 {
 public:
   typedef MatrixCoefficients< TInputMesh > Superclass;
@@ -61,16 +66,19 @@ public:
   typedef typename InputMeshType::CoordRepType InputCoordRepType;
   typedef typename InputMeshType::QEType       InputQEType;
 
-  OnesMatrixCoefficients() {}
+  OnesMatrixCoefficients() {
+  }
 
   /**
    * \return \f$ 1 \f$
    */
-  InputCoordRepType operator()( const InputMeshType *itkNotUsed(iMesh),
-                                InputQEType *itkNotUsed(iEdge) ) const
+  InputCoordRepType
+  operator()( const InputMeshType *itkNotUsed(iMesh),
+              InputQEType *itkNotUsed(iEdge) ) const
   {
     return 1.0;
   }
+
 };
 
 /** \class InverseEuclideanDistanceMatrixCoefficients
@@ -81,7 +89,7 @@ public:
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh >
-class InverseEuclideanDistanceMatrixCoefficients:
+class InverseEuclideanDistanceMatrixCoefficients :
   public MatrixCoefficients< TInputMesh >
 {
 public:
@@ -94,14 +102,16 @@ public:
   typedef typename InputMeshType::QEType          InputQEType;
   typedef typename InputMeshType::VectorType      InputVectorType;
 
-  InverseEuclideanDistanceMatrixCoefficients() {}
+  InverseEuclideanDistanceMatrixCoefficients() {
+  }
 
   /**
    * \param[in] iMesh
    * \param[in] iEdge
    * \return \f$ \frac{1}{\|\boldsymbol{p1} - \boldsymbol{p2} \|} \f$
    */
-  InputCoordRepType operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
+  InputCoordRepType
+  operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
   {
     InputPointIdentifier id1 = iEdge->GetOrigin();
     InputPointIdentifier id2 = iEdge->GetDestination();
@@ -113,6 +123,7 @@ public:
 
     return oValue;
   }
+
 };
 
 /** \class ConformalMatrixCoefficients
@@ -123,7 +134,7 @@ public:
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh >
-class ConformalMatrixCoefficients:public MatrixCoefficients< TInputMesh >
+class ConformalMatrixCoefficients : public MatrixCoefficients< TInputMesh >
 {
 public:
   typedef MatrixCoefficients< TInputMesh > Superclass;
@@ -134,14 +145,16 @@ public:
   typedef typename InputMeshType::PointIdentifier InputPointIdentifier;
   typedef typename InputMeshType::QEType          InputQEType;
 
-  ConformalMatrixCoefficients() {}
+  ConformalMatrixCoefficients() {
+  }
 
   /**
    * \param[in] iMesh
    * \param[in] iEdge
    * \return \f$ \cot \alpha_{ij} + \cot \beta_{ij} \f$
    */
-  InputCoordRepType operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
+  InputCoordRepType
+  operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
   {
     InputPointIdentifier id1 = iEdge->GetOrigin();
     InputPointIdentifier id2 = iEdge->GetDestination();
@@ -165,6 +178,7 @@ public:
 
     return vnl_math_max( NumericTraits< InputCoordRepType >::Zero, oValue);
   }
+
 };
 
 /**\class AuthalicMatrixCoefficients
@@ -176,7 +190,7 @@ public:
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh >
-class AuthalicMatrixCoefficients:public MatrixCoefficients< TInputMesh >
+class AuthalicMatrixCoefficients : public MatrixCoefficients< TInputMesh >
 {
 public:
   typedef MatrixCoefficients< TInputMesh > Superclass;
@@ -187,7 +201,8 @@ public:
   typedef typename InputMeshType::PointIdentifier InputPointIdentifier;
   typedef typename InputMeshType::QEType          InputQEType;
 
-  AuthalicMatrixCoefficients() {}
+  AuthalicMatrixCoefficients() {
+  }
 
   /**
    * \param[in] iMesh
@@ -195,7 +210,8 @@ public:
    * \return \f$ \frac{\cot \gamma_{ij} + \cot
    \delta_{ij}}{\|\boldsymbol{p1} - \boldsymbol{p2} \|^2} \f$
    */
-  InputCoordRepType operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
+  InputCoordRepType
+  operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
   {
     InputPointIdentifier id1 = iEdge->GetOrigin();
     InputPointType       pt1 = iMesh->GetPoint(id1);
@@ -222,6 +238,7 @@ public:
 
     return oValue / pt1.SquaredEuclideanDistanceTo(pt2);
   }
+
 };
 
 /** \class IntrinsicMatrixCoefficients
@@ -232,7 +249,7 @@ public:
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh >
-class IntrinsicMatrixCoefficients:public MatrixCoefficients< TInputMesh >
+class IntrinsicMatrixCoefficients : public MatrixCoefficients< TInputMesh >
 {
 public:
   typedef MatrixCoefficients< TInputMesh > Superclass;
@@ -243,21 +260,24 @@ public:
 
   InputCoordRepType m_Lambda;
 
-  IntrinsicMatrixCoefficients(const InputCoordRepType & iLambda):
+  IntrinsicMatrixCoefficients(const InputCoordRepType & iLambda) :
     m_Lambda(iLambda)
-  {}
+  {
+  }
 
-  InputCoordRepType operator()(const InputMeshType *iMesh,
-                               InputQEType *iEdge) const
+  InputCoordRepType
+  operator()(const InputMeshType *iMesh,
+             InputQEType *iEdge) const
   {
     AuthalicMatrixCoefficients< TInputMesh >  authalic;
     ConformalMatrixCoefficients< TInputMesh > conformal;
 
     InputCoordRepType oValue = m_Lambda * conformal(iMesh, iEdge)
-                               + ( 1.0 - m_Lambda ) * authalic(iMesh, iEdge);
+      + ( 1.0 - m_Lambda ) * authalic(iMesh, iEdge);
 
     return oValue;
   }
+
 };
 
 /** \class HarmonicMatrixCoefficients
@@ -268,7 +288,7 @@ public:
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh >
-class HarmonicMatrixCoefficients:public MatrixCoefficients< TInputMesh >
+class HarmonicMatrixCoefficients : public MatrixCoefficients< TInputMesh >
 {
 public:
   typedef MatrixCoefficients< TInputMesh > Superclass;
@@ -283,9 +303,11 @@ public:
   itkStaticConstMacro(PointDimension, unsigned int,
                       InputPointType::PointDimension);
 
-  HarmonicMatrixCoefficients() {}
+  HarmonicMatrixCoefficients() {
+  }
 
-  InputCoordRepType operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
+  InputCoordRepType
+  operator()(const InputMeshType *iMesh, InputQEType *iEdge) const
   {
     InputPointIdentifier id1 = iEdge->GetOrigin();
     InputPointIdentifier id2 = iEdge->GetDestination();
@@ -319,6 +341,7 @@ public:
 
     return oValue;
   }
+
 };
 }
 #endif

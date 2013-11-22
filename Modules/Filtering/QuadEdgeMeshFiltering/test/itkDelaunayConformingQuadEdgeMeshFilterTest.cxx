@@ -22,7 +22,8 @@
 // NEW
 #include "itkDelaunayConformingQuadEdgeMeshFilter.h"
 
-int itkDelaunayConformingQuadEdgeMeshFilterTest( int argc, char* argv[] )
+int
+itkDelaunayConformingQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
   // ** ERROR MESSAGE AND HELP ** //
   if( argc < 3 )
@@ -36,16 +37,16 @@ int itkDelaunayConformingQuadEdgeMeshFilterTest( int argc, char* argv[] )
   // ** TYPEDEF **
   typedef double Coord;
 
-  typedef itk::QuadEdgeMesh< Coord, 3 >                      MeshType;
-  typedef itk::MeshFileReader< MeshType >                    ReaderType;
-  typedef itk::MeshFileWriter< MeshType >                    WriterType;
+  typedef itk::QuadEdgeMesh< Coord, 3 >   MeshType;
+  typedef itk::MeshFileReader< MeshType > ReaderType;
+  typedef itk::MeshFileWriter< MeshType > WriterType;
 
   // ** READ THE FILE IN **
-  ReaderType::Pointer reader = ReaderType::New( );
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
-    reader->Update( );
+    reader->Update();
     }
   catch( itk::ExceptionObject & excp )
     {
@@ -54,24 +55,24 @@ int itkDelaunayConformingQuadEdgeMeshFilterTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  MeshType::Pointer mesh = reader->GetOutput( );
+  MeshType::Pointer mesh = reader->GetOutput();
 
   typedef itk::DelaunayConformingQuadEdgeMeshFilter< MeshType, MeshType >
-  DelaunayConformFilterType;
-  DelaunayConformFilterType::Pointer filter = DelaunayConformFilterType::New( );
+    DelaunayConformFilterType;
+  DelaunayConformFilterType::Pointer filter = DelaunayConformFilterType::New();
   filter->SetInput( mesh );
-  filter->Update( );
+  filter->Update();
 
   // ** WRITE OUTPUT **
-  WriterType::Pointer writer = WriterType::New( );
-  writer->SetInput( filter->GetOutput( ) );
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[2] );
-  writer->Update( );
+  writer->Update();
 
   std::cout <<"Input: " <<argv[1] <<std::endl;
   std::cout <<"Output: " <<argv[2] <<std::endl;
   std::cout <<"Number of Edge flipped performed: "
-    <<filter->GetNumberOfEdgeFlips( ) <<std::endl;
+            <<filter->GetNumberOfEdgeFlips() <<std::endl;
 
   // ** PRINT **
   std::cout << filter;

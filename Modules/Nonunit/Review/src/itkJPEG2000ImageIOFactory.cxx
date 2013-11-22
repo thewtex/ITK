@@ -31,7 +31,8 @@ JPEG2000ImageIOFactory::JPEG2000ImageIOFactory()
 }
 
 JPEG2000ImageIOFactory::~JPEG2000ImageIOFactory()
-{}
+{
+}
 
 const char *
 JPEG2000ImageIOFactory::GetITKSourceVersion() const
@@ -44,4 +45,5 @@ JPEG2000ImageIOFactory::GetDescription() const
 {
   return "JPEG2000 ImageIO Factory, allows the loading of JPEG2000 images into insight";
 }
+
 } // end namespace itk

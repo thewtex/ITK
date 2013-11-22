@@ -21,8 +21,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int itkBilateralImageFilterTest3(int ac, char* av[] )
+int
+itkBilateralImageFilterTest3(int ac, char* av[] )
 {
   if(ac < 3)
     {
@@ -40,32 +40,32 @@ int itkBilateralImageFilterTest3(int ac, char* av[] )
   typedef itk::BilateralImageFilter<myImage,myImage> FilterType;
 
   FilterType::Pointer filter1 = FilterType::New();
-    filter1->SetInput(input->GetOutput());
+  filter1->SetInput(input->GetOutput() );
   FilterType::Pointer filter2 = FilterType::New();
-    filter2->SetInput(filter1->GetOutput());
+  filter2->SetInput(filter1->GetOutput() );
   FilterType::Pointer filter3 = FilterType::New();
-    filter3->SetInput(filter2->GetOutput());
+  filter3->SetInput(filter2->GetOutput() );
 
-    // Instead of using a single aggressive smoothing filter, use 3
-    // less aggressive filters.
-    //
-    // These settings match the "wedding" cake image (cake_easy.png) where
-    // the signal to noise ratio is 5 (step heights near 100 units,
-    // noise sigma near 20 units). A single filter stage with these
-    // settings cuts the noise level in half.  These three stages should
-    // reduce the amount of noise by a factor of 8. This is comparable to
-    // the noise reduction in using a single stage with parameters
-    // (4.0, 50.0).  The difference is that with 3 less aggressive stages
-    // the edges are preserved better.
-    filter1->SetDomainSigma( 4.0 );
-    filter1->SetRangeSigma( 20.0 );
-    filter1->SetDomainMu( 2.5 );
-    filter2->SetDomainSigma( 4.0 );
-    filter2->SetRangeSigma( 20.0 );
-    filter2->SetDomainMu( 2.5 );
-    filter3->SetDomainSigma( 4.0 );
-    filter3->SetRangeSigma( 20.0 );
-    filter3->SetDomainMu( 2.5 );
+  // Instead of using a single aggressive smoothing filter, use 3
+  // less aggressive filters.
+  //
+  // These settings match the "wedding" cake image (cake_easy.png) where
+  // the signal to noise ratio is 5 (step heights near 100 units,
+  // noise sigma near 20 units). A single filter stage with these
+  // settings cuts the noise level in half.  These three stages should
+  // reduce the amount of noise by a factor of 8. This is comparable to
+  // the noise reduction in using a single stage with parameters
+  // (4.0, 50.0).  The difference is that with 3 less aggressive stages
+  // the edges are preserved better.
+  filter1->SetDomainSigma( 4.0 );
+  filter1->SetRangeSigma( 20.0 );
+  filter1->SetDomainMu( 2.5 );
+  filter2->SetDomainSigma( 4.0 );
+  filter2->SetRangeSigma( 20.0 );
+  filter2->SetDomainMu( 2.5 );
+  filter3->SetDomainSigma( 4.0 );
+  filter3->SetRangeSigma( 20.0 );
+  filter3->SetDomainMu( 2.5 );
 
   try
     {
@@ -80,10 +80,10 @@ int itkBilateralImageFilterTest3(int ac, char* av[] )
 
   // Generate test image
   itk::ImageFileWriter<myImage>::Pointer writer;
-    writer = itk::ImageFileWriter<myImage>::New();
-    writer->SetInput( filter3->GetOutput() );
-    writer->SetFileName( av[2] );
-    writer->Update();
+  writer = itk::ImageFileWriter<myImage>::New();
+  writer->SetInput( filter3->GetOutput() );
+  writer->SetFileName( av[2] );
+  writer->Update();
 
   return EXIT_SUCCESS;
 }

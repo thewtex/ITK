@@ -44,6 +44,7 @@ LabelStatisticsOpeningImageFilter< TInputImage, TFeatureImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -126,5 +127,6 @@ LabelStatisticsOpeningImageFilter< TInputImage, TFeatureImage >
   os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")"
      << std::endl;
 }
+
 } // end namespace itk
 #endif

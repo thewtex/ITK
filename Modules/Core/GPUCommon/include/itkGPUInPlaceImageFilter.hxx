@@ -74,21 +74,21 @@ GPUInPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
       // Graft this first input to the output.  Later, we'll need to
       // remove the input's hold on the bulk data.
       //
-        OutputImagePointer inputAsOutput =
+      OutputImagePointer inputAsOutput =
         dynamic_cast< TOutputImage * >( const_cast< TInputImage * >( this->GetInput() ) );
       if ( inputAsOutput )
         {
-          this->GraftOutput(inputAsOutput);
+        this->GraftOutput(inputAsOutput);
         }
       else
         {
         // if we cannot cast the input to an output type, then allocate
         // an output usual.
-          OutputImagePointer outputPtr;
+        OutputImagePointer outputPtr;
 
-          outputPtr = this->GetOutput(0);
-          outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
-          outputPtr->Allocate();
+        outputPtr = this->GetOutput(0);
+        outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
+        outputPtr->Allocate();
         }
 
       typedef ImageBase< OutputImageDimension > ImageBaseType;

@@ -31,7 +31,8 @@ DCMTKImageIOFactory::DCMTKImageIOFactory()
 }
 
 DCMTKImageIOFactory::~DCMTKImageIOFactory()
-{}
+{
+}
 
 const char *
 DCMTKImageIOFactory::GetITKSourceVersion(void) const
@@ -50,9 +51,10 @@ DCMTKImageIOFactory::GetDescription() const
 
 static bool DCMTKImageIOFactoryHasBeenRegistered;
 
-void DCMTKImageIOFactoryRegister__Private(void)
+void
+DCMTKImageIOFactoryRegister__Private(void)
 {
-  if( ! DCMTKImageIOFactoryHasBeenRegistered )
+  if( !DCMTKImageIOFactoryHasBeenRegistered )
     {
     DCMTKImageIOFactoryHasBeenRegistered = true;
     DCMTKImageIOFactory::RegisterOneFactory();

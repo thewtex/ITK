@@ -63,15 +63,15 @@ namespace itk
  */
 template<typename TTransform>
 class BSplineTransformParametersAdaptor
-: public TransformParametersAdaptor<TTransform>
+  : public TransformParametersAdaptor<TTransform>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef BSplineTransformParametersAdaptor          Self;
-  typedef TransformParametersAdaptor<TTransform>     Superclass;
-  typedef SmartPointer<Self>                         Pointer;
-  typedef SmartPointer<const Self>                   ConstPointer;
+  typedef BSplineTransformParametersAdaptor      Self;
+  typedef TransformParametersAdaptor<TTransform> Superclass;
+  typedef SmartPointer<Self>                     Pointer;
+  typedef SmartPointer<const Self>               ConstPointer;
 
   /** New macro for creation of through a Smart Pointer. */
   itkNewMacro( Self );
@@ -80,23 +80,22 @@ public:
   itkTypeMacro( BSplineTransformParametersAdaptor, TransformParametersAdaptor );
 
   /** Typedefs associated with the transform */
-  typedef TTransform                                        TransformType;
-  typedef typename TransformType::Pointer                   TransformPointer;
-  typedef typename Superclass::ParametersType               ParametersType;
-  typedef typename Superclass::ParametersValueType          ParametersValueType;
+  typedef TTransform                               TransformType;
+  typedef typename TransformType::Pointer          TransformPointer;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
-  typedef typename TransformType::OriginType                OriginType;
-  typedef typename TransformType::SizeType                  SizeType;
-  typedef typename TransformType::SpacingType               SpacingType;
-  typedef typename TransformType::IndexType                 IndexType;
-  typedef typename TransformType::MeshSizeType              MeshSizeType;
-  typedef typename TransformType::DirectionType             DirectionType;
-  typedef typename TransformType::PhysicalDimensionsType    PhysicalDimensionsType;
+  typedef typename TransformType::OriginType             OriginType;
+  typedef typename TransformType::SizeType               SizeType;
+  typedef typename TransformType::SpacingType            SpacingType;
+  typedef typename TransformType::IndexType              IndexType;
+  typedef typename TransformType::MeshSizeType           MeshSizeType;
+  typedef typename TransformType::DirectionType          DirectionType;
+  typedef typename TransformType::PhysicalDimensionsType PhysicalDimensionsType;
 
-
-  typedef typename TransformType::ImageType                 ImageType;
-  typedef typename ImageType::RegionType                    RegionType;
-  typedef typename TransformType::CoefficientImageArray     CoefficientImageArray;
+  typedef typename TransformType::ImageType             ImageType;
+  typedef typename ImageType::RegionType                RegionType;
+  typedef typename TransformType::CoefficientImageArray CoefficientImageArray;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( SpaceDimension, unsigned int, TransformType::SpaceDimension );
@@ -138,15 +137,15 @@ protected:
 
 private:
   BSplineTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  void operator=( const Self & );                    //purposely not implemented
 
   /** Helper function to set m_RequiredFixedParameters */
   void UpdateRequiredFixedParameters();
 
-  MeshSizeType                               m_RequiredTransformDomainMeshSize;
-  OriginType                                 m_RequiredTransformDomainOrigin;
-  DirectionType                              m_RequiredTransformDomainDirection;
-  PhysicalDimensionsType                     m_RequiredTransformDomainPhysicalDimensions;
+  MeshSizeType           m_RequiredTransformDomainMeshSize;
+  OriginType             m_RequiredTransformDomainOrigin;
+  DirectionType          m_RequiredTransformDomainDirection;
+  PhysicalDimensionsType m_RequiredTransformDomainPhysicalDimensions;
 
 }; //class BSplineTransformParametersAdaptor
 }  // namespace itk

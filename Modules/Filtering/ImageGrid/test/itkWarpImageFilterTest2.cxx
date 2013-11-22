@@ -29,12 +29,12 @@ typedef itk::WarpImageFilter<ImageType,
 
 typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
 #define AllocateImageFromRegionAndSpacing(ImageType,rval,region,spacing) \
-{ \
-  rval = ImageType::New(); \
-  rval->SetSpacing(spacing); \
-  rval->SetRegions(region); \
-  rval->Allocate(); \
-}
+    { \
+    rval = ImageType::New(); \
+    rval->SetSpacing(spacing); \
+    rval->SetRegions(region); \
+    rval->Allocate(); \
+    }
 
 namespace {
 
@@ -42,24 +42,24 @@ ImageType::Pointer
 MakeCheckerboard()
 {
   typedef itk::ImageRegionIterator<ImageType> IteratorType;
-  ImageType::SizeType size = {{16,16,16}};
+  ImageType::SizeType    size = {{16,16,16}};
   ImageType::SpacingType spacing;
   spacing[0] = spacing[1] = spacing[2] = 1.0;
-  ImageType::IndexType index = {{0,0,0}};
+  ImageType::IndexType  index = {{0,0,0}};
   ImageType::RegionType region;
   region.SetSize(size);
   region.SetIndex(index);
   ImageType::Pointer image;
   AllocateImageFromRegionAndSpacing(ImageType,image,region,spacing);
   image->FillBuffer(0.0);
-  for( IteratorType it(image,image->GetLargestPossibleRegion()); !it.IsAtEnd(); ++it)
+  for( IteratorType it(image,image->GetLargestPossibleRegion() ); !it.IsAtEnd(); ++it)
     {
-    ImageType::IndexType ind(it.GetIndex());
+    ImageType::IndexType ind(it.GetIndex() );
     // initially checkboard 4 pixels wide
-    int x = ind[0] / 4;
-    int y = ind[1] / 4;
-    int z = ind[2] / 4;
-    bool black(((x&1) + (y&1)) & 1);
+    int  x = ind[0] / 4;
+    int  y = ind[1] / 4;
+    int  z = ind[2] / 4;
+    bool black( ( (x&1) + (y&1) ) & 1);
     if(z & 1)
       {
       black = !black;
@@ -70,19 +70,20 @@ MakeCheckerboard()
 }
 
 template <long unsigned int TImageIndexSpaceSize>
-typename DisplacementFieldType::Pointer MakeDisplacementField(void)
+typename DisplacementFieldType::Pointer
+MakeDisplacementField(void)
 {
   typedef itk::ImageRegionIterator<DisplacementFieldType> IteratorType;
   const DisplacementFieldType::SizeType size = {{TImageIndexSpaceSize,TImageIndexSpaceSize,TImageIndexSpaceSize}};
-  DisplacementFieldType::SpacingType spacing;
+  DisplacementFieldType::SpacingType    spacing;
   spacing[0] = spacing[1] = spacing[2] = 16.0/(double)TImageIndexSpaceSize;
-  DisplacementFieldType::IndexType index = {{0,0,0}};
+  DisplacementFieldType::IndexType  index = {{0,0,0}};
   DisplacementFieldType::RegionType region;
   region.SetSize(size);
   region.SetIndex(index);
   DisplacementFieldType::Pointer image;
   AllocateImageFromRegionAndSpacing(DisplacementFieldType,image,region,spacing);
-  for( IteratorType it(image,image->GetLargestPossibleRegion()); ! it.IsAtEnd(); ++it)
+  for( IteratorType it(image,image->GetLargestPossibleRegion() ); !it.IsAtEnd(); ++it)
     {
     DisplacementFieldType::PixelType pix;
     for(unsigned i = 0; i < 3; i++)
@@ -108,6 +109,7 @@ itkWarpImageFilterTest2(int, char * [])
   DisplacementFieldType::Pointer defField2 = MakeDisplacementField<8u>();
 
   WarpFilterType::Pointer filter = WarpFilterType::New();
+
   // test with full res
   filter->SetDisplacementField(defField1);
   filter->SetInput(image);
@@ -121,13 +123,13 @@ itkWarpImageFilterTest2(int, char * [])
   filter->Update();
   ImageType::Pointer result2 = filter->GetOutput();
   itk::ImageRegionIterator<ImageType>
-    it1(result1,result1->GetLargestPossibleRegion()),
-    it2(result2,result1->GetLargestPossibleRegion());
+  it1(result1,result1->GetLargestPossibleRegion() ),
+  it2(result2,result1->GetLargestPossibleRegion() );
   for(it1.GoToBegin(),it2.GoToBegin();
       !it1.IsAtEnd() && !it2.IsAtEnd();
       ++it1, ++it2)
     {
-    if(it1.Value() != it2.Value())
+    if(it1.Value() != it2.Value() )
       {
       std::cout << "Pixels differ " << it1.Value() << " "
                 << it2.Value()
@@ -135,7 +137,7 @@ itkWarpImageFilterTest2(int, char * [])
       return EXIT_FAILURE;
       }
     }
-  if(it1.IsAtEnd() != it2.IsAtEnd())
+  if(it1.IsAtEnd() != it2.IsAtEnd() )
     {
     std::cout << "Iterators don't agree on end of image" << std::endl;
     return EXIT_FAILURE;
@@ -150,22 +152,21 @@ itkWarpImageFilterTest2(int, char * [])
   filter2->SetInput( monitor1->GetOutput() );
   filter2->SetOutputParametersFromImage(image);
 
-
   MonitorFilter::Pointer monitor2 = MonitorFilter::New();
-  monitor2->SetInput(filter2->GetOutput());
+  monitor2->SetInput(filter2->GetOutput() );
 
   typedef itk::StreamingImageFilter<ImageType,ImageType> StreamerType;
   StreamerType::Pointer streamer = StreamerType::New();
-  streamer->SetInput(monitor2->GetOutput());
+  streamer->SetInput(monitor2->GetOutput() );
   streamer->SetNumberOfStreamDivisions(4);
   streamer->Update();
   itk::ImageRegionIterator<ImageType> streamIt(streamer->GetOutput(),
-                                               streamer->GetOutput()->GetBufferedRegion());
+                                               streamer->GetOutput()->GetBufferedRegion() );
   for(streamIt.GoToBegin(),it2.GoToBegin();
       !streamIt.IsAtEnd() && !it2.IsAtEnd();
       ++streamIt, ++it2)
     {
-    if(streamIt.Value() != it2.Value())
+    if(streamIt.Value() != it2.Value() )
       {
       std::cout << "Pixels differ " << streamIt.Value() << " "
                 << it2.Value()
@@ -174,7 +175,7 @@ itkWarpImageFilterTest2(int, char * [])
       }
 
     }
-  if(streamIt.IsAtEnd() != it2.IsAtEnd())
+  if(streamIt.IsAtEnd() != it2.IsAtEnd() )
     {
     std::cout << "Iterators don't agree on end of image" << std::endl;
     return EXIT_FAILURE;
@@ -182,7 +183,7 @@ itkWarpImageFilterTest2(int, char * [])
 
   // this verifies that the pipeline was executed as expected along
   // with correct region propagation and output information
-  if (!monitor2->VerifyAllInputCanStream(4))
+  if (!monitor2->VerifyAllInputCanStream(4) )
     {
     std::cout << "Filter failed to execute as expected!" << std::endl;
     std::cout << monitor2;

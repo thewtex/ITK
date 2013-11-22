@@ -47,7 +47,7 @@ namespace itk
 // on the defaults of template parameters
 template< typename TInputImage,
           typename TOutputImage = TInputImage >
-class GradientMagnitudeRecursiveGaussianImageFilter:
+class GradientMagnitudeRecursiveGaussianImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -77,21 +77,21 @@ public:
 
   /**  Smoothing filter type */
   typedef RecursiveGaussianImageFilter<
-    RealImageType,
-    RealImageType
-    >    GaussianFilterType;
+      RealImageType,
+      RealImageType
+      >    GaussianFilterType;
 
   /**  Derivative filter type, it will be the first in the pipeline  */
   typedef RecursiveGaussianImageFilter<
-    InputImageType,
-    RealImageType
-    >    DerivativeFilterType;
+      InputImageType,
+      RealImageType
+      >    DerivativeFilterType;
 
   /**  Smoothing filter type */
   typedef SqrtImageFilter<
-    RealImageType,
-    TOutputImage
-    >    SqrtFilterType;
+      RealImageType,
+      TOutputImage
+      >    SqrtFilterType;
 
   /**  Pointer to a gaussian filter.  */
   typedef typename GaussianFilterType::Pointer GaussianFilterPointer;
@@ -123,12 +123,14 @@ public:
 
   /** Set Sigma value. Sigma is measured in the units of image spacing.  */
   void SetSigma(RealType sigma);
+
   RealType GetSigma();
 
   /** Define which normalization factor will be used for the Gaussian
    *  \sa  RecursiveGaussianImageFilter::SetNormalizeAcrossScale
    */
   void SetNormalizeAcrossScale(bool normalizeInScaleSpace);
+
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
   void SetNumberOfThreads(ThreadIdType nb);
@@ -142,7 +144,10 @@ public:
 
 protected:
   GradientMagnitudeRecursiveGaussianImageFilter();
-  virtual ~GradientMagnitudeRecursiveGaussianImageFilter() {}
+  virtual
+  ~GradientMagnitudeRecursiveGaussianImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
@@ -171,20 +176,27 @@ private:
 
   class SqrSpacing
   {
-  public:
-    SqrSpacing():m_Spacing(0) {}
-    ~SqrSpacing() {}
-    bool operator!=(const SqrSpacing & other) const
+public:
+    SqrSpacing() : m_Spacing(0) {
+    }
+
+    ~SqrSpacing() {
+    }
+
+    bool
+    operator!=(const SqrSpacing & other) const
     {
       return !( *this == other );
     }
 
-    bool operator==(const SqrSpacing & other) const
+    bool
+    operator==(const SqrSpacing & other) const
     {
       return other.m_Spacing == m_Spacing;
     }
 
-    inline InternalRealType operator()(const InternalRealType & a, const InternalRealType & b)
+    inline InternalRealType
+    operator()(const InternalRealType & a, const InternalRealType & b)
     {
       return a + vnl_math_sqr(b / m_Spacing);
     }

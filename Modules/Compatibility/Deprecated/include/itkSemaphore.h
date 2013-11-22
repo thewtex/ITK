@@ -101,7 +101,7 @@ typedef int SemaphoreType;
  * \deprecated
  * \ingroup ITKDeprecated
  */
-class Semaphore:public LightObject
+class Semaphore : public LightObject
 {
 public:
   /** Standard class typedefs. */
@@ -140,10 +140,11 @@ protected:
   // function is only to avoid the detection that
   // warning: private field 'm_Pad1' is not used
   // warning: private field 'm_Pad2' is not used
-  std::string NeverUseThisCompilerWarningAvoidanceFunctionForPad1Pad2(void) const
-    {
+  std::string
+  NeverUseThisCompilerWarningAvoidanceFunctionForPad1Pad2(void) const
+  {
     return std::string(this->m_Pad1)+"-"+std::string(this->m_Pad2);
-    }
+  }
 
 private:
 

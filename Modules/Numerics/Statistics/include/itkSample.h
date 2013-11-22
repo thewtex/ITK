@@ -58,7 +58,7 @@ namespace Statistics
  */
 
 template< typename TMeasurementVector >
-class Sample:public DataObject
+class Sample : public DataObject
 {
 public:
   /** Standard class typedefs */
@@ -76,7 +76,7 @@ public:
   /** ValueType of a measurement (ValueType of a component of the
    * MeasurementVector */
   typedef typename MeasurementVectorTraitsTypes<
-    MeasurementVectorType >::ValueType MeasurementType;
+      MeasurementVectorType >::ValueType MeasurementType;
 
   /** Frequency value type */
   typedef MeasurementVectorTraits::AbsoluteFrequencyType AbsoluteFrequencyType;
@@ -107,7 +107,8 @@ public:
   virtual TotalAbsoluteFrequencyType GetTotalFrequency() const = 0;
 
   /** Set method for the length of the measurement vector */
-  virtual void SetMeasurementVectorSize(MeasurementVectorSizeType s)
+  virtual void
+  SetMeasurementVectorSize(MeasurementVectorSizeType s)
   {
     // Test whether the vector type is resizable or not
     MeasurementVectorType m;
@@ -158,7 +159,8 @@ public:
   itkGetConstMacro(MeasurementVectorSize, MeasurementVectorSizeType);
 
   /** Method to graft another sample */
-  virtual void Graft(const DataObject *thatObject)
+  virtual void
+  Graft(const DataObject *thatObject)
   {
     this->Superclass::Graft(thatObject);
 
@@ -173,14 +175,18 @@ protected:
   Sample()
   {
     m_MeasurementVectorSize = NumericTraits<MeasurementVectorType>::GetLength(
-      MeasurementVectorType() );
+        MeasurementVectorType() );
   }
 
-  virtual ~Sample() {}
+  virtual
+  ~Sample() {
+  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "Length of measurement vectors in the sample: "
        << m_MeasurementVectorSize << std::endl;
   }

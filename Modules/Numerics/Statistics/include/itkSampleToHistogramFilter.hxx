@@ -42,7 +42,8 @@ SampleToHistogramFilter< TSample, THistogram >
 template< typename TSample, typename THistogram >
 SampleToHistogramFilter< TSample, THistogram >
 ::~SampleToHistogramFilter()
-{}
+{
+}
 
 template< typename TSample, typename THistogram >
 void
@@ -59,24 +60,24 @@ const typename
 SampleToHistogramFilter< TSample, THistogram >::SampleType *
 SampleToHistogramFilter< TSample, THistogram >
 ::GetInput() const
-{
+  {
   const SampleType *input =
     static_cast< const SampleType * >( this->ProcessObject::GetInput(0) );
 
   return input;
-}
+  }
 
 template< typename TSample, typename THistogram >
 const typename
 SampleToHistogramFilter< TSample, THistogram >::HistogramType *
 SampleToHistogramFilter< TSample, THistogram >
 ::GetOutput() const
-{
+  {
   const HistogramType *output =
     static_cast< const HistogramType * >( this->ProcessObject::GetOutput(0) );
 
   return output;
-}
+  }
 
 template< typename TSample, typename THistogram >
 void
@@ -104,6 +105,7 @@ SampleToHistogramFilter< TSample, THistogram >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   // m_AutoMinimumMaximum
   os << indent << "AutoMinimumMaximum: "
      << this->GetAutoMinimumMaximumInput() << std::endl;
@@ -171,10 +173,10 @@ SampleToHistogramFilter< TSample, THistogram >
   if ( histogramSize.Size() != measurementVectorSize )
     {
     itkSpecializedMessageExceptionMacro(HistogramWrongNumberOfComponents,
-      "Histogram number of components: "
-      << histogramSize.Size()
-      << " doesn't match Measurement Vector Size: "
-      << measurementVectorSize);
+                                        "Histogram number of components: "
+                                        << histogramSize.Size()
+                                        << " doesn't match Measurement Vector Size: "
+                                        << measurementVectorSize);
     }
 
   outputHistogram->SetMeasurementVectorSize(measurementVectorSize);
@@ -183,17 +185,17 @@ SampleToHistogramFilter< TSample, THistogram >
   typename SampleType::MeasurementVectorType upper;
 
   NumericTraits<typename SampleType::MeasurementVectorType>::SetLength(lower,
-    measurementVectorSize);
+                                                                       measurementVectorSize);
   NumericTraits<typename SampleType::MeasurementVectorType>::SetLength(upper,
-    measurementVectorSize);
+                                                                       measurementVectorSize);
 
   HistogramMeasurementVectorType h_upper;
   HistogramMeasurementVectorType h_lower;
 
   NumericTraits<HistogramMeasurementVectorType>::SetLength(h_lower,
-    measurementVectorSize);
+                                                           measurementVectorSize);
   NumericTraits<HistogramMeasurementVectorType>::SetLength(h_upper,
-    measurementVectorSize);
+                                                           measurementVectorSize);
 
   const HistogramMeasurementType maximumPossibleValue =
     itk::NumericTraits< HistogramMeasurementType >::max();
@@ -237,12 +239,13 @@ SampleToHistogramFilter< TSample, THistogram >
           }
         else
           {
-          // h_upper[i] = SafeAssign(upper[i] + NumericTraits<MeasurementType>::One);
+          // h_upper[i] = SafeAssign(upper[i] +
+          // NumericTraits<MeasurementType>::One);
           // if ( h_upper[i] <= upper[i] )
           if(upper[i] <
              (static_cast<MeasurementType>
-              (NumericTraits<HistogramMeasurementType>::max()) -
-              NumericTraits<MeasurementType>::One))
+              (NumericTraits<HistogramMeasurementType>::max() ) -
+              NumericTraits<MeasurementType>::One) )
             {
             h_upper[i] = static_cast<HistogramMeasurementType>
               (upper[i] + NumericTraits<MeasurementType>::One);
@@ -325,6 +328,7 @@ SampleToHistogramFilter< TSample, THistogram >
     ++iter;
     }
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

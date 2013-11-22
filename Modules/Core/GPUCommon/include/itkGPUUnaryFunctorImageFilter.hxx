@@ -59,7 +59,15 @@ GPUUnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TParentImageFi
   localSize[0] = localSize[1] = localSize[2] = OpenCLGetLocalBlockSize(ImageDim);
   for(int i=0; i<ImageDim; i++)
     {
-    globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); // total # of threads
+    globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             //
+                                                                                             // total
+                                                                                             //
+                                                                                             // #
+                                                                                             //
+                                                                                             // of
+                                                                                             //
+                                                                                             // threads
     }
 
   // arguments set up using Functor

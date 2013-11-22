@@ -33,6 +33,7 @@ LaplacianSharpeningImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "UseImageSpacing = " << m_UseImageSpacing << std::endl;
 }
 
@@ -156,11 +157,11 @@ LaplacianSharpeningImageFilter< TInputImage, TOutputImage >
   RealType inputShift, inputScale, filteredShift, filteredScale;
   inputShift = static_cast< RealType >( inputCalculator->GetMinimum() );
   inputScale = static_cast< RealType >( inputCalculator->GetMaximum() )
-               - static_cast< RealType >( inputCalculator->GetMinimum() );
+    - static_cast< RealType >( inputCalculator->GetMinimum() );
 
   filteredShift = filteredCalculator->GetMinimum(); // no need to cast
   filteredScale = filteredCalculator->GetMaximum()
-                  - filteredCalculator->GetMinimum();
+    - filteredCalculator->GetMinimum();
 
   ImageRegionIterator< RealImageType >
   it( filter->GetOutput(), filter->GetOutput()->GetRequestedRegion() );
@@ -193,11 +194,11 @@ LaplacianSharpeningImageFilter< TInputImage, TOutputImage >
     ++inIt;
     }
   RealType inputMean = inputSum
-                       / static_cast< RealType >( this->GetOutput()->GetRequestedRegion()
-                                                  .GetNumberOfPixels() );
+    / static_cast< RealType >( this->GetOutput()->GetRequestedRegion()
+                               .GetNumberOfPixels() );
   RealType enhancedMean = enhancedSum
-                          / static_cast< RealType >( this->GetOutput()->GetRequestedRegion()
-                                                     .GetNumberOfPixels() );
+    / static_cast< RealType >( this->GetOutput()->GetRequestedRegion()
+                               .GetNumberOfPixels() );
 
   // update progress
   this->UpdateProgress(0.9);
@@ -246,6 +247,7 @@ LaplacianSharpeningImageFilter< TInputImage, TOutputImage >
   // update progress
   this->UpdateProgress(1.0);
 }
+
 } // end namespace itk
 
 #endif

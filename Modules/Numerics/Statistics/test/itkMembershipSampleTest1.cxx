@@ -21,7 +21,8 @@
 #include "itkMembershipSample.h"
 
 // MembershipSample test using FixedArray type measurement vector
-int itkMembershipSampleTest1(int, char* [] )
+int
+itkMembershipSampleTest1(int, char* [] )
 {
 
   const unsigned int MeasurementVectorSize = 3;
@@ -29,14 +30,13 @@ int itkMembershipSampleTest1(int, char* [] )
   const unsigned int numberOfClasses1 = 2;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >  MeasurementVectorType;
+      float, MeasurementVectorSize >  MeasurementVectorType;
 
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
-  typedef itk::Statistics::MembershipSample< SampleType >   MembershipSampleType;
+  typedef itk::Statistics::MembershipSample< SampleType > MembershipSampleType;
 
   SampleType::Pointer sample = SampleType::New();
-
 
   MembershipSampleType::Pointer membershipSample = MembershipSampleType::New();
 
@@ -59,7 +59,7 @@ int itkMembershipSampleTest1(int, char* [] )
   membershipSample->Print( std::cout );
 
   // Add measurmement vectors to the list sample
-  unsigned int sampleSize = 10;
+  unsigned int          sampleSize = 10;
   MeasurementVectorType mv;
 
   std::cout << "Sample length = " << sample->GetMeasurementVectorSize() << std::endl;
@@ -75,8 +75,8 @@ int itkMembershipSampleTest1(int, char* [] )
     }
 
   // Add instances to the membership sample
-  SampleType::ConstIterator   begin = sample->Begin();
-  SampleType::ConstIterator   end   = sample->End();
+  SampleType::ConstIterator begin = sample->Begin();
+  SampleType::ConstIterator end   = sample->End();
 
   SampleType::ConstIterator iter= begin;
 
@@ -122,16 +122,16 @@ int itkMembershipSampleTest1(int, char* [] )
       }
 
     MembershipSampleType::InstanceIdentifier id = 0;
-    while (s_iter != membershipSample->End())
+    while (s_iter != membershipSample->End() )
       {
       if (membershipSample->GetMeasurementVector(id) !=
-          s_iter.GetMeasurementVector())
+          s_iter.GetMeasurementVector() )
         {
         std::cerr << "Iterator::GetMeasurementVector (forward) failed"
                   << std::endl;
         return EXIT_FAILURE;
         }
-      if (id != s_iter.GetInstanceIdentifier())
+      if (id != s_iter.GetInstanceIdentifier() )
         {
         std::cerr << "Iterator::GetInstanceIdentifier (forward) failed"
                   << std::endl;
@@ -169,7 +169,7 @@ int itkMembershipSampleTest1(int, char* [] )
       ++sampleCounter;
       }
 
-    if (s_iter != membershipSample->End())
+    if (s_iter != membershipSample->End() )
       {
       std::cerr << "Iterator::End (forward) failed" << std::endl;
       return EXIT_FAILURE;
@@ -180,7 +180,7 @@ int itkMembershipSampleTest1(int, char* [] )
   std::cerr << "Const Iterators..." << std::endl;
     {
     // forward iterator
-    typedef MembershipSampleType::ConstIterator  ConstIteratorType;
+    typedef MembershipSampleType::ConstIterator ConstIteratorType;
     ConstIteratorType s_iter = membershipSample->Begin();
 
     // copy constructor
@@ -203,7 +203,7 @@ int itkMembershipSampleTest1(int, char* [] )
       }
 
     // copy from non-const iterator
-    MembershipSampleType::Iterator nonconst_iter = membershipSample->Begin();
+    MembershipSampleType::Iterator      nonconst_iter = membershipSample->Begin();
     MembershipSampleType::ConstIterator s2_iter(nonconst_iter);
     if (s2_iter != s_iter)
       {
@@ -220,16 +220,16 @@ int itkMembershipSampleTest1(int, char* [] )
       }
 
     MembershipSampleType::InstanceIdentifier id = 0;
-    while (s_iter != membershipSample->End())
+    while (s_iter != membershipSample->End() )
       {
       if (membershipSample->GetMeasurementVector(id) !=
-          s_iter.GetMeasurementVector())
+          s_iter.GetMeasurementVector() )
         {
         std::cerr << "Iterator::GetMeasurementVector (forward) failed"
                   << std::endl;
         return EXIT_FAILURE;
         }
-      if (id != s_iter.GetInstanceIdentifier())
+      if (id != s_iter.GetInstanceIdentifier() )
         {
         std::cerr << "Iterator::GetInstanceIdentifier (forward) failed"
                   << std::endl;
@@ -244,7 +244,7 @@ int itkMembershipSampleTest1(int, char* [] )
       ++s_iter;
       }
 
-    if (s_iter != membershipSample->End())
+    if (s_iter != membershipSample->End() )
       {
       std::cerr << "Iterator::End (forward) failed" << std::endl;
       return EXIT_FAILURE;

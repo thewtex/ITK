@@ -20,24 +20,25 @@
 #include "itkMeshFileWriter.h"
 #include "itkConformalFlatteningMeshFilter.h"
 
-int itkConformalFlatteningMeshFilterTest(int argc, char *argv[])
+int
+itkConformalFlatteningMeshFilterTest(int argc, char *argv[])
 {
   if( argc < 4 )
     {
-     std::cerr << "Usage: "<< argv[0] \
-               << "vtkInputFilename vtkOutputFilename mapToSphere[0:1] [polarCellId]\n";
+    std::cerr << "Usage: "<< argv[0] \
+              << "vtkInputFilename vtkOutputFilename mapToSphere[0:1] [polarCellId]\n";
 
     return EXIT_FAILURE;
     }
 
   typedef itk::Mesh< double, 3 > MeshType;
 
-  typedef itk::ConformalFlatteningMeshFilter<MeshType, MeshType>  FilterType;
+  typedef itk::ConformalFlatteningMeshFilter<MeshType, MeshType> FilterType;
 
-  typedef itk::MeshFileReader<MeshType>  ReaderType;
-  typedef itk::MeshFileWriter<MeshType>  WriterType;
+  typedef itk::MeshFileReader<MeshType> ReaderType;
+  typedef itk::MeshFileWriter<MeshType> WriterType;
 
-  typedef MeshType::CellIdentifier  CellIdentifier;
+  typedef MeshType::CellIdentifier CellIdentifier;
 
   //
   // Read mesh file
@@ -69,7 +70,7 @@ int itkConformalFlatteningMeshFilterTest(int argc, char *argv[])
   // Connect the input
   filter->SetInput( mesh );
 
-  CellIdentifier  polarCellId = 0; // default set to the first cell
+  CellIdentifier polarCellId = 0;  // default set to the first cell
 
   if( argc > 4 )
     {

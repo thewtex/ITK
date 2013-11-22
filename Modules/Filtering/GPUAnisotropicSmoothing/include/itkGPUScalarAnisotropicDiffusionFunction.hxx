@@ -87,9 +87,17 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
     imgScale[i] = this->m_ScaleCoefficients[i];
     localSize[i] = (blockSize <= outSize[i]) ? blockSize : 1;
     globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             //
+                                                                                             //
                                                                                              // total
+                                                                                             //
+                                                                                             //
                                                                                              // #
+                                                                                             //
+                                                                                             //
                                                                                              // of
+                                                                                             //
+                                                                                             //
                                                                                              // threads
     bufferSize *= globalSize[i]/localSize[i];
     numPixel *= imgSize[i];
@@ -104,7 +112,7 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
     }
 
   typename GPUKernelManager::Pointer kernelManager = this->m_AnisotropicDiffusionFunctionGPUKernelManager;
-  int                                kernelHandle = this->m_AverageGradientMagnitudeSquaredGPUKernelHandle;
+  int kernelHandle = this->m_AverageGradientMagnitudeSquaredGPUKernelHandle;
 
   // Set arguments
   int argidx = 0;
@@ -113,27 +121,28 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
 
   // Set shared memory args
   if (ImageDim == 2)
-  {
+    {
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0] * localSize[1], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[1], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[1], NULL);
-  }
+    }
   else if (ImageDim == 3)
-  {
-    kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0] * localSize[1] * localSize[2], NULL);
+    {
+    kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0] * localSize[1] * localSize[2],
+                                NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0] * localSize[1], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0] * localSize[1], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0] * localSize[2], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[0] * localSize[2], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[1] * localSize[2], NULL);
     kernelManager->SetKernelArg(kernelHandle, argidx++, sizeof(float) * localSize[1] * localSize[2], NULL);
-  }
+    }
   else
-  {
+    {
     // no need to set shared memory args when dimension is not 2 or 3
-  }
+    }
 
   // Set filter scale parameter
   for(int i=0; i<ImageDim; i++)
@@ -156,13 +165,19 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
 
   this->m_AnisotropicDiffusionFunctionGPUBuffer->SetCPUBufferPointer( intermSum );
   this->m_AnisotropicDiffusionFunctionGPUBuffer->SetCPUDirtyFlag( true );   //
+                                                                            //
+                                                                            //
                                                                             // CPU
+                                                                            //
+                                                                            //
                                                                             // is
+                                                                            //
+                                                                            //
                                                                             // dirty
   this->m_AnisotropicDiffusionFunctionGPUBuffer->SetGPUDirtyFlag( false );
   this->m_AnisotropicDiffusionFunctionGPUBuffer->UpdateCPUBuffer();   //
-                                                                            // Copy
-                                                                            // GPU->CPU
+  // Copy
+  // GPU->CPU
 
   for(int i=0; i<(int)bufferSize; i++)
     {

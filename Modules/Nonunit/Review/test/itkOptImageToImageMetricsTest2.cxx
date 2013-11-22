@@ -23,7 +23,8 @@
 
 #include "itkOptImageToImageMetricsTest2.h"
 
-int itkOptImageToImageMetricsTest2(int , char* argv[])
+int
+itkOptImageToImageMetricsTest2(int , char* argv[])
 {
   std::cout << "OPTIMIZED ON" << std::endl;
 
@@ -51,13 +52,15 @@ int itkOptImageToImageMetricsTest2(int , char* argv[])
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
   std::cout << "Now Running tests with : " << std::endl;
-  std::cout << "\t Global Default Number of Threads " << itk::MultiThreader::GetGlobalDefaultNumberOfThreads() << std::endl;
-  std::cout << "\t Global Maximum Number of Threads " << itk::MultiThreader::GetGlobalMaximumNumberOfThreads() << std::endl;
+  std::cout << "\t Global Default Number of Threads " << itk::MultiThreader::GetGlobalDefaultNumberOfThreads() <<
+    std::endl;
+  std::cout << "\t Global Maximum Number of Threads " << itk::MultiThreader::GetGlobalMaximumNumberOfThreads() <<
+    std::endl;
   std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
   std::cout << std::endl;
 
   itk::BSplineLinearTest( fixedImageReader.GetPointer(),
-                       movingImageReader.GetPointer() );
+                          movingImageReader.GetPointer() );
 
   return(EXIT_SUCCESS);
 }

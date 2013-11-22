@@ -132,6 +132,7 @@ PointSetToPointSetRegistrationMethod< TFixedPointSet, TMovingPointSet >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Metric: " << m_Metric.GetPointer() << std::endl;
   os << indent << "Optimizer: " << m_Optimizer.GetPointer() << std::endl;
   os << indent << "Transform: " << m_Transform.GetPointer() << std::endl;
@@ -188,9 +189,9 @@ template< typename TFixedPointSet, typename TMovingPointSet >
 const typename PointSetToPointSetRegistrationMethod< TFixedPointSet, TMovingPointSet >::TransformOutputType *
 PointSetToPointSetRegistrationMethod< TFixedPointSet, TMovingPointSet >
 ::GetOutput() const
-{
+  {
   return static_cast< const TransformOutputType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename TFixedPointSet, typename TMovingPointSet >
 DataObject::Pointer

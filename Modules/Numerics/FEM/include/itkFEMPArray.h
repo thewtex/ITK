@@ -53,7 +53,7 @@ public:
   /**
    * Dumb pointer typedef support.
    */
-  typedef Self *     Pointer;
+  typedef Self *      Pointer;
   typedef const Self *ConstPointer;
 
   /**
@@ -73,7 +73,8 @@ public:
   /**
    * Returns a pointer to i-th object stored in an array (not a pointer to FEMP of that object).
    */
-  ClassTypePointer operator()(int i)
+  ClassTypePointer
+  operator()(int i)
   {
     return &( *this->operator[](i) );
   }
@@ -82,7 +83,8 @@ public:
    * Returns a pointer to i-th object stored in an array (not a pointer to FEMP of that object).
    * This function works on the const arrays.
    */
-  ClassTypeConstPointer operator()(int i) const
+  ClassTypeConstPointer
+  operator()(int i) const
   {
     return &( *this->operator[](i) );
   }
@@ -165,7 +167,8 @@ FEMPArray<T>::Find(int gn) const
 }
 
 template <typename T>
-int FEMPArray<T>::Renumber()
+int
+FEMPArray<T>::Renumber()
 {
   typename Superclass::iterator i;
   int j = 0;

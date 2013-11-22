@@ -26,25 +26,27 @@
  * TODO Numerical verification.
  */
 
-int itkJointHistogramMutualInformationImageToImageMetricv4Test( int , char * [] )
+int
+itkJointHistogramMutualInformationImageToImageMetricv4Test( int , char * [] )
 {
 
   const unsigned int imageSize = 10;
   const unsigned int imageDimensionality = 3;
-  typedef itk::Image< double, imageDimensionality >              ImageType;
 
-  ImageType::SizeType       size;
+  typedef itk::Image< double, imageDimensionality > ImageType;
+
+  ImageType::SizeType size;
   size.Fill( imageSize );
-  ImageType::IndexType      index;
+  ImageType::IndexType index;
   index.Fill( 0 );
-  ImageType::RegionType     region;
+  ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
-  ImageType::SpacingType    spacing;
+  ImageType::SpacingType spacing;
   spacing.Fill(1.0);
-  ImageType::PointType      origin;
+  ImageType::PointType origin;
   origin.Fill(0);
-  ImageType::DirectionType  direction;
+  ImageType::DirectionType direction;
   direction.SetIdentity();
 
   /* Create simple test images. */
@@ -84,19 +86,19 @@ int itkJointHistogramMutualInformationImageToImageMetricv4Test( int , char * [] 
 
   /* Transforms */
   typedef itk::TranslationTransform<double,imageDimensionality>
-                                                            FixedTransformType;
+    FixedTransformType;
   typedef itk::TranslationTransform<double,imageDimensionality>
-                                                            MovingTransformType;
-  FixedTransformType::Pointer fixedTransform = FixedTransformType::New();
+    MovingTransformType;
+  FixedTransformType::Pointer  fixedTransform = FixedTransformType::New();
   MovingTransformType::Pointer movingTransform = MovingTransformType::New();
   fixedTransform->SetIdentity();
   movingTransform->SetIdentity();
 
   /* The metric */
   typedef itk::JointHistogramMutualInformationImageToImageMetricv4< ImageType,
-                                                                ImageType,
-                                                                ImageType >
-                                                                  MetricType;
+                                                                    ImageType,
+                                                                    ImageType >
+    MetricType;
   MetricType::Pointer metric = MetricType::New();
 
   /* Assign images and transforms.
@@ -122,7 +124,7 @@ int itkJointHistogramMutualInformationImageToImageMetricv4Test( int , char * [] 
     }
 
   // Evaluate
-  MetricType::MeasureType valueReturn1, valueReturn2;
+  MetricType::MeasureType    valueReturn1, valueReturn2;
   MetricType::DerivativeType derivativeReturn;
   try
     {
@@ -146,7 +148,7 @@ int itkJointHistogramMutualInformationImageToImageMetricv4Test( int , char * [] 
 
   // Test that non-overlapping images will generate a warning
   // and return max value for metric value.
-  MovingTransformType::ParametersType parameters(movingTransform->GetNumberOfParameters());
+  MovingTransformType::ParametersType parameters(movingTransform->GetNumberOfParameters() );
   parameters.Fill( static_cast<MovingTransformType::ParametersValueType>(1000) );
   movingTransform->SetParameters( parameters );
   MetricType::MeasureType expectedMetricMax;

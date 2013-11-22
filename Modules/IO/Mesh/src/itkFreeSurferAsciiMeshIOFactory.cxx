@@ -25,21 +25,23 @@ namespace itk
 void
 FreeSurferAsciiMeshIOFactory
 ::PrintSelf(std::ostream &, Indent) const
-{}
+{
+}
 
 FreeSurferAsciiMeshIOFactory
 ::FreeSurferAsciiMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkFreeSurferAsciiMeshIO",
-                         "Freesurfer Mesh IO",
-                         1,
-                         CreateObjectFunction< FreeSurferAsciiMeshIO >::New() );
+                          "itkFreeSurferAsciiMeshIO",
+                          "Freesurfer Mesh IO",
+                          1,
+                          CreateObjectFunction< FreeSurferAsciiMeshIO >::New() );
 }
 
 FreeSurferAsciiMeshIOFactory
 ::~FreeSurferAsciiMeshIOFactory()
-{}
+{
+}
 
 const char *
 FreeSurferAsciiMeshIOFactory
@@ -54,4 +56,5 @@ FreeSurferAsciiMeshIOFactory
 {
   return "FreeSurfer ASCII Mesh IO Factory, allows the loading of FreeSurfer Ascii mesh into insight";
 }
+
 } // end namespace itk

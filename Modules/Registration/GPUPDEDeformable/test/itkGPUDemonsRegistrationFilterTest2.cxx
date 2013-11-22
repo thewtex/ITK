@@ -25,8 +25,7 @@
 #include "itkVectorCastImageFilter.h"
 #include "itkImageFileWriter.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 template<typename TRegistration>
@@ -34,17 +33,23 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(TRegistration* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
     std::cout << "Progress: " << m_Process->GetProgress() << "  ";
     std::cout << "Iter: " << m_Process->GetElapsedIterations() << "  ";
     std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
     std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
     std::cout << std::endl;
+
     if ( m_Process->GetElapsedIterations() == 150 )
-      { m_Process->StopRegistration(); }
-    }
+              { m_Process->StopRegistration(); }
+  }
+
   typename TRegistration::Pointer m_Process;
 };
 }
@@ -53,11 +58,11 @@ public:
 template <typename TImage>
 void
 FillWithCircle(
-TImage * image,
-double * center,
-double radius,
-typename TImage::PixelType foregnd,
-typename TImage::PixelType backgnd )
+  TImage * image,
+  double * center,
+  double radius,
+  typename TImage::PixelType foregnd,
+  typename TImage::PixelType backgnd )
 {
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
@@ -73,7 +78,7 @@ typename TImage::PixelType backgnd )
     double distance = 0;
     for( unsigned int j = 0; j < TImage::ImageDimension; j++ )
       {
-      distance += vnl_math_sqr((double) index[j] - center[j]);
+      distance += vnl_math_sqr( (double) index[j] - center[j]);
       }
     if( distance <= r2 ) it.Set( foregnd );
     else it.Set( backgnd );
@@ -82,13 +87,12 @@ typename TImage::PixelType backgnd )
 
 }
 
-
 // Template function to copy image regions
 template <typename TImage>
 void
 CopyImageBuffer(
-TImage *input,
-TImage *output )
+  TImage *input,
+  TImage *output )
 {
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator outIt( output, output->GetBufferedRegion() );
@@ -99,9 +103,9 @@ TImage *output )
 
 }
 
-int itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
+int
+itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
 {
-
 
   if( argc < 3 )
     {
@@ -126,7 +130,7 @@ int itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
   std::cout << std::endl;
 
   ImageType::SizeValueType sizeArray[ImageDimension] = { 128, 128 };
-  SizeType size;
+  SizeType                 size;
   size.SetSize( sizeArray );
 
   IndexType index;
@@ -152,8 +156,8 @@ int itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
   initField->SetBufferedRegion( region );
   initField->Allocate();
 
-  double center[ImageDimension];
-  double radius;
+  double    center[ImageDimension];
+  double    radius;
   PixelType fgnd = 250;
   PixelType bgnd = 15;
 
@@ -201,12 +205,12 @@ int itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
   typedef RegistrationType::GPUDemonsRegistrationFunctionType FunctionType;
   FunctionType * fptr;
   fptr = dynamic_cast<FunctionType *>(
-    registrator->GetDifferenceFunction().GetPointer() );
+      registrator->GetDifferenceFunction().GetPointer() );
   if (!fptr)
-  {
+    {
     std::cout << "Invalid demons registration function ptr" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::cout << "Printing Demons Registration Function" << std::endl;
   fptr->Print( std::cout );
 
@@ -223,14 +227,15 @@ int itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
   registrator->SetStandardDeviations( v );
 
   typedef ShowProgressObject<RegistrationType> ProgressType;
-  ProgressType progressWatch(registrator);
+  ProgressType                                    progressWatch(registrator);
   itk::SimpleMemberCommand<ProgressType>::Pointer command;
   command = itk::SimpleMemberCommand<ProgressType>::New();
   command->SetCallbackFunction(&progressWatch,
                                &ProgressType::ShowProgress);
   registrator->AddObserver( itk::ProgressEvent(), command);
 
-//   std::cout << "WARNING DISABLING DEFORMATION FIELD SMOOTHING !!!!" << std::endl;
+//   std::cout << "WARNING DISABLING DEFORMATION FIELD SMOOTHING !!!!" <<
+// std::endl;
 //   registrator->SmoothDisplacementFieldOff();
   std::cout << "Printing Demons Registration Filter" << std::endl;
   registrator->Print( std::cout );
@@ -261,20 +266,20 @@ int itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
 
   // compare the warp and fixed images
   itk::ImageRegionIterator<ImageType> fixedIter( fixed,
-      fixed->GetBufferedRegion() );
+                                                 fixed->GetBufferedRegion() );
   itk::ImageRegionIterator<ImageType> warpedIter( warper->GetOutput(),
-      fixed->GetBufferedRegion() );
+                                                  fixed->GetBufferedRegion() );
 
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
-  WriterType::Pointer      fixedWriter =  WriterType::New();
+  WriterType::Pointer fixedWriter =  WriterType::New();
 
   fixedWriter->SetFileName( argv[1] );
 
   fixedWriter->SetInput( fixed );
   fixedWriter->Update();
 
-  WriterType::Pointer      warpedWriter =  WriterType::New();
+  WriterType::Pointer warpedWriter =  WriterType::New();
 
   warpedWriter->SetFileName( argv[2] );
 
@@ -358,7 +363,7 @@ int itkGPUDemonsRegistrationFilterTest2(int argc, char* argv[] )
   try
     {
     fptr = dynamic_cast<FunctionType *>(
-      registrator->GetDifferenceFunction().GetPointer() );
+        registrator->GetDifferenceFunction().GetPointer() );
     fptr->SetMovingImageInterpolator( NULL );
     registrator->SetInput( initField );
     registrator->Update();

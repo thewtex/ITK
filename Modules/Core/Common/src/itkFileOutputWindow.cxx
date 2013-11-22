@@ -94,4 +94,5 @@ FileOutputWindow
     m_Stream->flush();
     }
 }
+
 } // end namespace itk

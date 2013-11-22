@@ -46,19 +46,17 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkVectorConfidenceConnectedImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRGBPixel.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 7 )
     {
@@ -67,7 +65,6 @@ int main( int argc, char *argv[] )
     std::cerr << " inputImage  outputImage seedX seedY multiplier iterations" << std::endl;
     return 1;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -78,15 +75,14 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char                         PixelComponentType;
-  typedef   itk::RGBPixel< PixelComponentType >   InputPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InputPixelType, Dimension >  InputImageType;
+  typedef   unsigned char                       PixelComponentType;
+  typedef   itk::RGBPixel< PixelComponentType > InputPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
-
 
   // We instantiate reader and writer types
   //
@@ -99,7 +95,6 @@ int main( int argc, char *argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   //  Software Guide : BeginLatex
   //
   //  We now declare the type of the region growing filter. In this case it
@@ -109,7 +104,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef  itk::VectorConfidenceConnectedImageFilter< InputImageType,
-                                    OutputImageType > ConnectedFilterType;
+                                                      OutputImageType > ConnectedFilterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -121,9 +116,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   ConnectedFilterType::Pointer confidenceConnected
-                                                 = ConnectedFilterType::New();
+    = ConnectedFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -135,7 +129,6 @@ int main( int argc, char *argv[] )
   confidenceConnected->SetInput( reader->GetOutput() );
   writer->SetInput( confidenceConnected->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -159,7 +152,6 @@ int main( int argc, char *argv[] )
   confidenceConnected->SetMultiplier( multiplier );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The number of iterations is typically determined based on the
@@ -173,7 +165,10 @@ int main( int argc, char *argv[] )
   //  possible that by letting the algorithm run for more iterations the
   //  region will end up engulfing the entire image.
   //
-  //  \index{itk::Vector\-Confidence\-Connected\-Image\-Filter!SetNumberOfIterations()}
+  //
+  //
+  //
+  // \index{itk::Vector\-Confidence\-Connected\-Image\-Filter!SetNumberOfIterations()}
   //
   //  Software Guide : EndLatex
 
@@ -183,7 +178,6 @@ int main( int argc, char *argv[] )
   confidenceConnected->SetNumberOfIterations( iterations );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The output of this filter is a binary image with zero-value pixels
@@ -191,14 +185,15 @@ int main( int argc, char *argv[] )
   //  put inside the region is selected with the method
   //  \code{SetReplaceValue()}
   //
-  //  \index{itk::Vector\-Confidence\-Connected\-Image\-Filter!SetReplaceValue()}
+  //
+  //
+  // \index{itk::Vector\-Confidence\-Connected\-Image\-Filter!SetReplaceValue()}
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -210,20 +205,21 @@ int main( int argc, char *argv[] )
   //  of a \doxygen{Index} to the \code{SetSeed()} method.
   //
   //  \index{itk::Vector\-Confidence\-Connected\-Image\-Filter!SetSeed()}
-  //  \index{itk::Vector\-Confidence\-Connected\-Image\-Filter!SetInitialNeighborhoodRadius()}
+  //
+  //
+  //
+  // \index{itk::Vector\-Confidence\-Connected\-Image\-Filter!SetInitialNeighborhoodRadius()}
   //
   //  Software Guide : EndLatex
 
-  InputImageType::IndexType  index;
+  InputImageType::IndexType index;
 
   index[0] = atoi( argv[3] );
   index[1] = atoi( argv[4] );
 
-
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetSeed( index );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -237,7 +233,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetInitialNeighborhoodRadius( 3 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -259,7 +254,6 @@ int main( int argc, char *argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Now let's run this example using as input the image
@@ -271,9 +265,12 @@ int main( int argc, char *argv[] )
   //  \begin{tabular}{|l|c|c|c|c|}
   //  \hline
   //  Structure & Seed Index & Multiplier & Iterations & Output Image \\ \hline
-  //  Rectum & $(70,120)$ & 7 & 1 & Second from left in Figure \ref{fig:VectorConfidenceConnectedOutput} \\ \hline
-  //  Rectum & $(23, 93)$ & 7 & 1 & Third  from left in Figure \ref{fig:VectorConfidenceConnectedOutput} \\ \hline
-  //  Vitreo & $(66, 66)$ & 3 & 1 & Fourth from left in Figure \ref{fig:VectorConfidenceConnectedOutput} \\ \hline
+  //  Rectum & $(70,120)$ & 7 & 1 & Second from left in Figure
+  // \ref{fig:VectorConfidenceConnectedOutput} \\ \hline
+  //  Rectum & $(23, 93)$ & 7 & 1 & Third  from left in Figure
+  // \ref{fig:VectorConfidenceConnectedOutput} \\ \hline
+  //  Vitreo & $(66, 66)$ & 3 & 1 & Fourth from left in Figure
+  // \ref{fig:VectorConfidenceConnectedOutput} \\ \hline
   //  \end{tabular}
   //  \end{center}
   //
@@ -282,7 +279,8 @@ int main( int argc, char *argv[] )
   // \includegraphics[width=0.24\textwidth]{VectorConfidenceConnectedOutput1}
   // \includegraphics[width=0.24\textwidth]{VectorConfidenceConnectedOutput2}
   // \includegraphics[width=0.24\textwidth]{VectorConfidenceConnectedOutput3}
-  // \itkcaption[VectorConfidenceConnected segmentation results]{Segmentation results of
+  // \itkcaption[VectorConfidenceConnected segmentation results]{Segmentation
+  // results of
   // the VectorConfidenceConnected filter for various seed points.}
   // \label{fig:VectorConfidenceConnectedOutput}
   // \end{figure}
@@ -303,17 +301,17 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef ConnectedFilterType::MeanVectorType   MeanVectorType;
+  typedef ConnectedFilterType::MeanVectorType MeanVectorType;
 
   const MeanVectorType & mean = confidenceConnected->GetMean();
 
   std::cout << "Mean vector = " << std::endl;
   std::cout << mean << std::endl;
 
-  typedef ConnectedFilterType::CovarianceMatrixType   CovarianceMatrixType;
+  typedef ConnectedFilterType::CovarianceMatrixType CovarianceMatrixType;
 
   const CovarianceMatrixType & covariance
-                                       = confidenceConnected->GetCovariance();
+    = confidenceConnected->GetCovariance();
 
   std::cout << "Covariance matrix = " << std::endl;
   std::cout << covariance << std::endl;

@@ -24,7 +24,8 @@ namespace fem
 {
 
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer LoadEdge::CreateAnother(void) const
+::itk::LightObject::Pointer
+LoadEdge::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -45,39 +46,45 @@ namespace fem
   return smartPtr;
 }
 
-void LoadEdge::SetEdge(int edge)
+void
+LoadEdge::SetEdge(int edge)
 {
   this->m_Edge = edge;
 }
 
-int LoadEdge::GetEdge() const
+int
+LoadEdge::GetEdge() const
 {
   return this->m_Edge;
 }
 
-void LoadEdge::SetForce(const vnl_matrix<itk::fem::Element::Float> force)
+void
+LoadEdge::SetForce(const vnl_matrix<itk::fem::Element::Float> force)
 {
   this->m_Force = force;
 }
 
-const vnl_matrix<itk::fem::Element::Float> & LoadEdge::GetForce() const
+const vnl_matrix<itk::fem::Element::Float> &
+LoadEdge::GetForce() const
 {
   return this->m_Force;
 }
 
-vnl_matrix<itk::fem::Element::Float> & LoadEdge::GetForce()
+vnl_matrix<itk::fem::Element::Float> &
+LoadEdge::GetForce()
 {
   return this->m_Force;
 }
 
-void LoadEdge::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
+void
+LoadEdge::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
 {
   //
   // Only some classes modify their state in PopulateEdges, but that
   // means for it to be a virtual method in every class, it has to be non-const.
   // But in general, the ApplyLoad method is correct in taking a const
   // pointer to element.
-  const_cast<Element *>(element.GetPointer())->PopulateEdgeIds();
+  const_cast<Element *>(element.GetPointer() )->PopulateEdgeIds();
 
   const unsigned int NnDOF = element->GetNumberOfDegreesOfFreedomPerNode();
   const unsigned int EdgeNum = this->GetEdge();
@@ -103,9 +110,11 @@ void LoadEdge::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe
 
 }
 
-void LoadEdge::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadEdge::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Edge: " << this->m_Edge << std::endl;
   os << indent << "Force: " << this->m_Force << std::endl;
 }

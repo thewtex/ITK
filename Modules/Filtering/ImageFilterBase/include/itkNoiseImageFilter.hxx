@@ -31,7 +31,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 NoiseImageFilter< TInputImage, TOutputImage >
 ::NoiseImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -100,6 +101,7 @@ NoiseImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

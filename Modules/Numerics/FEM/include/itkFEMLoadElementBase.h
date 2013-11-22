@@ -74,35 +74,62 @@ public:
   LoadElement() : m_Element(0)
   {
   }
-  void AddNextElement(Element::ConstPointer e)
-    {
-      this->AddNextElementInternal(e.GetPointer());
-    }
-  void AddNextElement(Element::Pointer e)
-    {
-      this->AddNextElementInternal(e.GetPointer());
-    }
+
+  void
+  AddNextElement(Element::ConstPointer e)
+  {
+    this->AddNextElementInternal(e.GetPointer() );
+  }
+
+  void
+  AddNextElement(Element::Pointer e)
+  {
+    this->AddNextElementInternal(e.GetPointer() );
+  }
 
   Element::ConstPointer GetElement(int i);
 
   unsigned int GetNumberOfElements(void);
 
-  ElementPointersVectorType & GetElementArray()
-    {
-      return this->m_Element;
-    }
+  ElementPointersVectorType &
+  GetElementArray()
+  {
+    return this->m_Element;
+  }
 
-  const ElementPointersVectorType & GetElementArray() const
-    {
-      return this->m_Element;
-    }
+  const ElementPointersVectorType &
+  GetElementArray() const
+  {
+    return this->m_Element;
+  }
 
   /** Apply the load to the specified element */
-  virtual void ApplyLoad(Element::ConstPointer , Element::VectorType & ) { /* HACK:  This should probably through an execption if it is not intended to be used. */ }
+  virtual void
+  ApplyLoad(Element::ConstPointer , Element::VectorType & ) {              /*
+                                                                             HACK:
+
+                                                                             This
+                                                                             should
+                                                                             probably
+                                                                             through
+                                                                             an
+                                                                             execption
+                                                                             if
+                                                                             it
+                                                                             is
+                                                                             not
+                                                                             intended
+                                                                             to
+                                                                             be
+                                                                             used.
+                                                                             */
+  }
 
 protected:
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
+
   void AddNextElementInternal(const Element *e);
+
   ElementPointersVectorType m_Element;  /** pointers to element objects on which the
                                    load acts */
 };

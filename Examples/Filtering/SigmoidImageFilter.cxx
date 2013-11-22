@@ -36,7 +36,8 @@
 //  pixel-wise.
 //
 //  \begin{equation}
-//  I' = (Max-Min)\cdot \frac{1}{\left(1+e^{-\left(\frac{ I - \beta }{\alpha } \right)} \right)} + Min
+//  I' = (Max-Min)\cdot \frac{1}{\left(1+e^{-\left(\frac{ I - \beta }{\alpha }
+// \right)} \right)} + Min
 //  \end{equation}
 //
 //  In the equation above, $I$ is the intensity of the input pixel, $I'$ the
@@ -61,11 +62,9 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -75,13 +74,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkSigmoidImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 7 )
     {
@@ -99,22 +97,21 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -129,10 +126,9 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::SigmoidImageFilter<
-               InputImageType, OutputImageType >  SigmoidFilterType;
+      InputImageType, OutputImageType >  SigmoidFilterType;
   SigmoidFilterType::Pointer sigmoidFilter = SigmoidFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -152,7 +148,6 @@ int main( int argc, char * argv[] )
   sigmoidFilter->SetOutputMaximum(   outputMaximum  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The coefficients $\alpha$ and $\beta$ are set with the methods
@@ -171,19 +166,19 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-  const double  alpha = atof( argv[5] );
-  const double  beta  = atof( argv[6] );
+  const double alpha = atof( argv[5] );
+  const double beta  = atof( argv[6] );
 
   // Software Guide : BeginCodeSnippet
   sigmoidFilter->SetAlpha(  alpha  );
   sigmoidFilter->SetBeta(   beta   );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input to the SigmoidImageFilter can be taken from any other filter,
-  //  such as an image file reader, for example. The output can be passed down the
+  //  such as an image file reader, for example. The output can be passed down
+  // the
   //  pipeline to other filters, like an image file writer. An update call on
   //  any downstream filter will trigger the execution of the Sigmoid filter.
   //
@@ -192,13 +187,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   sigmoidFilter->SetInput( reader->GetOutput() );
   writer->SetInput( sigmoidFilter->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -206,7 +199,8 @@ int main( int argc, char * argv[] )
   // \center
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
   // \includegraphics[width=0.44\textwidth]{SigmoidImageFilterOutput}
-  // \itkcaption[Effect of the Sigmoid filter.]{Effect of the Sigmoid filter on a
+  // \itkcaption[Effect of the Sigmoid filter.]{Effect of the Sigmoid filter on
+  // a
   // slice from a MRI proton density brain image.}
   // \label{fig:SigmoidImageFilterOutput}
   // \end{figure}
@@ -239,7 +233,6 @@ int main( int argc, char * argv[] )
   //  whose distribution is Gaussian.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

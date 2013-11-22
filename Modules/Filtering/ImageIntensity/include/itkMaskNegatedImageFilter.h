@@ -38,21 +38,27 @@ public:
 
   MaskNegatedInput()
     : m_OutsideValue(NumericTraits< TOutput >::Zero)
-    , m_MaskingValue(NumericTraits< TMask >::ZeroValue())
+    , m_MaskingValue(NumericTraits< TMask >::ZeroValue() )
   {
   }
-  ~MaskNegatedInput() {}
-  bool operator!=(const MaskNegatedInput &) const
+
+  ~MaskNegatedInput() {
+  }
+
+  bool
+  operator!=(const MaskNegatedInput &) const
   {
     return false;
   }
 
-  bool operator==(const MaskNegatedInput & other) const
+  bool
+  operator==(const MaskNegatedInput & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A, const TMask & B) const
+  inline TOutput
+  operator()(const TInput & A, const TMask & B) const
   {
     if ( B != m_MaskingValue )
       {
@@ -65,28 +71,33 @@ public:
   }
 
   /** Method to explicitly set the outside value of the mask */
-  void SetOutsideValue(const TOutput & outsideValue)
+  void
+  SetOutsideValue(const TOutput & outsideValue)
   {
     m_OutsideValue = outsideValue;
   }
 
   /** Method to get the outside value of the mask */
-  const TOutput & GetOutsideValue() const
+  const TOutput &
+  GetOutsideValue() const
   {
     return m_OutsideValue;
   }
 
   /** Method to explicitly set the masking value of the mask */
-  void SetMaskingValue(const TMask & maskingValue)
+  void
+  SetMaskingValue(const TMask & maskingValue)
   {
     m_MaskingValue = maskingValue;
   }
 
   /** Method to get the outside value of the mask */
-  const TMask & GetMaskingValue() const
+  const TMask &
+  GetMaskingValue() const
   {
     return m_MaskingValue;
   }
+
 private:
   TOutput m_OutsideValue;
   TMask   m_MaskingValue;
@@ -126,7 +137,7 @@ private:
  * \endwiki
  */
 template< typename TInputImage, typename TMaskImage, typename TOutputImage = TInputImage >
-class MaskNegatedImageFilter:
+class MaskNegatedImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage, TMaskImage, TOutputImage,
                             Functor::MaskNegatedInput<
@@ -159,7 +170,8 @@ public:
   typedef TMaskImage MaskImageType;
 
   /** Method to explicitly set the outside value of the mask. Defaults to 0 */
-  void SetOutsideValue(const typename TOutputImage::PixelType & outsideValue)
+  void
+  SetOutsideValue(const typename TOutputImage::PixelType & outsideValue)
   {
     if ( this->GetOutsideValue() != outsideValue )
       {
@@ -168,13 +180,15 @@ public:
       }
   }
 
-  const typename TOutputImage::PixelType & GetOutsideValue() const
+  const typename TOutputImage::PixelType &
+  GetOutsideValue() const
   {
     return this->GetFunctor().GetOutsideValue();
   }
 
   /** Method to explicitly set the masking value of the mask. Defaults to 0 */
-  void SetMaskingValue(const typename TMaskImage::PixelType & maskingValue)
+  void
+  SetMaskingValue(const typename TMaskImage::PixelType & maskingValue)
   {
     if ( this->GetMaskingValue() != maskingValue )
       {
@@ -184,7 +198,8 @@ public:
   }
 
   /** Method to get the masking value of the mask. */
-  const typename TMaskImage::PixelType & GetMaskingValue() const
+  const typename TMaskImage::PixelType &
+  GetMaskingValue() const
   {
     return this->GetFunctor().GetMaskingValue();
   }
@@ -193,15 +208,17 @@ public:
    *  the original value of the input image while non-zero pixels in
    *  the mask will be set to the "OutsideValue".
    */
-  void SetMaskImage(const MaskImageType *maskImage)
+  void
+  SetMaskImage(const MaskImageType *maskImage)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< MaskImageType * >( maskImage ) );
   }
 
-  const MaskImageType * GetMaskImage()
+  const MaskImageType *
+  GetMaskImage()
   {
-    return static_cast<const MaskImageType*>(this->ProcessObject::GetInput(1));
+    return static_cast<const MaskImageType*>(this->ProcessObject::GetInput(1) );
   }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -215,18 +232,25 @@ public:
 #endif
 
 protected:
-  MaskNegatedImageFilter() {}
-  virtual ~MaskNegatedImageFilter() {}
+  MaskNegatedImageFilter() {
+  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual
+  ~MaskNegatedImageFilter() {
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "OutsideValue: "  << this->GetOutsideValue() << std::endl;
   }
 
 private:
   MaskNegatedImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

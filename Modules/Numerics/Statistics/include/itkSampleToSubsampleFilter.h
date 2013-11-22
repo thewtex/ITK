@@ -43,7 +43,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class SampleToSubsampleFilter:public ProcessObject
+class SampleToSubsampleFilter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -77,7 +77,8 @@ public:
 
 protected:
   SampleToSubsampleFilter();
-  virtual ~SampleToSubsampleFilter();
+  virtual
+  ~SampleToSubsampleFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Make a DataObject of the correct type to used as the specified
@@ -93,6 +94,7 @@ protected:
 private:
   SampleToSubsampleFilter(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };                                       // end of class
 } // end of namespace Statistics
 } // end of namespace itk

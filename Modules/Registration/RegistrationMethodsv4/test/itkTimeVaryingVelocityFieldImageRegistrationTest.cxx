@@ -32,48 +32,57 @@ template<typename TFilter>
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef CommandIterationUpdate   Self;
-  typedef itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>  Pointer;
+  typedef CommandIterationUpdate  Self;
+  typedef itk::Command            Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *) caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     const TFilter * filter =
       dynamic_cast< const TFilter * >( object );
+
     if( typeid( event ) != typeid( itk::IterationEvent ) )
-      { return; }
+                { return; }
 
     unsigned int currentLevel = filter->GetCurrentLevel();
-    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension( currentLevel );
+    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension(
+        currentLevel );
     typename TFilter::SmoothingSigmasArrayType smoothingSigmas = filter->GetSmoothingSigmasPerLevel();
-    typename TFilter::TransformParametersAdaptorsContainerType adaptors = filter->GetTransformParametersAdaptorsPerLevel();
+    typename TFilter::TransformParametersAdaptorsContainerType adaptors =
+      filter->GetTransformParametersAdaptorsPerLevel();
 
     std::cout << "  Current level = " << currentLevel << std::endl;
     std::cout << "    shrink factor = " << shrinkFactors << std::endl;
     std::cout << "    smoothing sigma = " << smoothingSigmas[currentLevel] << std::endl;
-    std::cout << "    required fixed parameters = " << adaptors[currentLevel]->GetRequiredFixedParameters() << std::endl;
-    }
+    std::cout << "    required fixed parameters = " << adaptors[currentLevel]->GetRequiredFixedParameters() <<
+      std::endl;
+  }
+
 };
 
 template<unsigned int TDimension>
-int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
+int
+PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
 {
 
-  int numberOfAffineIterations = 100;
-  int numberOfDeformableIterationsLevel0 = 10;
-  int numberOfDeformableIterationsLevel1 = 20;
-  int numberOfDeformableIterationsLevel2 = 11;
+  int    numberOfAffineIterations = 100;
+  int    numberOfDeformableIterationsLevel0 = 10;
+  int    numberOfDeformableIterationsLevel1 = 20;
+  int    numberOfDeformableIterationsLevel2 = 11;
   double learningRate = static_cast<double>(0.5);
 
   if( argc >= 6 )
@@ -119,13 +128,14 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   movingImage->Update();
   movingImage->DisconnectPipeline();
 
-  typedef itk::AffineTransform<double, ImageDimension> AffineTransformType;
+  typedef itk::AffineTransform<double, ImageDimension>                                         AffineTransformType;
   typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, AffineTransformType> AffineRegistrationType;
   typename AffineRegistrationType::Pointer affineSimple = AffineRegistrationType::New();
   affineSimple->SetFixedImage( fixedImage );
   affineSimple->SetMovingImage( movingImage );
 
-  // Shrink the virtual domain by specified factors for each level.  See documentation
+  // Shrink the virtual domain by specified factors for each level.  See
+  // documentation
   // for the itkShrinkImageFilter for more detailed behavior.
   typename AffineRegistrationType::ShrinkFactorsArrayType affineShrinkFactorsPerLevel;
   affineShrinkFactorsPerLevel.SetSize( 3 );
@@ -137,7 +147,7 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   // Set the number of iterations
   typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
   GradientDescentOptimizerv4Type * optimizer = reinterpret_cast<GradientDescentOptimizerv4Type *>(
-    const_cast<typename AffineRegistrationType::OptimizerType *>( affineSimple->GetOptimizer() ) );
+      const_cast<typename AffineRegistrationType::OptimizerType *>( affineSimple->GetOptimizer() ) );
   optimizer->SetNumberOfIterations( numberOfAffineIterations );
   std::cout << "number of affine iterations: " << numberOfAffineIterations << std::endl;
 
@@ -165,7 +175,8 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
 
   typedef itk::CompositeTransform<RealType, ImageDimension> CompositeTransformType;
   typename CompositeTransformType::Pointer compositeTransform = CompositeTransformType::New();
-  compositeTransform->AddTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->GetOutput()->Get() ) );
+  compositeTransform->AddTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->
+                                                                                                        GetOutput()->Get() ) );
 
   typedef itk::ResampleImageFilter<MovingImageType, FixedImageType> AffineResampleFilterType;
   typename AffineResampleFilterType::Pointer affineResampler = AffineResampleFilterType::New();
@@ -178,7 +189,8 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   affineResampler->SetDefaultPixelValue( 0 );
   affineResampler->Update();
 
-  std::string affineMovingImageFileName = std::string( argv[4] ) + std::string( "MovingImageAfterAffineTransform.nii.gz" );
+  std::string affineMovingImageFileName = std::string( argv[4] ) +
+    std::string( "MovingImageAfterAffineTransform.nii.gz" );
 
   typedef itk::ImageFileWriter<FixedImageType> AffineWriterType;
   typename AffineWriterType::Pointer affineWriter = AffineWriterType::New();
@@ -189,7 +201,8 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   typedef itk::Vector<RealType, ImageDimension> VectorType;
   VectorType zeroVector( 0.0 );
 
-  // Determine the parameters (size, spacing, etc) for the time-varying velocity field
+  // Determine the parameters (size, spacing, etc) for the time-varying velocity
+  // field
   // Here we use 10 time index points.
   typedef itk::Image<VectorType, ImageDimension+1> TimeVaryingVelocityFieldType;
   typename TimeVaryingVelocityFieldType::Pointer velocityField = TimeVaryingVelocityFieldType::New();
@@ -243,11 +256,13 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   correlationMetric->SetUseMovingImageGradientFilter( false );
   correlationMetric->SetUseFixedImageGradientFilter( false );
 
-  typedef itk::TimeVaryingVelocityFieldImageRegistrationMethodv4<FixedImageType, MovingImageType> VelocityFieldRegistrationType;
+  typedef itk::TimeVaryingVelocityFieldImageRegistrationMethodv4<FixedImageType,
+                                                                 MovingImageType> VelocityFieldRegistrationType;
   typename VelocityFieldRegistrationType::Pointer velocityFieldRegistration = VelocityFieldRegistrationType::New();
 
   typedef typename VelocityFieldRegistrationType::OutputTransformType OutputTransformType;
-  typename OutputTransformType::Pointer outputTransform = const_cast<OutputTransformType *>( velocityFieldRegistration->GetOutput()->Get() );
+  typename OutputTransformType::Pointer outputTransform =
+    const_cast<OutputTransformType *>( velocityFieldRegistration->GetOutput()->Get() );
 
   velocityFieldRegistration->SetFixedImage( fixedImage );
   velocityFieldRegistration->SetMovingInitialTransform( compositeTransform );
@@ -325,7 +340,8 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
         }
       }
 
-    typename VelocityFieldTransformAdaptorType::Pointer fieldTransformAdaptor = VelocityFieldTransformAdaptorType::New();
+    typename VelocityFieldTransformAdaptorType::Pointer fieldTransformAdaptor =
+      VelocityFieldTransformAdaptorType::New();
     fieldTransformAdaptor->SetRequiredSpacing( velocityFieldSpacing );
     fieldTransformAdaptor->SetRequiredSize( velocityFieldSize );
     fieldTransformAdaptor->SetRequiredDirection( velocityFieldDirection );
@@ -336,7 +352,8 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   velocityFieldRegistration->SetTransformParametersAdaptorsPerLevel( adaptors );
 
   typedef CommandIterationUpdate<VelocityFieldRegistrationType> VelocityFieldRegistrationCommandType;
-  typename VelocityFieldRegistrationCommandType::Pointer displacementFieldObserver = VelocityFieldRegistrationCommandType::New();
+  typename VelocityFieldRegistrationCommandType::Pointer displacementFieldObserver =
+    VelocityFieldRegistrationCommandType::New();
   velocityFieldRegistration->AddObserver( itk::IterationEvent(), displacementFieldObserver );
 
   try
@@ -363,7 +380,8 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   resampler->SetDefaultPixelValue( 0 );
   resampler->Update();
 
-  std::string warpedMovingImageFileName = std::string( argv[4] ) + std::string( "MovingImageAfterVelocityFieldTransform.nii.gz" );
+  std::string warpedMovingImageFileName = std::string( argv[4] ) + std::string(
+      "MovingImageAfterVelocityFieldTransform.nii.gz" );
 
   typedef itk::ImageFileWriter<FixedImageType> WriterType;
   typename WriterType::Pointer writer = WriterType::New();
@@ -382,7 +400,8 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   inverseResampler->SetDefaultPixelValue( 0 );
   inverseResampler->Update();
 
-  std::string inverseWarpedFixedImageFileName = std::string( argv[4] ) + std::string( "InverseWarpedFixedImage.nii.gz" );
+  std::string inverseWarpedFixedImageFileName = std::string( argv[4] ) +
+    std::string( "InverseWarpedFixedImage.nii.gz" );
 
   typedef itk::ImageFileWriter<MovingImageType> InverseWriterType;
   typename InverseWriterType::Pointer inverseWriter = InverseWriterType::New();
@@ -401,26 +420,29 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkTimeVaryingVelocityFieldImageRegistrationTest( int argc, char *argv[] )
+int
+itkTimeVaryingVelocityFieldImageRegistrationTest( int argc, char *argv[] )
 {
   if ( argc < 4 )
     {
     std::cout << argv[0] << " imageDimension fixedImage movingImage outputPrefix [numberOfAffineIterations = 100] "
-              << "[numberOfDeformableIterationsLevel0 = 10] [numberOfDeformableIterationsLevel1 = 20] [numberOfDeformableIterationsLevel2 = 11 ] [learningRate = 0.5]" << std::endl;
+              <<
+      "[numberOfDeformableIterationsLevel0 = 10] [numberOfDeformableIterationsLevel1 = 20] [numberOfDeformableIterationsLevel2 = 11 ] [learningRate = 0.5]"
+              << std::endl;
     exit( 1 );
     }
 
   switch( atoi( argv[1] ) )
-   {
-   case 2:
-     PerformTimeVaryingVelocityFieldImageRegistration<2>( argc, argv );
-     break;
-   case 3:
-     PerformTimeVaryingVelocityFieldImageRegistration<3>( argc, argv );
-     break;
-   default:
+    {
+    case 2:
+      PerformTimeVaryingVelocityFieldImageRegistration<2>( argc, argv );
+      break;
+    case 3:
+      PerformTimeVaryingVelocityFieldImageRegistration<3>( argc, argv );
+      break;
+    default:
       std::cerr << "Unsupported dimension" << std::endl;
       exit( EXIT_FAILURE );
-   }
+    }
   return EXIT_SUCCESS;
 }

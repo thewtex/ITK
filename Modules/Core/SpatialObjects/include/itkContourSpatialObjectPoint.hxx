@@ -36,7 +36,8 @@ ContourSpatialObjectPoint< TPointDimension >
 template< unsigned int TPointDimension >
 ContourSpatialObjectPoint< TPointDimension >
 ::~ContourSpatialObjectPoint(void)
-{}
+{
+}
 
 /** Set the picked point : N-D case */
 template< unsigned int TPointDimension >
@@ -73,9 +74,9 @@ template< unsigned int TPointDimension >
 const typename ContourSpatialObjectPoint< TPointDimension >::PointType &
 ContourSpatialObjectPoint< TPointDimension >
 ::GetPickedPoint(void) const
-{
+  {
   return m_PickedPoint;
-}
+  }
 
 /** Set the normal : N-D case */
 template< unsigned int TPointDimension >
@@ -112,9 +113,9 @@ template< unsigned int TPointDimension >
 const typename ContourSpatialObjectPoint< TPointDimension >::VectorType &
 ContourSpatialObjectPoint< TPointDimension >
 ::GetNormal(void) const
-{
+  {
   return m_Normal;
-}
+  }
 
 /** Print the object */
 template< unsigned int TPointDimension >
@@ -123,6 +124,7 @@ ContourSpatialObjectPoint< TPointDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ContourSpatialObjectPoint(" << this << ")" << std::endl;
   os << indent << "Picked Point: ";
   os << indent <<  m_PickedPoint << std::endl;
@@ -145,6 +147,7 @@ ContourSpatialObjectPoint< TPointDimension >
     }
   return *this;
 }
+
 } // end namespace itk
 
 #endif

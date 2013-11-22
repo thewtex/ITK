@@ -18,14 +18,14 @@
 
 #include "itkImageIOBase.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkImageIOFileNameExtensionsTests( int , char * [] )
+int
+itkImageIOFileNameExtensionsTests( int , char * [] )
 {
-  typedef itk::ImageIOBase                        IOBaseType;
-  typedef std::list<itk::LightObject::Pointer>    ArrayOfImageIOType;
-  typedef IOBaseType::ArrayOfExtensionsType       ArrayOfExtensionsType;
+  typedef itk::ImageIOBase                     IOBaseType;
+  typedef std::list<itk::LightObject::Pointer> ArrayOfImageIOType;
+  typedef IOBaseType::ArrayOfExtensionsType    ArrayOfExtensionsType;
 
   ArrayOfImageIOType allobjects = itk::ObjectFactoryBase::CreateAllInstance("itkImageIOBase");
 
@@ -36,7 +36,7 @@ int itkImageIOFileNameExtensionsTests( int , char * [] )
 
     IOBaseType * io = dynamic_cast< IOBaseType * >( itr->GetPointer() );
 
-    if( ! io )
+    if( !io )
       {
       std::cerr << "Got a null pointer in the array" << std::endl;
       return EXIT_FAILURE;

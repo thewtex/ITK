@@ -43,7 +43,8 @@ PointSetToImageFilter< TInputPointSet, TOutputImage >
 template< typename TInputPointSet, typename TOutputImage >
 PointSetToImageFilter< TInputPointSet, TOutputImage >
 ::~PointSetToImageFilter()
-{}
+{
+}
 
 template< typename TInputPointSet, typename TOutputImage >
 void
@@ -71,19 +72,19 @@ template< typename TInputPointSet, typename TOutputImage >
 const typename PointSetToImageFilter< TInputPointSet, TOutputImage >::InputPointSetType *
 PointSetToImageFilter< TInputPointSet, TOutputImage >
 ::GetInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputPointSet * >( this->GetPrimaryInput() );
-}
+  }
 
 /** Get the input point-set */
 template< typename TInputPointSet, typename TOutputImage >
 const typename PointSetToImageFilter< TInputPointSet, TOutputImage >::InputPointSetType *
 PointSetToImageFilter< TInputPointSet, TOutputImage >
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputPointSet * >
-         ( this->ProcessObject::GetInput(idx) );
-}
+           ( this->ProcessObject::GetInput(idx) );
+  }
 
 template< typename TInputPointSet, typename TOutputImage >
 void
@@ -102,6 +103,7 @@ PointSetToImageFilter< TInputPointSet, TOutputImage >
 ::SetSpacing(const double *v)
 {
   SpacingType spacing;
+
   for(unsigned i = 0; i < TOutputImage::ImageDimension; ++i)
     {
     spacing[i] = static_cast< typename SpacingType::ValueType >(v[i]);
@@ -152,10 +154,10 @@ PointSetToImageFilter< TInputPointSet, TOutputImage >
   SizeType size;
 
   typedef BoundingBox<
-    typename InputPointSetType::PointIdentifier,
-    InputPointSetDimension,
-    typename InputPointSetType::CoordRepType,
-    typename InputPointSetType::PointsContainer>  BoundingBoxType;
+      typename InputPointSetType::PointIdentifier,
+      InputPointSetDimension,
+      typename InputPointSetType::CoordRepType,
+      typename InputPointSetType::PointsContainer>  BoundingBoxType;
   typename BoundingBoxType::Pointer bb = BoundingBoxType::New();
   bb->SetPoints( InputPointSet->GetPoints() );
   bb->ComputeBoundingBox();
@@ -261,6 +263,7 @@ PointSetToImageFilter< TInputPointSet, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Size : " << m_Size << std::endl;
   os << indent << "Origin: " << m_Origin << std::endl;
   os << indent << "Spacing: " << m_Spacing << std::endl;
@@ -272,6 +275,7 @@ PointSetToImageFilter< TInputPointSet, TOutputImage >
      << static_cast< typename NumericTraits< ValueType >::PrintType >( m_OutsideValue )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

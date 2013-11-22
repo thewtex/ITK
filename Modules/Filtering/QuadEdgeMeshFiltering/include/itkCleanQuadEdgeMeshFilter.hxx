@@ -39,7 +39,6 @@ CleanQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
   this->m_Decimation->SetCriterion( this->m_Criterion );
 }
 
-
 template< typename TInputMesh, typename TOutputMesh >
 void
 CleanQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
@@ -48,19 +47,19 @@ CleanQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
   InputCoordRepType zeroValue = NumericTraits< InputCoordRepType >::Zero;
 
   InputCoordRepType absoluteToleranceSquared = this->m_AbsoluteTolerance * this->m_AbsoluteTolerance;
+
   if ( ( this->m_AbsoluteTolerance == zeroValue ) && ( this->m_RelativeTolerance != zeroValue ) )
     {
     this->m_BoundingBox->SetPoints( this->GetInput()->GetPoints() );
     this->m_BoundingBox->ComputeBoundingBox();
 
     absoluteToleranceSquared = this->m_RelativeTolerance * this->m_RelativeTolerance
-                           * this->m_BoundingBox->GetDiagonalLength2();
+      * this->m_BoundingBox->GetDiagonalLength2();
     }
 
   this->MergePoints( absoluteToleranceSquared );
   this->CleanPoints();
 }
-
 
 template< typename TInputMesh, typename TOutputMesh >
 void
@@ -126,7 +125,6 @@ CleanQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
     }
 }
 
-
 template< typename TInputMesh, typename TOutputMesh >
 void
 CleanQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
@@ -151,13 +149,13 @@ CleanQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
   output->SqueezePointsIds();
 }
 
-
 template< typename TInputMesh, typename TOutputMesh >
 void
 CleanQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::PrintSelf( std::ostream & os, Indent indent ) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "AbsoluteTolerance: " << m_AbsoluteTolerance << std::endl;
   os << indent << "RelativeTolerance: " << m_RelativeTolerance << std::endl;
 }

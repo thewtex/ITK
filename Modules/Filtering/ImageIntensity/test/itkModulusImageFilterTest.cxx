@@ -23,15 +23,16 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkModulusImageFilterTest(int argc, char * argv[])
+int
+itkModulusImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
-  {
+    {
     std::cerr << "Missing Arguments" << std::endl;
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << " inputImage outputImage " << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   const int dim = 2;
 

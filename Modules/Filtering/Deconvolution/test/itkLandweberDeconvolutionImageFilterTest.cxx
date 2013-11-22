@@ -23,7 +23,8 @@
 #include "itkDeconvolutionIterationCommand.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkLandweberDeconvolutionImageFilterTest(int argc, char* argv[])
+int
+itkLandweberDeconvolutionImageFilterTest(int argc, char* argv[])
 {
   if ( argc < 5 )
     {
@@ -33,8 +34,8 @@ int itkLandweberDeconvolutionImageFilterTest(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  typedef float                              PixelType;
-  const unsigned int                         Dimension = 2;
+  typedef float PixelType;
+  const unsigned int Dimension = 2;
   typedef itk::Image< PixelType, Dimension > ImageType;
   typedef itk::ImageFileReader< ImageType >  ReaderType;
   typedef itk::ImageFileWriter< ImageType >  WriterType;

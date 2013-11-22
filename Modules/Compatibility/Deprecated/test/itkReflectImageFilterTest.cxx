@@ -19,32 +19,32 @@
 #include "itkReflectImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
-int itkReflectImageFilterTest(int, char* [] )
+int
+itkReflectImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the image
   const unsigned int myDimension = 3;
 
   // Declare the types of the image
-  typedef itk::Image<unsigned short, myDimension>  myImageType;
+  typedef itk::Image<unsigned short, myDimension> myImageType;
 
   // Declare the type of the Region
-  typedef myImageType::RegionType       myRegionType;
+  typedef myImageType::RegionType myRegionType;
 
   // Declare the type of the index to access images
-  typedef myRegionType::IndexType        myIndexType;
+  typedef myRegionType::IndexType myIndexType;
 
   // Declare the type of the size
-  typedef myRegionType::SizeType         mySizeType;
+  typedef myRegionType::SizeType mySizeType;
 
   // Declare the type for the ADD filter
   typedef itk::ReflectImageFilter<
-                        myImageType,
-                        myImageType  >  myFilterType;
+      myImageType,
+      myImageType  >  myFilterType;
 
   // Declare the pointers to images
-  typedef myImageType::Pointer   myImagePointer;
+  typedef myImageType::Pointer myImagePointer;
 
   // Create an image
   myImagePointer inputImage = myImageType::New();
@@ -70,9 +70,8 @@ int itkReflectImageFilterTest(int, char* [] )
   inputImage->SetRequestedRegion( region );
   inputImage->Allocate();
 
-
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for the input Image  (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -82,23 +81,21 @@ int itkReflectImageFilterTest(int, char* [] )
   std::cout << "Input Image " << std::endl;
   unsigned long counter = 0;
   while( !it.IsAtEnd() )
-  {
+    {
     it.Set( counter );
     std::cout << it.Get() << std::endl;
     ++counter;
     ++it;
-  }
+    }
 
   // Create the Filter
   myFilterType::Pointer filter = myFilterType::New();
-
 
   // Connect the input image
   filter->SetInput( inputImage );
 
   // Get the Smart Pointer to the Filter Output
   myImagePointer outputImage = filter->GetOutput();
-
 
   // Execute the filter
   filter->Update();
@@ -109,11 +106,10 @@ int itkReflectImageFilterTest(int, char* [] )
   //  Print the content of the result image
   std::cout << " Result " << std::endl;
   while( !ot.IsAtEnd() )
-  {
+    {
     std::cout << ot.GetIndex() << " = " << ot.Get() << std::endl;
     ++ot;
-  }
-
+    }
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;

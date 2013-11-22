@@ -49,7 +49,7 @@ public:
 
   // Declare the datastructure that will be used to hold the
   // dictionary.
-  class MetaDataDictionaryMapType:
+  class MetaDataDictionaryMapType :
     public std::map< std::string, MetaDataObjectBase::Pointer >
   {};
 
@@ -64,7 +64,8 @@ public:
   MetaDataDictionary & operator=(const MetaDataDictionary &);
 
   // Destructor
-  virtual ~MetaDataDictionary();
+  virtual
+  ~MetaDataDictionary();
 
   /** Returns a vector of keys to the key/value entries in the
    * dictionary.  Iterate through the dictionary using these keys.
@@ -80,7 +81,9 @@ public:
   const MetaDataObjectBase * operator[](const std::string &) const;
 
   const MetaDataObjectBase * Get(const std::string &) const;
+
   void Set(const std::string &, MetaDataObjectBase * );
+
   bool HasKey(const std::string &) const;
 
   /** \warning the following functions SHOULD NOT be used with

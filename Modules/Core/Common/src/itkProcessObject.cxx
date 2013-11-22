@@ -35,26 +35,23 @@
 namespace itk
 {
 
-
 namespace
-{ // local namespace for managing globals
+{   // local namespace for managing globals
 const size_t ITK_GLOBAL_INDEX_NAMES_NUMBER = 100;
 const size_t ITK_GLOBAL_INDEX_NAMES_LENGTH = 4;
-const char globalIndexNames[ITK_GLOBAL_INDEX_NAMES_NUMBER][ITK_GLOBAL_INDEX_NAMES_LENGTH] =
-{ "_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8", "_9",
-  "_10", "_11", "_12", "_13", "_14", "_15", "_16", "_17", "_18", "_19",
-  "_20", "_21", "_22", "_23", "_24", "_25", "_26", "_27", "_28", "_29",
-  "_30", "_31", "_32", "_33", "_34", "_35", "_36", "_37", "_38", "_39",
-  "_40", "_41", "_42", "_43", "_44", "_45", "_46", "_47", "_48", "_49",
-  "_50", "_51", "_52", "_53", "_54", "_55", "_56", "_57", "_58", "_59",
-  "_60", "_61", "_62", "_63", "_64", "_65", "_66", "_67", "_68", "_69",
-  "_70", "_71", "_72", "_73", "_74", "_75", "_76", "_77", "_78", "_79",
-  "_80", "_81", "_82", "_83", "_84", "_85", "_86", "_87", "_88", "_89",
-  "_90", "_91", "_92", "_93", "_94", "_95", "_96", "_97", "_98", "_99"
-};
+const char   globalIndexNames[ITK_GLOBAL_INDEX_NAMES_NUMBER][ITK_GLOBAL_INDEX_NAMES_LENGTH] =
+        { "_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8", "_9",
+        "_10", "_11", "_12", "_13", "_14", "_15", "_16", "_17", "_18", "_19",
+        "_20", "_21", "_22", "_23", "_24", "_25", "_26", "_27", "_28", "_29",
+        "_30", "_31", "_32", "_33", "_34", "_35", "_36", "_37", "_38", "_39",
+        "_40", "_41", "_42", "_43", "_44", "_45", "_46", "_47", "_48", "_49",
+        "_50", "_51", "_52", "_53", "_54", "_55", "_56", "_57", "_58", "_59",
+        "_60", "_61", "_62", "_63", "_64", "_65", "_66", "_67", "_68", "_69",
+        "_70", "_71", "_72", "_73", "_74", "_75", "_76", "_77", "_78", "_79",
+        "_80", "_81", "_82", "_83", "_84", "_85", "_86", "_87", "_88", "_89",
+        "_90", "_91", "_92", "_93", "_94", "_95", "_96", "_97", "_98", "_99"};
 
 }
-
 
 /**
  * Instantiate object with no start, end, or progress methods.
@@ -99,16 +96,15 @@ ProcessObject
     {
     return this->MakeOutput( this->MakeIndexFromOutputName(name) );
     }
-  return static_cast<DataObject *>(DataObject::New().GetPointer());
+  return static_cast<DataObject *>(DataObject::New().GetPointer() );
 }
 
 DataObject::Pointer
 ProcessObject
 ::MakeOutput(DataObjectPointerArraySizeType)
 {
-  return static_cast<DataObject *>(DataObject::New().GetPointer());
+  return static_cast<DataObject *>(DataObject::New().GetPointer() );
 }
-
 
 /**
  * Destructor for the ProcessObject class. We've got to
@@ -156,7 +152,6 @@ ProcessObject
         }
       m_IndexedInputs.resize(std::max<DataObjectPointerArraySizeType>(num, 1) );
 
-
       if (num < 1 )
         {
         m_IndexedInputs[0]->second = NULL;
@@ -184,6 +179,7 @@ ProcessObject
 ::GetNumberOfValidRequiredInputs() const
 {
   DataObjectPointerArraySizeType count = 0;
+
   for( DataObjectPointerArraySizeType i = 0; i < m_NumberOfRequiredInputs; i++ )
     {
     if( this->GetInput( i ) )
@@ -251,7 +247,6 @@ ProcessObject
     this->Modified();
     }
 }
-
 
 /**
  * Remove an input.
@@ -349,6 +344,7 @@ ProcessObject
 ::PushFrontInput(const DataObject *input)
 {
   const DataObjectPointerArraySizeType nb = this->GetNumberOfIndexedInputs();
+
   for( DataObjectPointerArraySizeType i = nb; i > 0; i-- )
     {
     this->SetNthInput( i, this->GetInput(i-1) );
@@ -364,6 +360,7 @@ ProcessObject
 ::PopFrontInput()
 {
   DataObjectPointerArraySizeType nb = this->GetNumberOfIndexedInputs();
+
   if( nb > 0 )
     {
     for( DataObjectPointerArraySizeType i = 1; i < nb; i++ )
@@ -403,7 +400,6 @@ ProcessObject
       return;
       }
     }
-
 
   DataObjectPointerMap::iterator it = m_Outputs.find(key);
 
@@ -586,6 +582,7 @@ ProcessObject
 ::GetOutput(const DataObjectIdentifierType & key)
 {
   DataObjectPointerMap::iterator it = m_Outputs.find(key);
+
   if ( it == m_Outputs.end() )
     {
     return NULL;
@@ -598,6 +595,7 @@ ProcessObject
 ::GetOutput(const DataObjectIdentifierType & key) const
 {
   DataObjectPointerMap::const_iterator it = m_Outputs.find(key);
+
   if ( it == m_Outputs.end() )
     {
     return NULL;
@@ -657,6 +655,7 @@ ProcessObject
 ::HasOutput( const DataObjectIdentifierType & key ) const
 {
   DataObjectPointerMap::const_iterator it = m_Outputs.find(key);
+
   return it != m_Outputs.end();
 }
 
@@ -665,7 +664,8 @@ ProcessObject
 ::GetOutputNames() const
 {
   NameArray res;
-  res.reserve(m_Outputs.size());
+
+  res.reserve(m_Outputs.size() );
   for ( DataObjectPointerMap::const_iterator it = m_Outputs.begin(); it != m_Outputs.end(); ++it )
     {
     // only include the primary if it's required or set
@@ -685,7 +685,8 @@ ProcessObject
 // {
 //   ConstDataObjectPointerArray res;
 //   res.reserve(m_Outputs.size());
-//   for ( DataObjectPointerMap::const_iterator it = m_Outputs.begin(); it != m_Outputs.end(); ++it )
+//   for ( DataObjectPointerMap::const_iterator it = m_Outputs.begin(); it !=
+// m_Outputs.end(); ++it )
 //     {
 //     res.push_back( it->second.GetPointer() );
 //     }
@@ -697,7 +698,8 @@ ProcessObject
 ::GetOutputs()
 {
   DataObjectPointerArray res;
-  res.reserve(m_Outputs.size());
+
+  res.reserve(m_Outputs.size() );
   for ( DataObjectPointerMap::iterator it = m_Outputs.begin(); it != m_Outputs.end(); ++it )
     {
     // only include the primary if it's required or set
@@ -753,7 +755,8 @@ ProcessObject::DataObjectPointerArray
 ProcessObject
 ::GetIndexedOutputs()
 {
-  DataObjectPointerArray res(this->GetNumberOfIndexedOutputs());
+  DataObjectPointerArray res(this->GetNumberOfIndexedOutputs() );
+
   for ( DataObjectPointerArraySizeType i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
     {
     res[i] = this->GetOutput(i);
@@ -769,6 +772,7 @@ ProcessObject
 ::GetInput(const DataObjectIdentifierType & key)
 {
   DataObjectPointerMap::iterator it = m_Inputs.find(key);
+
   if ( it == m_Inputs.end() )
     {
     return NULL;
@@ -781,6 +785,7 @@ ProcessObject
 ::GetInput(const DataObjectIdentifierType & key) const
 {
   DataObjectPointerMap::const_iterator it = m_Inputs.find(key);
+
   if ( it == m_Inputs.end() )
     {
     return NULL;
@@ -812,6 +817,7 @@ ProcessObject
 ::HasInput( const DataObjectIdentifierType & key ) const
 {
   DataObjectPointerMap::const_iterator it = m_Inputs.find(key);
+
   return it != m_Inputs.end();
 }
 
@@ -820,7 +826,8 @@ ProcessObject
 ::GetInputNames() const
 {
   NameArray res;
-  res.reserve(m_Inputs.size());
+
+  res.reserve(m_Inputs.size() );
   for ( DataObjectPointerMap::const_iterator it = m_Inputs.begin(); it != m_Inputs.end(); ++it )
     {
     // only include the primary if it's required or set
@@ -833,7 +840,6 @@ ProcessObject
     }
   return res;
 }
-
 
 bool
 ProcessObject
@@ -889,7 +895,6 @@ ProcessObject
     it->second = this->GetInput( m_IndexedInputs[idx]->first );
     }
 
-
   m_IndexedInputs[idx] = it;
 
   if( name == m_IndexedInputs[0]->first && m_NumberOfRequiredInputs == 0 )
@@ -941,7 +946,8 @@ ProcessObject
 ::GetRequiredInputNames() const
 {
   NameArray res;
-  res.reserve(m_RequiredInputNames.size());
+
+  res.reserve(m_RequiredInputNames.size() );
   for ( NameSet::const_iterator it = m_RequiredInputNames.begin(); it != m_RequiredInputNames.end(); ++it )
     {
     res.push_back( *it );
@@ -955,7 +961,8 @@ ProcessObject
 // {
 //   ConstDataObjectPointerArray res;
 //   res.reserve(m_Inputs.size());
-//   for ( DataObjectPointerMap::const_iterator it = m_Inputs.begin(); it != m_Inputs.end(); ++it )
+//   for ( DataObjectPointerMap::const_iterator it = m_Inputs.begin(); it !=
+// m_Inputs.end(); ++it )
 //     {
 //     res.push_back( it->second.GetPointer() );
 //     }
@@ -967,7 +974,8 @@ ProcessObject
 ::GetInputs()
 {
   DataObjectPointerArray res;
-  res.reserve(m_Inputs.size());
+
+  res.reserve(m_Inputs.size() );
   for ( DataObjectPointerMap::iterator it = m_Inputs.begin(); it != m_Inputs.end(); ++it )
     {
     // only include the primary if it's required or set
@@ -1014,7 +1022,8 @@ ProcessObject
 // ::GetIndexedInputs() const
 // {
 //   ConstDataObjectPointerArray res(this->GetNumberOfIndexedInputs());
-//   for ( DataObjectPointerArraySizeType i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
+//   for ( DataObjectPointerArraySizeType i = 0; i <
+// this->GetNumberOfIndexedInputs(); i++ )
 //     {
 //     res[i] = this->GetInput(i);
 //     }
@@ -1025,7 +1034,8 @@ ProcessObject::DataObjectPointerArray
 ProcessObject
 ::GetIndexedInputs()
 {
-  DataObjectPointerArray res(this->GetNumberOfIndexedInputs());
+  DataObjectPointerArray res(this->GetNumberOfIndexedInputs() );
+
   for ( DataObjectPointerArraySizeType i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     res[i] = this->GetInput(i);
@@ -1066,7 +1076,7 @@ ProcessObject
   else
     {
     char buf[2+21]; // a 64-bit integer is ~20 decimal places max
-    sprintf(buf, "_%u", static_cast<unsigned int>(idx));
+    sprintf(buf, "_%u", static_cast<unsigned int>(idx) );
     return buf;
     }
 }
@@ -1099,14 +1109,15 @@ ProcessObject::DataObjectPointerArraySizeType
 ProcessObject
 ::MakeIndexFromName(const DataObjectIdentifierType & name) const
 {
-  DataObjectIdentifierType baseName = "_";
+  DataObjectIdentifierType       baseName = "_";
   DataObjectPointerArraySizeType baseSize = baseName.size();
+
   if( name.size() <= baseSize || name.substr(0, baseSize) != baseName )
     {
     itkDebugMacro("MakeIndexFromName("<<name<<") -> exception bad base name");
     itkExceptionMacro(<<"Not an indexed data object: " << name);
     }
-  DataObjectIdentifierType idxStr = name.substr(baseSize);
+  DataObjectIdentifierType       idxStr = name.substr(baseSize);
   DataObjectPointerArraySizeType idx;
   if( !(std::istringstream(idxStr) >> idx) )
     {
@@ -1210,6 +1221,7 @@ ProcessObject
   Superclass::PrintSelf(os, indent);
 
   Indent indent2 = indent.GetNextIndent();
+
   if ( !m_Inputs.empty() )
     {
     os << indent << "Inputs: " << std::endl;
@@ -1375,7 +1387,7 @@ ProcessObject
    * Verify the require named inputs.
    */
   NameSet::const_iterator i = m_RequiredInputNames.begin();
-  while (i != m_RequiredInputNames.end())
+  while (i != m_RequiredInputNames.end() )
     {
     if ( this->GetInput(*i) == NULL )
       {
@@ -1401,7 +1413,6 @@ ProcessObject
     }
 }
 
-
 /**
  *
  */
@@ -1411,7 +1422,6 @@ ProcessObject
 {
 }
 
-
 /**
  *
  */
@@ -1419,9 +1429,9 @@ void
 ProcessObject
 ::UpdateOutputInformation()
 {
-  ModifiedTimeType               t1, t2;
-  DataObject *                   input;
-  DataObject *                   output;
+  ModifiedTimeType t1, t2;
+  DataObject *     input;
+  DataObject *     output;
 
   /**
    * Watch out for loops in the pipeline
@@ -1877,6 +1887,7 @@ ProcessObject::ProcessObjectDomainThreader< TDomainPartitioner, TAssociate >
 ::DetermineNumberOfThreadsUsed()
 {
   MultiThreader * multiThreader = this->m_Associate->GetMultiThreader();
+
   this->SetMultiThreader( multiThreader );
   multiThreader->SetNumberOfThreads( this->m_Associate->GetNumberOfThreads() );
 
@@ -1904,6 +1915,7 @@ ProcessObject
       }
     }
 }
+
 #if !defined(ITK_LEGACY_REMOVE)
 /**
  *
@@ -1914,6 +1926,7 @@ ProcessObject
 {
   this->SetNumberOfIndexedInputs(num);
 }
+
 /**
  *
  */
@@ -1969,7 +1982,6 @@ ProcessObject
     }
   itkDebugMacro("tried to remove an output that was not in the list");
 }
-
 
 #endif
 

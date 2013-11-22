@@ -27,7 +27,8 @@ especially the change of working directory for reading/writing external files in
 #include <iostream>
 #include "itkMacro.h"
 
-int itkDOMTest5( int argc, char* argv[] )
+int
+itkDOMTest5( int argc, char* argv[] )
 {
   if ( argc < 2 )
     {

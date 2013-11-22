@@ -27,13 +27,15 @@ namespace itk
 template< unsigned int TSpaceDimension >
 SceneSpatialObject< TSpaceDimension >
 ::SceneSpatialObject()
-{}
+{
+}
 
 /** Destructor */
 template< unsigned int TSpaceDimension >
 SceneSpatialObject< TSpaceDimension >
 ::~SceneSpatialObject()
-{}
+{
+}
 
 /** Add a spatial object to the SceneSpatialObject */
 template< unsigned int TSpaceDimension >
@@ -98,7 +100,7 @@ template< unsigned int TSpaceDimension >
 typename SceneSpatialObject< TSpaceDimension >::ObjectListType *
 SceneSpatialObject< TSpaceDimension >
 ::GetObjects(unsigned int depth, char *name)
-{
+  {
   ObjectListType *newList = new ObjectListType;
 
   typename ObjectListType::const_iterator it = m_Objects.begin();
@@ -113,7 +115,7 @@ SceneSpatialObject< TSpaceDimension >
     if ( depth > 0 )
       {
       typedef typename SpatialObject< TSpaceDimension >::ChildrenListType
-      ChildListType;
+        ChildListType;
       ChildListType *childList =
         dynamic_cast< SpatialObject< TSpaceDimension > * >( ( *it ).GetPointer() )->
         GetChildren(depth - 1, name);
@@ -132,7 +134,7 @@ SceneSpatialObject< TSpaceDimension >
     }
 
   return newList;
-}
+  }
 
 /** Set the children list */
 template< unsigned int TSpaceDimension >
@@ -276,7 +278,7 @@ SceneSpatialObject< TSpaceDimension >
       else
         {
         parentObject->AddSpatialObject( dynamic_cast< SpatialObject< TSpaceDimension > * >
-                                ( ( *it ).GetPointer() ) );
+                                        ( ( *it ).GetPointer() ) );
         oldIt = it;
         ++it;
         m_Objects.erase(oldIt);
@@ -396,6 +398,7 @@ SceneSpatialObject< TSpaceDimension >
   m_Objects.clear();
   this->Modified();
 }
+
 } // end of namespace itk
 
 #endif

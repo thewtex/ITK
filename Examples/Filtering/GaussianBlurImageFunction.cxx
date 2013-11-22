@@ -22,13 +22,14 @@
 #include "itkGaussianBlurImageFunction.h"
 #include "itkImageRegionIterator.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 ) {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputImageFile  outputImageFile sigma maxKernelWidth" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   typedef itk::Image< float, 2 >                     ImageType;
   typedef itk::ImageFileReader< ImageType >          ReaderType;

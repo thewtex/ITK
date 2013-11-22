@@ -178,9 +178,11 @@ VotingBinaryHoleFillingImageFilter< TInputImage, TOutput >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Majority Threshold           : " << m_MajorityThreshold << std::endl;
   os << indent << "Number of Pixels Changed     : " << m_NumberOfPixelsChanged << std::endl;
 }
+
 } // end namespace itk
 
 #endif

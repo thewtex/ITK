@@ -48,6 +48,7 @@ RegionalMinimaImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
     {
     return;
@@ -118,7 +119,7 @@ RegionalMinimaImageFilter< TInputImage, TOutputImage >
   else
     {
     typedef BinaryThresholdImageFilter<
-      InputImageType, OutputImageType > ThresholdType;
+        InputImageType, OutputImageType > ThresholdType;
 
     typename ThresholdType::Pointer threshold = ThresholdType::New();
 
@@ -147,5 +148,6 @@ RegionalMinimaImageFilter< TInputImage, TOutputImage >
   os << indent << "ForegroundValue: " << m_ForegroundValue << std::endl;
   os << indent << "BackgroundValue: " << m_BackgroundValue << std::endl;
 }
+
 } // end namespace itk
 #endif

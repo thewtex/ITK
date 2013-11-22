@@ -32,7 +32,7 @@
 namespace {
 
 template<typename TCoordRepType, unsigned int NDimensions>
-class NonlinearAffineTransform:
+class NonlinearAffineTransform :
   public itk::AffineTransform<TCoordRepType,NDimensions>
 {
 public:
@@ -56,11 +56,16 @@ public:
                        NDimensions *( NDimensions + 1 ) );
 
   /** Override this. See test below. */
-    virtual bool IsLinear() const { return false; }
+  virtual bool
+  IsLinear() const {
+    return false;
+  }
+
 };
 }
 
-int itkResampleImageTest2(int argc, char * argv [] )
+int
+itkResampleImageTest2(int argc, char * argv [] )
 {
 
   if( argc < 5 )
@@ -77,22 +82,22 @@ int itkResampleImageTest2(int argc, char * argv [] )
 
   const unsigned int NDimensions = 2;
 
-  typedef unsigned char                          PixelType;
-  typedef itk::Image<PixelType, NDimensions>     ImageType;
-  typedef ImageType::IndexType                   ImageIndexType;
-  typedef ImageType::Pointer                     ImagePointerType;
-  typedef ImageType::RegionType                  ImageRegionType;
-  typedef ImageType::SizeType                    ImageSizeType;
-  typedef double                                 CoordRepType;
+  typedef unsigned char                      PixelType;
+  typedef itk::Image<PixelType, NDimensions> ImageType;
+  typedef ImageType::IndexType               ImageIndexType;
+  typedef ImageType::Pointer                 ImagePointerType;
+  typedef ImageType::RegionType              ImageRegionType;
+  typedef ImageType::SizeType                ImageSizeType;
+  typedef double                             CoordRepType;
 
   typedef itk::AffineTransform<CoordRepType,NDimensions>
-                                                 AffineTransformType;
+    AffineTransformType;
   typedef NonlinearAffineTransform<CoordRepType,NDimensions>
-                                                 NonlinearAffineTransformType;
+    NonlinearAffineTransformType;
   typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType>
-                                                 InterpolatorType;
+    InterpolatorType;
   typedef itk::NearestNeighborExtrapolateImageFunction<ImageType,CoordRepType>
-                                                 ExtrapolatorType;
+    ExtrapolatorType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   typedef itk::ImageFileWriter< ImageType > WriterType;
@@ -167,7 +172,7 @@ int itkResampleImageTest2(int argc, char * argv [] )
   // we get the same results for both methods.
   std::cout << "Test with NonlinearAffineTransform." << std::endl;
   NonlinearAffineTransformType::Pointer nonlinearAffineTransform =
-                                    NonlinearAffineTransformType::New();
+    NonlinearAffineTransformType::New();
   nonlinearAffineTransform->Scale(2.0);
   resample->SetTransform( nonlinearAffineTransform );
   writer2->SetInput( resample->GetOutput() );
@@ -239,8 +244,7 @@ int itkResampleImageTest2(int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
- std::cout << "Test passed." << std::endl;
- return EXIT_SUCCESS;
+  std::cout << "Test passed." << std::endl;
+  return EXIT_SUCCESS;
 
 }

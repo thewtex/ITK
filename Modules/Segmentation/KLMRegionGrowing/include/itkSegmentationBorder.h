@@ -42,7 +42,7 @@ namespace itk
  * \ingroup RegionGrowingSegmentation
  * \ingroup ITKKLMRegionGrowing
  */
-class SegmentationBorder:public Object
+class SegmentationBorder : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -65,7 +65,9 @@ public:
    * access to specific instantiations of other border representations. This
    * is the function should be overloaded in any derived classes for the user
    * to access the various methods supported by the method. */
-  virtual void ApplySegmentationBorder(){}
+  virtual void
+  ApplySegmentationBorder(){
+  }
 
 protected:
   SegmentationBorder();

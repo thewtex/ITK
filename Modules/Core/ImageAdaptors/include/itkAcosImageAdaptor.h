@@ -50,11 +50,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = (TInternalType)vcl_acos( (double)input ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = (TInternalType)vcl_acos( (double)input );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return (TExternalType)vcl_acos( (double)input ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return (TExternalType)vcl_acos( (double)input );
+  }
+
 };
 } // end namespace Accessor
 
@@ -68,7 +75,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class AcosImageAdaptor:public
+class AcosImageAdaptor : public
   ImageAdaptor< TImage, Accessor::AcosPixelAccessor<
                   typename TImage::PixelType,
                   TOutputPixelType > >
@@ -90,12 +97,17 @@ public:
   itkTypeMacro(AcosImageAdaptor, ImageAdaptor);
 
 protected:
-  AcosImageAdaptor() {}
-  virtual ~AcosImageAdaptor() {}
+  AcosImageAdaptor() {
+  }
+
+  virtual
+  ~AcosImageAdaptor() {
+  }
 
 private:
   AcosImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

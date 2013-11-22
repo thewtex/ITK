@@ -24,23 +24,25 @@ namespace itk
 void
 BYUMeshIOFactory
 ::PrintSelf(std::ostream &, Indent) const
-{}
+{
+}
 
 // /////////////////////////////////////////////////////////////////////
 BYUMeshIOFactory
 ::BYUMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkBYUMeshIO",
-                         "BYU Mesh IO",
-                         1,
-                         CreateObjectFunction< BYUMeshIO >::New() );
+                          "itkBYUMeshIO",
+                          "BYU Mesh IO",
+                          1,
+                          CreateObjectFunction< BYUMeshIO >::New() );
 }
 
 // /////////////////////////////////////////////////////////////////////
 BYUMeshIOFactory
 ::~BYUMeshIOFactory()
-{}
+{
+}
 
 // /////////////////////////////////////////////////////////////////////
 const char *

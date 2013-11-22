@@ -42,10 +42,10 @@ class DisplacementFieldToBSplineImageFilter
   : public ImageToImageFilter<TInputImage, TOutputImage>
 {
 public:
-  typedef DisplacementFieldToBSplineImageFilter            Self;
-  typedef ImageToImageFilter<TInputImage, TOutputImage>    Superclass;
-  typedef SmartPointer<Self>                               Pointer;
-  typedef SmartPointer<const Self>                         ConstPointer;
+  typedef DisplacementFieldToBSplineImageFilter         Self;
+  typedef ImageToImageFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -53,17 +53,17 @@ public:
   /** Extract dimension from input image. */
   itkStaticConstMacro( ImageDimension, unsigned int, TInputImage::ImageDimension );
 
-  typedef TInputImage                          InputFieldType;
-  typedef TOutputImage                         OutputFieldType;
+  typedef TInputImage  InputFieldType;
+  typedef TOutputImage OutputFieldType;
 
-  typedef InputFieldType                       DisplacementFieldType;
-  typedef OutputFieldType                      InverseDisplacementFieldType;
+  typedef InputFieldType  DisplacementFieldType;
+  typedef OutputFieldType InverseDisplacementFieldType;
 
   /** Image typedef support. */
-  typedef typename OutputFieldType::PixelType     PixelType;
-  typedef typename OutputFieldType::PixelType     VectorType;
-  typedef typename OutputFieldType::RegionType    RegionType;
-  typedef typename OutputFieldType::IndexType     IndexType;
+  typedef typename OutputFieldType::PixelType  PixelType;
+  typedef typename OutputFieldType::PixelType  VectorType;
+  typedef typename OutputFieldType::RegionType RegionType;
+  typedef typename OutputFieldType::IndexType  IndexType;
 
   typedef typename OutputFieldType::PointType     PointType;
   typedef typename OutputFieldType::SpacingType   SpacingType;
@@ -71,59 +71,68 @@ public:
   typedef typename OutputFieldType::SizeType      SizeType;
   typedef typename OutputFieldType::DirectionType DirectionType;
 
-  typedef typename VectorType::RealValueType      RealType;
-  typedef Image<RealType, ImageDimension>         RealImageType;
+  typedef typename VectorType::RealValueType RealType;
+  typedef Image<RealType, ImageDimension>    RealImageType;
 
   /** B-spline smoothing filter argument typedefs */
-  typedef PointSet<VectorType, ImageDimension>    PointSetType;
+  typedef PointSet<VectorType, ImageDimension> PointSetType;
 
   /** B-sline filter typedefs */
   typedef BSplineScatteredDataPointSetToImageFilter<
-    PointSetType, OutputFieldType>                          BSplineFilterType;
-  typedef typename BSplineFilterType::WeightsContainerType  WeightsContainerType;
-  typedef typename BSplineFilterType::PointDataImageType    DisplacementFieldControlPointLatticeType;
-  typedef typename BSplineFilterType::ArrayType             ArrayType;
+      PointSetType, OutputFieldType>                          BSplineFilterType;
+  typedef typename BSplineFilterType::WeightsContainerType WeightsContainerType;
+  typedef typename BSplineFilterType::PointDataImageType   DisplacementFieldControlPointLatticeType;
+  typedef typename BSplineFilterType::ArrayType            ArrayType;
 
   /** Set the displacement field */
-  void SetDisplacementField( const InputFieldType * field )
-    {
+  void
+  SetDisplacementField( const InputFieldType * field )
+  {
     this->SetInput( field );
-    }
+  }
 
   /**
    * Get the deformation field.
    */
-  const InputFieldType* GetDisplacementField() const
-    {
+  const InputFieldType*
+  GetDisplacementField() const
+  {
     return this->GetInput( 0 );
-    }
+  }
 
   /**
    * Get the displacement field control point lattice.
    */
-  const DisplacementFieldControlPointLatticeType * GetDisplacementFieldControlPointLattice() const
-    {
+  const DisplacementFieldControlPointLatticeType *
+  GetDisplacementFieldControlPointLattice() const
+  {
     return this->m_DisplacementFieldControlPointLattice;
-    }
+  }
 
   /**
    * Set confidence image function.  If a confidence image is specified,
    * estimation of the displacement field weights the contribution of each voxel
    * according the value of the corresponding voxel in the confidence image.
    */
-  void SetConfidenceImage( const RealImageType *image )
-    {
+  void
+  SetConfidenceImage( const RealImageType *image )
+  {
     this->SetNthInput( 1, const_cast<RealImageType *>( image ) );
-    }
-  void SetInput1( const RealImageType *image ) { this->SetConfidenceImage( image ); }
+  }
+
+  void
+  SetInput1( const RealImageType *image ) {
+    this->SetConfidenceImage( image );
+  }
 
   /**
    * Get confidence image function.
    */
-  const RealImageType* GetConfidenceImage() const
-    {
+  const RealImageType*
+  GetConfidenceImage() const
+  {
     return static_cast<const RealImageType*>( this->ProcessObject::GetInput( 1 ) );
-    }
+  }
 
   /**
    * Set the spline order defining the bias field estimate.  Default = 3.
@@ -167,13 +176,14 @@ public:
    * specify a B-spline mesh size for initial fitting followed by a doubling of
    * the mesh resolution for each subsequent fitting level.  Default = 1 level.
    */
-  void SetNumberOfFittingLevels( unsigned int n )
-    {
+  void
+  SetNumberOfFittingLevels( unsigned int n )
+  {
     ArrayType nlevels;
 
     nlevels.Fill( n );
     this->SetNumberOfFittingLevels( nlevels );
-    }
+  }
 
   /**
    * Get the number of fitting levels.  One of the contributions of N4 is the
@@ -203,7 +213,8 @@ protected:
   DisplacementFieldToBSplineImageFilter();
 
   /** Deconstructor */
-  virtual ~DisplacementFieldToBSplineImageFilter();
+  virtual
+  ~DisplacementFieldToBSplineImageFilter();
 
   /** Standard print self function **/
   void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -212,17 +223,19 @@ protected:
   void GenerateData();
 
 private:
-  DisplacementFieldToBSplineImageFilter( const Self& ); //purposely not implemented
-  void operator=( const Self& );                 //purposely not implemented
+  DisplacementFieldToBSplineImageFilter( const Self& ); //purposely not
+                                                        // implemented
+  void operator=( const Self& );                        //purposely not
 
-  bool                                         m_EstimateInverse;
-  bool                                         m_EnforceStationaryBoundary;
-  unsigned int                                 m_SplineOrder;
-  ArrayType                                    m_NumberOfControlPoints;
-  ArrayType                                    m_NumberOfFittingLevels;
+  // implemented
+
+  bool         m_EstimateInverse;
+  bool         m_EnforceStationaryBoundary;
+  unsigned int m_SplineOrder;
+  ArrayType    m_NumberOfControlPoints;
+  ArrayType    m_NumberOfFittingLevels;
 
   typename DisplacementFieldControlPointLatticeType::Pointer    m_DisplacementFieldControlPointLattice;
-
 
 };
 

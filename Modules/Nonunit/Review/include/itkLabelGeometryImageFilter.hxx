@@ -39,7 +39,7 @@ typename LabelGeometryImageFilter< TLabelImage, TIntensityImage >::MatrixType
 CalculateRotationMatrix(vnl_symmetric_eigensystem< double > eig)
 {
   typename LabelGeometryImageFilter< TLabelImage, TIntensityImage >::MatrixType
-  rotationMatrix(TLabelImage::ImageDimension, TLabelImage::ImageDimension, 0);
+    rotationMatrix(TLabelImage::ImageDimension, TLabelImage::ImageDimension, 0);
   for ( unsigned int i = 0; i < TLabelImage::ImageDimension; i++ )
     {
     rotationMatrix.set_column( i, eig.get_eigenvector(i) );
@@ -109,10 +109,10 @@ CalculateOrientedImage(
   typename TransformType::CenterType center;
   typename TGenericImage::PointType origin;
   for( unsigned int i = 0; i < TLabelImage::ImageDimension; i++ )
-  {
+    {
     center[i] = labelGeometry.m_Centroid[i] * filter->GetInput()->GetSpacing()[i];
     origin[i] = labelGeometry.m_OrientedBoundingBoxOrigin[i] * filter->GetInput()->GetSpacing()[i];
-  }
+    }
   typename TransformType::OutputVectorType translation;
   translation.Fill(0);
   transform->SetCenter(center);
@@ -131,7 +131,7 @@ CalculateOrientedImage(
   for ( unsigned int i = 0; i < TLabelImage::ImageDimension; i++ )
     {
     boundingBoxSize[i] = ( typename ResampleFilterType::SizeType::SizeValueType )vcl_ceil(
-      labelGeometry.m_OrientedBoundingBoxSize[i]);
+        labelGeometry.m_OrientedBoundingBoxSize[i]);
     }
 
   resampler->SetTransform(transform);
@@ -317,7 +317,7 @@ LabelGeometryImageFilter< TLabelImage, TIntensityImage >
         {
         // FIRST ORDER WEIGHTED RAW MOMENTS
         ( *mapIt ).second.m_FirstOrderWeightedRawMoments[i] += index[i]
-                                                               * ( typename LabelIndexType::IndexValueType )value;
+          * ( typename LabelIndexType::IndexValueType )value;
         }
 
       ++it;
@@ -332,8 +332,8 @@ LabelGeometryImageFilter< TLabelImage, TIntensityImage >
     if ( m_CalculateOrientedIntensityRegions )
       {
       std::cerr
-      << "ERROR: An input intensity image must be used in order to calculate the oriented intensity image."
-      << std::endl;
+        << "ERROR: An input intensity image must be used in order to calculate the oriented intensity image."
+        << std::endl;
       }
     m_CalculateOrientedIntensityRegions = false;
     }
@@ -357,7 +357,7 @@ LabelGeometryImageFilter< TLabelImage, TIntensityImage >
       ( *mapIt ).second.m_BoundingBoxSize[i] =
         ( *mapIt ).second.m_BoundingBox[2 * i + 1] - ( *mapIt ).second.m_BoundingBox[2 * i] + 1;
       ( *mapIt ).second.m_BoundingBoxVolume = ( *mapIt ).second.m_BoundingBoxVolume
-                                              * ( *mapIt ).second.m_BoundingBoxSize[i];
+        * ( *mapIt ).second.m_BoundingBoxSize[i];
       }
 
     for ( unsigned int i = 0; i < ImageDimension; i++ )
@@ -426,11 +426,15 @@ LabelGeometryImageFilter< TLabelImage, TIntensityImage >
     ( *mapIt ).second.m_AxesLength = axesLength;
 
     // The following three features are currently only meaningful in 2D.
-    ( *mapIt ).second.m_Eccentricity = vcl_sqrt( ( eigenvalues[ImageDimension-1] - eigenvalues[0] ) / eigenvalues[ImageDimension-1] );
+    ( *mapIt ).second.m_Eccentricity =
+      vcl_sqrt( ( eigenvalues[ImageDimension-1] - eigenvalues[0] ) / eigenvalues[ImageDimension-1] );
     ( *mapIt ).second.m_Elongation = axesLength[ImageDimension-1] / axesLength[0];
-    RealType orientation = vcl_atan2(eig.get_eigenvector(ImageDimension-1)[1], eig.get_eigenvector(ImageDimension-1)[0]);
-    // Change the orientation from being between -pi to pi to being from 0 to pi.
-    // We can add pi because the orientation of the major axis is symmetric about the origin.
+    RealType orientation =
+      vcl_atan2(eig.get_eigenvector(ImageDimension-1)[1], eig.get_eigenvector(ImageDimension-1)[0]);
+    // Change the orientation from being between -pi to pi to being from 0 to
+    // pi.
+    // We can add pi because the orientation of the major axis is symmetric
+    // about the origin.
     ( *mapIt ).second.m_Orientation = orientation < 0.0 ? orientation + vnl_math::pi : orientation;
 
     if ( m_CalculateOrientedBoundingBox == true )
@@ -1098,7 +1102,7 @@ LabelGeometryImageFilter< TImage, TLabelImage >
   MapConstIterator mapIt;
   for ( mapIt = m_LabelGeometryMapper.begin(); mapIt != m_LabelGeometryMapper.end(); mapIt++ )
     {
-    typedef typename NumericTraits< LabelPixelType >::PrintType  LabelPrintType;
+    typedef typename NumericTraits< LabelPixelType >::PrintType LabelPrintType;
     os << indent << "Label[" << (LabelPrintType)( ( *mapIt ).second.m_Label ) << "]: ";
     os << "\t Volume: " << ( *mapIt ).second.m_ZeroOrderMoment;
     os << "\t Integrated Intensity: " << ( *mapIt ).second.m_Sum;
@@ -1123,5 +1127,6 @@ LabelGeometryImageFilter< TImage, TLabelImage >
     os << "\n\n";
     }
 }
+
 } // end namespace itk
 #endif

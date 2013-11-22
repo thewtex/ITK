@@ -45,7 +45,8 @@
 #include "itkImageRegionIterator.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
@@ -66,12 +67,12 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char               PixelType;
-  typedef itk::Image< PixelType, 2 >  ImageType;
+  typedef unsigned char              PixelType;
+  typedef itk::Image< PixelType, 2 > ImageType;
 
   typedef itk::ConstShapedNeighborhoodIterator<
-                                          ImageType
-                                            > ShapedNeighborhoodIteratorType;
+      ImageType
+      > ShapedNeighborhoodIteratorType;
 
   typedef itk::ImageRegionIterator< ImageType> IteratorType;
   // Software Guide : EndCodeSnippet
@@ -92,13 +93,14 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
   // Software Guide : BeginLatex
   //
   // Refer to the examples in Section~\ref{sec:itkNeighborhoodIterator} or the
-  // source code of this example for a description of how to read the input image
+  // source code of this example for a description of how to read the input
+  // image
   // and allocate a matching output image.
   //
   // The size of the structuring element is read from the command line and used
@@ -110,7 +112,7 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  unsigned int element_radius = ::atoi( argv[3] );
+  unsigned int                               element_radius = ::atoi( argv[3] );
   ShapedNeighborhoodIteratorType::RadiusType radius;
   radius.Fill(element_radius);
   // Software Guide : EndCodeSnippet
@@ -124,10 +126,10 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::NeighborhoodAlgorithm::ImageBoundaryFacesCalculator<
-                                                ImageType > FaceCalculatorType;
+      ImageType > FaceCalculatorType;
 
-  FaceCalculatorType faceCalculator;
-  FaceCalculatorType::FaceListType faceList;
+  FaceCalculatorType                         faceCalculator;
+  FaceCalculatorType::FaceListType           faceList;
   FaceCalculatorType::FaceListType::iterator fit;
 
   faceList = faceCalculator( reader->GetOutput(),
@@ -141,20 +143,19 @@ int main( int argc, char ** argv )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   IteratorType out;
 
   const PixelType background_value = 0;
   const PixelType foreground_value = 255;
-  const float rad = static_cast<float>(element_radius);
+  const float     rad = static_cast<float>(element_radius);
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
   // The outer loop of the algorithm is structured as in previous neighborhood
-  // iterator examples.  Each region in the face list is processed in turn.  As each new
+  // iterator examples.  Each region in the face list is processed in turn.  As
+  // each new
   // region is processed, the input and output iterators are initialized on that
   // region.
   //
@@ -196,9 +197,12 @@ int main( int argc, char ** argv )
     //
     // The inner loop, which implements the erosion algorithm, is fairly simple.
     // The \code{for} loop steps the input and output iterators through their
-    // respective images.  At each step, the active stencil of the shaped iterator
-    // is traversed to determine whether all pixels underneath the stencil contain
-    // the foreground value, i.e. are contained within the set $I$.  Note the use
+    // respective images.  At each step, the active stencil of the shaped
+    // iterator
+    // is traversed to determine whether all pixels underneath the stencil
+    // contain
+    // the foreground value, i.e. are contained within the set $I$.  Note the
+    // use
     // of the stencil iterator, \code{ci}, in performing this check.
     //
     // Software Guide : EndLatex

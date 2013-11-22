@@ -53,7 +53,7 @@ namespace itk
     typedef typename MeshType::PointIdentifier PointIdentifier;            \
     typedef typename MeshType::PointsContainer PointsContainer;            \
     typedef typename MeshType::PointsContainerIterator                     \
-    PointsContainerIterator;                                               \
+      PointsContainerIterator;                                               \
                                                                            \
     PointsContainer *points = ( MeshInstance )->GetPoints();               \
     /* If no points container are present, do nothing */                   \
@@ -107,7 +107,7 @@ namespace itk
     {                                                                          \
     typedef typename MeshType::CellsContainer CellsContainer;                  \
     typedef typename MeshType::CellsContainerIterator                          \
-    CellsContainerIterator;                                                    \
+      CellsContainerIterator;                                                    \
     /* If no cells are present, do nothing */                                  \
     if ( !MeshInstance->GetCells() )                                           \
       {                                                                        \

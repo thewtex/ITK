@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedPointSet, typename TMovingImage >
-class MeanReciprocalSquareDifferencePointSetToImageMetric:
+class MeanReciprocalSquareDifferencePointSetToImageMetric :
   public PointSetToImageMetric< TFixedPointSet, TMovingImage >
 {
 public:
@@ -98,16 +98,22 @@ public:
 
 protected:
   MeanReciprocalSquareDifferencePointSetToImageMetric();
-  virtual ~MeanReciprocalSquareDifferencePointSetToImageMetric() {}
+  virtual
+  ~MeanReciprocalSquareDifferencePointSetToImageMetric() {
+  }
+
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MeanReciprocalSquareDifferencePointSetToImageMetric(const Self &); //purposely
                                                                      // not
+                                                                     //
+                                                                     //
                                                                      // implemented
   void operator=(const Self &);                                      //purposely
-                                                                     // not
-                                                                     // implemented
+
+  // not
+  // implemented
 
   double m_Lambda;
 };

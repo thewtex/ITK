@@ -19,19 +19,21 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkTimeProbesCollectorBase.h"
 
-int itkOrientedImageProfileTest1( int, char *[] )
+int
+itkOrientedImageProfileTest1( int, char *[] )
 {
 
   const unsigned int Dimension = 3;
+
   typedef unsigned char PixelType;
 
-  typedef itk::Image<PixelType, Dimension>    ImageType;
+  typedef itk::Image<PixelType, Dimension> ImageType;
 
-  typedef ImageType::IndexType                        IndexType;
-  typedef ImageType::SizeType                         SizeType;
-  typedef ImageType::PointType                        PointType;
-  typedef ImageType::RegionType                       RegionType;
-  typedef ImageType::SpacingType                      SpacingType;
+  typedef ImageType::IndexType   IndexType;
+  typedef ImageType::SizeType    SizeType;
+  typedef ImageType::PointType   PointType;
+  typedef ImageType::RegionType  RegionType;
+  typedef ImageType::SpacingType SpacingType;
 
   IndexType start;
   SizeType  size;
@@ -67,7 +69,7 @@ int itkOrientedImageProfileTest1( int, char *[] )
 
   itr.GoToBegin();
 
-  itk::TimeProbesCollectorBase  chronometer;
+  itk::TimeProbesCollectorBase chronometer;
 
   chronometer.Start("Transform");
 

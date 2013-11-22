@@ -42,10 +42,10 @@ class GradientDescentOptimizerBasev4Template
 {
 public:
   /** Standard class typedefs. */
-  typedef GradientDescentOptimizerBasev4Template                       Self;
+  typedef GradientDescentOptimizerBasev4Template                             Self;
   typedef ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType> Superclass;
-  typedef SmartPointer< Self >                                         Pointer;
-  typedef SmartPointer< const Self >                                   ConstPointer;
+  typedef SmartPointer< Self >                                               Pointer;
+  typedef SmartPointer< const Self >                                         ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(GradientDescentOptimizerBasev4Template, Superclass);
@@ -61,27 +61,28 @@ public:
     } StopConditionType;
 
   /** Stop condition return string type */
-  typedef std::string                            StopConditionReturnStringType;
+  typedef std::string StopConditionReturnStringType;
 
   /** Stop condition internal string type */
-  typedef std::ostringstream                     StopConditionDescriptionType;
+  typedef std::ostringstream StopConditionDescriptionType;
 
-  /** It should be possible to derive the internal computation type from the class object. */
-  typedef TInternalComputationValueType          InternalComputationValueType;
+  /** It should be possible to derive the internal computation type from the
+    class object. */
+  typedef TInternalComputationValueType InternalComputationValueType;
 
   /** Metric type over which this class is templated */
-  typedef typename Superclass::MetricType                    MetricType;
-  typedef typename MetricType::Pointer                       MetricTypePointer;
+  typedef typename Superclass::MetricType MetricType;
+  typedef typename MetricType::Pointer    MetricTypePointer;
 
   /** Derivative type */
-  typedef typename MetricType::DerivativeType                DerivativeType;
+  typedef typename MetricType::DerivativeType DerivativeType;
 
   /** Measure type */
-  typedef typename Superclass::MeasureType                   MeasureType;
+  typedef typename Superclass::MeasureType MeasureType;
 
-  typedef typename Superclass::ScalesType                    ScalesType;
+  typedef typename Superclass::ScalesType ScalesType;
 
-  typedef typename Superclass::ParametersType                ParametersType;
+  typedef typename Superclass::ParametersType ParametersType;
 
   /** Get the most recent gradient values. */
   itkGetConstReferenceMacro( Gradient, DerivativeType );
@@ -123,6 +124,7 @@ public:
    * \sa EstimateLearningRate()
    */
   virtual void ModifyGradientByScales();
+
   virtual void ModifyGradientByLearningRate();
 
   typedef ThreadedIndexedContainerPartitioner::IndexRangeType IndexRangeType;
@@ -148,25 +150,29 @@ protected:
 
   /** Default constructor */
   GradientDescentOptimizerBasev4Template();
-  virtual ~GradientDescentOptimizerBasev4Template();
+  virtual
+  ~GradientDescentOptimizerBasev4Template();
 
   typename DomainThreader<ThreadedIndexedContainerPartitioner, Self>::Pointer m_ModifyGradientByScalesThreader;
   typename DomainThreader<ThreadedIndexedContainerPartitioner, Self>::Pointer m_ModifyGradientByLearningRateThreader;
 
   /* Common variables for optimization control and reporting */
-  bool                          m_Stop;
-  StopConditionType             m_StopCondition;
-  StopConditionDescriptionType  m_StopConditionDescription;
-  SizeValueType                 m_NumberOfIterations;
-  SizeValueType                 m_CurrentIteration;
+  bool                         m_Stop;
+  StopConditionType            m_StopCondition;
+  StopConditionDescriptionType m_StopConditionDescription;
+  SizeValueType                m_NumberOfIterations;
+  SizeValueType                m_CurrentIteration;
 
   /** Current gradient */
-  DerivativeType     m_Gradient;
+  DerivativeType m_Gradient;
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  GradientDescentOptimizerBasev4Template( const Self & ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  GradientDescentOptimizerBasev4Template( const Self & ); //purposely not
+                                                          // implemented
+  void operator=( const Self& );                          //purposely not
+
+  // implemented
 
 };
 

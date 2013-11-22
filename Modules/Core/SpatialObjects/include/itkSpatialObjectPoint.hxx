@@ -42,16 +42,17 @@ SpatialObjectPoint< TPointDimension >
 template< unsigned int TPointDimension >
 SpatialObjectPoint< TPointDimension >
 ::~SpatialObjectPoint(void)
-{}
+{
+}
 
 /** Return the color of the point */
 template< unsigned int TPointDimension >
 const typename SpatialObjectPoint< TPointDimension >::PixelType &
 SpatialObjectPoint< TPointDimension >
 ::GetColor(void) const
-{
+  {
   return m_Color;
-}
+  }
 
 /** Set the color of the point */
 template< unsigned int TPointDimension >
@@ -169,9 +170,9 @@ template< unsigned int TPointDimension >
 const typename SpatialObjectPoint< TPointDimension >::PointType &
 SpatialObjectPoint< TPointDimension >
 ::GetPosition(void) const
-{
+  {
   return m_X;
-}
+  }
 
 /** Set the position : n-D case */
 template< unsigned int TPointDimension >
@@ -241,6 +242,7 @@ SpatialObjectPoint< TPointDimension >
     }
   os <<  m_X[TPointDimension - 1] << std::endl;
 }
+
 } // end namespace itk
 
 #endif

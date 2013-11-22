@@ -67,7 +67,8 @@ BYUMeshIO
   // Define input file stream and attach it to input file
   std::ifstream inputFile;
 
-  // Due to the windows couldn't work well for tellg() and seekg() for ASCII mode, hence we
+  // Due to the windows couldn't work well for tellg() and seekg() for ASCII
+  // mode, hence we
   //open the file with std::ios::binary
   inputFile.open(this->m_FileName.c_str(), std::ios::in | std::ios::binary);
 
@@ -241,7 +242,7 @@ BYUMeshIO
   // Get cell buffer
   inputFile.precision(12);
   unsigned int *data = static_cast< unsigned int * >( buffer );
-  SizeValueType  numPoints = 0;
+  SizeValueType numPoints = 0;
   SizeValueType id = itk::NumericTraits< SizeValueType >::Zero;
   SizeValueType index = 2;
   int           ptId;
@@ -552,8 +553,10 @@ BYUMeshIO
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "PartId: " << m_PartId << std::endl;
   os << indent << "First Cell Id: " << m_FirstCellId << std::endl;
   os << indent << "Last Cell Id: " << m_LastCellId << std::endl;
 }
+
 } // namespace itk end

@@ -49,9 +49,9 @@ template< typename TInputImage, typename TLevelSetContainer >
 const typename LevelSetEquationTermBase< TInputImage, TLevelSetContainer >::RequiredDataType &
 LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 ::GetRequiredData() const
-{
+  {
   return this->m_RequiredData;
-}
+  }
 
 // ----------------------------------------------------------------------------
 template< typename TInputImage, typename TLevelSetContainer >
@@ -88,6 +88,7 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
     return NumericTraits< LevelSetOutputRealType >::Zero;
     }
 }
+
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -108,6 +109,7 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
     return NumericTraits< LevelSetOutputRealType >::Zero;
     }
 }
+
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -129,7 +131,7 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
     if( this->m_CurrentLevelSetPointer.IsNull() )
       {
       itkWarningMacro(
-      << "m_CurrentLevelSetId does not exist in the level set container" );
+        << "m_CurrentLevelSetId does not exist in the level set container" );
       }
     }
 
@@ -138,6 +140,7 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
     itkWarningMacro( << "m_Heaviside is NULL" );
     }
 }
+
 // ----------------------------------------------------------------------------
 
 }

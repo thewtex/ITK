@@ -49,14 +49,14 @@ namespace itk {
 
 template<typename TInputImage, typename TOutputImage, typename TMaskImage=TOutputImage>
 class IntermodesThresholdImageFilter :
-    public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
+  public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
 {
 public:
   /** Standard Self typedef */
-  typedef IntermodesThresholdImageFilter                              Self;
-  typedef HistogramThresholdImageFilter<TInputImage,TOutputImage,TMaskImage>     Superclass;
-  typedef SmartPointer<Self>                                          Pointer;
-  typedef SmartPointer<const Self>                                    ConstPointer;
+  typedef IntermodesThresholdImageFilter                                     Self;
+  typedef HistogramThresholdImageFilter<TInputImage,TOutputImage,TMaskImage> Superclass;
+  typedef SmartPointer<Self>                                                 Pointer;
+  typedef SmartPointer<const Self>                                           ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -64,14 +64,14 @@ public:
   /** Runtime information support. */
   itkTypeMacro(IntermodesThresholdImageFilter, HistogramThresholdImageFilter);
 
-  typedef TInputImage                       InputImageType;
-  typedef TOutputImage                      OutputImageType;
-  typedef TMaskImage                        MaskImageType;
+  typedef TInputImage  InputImageType;
+  typedef TOutputImage OutputImageType;
+  typedef TMaskImage   MaskImageType;
 
   /** Image pixel value typedef. */
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename MaskImageType::PixelType    MaskPixelType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename MaskImageType::PixelType   MaskPixelType;
 
   /** Image related typedefs. */
   typedef typename InputImageType::Pointer  InputImagePointer;
@@ -90,26 +90,30 @@ public:
   typedef typename Superclass::HistogramType                             HistogramType;
   typedef IntermodesThresholdCalculator< HistogramType, InputPixelType > CalculatorType;
 
-  void SetMaximumSmoothingIterations(unsigned long I)
+  void
+  SetMaximumSmoothingIterations(unsigned long I)
   {
     m_IntermodesCalculator->SetMaximumSmoothingIterations(I);
   }
 
-  unsigned long GetMaximumSmoothingIterations()
+  unsigned long
+  GetMaximumSmoothingIterations()
   {
-    return(m_IntermodesCalculator->GetMaximumSmoothingIterations());
+    return(m_IntermodesCalculator->GetMaximumSmoothingIterations() );
   }
 
   /** select whether midpoint (intermode=true) or minimum between
      peaks is used */
-  void SetUseInterMode(unsigned long I)
+  void
+  SetUseInterMode(unsigned long I)
   {
     m_IntermodesCalculator->SetUseInterMode(I);
   }
 
-  bool GetUseInterMode()
+  bool
+  GetUseInterMode()
   {
-    return(m_IntermodesCalculator->GetUseInterMode());
+    return(m_IntermodesCalculator->GetUseInterMode() );
   }
 
   /** Image related typedefs. */
@@ -121,24 +125,29 @@ public:
 protected:
 
   IntermodesThresholdImageFilter()
-    {
+  {
     m_IntermodesCalculator = CalculatorType::New();
     this->SetCalculator( m_IntermodesCalculator );
     m_IntermodesCalculator->SetMaximumSmoothingIterations(10000);
     m_IntermodesCalculator->SetUseInterMode(true);
-    }
-  ~IntermodesThresholdImageFilter(){};
+  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
-    {
+  ~IntermodesThresholdImageFilter(){
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
     Superclass::PrintSelf(os, indent);
-    os << indent << "MaximumSmoothingIterations: " << m_IntermodesCalculator->GetMaximumSmoothingIterations() << std::endl;
+
+    os << indent << "MaximumSmoothingIterations: " << m_IntermodesCalculator->GetMaximumSmoothingIterations() <<
+      std::endl;
     os << indent << "UseInterMode: " << m_IntermodesCalculator->GetUseInterMode() << std::endl;
-    }
+  }
 
 private:
   IntermodesThresholdImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                 //purposely not implemented
 
   typename CalculatorType::Pointer m_IntermodesCalculator;
 

@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = float >
-class VarianceImageFunction:
+class VarianceImageFunction :
   public ImageFunction< TInputImage, typename NumericTraits< typename TInputImage::PixelType >::RealType,
                         TCoordRep >
 {
@@ -80,13 +80,14 @@ public:
 
   /** Datatype used for the variance */
   typedef typename NumericTraits< typename InputImageType::PixelType >::RealType
-  RealType;
+    RealType;
 
   /** Evalulate the function at specified index */
   virtual RealType EvaluateAtIndex(const IndexType & index) const;
 
   /** Evaluate the function at non-integer positions */
-  virtual RealType Evaluate(const PointType & point) const
+  virtual RealType
+  Evaluate(const PointType & point) const
   {
     IndexType index;
 
@@ -94,7 +95,8 @@ public:
     return this->EvaluateAtIndex(index);
   }
 
-  virtual RealType EvaluateAtContinuousIndex(
+  virtual RealType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & cindex) const
   {
     IndexType index;
@@ -110,7 +112,9 @@ public:
 
 protected:
   VarianceImageFunction();
-  ~VarianceImageFunction(){}
+  ~VarianceImageFunction(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

@@ -55,7 +55,8 @@ public:
   typedef  Vector< T, 3 > InternalType;
 
   /** Write access to the VectorToRGB component */
-  inline void Set(InternalType & output, const ExternalType & input) const
+  inline void
+  Set(InternalType & output, const ExternalType & input) const
   {
     output[0] = input[0];
     output[1] = input[1];
@@ -63,7 +64,8 @@ public:
   }
 
   /** Read access to the VectorToRGB component */
-  inline ExternalType Get(const InternalType & input) const
+  inline ExternalType
+  Get(const InternalType & input) const
   {
     ExternalType rgb( input.GetDataPointer() );
 

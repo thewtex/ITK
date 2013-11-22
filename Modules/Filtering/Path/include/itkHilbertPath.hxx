@@ -37,6 +37,7 @@ HilbertPath<TIndexValue, VDimension>
 ::ConstructHilbertPath()
 {
   SizeValueType numberOfPathVertices = ( 1 << this->m_HilbertOrder );
+
   for( unsigned int d = 1; d < Dimension; d++ )
     {
     numberOfPathVertices *= static_cast<SizeValueType>( 1 << this->m_HilbertOrder );
@@ -61,6 +62,7 @@ HilbertPath<TIndexValue, VDimension>
   PathIndexType e = 0;
 
   IndexType index;
+
   index.Fill( 0 );
 
   for( PathIndexType i = 0; i < this->m_HilbertOrder; ++i )
@@ -109,7 +111,8 @@ HilbertPath<TIndexValue, VDimension>
 template<typename TIndexValue, unsigned int VDimension>
 typename HilbertPath<TIndexValue, VDimension>::PathIndexType
 HilbertPath<TIndexValue, VDimension>
-::GetTransform( const PathIndexType entry, const PathIndexType direction, const PathIndexType width, const PathIndexType x )
+::GetTransform( const PathIndexType entry, const PathIndexType direction, const PathIndexType width,
+                const PathIndexType x )
 {
   return ( this->GetRightBitRotation( x ^ entry, direction + 1, width ) );
 }
@@ -117,7 +120,8 @@ HilbertPath<TIndexValue, VDimension>
 template<typename TIndexValue, unsigned int VDimension>
 typename HilbertPath<TIndexValue, VDimension>::PathIndexType
 HilbertPath<TIndexValue, VDimension>
-::GetInverseTransform( const PathIndexType entry, const PathIndexType direction, const PathIndexType width, const PathIndexType x )
+::GetInverseTransform( const PathIndexType entry, const PathIndexType direction, const PathIndexType width,
+                       const PathIndexType x )
 {
   return ( this->GetLeftBitRotation( x, direction + 1, width ) ^ entry );
 }
@@ -253,6 +257,7 @@ HilbertPath<TIndexValue, VDimension>
 
   std::cout << "Hilbert order: " << this->m_HilbertOrder << std::endl;
 }
+
 } // end namespace itk
 
 #endif

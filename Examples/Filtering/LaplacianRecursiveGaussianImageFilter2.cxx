@@ -58,7 +58,8 @@
 // Software Guide : EndCodeSnippet
 #include "itkRescaleIntensityImageFilter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -74,8 +75,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -85,11 +86,11 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -102,7 +103,7 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::LaplacianRecursiveGaussianImageFilter<
-                        InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -125,7 +126,8 @@ int main( int argc, char * argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The option for normalizing across scale space can also be selected in this filter.
+  //  The option for normalizing across scale space can also be selected in this
+  // filter.
   //
   //  \index{LaplacianRecursiveGaussianImageFilter!SetNormalizeAcrossScale()}
   //
@@ -191,7 +193,7 @@ int main( int argc, char * argv[] )
   typedef  float                          WritePixelType;
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetInput( laplacian->GetOutput() );
@@ -202,10 +204,16 @@ int main( int argc, char * argv[] )
   //
   // \begin{figure}
   // \center
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{LaplacianRecursiveGaussianImageFilter2Output3}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{LaplacianRecursiveGaussianImageFilter2Output5}
-  // \itkcaption[Output of the LaplacianRecursiveGaussianImageFilter.]{Effect of the
-  // LaplacianRecursiveGaussianImageFilter on a slice from a MRI proton density image
+  // \itkcaption[Output of the LaplacianRecursiveGaussianImageFilter.]{Effect of
+  // the
+  // LaplacianRecursiveGaussianImageFilter on a slice from a MRI proton density
+  // image
   // of the brain.}
   // \label{fig:RecursiveGaussianImageFilter2InputOutput}
   // \end{figure}
@@ -227,12 +235,12 @@ int main( int argc, char * argv[] )
     typedef itk::Image<CharPixelType, 2> CharImageType;
 
     typedef itk::RescaleIntensityImageFilter< OutputImageType, CharImageType>
-                                                            RescaleFilterType;
+      RescaleFilterType;
     RescaleFilterType::Pointer rescale = RescaleFilterType::New();
     rescale->SetInput( laplacian->GetOutput() );
     rescale->SetOutputMinimum(   0 );
     rescale->SetOutputMaximum( 255 );
-    typedef itk::ImageFileWriter< CharImageType >  CharWriterType;
+    typedef itk::ImageFileWriter< CharImageType > CharWriterType;
     CharWriterType::Pointer charWriter = CharWriterType::New();
     charWriter->SetFileName( argv[4] );
     charWriter->SetInput( rescale->GetOutput() );

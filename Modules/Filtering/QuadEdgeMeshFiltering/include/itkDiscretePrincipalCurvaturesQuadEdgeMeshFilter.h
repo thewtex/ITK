@@ -31,15 +31,15 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class DiscretePrincipalCurvaturesQuadEdgeMeshFilter:
+class DiscretePrincipalCurvaturesQuadEdgeMeshFilter :
   public DiscreteCurvatureQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
-  typedef DiscretePrincipalCurvaturesQuadEdgeMeshFilter     Self;
-  typedef SmartPointer< Self >                              Pointer;
-  typedef SmartPointer< const Self >                        ConstPointer;
+  typedef DiscretePrincipalCurvaturesQuadEdgeMeshFilter Self;
+  typedef SmartPointer< Self >                          Pointer;
+  typedef SmartPointer< const Self >                    ConstPointer;
   typedef DiscreteCurvatureQuadEdgeMeshFilter<
-    TInputMesh, TOutputMesh >                               Superclass;
+      TInputMesh, TOutputMesh >                               Superclass;
 
   typedef typename Superclass::InputMeshType                 InputMeshType;
   typedef typename Superclass::InputMeshPointer              InputMeshPointer;
@@ -71,14 +71,18 @@ public:
 #endif
 
 protected:
-  DiscretePrincipalCurvaturesQuadEdgeMeshFilter():
-    m_Gaussian(0.0), m_Mean(0.0){}
-  ~DiscretePrincipalCurvaturesQuadEdgeMeshFilter() {}
+  DiscretePrincipalCurvaturesQuadEdgeMeshFilter() :
+    m_Gaussian(0.0), m_Mean(0.0){
+  }
+
+  ~DiscretePrincipalCurvaturesQuadEdgeMeshFilter() {
+  }
 
   OutputCurvatureType m_Gaussian;
   OutputCurvatureType m_Mean;
 
-  void ComputeMeanAndGaussianCurvatures(const OutputPointType & iP)
+  void
+  ComputeMeanAndGaussianCurvatures(const OutputPointType & iP)
   {
     OutputMeshPointer output = this->GetOutput();
 
@@ -123,7 +127,7 @@ protected:
 
           // Compute Angle;
           sum_theta += static_cast< OutputCurvatureType >(
-            TriangleType::ComputeAngle(q0, iP, q1) );
+              TriangleType::ComputeAngle(q0, iP, q1) );
 
           temp_area = this->ComputeMixedArea(qe_it, qe_it2);
           area += temp_area;
@@ -146,7 +150,8 @@ protected:
       }
   }
 
-  virtual OutputCurvatureType ComputeDelta()
+  virtual OutputCurvatureType
+  ComputeDelta()
   {
     return vnl_math_max( static_cast<OutputCurvatureType>( 0. ),
                          m_Mean * m_Mean - m_Gaussian );
@@ -154,11 +159,12 @@ protected:
 
 private:
   DiscretePrincipalCurvaturesQuadEdgeMeshFilter(const Self &); // purposely
-                                                                  // not
-                                                                  // implemented
-  void operator=(const Self &);                                   // purposely
-                                                                  // not
-                                                                  // implemented
+                                                               // not
+                                                               // implemented
+  void operator=(const Self &);                                // purposely
+
+  // not
+  // implemented
 };
 }
 

@@ -42,6 +42,7 @@ TransformMeshFilter< TInputMesh, TOutputMesh, TTransform >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   if ( m_Transform )
     {
     os << indent << "Transform: " << m_Transform << std::endl;
@@ -119,6 +120,7 @@ TransformMeshFilter< TInputMesh, TOutputMesh, TTransform >
                                         inputMesh->GetBoundaryAssignments(dim) );
     }
 }
+
 } // end namespace itk
 
 #endif

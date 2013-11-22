@@ -38,14 +38,14 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkListSample.h"
 #include "itkMembershipSample.h"
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -56,9 +56,9 @@ int main()
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Vector< float, 3 > MeasurementVectorType;
+  typedef itk::Vector< float, 3 >                              MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
-  SampleType::Pointer sample = SampleType::New();
+  SampleType::Pointer   sample = SampleType::New();
   MeasurementVectorType mv;
 
   mv[0] = 1.0;
@@ -150,7 +150,6 @@ int main()
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // To see the numbers of instances in each class subsample, we use
@@ -166,7 +165,6 @@ int main()
             << membershipSample->GetClassSample(1)->Size() << std::endl;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We call the \code{GetClassSample()} method to get the
@@ -181,10 +179,10 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   MembershipSampleType::ClassSampleType::ConstPointer classSample =
-                                  membershipSample->GetClassSample( 0 );
+    membershipSample->GetClassSample( 0 );
 
   MembershipSampleType::ClassSampleType::ConstIterator c_iter =
-                                                    classSample->Begin();
+    classSample->Begin();
 
   while ( c_iter != classSample->End() )
     {

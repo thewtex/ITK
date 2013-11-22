@@ -110,6 +110,7 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
                        ThreadIdType threadId)
 {
   const SizeValueType size0 = outputRegionForThread.GetSize(0);
+
   if( size0 == 0)
     {
     return;
@@ -125,13 +126,12 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
     dynamic_cast< const TInputImage3 * >( ( ProcessObject::GetInput(2) ) );
   OutputImagePointer outputPtr = this->GetOutput(0);
 
-
   ImageScanlineConstIterator< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
   ImageScanlineConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
   ImageScanlineConstIterator< TInputImage3 > inputIt3(inputPtr3, outputRegionForThread);
   ImageScanlineIterator< TOutputImage >      outputIt(outputPtr, outputRegionForThread);
 
-  const size_t numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
+  const size_t     numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
   ProgressReporter progress( this, threadId, numberOfLinesToProcess );
 
   while ( !inputIt1.IsAtEnd() )
@@ -144,13 +144,14 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
       ++inputIt3;
       ++outputIt;
       }
-      inputIt1.NextLine();
-      inputIt2.NextLine();
-      inputIt3.NextLine();
-      outputIt.NextLine();
+    inputIt1.NextLine();
+    inputIt2.NextLine();
+    inputIt3.NextLine();
+    outputIt.NextLine();
     progress.CompletedPixel(); // potential exception thrown here
     }
 }
+
 } // end namespace itk
 
 #endif

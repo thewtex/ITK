@@ -18,14 +18,15 @@
 
 #include "itkQuadEdgeMesh.h"
 
-int itkQuadEdgeMeshTest3( int , char* [] )
+int
+itkQuadEdgeMeshTest3( int , char* [] )
 {
-  typedef double                                    PixelType;
-  typedef itk::QuadEdgeMesh< PixelType, 3 >         MeshType;
-  typedef MeshType::CellType                        CellType;
-  typedef MeshType::QEPrimal                        QEPrimal;
-  typedef itk::QuadEdgeMeshLineCell< CellType >     LineType;
-  typedef itk::QuadEdgeMeshPolygonCell< CellType >  QEPolygonCellType;
+  typedef double                                   PixelType;
+  typedef itk::QuadEdgeMesh< PixelType, 3 >        MeshType;
+  typedef MeshType::CellType                       CellType;
+  typedef MeshType::QEPrimal                       QEPrimal;
+  typedef itk::QuadEdgeMeshLineCell< CellType >    LineType;
+  typedef itk::QuadEdgeMeshPolygonCell< CellType > QEPolygonCellType;
 
   MeshType::Pointer mesh = MeshType::New();
 
@@ -45,8 +46,8 @@ int itkQuadEdgeMeshTest3( int , char* [] )
   mesh->SetPoint( 3, point3 );
 
   CellType::CellAutoPointer cellpointer;
-  QEPolygonCellType* poly;
-  LineType* edge;
+  QEPolygonCellType*        poly;
+  LineType*                 edge;
 
   poly = new QEPolygonCellType( 3 );
   cellpointer.TakeOwnership( poly );
@@ -71,12 +72,12 @@ int itkQuadEdgeMeshTest3( int , char* [] )
 
   poly = new QEPolygonCellType( 3 );
   // FIXME ALEX: write REAL test code here for coverage.
-  poly->GetNameOfClass( );
-  poly->GetEdgeRingEntry( )->GetRight( );
-  poly->GetEdgeRingEntry( )->GetLeft( );
-  poly->GetEdgeRingEntry( )->GetIdent( );
-  poly->GetType( );
-  poly->GetDimension( );
+  poly->GetNameOfClass();
+  poly->GetEdgeRingEntry()->GetRight();
+  poly->GetEdgeRingEntry()->GetLeft();
+  poly->GetEdgeRingEntry()->GetIdent();
+  poly->GetType();
+  poly->GetDimension();
   // up to here.
   cellpointer.TakeOwnership( poly );
   cellpointer->SetPointId( 0, 3 );
@@ -115,9 +116,9 @@ int itkQuadEdgeMeshTest3( int , char* [] )
   mesh->SetCell( 8, cellpointer );
 
   edge = new LineType;
-  edge->GetNameOfClass( );
-  edge->GetType( );
-  edge->GetDimension( );
+  edge->GetNameOfClass();
+  edge->GetType();
+  edge->GetDimension();
   cellpointer.TakeOwnership( edge );
   cellpointer->SetPointId( 0, 3 );
   cellpointer->SetPointId( 1, 0 );
@@ -126,7 +127,7 @@ int itkQuadEdgeMeshTest3( int , char* [] )
   std::cout << "numPoints = " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "numCells  = " << mesh->GetNumberOfCells() << std::endl;
 
-  typedef MeshType::PointsContainer::ConstIterator  PointIterator;
+  typedef MeshType::PointsContainer::ConstIterator PointIterator;
   PointIterator pointIterator = mesh->GetPoints()->Begin();
   PointIterator pointEnd      = mesh->GetPoints()->End();
 
@@ -180,7 +181,7 @@ int itkQuadEdgeMeshTest3( int , char* [] )
     }
 
   //try to clear the populated mesh
-  mesh->Clear( );
+  mesh->Clear();
 
   std::cout << "Mesh3Test passed" << std::endl;
   return EXIT_SUCCESS;

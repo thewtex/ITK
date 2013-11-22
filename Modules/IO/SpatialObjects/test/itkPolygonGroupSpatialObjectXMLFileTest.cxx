@@ -22,8 +22,8 @@
 
 static float strandPoints[11][2] =
   {
-    {1,1},{1,2},{1.25,2},{1.25,1.25},{1.75,1.25},
-    {1.75,1.5},{1.5,1.5},{1.5,2},{2,2},{2,1},{1,1}
+           {1,1},{1,2},{1.25,2},{1.25,1.25},{1.75,1.25},
+           {1.75,1.5},{1.5,1.5},{1.5,2},{2,2},{2,1},{1,1}
   };
 typedef itk::PolygonSpatialObject<3>      Polygon3DType;
 typedef itk::PolygonGroupSpatialObject<3> PolygonGroup3DType;
@@ -39,7 +39,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
       itk::PolygonSpatialObject<3>::Pointer strand
         = itk::PolygonSpatialObject<3>::New();
 
-      if(!PolygonGroup->AddStrand(strand))
+      if(!PolygonGroup->AddStrand(strand) )
         {
         std::cerr << "Error adding point" << std::endl;
         return EXIT_FAILURE;
@@ -54,7 +54,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         pos[1] = strandPoints[i][1];
         pos[2] = z;
         itk::PolygonSpatialObject<3>::PointType curpoint(pos);
-        if(!strand->AddPoint(curpoint))
+        if(!strand->AddPoint(curpoint) )
           {
           std::cerr << "Error adding point" << std::endl;
           return EXIT_FAILURE;
@@ -70,8 +70,9 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
   return EXIT_SUCCESS;
 }
 
-int testPolygonGroupEquivalence(PolygonGroup3DPointer &p1,
-                                PolygonGroup3DPointer &p2)
+int
+testPolygonGroupEquivalence(PolygonGroup3DPointer &p1,
+                            PolygonGroup3DPointer &p2)
 {
   //
   // Write out polygondata
@@ -98,9 +99,9 @@ int testPolygonGroupEquivalence(PolygonGroup3DPointer &p1,
       return EXIT_FAILURE;
       }
     Polygon3DType *curstrand1 =
-      dynamic_cast<Polygon3DType *>((*it1).GetPointer());
+      dynamic_cast<Polygon3DType *>( (*it1).GetPointer() );
     Polygon3DType *curstrand2 =
-      dynamic_cast<Polygon3DType *>((*it2).GetPointer());
+      dynamic_cast<Polygon3DType *>( (*it2).GetPointer() );
 
     Polygon3DType::PointListType &points1 =
       curstrand1->GetPoints();
@@ -117,7 +118,6 @@ int testPolygonGroupEquivalence(PolygonGroup3DPointer &p1,
     Polygon3DType::PointListType::iterator pointItEnd2
       = points2.end();
 
-
     while(pointIt1 != pointItEnd1)
       {
       if(pointIt2 == pointItEnd2)
@@ -133,7 +133,8 @@ int testPolygonGroupEquivalence(PolygonGroup3DPointer &p1,
       if(curpoint1 != curpoint2)
         {
         //Just a silly test to make sure that the positions returned are valid
-        std::cerr << "Error: both points should have the same value: " <<  curpoint1 << " and " << curpoint2 << std::endl;
+        std::cerr << "Error: both points should have the same value: " <<  curpoint1 << " and " << curpoint2 <<
+          std::endl;
         //This should never happen in this test.
         return EXIT_FAILURE;
         }
@@ -161,7 +162,9 @@ int testPolygonGroupEquivalence(PolygonGroup3DPointer &p1,
   delete children2;
   return EXIT_SUCCESS;
 }
-int itkPolygonGroupSpatialObjectXMLFileTest(int ac, char *av[])
+
+int
+itkPolygonGroupSpatialObjectXMLFileTest(int ac, char *av[])
 {
   if(ac < 2)
     {
@@ -172,7 +175,7 @@ int itkPolygonGroupSpatialObjectXMLFileTest(int ac, char *av[])
   PolygonGroup3DPointer PolygonGroup = PolygonGroup3DType::New();
 
   PolygonGroup3DPointer PGroupFromFile;
-  if(buildPolygonGroup(PolygonGroup) != 0 || PolygonGroup.IsNull())
+  if(buildPolygonGroup(PolygonGroup) != 0 || PolygonGroup.IsNull() )
     {
     std::cerr << "Error building polygon group" << std::endl;
     return EXIT_FAILURE;
@@ -185,8 +188,8 @@ int itkPolygonGroupSpatialObjectXMLFileTest(int ac, char *av[])
     itk::PolygonGroupSpatialObjectXMLFileWriter::Pointer pw =
       itk::PolygonGroupSpatialObjectXMLFileWriter::New();
 
-    pw->SetFilename(xmlfilename.c_str());
-    pw->SetObject(&(*PolygonGroup));
+    pw->SetFilename(xmlfilename.c_str() );
+    pw->SetObject(&(*PolygonGroup) );
     pw->WriteFile();
     }
   catch(itk::ExceptionObject &)
@@ -199,10 +202,10 @@ int itkPolygonGroupSpatialObjectXMLFileTest(int ac, char *av[])
     {
     itk::PolygonGroupSpatialObjectXMLFileReader::Pointer p =
       itk::PolygonGroupSpatialObjectXMLFileReader::New();
-    p->SetFilename(xmlfilename.c_str());
+    p->SetFilename(xmlfilename.c_str() );
     p->GenerateOutputInformation();
     PGroupFromFile = p->GetOutputObject();
-    if(PGroupFromFile.IsNull())
+    if(PGroupFromFile.IsNull() )
       {
       std::cerr << "Error retrieving object pointer" << std::endl;
       return EXIT_FAILURE;
@@ -213,7 +216,7 @@ int itkPolygonGroupSpatialObjectXMLFileTest(int ac, char *av[])
     std::cerr << "Error Reading file" << std::endl;
     return EXIT_FAILURE;
     }
-  itksys::SystemTools::RemoveFile(xmlfilename.c_str());
+  itksys::SystemTools::RemoveFile(xmlfilename.c_str() );
 
   return testPolygonGroupEquivalence(PolygonGroup,PGroupFromFile);
 }

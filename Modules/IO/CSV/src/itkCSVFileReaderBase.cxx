@@ -42,6 +42,7 @@ CSVFileReaderBase
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
+
   os << indent << "File Name: "         << this->m_FileName << std::endl;
   os << indent << "FieldDelimiterCharacter: "
      << this->m_FieldDelimiterCharacter << std::endl;
@@ -95,7 +96,7 @@ CSVFileReaderBase
   unsigned int prev_cols = 0;
   unsigned int current_cols = 0;
   unsigned int max_cols = 0;
-  bool isSame = true;
+  bool         isSame = true;
 
   // If column headers exist,
   if ( this->m_HasColumnHeaders )
@@ -109,7 +110,7 @@ CSVFileReaderBase
     if ( this->m_UseStringDelimiterCharacter )
       {
       int cellnum = 0;
-      while(std::getline(linestream,cell,this->m_StringDelimiterCharacter))
+      while(std::getline(linestream,cell,this->m_StringDelimiterCharacter) )
         {
         if ( cellnum%2 != 0)
           {
@@ -123,7 +124,7 @@ CSVFileReaderBase
     // character
     else
       {
-      while(std::getline(linestream,cell,this->m_FieldDelimiterCharacter))
+      while(std::getline(linestream,cell,this->m_FieldDelimiterCharacter) )
         {
         prev_cols++;
         }
@@ -138,7 +139,7 @@ CSVFileReaderBase
     }
 
   // Count the number of entries in each of the following lines
-  while(std::getline(this->m_InputStream,line))
+  while(std::getline(this->m_InputStream,line) )
     {
     cols = 0;
     std::stringstream linestream(line);
@@ -162,7 +163,7 @@ CSVFileReaderBase
       }
 
     // Count the entries
-    while(std::getline(linestream,cell, this->m_FieldDelimiterCharacter))
+    while(std::getline(linestream,cell, this->m_FieldDelimiterCharacter) )
       {
       cols++;
       }
@@ -218,6 +219,7 @@ CSVFileReaderBase
    *  beginning of this->m_Line. */
 
   std::string empty;
+
   // Check that we are not at the end of the file
   itkDebugMacro( << "m_Line: " << m_Line );
   if ( !this->m_InputStream.eof() )

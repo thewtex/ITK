@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMElement3DC0LinearHexahedronStrainTest(int argc, char *argv[])
+int
+itkFEMElement3DC0LinearHexahedronStrainTest(int argc, char *argv[])
 {
   if(argc < 1)
     {

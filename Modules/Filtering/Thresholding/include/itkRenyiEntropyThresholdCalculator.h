@@ -64,19 +64,24 @@ public:
   itkTypeMacro(RenyiEntropyThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
 protected:
-  RenyiEntropyThresholdCalculator() { m_FirstBin = 0; m_LastBin = 0; m_Size = 0; }
-  virtual ~RenyiEntropyThresholdCalculator() {}
+  RenyiEntropyThresholdCalculator() {
+    m_FirstBin = 0; m_LastBin = 0; m_Size = 0;
+  }
+
+  virtual
+  ~RenyiEntropyThresholdCalculator() {
+  }
 
   void GenerateData(void);
 
-  typedef typename HistogramType::TotalAbsoluteFrequencyType  TotalAbsoluteFrequencyType;
-  typedef typename HistogramType::AbsoluteFrequencyType       AbsoluteFrequencyType;
-  typedef typename HistogramType::InstanceIdentifier          InstanceIdentifier;
-  typedef typename HistogramType::SizeValueType               SizeValueType;
+  typedef typename HistogramType::TotalAbsoluteFrequencyType TotalAbsoluteFrequencyType;
+  typedef typename HistogramType::AbsoluteFrequencyType      AbsoluteFrequencyType;
+  typedef typename HistogramType::InstanceIdentifier         InstanceIdentifier;
+  typedef typename HistogramType::SizeValueType              SizeValueType;
 
   InstanceIdentifier MaxEntropyThresholding( const HistogramType* histogram,
                                              const std::vector< double >& normHisto,
@@ -95,15 +100,14 @@ protected:
 
 private:
   RenyiEntropyThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                  //purposely not implemented
 
-  InstanceIdentifier  m_FirstBin;
-  InstanceIdentifier  m_LastBin;
-  SizeValueType       m_Size;
+  InstanceIdentifier m_FirstBin;
+  InstanceIdentifier m_LastBin;
+  SizeValueType      m_Size;
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRenyiEntropyThresholdCalculator.hxx"

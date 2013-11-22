@@ -32,9 +32,14 @@ class IntensityWindowingTransform
 {
 public:
   typedef typename NumericTraits< TInput >::RealType RealType;
-  IntensityWindowingTransform() {}
-  ~IntensityWindowingTransform() {}
-  bool operator!=(const IntensityWindowingTransform & other) const
+  IntensityWindowingTransform() {
+  }
+
+  ~IntensityWindowingTransform() {
+  }
+
+  bool
+  operator!=(const IntensityWindowingTransform & other) const
   {
     if ( m_Factor         != other.m_Factor
          || m_Offset         != other.m_Offset
@@ -48,18 +53,44 @@ public:
     return false;
   }
 
-  bool operator==(const IntensityWindowingTransform & other) const
+  bool
+  operator==(const IntensityWindowingTransform & other) const
   {
     return !( *this != other );
   }
 
-  void SetFactor(RealType a) { m_Factor = a; }
-  void SetOffset(RealType b) { m_Offset = b; }
-  void SetOutputMinimum(TOutput min) { m_OutputMinimum = min; }
-  void SetOutputMaximum(TOutput max) { m_OutputMaximum = max; }
-  void SetWindowMinimum(TInput min) { m_WindowMinimum = min; }
-  void SetWindowMaximum(TInput max) { m_WindowMaximum = max; }
-  inline TOutput operator()(const TInput & x) const
+  void
+  SetFactor(RealType a) {
+    m_Factor = a;
+  }
+
+  void
+  SetOffset(RealType b) {
+    m_Offset = b;
+  }
+
+  void
+  SetOutputMinimum(TOutput min) {
+    m_OutputMinimum = min;
+  }
+
+  void
+  SetOutputMaximum(TOutput max) {
+    m_OutputMaximum = max;
+  }
+
+  void
+  SetWindowMinimum(TInput min) {
+    m_WindowMinimum = min;
+  }
+
+  void
+  SetWindowMaximum(TInput max) {
+    m_WindowMaximum = max;
+  }
+
+  inline TOutput
+  operator()(const TInput & x) const
   {
     if ( x < m_WindowMinimum )
       {
@@ -112,7 +143,7 @@ private:
  * \sa RescaleIntensityImageFilter
  */
 template< typename  TInputImage, typename  TOutputImage = TInputImage >
-class IntensityWindowingImageFilter:
+class IntensityWindowingImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::IntensityWindowingTransform<
@@ -123,10 +154,10 @@ public:
   /** Standard class typedefs. */
   typedef IntensityWindowingImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::IntensityWindowingTransform<
-      typename TInputImage::PixelType,
-      typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::IntensityWindowingTransform<
+        typename TInputImage::PixelType,
+        typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -188,7 +219,9 @@ public:
 
 protected:
   IntensityWindowingImageFilter();
-  virtual ~IntensityWindowingImageFilter() {}
+  virtual
+  ~IntensityWindowingImageFilter() {
+  }
 
 private:
   IntensityWindowingImageFilter(const Self &); //purposely not implemented

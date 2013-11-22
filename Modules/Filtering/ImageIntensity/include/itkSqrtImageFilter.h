@@ -34,22 +34,30 @@ template< typename TInput, typename TOutput >
 class Sqrt
 {
 public:
-  Sqrt() {}
-  ~Sqrt() {}
-  bool operator!=(const Sqrt &) const
+  Sqrt() {
+  }
+
+  ~Sqrt() {
+  }
+
+  bool
+  operator!=(const Sqrt &) const
   {
     return false;
   }
 
-  bool operator==(const Sqrt & other) const
+  bool
+  operator==(const Sqrt & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return (TOutput)vcl_sqrt( (double)A );
   }
+
 };
 }
 /** \class SqrtImageFilter
@@ -62,19 +70,19 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class SqrtImageFilter:
+class SqrtImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Sqrt< typename TInputImage::PixelType,
-                                           typename TOutputImage::PixelType >   >
+                                          typename TOutputImage::PixelType >   >
 {
 public:
   /** Standard class typedefs. */
   typedef SqrtImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Sqrt< typename TInputImage::PixelType,
-                   typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Sqrt< typename TInputImage::PixelType,
+                     typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -96,12 +104,17 @@ public:
 #endif
 
 protected:
-  SqrtImageFilter() {}
-  virtual ~SqrtImageFilter() {}
+  SqrtImageFilter() {
+  }
+
+  virtual
+  ~SqrtImageFilter() {
+  }
 
 private:
   SqrtImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

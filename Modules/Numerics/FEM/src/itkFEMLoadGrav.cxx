@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer LoadGravConst::CreateAnother(void) const
+::itk::LightObject::Pointer
+LoadGravConst::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -41,22 +42,26 @@ namespace fem
   return smartPtr;
 }
 
-void LoadGravConst::SetForce(const vnl_vector<itk::fem::Element::Float> force)
+void
+LoadGravConst::SetForce(const vnl_vector<itk::fem::Element::Float> force)
 {
   this->m_GravityForce = force;
 }
 
-vnl_vector<itk::fem::Element::Float> & LoadGravConst::GetForce()
+vnl_vector<itk::fem::Element::Float> &
+LoadGravConst::GetForce()
 {
   return this->m_GravityForce;
 }
 
-const vnl_vector<itk::fem::Element::Float> & LoadGravConst::GetForce() const
+const vnl_vector<itk::fem::Element::Float> &
+LoadGravConst::GetForce() const
 {
   return this->m_GravityForce;
 }
 
-void LoadGravConst::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
+void
+LoadGravConst::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
 {
   // Order of integration
   // FIXME: Allow changing the order of integration by setting a
@@ -109,9 +114,11 @@ void LoadGravConst::ApplyLoad(Element::ConstPointer element, Element::VectorType
     }
 }
 
-void LoadGravConst::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadGravConst::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Gravity Force: " << this->m_GravityForce << std::endl;
 }
 

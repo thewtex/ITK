@@ -89,11 +89,12 @@ GiftiMeshIO
 ::GetLabelColorTable()
 {
   LabelColorContainerPointer colorMap;
-  if(ExposeMetaData< LabelColorContainerPointer >(this->GetMetaDataDictionary(), "colorContainer", colorMap))
+
+  if(ExposeMetaData< LabelColorContainerPointer >(this->GetMetaDataDictionary(), "colorContainer", colorMap) )
     {
     return colorMap;
     }
-    else
+  else
     {
     return NULL;
     }
@@ -104,11 +105,12 @@ GiftiMeshIO
 ::GetLabelNameTable()
 {
   LabelNameContainerPointer labelMap;
-  if(ExposeMetaData< LabelNameContainerPointer >(this->GetMetaDataDictionary(), "labelContainer", labelMap))
+
+  if(ExposeMetaData< LabelNameContainerPointer >(this->GetMetaDataDictionary(), "labelContainer", labelMap) )
     {
     return labelMap;
     }
-    else
+  else
     {
     return NULL;
     }
@@ -118,7 +120,8 @@ void
 GiftiMeshIO
 ::SetLabelColorTable(const LabelColorContainer * colorMap)
 {
-  EncapsulateMetaData< LabelColorContainerPointer >(this->GetMetaDataDictionary(), "colorContainer", const_cast<LabelColorContainer *>(colorMap));
+  EncapsulateMetaData< LabelColorContainerPointer >(this->GetMetaDataDictionary(), "colorContainer",
+                                                    const_cast<LabelColorContainer *>(colorMap) );
   this->Modified();
 }
 
@@ -126,7 +129,8 @@ void
 GiftiMeshIO
 ::SetLabelNameTable(const LabelNameContainer * labelMap)
 {
-  EncapsulateMetaData< LabelNameContainerPointer >(this->GetMetaDataDictionary(), "labelContainer", const_cast<LabelNameContainer *>(labelMap));
+  EncapsulateMetaData< LabelNameContainerPointer >(this->GetMetaDataDictionary(), "labelContainer",
+                                                   const_cast<LabelNameContainer *>(labelMap) );
   this->Modified();
 }
 
@@ -225,7 +229,8 @@ GiftiMeshIO
           itkExceptionMacro(<< "Input mesh is not triangle mesh");
           }
         }
-      this->m_CellBufferSize = static_cast< SizeValueType >( m_GiftiImage->darray[ii]->nvals + 2 * this->m_NumberOfCells );
+      this->m_CellBufferSize =
+        static_cast< SizeValueType >( m_GiftiImage->darray[ii]->nvals + 2 * this->m_NumberOfCells );
       this->m_UpdateCells = true;
 
       switch ( m_GiftiImage->darray[ii]->datatype )
@@ -273,8 +278,9 @@ GiftiMeshIO
       if ( m_GiftiImage->darray[ii]->num_dim > 0 )
         {
         // we assume that the data is point data
-        if ( this->m_NumberOfPoints != static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) && this->m_NumberOfCells !=
-            static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) )
+        if ( this->m_NumberOfPoints != static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) &&
+             this->m_NumberOfCells !=
+             static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) )
           {
           if ( this->m_NumberOfPoints == 0 && m_ReadPointData )
             {
@@ -449,8 +455,9 @@ GiftiMeshIO
       {
       if ( m_GiftiImage->darray[ii]->num_dim > 0 )
         {
-        if ( this->m_NumberOfPoints != static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) && this->m_NumberOfCells !=
-            static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) )
+        if ( this->m_NumberOfPoints != static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) &&
+             this->m_NumberOfCells !=
+             static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) )
           {
           if ( this->m_NumberOfPoints == 0 && m_ReadPointData )
             {
@@ -668,8 +675,9 @@ GiftiMeshIO
 
       if ( m_GiftiImage->darray[ii]->num_dim > 0 )
         {
-        if ( this->m_NumberOfPoints != static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) && this->m_NumberOfCells !=
-            static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) )
+        if ( this->m_NumberOfPoints != static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) &&
+             this->m_NumberOfCells !=
+             static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) )
           {
           if ( this->m_NumberOfPoints == 0 && m_ReadPointData )
             {
@@ -975,7 +983,8 @@ GiftiMeshIO
         case ULONGLONG:
           {
           this->WriteCellsBuffer(static_cast< unsigned long long * >( m_GiftiImage->darray[ii]->data ),
-                                 static_cast< unsigned long long * >( buffer ), TRIANGLE_CELL, 3, this->m_NumberOfCells);
+                                 static_cast< unsigned long long * >( buffer ), TRIANGLE_CELL, 3,
+                                 this->m_NumberOfCells);
           break;
           }
         case FLOAT:
@@ -1033,7 +1042,8 @@ GiftiMeshIO
   // Read point or cell Data
   for ( int ii = 0; ii < m_GiftiImage->numDA; ++ii )
     {
-    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE  || m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_VECTOR
+    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE  || m_GiftiImage->darray[ii]->intent ==
+         NIFTI_INTENT_VECTOR
          || m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_LABEL )
       {
       if ( static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) == this->m_NumberOfPointPixels )
@@ -1063,7 +1073,8 @@ GiftiMeshIO
   // Read point or cell Data
   for ( int ii = 0; ii < m_GiftiImage->numDA; ++ii )
     {
-    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE  || m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_VECTOR
+    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE  || m_GiftiImage->darray[ii]->intent ==
+         NIFTI_INTENT_VECTOR
          || m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_LABEL )
       {
       if ( static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) == this->m_NumberOfCellPixels )
@@ -1331,7 +1342,8 @@ GiftiMeshIO
     else
       {
       gifti_free_image( m_GiftiImage );
-      itkExceptionMacro("Unsupported number of components in point data pixel : " << this->m_NumberOfPointPixelComponents);
+      itkExceptionMacro(
+        "Unsupported number of components in point data pixel : " << this->m_NumberOfPointPixelComponents);
       }
 
     // Set data type of data array
@@ -1416,7 +1428,8 @@ GiftiMeshIO
     else
       {
       gifti_free_image( m_GiftiImage );
-      itkExceptionMacro("Unsupported number of components in cell data pixel : " << this->m_NumberOfCellPixelComponents);
+      itkExceptionMacro("Unsupported number of components in cell data pixel : " <<
+                        this->m_NumberOfCellPixelComponents);
       }
 
     // Set data type of data array
@@ -1474,7 +1487,8 @@ GiftiMeshIO
           }
         case CHAR:
           {
-          ConvertBuffer(static_cast< char * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< char * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                        pointsBufferSize);
           break;
           }
         case USHORT:
@@ -1486,17 +1500,20 @@ GiftiMeshIO
           }
         case SHORT:
           {
-          ConvertBuffer(static_cast< short * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< short * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                        pointsBufferSize);
           break;
           }
         case UINT:
           {
-          ConvertBuffer(static_cast< unsigned int * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< unsigned int * >( buffer ),
+                        static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
           break;
           }
         case INT:
           {
-          ConvertBuffer(static_cast< int * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< int * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                        pointsBufferSize);
           break;
           }
         case ULONG:
@@ -1508,7 +1525,8 @@ GiftiMeshIO
           }
         case LONG:
           {
-          ConvertBuffer(static_cast< long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                        pointsBufferSize);
           break;
           }
         case ULONGLONG:
@@ -1520,22 +1538,26 @@ GiftiMeshIO
           }
         case LONGLONG:
           {
-          ConvertBuffer(static_cast< long long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< long long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                        pointsBufferSize);
           break;
           }
         case FLOAT:
           {
-          ConvertBuffer(static_cast< float * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< float * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                        pointsBufferSize);
           break;
           }
         case DOUBLE:
           {
-          ConvertBuffer(static_cast< double * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< double * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                        pointsBufferSize);
           break;
           }
         case LDOUBLE:
           {
-          ConvertBuffer(static_cast< long double * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
+          ConvertBuffer(static_cast< long double * >( buffer ),
+                        static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointsBufferSize);
           break;
           }
         default:
@@ -1561,68 +1583,80 @@ GiftiMeshIO
         {
         case UCHAR:
           {
-          this->ReadCellsBuffer( static_cast< unsigned char * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< unsigned char * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case CHAR:
           {
-          this->ReadCellsBuffer( static_cast< char * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< char * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case USHORT:
           {
-          this->ReadCellsBuffer( static_cast< unsigned short * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< unsigned short * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case SHORT:
           {
-          this->ReadCellsBuffer( static_cast< short * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< short * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case UINT:
           {
-          this->ReadCellsBuffer( static_cast< unsigned int * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< unsigned int * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case INT:
           {
-          this->ReadCellsBuffer( static_cast< int * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< int * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case ULONG:
           {
-          this->ReadCellsBuffer( static_cast< unsigned long * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< unsigned long * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case LONG:
           {
-          this->ReadCellsBuffer( static_cast< long * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< long * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case ULONGLONG:
           {
           this->ReadCellsBuffer( static_cast< unsigned long long * >( buffer ),
-                                static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case LONGLONG:
           {
-          this->ReadCellsBuffer( static_cast< long long * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< long long * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case FLOAT:
           {
-          this->ReadCellsBuffer( static_cast< float * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< float * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case DOUBLE:
           {
-          this->ReadCellsBuffer( static_cast< double * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< double * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         case LDOUBLE:
           {
-          this->ReadCellsBuffer( static_cast< long double * >( buffer ), static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
+          this->ReadCellsBuffer( static_cast< long double * >( buffer ),
+                                 static_cast< int32_t * >( m_GiftiImage->darray[ii]->data ) );
           break;
           }
         default:
@@ -1642,7 +1676,8 @@ GiftiMeshIO
   // Get data array contain intent of NIFTI_INTENT_SHAPE
   for ( int ii = 0; ii < m_GiftiImage->numDA; ++ii )
     {
-    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE || m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_VECTOR )
+    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE || m_GiftiImage->darray[ii]->intent ==
+         NIFTI_INTENT_VECTOR )
       {
       if ( static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) == this->m_NumberOfPointPixels )
         {
@@ -1658,7 +1693,8 @@ GiftiMeshIO
             }
           case CHAR:
             {
-            ConvertBuffer(static_cast< char * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< char * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case USHORT:
@@ -1670,7 +1706,8 @@ GiftiMeshIO
             }
           case SHORT:
             {
-            ConvertBuffer(static_cast< short * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< short * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case UINT:
@@ -1682,7 +1719,8 @@ GiftiMeshIO
             }
           case INT:
             {
-            ConvertBuffer(static_cast< int * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< int * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case ULONG:
@@ -1694,7 +1732,8 @@ GiftiMeshIO
             }
           case LONG:
             {
-            ConvertBuffer(static_cast< long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case ULONGLONG:
@@ -1713,12 +1752,14 @@ GiftiMeshIO
             }
           case FLOAT:
             {
-            ConvertBuffer(static_cast< float * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< float * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case DOUBLE:
             {
-            ConvertBuffer(static_cast< double * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< double * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case LDOUBLE:
@@ -1753,7 +1794,8 @@ GiftiMeshIO
             }
           case CHAR:
             {
-            ConvertBuffer(static_cast< char * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< char * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case USHORT:
@@ -1765,7 +1807,8 @@ GiftiMeshIO
             }
           case SHORT:
             {
-            ConvertBuffer(static_cast< short * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< short * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case UINT:
@@ -1777,7 +1820,8 @@ GiftiMeshIO
             }
           case INT:
             {
-            ConvertBuffer(static_cast< int * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< int * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case ULONG:
@@ -1789,7 +1833,8 @@ GiftiMeshIO
             }
           case LONG:
             {
-            ConvertBuffer(static_cast< long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case ULONGLONG:
@@ -1801,17 +1846,20 @@ GiftiMeshIO
             }
           case LONGLONG:
             {
-            ConvertBuffer(static_cast< long long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< long long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case FLOAT:
             {
-            ConvertBuffer(static_cast< float * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< float * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case DOUBLE:
             {
-            ConvertBuffer(static_cast< double * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), pointDataBufferSize);
+            ConvertBuffer(static_cast< double * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          pointDataBufferSize);
             break;
             }
           case LDOUBLE:
@@ -1839,7 +1887,8 @@ GiftiMeshIO
   // Get data array contain intent of NIFTI_INTENT_SHAPE
   for ( int ii = 0; ii < m_GiftiImage->numDA; ++ii )
     {
-    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE || m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_VECTOR )
+    if ( m_GiftiImage->darray[ii]->intent == NIFTI_INTENT_SHAPE || m_GiftiImage->darray[ii]->intent ==
+         NIFTI_INTENT_VECTOR )
       {
       if ( static_cast< SizeValueType >( m_GiftiImage->darray[ii]->dims[0] ) == this->m_NumberOfCellPixels )
         {
@@ -1855,7 +1904,8 @@ GiftiMeshIO
             }
           case CHAR:
             {
-            ConvertBuffer(static_cast< char * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< char * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case USHORT:
@@ -1867,7 +1917,8 @@ GiftiMeshIO
             }
           case SHORT:
             {
-            ConvertBuffer(static_cast< short * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< short * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case UINT:
@@ -1879,7 +1930,8 @@ GiftiMeshIO
             }
           case INT:
             {
-            ConvertBuffer(static_cast< int * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< int * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case ULONG:
@@ -1891,7 +1943,8 @@ GiftiMeshIO
             }
           case LONG:
             {
-            ConvertBuffer(static_cast< long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< long * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case ULONGLONG:
@@ -1910,12 +1963,14 @@ GiftiMeshIO
             }
           case FLOAT:
             {
-            ConvertBuffer(static_cast< float * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< float * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case DOUBLE:
             {
-            ConvertBuffer(static_cast< double * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< double * >( buffer ), static_cast< float * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case LDOUBLE:
@@ -1950,7 +2005,8 @@ GiftiMeshIO
             }
           case CHAR:
             {
-            ConvertBuffer(static_cast< char * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< char * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case USHORT:
@@ -1962,7 +2018,8 @@ GiftiMeshIO
             }
           case SHORT:
             {
-            ConvertBuffer(static_cast< short * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< short * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case UINT:
@@ -1974,7 +2031,8 @@ GiftiMeshIO
             }
           case INT:
             {
-            ConvertBuffer(static_cast< int * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< int * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case ULONG:
@@ -1986,7 +2044,8 @@ GiftiMeshIO
             }
           case LONG:
             {
-            ConvertBuffer(static_cast< long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case ULONGLONG:
@@ -1998,17 +2057,20 @@ GiftiMeshIO
             }
           case LONGLONG:
             {
-            ConvertBuffer(static_cast< long long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< long long * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case FLOAT:
             {
-            ConvertBuffer(static_cast< float * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< float * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case DOUBLE:
             {
-            ConvertBuffer(static_cast< double * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ), cellDataBufferSize);
+            ConvertBuffer(static_cast< double * >( buffer ), static_cast< int * >( m_GiftiImage->darray[ii]->data ),
+                          cellDataBufferSize);
             break;
             }
           case LDOUBLE:
@@ -2042,9 +2104,11 @@ GiftiMeshIO
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "gii version : " << std::endl;
   os << indent << gifticlib_version() << std::endl;
   os << indent << "Direction : " << std::endl;
   os << indent << m_Direction << std::endl;
 }
+
 } // namespace itk end

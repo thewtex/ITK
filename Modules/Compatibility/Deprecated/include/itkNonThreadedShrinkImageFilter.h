@@ -46,7 +46,7 @@ namespace itk
  * \ingroup GeometricTransform
  */
 template< typename TInputImage, typename TOutputImage >
-class NonThreadedShrinkImageFilter:
+class NonThreadedShrinkImageFilter :
   public ShrinkImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -62,7 +62,8 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(NonThreadedShrinkImageFilter, ShrinkImageFilter);
 
-  virtual void SetNumberOfThreads(ThreadIdType)
+  virtual void
+  SetNumberOfThreads(ThreadIdType)
   {
     Superclass::SetNumberOfThreads(1);
   }
@@ -76,6 +77,7 @@ protected:
 private:
   NonThreadedShrinkImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace itk
 

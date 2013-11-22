@@ -40,7 +40,8 @@ CurvesLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void CurvesLevelSetFunction< TImageType, TFeatureImageType >
+void
+CurvesLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateSpeedImage()
 {
   /* copy the feature image into the speed image */
@@ -52,7 +53,8 @@ void CurvesLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void CurvesLevelSetFunction< TImageType, TFeatureImageType >
+void
+CurvesLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateAdvectionImage()
 {
   /* compute the gradient of the feature image. */
@@ -62,7 +64,7 @@ void CurvesLevelSetFunction< TImageType, TFeatureImageType >
   if ( m_DerivativeSigma != NumericTraits< float >::Zero )
     {
     typedef GradientRecursiveGaussianImageFilter< FeatureImageType, VectorImageType >
-    DerivativeFilterType;
+      DerivativeFilterType;
 
     typename DerivativeFilterType::Pointer derivative = DerivativeFilterType::New();
     derivative->SetInput( this->GetFeatureImage() );
@@ -106,6 +108,7 @@ void CurvesLevelSetFunction< TImageType, TFeatureImageType >
     ait.Set(v);
     }
 }
+
 } // end namespace itk
 
 #endif

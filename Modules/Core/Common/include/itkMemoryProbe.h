@@ -36,8 +36,8 @@ namespace itk
  *
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT MemoryProbe:
-  public ResourceProbe< SizeValueType, double >
+class ITKCommon_EXPORT MemoryProbe :
+  public               ResourceProbe< SizeValueType, double >
 {
 public:
 

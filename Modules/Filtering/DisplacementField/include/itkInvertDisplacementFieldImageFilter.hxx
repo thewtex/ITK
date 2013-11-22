@@ -34,9 +34,9 @@ namespace itk
 template<typename TInputImage, typename TOutputImage>
 InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
 ::InvertDisplacementFieldImageFilter() :
- m_MaximumNumberOfIterations( 20 ),
- m_MaxErrorToleranceThreshold( 0.1 ),
- m_MeanErrorToleranceThreshold( 0.001 )
+  m_MaximumNumberOfIterations( 20 ),
+  m_MaxErrorToleranceThreshold( 0.1 ),
+  m_MeanErrorToleranceThreshold( 0.001 )
 {
   this->SetNumberOfRequiredInputs( 1 );
 
@@ -118,11 +118,11 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
   unsigned int iteration = 0;
 
   while( iteration++ < this->m_MaximumNumberOfIterations &&
-    this->m_MaxErrorNorm > this->m_MaxErrorToleranceThreshold &&
-    this->m_MeanErrorNorm > this->m_MeanErrorToleranceThreshold )
+         this->m_MaxErrorNorm > this->m_MaxErrorToleranceThreshold &&
+         this->m_MeanErrorNorm > this->m_MeanErrorToleranceThreshold )
     {
     itkDebugMacro( "Iteration " << iteration << ": mean error norm = " << this->m_MeanErrorNorm
-      << ", max error norm = " << this->m_MaxErrorNorm );
+                                << ", max error norm = " << this->m_MaxErrorNorm );
 
     typedef ComposeDisplacementFieldsImageFilter<DisplacementFieldType> ComposerType;
     typename ComposerType::Pointer composer = ComposerType::New();
@@ -177,7 +177,7 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
   const typename DisplacementFieldType::PixelType zeroVector( 0.0 );
 
   ImageRegionIterator<DisplacementFieldType> ItE( this->m_ComposedField, region );
-  ImageRegionIterator<RealImageType> ItS( this->m_ScaledNormImage, region );
+  ImageRegionIterator<RealImageType>         ItS( this->m_ScaledNormImage, region );
 
   if( this->m_DoThreadedEstimateInverse )
     {
@@ -186,7 +186,7 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
     for( ItI.GoToBegin(), ItE.GoToBegin(), ItS.GoToBegin(); !ItI.IsAtEnd(); ++ItI, ++ItE, ++ItS )
       {
       VectorType update = ItE.Get();
-      RealType scaledNorm = ItS.Get();
+      RealType   scaledNorm = ItS.Get();
 
       if( scaledNorm > this->m_Epsilon * this->m_MaxErrorNorm  )
         {
@@ -218,7 +218,7 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
     for( ItE.GoToBegin(), ItS.GoToBegin(); !ItE.IsAtEnd(); ++ItE, ++ItS )
       {
       const VectorType & displacement = ItE.Get();
-      RealType scaledNorm = 0.0;
+      RealType           scaledNorm = 0.0;
       for( unsigned int d = 0; d < ImageDimension; ++d )
         {
         scaledNorm += vnl_math_sqr( displacement[d] * inverseSpacing[d] );

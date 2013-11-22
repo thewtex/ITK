@@ -22,7 +22,7 @@ namespace itk
 {
 template< typename TInput, typename TOutput >
 class FastMarchingBaseTestHelper :
-    public FastMarchingBase< TInput, TOutput >
+  public FastMarchingBase< TInput, TOutput >
 {
 public:
   typedef FastMarchingBaseTestHelper          Self;
@@ -40,59 +40,81 @@ public:
   typedef typename Superclass::OutputDomainType OutputDomainType;
 
 //  typedef typename Superclass::NodeContainerType  NodeContainerType;
-  typedef typename Superclass::NodeType         NodeType;
+  typedef typename Superclass::NodeType NodeType;
 
-  typedef typename Superclass::OutputPixelType  OutputPixelType;
-  typedef typename Superclass::LabelType        LabelType;
+  typedef typename Superclass::OutputPixelType OutputPixelType;
+  typedef typename Superclass::LabelType       LabelType;
 
 protected:
-  FastMarchingBaseTestHelper() {}
-  ~FastMarchingBaseTestHelper() {}
+  FastMarchingBaseTestHelper() {
+  }
 
-  IdentifierType GetTotalNumberOfNodes() const
-    { return 1; }
+  ~FastMarchingBaseTestHelper() {
+  }
 
-  void SetOutputValue( OutputDomainType*,
-                      const NodeType&,
-                      const OutputPixelType& )
-    {
-    }
+  IdentifierType
+  GetTotalNumberOfNodes() const
+  {
+    return 1;
+  }
 
-  const OutputPixelType GetOutputValue( OutputDomainType* ,
-                                  const NodeType& ) const
-    {
+  void
+  SetOutputValue( OutputDomainType*,
+                  const NodeType&,
+                  const OutputPixelType& )
+  {
+  }
+
+  const OutputPixelType
+  GetOutputValue( OutputDomainType* ,
+                  const NodeType& ) const
+  {
     return NumericTraits< OutputPixelType >::Zero;
-    }
+  }
 
-  unsigned char GetLabelValueForGivenNode( const NodeType& ) const
-    {
+  unsigned char
+  GetLabelValueForGivenNode( const NodeType& ) const
+  {
     return Traits::Far;
-    }
+  }
 
-  void SetLabelValueForGivenNode( const NodeType& ,
-                                 const LabelType& )
-    {}
+  void
+  SetLabelValueForGivenNode( const NodeType& ,
+                             const LabelType& )
+  {
+  }
 
-  void UpdateNeighbors( OutputDomainType* , const NodeType& )
-    {}
+  void
+  UpdateNeighbors( OutputDomainType* , const NodeType& )
+  {
+  }
 
-  void UpdateValue( OutputDomainType* , const NodeType& )
-    {}
+  void
+  UpdateValue( OutputDomainType* , const NodeType& )
+  {
+  }
 
-  bool CheckTopology( OutputDomainType* , const NodeType&  )
-    { return true; }
+  bool
+  CheckTopology( OutputDomainType* , const NodeType&  )
+  {
+    return true;
+  }
 
-  void InitializeOutput( OutputDomainType* ) {}
+  void
+  InitializeOutput( OutputDomainType* ) {
+  }
 
 private:
   FastMarchingBaseTestHelper( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 }
 
 // -----------------------------------------------------------------------------
 
-int itkFastMarchingBaseTest( int argc, char* argv[] )
+int
+itkFastMarchingBaseTest( int argc, char* argv[] )
 {
   if( argc != 2 )
     {
@@ -109,12 +131,12 @@ int itkFastMarchingBaseTest( int argc, char* argv[] )
     typedef itk::Image<PixelType, Dimension> ImageType;
 
     typedef itk::FastMarchingStoppingCriterionBase< ImageType, ImageType >
-        ImageCriterionType;
+      ImageCriterionType;
 
     ImageType::Pointer input = ImageType::New();
 
     typedef itk::FastMarchingBaseTestHelper< ImageType, ImageType >
-        ImageFastMarching;
+      ImageFastMarching;
     ImageFastMarching::Pointer fmm = ImageFastMarching::New();
     fmm->SetInput( input );
 
@@ -140,12 +162,12 @@ int itkFastMarchingBaseTest( int argc, char* argv[] )
       {
       typedef itk::QuadEdgeMesh<PixelType, 3, itk::QuadEdgeMeshTraits< PixelType, 3, bool, bool > > MeshType;
       typedef itk::FastMarchingStoppingCriterionBase< MeshType, MeshType >
-          MeshCriterionType;
+        MeshCriterionType;
 
       MeshType::Pointer input = MeshType::New();
 
       typedef itk::FastMarchingBaseTestHelper< MeshType, MeshType >
-          MeshFastMarching;
+        MeshFastMarching;
       MeshFastMarching::Pointer fmm = MeshFastMarching::New();
       fmm->SetInput( input );
 

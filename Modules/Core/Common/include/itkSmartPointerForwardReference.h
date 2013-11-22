@@ -50,7 +50,9 @@ class SmartPointerForwardReference
 public:
   /** Constructor  */
   SmartPointerForwardReference ()
-  { m_Pointer = 0; }
+  {
+    m_Pointer = 0;
+  }
 
   /** Const constructor  */
   SmartPointerForwardReference (const SmartPointerForwardReference< T > & p);
@@ -104,14 +106,17 @@ private:
   void Register();
 
   void UnRegister();
+
 };
 
 template< typename T >
-std::ostream & operator<<(std::ostream & os, SmartPointerForwardReference< T > p)
+std::ostream &
+operator<<(std::ostream & os, SmartPointerForwardReference< T > p)
 {
   p.Print(os);
   return os;
 }
+
 } // end namespace itk
 
 #endif

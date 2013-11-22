@@ -26,7 +26,7 @@ template< typename TImage, typename TFunction >
 FloodFilledSpatialFunctionConditionalConstIterator< TImage, TFunction >
 ::FloodFilledSpatialFunctionConditionalConstIterator(const ImageType *imagePtr,
                                                      FunctionType *fnPtr,
-                                                     IndexType startIndex):Superclass(imagePtr, fnPtr, startIndex)
+                                                     IndexType startIndex) : Superclass(imagePtr, fnPtr, startIndex)
 {
   // The default inclusion strategy is "center"
   this->SetCenterInclusionStrategy();
@@ -35,7 +35,7 @@ FloodFilledSpatialFunctionConditionalConstIterator< TImage, TFunction >
 template< typename TImage, typename TFunction >
 FloodFilledSpatialFunctionConditionalConstIterator< TImage, TFunction >
 ::FloodFilledSpatialFunctionConditionalConstIterator(const ImageType *imagePtr,
-                                                     FunctionType *fnPtr):Superclass(imagePtr, fnPtr)
+                                                     FunctionType *fnPtr) : Superclass(imagePtr, fnPtr)
 {
   // The default inclusion strategy is "center"
   this->SetCenterInclusionStrategy();
@@ -199,6 +199,7 @@ FloodFilledSpatialFunctionConditionalConstIterator< TImage, TFunction >
   // To be safe, we'll say that the pixel is not inside
   return false;
 }
+
 } // end namespace itk
 
 #endif

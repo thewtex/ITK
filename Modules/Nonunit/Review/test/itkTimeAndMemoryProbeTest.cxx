@@ -20,12 +20,13 @@
 
 #include <iostream>
 
-int itkTimeAndMemoryProbeTest(int argc,char* argv[])
+int
+itkTimeAndMemoryProbeTest(int argc,char* argv[])
 {
   (void)argc;
   (void)argv;
 
-  itk::TimeProbe timeProbe;
+  itk::TimeProbe                 timeProbe;
   itk::MemoryProbesCollectorBase memoryProbes;
 
   timeProbe.Start();

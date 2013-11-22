@@ -31,9 +31,9 @@ itkBSplineScatteredDataPointSetToImageFilterTest2( int, char * [] )
   const unsigned int ParametricDimension = 1;
   const unsigned int DataDimension = 3;
 
-  typedef double                                         RealType;
-  typedef itk::Vector<RealType, DataDimension>           VectorType;
-  typedef itk::Image<VectorType, ParametricDimension>    ImageType;
+  typedef double                                      RealType;
+  typedef itk::Vector<RealType, DataDimension>        VectorType;
+  typedef itk::Image<VectorType, ParametricDimension> ImageType;
 
   typedef itk::PointSet<VectorType, ParametricDimension> PointSetType;
 

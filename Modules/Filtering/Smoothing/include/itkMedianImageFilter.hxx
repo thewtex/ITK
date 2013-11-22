@@ -34,7 +34,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 MedianImageFilter< TInputImage, TOutputImage >
 ::MedianImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -94,6 +95,7 @@ MedianImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -22,12 +22,10 @@
 #include "itkMinimumDecisionRule.h"
 #include "itkImageClassifierBase.h"
 
-
 // This tests the supervised image classifier methods. The test,
 // however, only exercises a pathalogical case, where the covariances
 // of all the classes are singular.  In this case, the methods degrade
 // to classifying based on euclidean distance to the mean.
-
 
 //Data definitons
 
@@ -39,16 +37,23 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::LightProcessObject * o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::LightProcessObject::Pointer m_Process;
 };
 
 }
 
-
-int itkSupervisedImageClassifierTest(int, char* [] )
+int
+itkSupervisedImageClassifierTest(int, char* [] )
 {
   const unsigned int IMGWIDTH       =    2;
   const unsigned int IMGHEIGHT      =    2;
@@ -265,7 +270,7 @@ int itkSupervisedImageClassifierTest(int, char* [] )
   //Set the image model estimator
   //----------------------------------------------------------------------
   typedef itk::ImageGaussianModelEstimator<VecImageType,
-    MembershipFunctionType, ClassImageType>
+                                           MembershipFunctionType, ClassImageType>
     ImageGaussianModelEstimatorType;
 
   ImageGaussianModelEstimatorType::Pointer
@@ -301,14 +306,14 @@ int itkSupervisedImageClassifierTest(int, char* [] )
   typedef VecImagePixelType MeasurementVectorType;
 
   typedef itk::ImageClassifierBase< VecImageType,
-    ClassImageType > SupervisedClassifierType;
+                                    ClassImageType > SupervisedClassifierType;
 
   SupervisedClassifierType::Pointer
     applyClassifier = SupervisedClassifierType::New();
 
   typedef SupervisedImageClassifierTest::ShowProgressObject ProgressType;
 
-  ProgressType progressWatch(applyClassifier);
+  ProgressType                                    progressWatch(applyClassifier);
   itk::SimpleMemberCommand<ProgressType>::Pointer command;
   command = itk::SimpleMemberCommand<ProgressType>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -321,7 +326,7 @@ int itkSupervisedImageClassifierTest(int, char* [] )
 
   // Set the decision rule
   applyClassifier->
-    SetDecisionRule((DecisionRuleBasePointer) myDecisionRule );
+  SetDecisionRule( (DecisionRuleBasePointer) myDecisionRule );
 
   //Add the membership functions
   for( unsigned int i=0; i<NUM_CLASSES; i++ )
@@ -343,21 +348,21 @@ int itkSupervisedImageClassifierTest(int, char* [] )
                                  outClassImage->GetBufferedRegion() );
 
   int i=0;
-  while(!labeloutIt.IsAtEnd())
+  while(!labeloutIt.IsAtEnd() )
     {
     //Print the classified index
     int classIndex = (int) labeloutIt.Get();
     std::cout << " Pixel No " << i << " Value " << classIndex << std::endl;
     ++i;
     ++labeloutIt;
-    }//end while
+    } //end while
 
   //Verify if the results were as per expectation
   labeloutIt.GoToBegin();
   bool passTest = true;
 
   //Loop through the data set
-  while(!labeloutIt.IsAtEnd())
+  while(!labeloutIt.IsAtEnd() )
     {
     int classIndex = (int) labeloutIt.Get();
     if (classIndex != 2)
@@ -391,7 +396,7 @@ int itkSupervisedImageClassifierTest(int, char* [] )
       }
     ++labeloutIt;
 
-    }//end while
+    } //end while
 
   if( passTest == true )
     {

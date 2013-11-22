@@ -30,7 +30,8 @@
  * '--compare' option.
  */
 
-int itkResampleImageTest3(int argc, char * argv [] )
+int
+itkResampleImageTest3(int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -42,17 +43,17 @@ int itkResampleImageTest3(int argc, char * argv [] )
 
   const unsigned int NDimensions = 2;
 
-  typedef unsigned char                          PixelType;
-  typedef itk::Image<PixelType, NDimensions>     ImageType;
-  typedef ImageType::IndexType                   ImageIndexType;
-  typedef ImageType::Pointer                     ImagePointerType;
-  typedef ImageType::RegionType                  ImageRegionType;
-  typedef ImageType::SizeType                    ImageSizeType;
-  typedef double                                 CoordRepType;
+  typedef unsigned char                      PixelType;
+  typedef itk::Image<PixelType, NDimensions> ImageType;
+  typedef ImageType::IndexType               ImageIndexType;
+  typedef ImageType::Pointer                 ImagePointerType;
+  typedef ImageType::RegionType              ImageRegionType;
+  typedef ImageType::SizeType                ImageSizeType;
+  typedef double                             CoordRepType;
 
-  typedef itk::IdentityTransform<CoordRepType,NDimensions>  TransformType;
+  typedef itk::IdentityTransform<CoordRepType,NDimensions> TransformType;
   typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType>
-                                                            InterpolatorType;
+    InterpolatorType;
 
   typedef itk::ImageFileReader< ImageType >                ReaderType;
   typedef itk::ImageFileWriter< ImageType >                WriterType;
@@ -60,8 +61,8 @@ int itkResampleImageTest3(int argc, char * argv [] )
   typedef itk::ResampleImageFilter< ImageType, ImageType > ResampleFilterType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
-    reader1->SetFileName( argv[1] );
-    reader1->Update();
+  reader1->SetFileName( argv[1] );
+  reader1->Update();
 
   // Create an identity transformation
   TransformType::Pointer identityTransform = TransformType::New();
@@ -71,34 +72,34 @@ int itkResampleImageTest3(int argc, char * argv [] )
 
   // Create an image with flipped directions
   ImageType::DirectionType direction;
-    direction[0][0] = -1.0;
-    direction[0][1] = 0.0;
-    direction[1][0] = 0.0;
-    direction[1][1] = -1.0;
+  direction[0][0] = -1.0;
+  direction[0][1] = 0.0;
+  direction[1][0] = 0.0;
+  direction[1][1] = -1.0;
   ImageType::RegionType inputRegion =
     reader1->GetOutput()->GetLargestPossibleRegion();
   ImageType::PointType origin;
-    origin[0] = inputRegion.GetSize()[0];
-    origin[1] = inputRegion.GetSize()[1];
+  origin[0] = inputRegion.GetSize()[0];
+  origin[1] = inputRegion.GetSize()[1];
 
   ChangeInfoType::Pointer changeInfo = ChangeInfoType::New();
-    changeInfo->ChangeDirectionOn();
-    changeInfo->SetOutputDirection( direction );
-    changeInfo->ChangeOriginOn();
-    changeInfo->SetOutputOrigin( origin );
-    changeInfo->SetInput( reader1->GetOutput() );
+  changeInfo->ChangeDirectionOn();
+  changeInfo->SetOutputDirection( direction );
+  changeInfo->ChangeOriginOn();
+  changeInfo->SetOutputOrigin( origin );
+  changeInfo->SetInput( reader1->GetOutput() );
 
   // Create and configure a resampling filter
   ResampleFilterType::Pointer resample = ResampleFilterType::New();
-    resample->SetInput( reader1->GetOutput() );
-    resample->SetReferenceImage( changeInfo->GetOutput() );
-    resample->UseReferenceImageOn();
-    resample->SetTransform( identityTransform );
-    resample->SetInterpolator( interpolator );
+  resample->SetInput( reader1->GetOutput() );
+  resample->SetReferenceImage( changeInfo->GetOutput() );
+  resample->UseReferenceImageOn();
+  resample->SetTransform( identityTransform );
+  resample->SetInterpolator( interpolator );
 
   WriterType::Pointer writer1 = WriterType::New();
-    writer1->SetFileName( argv[2] );
-    writer1->SetInput( resample->GetOutput() );
+  writer1->SetFileName( argv[2] );
+  writer1->SetInput( resample->GetOutput() );
 
   // Run the resampling filter
   try
@@ -111,7 +112,7 @@ int itkResampleImageTest3(int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
- std::cout << "Test passed." << std::endl;
- return EXIT_SUCCESS;
+  std::cout << "Test passed." << std::endl;
+  return EXIT_SUCCESS;
 
 }

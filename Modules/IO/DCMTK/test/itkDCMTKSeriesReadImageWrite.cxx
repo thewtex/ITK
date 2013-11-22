@@ -29,7 +29,8 @@
 #include "itkDCMTKImageIO.h"
 #include "itkDCMTKSeriesFileNames.h"
 
-int itkDCMTKSeriesReadImageWrite( int argc, char* argv[] )
+int
+itkDCMTKSeriesReadImageWrite( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -38,12 +39,12 @@ int itkDCMTKSeriesReadImageWrite( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::Image<unsigned short,3>            ImageType;
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
-  typedef itk::DCMTKImageIO                       ImageIOType;
-  typedef itk::DCMTKSeriesFileNames               SeriesFileNames;
+  typedef itk::Image<unsigned short,3>        ImageType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
+  typedef itk::DCMTKImageIO                   ImageIOType;
+  typedef itk::DCMTKSeriesFileNames           SeriesFileNames;
 
-  ImageIOType::Pointer dcmtkIO = ImageIOType::New();
+  ImageIOType::Pointer     dcmtkIO = ImageIOType::New();
   SeriesFileNames::Pointer it = SeriesFileNames::New();
 
   it->SetInputDirectory( argv[1] );
@@ -51,7 +52,7 @@ int itkDCMTKSeriesReadImageWrite( int argc, char* argv[] )
   ReaderType::Pointer reader = ReaderType::New();
 
   const ReaderType::FileNamesContainer & filenames = it->GetInputFileNames();
-  unsigned int numberOfFilenames =  filenames.size();
+  unsigned int                           numberOfFilenames =  filenames.size();
   std::cout << numberOfFilenames << std::endl;
   for(unsigned int fni = 0; fni<numberOfFilenames; fni++)
     {

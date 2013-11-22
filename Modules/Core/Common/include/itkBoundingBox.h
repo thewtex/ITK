@@ -74,7 +74,7 @@ template<
   typename TPointsContainer =
     VectorContainer< TPointIdentifier, Point< TCoordRep, VPointDimension > >
   >
-class BoundingBox:public Object
+class BoundingBox : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -171,7 +171,8 @@ public:
 
 protected:
   BoundingBox();
-  virtual ~BoundingBox();
+  virtual
+  ~BoundingBox();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef typename PointsContainer::ConstIterator ConstIterator;

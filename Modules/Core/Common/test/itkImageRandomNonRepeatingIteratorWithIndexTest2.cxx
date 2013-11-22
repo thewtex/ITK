@@ -26,16 +26,18 @@
 #include <iostream>
 #include "itkImageRandomNonRepeatingConstIteratorWithIndex.h"
 
-int itkImageRandomNonRepeatingIteratorWithIndexTest2(int, char* [])
+int
+itkImageRandomNonRepeatingIteratorWithIndexTest2(int, char* [])
 {
   const unsigned int ImageDimension = 2;
-  typedef itk::Index< ImageDimension >             PixelType;
-  typedef itk::Image< PixelType, ImageDimension >  ImageType;
+
+  typedef itk::Index< ImageDimension >            PixelType;
+  typedef itk::Image< PixelType, ImageDimension > ImageType;
 
   typedef itk::ImageRandomNonRepeatingConstIteratorWithIndex< ImageType >
     RandomConstIteratorType;
   const unsigned long N = 10;
-  const int Seed = 42;
+  const int           Seed = 42;
   ImageType::SizeType size;
   size.Fill(N);
   ImageType::IndexType start;
@@ -51,7 +53,7 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest2(int, char* [])
   typedef std::vector<ImageType::IndexType>            WalkType;
   typedef WalkType::iterator                           WalkIteratorType;
   typedef std::pair<WalkIteratorType,WalkIteratorType> WalkIteratorPairType;
-  WalkType firstWalk(N);
+  WalkType                firstWalk(N);
   RandomConstIteratorType firstIt(myImage, region);
   firstIt.ReinitializeSeed( Seed );
   firstIt.SetNumberOfSamples( region.GetNumberOfPixels() );
@@ -59,7 +61,7 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest2(int, char* [])
     {
     firstWalk.push_back( firstIt.GetIndex() );
     }
-  WalkType secondWalk(N);
+  WalkType                secondWalk(N);
   RandomConstIteratorType secondIt(myImage, region);
   secondIt.ReinitializeSeed( Seed );
   secondIt.SetNumberOfSamples( region.GetNumberOfPixels() );

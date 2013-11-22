@@ -69,7 +69,7 @@ inline const typename VectorContainerToListSampleAdaptor<TVectorContainer>
 ::MeasurementVectorType &
 VectorContainerToListSampleAdaptor<TVectorContainer>
 ::GetMeasurementVector( InstanceIdentifier identifier ) const
-{
+  {
   if( this->m_VectorContainer.IsNull() )
     {
     itkExceptionMacro( "Vector container has not been set yet" );
@@ -77,7 +77,7 @@ VectorContainerToListSampleAdaptor<TVectorContainer>
 
   this->m_TempPoint = this->m_VectorContainer->GetElement( identifier );
   return this->m_TempPoint;
-}
+  }
 
 template<typename TVectorContainer>
 inline typename VectorContainerToListSampleAdaptor<TVectorContainer>
@@ -105,6 +105,7 @@ VectorContainerToListSampleAdaptor<TVectorContainer>
     }
   return this->Size();
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

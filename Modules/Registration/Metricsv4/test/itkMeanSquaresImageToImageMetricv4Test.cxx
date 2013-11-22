@@ -25,25 +25,27 @@
  * TODO Numerical verification.
  */
 
-int itkMeanSquaresImageToImageMetricv4Test(int, char ** const)
+int
+itkMeanSquaresImageToImageMetricv4Test(int, char ** const)
 {
 
   const unsigned int imageSize = 5;
   const unsigned int imageDimensionality = 3;
-  typedef itk::Image< double, imageDimensionality >              ImageType;
 
-  ImageType::SizeType       size;
+  typedef itk::Image< double, imageDimensionality > ImageType;
+
+  ImageType::SizeType size;
   size.Fill( imageSize );
-  ImageType::IndexType      index;
+  ImageType::IndexType index;
   index.Fill( 0 );
-  ImageType::RegionType     region;
+  ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
-  ImageType::SpacingType    spacing;
+  ImageType::SpacingType spacing;
   spacing.Fill(1.0);
-  ImageType::PointType      origin;
+  ImageType::PointType origin;
   origin.Fill(0);
-  ImageType::DirectionType  direction;
+  ImageType::DirectionType direction;
   direction.SetIdentity();
 
   /* Create simple test images. */
@@ -88,7 +90,7 @@ int itkMeanSquaresImageToImageMetricv4Test(int, char ** const)
   typedef itk::TranslationTransform<double,imageDimensionality> FixedTransformType;
   typedef itk::TranslationTransform<double,imageDimensionality> MovingTransformType;
 
-  FixedTransformType::Pointer fixedTransform = FixedTransformType::New();
+  FixedTransformType::Pointer  fixedTransform = FixedTransformType::New();
   MovingTransformType::Pointer movingTransform = MovingTransformType::New();
 
   fixedTransform->SetIdentity();
@@ -120,7 +122,7 @@ int itkMeanSquaresImageToImageMetricv4Test(int, char ** const)
     }
 
   // Evaluate with GetValueAndDerivative
-  MetricType::MeasureType valueReturn1, valueReturn2;
+  MetricType::MeasureType    valueReturn1, valueReturn2;
   MetricType::DerivativeType derivativeReturn;
 
   try

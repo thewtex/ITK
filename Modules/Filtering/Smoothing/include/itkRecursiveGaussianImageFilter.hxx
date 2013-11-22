@@ -103,7 +103,6 @@ RecursiveGaussianImageFilter< TInputImage, TOutputImage >
   const ScalarRealType sigmad = m_Sigma / spacing;
   ScalarRealType       across_scale_normalization = 1.0;
 
-
   A1[0] = static_cast< ScalarRealType >(  1.3530 );
   B1[0] = static_cast< ScalarRealType >(  1.8151 );
   W1    = static_cast< ScalarRealType >(  0.6681 );
@@ -178,10 +177,10 @@ RecursiveGaussianImageFilter< TInputImage, TOutputImage >
       }
     case SecondOrder:
       {
-       if ( this->GetNormalizeAcrossScale() )
-         {
-         across_scale_normalization = vnl_math_sqr(  m_Sigma );
-         }
+      if ( this->GetNormalizeAcrossScale() )
+        {
+        across_scale_normalization = vnl_math_sqr(  m_Sigma );
+        }
       // Approximation of convolution with the second derivative of a
       // Gaussian.
       ScalarRealType N0_0, N1_0, N2_0, N3_0;
@@ -356,6 +355,7 @@ RecursiveGaussianImageFilter< TInputImage, TOutputImage >
   os << "Order: " << m_Order << std::endl;
   os << "NormalizeAcrossScale: " << m_NormalizeAcrossScale << std::endl;
 }
+
 } // end namespace itk
 
 #endif

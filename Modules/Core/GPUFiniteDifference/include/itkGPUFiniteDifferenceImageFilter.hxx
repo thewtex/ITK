@@ -206,16 +206,16 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 
   // grab first valid value
   while ( t_it != t_end )
-  {
-    if ( *v_it )
     {
+    if ( *v_it )
+      {
       oMin = *t_it;
       flag = true;
       break;
-    }
+      }
     ++t_it;
     ++v_it;
-  }
+    }
 
   if ( !flag )
     {
@@ -228,14 +228,14 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   t_it = timeStepList.begin();
   v_it = valid.begin();
   while( t_it != t_end )
-  {
-    if( *v_it && ( *t_it < oMin ) )
     {
+    if( *v_it && ( *t_it < oMin ) )
+      {
       oMin = *t_it;
-    }
+      }
     ++t_it;
     ++v_it;
-  }
+    }
 
   return oMin;
 }

@@ -56,7 +56,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -74,9 +73,9 @@
 #include "itkBinaryMinMaxCurvatureFlowImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
-
 
   if( argc < 7 )
     {
@@ -86,7 +85,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Types should be chosen for the pixels of the input and output images and
@@ -95,19 +93,19 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
-  //  The BinaryMinMaxCurvatureFlowFilter type is now instantiated using both the
+  //  The BinaryMinMaxCurvatureFlowFilter type is now instantiated using both
+  // the
   //  input image and the output image types. The filter is then created using
   //  the \code{New()} method.
   //
@@ -119,15 +117,13 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::BinaryMinMaxCurvatureFlowImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -140,17 +136,15 @@ int main( int argc, char * argv[] )
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   const unsigned int numberOfIterations = atoi( argv[3] );
 
-  const double       timeStep = atof( argv[4] );
+  const double timeStep = atof( argv[4] );
 
   typedef FilterType::RadiusValueType RadiusType;
 
   const RadiusType radius = atol( argv[5] );
 
   const double threshold = atof( argv[6] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -182,10 +176,10 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
-  //  Typical values for the time step are $0.125$ in $2D$ images and $0.0625$ in
+  //  Typical values for the time step are $0.125$ in $2D$ images and $0.0625$
+  // in
   //  $3D$ images. The number of iterations can be usually around $10$, more
   //  iterations will result in further smoothing and will increase linearly
   //  the computing time. The radius of the stencil can be typically $1$. The
@@ -199,31 +193,30 @@ int main( int argc, char * argv[] )
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-               OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[2] );
 
-
   rescaler->SetInput( filter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{BinaryMinMaxCurvatureFlowImageFilterOutput}
   // \itkcaption[BinaryMinMaxCurvatureFlowImageFilter output]{Effect of the
   // BinaryMinMaxCurvatureFlowImageFilter on a slice from a MRI proton density
@@ -231,13 +224,14 @@ int main( int argc, char * argv[] )
   // \label{fig:BinaryMinMaxCurvatureFlowImageFilterInputOutput}
   // \end{figure}
   //
-  //  Figure \ref{fig:BinaryMinMaxCurvatureFlowImageFilterInputOutput} illustrates
+  //  Figure \ref{fig:BinaryMinMaxCurvatureFlowImageFilterInputOutput}
+  // illustrates
   //  the effect of this filter on a MRI proton density image of the brain. In
-  //  this example the filter was run with a time step of $0.125$, $10$ iterations,
+  //  this example the filter was run with a time step of $0.125$, $10$
+  // iterations,
   //  a stencil radius of $1$ and a threshold of $128$.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 

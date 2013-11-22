@@ -21,7 +21,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkIsolatedWatershedImageFilterTest(int ac, char* av[] )
+int
+itkIsolatedWatershedImageFilterTest(int ac, char* av[] )
 {
   if(ac < 7)
     {
@@ -40,7 +41,7 @@ int itkIsolatedWatershedImageFilterTest(int ac, char* av[] )
 
   FilterType::Pointer filter = FilterType::New();
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
 
   FilterType::IndexType seed1;
 
@@ -80,7 +81,6 @@ int itkIsolatedWatershedImageFilterTest(int ac, char* av[] )
             << static_cast<itk::NumericTraits<PixelType>::PrintType>(replaceValue2)
             << std::endl;
 
-
   try
     {
     input->Update();
@@ -98,10 +98,10 @@ int itkIsolatedWatershedImageFilterTest(int ac, char* av[] )
 
   // Generate test image
   itk::ImageFileWriter<myImage>::Pointer writer;
-    writer = itk::ImageFileWriter<myImage>::New();
-    writer->SetInput( filter->GetOutput() );
-    writer->SetFileName( av[2] );
-    writer->Update();
+  writer = itk::ImageFileWriter<myImage>::New();
+  writer->SetInput( filter->GetOutput() );
+  writer->SetFileName( av[2] );
+  writer->Update();
 
   return EXIT_SUCCESS;
 }

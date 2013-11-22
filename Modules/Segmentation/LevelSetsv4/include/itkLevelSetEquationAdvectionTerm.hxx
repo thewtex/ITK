@@ -86,7 +86,7 @@ LevelSetEquationAdvectionTerm< TInput, TLevelSetContainer >
   if ( m_DerivativeSigma != NumericTraits< LevelSetOutputRealType >::Zero )
     {
     typedef GradientRecursiveGaussianImageFilter< InputImageType, AdvectionImageType >
-    DerivativeFilterType;
+      DerivativeFilterType;
 
     typename DerivativeFilterType::Pointer derivative = DerivativeFilterType::New();
     derivative->SetInput( this->m_Input );
@@ -104,8 +104,8 @@ LevelSetEquationAdvectionTerm< TInput, TLevelSetContainer >
     derivative->SetUseImageSpacingOn();
     derivative->Update();
 
-    typedef typename DerivativeFilterType::OutputImageType                          DerivativeOutputImageType;
-    typedef VectorCastImageFilter< DerivativeOutputImageType, AdvectionImageType >  GradientCasterType;
+    typedef typename DerivativeFilterType::OutputImageType                         DerivativeOutputImageType;
+    typedef VectorCastImageFilter< DerivativeOutputImageType, AdvectionImageType > GradientCasterType;
 
     typename GradientCasterType::Pointer caster = GradientCasterType::New();
     caster->SetInput( derivative->GetOutput() );
@@ -123,7 +123,7 @@ LevelSetEquationAdvectionTerm< TInput, TLevelSetContainer >
     VectorType v = dit.Get();
     for ( unsigned int j = 0; j < ImageDimension; j++ )
       {
-      v[j] *= - NumericTraits< LevelSetOutputRealType >::One;
+      v[j] *= -NumericTraits< LevelSetOutputRealType >::One;
       }
     ait.Set(v);
     }
@@ -165,7 +165,7 @@ typename LevelSetEquationAdvectionTerm< TInput, TLevelSetContainer >::LevelSetOu
 LevelSetEquationAdvectionTerm< TInput, TLevelSetContainer >
 ::Value( const LevelSetInputIndexType& iP )
 {
-  VectorType advectionField = this->AdvectionSpeed( iP );
+  VectorType             advectionField = this->AdvectionSpeed( iP );
   LevelSetOutputRealType oValue = NumericTraits< LevelSetOutputRealType >::Zero;
 
   LevelSetGradientType backwardGradient = this->m_CurrentLevelSetPointer->EvaluateBackwardGradient( iP );
@@ -195,7 +195,7 @@ LevelSetEquationAdvectionTerm< TInput, TLevelSetContainer >
 ::Value( const LevelSetInputIndexType& iP,
          const LevelSetDataType& iData )
 {
-  VectorType advectionField = this->AdvectionSpeed( iP );
+  VectorType             advectionField = this->AdvectionSpeed( iP );
   LevelSetOutputRealType oValue = NumericTraits< LevelSetOutputRealType >::Zero;
 
   for( unsigned int dim = 0; dim < ImageDimension; dim++ )

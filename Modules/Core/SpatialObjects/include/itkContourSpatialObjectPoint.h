@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< unsigned int TPointDimension = 3 >
-class ContourSpatialObjectPoint:
+class ContourSpatialObjectPoint :
   public SpatialObjectPoint< TPointDimension >
 {
 public:
@@ -49,7 +49,8 @@ public:
   ContourSpatialObjectPoint(void);
 
   /** Default destructor. */
-  virtual ~ContourSpatialObjectPoint(void);
+  virtual
+  ~ContourSpatialObjectPoint(void);
 
   /** Get Picked Point */
   const PointType & GetPickedPoint(void) const;
@@ -83,6 +84,7 @@ protected:
 
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end of namespace itk
 

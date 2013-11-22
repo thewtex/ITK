@@ -37,10 +37,11 @@ namespace itk
  */
 template< typename TInputImage, typename TOutputImage >
 InPlaceImageFilter< TInputImage, TOutputImage >
-::InPlaceImageFilter():
+::InPlaceImageFilter() :
   m_InPlace(true),
   m_RunningInPlace(false)
-{}
+{
+}
 
 /**
  *
@@ -48,7 +49,8 @@ InPlaceImageFilter< TInputImage, TOutputImage >
 template< typename TInputImage, typename TOutputImage >
 InPlaceImageFilter< TInputImage, TOutputImage >
 ::~InPlaceImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -56,6 +58,7 @@ InPlaceImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "InPlace: " << ( m_InPlace ? "On" : "Off" ) << std::endl;
   if ( this->CanRunInPlace() )
     {
@@ -79,12 +82,13 @@ InPlaceImageFilter< TInputImage, TOutputImage >
   // may fail and that is an expected likely hood, if inputPtr is NULL
   // then this filter will not run in-place.
   const InputImageType *inputPtr = dynamic_cast<const InputImageType *>( this->ProcessObject::GetInput(0) );
-  OutputImageType      *outputPtr = this->GetOutput();
+  OutputImageType *     outputPtr = this->GetOutput();
 
   // if told to run in place and the types support it,
   // additionally the buffered and requested regions of the input and
   // output must match.
   bool rMatch = true;
+
   if( inputPtr != NULL && (unsigned int)InputImageDimension == (unsigned int)OutputImageDimension )
     {
     for( unsigned int i=0; i<(unsigned int)InputImageDimension; i++ )
@@ -131,7 +135,8 @@ InPlaceImageFilter< TInputImage, TOutputImage >
       // method since it returns the input as a pointer to a
       // DataObject as opposed to the subclass version which
       // static_casts the input to an TInputImage).
-      typename ImageBaseType::Pointer nthOutputPtr = dynamic_cast< ImageBaseType * >( this->ProcessObject::GetOutput(i) );
+      typename ImageBaseType::Pointer nthOutputPtr =
+        dynamic_cast< ImageBaseType * >( this->ProcessObject::GetOutput(i) );
 
       if ( nthOutputPtr )
         {
@@ -176,7 +181,7 @@ InPlaceImageFilter< TInputImage, TOutputImage >
       ptr->ReleaseData();
       }
 
-     this->m_RunningInPlace = false;
+    this->m_RunningInPlace = false;
     }
   else
     {

@@ -25,7 +25,6 @@
 //
 // Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -48,8 +47,8 @@
 
 //#define WRITE_CUBE_IMAGE_TO_FILE
 
-
-void usage()
+void
+usage()
 {
   std::cerr << "\n";
   std::cerr << "Usage: DRR <options> [input]\n";
@@ -71,10 +70,12 @@ void usage()
   std::cerr << "       <-o file>               Output image filename\n\n";
   std::cerr << "                               by  thomas@hartkens.de\n";
   std::cerr << "                               and john.hipwell@kcl.ac.uk (CISG London)\n\n";
+
   exit(1);
 }
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   char *input_name = NULL;
   char *output_name = NULL;
@@ -107,28 +108,27 @@ int main( int argc, char *argv[] )
 
   double threshold=0;
 
-
   // Parse command line parameters
 
   while (argc > 1)
     {
     ok = false;
 
-    if ((ok == false) && (strcmp(argv[1], "-h") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-h") == 0) )
       {
       argc--; argv++;
       ok = true;
       usage();
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-v") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-v") == 0) )
       {
       argc--; argv++;
       ok = true;
       verbose = true;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-rx") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-rx") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -136,7 +136,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-ry") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-ry") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -144,7 +144,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-rz") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-rz") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -152,7 +152,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-threshold") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-threshold") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -160,7 +160,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-t") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-t") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -172,7 +172,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-cor") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-cor") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -184,7 +184,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-res") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-res") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -194,7 +194,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-size") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-size") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -204,7 +204,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-sid") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-sid") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -212,7 +212,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-normal") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-normal") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -222,7 +222,7 @@ int main( int argc, char *argv[] )
       argc--; argv++;
       }
 
-    if ((ok == false) && (strcmp(argv[1], "-o") == 0))
+    if ( (ok == false) && (strcmp(argv[1], "-o") == 0) )
       {
       argc--; argv++;
       ok = true;
@@ -250,7 +250,7 @@ int main( int argc, char *argv[] )
 
   if (verbose)
     {
-    if (input_name)  std::cout << "Input image: "  << input_name  << std::endl;
+    if (input_name) std::cout << "Input image: "  << input_name  << std::endl;
     if (output_name) std::cout << "Output image: " << output_name << std::endl;
     }
 
@@ -262,12 +262,12 @@ int main( int argc, char *argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  const     unsigned int   Dimension = 3;
+  const     unsigned int Dimension = 3;
   typedef   short         InputPixelType;
   typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
   InputImageType::Pointer image;
 // Software Guide : EndCodeSnippet
@@ -282,10 +282,9 @@ int main( int argc, char *argv[] )
   if (input_name)
     {
 
-    typedef itk::ImageFileReader< InputImageType >  ReaderType;
+    typedef itk::ImageFileReader< InputImageType > ReaderType;
     ReaderType::Pointer reader = ReaderType::New();
     reader->SetFileName( input_name );
-
 
     try
       {
@@ -324,7 +323,7 @@ int main( int argc, char *argv[] )
     start[1] =   0;  // first index on Y
     start[2] =   0;  // first index on Z
 
-    InputImageType::SizeType  size;
+    InputImageType::SizeType size;
 
     size[0]  = 61;  // size along X
     size[1]  = 61;  // size along Y
@@ -345,44 +344,44 @@ int main( int argc, char *argv[] )
 
     IteratorType iterate( image, image->GetLargestPossibleRegion() );
 
-    while ( ! iterate.IsAtEnd() )
+    while ( !iterate.IsAtEnd() )
       {
 
       InputImageType::IndexType idx = iterate.GetIndex();
 
       if (   (idx[0] >= 6) && (idx[0] <= 54)
-          && (idx[1] >= 6) && (idx[1] <= 54)
-          && (idx[2] >= 6) && (idx[2] <= 54)
+             && (idx[1] >= 6) && (idx[1] <= 54)
+             && (idx[2] >= 6) && (idx[2] <= 54)
 
-          && (   (   ((idx[0] <= 11) || (idx[0] >= 49))
-                  && ((idx[1] <= 11) || (idx[1] >= 49)))
+             && (   (   ( (idx[0] <= 11) || (idx[0] >= 49) )
+                        && ( (idx[1] <= 11) || (idx[1] >= 49) ) )
 
-              || (   ((idx[0] <= 11) || (idx[0] >= 49))
-                  && ((idx[2] <= 11) || (idx[2] >= 49)))
+                    || (   ( (idx[0] <= 11) || (idx[0] >= 49) )
+                           && ( (idx[2] <= 11) || (idx[2] >= 49) ) )
 
-              || (   ((idx[1] <= 11) || (idx[1] >= 49))
-                  && ((idx[2] <= 11) || (idx[2] >= 49))) ))
+                    || (   ( (idx[1] <= 11) || (idx[1] >= 49) )
+                           && ( (idx[2] <= 11) || (idx[2] >= 49) ) ) ) )
         {
         iterate.Set(10);
         }
 
       else if (   (idx[0] >= 18) && (idx[0] <= 42)
-               && (idx[1] >= 18) && (idx[1] <= 42)
-               && (idx[2] >= 18) && (idx[2] <= 42)
+                  && (idx[1] >= 18) && (idx[1] <= 42)
+                  && (idx[2] >= 18) && (idx[2] <= 42)
 
-                  && (   (   ((idx[0] <= 23) || (idx[0] >= 37))
-                          && ((idx[1] <= 23) || (idx[1] >= 37)))
+                  && (   (   ( (idx[0] <= 23) || (idx[0] >= 37) )
+                             && ( (idx[1] <= 23) || (idx[1] >= 37) ) )
 
-                      || (   ((idx[0] <= 23) || (idx[0] >= 37))
-                          && ((idx[2] <= 23) || (idx[2] >= 37)))
+                         || (   ( (idx[0] <= 23) || (idx[0] >= 37) )
+                                && ( (idx[2] <= 23) || (idx[2] >= 37) ) )
 
-                      || (   ((idx[1] <= 23) || (idx[1] >= 37))
-                          && ((idx[2] <= 23) || (idx[2] >= 37))) ))
+                         || (   ( (idx[1] <= 23) || (idx[1] >= 37) )
+                                && ( (idx[2] <= 23) || (idx[2] >= 37) ) ) ) )
         {
         iterate.Set(60);
         }
 
-      else if ((idx[0] == 30) && (idx[1] == 30) && (idx[2] == 30))
+      else if ( (idx[0] == 30) && (idx[1] == 30) && (idx[2] == 30) )
         {
         iterate.Set(100);
         }
@@ -390,10 +389,9 @@ int main( int argc, char *argv[] )
       ++iterate;
       }
 
-
 #ifdef WRITE_CUBE_IMAGE_TO_FILE
     char *filename = "cube.gipl";
-    typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+    typedef itk::ImageFileWriter< OutputImageType > WriterType;
     WriterType::Pointer writer = WriterType::New();
 
     writer->SetFileName( filename );
@@ -412,14 +410,13 @@ int main( int argc, char *argv[] )
       return EXIT_FAILURE;
       }
 #endif
-  }
-
+    }
 
   // Print out the details of the input volume
 
   if (verbose)
     {
-    unsigned int i;
+    unsigned int                      i;
     const InputImageType::SpacingType spacing = image->GetSpacing();
     std::cout << std::endl << "Input ";
 
@@ -472,7 +469,7 @@ int main( int argc, char *argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::CenteredEuler3DTransform< double >  TransformType;
+  typedef itk::CenteredEuler3DTransform< double > TransformType;
 
   TransformType::Pointer transform = TransformType::New();
 
@@ -513,20 +510,21 @@ int main( int argc, char *argv[] )
   if (verbose)
     {
     std::cout << "Image size: "
-       << imSize[0] << ", " << imSize[1] << ", " << imSize[2]
-       << std::endl << "   resolution: "
-       << imRes[0] << ", " << imRes[1] << ", " << imRes[2]
-       << std::endl << "   origin: "
-       << imOrigin[0] << ", " << imOrigin[1] << ", " << imOrigin[2]
-       << std::endl << "   center: "
-       << center[0] << ", " << center[1] << ", " << center[2]
-       << std::endl << "Transform: " << transform << std::endl;
+              << imSize[0] << ", " << imSize[1] << ", " << imSize[2]
+              << std::endl << "   resolution: "
+              << imRes[0] << ", " << imRes[1] << ", " << imRes[2]
+              << std::endl << "   origin: "
+              << imOrigin[0] << ", " << imOrigin[1] << ", " << imOrigin[2]
+              << std::endl << "   center: "
+              << center[0] << ", " << center[1] << ", " << center[2]
+              << std::endl << "Transform: " << transform << std::endl;
     }
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
 //
-// The \code{RayCastInterpolateImageFunction} is instantiated and passed the transform
+// The \code{RayCastInterpolateImageFunction} is instantiated and passed the
+// transform
 // object. The \code{RayCastInterpolateImageFunction} uses this
 // transform to reposition the x-ray source such that the DRR image
 // and x-ray source move as one around the input volume. This coupling
@@ -536,7 +534,7 @@ int main( int argc, char *argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::RayCastInterpolateImageFunction<InputImageType,double>
-                                                             InterpolatorType;
+    InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
   interpolator->SetTransform(transform);
 // Software Guide : EndCodeSnippet
@@ -571,7 +569,7 @@ int main( int argc, char *argv[] )
   focalpoint[2]= imOrigin[2] - sid/2.;
 
   interpolator->SetFocalPoint(focalpoint);
- // Software Guide : EndCodeSnippet
+  // Software Guide : EndCodeSnippet
 
   if (verbose)
     {
@@ -605,7 +603,7 @@ int main( int argc, char *argv[] )
 // Software Guide : BeginCodeSnippet
 
   // setup the scene
-  InputImageType::SizeType   size;
+  InputImageType::SizeType size;
 
   size[0] = dx;  // number of pixels along X of the 2D DRR image
   size[1] = dy;  // number of pixels along Y of the 2D DRR image
@@ -650,8 +648,8 @@ int main( int argc, char *argv[] )
 
   double origin[ Dimension ];
 
-  origin[0] = imOrigin[0] + o2Dx - sx*((double) dx - 1.)/2.;
-  origin[1] = imOrigin[1] + o2Dy - sy*((double) dy - 1.)/2.;
+  origin[0] = imOrigin[0] + o2Dx - sx*( (double) dx - 1.)/2.;
+  origin[1] = imOrigin[1] + o2Dy - sy*( (double) dy - 1.)/2.;
   origin[2] = imOrigin[2] + sid/2.;
 
   filter->SetOutputOrigin( origin );
@@ -679,13 +677,13 @@ int main( int argc, char *argv[] )
 
 // Software Guide : BeginCodeSnippet
     typedef itk::RescaleIntensityImageFilter<
-      InputImageType, OutputImageType > RescaleFilterType;
+        InputImageType, OutputImageType > RescaleFilterType;
     RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
     rescaler->SetOutputMinimum(   0 );
     rescaler->SetOutputMaximum( 255 );
     rescaler->SetInput( filter->GetOutput() );
 
-    typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+    typedef itk::ImageFileWriter< OutputImageType > WriterType;
     WriterType::Pointer writer = WriterType::New();
 
     writer->SetFileName( output_name );

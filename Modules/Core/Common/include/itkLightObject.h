@@ -29,10 +29,10 @@
 
 #if defined( _WIN32 )
 // To get LONG defined
-  #include "itkWindows.h"
+#include "itkWindows.h"
 #elif defined( __APPLE__ )
 // To get MAC_OS_X_VERSION_MIN_REQUIRED defined
-  #include <AvailabilityMacros.h>
+#include <AvailabilityMacros.h>
 #endif
 
 namespace itk
@@ -80,8 +80,11 @@ public:
   /** Return the name of this class as a string. Used by the object factory
    * (implemented in New()) to instantiate objects of a named type. Also
    * used for debugging and other output information.  */
-  virtual const char * GetNameOfClass() const
-  { return "LightObject"; }
+  virtual const char *
+  GetNameOfClass() const
+  {
+    return "LightObject";
+  }
 
 #ifdef _WIN32
   /** Used to avoid dll boundary problems.  */
@@ -109,16 +112,22 @@ public:
   virtual void UnRegister() const;
 
   /** Gets the reference count on this object. */
-  virtual int GetReferenceCount() const
-  { return static_cast< int >( m_ReferenceCount ); }
+  virtual int
+  GetReferenceCount() const
+  {
+    return static_cast< int >( m_ReferenceCount );
+  }
 
   /** Sets the reference count on this object. This is a dangerous
    * method, use it with care. */
   virtual void SetReferenceCount(int);
 
 protected:
-  LightObject():m_ReferenceCount(1) {}
-  virtual ~LightObject();
+  LightObject() : m_ReferenceCount(1) {
+  }
+
+  virtual
+  ~LightObject();
 
   /** Methods invoked by Print() to print information about the object
    * including superclasses. Typically not called by the user (use Print()
@@ -141,11 +150,11 @@ protected:
 #if ( defined( WIN32 ) || defined( _WIN32 ) )
   typedef LONG InternalReferenceCountType;
 #elif defined( __APPLE__ ) && ( MAC_OS_X_VERSION_MIN_REQUIRED >= 1050 )
- #if defined ( __LP64__ ) && __LP64__
+#if defined ( __LP64__ ) && __LP64__
   typedef volatile int64_t InternalReferenceCountType;
- #else
+#else
   typedef volatile int32_t InternalReferenceCountType;
- #endif
+#endif
 #elif defined( __GLIBCPP__ ) || defined( __GLIBCXX__ )
   typedef _Atomic_word InternalReferenceCountType;
 #else
@@ -161,6 +170,7 @@ protected:
 private:
   LightObject(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

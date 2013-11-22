@@ -83,7 +83,7 @@ namespace itk
  * \endwiki
  */
 class InternalHeader;
-class GDCMImageIO:public ImageIOBase
+class GDCMImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -197,6 +197,7 @@ public:
   void GetModel(char *model);
 
   void GetScanOptions(char *options);
+
 #endif
 
   /** More general method to retrieve an arbitrary DICOM value based
@@ -221,17 +222,31 @@ public:
    * This method allow advanced user to force the reading of such field
    * \warning this is a GDCM 1.x only option, no effect on GDCM 2.x
    */
-  virtual void SetMaxSizeLoadEntry( const long ) {}
+  virtual void
+  SetMaxSizeLoadEntry( const long ) {
+  }
 
   /** Parse any sequences in the DICOM file. Defaults to the value of
    *  LoadSequencesDefault. Loading DICOM files is faster when
    *  sequences are not needed.
    * \warning this is a GDCM 1.x only option, no effect on GDCM 2.x
    */
-  virtual void SetLoadSequences( const bool ) {}
-  virtual bool GetLoadSequences () const { return true; }
-  virtual void LoadSequencesOn () {}
-  virtual void LoadSequencesOff () {}
+  virtual void
+  SetLoadSequences( const bool ) {
+  }
+
+  virtual bool
+  GetLoadSequences() const {
+    return true;
+  }
+
+  virtual void
+  LoadSequencesOn() {
+  }
+
+  virtual void
+  LoadSequencesOff() {
+  }
 
   /** Global method to define the default value for
    * LoadSequences. When instances of GDCMImageIO are created, the
@@ -241,10 +256,22 @@ public:
    * particular ImageIO object on the readers. Default is false.
    * \warning this is a GDCM 1.x only option, no effect on GDCM 2.x
    */
-  static void SetLoadSequencesDefault(bool) {}
-  static void LoadSequencesDefaultOn() {}
-  static void LoadSequencesDefaultOff() {}
-  static bool GetLoadSequencesDefault() { return true; }
+  static void
+  SetLoadSequencesDefault(bool) {
+  }
+
+  static void
+  LoadSequencesDefaultOn() {
+  }
+
+  static void
+  LoadSequencesDefaultOff() {
+  }
+
+  static bool
+  GetLoadSequencesDefault() {
+    return true;
+  }
 
   /** Global method to define the default value for
    * LoadPrivateTags. When instances of GDCMImageIO are created, the
@@ -254,10 +281,23 @@ public:
    * particular ImageIO object on the readers. Default is false.
    * \warning this is a GDCM 1.x only option, no effect on GDCM 2.x
    */
-  static void SetLoadPrivateTagsDefault(bool) {}
-  static void LoadPrivateTagsDefaultOn() {}
-  static void LoadPrivateTagsDefaultOff() {}
-  static bool GetLoadPrivateTagsDefault() { return true; }
+  static void
+  SetLoadPrivateTagsDefault(bool) {
+  }
+
+  static void
+  LoadPrivateTagsDefaultOn() {
+  }
+
+  static void
+  LoadPrivateTagsDefaultOff() {
+  }
+
+  static bool
+  GetLoadPrivateTagsDefault() {
+    return true;
+  }
+
 #endif
 
   /** Set/Get a compression type to use. */

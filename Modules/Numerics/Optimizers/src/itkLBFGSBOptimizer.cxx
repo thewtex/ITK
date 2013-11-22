@@ -23,6 +23,7 @@
 
 extern "C" {
 extern double v3p_netlib_dpmeps_();
+
 }
 
 namespace itk
@@ -33,7 +34,7 @@ namespace itk
  * This class is used to translate iteration events, etc, from
  * vnl_lbfgsb into iteration events in ITK.
  */
-class LBFGSBOptimizerHelper:
+class LBFGSBOptimizerHelper :
   public vnl_lbfgsb
 {
 public:
@@ -55,7 +56,7 @@ private:
  * Constructor
  */
 LBFGSBOptimizer
-::LBFGSBOptimizer():
+::LBFGSBOptimizer() :
   m_Trace(false),
   m_OptimizerInitialized(false),
   m_CostFunctionConvergenceFactor(1e+7),
@@ -89,6 +90,7 @@ LBFGSBOptimizer
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Trace: ";
   if ( m_Trace )
     {
@@ -404,10 +406,11 @@ LBFGSBOptimizer
 /** Create with a reference to the ITK object */
 LBFGSBOptimizerHelper
 ::LBFGSBOptimizerHelper(vnl_cost_function & f,
-                        LBFGSBOptimizer * const itkObj):
+                        LBFGSBOptimizer * const itkObj) :
   vnl_lbfgsb(f),
   m_ItkObj(itkObj)
-{}
+{
+}
 
 /** Handle new iteration event */
 bool
@@ -435,10 +438,11 @@ const std::string
 LBFGSBOptimizer::GetStopConditionDescription() const
 {
   std::ostringstream stopConditionDescription;
+
   if ( this->m_CurrentIteration > this->m_MaximumNumberOfIterations)
     {
     stopConditionDescription << "Too many iterations. Iterations = "
-    << this->m_CurrentIteration << std::endl;
+                             << this->m_CurrentIteration << std::endl;
     }
   if ( m_VnlOptimizer )
     {
@@ -453,15 +457,15 @@ LBFGSBOptimizer::GetStopConditionDescription() const
         break;
       case vnl_nonlinear_minimizer::CONVERGED_FTOL:
         stopConditionDescription << "Function tolerance reached after "
-                                   << m_CurrentIteration
-                                   << " iterations. "
-                                   << "The relative reduction of the cost function <= "
-                                   << m_CostFunctionConvergenceFactor * v3p_netlib_dpmeps_()
-                                   << " = CostFunctionConvergenceFactor ("
-                                   << m_CostFunctionConvergenceFactor
-                                   << ") * machine precision ("
-                                   << v3p_netlib_dpmeps_()
-                                   << ").";
+                                 << m_CurrentIteration
+                                 << " iterations. "
+                                 << "The relative reduction of the cost function <= "
+                                 << m_CostFunctionConvergenceFactor * v3p_netlib_dpmeps_()
+                                 << " = CostFunctionConvergenceFactor ("
+                                 << m_CostFunctionConvergenceFactor
+                                 << ") * machine precision ("
+                                 << v3p_netlib_dpmeps_()
+                                 << ").";
 
         break;
       case vnl_nonlinear_minimizer::CONVERGED_XTOL:
@@ -472,12 +476,12 @@ LBFGSBOptimizer::GetStopConditionDescription() const
         break;
       case vnl_nonlinear_minimizer::CONVERGED_GTOL:
         stopConditionDescription << "Gradient tolerance reached. "
-                                   << "Projected gradient tolerance is "
-                                   << m_ProjectedGradientTolerance;
+                                 << "Projected gradient tolerance is "
+                                 << m_ProjectedGradientTolerance;
         break;
       case vnl_nonlinear_minimizer::FAILED_TOO_MANY_ITERATIONS:
         stopConditionDescription << "Too many iterations. Iterations = "
-                                   << m_MaximumNumberOfEvaluations;
+                                 << m_MaximumNumberOfEvaluations;
         break;
       case vnl_nonlinear_minimizer::FAILED_FTOL_TOO_SMALL:
         stopConditionDescription << "Function tolerance too small";
@@ -494,6 +498,7 @@ LBFGSBOptimizer::GetStopConditionDescription() const
     }
   return stopConditionDescription.str();
 }
+
 } // end namespace itk
 
 #endif

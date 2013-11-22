@@ -55,7 +55,7 @@ namespace itk
  */
 template< typename TScalar = double >
 // type for scalars (float or double)
-class Rigid3DTransform:
+class Rigid3DTransform :
   public MatrixOffsetTransformBase< TScalar, 3, 3 >
 {
 public:
@@ -156,6 +156,7 @@ public:
   //      (with no real effect) for backwards compatibility.
   //      In ITKv4 mode only the super class is needed
   virtual InverseTransformBasePointer GetInverseTransform() const;
+
   /**
    * Get rotation Matrix from an Rigid3DTransform
    *
@@ -164,7 +165,7 @@ public:
    *
    * \deprecated Use GetMatrix instead
    */
-  itkLegacyMacro(const MatrixType & GetRotationMatrix() const);
+  itkLegacyMacro(const MatrixType &GetRotationMatrix() const);
   /**
    * Set the rotation Matrix of a Rigid3D Transform
    *
@@ -175,7 +176,7 @@ public:
    * \deprecated Use SetMatrix instead
    *
    */
-  itkLegacyMacro(virtual void SetRotationMatrix(const MatrixType & matrix) );
+  itkLegacyMacro(virtual void SetRotationMatrix(const MatrixType &matrix) );
 #endif
 
   /**
@@ -189,10 +190,10 @@ public:
    *   transform using the result.
    *
    */
-  itkLegacyMacro(InputPointType      BackTransform(const OutputPointType & point) const);
-  itkLegacyMacro(InputVectorType     BackTransform(const OutputVectorType & vector) const);
-  itkLegacyMacro(InputVnlVectorType  BackTransform(const OutputVnlVectorType & vector) const);
-  itkLegacyMacro(InputCovariantVectorType BackTransform(const OutputCovariantVectorType & vector) const);
+  itkLegacyMacro(InputPointType      BackTransform(const OutputPointType &point) const);
+  itkLegacyMacro(InputVectorType     BackTransform(const OutputVectorType &vector) const);
+  itkLegacyMacro(InputVnlVectorType  BackTransform(const OutputVnlVectorType &vector) const);
+  itkLegacyMacro(InputCovariantVectorType BackTransform(const OutputCovariantVectorType &vector) const);
 
 protected:
   Rigid3DTransform(const MatrixType & matrix,
@@ -209,6 +210,7 @@ protected:
 private:
   Rigid3DTransform(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };                                //class Rigid3DTransform
 }  // namespace itk
 

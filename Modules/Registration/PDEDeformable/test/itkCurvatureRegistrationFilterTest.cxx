@@ -31,16 +31,23 @@
 
 #include "itkImageFileWriter.h"
 
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
@@ -49,11 +56,11 @@ public:
 template <typename TImage>
 void
 FillWithCircle(
-TImage * image,
-double * center,
-double radius,
-typename TImage::PixelType foregnd,
-typename TImage::PixelType backgnd )
+  TImage * image,
+  double * center,
+  double radius,
+  typename TImage::PixelType foregnd,
+  typename TImage::PixelType backgnd )
 {
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
@@ -69,7 +76,7 @@ typename TImage::PixelType backgnd )
     double distance = 0;
     for( unsigned int j = 0; j < TImage::ImageDimension; j++ )
       {
-      distance += vnl_math_sqr((double) index[j] - center[j]);
+      distance += vnl_math_sqr( (double) index[j] - center[j]);
       }
     if( distance <= r2 ) it.Set( foregnd );
     else it.Set( backgnd );
@@ -78,13 +85,12 @@ typename TImage::PixelType backgnd )
 
 }
 
-
 // Template function to copy image regions
 template <typename TImage>
 void
 CopyImageBuffer(
-TImage *input,
-TImage *output )
+  TImage *input,
+  TImage *output )
 {
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator outIt( output, output->GetBufferedRegion() );
@@ -95,7 +101,8 @@ TImage *output )
 
 }
 
-int itkCurvatureRegistrationFilterTest(int, char* [] )
+int
+itkCurvatureRegistrationFilterTest(int, char* [] )
 {
 
   typedef unsigned char PixelType;
@@ -104,19 +111,19 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
   typedef itk::Vector<float,ImageDimension>     VectorType;
   typedef itk::Image<VectorType,ImageDimension> FieldType;
   typedef itk::FastSymmetricForcesDemonsRegistrationFunction<ImageType,ImageType,FieldType>
-                                                ForcesType;
+    ForcesType;
   typedef itk::Image<VectorType::ValueType,ImageDimension>
-                                                FloatImageType;
-  typedef ImageType::IndexType                  IndexType;
-  typedef ImageType::SizeType                   SizeType;
-  typedef ImageType::RegionType                 RegionType;
+    FloatImageType;
+  typedef ImageType::IndexType  IndexType;
+  typedef ImageType::SizeType   SizeType;
+  typedef ImageType::RegionType RegionType;
 
   //--------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
   std::cout << std::endl;
 
   ImageType::SizeValueType sizeArray[ImageDimension] = { 128, 128 };
-  SizeType size;
+  SizeType                 size;
   size.SetSize( sizeArray );
 
   IndexType index;
@@ -142,8 +149,8 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
   initField->SetBufferedRegion( region );
   initField->Allocate();
 
-  double center[ImageDimension];
-  double radius;
+  double    center[ImageDimension];
+  double    radius;
   PixelType fgnd = 250;
   PixelType bgnd = 0;
 
@@ -179,13 +186,13 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
   typedef RegistrationType::RegistrationFunctionType FunctionType;
   FunctionType * fptr;
   fptr = dynamic_cast<FunctionType *>(
-    registrator->GetDifferenceFunction().GetPointer() );
+      registrator->GetDifferenceFunction().GetPointer() );
   fptr->Print( std::cout );
 
   // exercise other member variables
   std::cout << "No. Iterations: " << registrator->GetNumberOfIterations() << std::endl;
 
-  ShowProgressObject progressWatch(registrator);
+  ShowProgressObject                                    progressWatch(registrator);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -200,7 +207,6 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
   typedef itk::NearestNeighborInterpolateImageFunction<ImageType,CoordRepType>
     InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-
 
   warper->SetInput( moving );
   warper->SetDisplacementField( registrator->GetOutput() );
@@ -217,11 +223,11 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
 
   // compare the warp and fixed images
   itk::ImageRegionIterator<ImageType> fixedIter( fixed,
-      fixed->GetBufferedRegion() );
+                                                 fixed->GetBufferedRegion() );
   itk::ImageRegionIterator<ImageType> warpedIter( warper->GetOutput(),
-      fixed->GetBufferedRegion() );
+                                                  fixed->GetBufferedRegion() );
 
-  size_t ofs = 0;
+  size_t       ofs = 0;
   unsigned int numPixelsDifferent = 0;
   while( !fixedIter.IsAtEnd() )
     {
@@ -241,8 +247,8 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
     {
     std::cout << "Test failed - too many pixels different." << std::endl;
 
-    typedef itk::ImageFileWriter< ImageType >  WriterType;
-    WriterType::Pointer      writer =  WriterType::New();
+    typedef itk::ImageFileWriter< ImageType > WriterType;
+    WriterType::Pointer writer =  WriterType::New();
     writer->SetInput( warper->GetOutput() );
     writer->SetFileName( "warped.png" );
     writer->Update();
@@ -313,7 +319,7 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
   try
     {
     fptr = dynamic_cast<FunctionType *>(
-      registrator->GetDifferenceFunction().GetPointer() );
+        registrator->GetDifferenceFunction().GetPointer() );
     fptr->SetMovingImageInterpolator( NULL );
     registrator->SetInput( initField );
     registrator->Update();
@@ -333,7 +339,6 @@ int itkCurvatureRegistrationFilterTest(int, char* [] )
 
   std::cout << "Test passed" << std::endl;
   return EXIT_SUCCESS;
-
 
 }
 

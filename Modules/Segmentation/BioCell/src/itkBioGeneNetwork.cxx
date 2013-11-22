@@ -26,14 +26,16 @@ namespace bio
  */
 GeneNetwork
 ::GeneNetwork()
-{}
+{
+}
 
 /**
  *    Destructor
  */
 GeneNetwork
 ::~GeneNetwork()
-{}
+{
+}
 
 /**
  *    Copy from another genome
@@ -54,5 +56,6 @@ GeneNetwork
     geneNetwork.m_DomainConcentration.begin(),
     geneNetwork.m_DomainConcentration.end() );
 }
+
 }  // end namespace bio
 }  // end namespace itk

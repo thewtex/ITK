@@ -51,7 +51,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TFunctor, typename TMaskImage = TInputImage >
-class ConnectedComponentFunctorImageFilter:
+class ConnectedComponentFunctorImageFilter :
   public ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
 {
 public:
@@ -115,8 +115,15 @@ public:
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer.) */
-  FunctorType &       GetFunctor() { return m_Functor; }
-  const FunctorType & GetFunctor() const { return m_Functor; }
+  FunctorType &
+  GetFunctor() {
+    return m_Functor;
+  }
+
+  const FunctorType &
+  GetFunctor() const {
+    return m_Functor;
+  }
 
   /** Set the functor object.  This replaces the current Functor with a
    * copy of the specified Functor. This allows the user to specify a
@@ -124,7 +131,8 @@ public:
    * This method requires an operator!=() be defined on the functor
    * (or the compiler's default implementation of operator!=() being
    * appropriate). */
-  void SetFunctor(const FunctorType & functor)
+  void
+  SetFunctor(const FunctorType & functor)
   {
     m_Functor = functor;
     this->Modified();
@@ -152,9 +160,15 @@ public:
 #endif
 
 protected:
-  ConnectedComponentFunctorImageFilter() {}
-  virtual ~ConnectedComponentFunctorImageFilter() {}
-  ConnectedComponentFunctorImageFilter(const Self &) {}
+  ConnectedComponentFunctorImageFilter() {
+  }
+
+  virtual
+  ~ConnectedComponentFunctorImageFilter() {
+  }
+
+  ConnectedComponentFunctorImageFilter(const Self &) {
+  }
 
   FunctorType m_Functor;
 
@@ -162,6 +176,7 @@ protected:
    * Standard pipeline method.
    */
   void GenerateData();
+
 };
 } // end namespace itk
 

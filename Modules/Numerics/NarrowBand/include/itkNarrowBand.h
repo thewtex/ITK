@@ -37,7 +37,9 @@ public:
   TDataType   m_Data;
   TIndexType  m_Index;
   signed char m_NodeState;
-  BandNode() : m_NodeState( 0 ) {}
+  BandNode() : m_NodeState( 0 ) {
+  }
+
 };
 
 /** \class NarrowBand
@@ -45,7 +47,7 @@ public:
  * \ingroup ITKNarrowBand
  */
 template< typename NodeType >
-class NarrowBand:public LightObject
+class NarrowBand : public LightObject
 {
 public:
   /** Standard class typedefs */
@@ -70,7 +72,7 @@ public:
   typedef struct RegionStruct {
     Iterator Begin;
     Iterator End;
-  } RegionType;
+    } RegionType;
 
   /** Returns an array of RegionStructs which represent contiguous
    * arrays of nodes within the narrow band. */
@@ -79,68 +81,81 @@ public:
 
 #endif
 
-  Iterator Begin()
+  Iterator
+  Begin()
   {
     return m_NodeContainer.begin();
   }
 
-  ConstIterator Begin() const
+  ConstIterator
+  Begin() const
   {
     return m_NodeContainer.begin();
   }
 
-  Iterator End()
+  Iterator
+  End()
   {
     return m_NodeContainer.end();
   }
 
-  ConstIterator End() const
+  ConstIterator
+  End() const
   {
     return m_NodeContainer.end();
   }
 
-  SizeType Size() const
+  SizeType
+  Size() const
   {
     return m_NodeContainer.size();
   }
 
-  bool Empty() const
+  bool
+  Empty() const
   {
     return m_NodeContainer.empty();
   }
 
   /** Clear the narrow band container. */
-  void Clear()
+  void
+  Clear()
   {
     m_NodeContainer.clear();
   }
 
-  void Reserve(SizeType n)
+  void
+  Reserve(SizeType n)
   {
     m_NodeContainer.reserve(n);
   }
 
-  void PushBack(const NodeType & n)
+  void
+  PushBack(const NodeType & n)
   {
     m_NodeContainer.push_back(n);
   }
 
-  void PopBack()
+  void
+  PopBack()
   {
     m_NodeContainer.pop_back();
   }
 
-  void Resize(SizeType n)
+  void
+  Resize(SizeType n)
   {
     m_NodeContainer.resize(n);
   }
 
-  NodeType & operator[](SizeType n)
+  NodeType &
+  operator[](SizeType n)
   {
     return m_NodeContainer[n];
   }
 
-  const NodeType & operator[](SizeType n) const
+  const NodeType &
+  operator[](SizeType n) const
   {
     return m_NodeContainer[n];
   }
@@ -148,18 +163,31 @@ public:
   /** Set/Get the narrow band total radius. The narrow band width will be twice
   this value (positive and negative distance to the zero level set).
   The user of the narrow band container should set up this value properly. */
-  void SetTotalRadius(const float& val) { m_TotalRadius = val; }
+  void
+  SetTotalRadius(const float& val) {
+    m_TotalRadius = val;
+  }
 
-  float GetTotalRadius() const { return m_TotalRadius; }
+  float
+  GetTotalRadius() const {
+    return m_TotalRadius;
+  }
 
   /** Set/Get the narrow band inner radius. The inner radius is the safe are
   where the level set can be computed.*/
-  void SetInnerRadius(const float& val) { m_InnerRadius = val; }
+  void
+  SetInnerRadius(const float& val) {
+    m_InnerRadius = val;
+  }
 
-  float GetInnerRadius() const { return m_InnerRadius; }
+  float
+  GetInnerRadius() const {
+    return m_InnerRadius;
+  }
 
 protected:
-  NarrowBand() : m_TotalRadius( 0.0 ), m_InnerRadius( 0.0 ) {}
+  NarrowBand() : m_TotalRadius( 0.0 ), m_InnerRadius( 0.0 ) {
+  }
 
   float m_TotalRadius;
   float m_InnerRadius;

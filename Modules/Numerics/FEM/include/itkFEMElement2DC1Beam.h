@@ -55,7 +55,6 @@ public:
    * including its internal member variables. */
   virtual::itk::LightObject::Pointer CreateAnother(void) const;
 
-
   /**
    * Default constructor only clears the internal storage
    */
@@ -78,12 +77,14 @@ public:
   virtual void GetMassMatrix(MatrixType & Me) const;
 
   /** Get the Strain Displacement matrix */
-  virtual void GetStrainDisplacementMatrix(MatrixType &, const MatrixType &) const
+  virtual void
+  GetStrainDisplacementMatrix(MatrixType &, const MatrixType &) const
   {
   }
 
   /** Get the Material matrix */
-  virtual void GetMaterialMatrix(MatrixType &) const
+  virtual void
+  GetMaterialMatrix(MatrixType &) const
   {
   }
 
@@ -111,7 +112,8 @@ public:
   virtual void ShapeFunctionDerivatives(const VectorType & pt, MatrixType & shapeD) const;
 
   /** Convert from global to local coordinates */
-  virtual bool GetLocalFromGlobalCoordinates(const VectorType &, VectorType &) const
+  virtual bool
+  GetLocalFromGlobalCoordinates(const VectorType &, VectorType &) const
   {
     return false;
   }
@@ -120,7 +122,8 @@ public:
   virtual Float JacobianDeterminant(const VectorType & pt, const MatrixType *pJ) const;
 
   /** Get the degrees of freedom for each node */
-  virtual unsigned int GetNumberOfDegreesOfFreedomPerNode(void) const
+  virtual unsigned int
+  GetNumberOfDegreesOfFreedomPerNode(void) const
   {
     return 3;
   }
@@ -128,19 +131,23 @@ public:
   /**
    * Get/Set the material properties for the element
    */
-  virtual Material::ConstPointer GetMaterial(void) const
+  virtual Material::ConstPointer
+  GetMaterial(void) const
   {
     return dynamic_cast<const Material *>(m_mat);
   }
 
-  virtual void SetMaterial(Material::ConstPointer mat_)
+  virtual void
+  SetMaterial(Material::ConstPointer mat_)
   {
     m_mat =
       dynamic_cast<const MaterialLinearElasticity *>( mat_.GetPointer() );
   }
 
   /** No edges to populate in this class */
-  virtual void PopulateEdgeIds(void) { /* empty */ }
+  virtual void
+  PopulateEdgeIds(void) {              /* empty */
+  }
 
 protected:
   virtual void PrintSelf(std::ostream& os, Indent indent) const;

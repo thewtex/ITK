@@ -24,7 +24,8 @@
 #include "itkGrayscaleGrindPeakImageFilter.h"
 #include "itkXorImageFilter.h"
 
-int itkRemoveBoundaryObjectsTest2( int argc, char * argv[] )
+int
+itkRemoveBoundaryObjectsTest2( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -34,21 +35,19 @@ int itkRemoveBoundaryObjectsTest2( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //
   //  The following code defines the input and output pixel types and their
   //  associated image types.
   //
   const unsigned int Dimension = 2;
 
-  typedef unsigned char   InputPixelType;
-  typedef unsigned char   OutputPixelType;
-  typedef unsigned char   WritePixelType;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
+  typedef unsigned char WritePixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
-  typedef itk::Image< WritePixelType, Dimension >    WriteImageType;
-
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::Image< WritePixelType, Dimension >  WriteImageType;
 
   // readers/writers
   typedef itk::ImageFileReader< InputImageType  > ReaderType;
@@ -56,8 +55,8 @@ int itkRemoveBoundaryObjectsTest2( int argc, char * argv[] )
 
   // define the fillhole filter
   typedef itk::GrayscaleGrindPeakImageFilter<
-                            InputImageType,
-                            OutputImageType >  GrindPeakFilterType;
+      InputImageType,
+      OutputImageType >  GrindPeakFilterType;
 
   // define the xor and not filters
   typedef itk::XorImageFilter<InputImageType, InputImageType, OutputImageType>
@@ -68,7 +67,7 @@ int itkRemoveBoundaryObjectsTest2( int argc, char * argv[] )
   WriterType::Pointer writer  = WriterType::New();
 
   // Create the filter
-  GrindPeakFilterType::Pointer  grindpeak = GrindPeakFilterType::New();
+  GrindPeakFilterType::Pointer grindpeak = GrindPeakFilterType::New();
 
   // Create the xor and not filter
   XorFilterType::Pointer xorfilter = XorFilterType::New();

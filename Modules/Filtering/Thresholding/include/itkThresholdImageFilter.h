@@ -52,7 +52,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class ThresholdImageFilter:public InPlaceImageFilter< TImage, TImage >
+class ThresholdImageFilter : public InPlaceImageFilter< TImage, TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -118,7 +118,9 @@ public:
 
 protected:
   ThresholdImageFilter();
-  ~ThresholdImageFilter() {}
+  ~ThresholdImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** ThresholdImageFilter can be implemented as a multithreaded filter.

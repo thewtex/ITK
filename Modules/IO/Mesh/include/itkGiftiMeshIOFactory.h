@@ -28,7 +28,7 @@ namespace itk
    * \brief Create instances of GiftiMeshIO objects using an object factory.
    * \ingroup ITKIOMesh
    */
-class ITKIOMesh_EXPORT GiftiMeshIOFactory:public ObjectFactoryBase
+class ITKIOMesh_EXPORT GiftiMeshIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +49,8 @@ public:
   itkTypeMacro(GiftiMeshIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GiftiMeshIOFactory::Pointer giftiFactory = GiftiMeshIOFactory::New();
 
@@ -65,6 +66,7 @@ protected:
 private:
   GiftiMeshIOFactory(const Self &); // purposely not implemented
   void operator=(const Self &);     // purposely not implemented
+
 };
 // /////////////////////////////////////////////////////////////////////
 } // end namespace itk

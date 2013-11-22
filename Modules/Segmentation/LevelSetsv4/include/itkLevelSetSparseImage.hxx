@@ -26,12 +26,14 @@ namespace itk
 template< typename TOutput, unsigned int VDimension >
 LevelSetSparseImage< TOutput, VDimension >
 ::LevelSetSparseImage()
-{}
+{
+}
 
 template< typename TOutput, unsigned int VDimension >
 LevelSetSparseImage< TOutput, VDimension >
 ::~LevelSetSparseImage()
-{}
+{
+}
 
 // ----------------------------------------------------------------------------
 template< typename TOutput, unsigned int VDimension >
@@ -40,9 +42,9 @@ LevelSetSparseImage< TOutput, VDimension >
 ::Status( const InputType& inputIndex ) const
 {
   InputType mapIndex = inputIndex - this->m_DomainOffset;
+
   return this->m_LabelMap->GetPixel( mapIndex );
 }
-
 
 template< typename TOutput, unsigned int VDimension >
 void
@@ -58,7 +60,7 @@ LevelSetSparseImage< TOutput, VDimension >
   for( unsigned int dim = 0; dim < Dimension; dim++ )
     {
     this->m_NeighborhoodScales[dim] =
-        NumericTraits< OutputRealType >::One / static_cast< OutputRealType >( spacing[dim ] );
+      NumericTraits< OutputRealType >::One / static_cast< OutputRealType >( spacing[dim ] );
     }
   this->Modified();
 }
@@ -106,31 +108,33 @@ LevelSetSparseImage< TOutput, VDimension >
   this->m_LabelMap->Graft( LevelSet->m_LabelMap );
   this->m_Layers = LevelSet->m_Layers;
 }
+
 // ----------------------------------------------------------------------------
 template< typename TOutput, unsigned int VDimension >
 const typename LevelSetSparseImage< TOutput, VDimension >::LayerType&
 LevelSetSparseImage< TOutput, VDimension >::GetLayer( LayerIdType value ) const
-{
+  {
   LayerMapConstIterator it = m_Layers.find( value );
   if( it == m_Layers.end() )
     {
     itkGenericExceptionMacro( <<"This layer does not exist" );
     }
   return it->second;
-}
+  }
 
 // ----------------------------------------------------------------------------
 template< typename TOutput, unsigned int VDimension >
 typename LevelSetSparseImage< TOutput, VDimension >::LayerType&
 LevelSetSparseImage< TOutput, VDimension >::GetLayer( LayerIdType value )
-{
+  {
   LayerMapIterator it = m_Layers.find( value );
+
   if( it == m_Layers.end() )
     {
     itkGenericExceptionMacro( <<"This layer does not exist" );
     }
   return it->second;
-}
+  }
 
 // ----------------------------------------------------------------------------
 template< typename TOutput, unsigned int VDimension >
@@ -139,6 +143,7 @@ LevelSetSparseImage< TOutput, VDimension >
 ::SetLayer( LayerIdType value, const LayerType& iLayer )
 {
   LayerMapIterator it = m_Layers.find( value );
+
   if( it != m_Layers.end() )
     {
     it->second = iLayer;
@@ -171,6 +176,7 @@ LevelSetSparseImage< TOutput, VDimension >
   Superclass::CopyInformation( data );
 
   const Self *LevelSet = NULL;
+
   try
     {
     LevelSet = dynamic_cast< const Self* >( data );
@@ -212,9 +218,9 @@ LevelSetSparseImage< TOutput, VDimension >
 
   while( lIt != lEnd )
     {
-    LayerIdType id = *lIt;
+    LayerIdType        id = *lIt;
     LabelObjectPointer labelObject = this->m_LabelMap->GetLabelObject( id );
-    SizeValueType numberOfLines = labelObject->GetNumberOfLines();
+    SizeValueType      numberOfLines = labelObject->GetNumberOfLines();
 
     for( SizeValueType i = 0; i < numberOfLines; ++i )
       {
@@ -228,6 +234,5 @@ LevelSetSparseImage< TOutput, VDimension >
 }
 
 } // end namespace itk
-
 
 #endif // __itkLevelSetSparseImage_h

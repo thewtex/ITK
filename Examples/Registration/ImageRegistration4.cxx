@@ -49,14 +49,12 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageRegistrationMethod.h"
 #include "itkTranslationTransform.h"
 #include "itkMattesMutualInformationImageToImageMetric.h"
 #include "itkRegularStepGradientDescentOptimizer.h"
 // Software Guide : EndCodeSnippet
-
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -65,7 +63,6 @@
 #include "itkCastImageFilter.h"
 #include "itkCheckerBoardImageFilter.h"
 
-
 //  The following section of code implements a Command observer
 //  used to monitor the evolution of the registration process.
 //
@@ -73,38 +70,44 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>   Pointer;
+  typedef  CommandIterationUpdate Self;
+  typedef  itk::Command           Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
   typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   typedef   const OptimizerType *                  OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << optimizer->GetCurrentPosition() << std::endl;
-    }
+  }
+
 };
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -118,20 +121,20 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  const    unsigned int    Dimension = 2;
-  typedef  unsigned short  PixelType;
+  const    unsigned int Dimension = 2;
+  typedef  unsigned short PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   typedef itk::TranslationTransform< double, Dimension > TransformType;
   typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
   typedef itk::LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double             > InterpolatorType;
+      MovingImageType,
+      double             > InterpolatorType;
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType    > RegistrationType;
+      FixedImageType,
+      MovingImageType    > RegistrationType;
 
   //  Software Guide : BeginLatex
   //
@@ -145,19 +148,18 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::MattesMutualInformationImageToImageMetric<
-                                          FixedImageType,
-                                          MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
   // Software Guide : EndCodeSnippet
 
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetOptimizer(     optimizer     );
   registration->SetTransform(     transform     );
   registration->SetInterpolator(  interpolator  );
-
 
   //  Software Guide : BeginLatex
   //
@@ -171,7 +173,6 @@ int main( int argc, char *argv[] )
   registration->SetMetric( metric  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The metric requires two parameters to be selected: the number of bins
@@ -184,8 +185,14 @@ int main( int argc, char *argv[] )
   //  pixels will do. On the other hand, if the images are detailed, it may be
   //  necessary to use a much higher proportion, such as $20$ percent.
   //
-  //  \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!SetNumberOfHistogramBins()}
-  //  \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!SetNumberOfSpatialSamples()}
+  //
+  //
+  //
+  // \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!SetNumberOfHistogramBins()}
+  //
+  //
+  //
+  // \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!SetNumberOfSpatialSamples()}
   //
   //  Software Guide : EndLatex
 
@@ -204,12 +211,10 @@ int main( int argc, char *argv[] )
     numberOfSamples = atoi( argv[8] );
     }
 
-
   // Software Guide : BeginCodeSnippet
   metric->SetNumberOfHistogramBins( numberOfBins );
   metric->SetNumberOfSpatialSamples( numberOfSamples );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -219,10 +224,12 @@ int main( int argc, char *argv[] )
   // option only while you are fine tuning all other parameters of your
   // registration. We don't use this method in this current example though.
   //
-  //  \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!UseAllPixelsOn()}
+  //
+  //
+  //
+  // \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!UseAllPixelsOn()}
   //
   // Software Guide : EndLatex
-
 
   if( argc > 9 )
     {
@@ -248,8 +255,7 @@ int main( int argc, char *argv[] )
   fixedImageReader->Update();
 
   registration->SetFixedImageRegion(
-       fixedImageReader->GetOutput()->GetBufferedRegion() );
-
+    fixedImageReader->GetOutput()->GetBufferedRegion() );
 
   typedef RegistrationType::ParametersType ParametersType;
   ParametersType initialParameters( transform->GetNumberOfParameters() );
@@ -258,7 +264,6 @@ int main( int argc, char *argv[] )
   initialParameters[1] = 0.0;  // Initial offset in mm along Y
 
   registration->SetInitialTransformParameters( initialParameters );
-
 
   //  Software Guide : BeginLatex
   //
@@ -290,6 +295,8 @@ int main( int argc, char *argv[] )
   // this example we set the relaxation factor to a number higher than the
   // default in order to prevent the premature shrinkage of the step length.
   //
+  //
+  //
   // \index{itk::Regular\-Step\-Gradient\-Descent\-Optimizer!SetRelaxationFactor()}
   //
   // Software Guide : EndLatex
@@ -302,7 +309,6 @@ int main( int argc, char *argv[] )
   //
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
-
 
   try
     {
@@ -323,12 +329,12 @@ int main( int argc, char *argv[] )
   double TranslationAlongX = finalParameters[0];
   double TranslationAlongY = finalParameters[1];
 
-  // For stability reasons it may be desirable to round up the values of translation
+  // For stability reasons it may be desirable to round up the values of
+  // translation
   //
   unsigned int numberOfIterations = optimizer->GetCurrentIteration();
 
   double bestValue = optimizer->GetValue();
-
 
   // Print out results
   //
@@ -339,7 +345,6 @@ int main( int argc, char *argv[] )
   std::cout << " Iterations    = " << numberOfIterations << std::endl;
   std::cout << " Metric value  = " << bestValue          << std::endl;
   std::cout << " Stop Condition  = " << optimizer->GetStopCondition() << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -357,10 +362,9 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   TransformType::Pointer finalTransform = TransformType::New();
 
@@ -387,19 +391,18 @@ int main( int argc, char *argv[] )
   resample->SetOutputDirection( fixedImage->GetDirection() );
   resample->SetDefaultPixelValue( defaultPixelValue );
 
-
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char OutputPixelType;
 
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType > CastFilterType;
+      FixedImageType,
+      OutputImageType > CastFilterType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
 
@@ -407,15 +410,17 @@ int main( int argc, char *argv[] )
   writer->SetInput( caster->GetOutput()   );
   writer->Update();
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
   // \includegraphics[width=0.32\textwidth]{ImageRegistration4Output}
+  //
+  //
   // \includegraphics[width=0.32\textwidth]{ImageRegistration4CheckerboardBefore}
   // \includegraphics[width=0.32\textwidth]{ImageRegistration4CheckerboardAfter}
-  // \itkcaption[MattesMutualInformationImageToImageMetric output images]{The mapped
+  // \itkcaption[MattesMutualInformationImageToImageMetric output images]{The
+  // mapped
   // moving image (left) and the composition of fixed and moving images before
   // (center) and after (right) registration with Mattes mutual information.}
   // \label{fig:ImageRegistration4Output}
@@ -427,7 +432,6 @@ int main( int argc, char *argv[] )
   //  images before and after registration respectively.
   //
   //  Software Guide : EndLatex
-
 
   //
   // Generate checkerboards before and after registration
@@ -455,7 +459,6 @@ int main( int argc, char *argv[] )
     writer->Update();
     }
 
-
   // After registration
   resample->SetTransform( finalTransform );
   if( argc > 6 )
@@ -464,15 +467,17 @@ int main( int argc, char *argv[] )
     writer->Update();
     }
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
   // \includegraphics[width=0.44\textwidth]{ImageRegistration4TraceTranslations}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{ImageRegistration4TraceTranslations2}
   // \includegraphics[width=0.6\textwidth]{ImageRegistration4TraceMetric}
-  // \itkcaption[MattesMutualInformationImageToImageMetric output plots]{Sequence
+  // \itkcaption[MattesMutualInformationImageToImageMetric output
+  // plots]{Sequence
   // of translations and metric values at each iteration of the optimizer.}
   // \label{fig:ImageRegistration4TraceTranslations}
   // \end{figure}
@@ -513,6 +518,8 @@ int main( int argc, char *argv[] )
   //
   // \begin{figure}
   // \center
+  //
+  //
   // \includegraphics[width=0.8\textwidth]{ImageRegistration4TraceTranslationsNumberOfBins}
   // \itkcaption[MattesMutualInformationImageToImageMetric number of
   // bins]{Sensitivity of the optimization path to the number of Bins used for
@@ -532,7 +539,6 @@ int main( int argc, char *argv[] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginLatex
   //
   //  The plots in Figures~\ref{fig:ImageRegistration4TraceTranslations}
@@ -546,7 +552,6 @@ int main( int argc, char *argv[] )
   //  section~\ref{sec:MultiModalityRegistrationViolaWells}.
   //
   // Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

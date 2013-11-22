@@ -153,7 +153,7 @@ MeanSquaresPointSetToImageMetric<TFixedPointSet, TMovingImage>
       // which is equivalent to round up the point components.
       typedef typename OutputPointType::CoordRepType CoordRepType;
       typedef ContinuousIndex<CoordRepType, MovingImageType::ImageDimension>
-      MovingImageContinuousIndexType;
+        MovingImageContinuousIndexType;
 
       MovingImageContinuousIndexType tempIndex;
       this->m_MovingImage->TransformPhysicalPointToContinuousIndex(transformedPoint, tempIndex);
@@ -255,7 +255,7 @@ MeanSquaresPointSetToImageMetric<TFixedPointSet, TMovingImage>
       // which is equivalent to round up the point components.
       typedef typename OutputPointType::CoordRepType CoordRepType;
       typedef ContinuousIndex<CoordRepType, MovingImageType::ImageDimension>
-      MovingImageContinuousIndexType;
+        MovingImageContinuousIndexType;
 
       MovingImageContinuousIndexType tempIndex;
       this->m_MovingImage->TransformPhysicalPointToContinuousIndex(transformedPoint, tempIndex);

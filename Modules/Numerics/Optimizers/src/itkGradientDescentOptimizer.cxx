@@ -204,13 +204,14 @@ GradientDescentOptimizer
   for ( unsigned int j = 0; j < spaceDimension; j++ )
     {
     newPosition[j] = currentPosition[j]
-                     + direction * m_LearningRate * transformedGradient[j];
+      + direction * m_LearningRate * transformedGradient[j];
     }
 
   this->SetCurrentPosition(newPosition);
 
   this->InvokeEvent( IterationEvent() );
 }
+
 } // end namespace itk
 
 #endif

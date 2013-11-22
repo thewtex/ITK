@@ -21,7 +21,6 @@
 
 #include "itkUpdateMalcolmSparseLevelSet.h"
 
-
 namespace itk
 {
 template< unsigned int VDimension, typename TEquationContainer >
@@ -38,7 +37,8 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
 template< unsigned int VDimension, typename TEquationContainer >
 UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
 ::~UpdateMalcolmSparseLevelSet()
-{}
+{
+}
 
 template< unsigned int VDimension, typename TEquationContainer >
 void
@@ -52,7 +52,8 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
 
   this->m_Offset = this->m_InputLevelSet->GetDomainOffset();
 
-  this->m_OutputLevelSet->SetLayer( LevelSetType::ZeroLayer(), this->m_InputLevelSet->GetLayer( LevelSetType::ZeroLayer() ) );
+  this->m_OutputLevelSet->SetLayer( LevelSetType::ZeroLayer(),
+                                    this->m_InputLevelSet->GetLayer( LevelSetType::ZeroLayer() ) );
   this->m_OutputLevelSet->SetLabelMap( this->m_InputLevelSet->GetModifiableLabelMap() );
   this->m_OutputLevelSet->SetDomainOffset( this->m_Offset );
 
@@ -90,7 +91,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
       {
       itkAssertInDebugAndIgnoreInReleaseMacro( nodeIt->first == upIt->first );
 
-      const LevelSetInputType currentIdx = nodeIt->first;
+      const LevelSetInputType  currentIdx = nodeIt->first;
       const LevelSetOutputType update = upIt->second;
 
       if( update > 0 )
@@ -122,7 +123,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
   labelImageToLabelMapFilter->SetBackgroundValue( LevelSetType::PlusOneLayer() );
   labelImageToLabelMapFilter->Update();
 
-  LevelSetLabelMapPointer outputLabelMap = this->m_OutputLevelSet->GetModifiableLabelMap( );
+  LevelSetLabelMapPointer outputLabelMap = this->m_OutputLevelSet->GetModifiableLabelMap();
   outputLabelMap->Graft( labelImageToLabelMapFilter->GetOutput() );
 }
 
@@ -140,6 +141,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
   TermContainerPointer termContainer = this->m_EquationContainer->GetEquation( this->m_CurrentLevelSetId );
 
   LevelSetInputType inputIndex;
+
   while( nodeIt != nodeEnd )
     {
     const LevelSetInputType currentIndex = nodeIt->first;
@@ -155,7 +157,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
       }
     if( update < NumericTraits< LevelSetOutputRealType >::Zero )
       {
-      value = - NumericTraits< LevelSetOutputType >::One;
+      value = -NumericTraits< LevelSetOutputType >::One;
       }
 
     this->m_Update.insert( NodePairType( currentIndex, value ) );
@@ -170,8 +172,8 @@ void
 UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
 ::EvolveWithUnPhasedPropagation()
 {
-  LevelSetOutputType oldValue;
-  LevelSetOutputType newValue;
+  LevelSetOutputType  oldValue;
+  LevelSetOutputType  newValue;
   LevelSetLayerType & levelZero = this->m_OutputLevelSet->GetLayer( LevelSetType::ZeroLayer() );
 
   // neighborhood iterator
@@ -248,7 +250,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
         if( tempValue * newValue == -1 )
           {
           LevelSetInputType tempIndex =
-              neighIt.GetIndex( i.GetNeighborhoodOffset() );
+            neighIt.GetIndex( i.GetNeighborhoodOffset() );
 
           insertList.insert( NodePairType( tempIndex, tempValue ) );
           }
@@ -278,9 +280,9 @@ template< unsigned int VDimension,
 void
 UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
 ::EvolveWithPhasedPropagation( LevelSetLayerType& ioList,
-                        LevelSetLayerType& ioUpdate,
-                        const bool& iContraction )
-  {
+                               LevelSetLayerType& ioUpdate,
+                               const bool& iContraction )
+{
   itkAssertInDebugAndIgnoreInReleaseMacro( ioList.size() == ioUpdate.size() );
 
   ZeroFluxNeumannBoundaryCondition< LabelImageType > sp_nbc;
@@ -325,8 +327,8 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
     LevelSetOutputType newValue;
 
     LevelSetOutputType update = upIt->second;
-    LevelSetInputType currentIdx = nodeIt->first;
-    LevelSetInputType inputIndex = currentIdx + this->m_Offset;
+    LevelSetInputType  currentIdx = nodeIt->first;
+    LevelSetInputType  inputIndex = currentIdx + this->m_Offset;
 
     if( update != NumericTraits< LevelSetOutputRealType >::Zero )
       {
@@ -353,8 +355,8 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
       neighIt.SetLocation( currentIdx );
 
       for( typename NeighborhoodIteratorType::Iterator
-          i = neighIt.Begin();
-          !i.IsAtEnd(); ++i )
+           i = neighIt.Begin();
+           !i.IsAtEnd(); ++i )
         {
         LevelSetOutputType tempValue = i.Get();
 
@@ -386,7 +388,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
 
     ++nodeIt;
     }
-  }
+}
 
 template< unsigned int VDimension,
           typename TEquationContainer >
@@ -437,8 +439,8 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
 
     LevelSetOutputRealType oldValue = LevelSetType::ZeroLayer();
     for( typename NeighborhoodIteratorType::Iterator
-        i = neighIt.Begin();
-        !i.IsAtEnd(); ++i )
+         i = neighIt.Begin();
+         !i.IsAtEnd(); ++i )
       {
       LevelSetOutputType tempValue = i.Get();
       if( tempValue == LevelSetType::MinusOneLayer() )
@@ -454,7 +456,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
     if( negativeUpdate && !positiveUpdate )
       {
       const LevelSetOutputRealType newValue = LevelSetType::MinusOneLayer();
-      LevelSetLayerIterator tempIt = nodeIt;
+      LevelSetLayerIterator        tempIt = nodeIt;
       ++nodeIt;
       listZero.erase( tempIt );
 
@@ -466,7 +468,7 @@ UpdateMalcolmSparseLevelSet< VDimension, TEquationContainer >
       if( positiveUpdate && !negativeUpdate )
         {
         const LevelSetOutputRealType newValue = LevelSetType::PlusOneLayer();
-        LevelSetLayerIterator tempIt = nodeIt;
+        LevelSetLayerIterator        tempIt = nodeIt;
         ++nodeIt;
         listZero.erase( tempIt );
 

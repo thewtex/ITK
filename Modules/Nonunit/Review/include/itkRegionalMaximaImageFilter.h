@@ -51,7 +51,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class RegionalMaximaImageFilter:
+class RegionalMaximaImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -130,7 +130,9 @@ public:
 
 protected:
   RegionalMaximaImageFilter();
-  ~RegionalMaximaImageFilter() {}
+  ~RegionalMaximaImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** RegionalMaximaImageFilter needs the entire input be

@@ -19,9 +19,10 @@
 #include "itkMinimumDecisionRule.h"
 #include "itkObjectFactory.h"
 
-int itkMinimumDecisionRuleTest(int, char* [] )
+int
+itkMinimumDecisionRuleTest(int, char* [] )
 {
-  typedef itk::Statistics::MinimumDecisionRule      MinimumDecisionRuleType;
+  typedef itk::Statistics::MinimumDecisionRule MinimumDecisionRuleType;
 
   typedef MinimumDecisionRuleType::MembershipVectorType MembershipVectorType;
 

@@ -40,7 +40,8 @@ GDCMSeriesFileNames::~GDCMSeriesFileNames()
   delete m_SerieHelper;
 }
 
-void GDCMSeriesFileNames::SetInputDirectory(const char *name)
+void
+GDCMSeriesFileNames::SetInputDirectory(const char *name)
 {
   if ( !name )
     {
@@ -50,12 +51,13 @@ void GDCMSeriesFileNames::SetInputDirectory(const char *name)
   this->SetInputDirectory(fname);
 }
 
-void GDCMSeriesFileNames::SetInputDirectory(std::string const & name)
+void
+GDCMSeriesFileNames::SetInputDirectory(std::string const & name)
 {
   if ( name == "" )
     {
     itkWarningMacro(<< "You need to specify a directory where "
-                       "the DICOM files are located");
+                    "the DICOM files are located");
     return;
     }
   if ( m_InputDirectory == name )
@@ -77,7 +79,8 @@ void GDCMSeriesFileNames::SetInputDirectory(std::string const & name)
   this->Modified();
 }
 
-const SerieUIDContainer & GDCMSeriesFileNames::GetSeriesUIDs()
+const SerieUIDContainer &
+GDCMSeriesFileNames::GetSeriesUIDs()
 {
   m_SeriesUIDs.clear();
   // Accessing the first serie found (assume there is at least one)
@@ -90,7 +93,7 @@ const SerieUIDContainer & GDCMSeriesFileNames::GetSeriesUIDs()
 
       // Create its unique series ID
       std::string id = m_SerieHelper->
-                       CreateUniqueSeriesIdentifier(file).c_str();
+        CreateUniqueSeriesIdentifier(file).c_str();
 
       m_SeriesUIDs.push_back( id.c_str() );
       }
@@ -103,7 +106,8 @@ const SerieUIDContainer & GDCMSeriesFileNames::GetSeriesUIDs()
   return m_SeriesUIDs;
 }
 
-const FilenamesContainer & GDCMSeriesFileNames::GetFileNames(const std::string serie)
+const FilenamesContainer &
+GDCMSeriesFileNames::GetFileNames(const std::string serie)
 {
   m_InputFileNames.clear();
   // Accessing the first serie found (assume there is at least one)
@@ -123,7 +127,7 @@ const FilenamesContainer & GDCMSeriesFileNames::GetFileNames(const std::string s
         {
         gdcm::File *file = ( *flist )[0]; //for example take the first one
         std::string id = m_SerieHelper->
-                         CreateUniqueSeriesIdentifier(file).c_str();
+          CreateUniqueSeriesIdentifier(file).c_str();
 
         if ( id == serie )
           {
@@ -145,7 +149,7 @@ const FilenamesContainer & GDCMSeriesFileNames::GetFileNames(const std::string s
   if ( flist->size() )
     {
     ProgressReporter progress(this, 0,
-      static_cast<itk::SizeValueType>(flist->size()), 10);
+                              static_cast<itk::SizeValueType>(flist->size() ), 10);
     for ( it = flist->begin();
           it != flist->end(); ++it )
       {
@@ -154,7 +158,7 @@ const FilenamesContainer & GDCMSeriesFileNames::GetFileNames(const std::string s
       if ( !header )
         {
         itkWarningMacro(<< "GDCMSeriesFileNames got NULL header, "
-                           "this is a serious bug");
+                        "this is a serious bug");
         continue;
         }
       if ( !header->IsReadable() )
@@ -180,13 +184,15 @@ const FilenamesContainer & GDCMSeriesFileNames::GetFileNames(const std::string s
   return m_InputFileNames;
 }
 
-const FilenamesContainer & GDCMSeriesFileNames::GetInputFileNames()
+const FilenamesContainer &
+GDCMSeriesFileNames::GetInputFileNames()
 {
   // Do not specify any UID
   return GetFileNames("");
 }
 
-const FilenamesContainer & GDCMSeriesFileNames::GetOutputFileNames()
+const FilenamesContainer &
+GDCMSeriesFileNames::GetOutputFileNames()
 {
   // We are trying to extract the original filename and compose it with a path:
 
@@ -270,11 +276,13 @@ const FilenamesContainer & GDCMSeriesFileNames::GetOutputFileNames()
   return m_OutputFileNames;
 }
 
-void GDCMSeriesFileNames::PrintSelf(std::ostream & os, Indent indent) const
+void
+GDCMSeriesFileNames::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   unsigned int i;
+
   os << indent << "InputDirectory: " << m_InputDirectory << std::endl;
   os << indent << "LoadSequences:" << m_LoadSequences << std::endl;
   os << indent << "LoadPrivateTags:" << m_LoadPrivateTags << std::endl;
@@ -299,12 +307,14 @@ void GDCMSeriesFileNames::PrintSelf(std::ostream & os, Indent indent) const
     }
 }
 
-void GDCMSeriesFileNames::SetUseSeriesDetails(bool useSeriesDetails)
+void
+GDCMSeriesFileNames::SetUseSeriesDetails(bool useSeriesDetails)
 {
   m_UseSeriesDetails = useSeriesDetails;
   m_SerieHelper->SetUseSeriesDetails(m_UseSeriesDetails);
   m_SerieHelper->CreateDefaultUniqueSeriesIdentifier();
 }
+
 } //namespace ITK
 
 #endif

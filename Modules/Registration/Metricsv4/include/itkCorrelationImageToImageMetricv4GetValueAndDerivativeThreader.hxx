@@ -1,4 +1,4 @@
- /*=========================================================================
+/*=========================================================================
  *
  *  Copyright Insight Software Consortium
  *
@@ -24,24 +24,25 @@ namespace itk
 {
 
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
-CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
-::CorrelationImageToImageMetricv4GetValueAndDerivativeThreader():
+CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric,
+                                                              TCorrelationMetric>
+::CorrelationImageToImageMetricv4GetValueAndDerivativeThreader() :
   m_CorrelationMetricValueDerivativePerThreadVariables( NULL )
 {
 }
 
-
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
-CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
+CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric,
+                                                              TCorrelationMetric>
 ::~CorrelationImageToImageMetricv4GetValueAndDerivativeThreader()
 {
   delete[] m_CorrelationMetricValueDerivativePerThreadVariables;
 }
 
-
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 void
-CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
+CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric,
+                                                              TCorrelationMetric>
 ::BeforeThreadedExecution()
 {
   Superclass::BeforeThreadedExecution();
@@ -58,7 +59,8 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner
 
   // set size
   delete[] m_CorrelationMetricValueDerivativePerThreadVariables;
-  m_CorrelationMetricValueDerivativePerThreadVariables = new AlignedCorrelationMetricValueDerivativePerThreadStruct[ this->GetNumberOfThreadsUsed() ];
+  m_CorrelationMetricValueDerivativePerThreadVariables =
+    new AlignedCorrelationMetricValueDerivativePerThreadStruct[ this->GetNumberOfThreadsUsed() ];
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
     this->m_CorrelationMetricValueDerivativePerThreadVariables[i].fdm.SetSize(globalDerivativeSize);
@@ -83,7 +85,8 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner
 
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 void
-CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
+CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric,
+                                                             TCorrelationMetric>
 ::AfterThreadedExecution()
 {
 
@@ -95,17 +98,20 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
   this->m_CorrelationAssociate->m_NumberOfValidPoints = NumericTraits<SizeValueType>::Zero;
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
-    this->m_CorrelationAssociate->m_NumberOfValidPoints += this->m_GetValueAndDerivativePerThreadVariables[i].NumberOfValidPoints;
+    this->m_CorrelationAssociate->m_NumberOfValidPoints +=
+      this->m_GetValueAndDerivativePerThreadVariables[i].NumberOfValidPoints;
     }
 
   /* Check the number of valid points meets the default minimum.
    * If not, parameters will hold default return values for this case */
-  if( ! this->m_CorrelationAssociate->VerifyNumberOfValidPoints( this->m_CorrelationAssociate->m_Value, *(this->m_CorrelationAssociate->m_DerivativeResult) ) )
+  if( !this->m_CorrelationAssociate->VerifyNumberOfValidPoints( this->m_CorrelationAssociate->m_Value,
+                                                                *(this->m_CorrelationAssociate->m_DerivativeResult) ) )
     {
     return;
     }
 
-  itkDebugMacro("CorrelationImageToImageMetricv4: NumberOfValidPoints: " << this->m_CorrelationAssociate->m_NumberOfValidPoints);
+  itkDebugMacro(
+    "CorrelationImageToImageMetricv4: NumberOfValidPoints: " << this->m_CorrelationAssociate->m_NumberOfValidPoints);
 
   /* Accumulate the metric value from threads and store */
   this->m_CorrelationAssociate->m_Value = NumericTraits<InternalComputationValueType>::Zero;
@@ -128,7 +134,8 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
 
   this->m_CorrelationAssociate->m_Value = -1.0 * fm * fm / (m2f2);
 
-  /* For global transforms, compute the derivatives by combining values from each region. */
+  /* For global transforms, compute the derivatives by combining values from
+    each region. */
   if( this->m_CorrelationAssociate->GetComputeDerivative() )
     {
     DerivativeType fdm, mdm;
@@ -161,17 +168,19 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
 
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 bool
-CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
-::ProcessVirtualPoint( const VirtualIndexType & virtualIndex, const VirtualPointType & virtualPoint, const ThreadIdType threadId )
+CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric,
+                                                             TCorrelationMetric>
+::ProcessVirtualPoint( const VirtualIndexType & virtualIndex, const VirtualPointType & virtualPoint,
+                       const ThreadIdType threadId )
 {
-  FixedImagePointType         mappedFixedPoint;
-  FixedImagePixelType         mappedFixedPixelValue;
-  FixedImageGradientType      mappedFixedImageGradient;
-  MovingImagePointType        mappedMovingPoint;
-  MovingImagePixelType        mappedMovingPixelValue;
-  MovingImageGradientType     mappedMovingImageGradient;
-  bool                        pointIsValid = false;
-  MeasureType                 metricValueResult;
+  FixedImagePointType     mappedFixedPoint;
+  FixedImagePixelType     mappedFixedPixelValue;
+  FixedImageGradientType  mappedFixedImageGradient;
+  MovingImagePointType    mappedMovingPoint;
+  MovingImagePixelType    mappedMovingPixelValue;
+  MovingImageGradientType mappedMovingImageGradient;
+  bool                    pointIsValid = false;
+  MeasureType             metricValueResult;
 
   /* Transform the point into fixed and moving spaces, and evaluate.
    * Different behavior with pre-warping enabled is handled transparently.
@@ -179,7 +188,8 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
    * then we otherwise get when exceptions are caught in MultiThreader. */
   try
     {
-    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint, mappedFixedPixelValue );
+    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint,
+                                                                                 mappedFixedPixelValue );
     if( pointIsValid &&
         this->m_CorrelationAssociate->GetComputeDerivative() &&
         this->m_CorrelationAssociate->GetGradientSourceIncludesFixed() )
@@ -202,7 +212,8 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
 
   try
     {
-    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint, mappedMovingPixelValue );
+    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint,
+                                                                                  mappedMovingPixelValue );
     if( pointIsValid &&
         this->m_CorrelationAssociate->GetComputeDerivative() &&
         this->m_CorrelationAssociate->GetGradientSourceIncludesMoving() )
@@ -227,14 +238,14 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
   try
     {
     pointIsValid = this->ProcessPoint(
-                                   virtualIndex,
-                                   virtualPoint,
-                                   mappedFixedPoint, mappedFixedPixelValue,
-                                   mappedFixedImageGradient,
-                                   mappedMovingPoint, mappedMovingPixelValue,
-                                   mappedMovingImageGradient,
-                                   metricValueResult, this->m_GetValueAndDerivativePerThreadVariables[threadId].LocalDerivatives,
-                                   threadId );
+        virtualIndex,
+        virtualPoint,
+        mappedFixedPoint, mappedFixedPixelValue,
+        mappedFixedImageGradient,
+        mappedMovingPoint, mappedMovingPixelValue,
+        mappedMovingImageGradient,
+        metricValueResult, this->m_GetValueAndDerivativePerThreadVariables[threadId].LocalDerivatives,
+        threadId );
     }
   catch( ExceptionObject & exc )
     {
@@ -254,7 +265,8 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
 
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 bool
-CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
+CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric,
+                                                             TCorrelationMetric>
 ::ProcessPoint( const VirtualIndexType &           itkNotUsed(virtualIndex),
                 const VirtualPointType &           virtualPoint,
                 const FixedImagePointType &        itkNotUsed(mappedFixedPoint),
@@ -278,7 +290,9 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
   const InternalComputationValueType & f1 = fixedImageValue - this->m_CorrelationAssociate->m_AverageFix;
   const InternalComputationValueType & m1 = movingImageValue - this->m_CorrelationAssociate->m_AverageMov;
 
-  AlignedCorrelationMetricValueDerivativePerThreadStruct & cumsum = this->m_CorrelationMetricValueDerivativePerThreadVariables[threadID];
+  AlignedCorrelationMetricValueDerivativePerThreadStruct & cumsum =
+    this->m_CorrelationMetricValueDerivativePerThreadVariables[threadID];
+
   cumsum.f += f1;
   cumsum.m += m1;
   cumsum.f2 += f1 * f1;

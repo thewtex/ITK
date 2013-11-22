@@ -25,7 +25,6 @@
 #ifndef __itkNiftiImageIO_h
 #define __itkNiftiImageIO_h
 
-
 #include <fstream>
 #include "itkImageIOBase.h"
 #include <nifti1_io.h>
@@ -41,7 +40,7 @@ namespace itk
  * \ingroup IOFilters
  * \ingroup ITKIONIFTI
  */
-class NiftiImageIO:public ImageIOBase
+class NiftiImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -106,7 +105,10 @@ protected:
   ~NiftiImageIO();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  virtual bool GetUseLegacyModeForTwoFileWriting(void) const { return false; }
+  virtual bool
+  GetUseLegacyModeForTwoFileWriting(void) const {
+    return false;
+  }
 
 private:
   bool  MustRescale();
@@ -130,6 +132,7 @@ private:
 
   NiftiImageIO(const Self &);   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

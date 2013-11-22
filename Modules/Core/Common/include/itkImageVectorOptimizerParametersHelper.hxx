@@ -44,7 +44,7 @@ ImageVectorOptimizerParametersHelper< TValueType, NVectorDimension, VImageDimens
   if( m_ParameterImage.IsNull() )
     {
     itkGenericExceptionMacro("ImageVectorOptimizerParametersHelper::"
-      "MoveDataPointer: m_ParameterImage must be defined.");
+                             "MoveDataPointer: m_ParameterImage must be defined.");
     }
   // The buffer for Image<Vector> points to Vector type, not TValueType, so
   // have to cast.
@@ -54,7 +54,7 @@ ImageVectorOptimizerParametersHelper< TValueType, NVectorDimension, VImageDimens
   unsigned int sizeInVectors = m_ParameterImage->GetPixelContainer()->Size();
   // After this call, PixelContainer will *not* manage its memory.
   this->m_ParameterImage->GetPixelContainer()->SetImportPointer( vectorPointer,
-                                                              sizeInVectors );
+                                                                 sizeInVectors );
   Superclass::MoveDataPointer( container, pointer );
 }
 
@@ -87,13 +87,13 @@ ImageVectorOptimizerParametersHelper< TValueType, NVectorDimension, VImageDimens
     // to determine the number of raw elements of type TValueType in the buffer
     // and cast a pointer to it for assignment to the Array data pointer.
     unsigned int sz = image->GetPixelContainer()->Size() * NVectorDimension;
-    TValueType* valuePointer = reinterpret_cast<TValueType *>
-                              ( image->GetPixelContainer()->GetBufferPointer() );
+    TValueType*  valuePointer = reinterpret_cast<TValueType *>
+      ( image->GetPixelContainer()->GetBufferPointer() );
     //Set the Array's pointer to the image data buffer. By default it will
     // not manage the memory.
     container->SetData( valuePointer, sz );
     }
 }
 
-}//namespace itk
+} //namespace itk
 #endif

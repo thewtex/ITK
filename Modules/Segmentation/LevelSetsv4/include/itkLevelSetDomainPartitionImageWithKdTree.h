@@ -31,15 +31,15 @@ namespace itk
  * \ingroup ITKLevelSetsv4
  */
 template< typename TImage >
-class LevelSetDomainPartitionImageWithKdTree:
+class LevelSetDomainPartitionImageWithKdTree :
   public LevelSetDomainPartitionImage< TImage >
 {
 public:
 
-  typedef LevelSetDomainPartitionImageWithKdTree  Self;
-  typedef LevelSetDomainPartitionImage< TImage >  Superclass;
-  typedef SmartPointer< Self >                    Pointer;
-  typedef SmartPointer< const Self >              ConstPointer;
+  typedef LevelSetDomainPartitionImageWithKdTree Self;
+  typedef LevelSetDomainPartitionImage< TImage > Superclass;
+  typedef SmartPointer< Self >                   Pointer;
+  typedef SmartPointer< const Self >             ConstPointer;
 
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
@@ -48,12 +48,12 @@ public:
 
   itkTypeMacro( LevelSetDomainPartitionImageWithKdTree, LevelSetDomainPartitionImage);
 
-  typedef TImage                                        ImageType;
-  typedef typename Superclass::ListIndexType            ListIndexType;
-  typedef typename Superclass::ListRegionType           ListRegionType;
-  typedef typename Superclass::ListPointType            ListPointType;
-  typedef typename Superclass::ListIteratorType         ListIteratorType;
-  typedef typename Superclass::IdentifierListType       IdentifierListType;
+  typedef TImage                                  ImageType;
+  typedef typename Superclass::ListIndexType      ListIndexType;
+  typedef typename Superclass::ListRegionType     ListRegionType;
+  typedef typename Superclass::ListPointType      ListPointType;
+  typedef typename Superclass::ListIteratorType   ListIteratorType;
+  typedef typename Superclass::IdentifierListType IdentifierListType;
 
   typedef typename ListPointType::VectorType                    CentroidVectorType;
   typedef typename Statistics::ListSample< CentroidVectorType > SampleType;
@@ -85,11 +85,14 @@ protected:
   void PopulateDomainWithKdTree();
 
 private:
-  LevelSetDomainPartitionImageWithKdTree(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  LevelSetDomainPartitionImageWithKdTree(const Self &); // purposely not
+                                                        // implemented
+  void operator=(const Self &);                         // purposely not
 
-  KdTreePointer     m_KdTree;
-  NeighborsIdType   m_NumberOfNeighbors;
+  // implemented
+
+  KdTreePointer   m_KdTree;
+  NeighborsIdType m_NumberOfNeighbors;
 };
 
 } //end namespace itk

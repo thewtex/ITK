@@ -23,7 +23,8 @@
 typedef  double                                     CoordinateRepresentationType;
 typedef  itk::Point<CoordinateRepresentationType,3> PointType;
 
-void PrintPoint( const PointType & p )
+void
+PrintPoint( const PointType & p )
 {
   for( unsigned int i=0; i<PointType::PointDimension; i++)
     {
@@ -32,14 +33,15 @@ void PrintPoint( const PointType & p )
   std::cout << std::endl;
 }
 
-int itkAzimuthElevationToCartesianTransformTest(int, char *[])
+int
+itkAzimuthElevationToCartesianTransformTest(int, char *[])
 {
 
   const CoordinateRepresentationType ACCEPTABLE_ERROR = 1E-10;
 
   typedef itk::AzimuthElevationToCartesianTransform<
-    CoordinateRepresentationType
-    > AzimuthElevationToCartesianTransformType;
+      CoordinateRepresentationType
+      > AzimuthElevationToCartesianTransformType;
 
   AzimuthElevationToCartesianTransformType::Pointer transform =
     AzimuthElevationToCartesianTransformType::New();
@@ -72,9 +74,9 @@ int itkAzimuthElevationToCartesianTransformTest(int, char *[])
   bool same=true;
   for (unsigned int i=0; i < p.PointDimension && same; i++)
     {
-    same = ((vnl_math_abs(p[i] - answerBackwards[i]) < ACCEPTABLE_ERROR) &&
-            (vnl_math_abs(p[i] - reverseDirectionAnswerBackwards[i]) < ACCEPTABLE_ERROR) &&
-            (vnl_math_abs(answer[i] - reverseDirectionAnswer[i]) < ACCEPTABLE_ERROR));
+    same = ( (vnl_math_abs(p[i] - answerBackwards[i]) < ACCEPTABLE_ERROR) &&
+             (vnl_math_abs(p[i] - reverseDirectionAnswerBackwards[i]) < ACCEPTABLE_ERROR) &&
+             (vnl_math_abs(answer[i] - reverseDirectionAnswer[i]) < ACCEPTABLE_ERROR) );
     }
   if (!same)
     {

@@ -27,7 +27,7 @@ namespace itk
 {
 template< typename TInputImage1, typename TInputImage2 >
 DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
-::DirectedHausdorffDistanceImageFilter():m_MaxDistance(1)
+::DirectedHausdorffDistanceImageFilter() : m_MaxDistance(1)
 {
   // this filter requires two input images
   this->SetNumberOfRequiredInputs(2);
@@ -59,19 +59,19 @@ const typename DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 
 ::InputImage1Type *
 DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput1()
-{
+  {
   return this->GetInput();
-}
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 const typename DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::InputImage2Type *
 DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput2()
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage2 * >
-    ( this->ProcessObject::GetInput(1) );
-}
+           ( this->ProcessObject::GetInput(1) );
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 void
@@ -105,6 +105,7 @@ DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -138,7 +139,7 @@ DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 
   // Compute distance from non-zero pixels in the second image
   typedef itk::SignedMaurerDistanceMapImageFilter< InputImage2Type, DistanceMapType >
-  FilterType;
+    FilterType;
   typename FilterType::Pointer filter = FilterType::New();
 
   filter->SetInput( this->GetInput2() );
@@ -158,8 +159,8 @@ DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 
   m_DirectedHausdorffDistance = NumericTraits< RealType >::Zero;
 
-  RealType        sum = NumericTraits< RealType >::Zero;
-  IdentifierType  pixelcount = 0;
+  RealType       sum = NumericTraits< RealType >::Zero;
+  IdentifierType pixelcount = 0;
 
   // find max over all threads
   for ( ThreadIdType i = 0; i < numberOfThreads; i++ )
@@ -202,8 +203,10 @@ DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
     {
     if ( it1.Get() != NumericTraits< InputImage1PixelType >::Zero )
       {
-      // The signed distance map is calculated, but we want the calculation based on the
-      // unsigned distance map.  Therefore, we set all distance map values less than 0 to 0.
+      // The signed distance map is calculated, but we want the calculation
+      // based on the
+      // unsigned distance map.  Therefore, we set all distance map values less
+      // than 0 to 0.
       const RealType val2 = (static_cast< RealType >( it2.Get() ) < 0) ? 0 : static_cast< RealType >( it2.Get() );
       if ( val2 > m_MaxDistance[threadId] )
         {
@@ -234,5 +237,6 @@ DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
   os << indent << "Use Image Spacing : "
      << m_UseImageSpacing << std::endl;
 }
+
 } // end namespace itk
 #endif

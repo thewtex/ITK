@@ -48,11 +48,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = (TInternalType)vcl_cos( (double)input ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = (TInternalType)vcl_cos( (double)input );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return (TExternalType)vcl_cos( (double)input ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return (TExternalType)vcl_cos( (double)input );
+  }
+
 };
 } // end namespace Accessor
 
@@ -66,7 +73,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class CosImageAdaptor:public
+class CosImageAdaptor : public
   ImageAdaptor< TImage, Accessor::CosPixelAccessor<
                   typename TImage::PixelType,
                   TOutputPixelType >   >
@@ -88,12 +95,17 @@ public:
   itkTypeMacro(CosImageAdaptor, ImageAdaptor);
 
 protected:
-  CosImageAdaptor() {}
-  virtual ~CosImageAdaptor() {}
+  CosImageAdaptor() {
+  }
+
+  virtual
+  ~CosImageAdaptor() {
+  }
 
 private:
   CosImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

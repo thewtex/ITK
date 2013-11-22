@@ -113,7 +113,7 @@ template< typename TInputImage,
           typename TOutputImage = Image< TRealType,
                                          TInputImage::ImageDimension >
           >
-class DisplacementFieldJacobianDeterminantFilter:
+class DisplacementFieldJacobianDeterminantFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -151,9 +151,9 @@ public:
   /** Define the data type and the vector of data type used in calculations. */
   typedef TRealType RealType;
   typedef Vector< TRealType, InputPixelType::Dimension >
-                    RealVectorType;
+    RealVectorType;
   typedef Image< RealVectorType, TInputImage::ImageDimension >
-                    RealVectorImageType;
+    RealVectorImageType;
 
   /** Type of the iterator that will be used to move through the image.  Also
       the type which will be passed to the evaluate function */
@@ -178,14 +178,20 @@ public:
       (1/spacing). Use this option if you want to calculate the Jacobian
       determinant in the space in which the data was acquired. Default
       is ImageSpacingOn. */
-  void SetUseImageSpacingOn()
-  { this->SetUseImageSpacing(true); }
+  void
+  SetUseImageSpacingOn()
+  {
+    this->SetUseImageSpacing(true);
+  }
 
   /** Reset the derivative weights to ignore image spacing.  Use this option if
       you want to calculate the Jacobian determinant in the image space.
       Default is ImageSpacingOn. */
-  void SetUseImageSpacingOff()
-  { this->SetUseImageSpacing(false); }
+  void
+  SetUseImageSpacingOff()
+  {
+    this->SetUseImageSpacing(false);
+  }
 
   /** Set/Get whether or not the filter will use the spacing of the input
       image in its calculations */
@@ -198,11 +204,14 @@ public:
   /** Directly Set/Get the array of weights used in the gradient calculations.
       Note that calling UseImageSpacingOn will clobber these values. */
   void SetDerivativeWeights(const WeightsType &);
+
   itkGetConstReferenceMacro(DerivativeWeights, WeightsType);
 
 protected:
   DisplacementFieldJacobianDeterminantFilter();
-  virtual ~DisplacementFieldJacobianDeterminantFilter() {}
+  virtual
+  ~DisplacementFieldJacobianDeterminantFilter() {
+  }
 
   /** Do any necessary casting/copying of the input data.  Input pixel types
      whose value types are not real number types must be cast to real number

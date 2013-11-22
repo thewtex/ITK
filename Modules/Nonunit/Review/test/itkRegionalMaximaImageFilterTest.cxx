@@ -23,8 +23,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
-int itkRegionalMaximaImageFilterTest(int argc, char * argv[])
+int
+itkRegionalMaximaImageFilterTest(int argc, char * argv[])
 {
   if( argc < 5 )
     {
@@ -47,7 +47,6 @@ int itkRegionalMaximaImageFilterTest(int argc, char * argv[])
   typedef itk::RegionalMaximaImageFilter< ImageType, ImageType > FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
-
 
   // exercise Set/Get Fully connected methods for
   // testing purpose
@@ -97,7 +96,6 @@ int itkRegionalMaximaImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-
   filter->SetForegroundValue( 255 );
   if( filter->GetForegroundValue() != 255 )
     {
@@ -113,7 +111,7 @@ int itkRegionalMaximaImageFilterTest(int argc, char * argv[])
     }
 
   filter->SetForegroundValue( itk::NumericTraits< PixelType>::max() );
-  filter->SetBackgroundValue( itk::NumericTraits< PixelType>::NonpositiveMin());
+  filter->SetBackgroundValue( itk::NumericTraits< PixelType>::NonpositiveMin() );
 
   filter->SetFullyConnected( atoi(argv[1]) );
   itk::SimpleFilterWatcher watcher(filter, "filter");
@@ -123,7 +121,6 @@ int itkRegionalMaximaImageFilterTest(int argc, char * argv[])
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[3] );
   writer->Update();
-
 
   // produce the same output with other filters
   typedef itk::HConvexImageFilter< ImageType, ImageType > ConvexType;

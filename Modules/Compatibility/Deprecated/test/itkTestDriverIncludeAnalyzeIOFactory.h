@@ -22,7 +22,8 @@
 #include "itkTestDriverInclude.h"
 #include "itkObjectFactoryBase.h"
 
-void ProcessArgumentsAndRegisterAnalyzeIOFactory(int *ac, ArgumentStringType *av)
+void
+ProcessArgumentsAndRegisterAnalyzeIOFactory(int *ac, ArgumentStringType *av)
 {
   itk::ObjectFactoryBase::RegisterFactory( itk::AnalyzeImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::NiftiImageIOFactory::New() );
@@ -30,4 +31,5 @@ void ProcessArgumentsAndRegisterAnalyzeIOFactory(int *ac, ArgumentStringType *av
   ProcessArguments( ac, av );
 
 }
+
 #endif

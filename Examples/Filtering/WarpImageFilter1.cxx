@@ -26,18 +26,16 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 // Software Guide : BeginCodeSnippet
 #include "itkWarpImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -46,13 +44,14 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
+  const     unsigned int Dimension = 2;
 
   // Software Guide : BeginLatex
   // The deformation field is represented as an image of vector pixel types. The
   // dimension of the vectors is the same as the dimension of the input image.
   // Each vector in the deformation field represents the distance between a
-  // geometric point in the input space and a point in the output space such that:
+  // geometric point in the input space and a point in the output space such
+  // that:
   // \begin{equation}
   // p_{in} = p_{out} + distance
   // \end{equation}
@@ -62,20 +61,19 @@ int main( int argc, char * argv[] )
   typedef itk::Vector< VectorComponentType, Dimension > VectorPixelType;
   typedef itk::Image< VectorPixelType,  Dimension >     DisplacementFieldType;
 
-  typedef unsigned char                         PixelType;
-  typedef itk::Image< PixelType,  Dimension >   ImageType;
+  typedef unsigned char                       PixelType;
+  typedef itk::Image< PixelType,  Dimension > ImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef   itk::ImageFileReader< ImageType >  ReaderType;
-  typedef   itk::ImageFileWriter< ImageType >  WriterType;
+  typedef   itk::ImageFileReader< ImageType > ReaderType;
+  typedef   itk::ImageFileWriter< ImageType > WriterType;
 
   // Software Guide : BeginLatex
   // The field is read from a file, through a reader instantiated over the
   // vector pixel types.
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef   itk::ImageFileReader< DisplacementFieldType >  FieldReaderType;
+  typedef   itk::ImageFileReader< DisplacementFieldType > FieldReaderType;
   // Software Guide : EndCodeSnippet
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -90,7 +88,7 @@ int main( int argc, char * argv[] )
   fieldReader->Update();
 
   DisplacementFieldType::ConstPointer deformationField =
-                                                      fieldReader->GetOutput();
+    fieldReader->GetOutput();
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -106,7 +104,8 @@ int main( int argc, char * argv[] )
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
-  // Typically the mapped position does not correspond to an integer pixel position
+  // Typically the mapped position does not correspond to an integer pixel
+  // position
   // in the input image. Interpolation via an image function is used to compute
   // values at non-integer positions.
   // This is done via the \code{SetInterpolator()} method.
@@ -114,7 +113,7 @@ int main( int argc, char * argv[] )
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
   typedef itk::LinearInterpolateImageFunction<
-                       ImageType, double >  InterpolatorType;
+      ImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 

@@ -50,7 +50,8 @@ PowellOptimizer
 
 PowellOptimizer
 ::~PowellOptimizer()
-{}
+{
+}
 
 void
 PowellOptimizer
@@ -58,6 +59,7 @@ PowellOptimizer
           const vnl_vector< double > & direction)
 {
   const Optimizer::ScalesType & inv_scales = this->GetInverseScales();
+
   for ( unsigned int i = 0; i < m_SpaceDimension; ++i )
     {
     m_LineOrigin[i] = origin[i];
@@ -510,8 +512,8 @@ PowellOptimizer
     if ( fptt < fp )
       {
       double t = 2.0 * ( fp - 2.0 * fx + fptt )
-                 * vnl_math_sqr(fp - fx - del)
-                 - del *vnl_math_sqr(fp - fptt);
+        * vnl_math_sqr(fp - fx - del)
+        - del *vnl_math_sqr(fp - fptt);
       if ( t < 0.0 )
         {
         this->SetLine(p, xit);
@@ -575,5 +577,6 @@ PowellOptimizer
   os << indent << "Current Line Iteration " << m_CurrentLineIteration << std::endl;
   os << indent << "Stop              " << m_Stop             << std::endl;
 }
+
 } // end of namespace itk
 #endif

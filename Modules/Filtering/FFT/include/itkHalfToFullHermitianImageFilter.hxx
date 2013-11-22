@@ -108,8 +108,8 @@ HalfToFullHermitianImageFilter< TInputImage >
 
   // Copy the non-reflected region.
   OutputImageRegionType copyRegion( outputRegionForThread );
-  bool copy = copyRegion.Crop( inputRegion );
-  float initialProgress = 0.0f;
+  bool                  copy = copyRegion.Crop( inputRegion );
+  float                 initialProgress = 0.0f;
   if ( copy )
     {
     initialProgress = static_cast< float >( copyRegion.GetNumberOfPixels() ) /

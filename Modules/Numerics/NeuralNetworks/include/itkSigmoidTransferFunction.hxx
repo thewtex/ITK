@@ -50,9 +50,10 @@ SigmoidTransferFunction<ScalarType>
 ::Evaluate(const ScalarType& input)  const
 {
   const ScalarType x = (static_cast<ScalarType>(input) - m_Beta) / m_Alpha;
-  const ScalarType e = 1.0 / (1.0 + vcl_exp(-x));
+  const ScalarType e = 1.0 / (1.0 + vcl_exp(-x) );
   const ScalarType v = (m_OutputMaximum - m_OutputMinimum) * e
-                     + m_OutputMinimum;
+    + m_OutputMinimum;
+
   return v;
 }
 
@@ -63,6 +64,7 @@ SigmoidTransferFunction< ScalarType>
 ::EvaluateDerivative(const ScalarType& input)  const
 {
   ScalarType f = Evaluate(input);
+
   return f * (1 - f);
 }
 

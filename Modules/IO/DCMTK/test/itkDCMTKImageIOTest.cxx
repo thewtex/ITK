@@ -25,7 +25,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkDCMTKImageIOTest(int ac, char* av[])
+int
+itkDCMTKImageIOTest(int ac, char* av[])
 {
 
   if(ac < 5)
@@ -34,11 +35,11 @@ int itkDCMTKImageIOTest(int ac, char* av[])
     return EXIT_FAILURE;
     }
 
-  typedef short                                   InputPixelType;
-  typedef itk::Image< InputPixelType, 2 >         InputImageType;
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef short                                  InputPixelType;
+  typedef itk::Image< InputPixelType, 2 >        InputImageType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
-  typedef itk::DCMTKImageIO                       ImageIOType;
+  typedef itk::DCMTKImageIO ImageIOType;
   ImageIOType::Pointer dcmtkImageIO = ImageIOType::New();
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -62,14 +63,14 @@ int itkDCMTKImageIOTest(int ac, char* av[])
   typedef unsigned char                   WritePixelType;
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::RescaleIntensityImageFilter<
-    InputImageType, WriteImageType >      RescaleFilterType;
+      InputImageType, WriteImageType >      RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
   rescaler->SetInput( reader->GetOutput() );
 
-  typedef itk::ImageFileWriter< WriteImageType >  Writer2Type;
+  typedef itk::ImageFileWriter< WriteImageType > Writer2Type;
   Writer2Type::Pointer writer2 = Writer2Type::New();
   // writer2->DebugOn();
   writer2->SetFileName( av[3] );

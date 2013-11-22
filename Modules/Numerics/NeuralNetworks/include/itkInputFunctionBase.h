@@ -57,22 +57,26 @@ public:
 
 protected:
 
-  InputFunctionBase() {};
-  ~InputFunctionBase() {};
+  InputFunctionBase() {
+  }
+
+  ~InputFunctionBase() {
+  }
 
   /** Method to print the object. */
-  virtual void PrintSelf( std::ostream& os, Indent indent ) const
-    {
+  virtual void
+  PrintSelf( std::ostream& os, Indent indent ) const
+  {
     os << indent << "InputFunctionBase(" << this << ")" << std::endl;
     Superclass::PrintSelf( os, indent );
-    }
+  }
 
 private:
 
   InputFunctionBase(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);    //purposely not implemented
 
-};//class
+};  //class
 
 } // end namespace Statistics
 } // end namespace itk

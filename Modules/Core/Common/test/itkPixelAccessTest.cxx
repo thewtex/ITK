@@ -20,12 +20,12 @@
 
 #include "itkImage.h"
 
-
 // This routine is used to make sure that we call the "const" version
 // of GetPixel() (via the operator[])
 template <typename T, unsigned int VImageDimension>
-void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
-                          itk::Image<T, VImageDimension> &out)
+void
+TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
+                     itk::Image<T, VImageDimension> &out)
 {
   typename itk::Image<T, VImageDimension>::IndexType regionStartIndex3D = {{5, 10, 15}};
   typename itk::Image<T, VImageDimension>::IndexType regionEndIndex3D = {{8, 15, 17}};
@@ -41,8 +41,8 @@ void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
   out[regionEndIndex3D] = in[regionStartIndex3D];
 }
 
-
-int itkPixelAccessTest(int, char* [] )
+int
+itkPixelAccessTest(int, char* [] )
 {
   std::cout << "Creating an image" << std::endl;
   itk::Image<itk::Vector<unsigned short, 5>, 3>::Pointer
@@ -60,6 +60,7 @@ int itkPixelAccessTest(int, char* [] )
   itk::Image<itk::Vector<unsigned short, 5>, 3>::IndexType regionEndIndex3D = {{8, 15, 17}};
 
   itk::Image<itk::Vector<unsigned short, 5>, 3>::RegionType region;
+
   region.SetSize(imageSize3D);
   region.SetIndex(startIndex3D);
   o3->SetLargestPossibleRegion( region );
@@ -79,7 +80,6 @@ int itkPixelAccessTest(int, char* [] )
   vec[2] = 3;
   vec[3] = 2;
   vec[4] = 1;
-
 
   (*o3)[regionStartIndex3D] = vec;
   (*o3)[regionEndIndex3D] = (*o3)[regionStartIndex3D];

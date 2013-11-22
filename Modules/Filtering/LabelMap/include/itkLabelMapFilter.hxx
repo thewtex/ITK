@@ -34,7 +34,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 LabelMapFilter< TInputImage, TOutputImage >
-::LabelMapFilter():
+::LabelMapFilter() :
   m_InverseNumberOfLabelObjects( 1.0f ),
   m_NumberOfLabelObjectsProcessed( 1 )
 {
@@ -58,7 +58,7 @@ LabelMapFilter< TInputImage, TOutputImage >
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
 
   if ( !input )
-        { return; }
+                { return; }
 
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
@@ -77,8 +77,9 @@ LabelMapFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
   // initialize the iterator
-  m_LabelObjectIterator =  typename InputImageType::Iterator(this->GetLabelMap());
-//  m_LabelObjectIterator = typename InputImageType::Iterator(this->GetLabelMap());
+  m_LabelObjectIterator =  typename InputImageType::Iterator(this->GetLabelMap() );
+//  m_LabelObjectIterator = typename
+// InputImageType::Iterator(this->GetLabelMap());
 
   // and the mutex
   m_LabelObjectContainerLock = FastMutexLock::New();
@@ -104,27 +105,26 @@ LabelMapFilter< TInputImage, TOutputImage >
     {
     LabelObjectType *labelObject;
     // begin mutex lock
-    {
-    MutexLockHolder< FastMutexLock > lock(*m_LabelObjectContainerLock );
-
-    if ( m_LabelObjectIterator.IsAtEnd() )
       {
-      // mutex lock holder deleted
-      return;
+      MutexLockHolder< FastMutexLock > lock(*m_LabelObjectContainerLock );
+
+      if ( m_LabelObjectIterator.IsAtEnd() )
+        {
+        // mutex lock holder deleted
+        return;
+        }
+
+      // get the label object
+      labelObject = m_LabelObjectIterator.GetLabelObject();
+
+      // increment the iterator now, so it will not be invalidated if the object
+      // is destroyed
+      ++m_LabelObjectIterator;
+      ++m_NumberOfLabelObjectsProcessed;
+
+      // unlock the mutex, so the other threads can get an object
       }
-
-    // get the label object
-    labelObject = m_LabelObjectIterator.GetLabelObject();
-
-    // increment the iterator now, so it will not be invalidated if the object
-    // is destroyed
-    ++m_LabelObjectIterator;
-    ++m_NumberOfLabelObjectsProcessed;
-
-    // unlock the mutex, so the other threads can get an object
-    }
     // end mutex lock
-
 
     // and run the user defined method for that object
     this->ThreadedProcessLabelObject(labelObject);
@@ -156,6 +156,7 @@ LabelMapFilter< TInputImage, TOutputImage >
   // do nothing
   // the subclass should override this method
 }
+
 } // end namespace itk
 
 #endif

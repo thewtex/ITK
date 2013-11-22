@@ -32,7 +32,8 @@ ImageIORegion
 
 ImageIORegion
 ::~ImageIORegion()
-{}
+{
+}
 
 ImageIORegion
 ::ImageIORegion(unsigned int dimension)
@@ -45,7 +46,7 @@ ImageIORegion
 }
 
 ImageIORegion
-::ImageIORegion(const Self & region):Region()
+::ImageIORegion(const Self & region) : Region()
 {
   m_Index = region.m_Index;
   m_Size = region.m_Size;
@@ -61,7 +62,8 @@ ImageIORegion
   m_ImageDimension = region.m_ImageDimension;
 }
 
-std::ostream & operator<<(std::ostream & os, const ImageIORegion & region)
+std::ostream &
+operator<<(std::ostream & os, const ImageIORegion & region)
 {
   region.Print(os);
   return os;
@@ -89,7 +91,6 @@ ImageIORegion
 {
   return m_Index;
 }
-
 
 /** Set the size of the region. This plus the index determines the
  * rectangular shape, or extent, of the region. */
@@ -295,4 +296,5 @@ ImageIORegion
     }
   os << std::endl;
 }
+
 } //namespace itk

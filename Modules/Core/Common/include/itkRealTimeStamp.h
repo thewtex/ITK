@@ -46,7 +46,7 @@ class ITKCommon_EXPORT RealTimeStamp
 {
 public:
 
-  typedef  RealTimeStamp     Self;
+  typedef  RealTimeStamp Self;
 
   friend class RealTimeClock;
 
@@ -61,25 +61,39 @@ public:
 
   /** Return time in multiple units. */
   TimeRepresentationType GetTimeInMicroSeconds() const;
+
   TimeRepresentationType GetTimeInMilliSeconds() const;
+
   TimeRepresentationType GetTimeInSeconds() const;
+
   TimeRepresentationType GetTimeInMinutes() const;
+
   TimeRepresentationType GetTimeInHours() const;
+
   TimeRepresentationType GetTimeInDays() const;
 
   /** Arithmetic operations between RealTimeInterval and RealTimeStamp. */
   RealTimeInterval operator-( const Self & ) const;
+
   Self operator+( const RealTimeInterval & ) const;
+
   Self operator-( const RealTimeInterval & ) const;
+
   const Self & operator+=( const RealTimeInterval & );
+
   const Self & operator-=( const RealTimeInterval & );
 
   /** Comparison operations. */
   bool operator>( const Self & ) const;
+
   bool operator<( const Self & ) const;
+
   bool operator==( const Self & ) const;
+
   bool operator!=( const Self & ) const;
+
   bool operator<=( const Self & ) const;
+
   bool operator>=( const Self & ) const;
 
   /** Default print out of a RealTimeStamp */
@@ -87,18 +101,18 @@ public:
 
 private:
 
-  typedef   uint64_t   SecondsCounterType;
-  typedef   uint64_t   MicroSecondsCounterType;
+  typedef   uint64_t SecondsCounterType;
+  typedef   uint64_t MicroSecondsCounterType;
 
   /** Constructor with values. Intentionally made private */
   RealTimeStamp( SecondsCounterType, MicroSecondsCounterType );
 
-  typedef   RealTimeInterval::SecondsDifferenceType        SecondsDifferenceType;
-  typedef   RealTimeInterval::MicroSecondsDifferenceType   MicroSecondsDifferenceType;
+  typedef   RealTimeInterval::SecondsDifferenceType      SecondsDifferenceType;
+  typedef   RealTimeInterval::MicroSecondsDifferenceType MicroSecondsDifferenceType;
 
   /** Number of Seconds and Microseconds since... */
-  SecondsCounterType        m_Seconds;
-  MicroSecondsCounterType   m_MicroSeconds;
+  SecondsCounterType      m_Seconds;
+  MicroSecondsCounterType m_MicroSeconds;
 
 };
 

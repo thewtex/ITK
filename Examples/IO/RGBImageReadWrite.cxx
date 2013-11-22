@@ -36,8 +36,8 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -46,7 +46,6 @@ int main( int argc, char ** argv )
     std::cerr << argv[0] << " inputRGBImageFile  outputRGBImageFile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Software Guide : BeginLatex
   //
@@ -59,10 +58,9 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel< unsigned char >   PixelType;
-  typedef itk::Image< PixelType, 2 >       ImageType;
+  typedef itk::RGBPixel< unsigned char > PixelType;
+  typedef itk::Image< PixelType, 2 >     ImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -75,17 +73,15 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-
 
   //  Software Guide : BeginLatex
   //
@@ -99,10 +95,8 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   ImageType::Pointer image = reader->GetOutput();
   writer->SetInput( image );
-
 
   //  Software Guide : BeginLatex
   //
@@ -123,7 +117,6 @@ int main( int argc, char ** argv )
   //  internally in the \doxygen{ImageIO} objects.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

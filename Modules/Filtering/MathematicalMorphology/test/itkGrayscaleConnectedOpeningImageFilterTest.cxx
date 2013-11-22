@@ -24,8 +24,8 @@
 
 #include "itkGrayscaleConnectedOpeningImageFilter.h"
 
-
-int itkGrayscaleConnectedOpeningImageFilterTest( int argc, char * argv[] )
+int
+itkGrayscaleConnectedOpeningImageFilterTest( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -35,21 +35,19 @@ int itkGrayscaleConnectedOpeningImageFilterTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //
   //  The following code defines the input and output pixel types and their
   //  associated image types.
   //
   const unsigned int Dimension = 2;
 
-  typedef unsigned char   InputPixelType;
-  typedef unsigned char   OutputPixelType;
-  typedef unsigned char   WritePixelType;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
+  typedef unsigned char WritePixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
-  typedef itk::Image< WritePixelType, Dimension >    WriteImageType;
-
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::Image< WritePixelType, Dimension >  WriteImageType;
 
   // readers/writers
   typedef itk::ImageFileReader< InputImageType  > ReaderType;
@@ -57,17 +55,16 @@ int itkGrayscaleConnectedOpeningImageFilterTest( int argc, char * argv[] )
 
   // define the fillhole filter
   typedef itk::GrayscaleConnectedOpeningImageFilter<
-                            InputImageType,
-                            OutputImageType >  ConnectedOpeningFilterType;
-
+      InputImageType,
+      OutputImageType >  ConnectedOpeningFilterType;
 
   // Creation of Reader and Writer filters
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer  = WriterType::New();
 
   // Create the filter
-  ConnectedOpeningFilterType::Pointer  connectedOpening = ConnectedOpeningFilterType::New();
-  FilterWatcher watcher(connectedOpening, "Opening"); watcher.QuietOn();
+  ConnectedOpeningFilterType::Pointer connectedOpening = ConnectedOpeningFilterType::New();
+  FilterWatcher                       watcher(connectedOpening, "Opening"); watcher.QuietOn();
 
   // Setup the input and output files
   reader->SetFileName( argv[1] );

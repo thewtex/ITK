@@ -19,7 +19,6 @@
 #define __itkNumericSeriesFileNames_h
 #include "ITKIOImageBaseExport.h"
 
-
 #include "itkObject.h"
 #include "itkObjectFactory.h"
 #include "itkIntTypes.h"
@@ -51,7 +50,7 @@ namespace itk
  * \wikiexample{Utilities/NumericSeriesFileNames,Create a list of file names}
  * \endwiki
  */
-class ITKIOImageBase_EXPORT NumericSeriesFileNames:public Object
+class ITKIOImageBase_EXPORT NumericSeriesFileNames : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -95,7 +94,9 @@ public:
 
 protected:
   NumericSeriesFileNames();
-  ~NumericSeriesFileNames() {}
+  ~NumericSeriesFileNames() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

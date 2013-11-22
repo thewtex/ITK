@@ -19,7 +19,8 @@
 
 namespace itk
 {
-void WatershedMiniPipelineProgressCommand
+void
+WatershedMiniPipelineProgressCommand
 ::Execute(Object *caller, const EventObject & event)
 {
   ProcessObject *po = dynamic_cast< ProcessObject * >( caller );
@@ -37,7 +38,8 @@ void WatershedMiniPipelineProgressCommand
     }
 }
 
-void WatershedMiniPipelineProgressCommand
+void
+WatershedMiniPipelineProgressCommand
 ::Execute(const Object *caller, const EventObject & event)
 {
   ProcessObject *po = dynamic_cast< ProcessObject * >( const_cast< Object * >( caller ) );
@@ -55,11 +57,14 @@ void WatershedMiniPipelineProgressCommand
     }
 }
 
-void WatershedMiniPipelineProgressCommand
+void
+WatershedMiniPipelineProgressCommand
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NumberOfFilters: " << m_NumberOfFilters << std::endl;
   os << indent << "Count: " << m_Count << std::endl;
 }
+
 } // end namespace itk

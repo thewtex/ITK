@@ -34,7 +34,6 @@
 #define __itkSiemensVisionImageIO_h
 #include "ITKIOSiemensExport.h"
 
-
 #include "itkIPLCommonImageIO.h"
 
 namespace itk
@@ -47,7 +46,7 @@ namespace itk
  * \ingroup IOFilters
  * \ingroup ITKIOSiemens
  */
-class ITKIOSiemens_EXPORT SiemensVisionImageIO:public IPLCommonImageIO
+class ITKIOSiemens_EXPORT SiemensVisionImageIO : public IPLCommonImageIO
 {
 public:
   /** Standard class typedefs. */
@@ -414,6 +413,7 @@ private:
     } SiemensVisionHeaderInfo;
   SiemensVisionImageIO(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

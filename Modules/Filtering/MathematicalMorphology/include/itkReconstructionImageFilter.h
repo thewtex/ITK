@@ -52,7 +52,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TCompare >
-class ReconstructionImageFilter:
+class ReconstructionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -138,7 +138,9 @@ public:
 
 protected:
   ReconstructionImageFilter();
-  ~ReconstructionImageFilter() {}
+  ~ReconstructionImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** ValuedRegionalExtremaImageFilter needs the entire input be

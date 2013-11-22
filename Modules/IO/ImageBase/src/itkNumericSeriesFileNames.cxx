@@ -24,9 +24,10 @@
 namespace itk
 {
 NumericSeriesFileNames
-::NumericSeriesFileNames():
+::NumericSeriesFileNames() :
   m_StartIndex(1), m_EndIndex(1), m_IncrementIndex(1), m_SeriesFormat("%d")
-{}
+{
+}
 
 #if defined(_MSC_VER)
 #define snprintf _snprintf
@@ -60,19 +61,19 @@ NumericSeriesFileNames
       {
       // broken snprintf reports overflow with -1
       nchars = static_cast< OffsetValueType >(
-        m_SeriesFormat.size() + sizeof(c) ); // enough room for path +
-                                             // absurdly long integer string.
+          m_SeriesFormat.size() + sizeof(c) ); // enough room for path +
+                                               // absurdly long integer string.
       }
     OffsetValueType bufflen = nchars + 1;
-    char *temp = new char[bufflen];
+    char *          temp = new char[bufflen];
     OffsetValueType result = snprintf (temp, bufflen, m_SeriesFormat.c_str(), i);
     if(result < 0 || result >= bufflen)
       {
       std::stringstream message_cache;
       message_cache << "The filename is too long for temp buffer."
-                        << " Truncated form: " << temp << "." << std::endl
-                        << "nchars: " << nchars << " bufflen: " << bufflen
-                        << " result: " << result;
+                    << " Truncated form: " << temp << "." << std::endl
+                    << "nchars: " << nchars << " bufflen: " << bufflen
+                    << " result: " << result;
       delete[] temp;
       itkExceptionMacro(<< message_cache.str() );
       }
@@ -99,6 +100,7 @@ NumericSeriesFileNames
     os << indent << "Filenames[" << i << "]: " << m_FileNames[i] << std::endl;
     }
 }
+
 } //namespace ITK
 
 #endif

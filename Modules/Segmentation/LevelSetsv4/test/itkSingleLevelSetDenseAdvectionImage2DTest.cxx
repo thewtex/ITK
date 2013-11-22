@@ -27,7 +27,8 @@
 #include "itkLevelSetEvolution.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 
-int itkSingleLevelSetDenseAdvectionImage2DTest( int argc, char* argv[] )
+int
+itkSingleLevelSetDenseAdvectionImage2DTest( int argc, char* argv[] )
 {
   if( argc < 7 )
     {
@@ -48,15 +49,15 @@ int itkSingleLevelSetDenseAdvectionImage2DTest( int argc, char* argv[] )
   typedef LevelSetType::OutputRealType                   LevelSetOutputRealType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
 
-  typedef itk::IdentifierType                                     IdentifierType;
-  typedef itk::LevelSetContainer< IdentifierType, LevelSetType >  LevelSetContainerType;
+  typedef itk::IdentifierType                                    IdentifierType;
+  typedef itk::LevelSetContainer< IdentifierType, LevelSetType > LevelSetContainerType;
 
   typedef itk::LevelSetEquationAdvectionTerm< InputImageType, LevelSetContainerType >
-                                                                      AdvectionTermType;
+    AdvectionTermType;
   typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >
-                                                                      TermContainerType;
+    TermContainerType;
 
-  typedef itk::LevelSetEquationContainer< TermContainerType >     EquationContainerType;
+  typedef itk::LevelSetEquationContainer< TermContainerType > EquationContainerType;
 
   typedef itk::LevelSetEvolution< EquationContainerType, LevelSetType > LevelSetEvolutionType;
 
@@ -73,16 +74,16 @@ int itkSingleLevelSetDenseAdvectionImage2DTest( int argc, char* argv[] )
   reader->Update();
   InputImageType::Pointer input = reader->GetOutput();
 
-  FastMarchingFilterType::Pointer  fastMarching = FastMarchingFilterType::New();
+  FastMarchingFilterType::Pointer fastMarching = FastMarchingFilterType::New();
 
   NodeContainer::Pointer seeds = NodeContainer::New();
 
-  ImageType::IndexType  seedPosition;
+  ImageType::IndexType seedPosition;
   seedPosition[0] = atoi( argv[2] );
   seedPosition[1] = atoi( argv[3] );
 
   const double initialDistance = atof( argv[4] );
-  const double seedValue = - initialDistance;
+  const double seedValue = -initialDistance;
 
   NodeType node;
   node.SetValue( seedValue );
@@ -122,7 +123,7 @@ int itkSingleLevelSetDenseAdvectionImage2DTest( int argc, char* argv[] )
   heaviside->SetEpsilon( 1.0 );
 
   // Map of levelset bases
-  LevelSetType::Pointer  level_set = LevelSetType::New();
+  LevelSetType::Pointer level_set = LevelSetType::New();
   level_set->SetImage( fastMarching->GetOutput() );
 
   // Insert the levelsets in a levelset container
@@ -164,7 +165,7 @@ int itkSingleLevelSetDenseAdvectionImage2DTest( int argc, char* argv[] )
   equationContainer->AddEquation( 0, termContainer0 );
 
   typedef itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
-      StoppingCriterionType;
+    StoppingCriterionType;
   StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( 5 );
 

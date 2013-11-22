@@ -30,7 +30,6 @@
 
  ***************************************************************/
 
-
 #include "itkImageMomentsCalculator.h"
 #include "itkMultiResolutionPyramidImageFilter.h"
 
@@ -40,19 +39,22 @@ typedef itk::Image<signed short, 2> WImageType;
 typedef itk::Image<float, 2> TImageType;
 //typedef itk::Image<double, 2> TImageType;
 
-//Need to use a Pyramid filter here instead of just downsampling to a 32x32 image
+//Need to use a Pyramid filter here instead of just downsampling to a 32x32
+// image
 typedef itk::MultiResolutionPyramidImageFilter<TImageType,TImageType> PyramidFilterType;
 
-PyramidFilterType::Pointer MakeTwoLevelPyramid(TImageType::Pointer refImage)
+PyramidFilterType::Pointer
+MakeTwoLevelPyramid(TImageType::Pointer refImage)
 {
   PyramidFilterType::ScheduleType pyramidSchedule;
 
   PyramidFilterType::Pointer MyPyramid=PyramidFilterType::New();
+
   MyPyramid->SetInput(refImage);
   MyPyramid->SetNumberOfLevels(2);
   MyPyramid->SetMaximumError(1.e-5);
   pyramidSchedule.SetSize(2,2);
-  for( unsigned int c=0;c<pyramidSchedule.cols();c++ )
+  for( unsigned int c=0; c<pyramidSchedule.cols(); c++ )
     {
     pyramidSchedule[0][c]=8;
     pyramidSchedule[1][c]=4;
@@ -62,14 +64,16 @@ PyramidFilterType::Pointer MakeTwoLevelPyramid(TImageType::Pointer refImage)
   return MyPyramid;
 }
 
-
-TImageType::PointType GetImageCenterPhysicalPoint(TImageType::Pointer & image)
+TImageType::PointType
+GetImageCenterPhysicalPoint(TImageType::Pointer & image)
 {
-  const TImageType::SizeType imageOverallSize=image->GetLargestPossibleRegion().GetSize();
+  const TImageType::SizeType imageOverallSize=
+    image->GetLargestPossibleRegion().GetSize();
   itk::ContinuousIndex<itk::SpacePrecisionType, TImageType::ImageDimension> centerIndex;
   itk::ContinuousIndex<itk::SpacePrecisionType, TImageType::ImageDimension> firstIndex;
   itk::ContinuousIndex<itk::SpacePrecisionType, TImageType::ImageDimension> lastIndex;
-  for( unsigned int q=0;q<TImageType::ImageDimension;q++ )
+
+  for( unsigned int q=0; q<TImageType::ImageDimension; q++ )
     {
     lastIndex[q]=(imageOverallSize[q]-1);
     firstIndex[q]=0;
@@ -81,11 +85,13 @@ TImageType::PointType GetImageCenterPhysicalPoint(TImageType::Pointer & image)
   image->TransformContinuousIndexToPhysicalPoint( firstIndex,  firstLocation );
   TImageType::PointType lastLocation;
   image->TransformContinuousIndexToPhysicalPoint( lastIndex,  lastLocation );
-  std::cout << "FirstLocation=" << firstLocation << " LastLocation=" << lastLocation << " CenterLocation=" << centerLocation << std::endl;
+  std::cout << "FirstLocation=" << firstLocation << " LastLocation=" << lastLocation << " CenterLocation=" <<
+    centerLocation << std::endl;
   return centerLocation;
 }
 
-TImageType::PointType GetCenterOfMass(TImageType::Pointer volume)
+TImageType::PointType
+GetCenterOfMass(TImageType::Pointer volume)
 {
   TImageType::PointType CenterOfMass;
     {
@@ -94,19 +100,22 @@ TImageType::PointType GetCenterOfMass(TImageType::Pointer volume)
     moments->SetImage(volume);
     moments->Compute();
     TImageType::PointType::VectorType tempCenterOfMass=moments->GetCenterOfGravity();
-    for( unsigned int q=0;q<TImageType::ImageDimension;q++ )
+    for( unsigned int q=0; q<TImageType::ImageDimension; q++ )
       {
       CenterOfMass[q]=tempCenterOfMass[q];
       }
     }
-  return  CenterOfMass;
+
+  return CenterOfMass;
 }
 
-TImageType::PointType ComputeCG(TImageType::Pointer img)
+TImageType::PointType
+ComputeCG(TImageType::Pointer img)
 {
   itk::ImageRegionConstIteratorWithIndex< TImageType > it( img,
-    img->GetLargestPossibleRegion() );
+                                                           img->GetLargestPossibleRegion() );
   TImageType::PointType Cg;
+
   Cg.Fill( 0.0 );
   double sumMass=0.0;
   while( !it.IsAtEnd() )
@@ -130,13 +139,14 @@ TImageType::PointType ComputeCG(TImageType::Pointer img)
   return Cg;
 }
 
-int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
+int
+itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
 {
 
   /*  Make an image that is 32x32 */
-  TImageType::SizeType newSize;
+  TImageType::SizeType    newSize;
   TImageType::SpacingType newSpacing;
-  TImageType::PointType newOrigin;
+  TImageType::PointType   newOrigin;
 
   for( unsigned int i =0; i < TImageType::ImageDimension; i++ )
     {
@@ -162,10 +172,10 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
   image->Print(std::cout);
 
   TImageType::IndexType Index;
-  for( int u=12;u<20;u++ )
+  for( int u=12; u<20; u++ )
     {
     Index[0]=u;
-    for( int v=12;v<20;v++ )
+    for( int v=12; v<20; v++ )
       {
       Index[1]=v;
       image->SetPixel(Index,255.0);
@@ -173,16 +183,19 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
     }
 
   PyramidFilterType::Pointer MyPyramid=MakeTwoLevelPyramid(image);
-  TImageType::Pointer ReallySmallImage=MyPyramid->GetOutput(0);
-  TImageType::Pointer SmallImage=MyPyramid->GetOutput(1);
+  TImageType::Pointer        ReallySmallImage=MyPyramid->GetOutput(0);
+  TImageType::Pointer        SmallImage=MyPyramid->GetOutput(1);
 
-  itk::ShrinkImageFilter< TImageType, TImageType >::Pointer Shrinkfilter= itk::ShrinkImageFilter< TImageType, TImageType >::New();
+  itk::ShrinkImageFilter< TImageType,
+                          TImageType >::Pointer Shrinkfilter= itk::ShrinkImageFilter< TImageType, TImageType >::New();
   Shrinkfilter->SetInput( image );
   Shrinkfilter->SetShrinkFactors( 4 );
   Shrinkfilter->Update();
   TImageType::Pointer ShrinkSmallImage=Shrinkfilter->GetOutput();
 
-  itk::DiscreteGaussianImageFilter< TImageType,  TImageType>::Pointer smoother= itk::DiscreteGaussianImageFilter< TImageType,  TImageType>::New();
+  itk::DiscreteGaussianImageFilter< TImageType,
+                                    TImageType>::Pointer smoother=
+    itk::DiscreteGaussianImageFilter< TImageType,  TImageType>::New();
   smoother->SetInput( image );
   smoother->SetUseImageSpacing( true );
   smoother->SetMaximumError( MyPyramid->GetMaximumError() );
@@ -197,7 +210,9 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
 
   TImageType::Pointer GaussianImage=smoother->GetOutput();
 
-  itk::ShrinkImageFilter< TImageType, TImageType >::Pointer smootherShrinkfilter= itk::ShrinkImageFilter< TImageType, TImageType >::New();
+  itk::ShrinkImageFilter< TImageType,
+                          TImageType >::Pointer smootherShrinkfilter=
+    itk::ShrinkImageFilter< TImageType, TImageType >::New();
   smootherShrinkfilter->SetInput( GaussianImage );
   smootherShrinkfilter->SetShrinkFactors( 4 );
   smootherShrinkfilter->Update();
@@ -206,37 +221,37 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
 //#define __WRITE_DEBUG_IMAGING__
 #ifdef __WRITE_DEBUG_IMAGING__
   typedef itk::ImageFileWriter< WImageType > WriterType;
-  WriterType::Pointer writer = WriterType::New();
+  WriterType::Pointer                                   writer = WriterType::New();
   itk::CastImageFilter<TImageType, WImageType>::Pointer castFilter=itk::CastImageFilter<TImageType, WImageType>::New();
 
   try
     {
     writer->SetFileName("PyramidTestFullSize.tif");
     castFilter->SetInput(image);
-    writer->SetInput(castFilter->GetOutput());
+    writer->SetInput(castFilter->GetOutput() );
     writer->Update();
     writer->SetFileName("PyramidTestQuarterSize.tif");
     castFilter->SetInput(SmallImage);
-    writer->SetInput(castFilter->GetOutput());
+    writer->SetInput(castFilter->GetOutput() );
     writer->Update();
     writer->SetFileName("PyramidTestEightSize.tif");
     castFilter->SetInput(ReallySmallImage);
-    writer->SetInput(castFilter->GetOutput());
+    writer->SetInput(castFilter->GetOutput() );
     writer->Update();
 
     writer->SetFileName("ShrinkTestQuarterSize.tif");
     castFilter->SetInput(ShrinkSmallImage);
-    writer->SetInput(castFilter->GetOutput());
+    writer->SetInput(castFilter->GetOutput() );
     writer->Update();
 
     writer->SetFileName("GaussianTestFullSize.tif");
     castFilter->SetInput(GaussianImage);
-    writer->SetInput(castFilter->GetOutput());
+    writer->SetInput(castFilter->GetOutput() );
     writer->Update();
 
     writer->SetFileName("GaussianTestQuarterSize.tif");
     castFilter->SetInput(GaussianShrinkSmallImage);
-    writer->SetInput(castFilter->GetOutput());
+    writer->SetInput(castFilter->GetOutput() );
     writer->Update();
     }
   catch (itk::ExceptionObject &err)
@@ -249,7 +264,7 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
 
   //Known CG=[0,0]
   TImageType::PointType testCG;
-  int errorCount=0;
+  int                   errorCount=0;
     {
     TImageType::Pointer test=image;
     std::cout << "\nFullSizeImage...";
@@ -263,11 +278,12 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
       {
       std::cout << "PASSED" << std::endl;
       }
-    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) << " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
+    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) <<
+      " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
     std::cout << "\nQuarterSizeImage...";
     test=SmallImage;
     testCG=ComputeCG( test );
-    if (testCG.GetVectorFromOrigin().GetNorm() > (newSpacing[1] * 4.0 / 2.0))
+    if (testCG.GetVectorFromOrigin().GetNorm() > (newSpacing[1] * 4.0 / 2.0) )
       {
       errorCount++;
       std::cout << "FAILED" << std::endl;
@@ -276,11 +292,12 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
       {
       std::cout << "PASSED" << std::endl;
       }
-    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) << " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
+    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) <<
+      " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
     std::cout << "\nEighthSizeImage...";
     test=ReallySmallImage;
     testCG=ComputeCG( test );
-    if (testCG.GetVectorFromOrigin().GetNorm() > (newSpacing[1] * 8.0 / 2.0))
+    if (testCG.GetVectorFromOrigin().GetNorm() > (newSpacing[1] * 8.0 / 2.0) )
       {
       errorCount++;
       std::cout << "FAILED" << std::endl;
@@ -289,7 +306,8 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
       {
       std::cout << "PASSED" << std::endl;
       }
-    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) << " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
+    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) <<
+      " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
     std::cout << "\nShrinkSmallSizeImage...";
     test=ShrinkSmallImage;
     testCG=ComputeCG( test );
@@ -302,7 +320,8 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
       {
       std::cout << "PASSED" << std::endl;
       }
-    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) << " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
+    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) <<
+      " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
 
     std::cout << "\nGaussianFullSizeImage...";
     test=GaussianImage;
@@ -316,12 +335,13 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
       {
       std::cout << "PASSED" << std::endl;
       }
-    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) << " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
+    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) <<
+      " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
 
     std::cout << "\nGaussianQuarterSizeImage...";
     test=GaussianShrinkSmallImage;
     testCG=ComputeCG( test );
-    if (testCG.GetVectorFromOrigin().GetNorm() > (newSpacing[1] * 4.0 / 2.0))
+    if (testCG.GetVectorFromOrigin().GetNorm() > (newSpacing[1] * 4.0 / 2.0) )
       {
       errorCount++;
       std::cout << "FAILED" << std::endl;
@@ -330,7 +350,8 @@ int itkShrinkImagePreserveObjectPhysicalLocations(int, char* [] )
       {
       std::cout << "PASSED" << std::endl;
       }
-    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) << " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
+    std::cout << "Origin="<< test->GetOrigin() << " CenterOfSpace=" << GetImageCenterPhysicalPoint(test) <<
+      " CenterOfMass=" << GetCenterOfMass(test) << "CG=" <<testCG << std::endl;
     }
   std::cout << "Found " << errorCount << " errors." << std::endl;
 

@@ -42,7 +42,7 @@ namespace itk
  */
 template< typename TOutputImage >
 class GaussianImageSource :
-    public ParametricImageSource< TOutputImage >
+  public ParametricImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -52,7 +52,7 @@ public:
   typedef SmartPointer< const Self >            ConstPointer;
 
   /** Typedef for the output image type. */
-  typedef TOutputImage                     OutputImageType;
+  typedef TOutputImage OutputImageType;
 
   /** Typedef for the output image PixelType. */
   typedef typename TOutputImage::PixelType OutputImagePixelType;
@@ -108,6 +108,7 @@ public:
    * dimension, the next N values are the Mean parameters in each
    * dimension, and the last value is the Scale. */
   virtual void SetParameters(const ParametersType & parameters);
+
   virtual ParametersType GetParameters() const;
 
   /** Get the number of parameters for this image source. When this

@@ -54,7 +54,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage, typename TOutputImage >
-class LabelMapFilter:
+class LabelMapFilter :
   public
   ImageToImageFilter< TInputImage, TOutputImage >
 {
@@ -113,7 +113,8 @@ protected:
    * Return the label collection image to use. This method may be overloaded
    * if the label collection image to use is not the input image.
    */
-  virtual InputImageType * GetLabelMap()
+  virtual InputImageType *
+  GetLabelMap()
   {
     return static_cast< InputImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(0) ) );
   }
@@ -125,8 +126,8 @@ private:
   void operator=(const Self &); //purposely not implemented
 
   typename InputImageType::Iterator m_LabelObjectIterator;
-  float                             m_InverseNumberOfLabelObjects;
-  SizeValueType                     m_NumberOfLabelObjectsProcessed;
+  float         m_InverseNumberOfLabelObjects;
+  SizeValueType m_NumberOfLabelObjectsProcessed;
 };
 } // end namespace itk
 

@@ -142,10 +142,10 @@ StretchIntensityImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
-  const TInputImage *  inputPtr = this->GetInput();
-  TOutputImage      *  outputPtr = this->GetOutput(0);
+  const TInputImage * inputPtr = this->GetInput();
+  TOutputImage *      outputPtr = this->GetOutput(0);
 
-  InputImageRegionType    inputRegionForThread = outputRegionForThread;
+  InputImageRegionType inputRegionForThread = outputRegionForThread;
 
   // Define the iterators
   ImageRegionConstIterator< TInputImage > inputIt(inputPtr, inputRegionForThread);
@@ -162,7 +162,7 @@ StretchIntensityImageFilter< TInputImage, TOutputImage >
 
     const RealType value  = static_cast< RealType >( x ) * m_Scale + m_Shift;
 
-    OutputPixelType  result = static_cast< OutputPixelType >( value );
+    OutputPixelType result = static_cast< OutputPixelType >( value );
 
     result = ( result > m_OutputMaximum ) ? m_OutputMaximum : result;
     result = ( result < m_OutputMinimum ) ? m_OutputMinimum : result;
@@ -198,7 +198,6 @@ StretchIntensityImageFilter< TInputImage, TOutputImage >
 {
   return itkDynamicCastInDebugMode< const TInputImage * >( this->GetPrimaryInput() );
 }
-
 
 } // end namespace Testing
 } // end namespace itk

@@ -37,7 +37,7 @@ namespace itk
  *
  */
 template< typename TImage >
-class ImageScanlineIterator:public ImageScanlineConstIterator< TImage >
+class ImageScanlineIterator : public ImageScanlineConstIterator< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -72,7 +72,8 @@ public:
   ImageScanlineIterator(const ImageIterator< TImage > & it);
 
   /** Set the pixel value */
-  void Set(const PixelType & value) const
+  void
+  Set(const PixelType & value) const
   {
     this->m_PixelAccessorFunctor.Set(*( const_cast< InternalPixelType * >(
                                           this->m_Buffer + this->m_Offset ) ), value);
@@ -81,14 +82,18 @@ public:
   /** Return a reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  PixelType & Value(void)
-  { return *( const_cast< InternalPixelType * >( this->m_Buffer + this->m_Offset ) ); }
+  PixelType &
+  Value(void)
+  {
+    return *( const_cast< InternalPixelType * >( this->m_Buffer + this->m_Offset ) );
+  }
 
 protected:
   /** the construction from a const iterator is declared protected
       in order to enforce const correctness. */
   ImageScanlineIterator(const ImageScanlineConstIterator< TImage > & it);
   Self & operator=(const ImageScanlineConstIterator< TImage > & it);
+
 };
 } // end namespace itk
 

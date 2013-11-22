@@ -54,16 +54,17 @@
 #include "itkNeighborhoodInnerProduct.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
-      std::cerr << "Missing parameters. " << std::endl;
-      std::cerr << "Usage: " << std::endl;
-      std::cerr << argv[0]
-                << " inputImageFile outputImageFile direction"
-                << std::endl;
-      return -1;
+    std::cerr << "Missing parameters. " << std::endl;
+    std::cerr << "Usage: " << std::endl;
+    std::cerr << argv[0]
+              << " inputImageFile outputImageFile direction"
+              << std::endl;
+    return -1;
     }
 
   typedef float                             PixelType;
@@ -87,10 +88,10 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
-  IteratorType out(output, reader->GetOutput()->GetRequestedRegion());
+  IteratorType out(output, reader->GetOutput()->GetRequestedRegion() );
 
   // Software Guide : BeginLatex
   //
@@ -98,11 +99,13 @@ int main( int argc, char ** argv )
   // \index{convolution!operators}
   // \index{iterators!neighborhood!and convolution}
   //
-  // Refer to the previous example for a description of reading the input image and
+  // Refer to the previous example for a description of reading the input image
+  // and
   // setting up the output image and iterator.
   //
   // The following code creates a Sobel operator.  The Sobel operator requires
-  // a direction for its partial derivatives.  This direction is read from the command line.
+  // a direction for its partial derivatives.  This direction is read from the
+  // command line.
   // Changing the direction of the derivatives changes the bias of the edge
   // detection, i.e. maximally vertical or maximally horizontal.
   //
@@ -116,7 +119,8 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginLatex
   //
-  // The neighborhood iterator is initialized as before, except that now it takes
+  // The neighborhood iterator is initialized as before, except that now it
+  // takes
   // its radius directly from the radius of the Sobel operator.  The inner
   // product function object is templated over image type and requires no
   // initialization.
@@ -125,8 +129,8 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   NeighborhoodIteratorType::RadiusType radius = sobelOperator.GetRadius();
-  NeighborhoodIteratorType it( radius, reader->GetOutput(),
-                               reader->GetOutput()->GetRequestedRegion() );
+  NeighborhoodIteratorType             it( radius, reader->GetOutput(),
+                                           reader->GetOutput()->GetRequestedRegion() );
 
   itk::NeighborhoodInnerProduct<ImageType> innerProduct;
   // Software Guide : EndCodeSnippet
@@ -135,7 +139,8 @@ int main( int argc, char ** argv )
   //
   // Using the Sobel operator, inner product, and neighborhood iterator objects,
   // we can now write a very simple \code{for} loop for performing convolution
-  // filtering.  As before, out-of-bounds pixel values are supplied automatically
+  // filtering.  As before, out-of-bounds pixel values are supplied
+  // automatically
   // by the iterator.
   //
   // Software Guide : EndLatex
@@ -150,7 +155,8 @@ int main( int argc, char ** argv )
   // Software Guide : BeginLatex
   //
   // The output is rescaled and written as in the previous example.  Applying
-  // this example in the $x$ and $y$ directions produces the images at the center
+  // this example in the $x$ and $y$ directions produces the images at the
+  // center
   // and right of Figure~\ref{fig:NeighborhoodExamples1}. Note that x-direction
   // operator produces the same output image as in the previous example.
   //
@@ -161,7 +167,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter<
-               ImageType, WriteImageType > RescaleFilterType;
+      ImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
@@ -171,7 +177,7 @@ int main( int argc, char ** argv )
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
-  writer->SetInput(rescaler->GetOutput());
+  writer->SetInput(rescaler->GetOutput() );
   try
     {
     writer->Update();

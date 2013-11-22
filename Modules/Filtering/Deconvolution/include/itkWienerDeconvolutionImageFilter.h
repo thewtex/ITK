@@ -71,18 +71,19 @@ namespace itk
  * \ingroup ITKDeconvolution
  *
  */
-template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage, typename TInternalPrecision=double >
+template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage,
+          typename TInternalPrecision=double >
 class WienerDeconvolutionImageFilter :
   public InverseDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 {
 public:
-  typedef WienerDeconvolutionImageFilter                         Self;
+  typedef WienerDeconvolutionImageFilter Self;
   typedef InverseDeconvolutionImageFilter< TInputImage,
                                            TKernelImage,
                                            TOutputImage,
                                            TInternalPrecision >  Superclass;
-  typedef SmartPointer< Self >                                   Pointer;
-  typedef SmartPointer< const Self >                             ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -125,7 +126,8 @@ public:
 
 protected:
   WienerDeconvolutionImageFilter();
-  ~WienerDeconvolutionImageFilter() {}
+  ~WienerDeconvolutionImageFilter() {
+  }
 
   /** This filter uses a minipipeline to compute the output. */
   void GenerateData();
@@ -145,18 +147,27 @@ template< typename TPixel >
 class WienerDeconvolutionFunctor
 {
 public:
-  WienerDeconvolutionFunctor() { m_KernelZeroMagnitudeThreshold = 0.0; }
-  ~WienerDeconvolutionFunctor() {}
+  WienerDeconvolutionFunctor() {
+    m_KernelZeroMagnitudeThreshold = 0.0;
+  }
 
-  bool operator!=( const WienerDeconvolutionFunctor & ) const
+  ~WienerDeconvolutionFunctor() {
+  }
+
+  bool
+  operator!=( const WienerDeconvolutionFunctor & ) const
   {
     return false;
   }
-  bool operator==( const WienerDeconvolutionFunctor & other) const
+
+  bool
+  operator==( const WienerDeconvolutionFunctor & other) const
   {
     return !(*this != other);
   }
-  inline TPixel operator()(const TPixel & I, const TPixel & H) const
+
+  inline TPixel
+  operator()(const TPixel & I, const TPixel & H) const
   {
     TPixel Pn = m_NoisePowerSpectralDensityConstant;
 
@@ -167,6 +178,7 @@ public:
 
     TPixel denominator = std::norm( H ) + ( Pn / (Pf - Pn) );
     TPixel value = NumericTraits< TPixel >::ZeroValue();
+
     if ( std::abs( denominator ) >= m_KernelZeroMagnitudeThreshold )
       {
       value = I * ( std::conj( H ) / denominator );
@@ -177,22 +189,28 @@ public:
 
   /** Set/get the constant defining the noise power spectral density
   * constant. */
-  void SetNoisePowerSpectralDensityConstant(double constant)
+  void
+  SetNoisePowerSpectralDensityConstant(double constant)
   {
     m_NoisePowerSpectralDensityConstant = constant;
   }
-  double GetNoisePowerSpectralDensityConstant() const
+
+  double
+  GetNoisePowerSpectralDensityConstant() const
   {
     return m_NoisePowerSpectralDensityConstant;
   }
 
   /** Set/get the threshold value below which complex magnitudes are considered
    * to be zero. */
-  void SetKernelZeroMagnitudeThreshold(double mu)
+  void
+  SetKernelZeroMagnitudeThreshold(double mu)
   {
     m_KernelZeroMagnitudeThreshold = mu;
   }
-  double GetKernelZeroMagnitudeThreshold() const
+
+  double
+  GetKernelZeroMagnitudeThreshold() const
   {
     return m_KernelZeroMagnitudeThreshold;
   }

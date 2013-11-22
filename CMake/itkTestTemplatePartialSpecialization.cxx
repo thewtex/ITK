@@ -26,30 +26,53 @@ class victor
   T data[256];
 
 public:
-  victor() {}
-  T &operator[](unsigned i) { return data[i]; }
+  victor() {
+  }
+
+  T &
+  operator[](unsigned i) {
+    return data[i];
+  }
+
 };
 
 template <class T>
 class victor<T *>
 {
   T *data[256];
- public:
-  T * &operator[](unsigned i) { return data[i]; }
-  void slarf() { data[0] += (data[2] - data[1]); }
+
+public:
+  T * &
+  operator[](unsigned i) {
+    return data[i];
+  }
+
+  void
+  slarf() {
+    data[0] += (data[2] - data[1]);
+  }
+
 };
 
 template <class A, class R>
 struct foo {
   typedef A a;
   typedef R r;
-};
+  };
 
-template <class T> struct foo<T *, T *> { void bar() {} };
-template <class T> struct foo<int *, T> { void baz() {} };
+template <class T> struct foo<T *, T *> { void
+                                          bar() {
+                                          }
 
-int main()
+                                          };
+template <class T> struct foo<int *, T> { void
+                                          baz() {
+                                          }
+
+                                          };
+
+int
+main()
 {
   return 0;
 }
-

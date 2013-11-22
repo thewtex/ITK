@@ -36,6 +36,7 @@ BackwardDifferenceOperator< TPixel, TDimension, TAllocator >
 
   return coeff;
 }
+
 } // namespace itk
 
 #endif

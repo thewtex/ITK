@@ -24,9 +24,9 @@
 #include "itkIntTypes.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
 #endif
-
 
 namespace itk
 {
@@ -49,7 +49,7 @@ namespace itk
  * \ingroup ITKV3Compatibility
  */
 template< typename TInputImage >
-class OtsuThresholdImageCalculator:public Object
+class OtsuThresholdImageCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -98,7 +98,10 @@ public:
 
 protected:
   OtsuThresholdImageCalculator();
-  virtual ~OtsuThresholdImageCalculator() {}
+  virtual
+  ~OtsuThresholdImageCalculator() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

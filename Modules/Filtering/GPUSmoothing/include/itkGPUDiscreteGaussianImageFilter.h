@@ -82,11 +82,11 @@ public:
   typedef typename NumericTraits<OutputPixelType>::ValueType OutputPixelValueType;
 
   typedef OutputPixelType
-                                                                         RealOutputPixelType;
+    RealOutputPixelType;
   typedef GPUImage< OutputPixelType,
                     ImageDimension >                                     RealOutputImageType;
   typedef typename NumericTraits<RealOutputPixelType>::ValueType
-                                                                         RealOutputPixelValueType;
+    RealOutputPixelValueType;
   typedef GPUNeighborhoodOperatorImageFilter< InputImageType, RealOutputImageType,
                                               RealOutputPixelValueType > FirstFilterType;
   typedef GPUNeighborhoodOperatorImageFilter< RealOutputImageType, RealOutputImageType,
@@ -102,8 +102,10 @@ public:
 protected:
   GPUDiscreteGaussianImageFilter();
 
-  virtual ~GPUDiscreteGaussianImageFilter() {
+  virtual
+  ~GPUDiscreteGaussianImageFilter() {
   }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Standard GPU pipeline method. */

@@ -16,14 +16,14 @@
  *
  *=========================================================================*/
 
-
 #include <fstream>
 
 #include "itkPointSetToListSampleAdaptor.h"
 #include "itkWeightedCentroidKdTreeGenerator.h"
 #include "itkKdTreeBasedKmeansEstimator.h"
 
-int itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
+int
+itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
 {
   namespace stat = itk::Statistics;
 
@@ -37,9 +37,9 @@ int itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
 
   unsigned int i;
   unsigned int j;
-  char* dataFileName = argv[1];
-  int dataSize = 2000;
-  int bucketSize = atoi( argv[3] );
+  char*        dataFileName = argv[1];
+  int          dataSize = 2000;
+  int          bucketSize = atoi( argv[3] );
   typedef itk::FixedArray< double, 2 > MeanType;
   double minStandardDeviation = atof( argv[2] );
 
@@ -58,17 +58,17 @@ int itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
 
   /* Loading point data */
   typedef itk::PointSet< double, 2 > PointSetType;
-  PointSetType::Pointer pointSet = PointSetType::New();
+  PointSetType::Pointer                pointSet = PointSetType::New();
   PointSetType::PointsContainerPointer pointsContainer =
     PointSetType::PointsContainer::New();
   pointsContainer->Reserve(dataSize);
-  pointSet->SetPoints(pointsContainer.GetPointer());
+  pointSet->SetPoints(pointsContainer.GetPointer() );
 
   PointSetType::PointsContainerIterator p_iter = pointsContainer->Begin();
-  PointSetType::PointType point;
-  double temp;
-  std::ifstream dataStream(dataFileName);
-  while (p_iter != pointsContainer->End())
+  PointSetType::PointType               point;
+  double                                temp;
+  std::ifstream                         dataStream(dataFileName);
+  while (p_iter != pointsContainer->End() )
     {
     for ( i = 0; i < PointSetType::PointDimension; i++)
       {
@@ -94,7 +94,7 @@ int itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
   typedef stat::WeightedCentroidKdTreeGenerator< DataSampleType > Generator;
   Generator::Pointer generator = Generator::New();
 
-  generator->SetSample(sample.GetPointer());
+  generator->SetSample(sample.GetPointer() );
   generator->SetBucketSize(bucketSize);
   generator->GenerateData();
 
@@ -103,7 +103,6 @@ int itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
   Estimator::Pointer estimator = Estimator::New();
   std::cout << estimator->GetNameOfClass() << std::endl;
   estimator->Print( std::cout );
-
 
   //Set the initial means
   estimator->SetParameters(initialMeans);
@@ -116,7 +115,7 @@ int itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  estimator->SetKdTree(generator->GetOutput());
+  estimator->SetKdTree(generator->GetOutput() );
 
   //Set the centroid position change threshold
   estimator->SetCentroidPositionChangesThreshold(0.0);
@@ -127,12 +126,11 @@ int itkKdTreeBasedKmeansEstimatorTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-
   estimator->StartOptimization();
   Estimator::ParametersType estimatedMeans = estimator->GetParameters();
 
-  bool passed = true;
-  int index;
+  bool               passed = true;
+  int                index;
   const unsigned int numberOfMeasurements = sample->GetMeasurementVectorSize();
   const unsigned int numberOfClasses = trueMeans.size() / numberOfMeasurements;
   for (i = 0; i < numberOfClasses; i++)

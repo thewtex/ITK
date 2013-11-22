@@ -18,7 +18,6 @@
 
 #include "itkImageRegionSplitterSlowDimension.h"
 
-
 namespace itk
 {
 
@@ -36,6 +35,7 @@ ImageRegionSplitterSlowDimension
 {
   // split on the outermost dimension available
   int splitAxis = dim - 1;
+
   while ( regionSize[splitAxis] == 1 )
     {
     --splitAxis;
@@ -47,7 +47,7 @@ ImageRegionSplitterSlowDimension
     }
 
   // determine the actual number of pieces that will be generated
-  const double range = regionSize[splitAxis];
+  const double       range = regionSize[splitAxis];
   const unsigned int valuesPerPiece = Math::Ceil< unsigned int >(range / (double)requestedNumber);
   const unsigned int maxPieceUsed = Math::Ceil< unsigned int >(range / (double)valuesPerPiece) - 1;
 
@@ -65,6 +65,7 @@ ImageRegionSplitterSlowDimension
 
   // split on the outermost dimension available
   unsigned int splitAxis = dim - 1;
+
   while ( regionSize[splitAxis] == 1 )
     {
     if ( splitAxis == 0 )
@@ -76,9 +77,9 @@ ImageRegionSplitterSlowDimension
     }
 
   // determine the actual number of pieces that will be generated
-  const double range=static_cast<double>(regionSize[splitAxis]);
-  const unsigned int valuesPerPiece = Math::Ceil< unsigned int >(range / static_cast<double>(numberOfPieces));
-  const unsigned int maxPieceIdUsed = Math::Ceil< unsigned int >(range / static_cast<double>(valuesPerPiece)) - 1;
+  const double       range=static_cast<double>(regionSize[splitAxis]);
+  const unsigned int valuesPerPiece = Math::Ceil< unsigned int >(range / static_cast<double>(numberOfPieces) );
+  const unsigned int maxPieceIdUsed = Math::Ceil< unsigned int >(range / static_cast<double>(valuesPerPiece) ) - 1;
 
   // Split the region
   if ( i < maxPieceIdUsed )

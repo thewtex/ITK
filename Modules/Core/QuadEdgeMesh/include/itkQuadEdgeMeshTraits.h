@@ -56,8 +56,8 @@ public:
   itkStaticConstMacro(MaxTopologicalDimension, unsigned int,
                       VPointDimension);
 
-  typedef ::itk::IdentifierType   PointIdentifier;
-  typedef ::itk::IdentifierType   CellIdentifier;
+  typedef::itk::IdentifierType PointIdentifier;
+  typedef::itk::IdentifierType CellIdentifier;
 
   typedef unsigned char CellFeatureIdentifier; // made small in purpose
 
@@ -86,11 +86,11 @@ public:
 
   /** Standard cell interface. */
   typedef QuadEdgeMeshCellTraitsInfo<
-    VPointDimension, CoordRepType,
-    InterpolationWeightType, PointIdentifier,
-    CellIdentifier,          CellFeatureIdentifier,
-    PointType,               PointsContainer,
-    UsingCellsContainer,     QEPrimal >                 CellTraits;
+      VPointDimension, CoordRepType,
+      InterpolationWeightType, PointIdentifier,
+      CellIdentifier,          CellFeatureIdentifier,
+      PointType,               PointsContainer,
+      UsingCellsContainer,     QEPrimal >                 CellTraits;
 
   typedef CellInterface< CellPixelType, CellTraits > CellType;
   typedef typename CellType::CellAutoPointer         CellAutoPointer;

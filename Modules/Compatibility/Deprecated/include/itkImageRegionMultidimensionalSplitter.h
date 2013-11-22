@@ -58,7 +58,7 @@ namespace itk
  */
 
 template< unsigned int VImageDimension >
-class ImageRegionMultidimensionalSplitter:public ImageRegionSplitter< VImageDimension >
+class ImageRegionMultidimensionalSplitter : public ImageRegionSplitter< VImageDimension >
 {
 public:
   /** Standard class typedefs. */
@@ -77,10 +77,10 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
   /** Index typedef support. An index is used to access pixel values. */
-  typedef Index< VImageDimension >           IndexType;
+  typedef Index< VImageDimension > IndexType;
 
   /** Size typedef support. A size is used to define region bounds. */
-  typedef Size< VImageDimension >          SizeType;
+  typedef Size< VImageDimension > SizeType;
 
   /** Region typedef support.   */
   typedef ImageRegion< VImageDimension > RegionType;
@@ -101,8 +101,12 @@ public:
                               const RegionType & region);
 
 protected:
-  ImageRegionMultidimensionalSplitter() {}
-  ~ImageRegionMultidimensionalSplitter() {}
+  ImageRegionMultidimensionalSplitter() {
+  }
+
+  ~ImageRegionMultidimensionalSplitter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

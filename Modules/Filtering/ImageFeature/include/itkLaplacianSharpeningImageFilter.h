@@ -50,7 +50,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class LaplacianSharpeningImageFilter:
+class LaplacianSharpeningImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -110,7 +110,9 @@ protected:
     m_UseImageSpacing = true;
   }
 
-  virtual ~LaplacianSharpeningImageFilter()  {}
+  virtual
+  ~LaplacianSharpeningImageFilter()  {
+  }
 
   /** Standard pipeline method. While this class does not implement a
    * ThreadedGenerateData(), its GenerateData() delegates all

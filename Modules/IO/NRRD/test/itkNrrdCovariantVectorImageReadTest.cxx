@@ -22,7 +22,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkNrrdCovariantVectorImageReadTest( int ac, char* av[] )
+int
+itkNrrdCovariantVectorImageReadTest( int ac, char* av[] )
 {
   if(ac < 1)
     {
@@ -33,7 +34,7 @@ int itkNrrdCovariantVectorImageReadTest( int ac, char* av[] )
   typedef itk::CovariantVector<float, 4> PixelType;
   typedef itk::Image<PixelType, 3>       myImage;
 
-  typedef itk::ImageFileReader<myImage>  ReaderType;
+  typedef itk::ImageFileReader<myImage> ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -52,13 +53,13 @@ int itkNrrdCovariantVectorImageReadTest( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-  myImage::Pointer image = reader->GetOutput();
+  myImage::Pointer   image = reader->GetOutput();
   myImage::IndexType coord;
-  PixelType sample;
+  PixelType          sample;
 
   // The test image has been constructed so that the vector coefficients
   // coincide with sample coordinates
-  double err = 0;
+  double       err = 0;
   unsigned int idx = 0;
   for (unsigned int zi=0; zi<5; zi++)
     {

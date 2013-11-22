@@ -19,32 +19,32 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkDicomImageIODirection2DTest( int argc, char * argv[] )
+int
+itkDicomImageIODirection2DTest( int argc, char * argv[] )
 {
 
   if( argc != 4 )
     {
     std::cerr << "Usage: " << argv[0]
-    << " OutputImage3DFormat1 OutputImage3DFormat2  OutputImage2DFormat1 "
-    << std::endl;
+              << " OutputImage3DFormat1 OutputImage3DFormat2  OutputImage2DFormat1 "
+              << std::endl;
     return EXIT_FAILURE;
     }
 
   typedef signed short PixelType;
 
-  typedef itk::Image<PixelType, 2 >    Image2DType;
-  typedef itk::Image<PixelType, 3 >    Image3DType;
+  typedef itk::Image<PixelType, 2 > Image2DType;
+  typedef itk::Image<PixelType, 3 > Image3DType;
 
-  typedef itk::ImageFileWriter< Image3DType >   Writer3DType;
-  typedef itk::ImageFileReader< Image2DType >   Reader2DType;
+  typedef itk::ImageFileWriter< Image3DType > Writer3DType;
+  typedef itk::ImageFileReader< Image2DType > Reader2DType;
 
   Image3DType::Pointer image3D = Image3DType::New();
 
   Image3DType::RegionType region;
-  Image3DType::SizeType size;
+  Image3DType::SizeType   size;
   size[0] = 100;
   size[1] = 100;
   size[2] = 1;
@@ -121,7 +121,7 @@ int itkDicomImageIODirection2DTest( int argc, char * argv[] )
 
   std::cout << directionCosines << std::endl;
 
-  typedef itk::ImageFileWriter< Image2DType >   Writer2DType;
+  typedef itk::ImageFileWriter< Image2DType > Writer2DType;
   Writer2DType::Pointer writer2D = Writer2DType::New();
   writer2D->SetFileName( argv[3] );
   writer2D->SetInput( image2D );

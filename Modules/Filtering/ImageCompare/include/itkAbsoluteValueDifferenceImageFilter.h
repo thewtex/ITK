@@ -57,20 +57,27 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class AbsoluteValueDifference2
 {
 public:
-  AbsoluteValueDifference2() {}
-  ~AbsoluteValueDifference2() {}
-  bool operator!=(const AbsoluteValueDifference2 &) const
+  AbsoluteValueDifference2() {
+  }
+
+  ~AbsoluteValueDifference2() {
+  }
+
+  bool
+  operator!=(const AbsoluteValueDifference2 &) const
   {
     return false;
   }
 
-  bool operator==(const AbsoluteValueDifference2 & other) const
+  bool
+  operator==(const AbsoluteValueDifference2 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A,
-                            const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A,
+             const TInput2 & B) const
   {
     const double dA = static_cast< double >( A );
     const double dB = static_cast< double >( B );
@@ -79,11 +86,12 @@ public:
 
     return static_cast< TOutput >( absdiff );
   }
+
 };
 }
 
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class AbsoluteValueDifferenceImageFilter:
+class AbsoluteValueDifferenceImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::AbsoluteValueDifference2<
@@ -123,12 +131,17 @@ public:
 #endif
 
 protected:
-  AbsoluteValueDifferenceImageFilter() {}
-  virtual ~AbsoluteValueDifferenceImageFilter() {}
+  AbsoluteValueDifferenceImageFilter() {
+  }
+
+  virtual
+  ~AbsoluteValueDifferenceImageFilter() {
+  }
 
 private:
   AbsoluteValueDifferenceImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
+
 };
 } // end namespace itk
 

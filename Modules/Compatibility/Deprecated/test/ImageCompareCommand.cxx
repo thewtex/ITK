@@ -29,9 +29,10 @@
 
 #define ITK_TEST_DIMENSION_MAX 6
 
-int RegressionTestImage (const char *, const char *, int, bool,double,int,int);
+int RegressionTestImage(const char *, const char *, int, bool,double,int,int);
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
   if(argc < 3)
     {
@@ -49,45 +50,43 @@ int main(int argc, char **argv)
   // Option for setting the tolerable difference in intensity values
   // between the two images.
   command.SetOption("toleranceIntensity","ToleranceIntensity",false,
-      "Acceptable differences in pixels intensity");
+                    "Acceptable differences in pixels intensity");
   command.AddOptionField("toleranceIntensity","value",MetaCommand::FLOAT,true);
 
   // Option for setting the radius of the neighborhood around a pixel
   // to search for similar intensity values.
   command.SetOption("toleranceRadius","ToleranceRadius",false,
-      "Neighbor pixels to look for similar values");
+                    "Neighbor pixels to look for similar values");
   command.AddOptionField("toleranceRadius","value",MetaCommand::INT,true);
 
   // Option for setting the number of pixel that can be tolerated to
   // have different intensities.
   command.SetOption("toleranceNumberOfPixels","ToleranceNumberOfPixels",false,
-      "Number of Pixels that are acceptable to have intensity differences");
+                    "Number of Pixels that are acceptable to have intensity differences");
   command.AddOptionField("toleranceNumberOfPixels","value",MetaCommand::INT,true);
 
   // Option for setting the filename of the test image.
   command.SetOption("testImage","TestImage",true,
-      "Filename of the image to be tested against the baseline images");
+                    "Filename of the image to be tested against the baseline images");
   command.AddOptionField("testImage","filename",MetaCommand::STRING,true);
 
   // Option for setting the filename of multiple baseline images.
   command.SetOption("baselineImages","BaselineImages",false,
-      "List of baseline images <N> <image1> <image2>...<imageN>");
+                    "List of baseline images <N> <image1> <image2>...<imageN>");
   command.AddOptionField("baselineImages","filename",MetaCommand::LIST,true);
 
   // Option for setting the filename of a single baseline image.
   command.SetOption("baselineImage","BaselineImage",false,
-      "Baseline images filename");
+                    "Baseline images filename");
   command.AddOptionField("baselineImage","filename",MetaCommand::STRING,true);
-
 
   command.Parse( argc, argv );
 
-
-  double toleranceIntensity = 0.0;
+  double        toleranceIntensity = 0.0;
   unsigned int  toleranceRadius = 0;
   unsigned long toleranceNumberOfPixels = 0;
-  std::string testImageFilename;
-  std::string baselineImageFilename;
+  std::string   testImageFilename;
+  std::string   baselineImageFilename;
 
   // If a value of intensity tolerance was given in the command line
   if( command.GetOptionWasSet("toleranceIntensity") )
@@ -150,23 +149,23 @@ int main(int argc, char **argv)
       {
       bestBaselineStatus =
         RegressionTestImage(
-            testImageFilename.c_str(), baselineImageFilename.c_str(),
-            0, false, toleranceIntensity, toleranceRadius,
-            toleranceNumberOfPixels);
+          testImageFilename.c_str(), baselineImageFilename.c_str(),
+          0, false, toleranceIntensity, toleranceRadius,
+          toleranceNumberOfPixels);
       bestBaselineFilename = baselineImageFilename;
       }
     else
       {
 
-      typedef std::list< std::string >::const_iterator  nameIterator;
+      typedef std::list< std::string >::const_iterator nameIterator;
       nameIterator baselineImageItr = baselineImageFilenames.begin();
       while( baselineImageItr != baselineImageFilenames.end() )
         {
         const int currentStatus =
           RegressionTestImage(
-              testImageFilename.c_str(), baselineImageItr->c_str(),
-              0, false, toleranceIntensity, toleranceRadius,
-              toleranceNumberOfPixels);
+            testImageFilename.c_str(), baselineImageItr->c_str(),
+            0, false, toleranceIntensity, toleranceRadius,
+            toleranceNumberOfPixels);
         if(currentStatus < bestBaselineStatus)
           {
           bestBaselineStatus = currentStatus;
@@ -218,20 +217,22 @@ int main(int argc, char **argv)
 }
 
 // Regression Testing Code
-int RegressionTestImage (const char *testImageFilename, const char *baselineImageFilename,
-                         int reportErrors, bool createDifferenceImage,
-                         double intensityTolerance,
-                         int radiusTolerance, int numberOfPixelsTolerance)
+int
+RegressionTestImage(const char *testImageFilename, const char *baselineImageFilename,
+                    int reportErrors, bool createDifferenceImage,
+                    double intensityTolerance,
+                    int radiusTolerance, int numberOfPixelsTolerance)
 {
-  // Use the factory mechanism to read the test and baseline files and convert them to double
-  typedef itk::Image<double,ITK_TEST_DIMENSION_MAX>         ImageType;
-  typedef itk::Image<unsigned char,ITK_TEST_DIMENSION_MAX>  OutputType;
-  typedef itk::Image<unsigned char,2>                       DiffOutputType;
-  typedef itk::ImageFileReader<ImageType>                   ReaderType;
+  // Use the factory mechanism to read the test and baseline files and convert
+  // them to double
+  typedef itk::Image<double,ITK_TEST_DIMENSION_MAX>        ImageType;
+  typedef itk::Image<unsigned char,ITK_TEST_DIMENSION_MAX> OutputType;
+  typedef itk::Image<unsigned char,2>                      DiffOutputType;
+  typedef itk::ImageFileReader<ImageType>                  ReaderType;
 
   // Read the baseline file
   ReaderType::Pointer baselineReader = ReaderType::New();
-    baselineReader->SetFileName(baselineImageFilename);
+  baselineReader->SetFileName(baselineImageFilename);
   try
     {
     baselineReader->UpdateLargestPossibleRegion();
@@ -244,7 +245,7 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
 
   // Read the file generated by the test
   ReaderType::Pointer testReader = ReaderType::New();
-    testReader->SetFileName(testImageFilename);
+  testReader->SetFileName(testImageFilename);
   try
     {
     testReader->UpdateLargestPossibleRegion();
@@ -257,9 +258,9 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
 
   // The sizes of the baseline and test image must match
   ImageType::SizeType baselineSize;
-    baselineSize = baselineReader->GetOutput()->GetLargestPossibleRegion().GetSize();
+  baselineSize = baselineReader->GetOutput()->GetLargestPossibleRegion().GetSize();
   ImageType::SizeType testSize;
-    testSize = testReader->GetOutput()->GetLargestPossibleRegion().GetSize();
+  testSize = testReader->GetOutput()->GetLargestPossibleRegion().GetSize();
 
   if (baselineSize != testSize)
     {
@@ -274,20 +275,20 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
   // Now compare the two images
   typedef itk::Testing::ComparisonImageFilter<ImageType,ImageType> DiffType;
   DiffType::Pointer diff = DiffType::New();
-    diff->SetValidInput(baselineReader->GetOutput());
-    diff->SetTestInput(testReader->GetOutput());
+  diff->SetValidInput(baselineReader->GetOutput() );
+  diff->SetTestInput(testReader->GetOutput() );
 
-    diff->SetDifferenceThreshold( intensityTolerance );
-    diff->SetToleranceRadius( radiusTolerance );
+  diff->SetDifferenceThreshold( intensityTolerance );
+  diff->SetToleranceRadius( radiusTolerance );
 
-    diff->UpdateLargestPossibleRegion();
+  diff->UpdateLargestPossibleRegion();
 
   bool differenceFailed = false;
 
   double averageIntensityDifference = diff->GetTotalDifference();
 
   unsigned long numberOfPixelsWithDifferences =
-                        diff->GetNumberOfPixelsWithDifferences();
+    diff->GetNumberOfPixelsWithDifferences();
 
   if( averageIntensityDifference > 0.0 )
     {
@@ -307,19 +308,19 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
 
   if (reportErrors)
     {
-    typedef itk::RescaleIntensityImageFilter<ImageType,OutputType>    RescaleType;
-    typedef itk::ExtractImageFilter<OutputType,DiffOutputType>        ExtractType;
-    typedef itk::ImageFileWriter<DiffOutputType>                      WriterType;
-    typedef itk::ImageRegion<ITK_TEST_DIMENSION_MAX>                  RegionType;
+    typedef itk::RescaleIntensityImageFilter<ImageType,OutputType> RescaleType;
+    typedef itk::ExtractImageFilter<OutputType,DiffOutputType>     ExtractType;
+    typedef itk::ImageFileWriter<DiffOutputType>                   WriterType;
+    typedef itk::ImageRegion<ITK_TEST_DIMENSION_MAX>               RegionType;
 
     OutputType::IndexType index; index.Fill(0);
-    OutputType::SizeType size; size.Fill(0);
+    OutputType::SizeType  size; size.Fill(0);
 
     RescaleType::Pointer rescale = RescaleType::New();
 
-    rescale->SetOutputMinimum(itk::NumericTraits<unsigned char>::NonpositiveMin());
-    rescale->SetOutputMaximum(itk::NumericTraits<unsigned char>::max());
-    rescale->SetInput(diff->GetOutput());
+    rescale->SetOutputMinimum(itk::NumericTraits<unsigned char>::NonpositiveMin() );
+    rescale->SetOutputMaximum(itk::NumericTraits<unsigned char>::max() );
+    rescale->SetInput(diff->GetOutput() );
     rescale->UpdateLargestPossibleRegion();
 
     RegionType region;
@@ -335,11 +336,11 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
     ExtractType::Pointer extract = ExtractType::New();
     extract->SetDirectionCollapseToSubmatrix();
 
-    extract->SetInput(rescale->GetOutput());
+    extract->SetInput(rescale->GetOutput() );
     extract->SetExtractionRegion(region);
 
     WriterType::Pointer writer = WriterType::New();
-      writer->SetInput(extract->GetOutput());
+    writer->SetInput(extract->GetOutput() );
     if(createDifferenceImage)
       {
       // if there are discrepencies, create an diff image
@@ -355,7 +356,7 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
       diffName << testImageFilename << ".diff.png";
       try
         {
-        rescale->SetInput(diff->GetOutput());
+        rescale->SetInput(diff->GetOutput() );
         rescale->Update();
         }
       catch(const std::exception& e)
@@ -367,7 +368,7 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
         {
         std::cerr << "Error during rescale of " << diffName.str() << std::endl;
         }
-      writer->SetFileName(diffName.str().c_str());
+      writer->SetFileName(diffName.str().c_str() );
       try
         {
         writer->Update();
@@ -390,7 +391,7 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
     baseName << testImageFilename << ".base.png";
     try
       {
-      rescale->SetInput(baselineReader->GetOutput());
+      rescale->SetInput(baselineReader->GetOutput() );
       rescale->Update();
       }
     catch(const std::exception& e)
@@ -404,7 +405,7 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
       }
     try
       {
-      writer->SetFileName(baseName.str().c_str());
+      writer->SetFileName(baseName.str().c_str() );
       writer->Update();
       }
     catch(const std::exception& e)
@@ -425,7 +426,7 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
     testName << testImageFilename << ".test.png";
     try
       {
-      rescale->SetInput(testReader->GetOutput());
+      rescale->SetInput(testReader->GetOutput() );
       rescale->Update();
       }
     catch(const std::exception& e)
@@ -439,7 +440,7 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
       }
     try
       {
-      writer->SetFileName(testName.str().c_str());
+      writer->SetFileName(testName.str().c_str() );
       writer->Update();
       }
     catch(const std::exception& e)
@@ -455,7 +456,6 @@ int RegressionTestImage (const char *testImageFilename, const char *baselineImag
     std::cout << "<DartMeasurementFile name=\"TestImage\" type=\"image/png\">";
     std::cout << testName.str();
     std::cout << "</DartMeasurementFile>" << std::endl;
-
 
     }
   return differenceFailed;

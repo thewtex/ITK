@@ -47,7 +47,7 @@ namespace itk
  * \ingroup ITKImageCompose
  */
 template< typename TInputImage, typename TOutputImage >
-class JoinSeriesImageFilter:
+class JoinSeriesImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -95,7 +95,9 @@ public:
 
 protected:
   JoinSeriesImageFilter();
-  ~JoinSeriesImageFilter() {}
+  ~JoinSeriesImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Override VeriyInputInformation() to add the additional check

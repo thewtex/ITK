@@ -34,7 +34,7 @@
 
 namespace itk
 {
-OutputWindow::Pointer OutputWindow:: m_Instance = 0;
+OutputWindow::Pointer OutputWindow::m_Instance = 0;
 
 /**
  * Prompting off by default
@@ -47,7 +47,8 @@ OutputWindow
 
 OutputWindow
 ::~OutputWindow()
-{}
+{
+}
 
 void
 OutputWindowDisplayText(const char *message)
@@ -99,6 +100,7 @@ OutputWindow
 ::DisplayText(const char *txt)
 {
   std::cerr << txt;
+
   if ( m_PromptUser )
     {
     char c = 'n';
@@ -162,4 +164,5 @@ OutputWindow
 {
   return GetInstance();
 }
+
 } // end namespace itk

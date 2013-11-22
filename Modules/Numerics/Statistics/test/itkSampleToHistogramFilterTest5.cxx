@@ -21,7 +21,8 @@
 #include "itkImageToListSampleFilter.h"
 #include "itkImageFileReader.h"
 
-int itkSampleToHistogramFilterTest5(int argc, char *argv[] )
+int
+itkSampleToHistogramFilterTest5(int argc, char *argv[] )
 {
 
   const unsigned int imageDimension = 2;
@@ -41,32 +42,31 @@ int itkSampleToHistogramFilterTest5(int argc, char *argv[] )
   // SampleToHistogramFilter can be used for generating the
   // histogram of an image.
   //
-  typedef unsigned char  VMeasurementType;  // type for the samples
-  typedef float          HMeasurementType;  // type for the histogram
-
+  typedef unsigned char VMeasurementType;   // type for the samples
+  typedef float         HMeasurementType;   // type for the histogram
 
   typedef itk::RGBPixel< VMeasurementType > PixelType;
 
   const unsigned int numberOfComponents = 3;
 
-  typedef itk::Image< PixelType, imageDimension >   ImageType;
+  typedef itk::Image< PixelType, imageDimension > ImageType;
 
   typedef itk::Statistics::ImageToListSampleFilter<
-    ImageType > ImageToListSampleFilterType;
+      ImageType > ImageToListSampleFilterType;
 
-  typedef ImageToListSampleFilterType::ListSampleType  SampleType;
+  typedef ImageToListSampleFilterType::ListSampleType SampleType;
 
   typedef itk::Statistics::Histogram< HMeasurementType,
-          itk::Statistics::DenseFrequencyContainer2 > HistogramType;
+                                      itk::Statistics::DenseFrequencyContainer2 > HistogramType;
 
   typedef itk::Statistics::SampleToHistogramFilter<
-    SampleType, HistogramType > FilterType;
+      SampleType, HistogramType > FilterType;
 
-  typedef HistogramType::MeasurementVectorType  MeasurementVectorType;
+  typedef HistogramType::MeasurementVectorType MeasurementVectorType;
 
-  typedef FilterType::HistogramSizeType      HistogramSizeType;
+  typedef FilterType::HistogramSizeType HistogramSizeType;
 
-  typedef itk::ImageFileReader< ImageType >    ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -94,7 +94,6 @@ int itkSampleToHistogramFilterTest5(int argc, char *argv[] )
     {
     std::cout << "Expected exception received" << std::endl;
     }
-
 
   const HistogramType * histogram = filter->GetOutput();
 
@@ -132,11 +131,10 @@ int itkSampleToHistogramFilterTest5(int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-
   HistogramType::ConstIterator histogramItr = histogram->Begin();
   HistogramType::ConstIterator histogramEnd = histogram->End();
 
-  typedef itk::NumericTraits< VMeasurementType >::PrintType    PrintType;
+  typedef itk::NumericTraits< VMeasurementType >::PrintType PrintType;
 
   unsigned int count = 0;
   while( histogramItr != histogramEnd )

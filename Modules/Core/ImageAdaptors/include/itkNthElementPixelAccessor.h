@@ -63,30 +63,45 @@ public:
   typedef   TContainer InternalType;
 
   /** Write access to the NthElement component */
-  inline void Set(InternalType & output, const ExternalType & input) const
-  { DefaultConvertPixelTraits<InternalType>::SetNthComponent(m_ElementNumber, output, input); }
+  inline void
+  Set(InternalType & output, const ExternalType & input) const
+  {
+    DefaultConvertPixelTraits<InternalType>::SetNthComponent(m_ElementNumber, output, input);
+  }
 
   /** Read access to the NthElement component */
-  inline ExternalType Get(const InternalType & input) const
-  { return static_cast<ExternalType>( DefaultConvertPixelTraits<InternalType>::GetNthComponent( m_ElementNumber, input ) ); }
+  inline ExternalType
+  Get(const InternalType & input) const
+  {
+    return static_cast<ExternalType>( DefaultConvertPixelTraits<InternalType>::GetNthComponent( m_ElementNumber,
+                                                                                                input ) );
+  }
 
   /** Get the element number to access in the container */
-  unsigned int GetElementNumber(void) const
-  { return m_ElementNumber; }
+  unsigned int
+  GetElementNumber(void) const
+  {
+    return m_ElementNumber;
+  }
 
   /** Set the element number to access in the container */
-  void SetElementNumber(unsigned int nth)
-  { m_ElementNumber = nth; }
+  void
+  SetElementNumber(unsigned int nth)
+  {
+    m_ElementNumber = nth;
+  }
 
   /** operator!=. This is needed to convert a pixel accessor to a functor.
    * \sa AdaptImageFilter */
-  bool operator!=(const Self & accessor) const
+  bool
+  operator!=(const Self & accessor) const
   {
     return ( m_ElementNumber != accessor.m_ElementNumber );
   }
 
   /** Assignment operator */
-  NthElementPixelAccessor & operator=(const NthElementPixelAccessor & accessor)
+  NthElementPixelAccessor &
+  operator=(const NthElementPixelAccessor & accessor)
   {
     m_ElementNumber = accessor.m_ElementNumber;
     return *this;
@@ -102,7 +117,6 @@ private:
   // Identifier of the N-th element to be accessed
   unsigned int m_ElementNumber;
 };
-
 
 template< typename TOutputPixelType, typename TPixelType >
 class NthElementPixelAccessor< TOutputPixelType, itk::VariableLengthVector<TPixelType> >
@@ -123,13 +137,15 @@ public:
 
   typedef VariableLengthVector< TPixelType > ActualPixelType;
 
-  inline void Set(ActualPixelType &output, const ExternalType & input) const
+  inline void
+  Set(ActualPixelType &output, const ExternalType & input) const
   {
     output[m_ElementNumber] = input;
   }
 
-  inline void Set(InternalType &output, const ExternalType & input,
-                  const unsigned long offset) const
+  inline void
+  Set(InternalType &output, const ExternalType & input,
+      const unsigned long offset) const
   {
     // note: v is a reference to the internal buffer, this method of
     // access relies on return value optimization to work
@@ -138,7 +154,8 @@ public:
     return Set( v, input );
   }
 
-  inline ExternalType Get(const ActualPixelType & input) const
+  inline ExternalType
+  Get(const ActualPixelType & input) const
   {
     ExternalType output;
 
@@ -146,44 +163,56 @@ public:
     return output;
   }
 
-  inline ExternalType Get(const InternalType &input, const SizeValueType offset) const
+  inline ExternalType
+  Get(const InternalType &input, const SizeValueType offset) const
   {
     return Get( Superclass::Get(input, offset) );
   }
 
-
   /** Get the element number to access in the container */
-  unsigned int GetElementNumber(void) const
-  { return m_ElementNumber; }
+  unsigned int
+  GetElementNumber(void) const
+  {
+    return m_ElementNumber;
+  }
 
   /** Set the element number to access in the container */
-  void SetElementNumber(unsigned int nth)
-  { m_ElementNumber = nth; }
+  void
+  SetElementNumber(unsigned int nth)
+  {
+    m_ElementNumber = nth;
+  }
 
   /** Set the length of each vector in the VectorImage */
-  void SetVectorLength(VectorLengthType l)
+  void
+  SetVectorLength(VectorLengthType l)
   {
     Superclass::SetVectorLength( l );
   }
 
   /** Get Vector lengths */
-  VectorLengthType GetVectorLength() const { return Superclass::GetVectorLength(); }
+  VectorLengthType
+  GetVectorLength() const {
+    return Superclass::GetVectorLength();
+  }
 
   NthElementPixelAccessor( unsigned int length = 1)
-    :m_ElementNumber(0)
-    {
+    : m_ElementNumber(0)
+  {
     Superclass::SetVectorLength( length );
-    }
+  }
 
   /** operator!=. This is needed to convert a pixel accessor to a functor.
    * \sa AdaptImageFilter */
-  bool operator!=(const Self & accessor) const
+  bool
+  operator!=(const Self & accessor) const
   {
     return ( m_ElementNumber != accessor.m_ElementNumber );
   }
 
   /** Assignment operator */
-  NthElementPixelAccessor & operator=(const NthElementPixelAccessor & accessor)
+  NthElementPixelAccessor &
+  operator=(const NthElementPixelAccessor & accessor)
   {
     m_ElementNumber = accessor.m_ElementNumber;
     this->SetVectorLength( accessor.GetVectorLength() );

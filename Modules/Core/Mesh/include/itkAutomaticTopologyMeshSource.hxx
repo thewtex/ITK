@@ -43,7 +43,8 @@ AutomaticTopologyMeshSource< TOutputMesh >
 template< typename TOutputMesh >
 AutomaticTopologyMeshSource< TOutputMesh >
 ::~AutomaticTopologyMeshSource()
-{}
+{
+}
 
 template< typename TOutputMesh >
 typename AutomaticTopologyMeshSource< TOutputMesh >::IdentifierType
@@ -731,6 +732,7 @@ AutomaticTopologyMeshSource< TOutputMesh >
   pointIDs[7] = AddPoint(p7);
   return AddHexahedron(pointIDs);
 }
+
 } /** end namespace itk. */
 
 #endif

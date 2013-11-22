@@ -19,13 +19,13 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
 #include "itkLabelImageToShapeLabelMapFilter.h"
 #include "itkShapeOpeningLabelMapFilter.h"
 
 #include "itkTestingMacros.h"
 
-int itkShapeOpeningLabelMapFilterTest1(int argc, char * argv[])
+int
+itkShapeOpeningLabelMapFilterTest1(int argc, char * argv[])
 {
   if( argc != 6 )
     {
@@ -42,8 +42,8 @@ int itkShapeOpeningLabelMapFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::ShapeLabelObject< PixelType, dim >           ShapeLabelObjectType;
-  typedef itk::LabelMap< ShapeLabelObjectType >             LabelMapType;
+  typedef itk::ShapeLabelObject< PixelType, dim > ShapeLabelObjectType;
+  typedef itk::LabelMap< ShapeLabelObjectType >   LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();

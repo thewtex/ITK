@@ -39,7 +39,8 @@ QuadEdgeMeshScalarDataVTKPolyDataWriter< TMesh >
 template< typename TMesh >
 QuadEdgeMeshScalarDataVTKPolyDataWriter< TMesh >
 ::~QuadEdgeMeshScalarDataVTKPolyDataWriter()
-{}
+{
+}
 
 template< typename TMesh >
 void
@@ -151,6 +152,7 @@ QuadEdgeMeshScalarDataVTKPolyDataWriter< TMesh >
     outputFile.close();
     }
 }
+
 }
 
 #endif

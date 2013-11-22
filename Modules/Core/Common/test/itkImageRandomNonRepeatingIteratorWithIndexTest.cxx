@@ -26,9 +26,11 @@
 #include <iostream>
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageRandomNonRepeatingIteratorWithIndex.h"
-int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
+int
+itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
 {
   const unsigned int ImageDimension = 3;
+
   typedef itk::Index< ImageDimension >                                    PixelType;
   typedef itk::Image< PixelType, ImageDimension >                         ImageType;
   typedef itk::SizeValueType                                              PriorityPixelType;
@@ -39,13 +41,13 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   typedef itk::ImageRandomNonRepeatingConstIteratorWithIndex< ImageType > RandomConstIteratorType;
   std::cout << "Creating images" << std::endl;
 
-  ImageType::Pointer myImage = ImageType::New();
+  ImageType::Pointer      myImage = ImageType::New();
   ImageType::ConstPointer myConstImage = myImage.GetPointer();
-  ImageType::SizeType size0;
+  ImageType::SizeType     size0;
   size0[0] = 50;
   size0[1] = 50;
   size0[2] = 50;
-  unsigned long numberOfSamples = 10;
+  unsigned long        numberOfSamples = 10;
   ImageType::IndexType start0;
   start0.Fill(0);
   ImageType::RegionType region0;
@@ -56,7 +58,7 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   myImage->SetRequestedRegion( region0 );
   myImage->Allocate();
   // Make the priority image
-  PriorityImageType::Pointer priorityImage = PriorityImageType::New();
+  PriorityImageType::Pointer  priorityImage = PriorityImageType::New();
   PriorityImageType::SizeType prioritySize;
   prioritySize[0] = 50;
   prioritySize[1] = 50;
@@ -77,10 +79,10 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   PriorityIteratorType pit( priorityImage, priorityRegion );
   pit.GoToBegin();
   while( !pit.IsAtEnd() )
-  {
+    {
     pit.Set( 1 );
     ++pit;
-  }
+    }
   PriorityImageType::IndexType substart;
   substart[0] = 15;
   substart[1] = 16;
@@ -96,8 +98,8 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   subit.GoToBegin();
   while( !subit.IsAtEnd() )
     {
-      subit.Set( 0 );
-      ++subit;
+    subit.Set( 0 );
+    ++subit;
     }
 
   //********
@@ -110,11 +112,11 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   // Because the random iterator does not repeat, this should
   // fill the image with indices
   while( !it.IsAtEnd() )
-  {
+    {
     index0 = it.GetIndex();
     it.Set( index0 );
     ++it;
-  }
+    }
 
   // Sample the image
   IteratorType ot( myImage, region0 );
@@ -126,11 +128,11 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
     index0 = ot.GetIndex();
     if( ot.Get() != index0 )
       {
-        std::cerr << "Values don't correspond to what was stored "
-          << std::endl;
-        std::cerr << "Test failed at index ";
-        std::cerr << index0 << std::endl;
-        return EXIT_FAILURE;
+      std::cerr << "Values don't correspond to what was stored "
+                << std::endl;
+      std::cerr << "Test failed at index ";
+      std::cerr << index0 << std::endl;
+      return EXIT_FAILURE;
       }
     //std::cout <<".";
     //std::cout << index0 << std::endl;
@@ -146,19 +148,19 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   std::cout << "Verifying const iterator... ";
   std::cout << "Random walk of the Iterator over the image " << std::endl;
   while( !cot.IsAtEnd() )
-  {
+    {
     index0 = cot.GetIndex();
     if( cot.Get() != index0 )
       {
       std::cerr << "Values don't correspond to what was stored "
-        << std::endl;
+                << std::endl;
       std::cerr << "Test failed at index ";
       std::cerr << index0 << " value is " << cot.Get() <<  std::endl;
       return EXIT_FAILURE;
       }
     std::cout << index0 << std::endl;
     ++cot;
-  }
+    }
   std::cout << "   Done ! " << std::endl;
 
   // Verification
@@ -170,19 +172,19 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   --ior;
 
   while( !ior.IsAtBegin() )
-  {
+    {
     index0 = ior.GetIndex();
     if( ior.Get() != index0 )
-    {
+      {
       std::cerr << "Values don't correspond to what was stored "
-        << std::endl;
+                << std::endl;
       std::cerr << "Test failed at index ";
       std::cerr << index0 << " value is " << ior.Get() <<  std::endl;
       return EXIT_FAILURE;
-    }
+      }
     std::cout << index0 << std::endl;
     --ior;
-  }
+    }
   std::cout << index0 << std::endl; // print the value at the beginning index
   std::cout << "   Done ! " << std::endl;
 
@@ -198,7 +200,7 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
     if( cor.Get() != index0 )
       {
       std::cerr << "Values don't correspond to what was stored "
-        << std::endl;
+                << std::endl;
       std::cerr << "Test failed at index ";
       std::cerr << index0 << " value is " << cor.Get() <<  std::endl;
       return EXIT_FAILURE;
@@ -208,32 +210,32 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
     }
   std::cout << index0 << std::endl; // print the value at the beginning index
   std::cout << "   Done ! " << std::endl;
- // Verification
+  // Verification
   std::cout << "Verifying const iterator in both directions... ";
   RandomConstIteratorType dor( myImage, region0 );
   dor.SetNumberOfSamples( numberOfSamples ); // 0=x, 1=y, 2=z
   dor.GoToEnd();
   --dor; // start at the last valid pixel position
-  for (unsigned int counter = 0; ! dor.IsAtEnd(); ++counter)
+  for (unsigned int counter = 0; !dor.IsAtEnd(); ++counter)
     {
-      index0 = dor.GetIndex();
-      if( dor.Get() != index0 )
-        {
-          std::cerr << "Values don't correspond to what was stored "
-                    << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index0 << " value is " << dor.Get() <<  std::endl;
-          return EXIT_FAILURE;
-        }
-      std::cout << index0 << std::endl;
-      if (counter < 6)  { --dor; }
-      else { ++dor; }
+    index0 = dor.GetIndex();
+    if( dor.Get() != index0 )
+      {
+      std::cerr << "Values don't correspond to what was stored "
+                << std::endl;
+      std::cerr << "Test failed at index ";
+      std::cerr << index0 << " value is " << dor.Get() <<  std::endl;
+      return EXIT_FAILURE;
+      }
+    std::cout << index0 << std::endl;
+    if (counter < 6)  { --dor; }
+    else { ++dor; }
     }
   std::cout << index0 << std::endl; // print the value at the beginning index
   std::cout << "   Done ! " << std::endl;
 
   // Verification of the Iterator in a subregion of the image
-  {
+    {
     std::cout << "Verifying Iterator in a Region smaller than the whole image... "
               << std::endl;
     ImageType::IndexType start;
@@ -270,10 +272,10 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
       ++cbot;
       }
     std::cout << "   Done ! " << std::endl;
-  }
+    }
 
   // Verification of the Const Iterator in a subregion of the image
-  {
+    {
     std::cout << "Verifying Const Iterator in a Region smaller than the whole image... "
               << std::endl;
     ImageType::IndexType start;
@@ -310,12 +312,11 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
       ++cbot;
       }
     std::cout << "   Done ! " << std::endl;
-  }
-
+    }
 
   // Verifying iterator works with  the priority image
 
-  {
+    {
     std::cout << "Verifying Iterator with respect to priority image... "
               << std::endl;
 
@@ -324,7 +325,7 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
     cbot.SetNumberOfSamples( numberOfSamples ); // 0=x, 1=y, 2=z
     cbot.GoToBegin();
     unsigned int count=0;
-    while( !cbot.IsAtEnd() && count<(subsize[0]*subsize[1]*subsize[2]))
+    while( !cbot.IsAtEnd() && count<(subsize[0]*subsize[1]*subsize[2]) )
       {
       ImageType::IndexType index =  cbot.GetIndex();
       if( !subregion.IsInside( index ) )
@@ -339,15 +340,15 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
       }
     // Now we have walked through all the pixels of low priority, next
     // one should be outside the region.
-      if( subregion.IsInside( index0 ) )
-        {
-        std::cerr << "Iterator in priority region test failed" << std::endl;
-        std::cerr << index0 << " is outside the region (should be in)" << region0 << std::endl;
-        return EXIT_FAILURE;
-        }
+    if( subregion.IsInside( index0 ) )
+      {
+      std::cerr << "Iterator in priority region test failed" << std::endl;
+      std::cerr << index0 << " is outside the region (should be in)" << region0 << std::endl;
+      return EXIT_FAILURE;
+      }
     std::cout << "   Done ! " << std::endl;
-  }
-  {
+    }
+    {
     std::cout << "Verifying const Iterator with respect to priority image... "
               << std::endl;
 
@@ -356,7 +357,7 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
     cbot.SetNumberOfSamples( numberOfSamples ); // 0=x, 1=y, 2=z
     cbot.GoToBegin();
     unsigned int count=0;
-    while( !cbot.IsAtEnd() && count<(subsize[0]*subsize[1]*subsize[2]))
+    while( !cbot.IsAtEnd() && count<(subsize[0]*subsize[1]*subsize[2]) )
       {
       ImageType::IndexType index =  cbot.GetIndex();
       if( !subregion.IsInside( index ) )
@@ -371,23 +372,23 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
       }
     // Now we have walked through all the pixels of low priority, next
     // one should be outside the region.
-      if( subregion.IsInside( index0 ) )
-        {
-        std::cerr << "Iterator in priority region test failed" << std::endl;
-        std::cerr << index0 << " is outside the region (should be in)" << region0 << std::endl;
-        return EXIT_FAILURE;
-        }
+    if( subregion.IsInside( index0 ) )
+      {
+      std::cerr << "Iterator in priority region test failed" << std::endl;
+      std::cerr << index0 << " is outside the region (should be in)" << region0 << std::endl;
+      return EXIT_FAILURE;
+      }
     std::cout << "   Done ! " << std::endl;
-  }
-  {
+    }
+    {
     // Exercise assignment operator
     std::cout << "Exercising assignment operator... " << std::endl;
     RandomConstIteratorType iteratorAssignment;
     iteratorAssignment = RandomConstIteratorType( myImage, myImage->GetLargestPossibleRegion() );
-    iteratorAssignment.SetNumberOfSamples(myImage->GetLargestPossibleRegion().GetNumberOfPixels());
+    iteratorAssignment.SetNumberOfSamples(myImage->GetLargestPossibleRegion().GetNumberOfPixels() );
     iteratorAssignment.GoToBegin();
     std::cout << "Finished exercising assignment operator!" << std::endl;
-  }
+    }
   std::cout << "Test passed" << std::endl;
   return EXIT_SUCCESS;
 }

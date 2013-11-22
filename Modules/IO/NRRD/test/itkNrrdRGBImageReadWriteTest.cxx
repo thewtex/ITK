@@ -25,7 +25,8 @@
 // so we don't label it as SPECIFIC_IMAGEIO_MODULE_TEST
 //
 
-int itkNrrdRGBImageReadWriteTest( int ac, char* av[] )
+int
+itkNrrdRGBImageReadWriteTest( int ac, char* av[] )
 {
   if(ac < 2)
     {
@@ -37,7 +38,7 @@ int itkNrrdRGBImageReadWriteTest( int ac, char* av[] )
   typedef itk::Image<PixelType, 2>     myImage;
 
   itk::ImageFileReader<myImage>::Pointer reader
-                                  = itk::ImageFileReader<myImage>::New();
+    = itk::ImageFileReader<myImage>::New();
   reader->SetFileName(av[1]);
 
   try

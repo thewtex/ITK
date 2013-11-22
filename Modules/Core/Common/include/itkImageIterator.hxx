@@ -28,34 +28,38 @@ namespace itk
 template< typename TImage >
 ImageIterator< TImage >
 ::ImageIterator()
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //  Constructor
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIterator< TImage >
-::ImageIterator(const Self & it):
+::ImageIterator(const Self & it) :
   ImageConstIterator< TImage >(it)
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //  Constructor
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIterator< TImage >
-::ImageIterator(TImage *ptr, const RegionType & region):
+::ImageIterator(TImage *ptr, const RegionType & region) :
   ImageConstIterator< TImage >(ptr, region)
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //  Constructor
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIterator< TImage >
-::ImageIterator(const ImageConstIterator< TImage > & it):
+::ImageIterator(const ImageConstIterator< TImage > & it) :
   ImageConstIterator< TImage >(it)
-{}
+{
+}
 
 //----------------------------------------------------------------------
 //    Assignment Operator
@@ -107,6 +111,7 @@ ImageIterator< TImage >
 {
   return this->Superclass::End();
 }
+
 #endif
 } // end namespace itk
 

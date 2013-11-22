@@ -44,7 +44,7 @@ namespace itk
  */
 
 template< typename TImageType, typename TFeatureImageType = TImageType >
-class SegmentationLevelSetFunction:
+class SegmentationLevelSetFunction :
   public LevelSetFunction< TImageType >
 {
 public:
@@ -86,19 +86,34 @@ public:
   typedef typename InterpolatorType::ContinuousIndexType ContinuousIndexType;
 
   /** Set/Get the image which will be used to calculate the speed function. */
-  virtual const FeatureImageType * GetFeatureImage() const
-  { return m_FeatureImage.GetPointer(); }
-  virtual void SetFeatureImage(const FeatureImageType *f)
-  {    m_FeatureImage = f;  }
+  virtual const FeatureImageType *
+  GetFeatureImage() const
+  {
+    return m_FeatureImage.GetPointer();
+  }
+
+  virtual void
+  SetFeatureImage(const FeatureImageType *f)
+  {
+    m_FeatureImage = f;
+  }
 
   /** Get/Set the image used as the speed function in the level set equation */
-  virtual ImageType * GetSpeedImage()
-  { return m_SpeedImage.GetPointer(); }
+  virtual ImageType *
+  GetSpeedImage()
+  {
+    return m_SpeedImage.GetPointer();
+  }
+
   void SetSpeedImage(ImageType *s);
 
   /** Get/Set the image used as the advection field in the level set equation */
-  virtual VectorImageType * GetAdvectionImage() const
-  { return m_AdvectionImage.GetPointer(); }
+  virtual VectorImageType *
+  GetAdvectionImage() const
+  {
+    return m_AdvectionImage.GetPointer();
+  }
+
   void SetAdvectionImage(VectorImageType *s);
 
   /** This method creates the appropriate member variable operators for the
@@ -110,13 +125,17 @@ public:
    * object.  This method is called before the solver begins its work to
    * produce the speed image used as the level set function's Propagation speed
    * term.  See LevelSetFunction for more information. */
-  virtual void CalculateSpeedImage() {}
+  virtual void
+  CalculateSpeedImage() {
+  }
 
   /** This method must be defined in a subclass to implement a working function
    * object.  This method is called before the solver begins its work to
    * produce the speed image used as the level set function's Advection field
    * term.  See LevelSetFunction for more information. */
-  virtual void CalculateAdvectionImage() {}
+  virtual void
+  CalculateAdvectionImage() {
+  }
 
   /** Allocates the image that will be used for the level set function's
    * Propagation Speed term.  See LevelSetFunction for more information. */
@@ -160,7 +179,10 @@ protected:
   virtual VectorType AdvectionField(const NeighborhoodType &,
                                     const FloatOffsetType &, GlobalDataStruct *gd) const;
 
-  virtual ~SegmentationLevelSetFunction() {}
+  virtual
+  ~SegmentationLevelSetFunction() {
+  }
+
   SegmentationLevelSetFunction()
   {
     m_SpeedImage = ImageType::New();
@@ -176,6 +198,7 @@ protected:
 private:
   SegmentationLevelSetFunction(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace
 

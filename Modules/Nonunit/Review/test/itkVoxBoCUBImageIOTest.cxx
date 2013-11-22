@@ -21,7 +21,8 @@
 
 #include "itkVoxBoCUBImageIOFactory.h"
 
-int itkVoxBoCUBImageIOTest( int argc, char * argv [] )
+int
+itkVoxBoCUBImageIOTest( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -30,11 +31,11 @@ int itkVoxBoCUBImageIOTest( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef unsigned short                      PixelType;
-  typedef itk::Image< PixelType, 3 >          ImageType;
+  typedef unsigned short             PixelType;
+  typedef itk::Image< PixelType, 3 > ImageType;
 
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
-  typedef itk::ImageFileWriter< ImageType >   WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   itk::VoxBoCUBImageIOFactory::RegisterOneFactory();
 

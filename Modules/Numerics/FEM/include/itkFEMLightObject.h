@@ -77,7 +77,8 @@ protected:
   /**
    * Virtual destructor
    */
-  virtual ~FEMLightObject()
+  virtual
+  ~FEMLightObject()
   {
   }
 

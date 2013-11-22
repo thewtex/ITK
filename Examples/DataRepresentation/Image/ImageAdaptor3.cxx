@@ -40,11 +40,9 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkGradientRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -66,24 +64,30 @@ namespace itk
 class VectorPixelAccessor
 {
 public:
-  typedef itk::CovariantVector<float,2>   InternalType;
-  typedef                      float      ExternalType;
+  typedef itk::CovariantVector<float,2> InternalType;
+  typedef                      float    ExternalType;
 
-  VectorPixelAccessor() : m_Index(0) {}
+  VectorPixelAccessor() : m_Index(0) {
+  }
 
-  VectorPixelAccessor & operator=( const VectorPixelAccessor & vpa )
-    {
-      m_Index = vpa.m_Index;
-      return *this;
-    }
-  ExternalType Get( const InternalType & input ) const
-    {
+  VectorPixelAccessor &
+  operator=( const VectorPixelAccessor & vpa )
+  {
+    m_Index = vpa.m_Index;
+    return *this;
+  }
+
+  ExternalType
+  Get( const InternalType & input ) const
+  {
     return static_cast<ExternalType>( input[ m_Index ] );
-    }
-  void SetIndex( unsigned int index )
-    {
+  }
+
+  void
+  SetIndex( unsigned int index )
+  {
     m_Index = index;
-    }
+  }
 
 private:
   unsigned int m_Index;
@@ -100,14 +104,14 @@ private:
 //
 //  Software Guide : EndLatex
 
-
 //-------------------------
 //
 //   Main code
 //
 //-------------------------
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -116,7 +120,6 @@ int main( int argc, char *argv[] )
     std::cerr << " indexOfComponentToExtract" << std::endl;
     return -1;
     }
-
 
 //  Software Guide : BeginLatex
 //
@@ -128,19 +131,17 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef unsigned char  InputPixelType;
-  const   unsigned int   Dimension = 2;
-  typedef itk::Image< InputPixelType,  Dimension  >   InputImageType;
-  typedef itk::CovariantVector< float, Dimension  >   VectorPixelType;
-  typedef itk::Image< VectorPixelType, Dimension  >   VectorImageType;
+  typedef unsigned char InputPixelType;
+  const   unsigned int Dimension = 2;
+  typedef itk::Image< InputPixelType,  Dimension  > InputImageType;
+  typedef itk::CovariantVector< float, Dimension  > VectorPixelType;
+  typedef itk::Image< VectorPixelType, Dimension  > VectorImageType;
   typedef itk::GradientRecursiveGaussianImageFilter< InputImageType,
-                                        VectorImageType> GradientFilterType;
+                                                     VectorImageType> GradientFilterType;
 
   GradientFilterType::Pointer gradient = GradientFilterType::New();
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -157,7 +158,6 @@ int main( int argc, char *argv[] )
   ImageAdaptorType::Pointer adaptor = ImageAdaptorType::New();
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  The index of the component to be extracted is specified
@@ -167,13 +167,11 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  itk::VectorPixelAccessor  accessor;
+  itk::VectorPixelAccessor accessor;
   accessor.SetIndex( atoi( argv[3] ) );
   adaptor->SetPixelAccessor( accessor );
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -182,16 +180,14 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType >   ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   gradient->SetInput( reader->GetOutput() );
 
   reader->SetFileName( argv[1] );
   gradient->Update();
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -201,17 +197,15 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   adaptor->SetImage( gradient->GetOutput() );
 // Software Guide : EndCodeSnippet
 
-
-  typedef itk::Image< unsigned char, Dimension >   OutputImageType;
+  typedef itk::Image< unsigned char, Dimension > OutputImageType;
   typedef itk::RescaleIntensityImageFilter< ImageAdaptorType, OutputImageType>
     RescalerType;
   RescalerType::Pointer rescaler = RescalerType::New();
-  typedef itk::ImageFileWriter< OutputImageType >   WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[2] );
@@ -222,7 +216,6 @@ int main( int argc, char *argv[] )
   rescaler->SetInput( adaptor );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //

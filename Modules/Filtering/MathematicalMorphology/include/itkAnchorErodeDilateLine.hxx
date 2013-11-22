@@ -68,7 +68,7 @@ AnchorErodeDilateLine< TInputPix, TCompare >
   int                 outLeftP = 0, outRightP = (int)bufflength - 1;
   int                 inLeftP = 0, inRightP = (int)bufflength - 1;
   InputImagePixelType Extreme;
-  HistogramType histo;
+  HistogramType       histo;
   if ( bufflength <= m_Size )
     {
     // basically a standard histogram method
@@ -160,7 +160,7 @@ AnchorErodeDilateLine< TInputPix, TCompare >
                     inLeftP,
                     inRightP,
                     middle) )
-      {}
+          {}
 
   FinishLine(buffer,
              inbuffer,
@@ -293,6 +293,7 @@ AnchorErodeDilateLine< TInputPix, TCompare >
   // Handles the right border.
   // First half of the structuring element
   HistogramType histo;
+
   Extreme = inbuffer[inRightP];
   histo.AddPixel(Extreme);
 
@@ -341,6 +342,7 @@ AnchorErodeDilateLine< TInputPix, TCompare >
 {
   os << indent << "Size: " << m_Size << std::endl;
 }
+
 } // end namespace itk
 
 #endif

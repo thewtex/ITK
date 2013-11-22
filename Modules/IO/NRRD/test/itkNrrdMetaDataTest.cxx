@@ -42,7 +42,7 @@ itkNrrdMetaDataTest( int ac, char* av[] )
   // Image type
   typedef itk::Image<unsigned char,3> ImageType;
   // create dummy image
-  ImageType::Pointer image1 = ImageType::New();
+  ImageType::Pointer  image1 = ImageType::New();
   ImageType::SizeType size = { {2,2,2} };
   image1->SetRegions(size);
   image1->Allocate();
@@ -62,13 +62,13 @@ itkNrrdMetaDataTest( int ac, char* av[] )
   fname += "/metadatatest.nrrd";
   // set up writer
   ImageWriterType::Pointer writer = ImageWriterType::New();
-  writer->SetImageIO(itk::NrrdImageIO::New());
-  writer->SetFileName(fname.c_str());
+  writer->SetImageIO(itk::NrrdImageIO::New() );
+  writer->SetFileName(fname.c_str() );
   writer->SetInput(image1);
   // set up reader
   ImageReaderType::Pointer reader = ImageReaderType::New();
-  reader->SetFileName(fname.c_str());
-  reader->SetImageIO(itk::NrrdImageIO::New());
+  reader->SetFileName(fname.c_str() );
+  reader->SetImageIO(itk::NrrdImageIO::New() );
   ImageType::Pointer image2;
   // write and then read
   try

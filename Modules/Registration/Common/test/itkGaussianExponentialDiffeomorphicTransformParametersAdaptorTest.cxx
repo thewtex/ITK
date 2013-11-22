@@ -19,10 +19,12 @@
 #include "itkGaussianExponentialDiffeomorphicTransform.h"
 #include "itkGaussianExponentialDiffeomorphicTransformParametersAdaptor.h"
 
-int itkGaussianExponentialDiffeomorphicTransformParametersAdaptorTest(int, char * [] )
+int
+itkGaussianExponentialDiffeomorphicTransformParametersAdaptorTest(int, char * [] )
 {
   const unsigned int SpaceDimension = 3;
-  typedef double CoordinateRepType;
+
+  typedef double                                                                            CoordinateRepType;
   typedef itk::GaussianExponentialDiffeomorphicTransform<CoordinateRepType, SpaceDimension> TransformType;
 
   /**
@@ -56,7 +58,6 @@ int itkGaussianExponentialDiffeomorphicTransformParametersAdaptorTest(int, char 
   zeroVector.Fill( 0 );
   displacementField->FillBuffer( zeroVector );
 
-
   TransformType::OutputVectorType nonzeroVector;
   nonzeroVector.Fill( 10.3 );
 
@@ -78,7 +79,7 @@ int itkGaussianExponentialDiffeomorphicTransformParametersAdaptorTest(int, char 
   TransformType::OutputPointType outputPointBeforeAdapt = transform->TransformPoint( point );
 
   SpacingType spacingBefore = transform->GetConstantVelocityField()->GetSpacing();
-  SizeType sizeBefore = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeBefore = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
 
   /**
    * Instantiate the adaptor
@@ -120,9 +121,8 @@ int itkGaussianExponentialDiffeomorphicTransformParametersAdaptorTest(int, char 
     return EXIT_FAILURE;
     }
 
-
   SpacingType spacingAfter = transform->GetConstantVelocityField()->GetSpacing();
-  SizeType sizeAfter = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeAfter = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
 
   std::cout << "Spacing: " << spacingBefore << "(before), " << spacingAfter << "(after)." << std::endl;
   std::cout << "Size: " << sizeBefore << "(before), " << sizeAfter << "(after)." << std::endl;
@@ -151,12 +151,14 @@ int itkGaussianExponentialDiffeomorphicTransformParametersAdaptorTest(int, char 
     std::cerr << "required direction conversion is incorrect." << std::endl;
     return EXIT_FAILURE;
     }
-  if( adaptor->GetGaussianSmoothingVarianceForTheUpdateField() != transform->GetGaussianSmoothingVarianceForTheUpdateField() )
+  if( adaptor->GetGaussianSmoothingVarianceForTheUpdateField() !=
+      transform->GetGaussianSmoothingVarianceForTheUpdateField() )
     {
     std::cerr << "update field mesh conversion is incorrect." << std::endl;
     return EXIT_FAILURE;
     }
-  if( adaptor->GetGaussianSmoothingVarianceForTheConstantVelocityField() != transform->GetGaussianSmoothingVarianceForTheConstantVelocityField() )
+  if( adaptor->GetGaussianSmoothingVarianceForTheConstantVelocityField() !=
+      transform->GetGaussianSmoothingVarianceForTheConstantVelocityField() )
     {
     std::cerr << "total field mesh conversion is incorrect." << std::endl;
     return EXIT_FAILURE;

@@ -49,15 +49,15 @@ namespace itk {
 
 template<typename TInputImage, typename TOutputImage, typename TMaskImage=TOutputImage>
 class MomentsThresholdImageFilter :
-    public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
+  public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
 {
 public:
   /** Standard Self typedef */
-  typedef MomentsThresholdImageFilter                                 Self;
+  typedef MomentsThresholdImageFilter Self;
   typedef HistogramThresholdImageFilter<TInputImage,TOutputImage,
                                         TMaskImage>                   Superclass;
-  typedef SmartPointer<Self>                                          Pointer;
-  typedef SmartPointer<const Self>                                    ConstPointer;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -65,14 +65,14 @@ public:
   /** Runtime information support. */
   itkTypeMacro(MomentsThresholdImageFilter, HistogramThresholdImageFilter);
 
-  typedef TInputImage                       InputImageType;
-  typedef TOutputImage                      OutputImageType;
-  typedef TMaskImage                        MaskImageType;
+  typedef TInputImage  InputImageType;
+  typedef TOutputImage OutputImageType;
+  typedef TMaskImage   MaskImageType;
 
   /** Image pixel value typedef. */
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename MaskImageType::PixelType    MaskPixelType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename MaskImageType::PixelType   MaskPixelType;
 
   /** Image related typedefs. */
   typedef typename InputImageType::Pointer  InputImagePointer;
@@ -99,14 +99,17 @@ public:
 
 protected:
   MomentsThresholdImageFilter()
-    {
+  {
     this->SetCalculator( CalculatorType::New() );
-    }
-  ~MomentsThresholdImageFilter(){};
+  }
+
+  ~MomentsThresholdImageFilter(){
+  }
 
 private:
   MomentsThresholdImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);              //purposely not implemented
+
 }; // end of class
 
 } // end namespace itk

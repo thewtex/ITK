@@ -32,7 +32,6 @@
 #include <string.h>
 #include <algorithm>
 
-
 namespace itk
 {
 
@@ -77,6 +76,7 @@ public:
       delete ObjectFactoryBasePrivate::m_InternalFactories;
       }
   }
+
 };
 //NOTE:  KWStyle insists on m_ for m_CleanUpObjectFactoryGlobal
 static CleanUpObjectFactory m_CleanUpObjectFactoryGlobal;
@@ -91,12 +91,12 @@ static CleanUpObjectFactory m_CleanUpObjectFactoryGlobal;
  * classes including <map> and getting long symbol warnings.
  */
 typedef std::multimap< std::string, ObjectFactoryBase::OverrideInformation >
-StringOverMapType;
+  StringOverMapType;
 
 /** \class OverRideMap
  * \brief Internal implementation class for ObjectFactorBase.
  */
-class OverRideMap:public StringOverMapType
+class OverRideMap : public StringOverMapType
 {
 public:
 };
@@ -132,7 +132,6 @@ ObjectFactoryBase::GetStrictVersionChecking()
   return ObjectFactoryBase::m_StrictVersionChecking;
 }
 
-
 /**
  * Create an instance of a named itk object using the loaded
  * factories
@@ -165,6 +164,7 @@ ObjectFactoryBase
   ObjectFactoryBase::Initialize();
 
   std::list< LightObject::Pointer > created;
+
   for ( FactoryListType::iterator
         i = ObjectFactoryBasePrivate::m_RegisteredFactories->begin();
         i != ObjectFactoryBasePrivate::m_RegisteredFactories->end(); ++i )
@@ -205,7 +205,7 @@ ObjectFactoryBase
 ::Initialize()
 {
   if (!ObjectFactoryBasePrivate::m_Initialized ||
-    !ObjectFactoryBasePrivate::m_RegisteredFactories )
+      !ObjectFactoryBasePrivate::m_RegisteredFactories )
     {
     ObjectFactoryBasePrivate::m_Initialized = true;
     ObjectFactoryBase::InitializeFactoryList();
@@ -346,6 +346,7 @@ NameIsSharedLibrary(const char *name)
   std::string extension = itksys::DynamicLoader::LibExtension();
 
   std::string sname = name;
+
   if ( sname.rfind(extension) == sname.size() - extension.size() )
     {
     return true;
@@ -356,8 +357,8 @@ NameIsSharedLibrary(const char *name)
 #endif
   const size_t extensionpos = sname.rfind(extension);
   if ( ( extensionpos != std::string::npos )
-    && ( extensionpos == ( sname.size() - extension.size() ) )
-    )
+       && ( extensionpos == ( sname.size() - extension.size() ) )
+       )
     {
     return true;
     }
@@ -405,7 +406,7 @@ ObjectFactoryBase
          */
         if ( loadfunction )
           {
-          ObjectFactoryBase *newfactory = ( *loadfunction )( );
+          ObjectFactoryBase *newfactory = ( *loadfunction )();
 
           /**
            * initialize class members if load worked
@@ -413,7 +414,7 @@ ObjectFactoryBase
           newfactory->m_LibraryHandle = (void *)lib;
           newfactory->m_LibraryPath = fullpath;
           newfactory->m_LibraryDate = 0; // unused for now...
-          if (!ObjectFactoryBase::RegisterFactory(newfactory))
+          if (!ObjectFactoryBase::RegisterFactory(newfactory) )
             {
             DynamicLoader::CloseLibrary(lib);
             }
@@ -509,7 +510,7 @@ ObjectFactoryBase
             ObjectFactoryBasePrivate::m_RegisteredFactories->begin();
           i != ObjectFactoryBasePrivate::m_RegisteredFactories->end(); ++i )
       {
-      if ((*i)->m_LibraryPath == factory->m_LibraryPath)
+      if ( (*i)->m_LibraryPath == factory->m_LibraryPath)
         {
         itkGenericOutputMacro(<< factory->m_LibraryPath << " is already loaded");
         return false;
@@ -522,9 +523,9 @@ ObjectFactoryBase
     if ( ObjectFactoryBase::m_StrictVersionChecking )
       {
       itkGenericExceptionMacro(<< "Incompatible factory version load attempt:"
-                            << "\nRunning itk version :\n" << Version::GetITKSourceVersion()
-                            << "\nAttempted loading factory version:\n" << factory->GetITKSourceVersion()
-                            << "\nAttempted factory:\n" << factory->m_LibraryPath << "\n");
+                               << "\nRunning itk version :\n" << Version::GetITKSourceVersion()
+                               << "\nAttempted loading factory version:\n" << factory->GetITKSourceVersion()
+                               << "\nAttempted factory:\n" << factory->m_LibraryPath << "\n");
       }
     else
       {
@@ -564,7 +565,7 @@ ObjectFactoryBase
       const size_t numberOfFactories = ObjectFactoryBasePrivate::m_RegisteredFactories->size();
       if( position < numberOfFactories )
         {
-        typedef FactoryListType::iterator    FactoryIterator;
+        typedef FactoryListType::iterator FactoryIterator;
         FactoryIterator fitr = ObjectFactoryBasePrivate::m_RegisteredFactories->begin();
 
         while( position-- )
@@ -833,6 +834,7 @@ ObjectFactoryBase
 ::GetClassOverrideNames()
 {
   std::list< std::string > ret;
+
   for ( OverRideMap::iterator i = m_OverrideMap->begin();
         i != m_OverrideMap->end(); ++i )
     {
@@ -849,6 +851,7 @@ ObjectFactoryBase
 ::GetClassOverrideWithNames()
 {
   std::list< std::string > ret;
+
   for ( OverRideMap::iterator i = m_OverrideMap->begin();
         i != m_OverrideMap->end(); ++i )
     {
@@ -865,6 +868,7 @@ ObjectFactoryBase
 ::GetClassOverrideDescriptions()
 {
   std::list< std::string > ret;
+
   for ( OverRideMap::iterator i = m_OverrideMap->begin();
         i != m_OverrideMap->end(); ++i )
     {
@@ -881,6 +885,7 @@ ObjectFactoryBase
 ::GetEnableFlags()
 {
   std::list< bool > ret;
+
   for ( OverRideMap::iterator i = m_OverrideMap->begin();
         i != m_OverrideMap->end(); ++i )
     {
@@ -897,4 +902,5 @@ ObjectFactoryBase
 {
   return m_LibraryPath.c_str();
 }
+
 } // end namespace itk

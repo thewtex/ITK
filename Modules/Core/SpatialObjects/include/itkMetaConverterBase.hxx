@@ -30,7 +30,7 @@ MetaConverterBase<VDimension>
 ::ReadMeta(const char *name)
 {
   SpatialObjectPointer rval;
-  MetaObjectType *mo = this->CreateMetaObject();
+  MetaObjectType *     mo = this->CreateMetaObject();
 
   mo->Read(name);
   rval = this->MetaObjectToSpatialObject(mo);
@@ -44,6 +44,7 @@ MetaConverterBase<VDimension>
 ::WriteMeta(const SpatialObjectType *spatialObject, const char *name)
 {
   MetaObject *mo = this->SpatialObjectToMetaObject(spatialObject);
+
   mo->Write(name);
   delete mo;
   return true;

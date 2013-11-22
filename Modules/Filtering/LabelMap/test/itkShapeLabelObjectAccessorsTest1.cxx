@@ -17,12 +17,11 @@
  *=========================================================================*/
 #include "itkImageFileReader.h"
 
-
 #include "itkShapeKeepNObjectsLabelMapFilter.h"
 #include "itkLabelImageToShapeLabelMapFilter.h"
 
-
-int itkShapeLabelObjectAccessorsTest1(int argc, char * argv[])
+int
+itkShapeLabelObjectAccessorsTest1(int argc, char * argv[])
 {
   if( argc != 2 )
     {
@@ -65,10 +64,13 @@ int itkShapeLabelObjectAccessorsTest1(int argc, char * argv[])
   attributes.push_back("PerimeterOnBorderRatio");
   for (size_t a = 0; a < attributes.size(); a++)
     {
-    if (ShapeLabelObjectType::GetNameFromAttribute(ShapeLabelObjectType::GetAttributeFromName(attributes[a])) != attributes[a])
+    if (ShapeLabelObjectType::GetNameFromAttribute(ShapeLabelObjectType::GetAttributeFromName(attributes[a]) ) !=
+        attributes[a])
       {
       std::cout << "Attribute translation for " << attributes[a] << " failed." << std::endl;
-      std::cout << "   Received " << ShapeLabelObjectType::GetNameFromAttribute(ShapeLabelObjectType::GetAttributeFromName(attributes[a])) << " but expected " << attributes[a] << std::endl;
+      std::cout << "   Received " << ShapeLabelObjectType::GetNameFromAttribute(ShapeLabelObjectType::GetAttributeFromName(
+                                                                                  attributes[a]) ) <<
+        " but expected " << attributes[a] << std::endl;
       status = EXIT_FAILURE;
       }
     }
@@ -89,7 +91,7 @@ int itkShapeLabelObjectAccessorsTest1(int argc, char * argv[])
     {
     ShapeLabelObjectType *labelObject = labelMap->GetNthLabelObject(n);
     std::cout << "Label: "
-              << itk::NumericTraits<LabelMapType::LabelType>::PrintType(labelObject->GetLabel()) << std::endl;
+              << itk::NumericTraits<LabelMapType::LabelType>::PrintType(labelObject->GetLabel() ) << std::endl;
     std::cout << "    BoundingBox: "
               << labelObject->GetBoundingBox() << std::endl;
     std::cout << "    NumberOfPixels: "
@@ -130,92 +132,92 @@ int itkShapeLabelObjectAccessorsTest1(int argc, char * argv[])
     ShapeLabelObjectType *labelCopy = labelMap->GetNthLabelObject(n);
     ShapeLabelObjectType *labelObject = labelMap->GetNthLabelObject(0);
     labelObject->CopyAttributesFrom(labelCopy);
-    if (labelCopy->GetLabel() != labelObject->GetLabel())
+    if (labelCopy->GetLabel() != labelObject->GetLabel() )
       {
       std::cout << "CopyAttributesFrom failed for attribute: " << "Label" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetBoundingBox() != labelObject->GetBoundingBox())
+    if (labelCopy->GetBoundingBox() != labelObject->GetBoundingBox() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "BoundingBox" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetNumberOfPixels() != labelObject->GetNumberOfPixels())
+    if (labelCopy->GetNumberOfPixels() != labelObject->GetNumberOfPixels() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "NumberOfPixels" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetPhysicalSize() != labelObject->GetPhysicalSize())
+    if (labelCopy->GetPhysicalSize() != labelObject->GetPhysicalSize() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "PhysicalSize" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetCentroid() != labelObject->GetCentroid())
+    if (labelCopy->GetCentroid() != labelObject->GetCentroid() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "Centroid" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetNumberOfPixelsOnBorder() != labelObject->GetNumberOfPixelsOnBorder())
+    if (labelCopy->GetNumberOfPixelsOnBorder() != labelObject->GetNumberOfPixelsOnBorder() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "NumberOfPixelsOnBorder" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetPerimeterOnBorder() != labelObject->GetPerimeterOnBorder())
+    if (labelCopy->GetPerimeterOnBorder() != labelObject->GetPerimeterOnBorder() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "PerimeterOnBorder" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetFeretDiameter() != labelObject->GetFeretDiameter())
+    if (labelCopy->GetFeretDiameter() != labelObject->GetFeretDiameter() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "FeretDiameter" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetPrincipalMoments() != labelObject->GetPrincipalMoments())
+    if (labelCopy->GetPrincipalMoments() != labelObject->GetPrincipalMoments() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "PrincipalMoments" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetPrincipalAxes() != labelObject->GetPrincipalAxes())
+    if (labelCopy->GetPrincipalAxes() != labelObject->GetPrincipalAxes() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "PrincipalAxes" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetElongation() != labelObject->GetElongation())
+    if (labelCopy->GetElongation() != labelObject->GetElongation() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "Elongation" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetPerimeter() != labelObject->GetPerimeter())
+    if (labelCopy->GetPerimeter() != labelObject->GetPerimeter() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "Perimeter" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetRoundness() != labelObject->GetRoundness())
+    if (labelCopy->GetRoundness() != labelObject->GetRoundness() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "Roundness" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetEquivalentSphericalRadius() != labelObject->GetEquivalentSphericalRadius())
+    if (labelCopy->GetEquivalentSphericalRadius() != labelObject->GetEquivalentSphericalRadius() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "EquivalentSphericalRadius" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetEquivalentSphericalPerimeter() != labelObject->GetEquivalentSphericalPerimeter())
+    if (labelCopy->GetEquivalentSphericalPerimeter() != labelObject->GetEquivalentSphericalPerimeter() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "EquivalentSphericalPerimeter" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetEquivalentEllipsoidDiameter() != labelObject->GetEquivalentEllipsoidDiameter())
+    if (labelCopy->GetEquivalentEllipsoidDiameter() != labelObject->GetEquivalentEllipsoidDiameter() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "EquivalentEllipsoidDiameter" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetFlatness() != labelObject->GetFlatness())
+    if (labelCopy->GetFlatness() != labelObject->GetFlatness() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "Flatness" << std::endl;
       status = EXIT_FAILURE;
       }
-    if (labelCopy->GetPerimeterOnBorderRatio() != labelObject->GetPerimeterOnBorderRatio())
+    if (labelCopy->GetPerimeterOnBorderRatio() != labelObject->GetPerimeterOnBorderRatio() )
       {
       std::cout << "CopyAttributeFrom failed for attribute " << "PerimeterOnBorderRatio" << std::endl;
       status = EXIT_FAILURE;
@@ -225,111 +227,113 @@ int itkShapeLabelObjectAccessorsTest1(int argc, char * argv[])
 
   for (unsigned int n = 0; n < labelMap->GetNumberOfLabelObjects(); n++)
     {
-    itk::Functor::LabelLabelObjectAccessor< ShapeLabelObjectType >  accessorLabel;
-    ShapeLabelObjectType *l = labelMap->GetNthLabelObject(n);
-    if (l->GetLabel() != accessorLabel(l))
+    itk::Functor::LabelLabelObjectAccessor< ShapeLabelObjectType > accessorLabel;
+    ShapeLabelObjectType *                                         l = labelMap->GetNthLabelObject(n);
+    if (l->GetLabel() != accessorLabel(l) )
       {
       std::cout << "l->GetLabel2() != accessorLabel(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::BoundingBoxLabelObjectAccessor< ShapeLabelObjectType > accessorBoundingBox;
-    if (l->GetBoundingBox() != accessorBoundingBox(l))
+    if (l->GetBoundingBox() != accessorBoundingBox(l) )
       {
       std::cout << "l->GetBoundingBox() != accessorBoundingBox(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::NumberOfPixelsLabelObjectAccessor< ShapeLabelObjectType > accessorSize;
-    if (l->GetNumberOfPixels() != accessorSize(l))
+    if (l->GetNumberOfPixels() != accessorSize(l) )
       {
       std::cout << "l->GetNumberOfPixels() != accessorSize(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::PhysicalSizeLabelObjectAccessor< ShapeLabelObjectType > accessorPhysicalSize;
-    if (l->GetPhysicalSize() != accessorPhysicalSize(l))
+    if (l->GetPhysicalSize() != accessorPhysicalSize(l) )
       {
       std::cout << "l->GetPhysicalSize() != accessorPhysicalSize(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::CentroidLabelObjectAccessor< ShapeLabelObjectType > accessorCentroid;
-    if (l->GetCentroid() != accessorCentroid(l))
+    if (l->GetCentroid() != accessorCentroid(l) )
       {
       std::cout << "l->GetCentroid() != accessorCentroid(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::NumberOfPixelsOnBorderLabelObjectAccessor< ShapeLabelObjectType > accessorSizeOnBorder;
-    if (l->GetNumberOfPixelsOnBorder() != accessorSizeOnBorder(l))
+    if (l->GetNumberOfPixelsOnBorder() != accessorSizeOnBorder(l) )
       {
       std::cout << "l->GetNumberOfPixelsOnBorder() != accessorSizeOnBorder(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::PerimeterOnBorderLabelObjectAccessor< ShapeLabelObjectType > accessorPerimeterOnBorder;
-    if (l->GetPerimeterOnBorder() != accessorPerimeterOnBorder(l))
+    if (l->GetPerimeterOnBorder() != accessorPerimeterOnBorder(l) )
       {
       std::cout << "l->GetPerimeterOnBorder() != accessorPerimeterOnBorder(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::FeretDiameterLabelObjectAccessor< ShapeLabelObjectType > accessorFeretDiameter;
-    if (l->GetFeretDiameter() != accessorFeretDiameter(l))
+    if (l->GetFeretDiameter() != accessorFeretDiameter(l) )
       {
       std::cout << "l->GetFeretDiameter() != accessorFeretDiameter(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::PrincipalMomentsLabelObjectAccessor< ShapeLabelObjectType > accessorPrincipalMoments;
-    if (l->GetPrincipalMoments() != accessorPrincipalMoments(l))
+    if (l->GetPrincipalMoments() != accessorPrincipalMoments(l) )
       {
       std::cout << "l->GetPrincipalMoments() != accessorPrincipalMoments(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::PrincipalAxesLabelObjectAccessor< ShapeLabelObjectType > accessorPrincipalAxes;
-    if (l->GetPrincipalAxes() != accessorPrincipalAxes(l))
+    if (l->GetPrincipalAxes() != accessorPrincipalAxes(l) )
       {
       std::cout << "l->GetPrincipalAxes() != accessorPrincipalAxes(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::ElongationLabelObjectAccessor< ShapeLabelObjectType > accessorElongation;
-    if (l->GetElongation() != accessorElongation(l))
+    if (l->GetElongation() != accessorElongation(l) )
       {
       std::cout << "l->GetElongation() != accessorElongation(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::PerimeterLabelObjectAccessor< ShapeLabelObjectType > accessorPerimeter;
-    if (l->GetPerimeter() != accessorPerimeter(l))
+    if (l->GetPerimeter() != accessorPerimeter(l) )
       {
       std::cout << "l->GetPerimeter() != accessorPerimeter(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::RoundnessLabelObjectAccessor< ShapeLabelObjectType > accessorRoundness;
-    if (l->GetRoundness() != accessorRoundness(l))
+    if (l->GetRoundness() != accessorRoundness(l) )
       {
       std::cout << "l->GetRoundness() != accessorRoundness(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::EquivalentSphericalRadiusLabelObjectAccessor< ShapeLabelObjectType > accessorEquivalentSphericalRadius;
-    if (l->GetEquivalentSphericalRadius() != accessorEquivalentSphericalRadius(l))
+    if (l->GetEquivalentSphericalRadius() != accessorEquivalentSphericalRadius(l) )
       {
       std::cout << "l->GetEquivalentSphericalRadius() != accessorEquivalentSphericalRadius(l)" << std::endl;
       status = EXIT_FAILURE;
       }
-    itk::Functor::EquivalentSphericalPerimeterLabelObjectAccessor< ShapeLabelObjectType > accessorEquivalentSphericalPerimeter;
-    if (l->GetEquivalentSphericalPerimeter() != accessorEquivalentSphericalPerimeter(l))
+    itk::Functor::EquivalentSphericalPerimeterLabelObjectAccessor< ShapeLabelObjectType >
+    accessorEquivalentSphericalPerimeter;
+    if (l->GetEquivalentSphericalPerimeter() != accessorEquivalentSphericalPerimeter(l) )
       {
       std::cout << "l->GetEquivalentSphericalPerimeter() != accessorEquivalentSphericalPerimeter(l)" << std::endl;
       status = EXIT_FAILURE;
       }
-    itk::Functor::EquivalentEllipsoidDiameterLabelObjectAccessor< ShapeLabelObjectType > accessorEquivalentEllipsoidDiameter;
-    if (l->GetEquivalentEllipsoidDiameter() != accessorEquivalentEllipsoidDiameter(l))
+    itk::Functor::EquivalentEllipsoidDiameterLabelObjectAccessor< ShapeLabelObjectType >
+    accessorEquivalentEllipsoidDiameter;
+    if (l->GetEquivalentEllipsoidDiameter() != accessorEquivalentEllipsoidDiameter(l) )
       {
       std::cout << "l->GetEquivalentEllipsoidDiameter() != accessorEquivalentEllipsoidDiameter(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::FlatnessLabelObjectAccessor< ShapeLabelObjectType > accessorFlatness;
-    if (l->GetFlatness() != accessorFlatness(l))
+    if (l->GetFlatness() != accessorFlatness(l) )
       {
       std::cout << "l->GetFlatness() != accessorFlatness(l)" << std::endl;
       status = EXIT_FAILURE;
       }
     itk::Functor::PerimeterOnBorderRatioLabelObjectAccessor< ShapeLabelObjectType > accessorPerimeterOnBorderRatio;
-    if (l->GetPerimeterOnBorderRatio() != accessorPerimeterOnBorderRatio(l))
+    if (l->GetPerimeterOnBorderRatio() != accessorPerimeterOnBorderRatio(l) )
       {
       std::cout << "l->GetPerimeterOnBorderRatio() != accessorPerimeterOnBorderRatio(l)" << std::endl;
       status = EXIT_FAILURE;
@@ -347,7 +351,7 @@ int itkShapeLabelObjectAccessorsTest1(int argc, char * argv[])
   // Check transforms
   for (unsigned int n = 0; n < labelMap->GetNumberOfLabelObjects(); n++)
     {
-    ShapeLabelObjectType *l = labelMap->GetNthLabelObject(n);
+    ShapeLabelObjectType *                       l = labelMap->GetNthLabelObject(n);
     ShapeLabelObjectType::AffineTransformPointer principleToPhysical = l->GetPrincipalAxesToPhysicalAxesTransform();
     std::cout << "Print principleToPhysical " << n << std::endl;
     principleToPhysical->Print(std::cout);

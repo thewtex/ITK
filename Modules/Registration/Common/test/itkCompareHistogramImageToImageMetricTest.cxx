@@ -24,7 +24,8 @@
 /** This test uses two 2D-Gaussians (standard deviation RegionSize/2).
     This test computes the mutual information between the two images.
 */
-int itkCompareHistogramImageToImageMetricTest(int , char* [])
+int
+itkCompareHistogramImageToImageMetricTest(int , char* [])
 {
   try {
     // Create two simple images.
@@ -43,18 +44,18 @@ int itkCompareHistogramImageToImageMetricTest(int , char* [])
     typedef FixedImageSourceType::Pointer             FixedImageSourcePointer;
 
     // Note: the following declarations are classical arrays
-    FixedImageType::SizeValueType fixedImageSize[] = {100,  100};
+    FixedImageType::SizeValueType  fixedImageSize[] = {100,  100};
     MovingImageType::SizeValueType movingImageSize[] = {100,  100};
 
-    FixedImageType::SpacingValueType fixedImageSpacing[]  = {1.0f, 1.0f};
+    FixedImageType::SpacingValueType  fixedImageSpacing[]  = {1.0f, 1.0f};
     MovingImageType::SpacingValueType movingImageSpacing[] = {1.0f, 1.0f};
 
-    FixedImageType::PointValueType fixedImageOrigin[] = {0.0f, 0.0f};
+    FixedImageType::PointValueType  fixedImageOrigin[] = {0.0f, 0.0f};
     MovingImageType::PointValueType movingImageOrigin[] = {0.0f, 0.0f};
 
     MovingImageSourceType::Pointer movingImageSource =
       MovingImageSourceType::New();
-    FixedImageSourceType::Pointer  fixedImageSource  =
+    FixedImageSourceType::Pointer fixedImageSource  =
       FixedImageSourceType::New();
 
     movingImageSource->SetSize(movingImageSize);
@@ -77,16 +78,16 @@ int itkCompareHistogramImageToImageMetricTest(int , char* [])
 
     // Set up the metric.
     typedef itk::KullbackLeiblerCompareHistogramImageToImageMetric<
-                                                       FixedImageType,
-                                                       MovingImageType
-                                                               > MetricType;
+        FixedImageType,
+        MovingImageType
+        > MetricType;
     typedef MetricType::TransformType         TransformBaseType;
     typedef MetricType::ScalesType            ScalesType;
     typedef TransformBaseType::ParametersType ParametersType;
 
     MetricType::Pointer metric = MetricType::New();
 
-    unsigned int nBins = 256;
+    unsigned int                        nBins = 256;
     MetricType::HistogramType::SizeType histSize;
 
     histSize.SetSize(2);
@@ -101,30 +102,30 @@ int itkCompareHistogramImageToImageMetricTest(int , char* [])
 
     // Set up a transform.
     typedef itk::TranslationTransform<CoordinateRepresentationType,
-      ImageDimension> TransformType;
+                                      ImageDimension> TransformType;
 
     TransformType::Pointer transform = TransformType::New();
-    metric->SetTransform(transform.GetPointer());
+    metric->SetTransform(transform.GetPointer() );
 
     // Set up an interpolator.
     typedef itk::LinearInterpolateImageFunction<MovingImageType,
-      double> InterpolatorType;
+                                                double> InterpolatorType;
 
     InterpolatorType::Pointer interpolator = InterpolatorType::New();
-    interpolator->SetInputImage(movingImage.GetPointer());
-    metric->SetInterpolator(interpolator.GetPointer());
+    interpolator->SetInputImage(movingImage.GetPointer() );
+    metric->SetInterpolator(interpolator.GetPointer() );
 
     // Define the region over which the metric will be computed.
-    metric->SetFixedImageRegion(fixedImage->GetBufferedRegion());
+    metric->SetFixedImageRegion(fixedImage->GetBufferedRegion() );
 
     // Set up transform parameters.
-    ParametersType parameters(transform->GetNumberOfParameters());
+    ParametersType parameters(transform->GetNumberOfParameters() );
 
     for (unsigned int k = 0; k < ImageDimension; k++)
       parameters[k] = 0.0f;
 
     // Set scales for derivative calculation.
-    ScalesType scales(transform->GetNumberOfParameters());
+    ScalesType scales(transform->GetNumberOfParameters() );
 
     for (unsigned int k = 0; k < transform->GetNumberOfParameters(); k++)
       scales[k] = 1;
@@ -132,17 +133,17 @@ int itkCompareHistogramImageToImageMetricTest(int , char* [])
     metric->SetDerivativeStepLengthScales(scales);
 
     // Now set up the Training Stuff
-    metric->SetTrainingTransform(transform.GetPointer());
+    metric->SetTrainingTransform(transform.GetPointer() );
     metric->SetTrainingFixedImage(fixedImage);
-    metric->SetTrainingFixedImageRegion(fixedImage->GetBufferedRegion());
+    metric->SetTrainingFixedImageRegion(fixedImage->GetBufferedRegion() );
     metric->SetTrainingMovingImage(movingImage);
-    metric->SetTrainingInterpolator(interpolator.GetPointer());
+    metric->SetTrainingInterpolator(interpolator.GetPointer() );
 
     // Initialize the metric.
     metric->Initialize();
 
     // Print out metric value and derivative.
-    MetricType::MeasureType measure = metric->GetValue(parameters);
+    MetricType::MeasureType    measure = metric->GetValue(parameters);
     MetricType::DerivativeType derivative;
     metric->GetDerivative(parameters, derivative);
 
@@ -153,13 +154,13 @@ int itkCompareHistogramImageToImageMetricTest(int , char* [])
     metric->Print(std::cout);
 
     std::cout << "Test passed." << std::endl;
-  }
+    }
   catch (itk::ExceptionObject& ex)
-  {
+    {
     std::cerr << "Exception caught!" << std::endl;
     std::cerr << ex << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   return EXIT_SUCCESS;
 }

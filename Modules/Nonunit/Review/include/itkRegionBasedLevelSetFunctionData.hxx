@@ -84,6 +84,7 @@ RegionBasedLevelSetFunctionData< TInputImage, TFeatureImage >
 
   return index;
 }
+
 } //end namespace itk
 
 #endif

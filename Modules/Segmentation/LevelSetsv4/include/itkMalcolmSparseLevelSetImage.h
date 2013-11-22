@@ -39,7 +39,7 @@ namespace itk
  */
 template< unsigned int VDimension >
 class MalcolmSparseLevelSetImage :
-    public LevelSetSparseImage< int8_t, VDimension >
+  public LevelSetSparseImage< int8_t, VDimension >
 {
 public:
   typedef MalcolmSparseLevelSetImage                Self;
@@ -62,50 +62,68 @@ public:
   typedef typename Superclass::HessianType      HessianType;
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  typedef typename Superclass::LayerIdType            LayerIdType;
-  typedef typename Superclass::LabelObjectType        LabelObjectType;
-  typedef typename Superclass::LabelObjectPointer     LabelObjectPointer;
-  typedef typename Superclass::LabelObjectLengthType  LabelObjectLengthType;
-  typedef typename Superclass::LabelObjectLineType    LabelObjectLineType;
+  typedef typename Superclass::LayerIdType           LayerIdType;
+  typedef typename Superclass::LabelObjectType       LabelObjectType;
+  typedef typename Superclass::LabelObjectPointer    LabelObjectPointer;
+  typedef typename Superclass::LabelObjectLengthType LabelObjectLengthType;
+  typedef typename Superclass::LabelObjectLineType   LabelObjectLineType;
 
-  typedef typename Superclass::LabelMapType     LabelMapType;
-  typedef typename Superclass::LabelMapPointer  LabelMapPointer;
-  typedef typename Superclass::RegionType       RegionType;
+  typedef typename Superclass::LabelMapType    LabelMapType;
+  typedef typename Superclass::LabelMapPointer LabelMapPointer;
+  typedef typename Superclass::RegionType      RegionType;
 
   typedef typename Superclass::LayerType          LayerType;
   typedef typename Superclass::LayerIterator      LayerIterator;
   typedef typename Superclass::LayerConstIterator LayerConstIterator;
 
-  typedef typename Superclass::LayerMapType           LayerMapType;
-  typedef typename Superclass::LayerMapIterator       LayerMapIterator;
-  typedef typename Superclass::LayerMapConstIterator  LayerMapConstIterator;
+  typedef typename Superclass::LayerMapType          LayerMapType;
+  typedef typename Superclass::LayerMapIterator      LayerMapIterator;
+  typedef typename Superclass::LayerMapConstIterator LayerMapConstIterator;
 
-  /** Returns the value of the level set function at a given location inputPixel */
+  /** Returns the value of the level set function at a given location inputPixel
+    */
   using Superclass::Evaluate;
   virtual OutputType Evaluate( const InputType& inputPixel ) const;
 
-  /** Returns the Hessian of the level set function at a given location inputPixel */
+  /** Returns the Hessian of the level set function at a given location
+    inputPixel */
   virtual HessianType EvaluateHessian( const InputType& inputPixel ) const;
 
-  /** Returns the Laplacian of the level set function at a given location inputPixel */
+  /** Returns the Laplacian of the level set function at a given location
+    inputPixel */
   virtual OutputRealType EvaluateLaplacian( const InputType& inputPixel ) const;
 
-  /** Returns the MeanCurvature of the level set function at a given location inputPixel */
+  /** Returns the MeanCurvature of the level set function at a given location
+    inputPixel */
   virtual OutputRealType EvaluateMeanCurvature( const InputType& inputPixel ) const;
 
   virtual void EvaluateHessian( const InputType& inputPixel, LevelSetDataType& data ) const;
+
   virtual void EvaluateLaplacian( const InputType& inputPixel, LevelSetDataType& data ) const;
+
   virtual void EvaluateMeanCurvature( const InputType& inputPixel, LevelSetDataType& data ) const;
 
-  static inline LayerIdType MinusOneLayer() { return -1; }
-  static inline LayerIdType ZeroLayer() { return 0; }
-  static inline LayerIdType PlusOneLayer() { return 1; }
+  static inline LayerIdType
+  MinusOneLayer() {
+    return -1;
+  }
+
+  static inline LayerIdType
+  ZeroLayer() {
+    return 0;
+  }
+
+  static inline LayerIdType
+  PlusOneLayer() {
+    return 1;
+  }
 
 protected:
 
   MalcolmSparseLevelSetImage();
 
-  virtual ~MalcolmSparseLevelSetImage();
+  virtual
+  ~MalcolmSparseLevelSetImage();
 
   /** Initialize the sparse field layers */
   virtual void InitializeLayers();
@@ -114,7 +132,8 @@ protected:
 
 private:
   MalcolmSparseLevelSetImage( const Self& ); //purposely not implemented
-  void operator = ( const Self& ); //purposely not implemented
+  void operator =( const Self& );            //purposely not implemented
+
 };
 }
 #ifndef ITK_MANUAL_INSTANTIATION

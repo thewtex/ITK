@@ -26,15 +26,16 @@ namespace itk
 template< unsigned int NDimensions >
 MetaSurfaceConverter< NDimensions >
 ::MetaSurfaceConverter()
-{}
+{
+}
 
 template< unsigned int NDimensions >
 typename MetaSurfaceConverter< NDimensions >::MetaObjectType *
 MetaSurfaceConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new SurfaceMetaObjectType);
-}
+  }
 
 /** Convert a metaSurface into an Surface SpatialObject */
 template< unsigned int NDimensions >
@@ -43,6 +44,7 @@ MetaSurfaceConverter< NDimensions >
 ::MetaObjectToSpatialObject(const MetaObjectType *mo)
 {
   const SurfaceMetaObjectType *surfaceMO = dynamic_cast<const SurfaceMetaObjectType *>(mo);
+
   if(surfaceMO == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaSurface");
@@ -111,11 +113,11 @@ template< unsigned int NDimensions >
 typename MetaSurfaceConverter< NDimensions >::MetaObjectType *
 MetaSurfaceConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   SurfaceSpatialObjectConstPointer surfaceSO =
     dynamic_cast<const SurfaceSpatialObjectType *>(so);
 
-  if(surfaceSO.IsNull())
+  if(surfaceSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to SurfaceSpatialObject");
     }
@@ -176,7 +178,7 @@ MetaSurfaceConverter< NDimensions >
     }
 
   return surfaceMO;
-}
+  }
 
 } // end namespace itk
 

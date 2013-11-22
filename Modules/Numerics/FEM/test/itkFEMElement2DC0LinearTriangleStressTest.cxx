@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMElement2DC0LinearTriangleStressTest(int argc, char *argv[])
+int
+itkFEMElement2DC0LinearTriangleStressTest(int argc, char *argv[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

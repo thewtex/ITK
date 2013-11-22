@@ -40,7 +40,8 @@
 
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 
 // Software Guide : BeginLatex
@@ -123,7 +124,6 @@ int main( int , char *[] )
   std::cout << "Number of objects in the group: ";
   std::cout << group->GetNumberOfChildren() << std::endl;
 // Software Guide : EndCodeSnippet
-
 
   return 0;
 }

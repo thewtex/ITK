@@ -42,7 +42,7 @@ namespace itk
  */
 template< typename TInputImage >
 class HalfToFullHermitianImageFilter :
-    public ImageToImageFilter< TInputImage, TInputImage >
+  public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -78,26 +78,36 @@ public:
                       TInputImage::ImageDimension);
 
   /** Was the original truncated dimension size in the x-dimension odd? */
-  void SetActualXDimensionIsOdd(bool isOdd)
+  void
+  SetActualXDimensionIsOdd(bool isOdd)
   {
     m_ActualXDimensionIsOdd = isOdd;
   }
-  void SetActualXDimensionIsOddOn()
+
+  void
+  SetActualXDimensionIsOddOn()
   {
     this->SetActualXDimensionIsOdd(true);
   }
-  void SetActualXDimensionIsOddOff()
+
+  void
+  SetActualXDimensionIsOddOff()
   {
     this->SetActualXDimensionIsOdd(false);
   }
-  bool GetActualXDimensionIsOdd()
+
+  bool
+  GetActualXDimensionIsOdd()
   {
     return m_ActualXDimensionIsOdd;
   }
 
 protected:
-  HalfToFullHermitianImageFilter() : m_ActualXDimensionIsOdd(false) {}
-  ~HalfToFullHermitianImageFilter() {}
+  HalfToFullHermitianImageFilter() : m_ActualXDimensionIsOdd(false) {
+  }
+
+  ~HalfToFullHermitianImageFilter() {
+  }
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
@@ -110,7 +120,7 @@ protected:
 
 private:
   HalfToFullHermitianImageFilter(const Self &); // purposely not implemented
-  void operator=(const Self &);           // purposely not implemented
+  void operator=(const Self &);                 // purposely not implemented
 
   bool m_ActualXDimensionIsOdd;
 };

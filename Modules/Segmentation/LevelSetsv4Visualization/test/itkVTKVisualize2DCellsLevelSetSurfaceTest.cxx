@@ -70,7 +70,7 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
     }
 
   typedef itk::BinaryImageToLevelSetImageAdaptor< BinaryImageType,
-    LevelSetType > BinaryImageToLevelSetType;
+                                                  LevelSetType > BinaryImageToLevelSetType;
 
   typename BinaryImageToLevelSetType::Pointer adaptor = BinaryImageToLevelSetType::New();
   adaptor->SetInputImage( binary );
@@ -94,14 +94,16 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   // Create the terms.
   //
   // // Chan and Vese internal term
-  typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType > ChanAndVeseInternalTermType;
+  typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType,
+                                                        LevelSetContainerType > ChanAndVeseInternalTermType;
   typename ChanAndVeseInternalTermType::Pointer cvInternalTerm = ChanAndVeseInternalTermType::New();
   cvInternalTerm->SetInput( inputImage );
   cvInternalTerm->SetCoefficient( 0.5 );
   std::cout << "Chan and Vese internal term created" << std::endl;
 
   // // Chan and Vese external term
-  typedef typename itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType > ChanAndVeseExternalTermType;
+  typedef typename itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType,
+                                                                 LevelSetContainerType > ChanAndVeseExternalTermType;
   typename ChanAndVeseExternalTermType::Pointer cvExternalTerm = ChanAndVeseExternalTermType::New();
   cvExternalTerm->SetInput( inputImage );
   std::cout << "Chan and Vese external term created" << std::endl;
@@ -123,7 +125,8 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   std::cout << "Equation container created" << std::endl;
 
   // Create stopping criteria
-  typedef typename itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType > StoppingCriterionType;
+  typedef typename itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
+    StoppingCriterionType;
   typename StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( numberOfIterations );
   std::cout << "Stopping criteria created" << std::endl;
@@ -144,7 +147,8 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   evolution->SetLevelSetContainer( levelSetContainer );
   std::cout << "Evolution class created" << std::endl;
 
-  typedef typename itk::LevelSetIterationUpdateCommand< LevelSetEvolutionType, VisualizationType > IterationUpdateCommandType;
+  typedef typename itk::LevelSetIterationUpdateCommand< LevelSetEvolutionType,
+                                                        VisualizationType > IterationUpdateCommandType;
   typename IterationUpdateCommandType::Pointer iterationUpdateCommand = IterationUpdateCommandType::New();
   iterationUpdateCommand->SetFilterToUpdate( visualizer );
   iterationUpdateCommand->SetUpdatePeriod( 5 );
@@ -157,7 +161,8 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   //! \todo Write out the final visualization image.
 }
 
-int itkVTKVisualize2DCellsLevelSetSurfaceTest( int argc, char* argv[] )
+int
+itkVTKVisualize2DCellsLevelSetSurfaceTest( int argc, char* argv[] )
 {
   if( argc < 5 )
     {
@@ -174,27 +179,27 @@ int itkVTKVisualize2DCellsLevelSetSurfaceTest( int argc, char* argv[] )
   // Image Dimension
   const unsigned int Dimension = 2;
 
-  typedef unsigned char                            InputPixelType;
-  typedef itk::Image< InputPixelType, Dimension >  InputImageType;
+  typedef unsigned char                           InputPixelType;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
 
   // Read input image (to be processed).
-  typedef itk::ImageFileReader< InputImageType >   ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   reader->Update();
   InputImageType::Pointer input = reader->GetOutput();
   std::cout << "Input image read" << std::endl;
 
-  int numberOfIterations;
+  int                numberOfIterations;
   std::istringstream istrm( argv[2] );
   istrm >> numberOfIterations;
 
   std::string levelSetRepresentation = argv[3];
   if( levelSetRepresentation.compare( "Dense" ) == 0 )
     {
-    typedef float                                         LevelSetPixelType;
-    typedef itk::Image< LevelSetPixelType, Dimension >    LevelSetImageType;
-    typedef itk::LevelSetDenseImage< LevelSetImageType >  LevelSetType;
+    typedef float                                        LevelSetPixelType;
+    typedef itk::Image< LevelSetPixelType, Dimension >   LevelSetImageType;
+    typedef itk::LevelSetDenseImage< LevelSetImageType > LevelSetType;
     try
       {
       VisualizeLevelSetSurface< InputImageType, LevelSetType >( input,

@@ -29,10 +29,10 @@ class DOMTestObjectDOMReader : public DOMReader<DOMTestObject>
 {
 public:
   /** Standard class typedefs. */
-  typedef DOMTestObjectDOMReader      Self;
-  typedef DOMReader<DOMTestObject>    Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef DOMTestObjectDOMReader     Self;
+  typedef DOMReader<DOMTestObject>   Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -41,7 +41,8 @@ public:
   itkTypeMacro(DOMTestObjectDOMReader, DOMReader);
 
 protected:
-  DOMTestObjectDOMReader() {}
+  DOMTestObjectDOMReader() {
+  }
 
   /**
    * This function is called automatically when update functions are performed.
@@ -51,13 +52,15 @@ protected:
 
 private:
   DOMTestObjectDOMReader(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
+
 };
 
 inline void
 DOMTestObjectDOMReader::GenerateData( const DOMNodeType* inputdom, const void* )
 {
   OutputType* output = this->GetOutput();
+
   if ( output == NULL )
     {
     OutputType::Pointer object = OutputType::New();
@@ -65,7 +68,7 @@ DOMTestObjectDOMReader::GenerateData( const DOMNodeType* inputdom, const void* )
     this->SetOutput( output );
     }
 
-  FancyString s;
+  FancyString   s;
   std::ifstream ifs;
 
   if ( inputdom->GetName() != "DOMTestObject" )

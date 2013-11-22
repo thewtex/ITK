@@ -31,27 +31,27 @@ namespace itk
  */
 template<typename TTransform>
 class BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor
-: public DisplacementFieldTransformParametersAdaptor<TTransform>
+  : public DisplacementFieldTransformParametersAdaptor<TTransform>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor          Self;
-  typedef DisplacementFieldTransformParametersAdaptor<TTransform>                      Superclass;
-  typedef SmartPointer<Self>                                                           Pointer;
-  typedef SmartPointer<const Self>                                                     ConstPointer;
+  typedef BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor Self;
+  typedef DisplacementFieldTransformParametersAdaptor<TTransform>             Superclass;
+  typedef SmartPointer<Self>                                                  Pointer;
+  typedef SmartPointer<const Self>                                            ConstPointer;
 
   /** New macro for creation of through a Smart Pointer. */
   itkNewMacro( Self );
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor,
-    DisplacementFieldTransformParametersAdaptor );
+                DisplacementFieldTransformParametersAdaptor );
 
-  typedef TTransform                               TransformType;
-  typedef typename TransformType::ScalarType       ScalarType;
-  typedef typename TransformType::SplineOrderType  SplineOrderType;
-  typedef typename TransformType::ArrayType        ArrayType;
+  typedef TTransform                              TransformType;
+  typedef typename TransformType::ScalarType      ScalarType;
+  typedef typename TransformType::SplineOrderType SplineOrderType;
+  typedef typename TransformType::ArrayType       ArrayType;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( SpaceDimension, unsigned int, TransformType::Dimension );
@@ -120,14 +120,20 @@ protected:
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
-  BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor( const Self & ); //purposely
+                                                                                       //
+                                                                                       // not
+                                                                                       //
+                                                                                       // implemented
+  void operator=( const Self & );                                                      //purposely
 
-  ArrayType                   m_NumberOfControlPointsForTheUpdateField;
-  ArrayType                   m_NumberOfControlPointsForTheTotalField;
-  ModifiedTimeType            m_NumberOfControlPointsForTheUpdateFieldSetTime;
-  ModifiedTimeType            m_NumberOfControlPointsForTheTotalFieldSetTime;
+  // not
+  // implemented
 
+  ArrayType        m_NumberOfControlPointsForTheUpdateField;
+  ArrayType        m_NumberOfControlPointsForTheTotalField;
+  ModifiedTimeType m_NumberOfControlPointsForTheUpdateFieldSetTime;
+  ModifiedTimeType m_NumberOfControlPointsForTheTotalFieldSetTime;
 
 }; //class BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor
 }  // namespace itk
@@ -136,4 +142,6 @@ private:
 #include "itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor.hxx"
 #endif
 
-#endif /* __itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor_h */
+#endif /*
+         __itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor_h
+         */

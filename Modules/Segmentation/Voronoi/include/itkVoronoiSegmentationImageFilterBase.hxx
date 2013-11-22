@@ -49,7 +49,8 @@ VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage
 template< typename TInputImage, typename TOutputImage, typename TBinaryPriorImage >
 VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage >
 ::~VoronoiSegmentationImageFilterBase()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage, typename TBinaryPriorImage >
 void
@@ -57,6 +58,7 @@ VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number Of Seeds: "
      << m_NumberOfSeeds << std::endl;
 
@@ -579,6 +581,7 @@ VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage
   RegionType region = this->GetInput()->GetRequestedRegion();
 
   itk::ImageRegionIteratorWithIndex< OutputImageType > oit(this->GetOutput(), region);
+
   while ( !oit.IsAtEnd() )
     {
     oit.Set(0);
@@ -611,6 +614,7 @@ VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage
   RegionType region = this->GetInput()->GetRequestedRegion();
 
   itk::ImageRegionIteratorWithIndex< OutputImageType > oit(this->GetOutput(), region);
+
   while ( !oit.IsAtEnd() )
     {
     oit.Set(0);
@@ -644,7 +648,7 @@ VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage
 ::FillPolygon(PointTypeDeque vertlist, OutputPixelType color)
 {
   TOutputImage *output = this->GetOutput();
-  IndexType idx;
+  IndexType     idx;
 
   PointType currP;
   PointType leftP;
@@ -1003,6 +1007,7 @@ VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage
   RegionType region = this->GetInput()->GetRequestedRegion();
 
   itk::ImageRegionIteratorWithIndex< VDImage > vdit(result, region);
+
   while ( !vdit.IsAtEnd() )
     {
     vdit.Set(0);
@@ -1142,6 +1147,7 @@ VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage
   this->GetOutput()
   ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
+
 } //end namespace
 
 #endif

@@ -18,7 +18,8 @@
 
 #include "itkEllipsoidInteriorExteriorSpatialFunction.h"
 
-int itkEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
+int
+itkEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
 {
   std::cout << "itkEllipsoidInteriorExteriorSpatialFunction test start" << std::endl;
 
@@ -40,7 +41,8 @@ int itkEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
   axes[2] = 20;
   spatialFunc->SetAxes(axes);
 
-  // Define function doitkEllipsoidInteriorExteriorSpatialFunctionTest, which encapsulates ellipsoid.
+  // Define function doitkEllipsoidInteriorExteriorSpatialFunctionTest, which
+  // encapsulates ellipsoid.
   int xExtent = 50;
   int yExtent = 50;
   int zExtent = 50;
@@ -57,7 +59,7 @@ int itkEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
   // (0,1,0) corresponds to the axes of length axes[0]
   // (1,0,0) corresponds to the axes of length axes[1]
   // (0,0,1) corresponds to the axes of length axes[2]
-  double data[] = {0, 1, 0, 1, 0, 0, 0, 0, 1};
+  double             data[] = {0, 1, 0, 1, 0, 0, 0, 0, 1};
   vnl_matrix<double> orientations (data, 3, 3);
 
   // Set the orientations of the ellipsoids
@@ -65,10 +67,12 @@ int itkEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
 
   // Evaluate all points in the spatial function and count the number of
   // pixels that are inside the sphere.
-  double testPosition[dimension];  // position of a pixel in the function doitkEllipsoidInteriorExteriorSpatialFunctionTest
+  double testPosition[dimension];  // position of a pixel in the function
+                                   //
+                                   // doitkEllipsoidInteriorExteriorSpatialFunctionTest
 
-  bool functionValue;  // Value of pixel at a given position
-  int interiorPixelCounter = 0;  // Count pixels inside ellipsoid
+  bool functionValue;            // Value of pixel at a given position
+  int  interiorPixelCounter = 0; // Count pixels inside ellipsoid
 
   for(int x = 0; x < xExtent; x++)
     {
@@ -81,7 +85,7 @@ int itkEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
         testPosition[2] = z;
         functionValue = spatialFunc->Evaluate(testPosition);
         if(functionValue == 1)
-          interiorPixelCounter ++;
+          interiorPixelCounter++;
         }
       }
     }
@@ -124,13 +128,13 @@ int itkEllipsoidInteriorExteriorSpatialFunctionTest(int, char* [] )
     }
   //Default behavior is to fail
   std::cerr << "calculated ellipsoid volume = " << volume << std::endl
-              << "measured ellipsoid volume = " << interiorPixelCounter << std::endl
-              << "volume error = " << volumeError << "%" << std::endl
-              << "function value = " << functionValue << std::endl
-              << "center location = (" << spatialFunc->GetCenter()[0] << ", " << spatialFunc->GetCenter()[0]
-              << ", " << spatialFunc->GetCenter()[2] << ")" << std::endl
-              << "major axis length = " << spatialFunc->GetAxes()[0] << " minor axis 1 length = "
-              << spatialFunc->GetAxes()[1] << " minor axis 2 length = " << spatialFunc->GetAxes()[2] << std::endl
-              << "itkEllipsoidSpatialFunction failed :(" << std::endl;
-    return EXIT_FAILURE;
+            << "measured ellipsoid volume = " << interiorPixelCounter << std::endl
+            << "volume error = " << volumeError << "%" << std::endl
+            << "function value = " << functionValue << std::endl
+            << "center location = (" << spatialFunc->GetCenter()[0] << ", " << spatialFunc->GetCenter()[0]
+            << ", " << spatialFunc->GetCenter()[2] << ")" << std::endl
+            << "major axis length = " << spatialFunc->GetAxes()[0] << " minor axis 1 length = "
+            << spatialFunc->GetAxes()[1] << " minor axis 2 length = " << spatialFunc->GetAxes()[2] << std::endl
+            << "itkEllipsoidSpatialFunction failed :(" << std::endl;
+  return EXIT_FAILURE;
 }

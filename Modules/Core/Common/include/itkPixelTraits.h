@@ -138,7 +138,6 @@ public:
   typedef unsigned long ValueType;
 };
 
-
 template< >
 class PixelTraits< long long >
 {
@@ -266,7 +265,6 @@ class JoinTraits< bool, unsigned long >
 public:
   typedef unsigned long ValueType;
 };
-
 
 template< >
 class JoinTraits< bool, long long >
@@ -939,7 +937,6 @@ public:
   typedef float ValueType;
 };
 
-
 template< >
 class JoinTraits< long, long long >
 {
@@ -1062,7 +1059,6 @@ class JoinTraits< unsigned long, double >
 public:
   typedef double ValueType;
 };
-
 
 /** \class PixelTraits<long long>
  * Specializations for long long.
@@ -1253,7 +1249,6 @@ class JoinTraits< unsigned long long, double >
 public:
   typedef double ValueType;
 };
-
 
 /**  \class PixelTraits<float>
  * Specializations for float.

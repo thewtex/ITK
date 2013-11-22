@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #ifndef __itkLevelSetEvolutionBase_h
 #define __itkLevelSetEvolutionBase_h
 
@@ -54,8 +53,8 @@ public:
   typedef TEquationContainer                      EquationContainerType;
   typedef typename EquationContainerType::Pointer EquationContainerPointer;
   typedef typename EquationContainerType::TermContainerType
-                                                  TermContainerType;
-  typedef typename TermContainerType::Pointer     TermContainerPointer;
+    TermContainerType;
+  typedef typename TermContainerType::Pointer TermContainerPointer;
 
   typedef typename TermContainerType::TermType TermType;
   typedef typename TermType::Pointer           TermPointer;
@@ -65,13 +64,13 @@ public:
   typedef typename InputImageType::ConstPointer      InputImageConstPointer;
   typedef typename InputImageType::RegionType        InputImageRegionType;
   typedef typename NumericTraits< InputImagePixelType >::RealType
-                                                     InputPixelRealType;
+    InputPixelRealType;
 
   itkStaticConstMacro ( ImageDimension, unsigned int, InputImageType::ImageDimension );
 
-  typedef typename TermContainerType::LevelSetContainerType       LevelSetContainerType;
+  typedef typename TermContainerType::LevelSetContainerType LevelSetContainerType;
 
-  typedef typename LevelSetContainerType::LevelSetIdentifierType  LevelSetIdentifierType;
+  typedef typename LevelSetContainerType::LevelSetIdentifierType LevelSetIdentifierType;
 
   typedef TLevelSet                               LevelSetType;
   typedef typename LevelSetType::InputType        LevelSetInputType;
@@ -88,13 +87,14 @@ public:
   typedef typename LevelSetContainerType::DomainMapImageFilterType DomainMapImageFilterType;
 
   typedef LevelSetEvolutionStoppingCriterion< LevelSetContainerType >
-                                                  StoppingCriterionType;
+    StoppingCriterionType;
   typedef typename StoppingCriterionType::Pointer StoppingCriterionPointer;
 
   itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
   itkGetModifiableObjectMacro(LevelSetContainer, LevelSetContainerType );
 
-  /** Set/Get the value of alpha for computing the time-step using CFL conditions */
+  /** Set/Get the value of alpha for computing the time-step using CFL
+    conditions */
   itkSetMacro( Alpha, LevelSetOutputRealType );
   itkGetMacro( Alpha, LevelSetOutputRealType );
 
@@ -120,11 +120,13 @@ public:
 protected:
   LevelSetEvolutionBase();
 
-  virtual ~LevelSetEvolutionBase();
+  virtual
+  ~LevelSetEvolutionBase();
 
   void CheckSetUp();
 
-  /** Initialize the iteration by computing parameters in the terms of the level set equation */
+  /** Initialize the iteration by computing parameters in the terms of the level
+    set equation */
   void InitializeIteration();
 
   /** Run the iterative loops of calculating levelset function updates until
@@ -148,16 +150,16 @@ protected:
 
   virtual void UpdateEquations() = 0;
 
-  StoppingCriterionPointer    m_StoppingCriterion;
+  StoppingCriterionPointer m_StoppingCriterion;
 
-  EquationContainerPointer                 m_EquationContainer;
+  EquationContainerPointer m_EquationContainer;
   typename LevelSetContainerType::Pointer  m_LevelSetContainer;
 
-  LevelSetOutputRealType      m_Alpha;
-  LevelSetOutputRealType      m_Dt;
-  LevelSetOutputRealType      m_RMSChangeAccumulator;
-  bool                        m_UserGloballyDefinedTimeStep;
-  IdentifierType              m_NumberOfIterations;
+  LevelSetOutputRealType m_Alpha;
+  LevelSetOutputRealType m_Dt;
+  LevelSetOutputRealType m_RMSChangeAccumulator;
+  bool                   m_UserGloballyDefinedTimeStep;
+  IdentifierType         m_NumberOfIterations;
 
   /** Helper members for threading. */
   typename LevelSetContainerType::Iterator m_LevelSetContainerIteratorToProcessWhenThreading;
@@ -165,7 +167,8 @@ protected:
 
 private:
   LevelSetEvolutionBase( const Self& ); // purposely not implemented
-  void operator = ( const Self& );  // purposely not implemented
+  void operator =( const Self& );       // purposely not implemented
+
 };
 }
 

@@ -35,33 +35,34 @@ namespace itk
  */
 template< typename TInput, typename TOutput >
 class FastMarchingReachedTargetNodesStoppingCriterion :
-public FastMarchingStoppingCriterionBase< TInput, TOutput >
+  public FastMarchingStoppingCriterionBase< TInput, TOutput >
 {
 public:
-  typedef FastMarchingReachedTargetNodesStoppingCriterion       Self;
-  typedef FastMarchingStoppingCriterionBase< TInput, TOutput >  Superclass;
-  typedef SmartPointer< Self >                                  Pointer;
-  typedef SmartPointer< const Self >                            ConstPointer;
-  typedef typename Superclass::Traits                           Traits;
+  typedef FastMarchingReachedTargetNodesStoppingCriterion      Self;
+  typedef FastMarchingStoppingCriterionBase< TInput, TOutput > Superclass;
+  typedef SmartPointer< Self >                                 Pointer;
+  typedef SmartPointer< const Self >                           ConstPointer;
+  typedef typename Superclass::Traits                          Traits;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(FastMarchingReachedTargetNodesStoppingCriterion,
-                FastMarchingStoppingCriterionBase );
+               FastMarchingStoppingCriterionBase );
 
-  typedef typename Superclass::OutputPixelType  OutputPixelType;
-  typedef typename Superclass::NodeType         NodeType;
+  typedef typename Superclass::OutputPixelType OutputPixelType;
+  typedef typename Superclass::NodeType        NodeType;
 
   /** \enum TargetConditionType */
   enum TargetConditionType { OneTarget = 1,
-                              SomeTargets,
-                              AllTargets };
+                             SomeTargets,
+                             AllTargets };
 
   /** Set/Get TargetCondition to indicate if the user wants the front to
   reach one, some or all target nodes. */
-  void SetTargetCondition( const TargetConditionType& iCondition )
+  void
+  SetTargetCondition( const TargetConditionType& iCondition )
   {
     m_TargetCondition = iCondition;
     m_Initialized = false;
@@ -75,7 +76,8 @@ public:
   itkGetMacro( TargetOffset, OutputPixelType );
 
   /** \brief Set the number of target nodes to be reached */
-  void SetNumberOfTargetsToBeReached( const size_t& iN )
+  void
+  SetNumberOfTargetsToBeReached( const size_t& iN )
   {
     m_NumberOfTargetsToBeReached = iN;
     m_Initialized = false;
@@ -83,7 +85,8 @@ public:
   }
 
   /** \brief Set Target Nodes*/
-  virtual void SetTargetNodes( const std::vector< NodeType >& iNodes )
+  virtual void
+  SetTargetNodes( const std::vector< NodeType >& iNodes )
   {
     m_TargetNodes = iNodes;
     m_Initialized = false;
@@ -91,7 +94,8 @@ public:
   }
 
   /** \brief Set the current node */
-  void SetCurrentNode( const NodeType& iNode )
+  void
+  SetCurrentNode( const NodeType& iNode )
   {
     if( !m_Initialized )
       {
@@ -105,9 +109,9 @@ public:
       if ( !m_TargetNodes.empty() )
         {
         typename std::vector< NodeType >::const_iterator
-            pointsIter = m_TargetNodes.begin();
+        pointsIter = m_TargetNodes.begin();
         typename std::vector< NodeType >::const_iterator
-            pointsEnd = m_TargetNodes.end();
+        pointsEnd = m_TargetNodes.end();
 
         while( pointsIter != pointsEnd )
           {
@@ -115,7 +119,7 @@ public:
             {
             this->m_ReachedTargetNodes.push_back( iNode );
             m_Satisfied =
-                ( m_ReachedTargetNodes.size() == m_NumberOfTargetsToBeReached );
+              ( m_ReachedTargetNodes.size() == m_NumberOfTargetsToBeReached );
             break;
             }
           ++pointsIter;
@@ -133,13 +137,15 @@ public:
   }
 
   /** \brief returns if the stopping condition is satisfied or not. */
-  bool IsSatisfied() const
+  bool
+  IsSatisfied() const
   {
     return m_Satisfied && ( this->m_CurrentValue >= m_StoppingValue );
   }
 
   /** \brief Get a short description of the stopping criterion. */
-  std::string GetDescription() const
+  std::string
+  GetDescription() const
   {
     return "Target Nodes Reached with possible overshoot";
   }
@@ -157,7 +163,8 @@ protected:
   }
 
   /** Destructor */
-  ~FastMarchingReachedTargetNodesStoppingCriterion() {}
+  ~FastMarchingReachedTargetNodesStoppingCriterion() {
+  }
 
   TargetConditionType     m_TargetCondition;
   std::vector< NodeType > m_TargetNodes;
@@ -168,12 +175,14 @@ protected:
   bool                    m_Satisfied;
   bool                    m_Initialized;
 
-  void Reset()
+  void
+  Reset()
   {
     this->Initialize();
   }
 
-  void Initialize()
+  void
+  Initialize()
   {
     if( m_TargetCondition == OneTarget )
       {
@@ -186,7 +195,7 @@ protected:
     if( m_NumberOfTargetsToBeReached < 1 )
       {
       itkExceptionMacro(
-            <<"Number of target nodes to be reached is null" );
+        <<"Number of target nodes to be reached is null" );
       }
     if( m_NumberOfTargetsToBeReached > m_TargetNodes.size() )
       {
@@ -201,7 +210,8 @@ protected:
 
 private:
   FastMarchingReachedTargetNodesStoppingCriterion( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 }
 #endif // __itkFastMarchingThresholdStoppingCriterion_h

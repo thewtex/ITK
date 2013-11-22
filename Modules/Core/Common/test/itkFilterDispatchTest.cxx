@@ -45,7 +45,7 @@
  * \class An example filter.
  */
 template <typename TInputImage, typename TOutputImage>
-class ExampleImageFilter:
+class ExampleImageFilter :
   public itk::ImageToImageFilter<TInputImage, TOutputImage>
 {
 public:
@@ -77,10 +77,19 @@ public:
   itkNewMacro(Self);
 
 protected:
-  ExampleImageFilter() {}
-  ExampleImageFilter(const Self&) {}
-  void operator=(const Self&) {}
-  virtual ~ExampleImageFilter() {}
+  ExampleImageFilter() {
+  }
+
+  ExampleImageFilter(const Self&) {
+  }
+
+  void
+  operator=(const Self&) {
+  }
+
+  virtual
+  ~ExampleImageFilter() {
+  }
 
 private:
   /**
@@ -94,14 +103,17 @@ private:
    * parameter(s) that is used to control which Execute() method is chosen.
    */
   template <unsigned long V>
-  struct Dispatch: public DispatchBase {};
+  struct Dispatch : public DispatchBase {};
 
   void Execute(const DispatchBase&);
-  void Execute(Dispatch<2>);
-  void Execute(Dispatch<3>);
-  void Execute(Dispatch<0>);
-};
 
+  void Execute(Dispatch<2>);
+
+  void Execute(Dispatch<3>);
+
+  void Execute(Dispatch<0>);
+
+};
 
 /**
  * Filter update method called by the user of the filter.
@@ -109,12 +121,12 @@ private:
  * appropriate Dispatch control class.
  */
 template <typename TInputImage, typename TOutputImage>
-void ExampleImageFilter<TInputImage, TOutputImage>
+void
+ExampleImageFilter<TInputImage, TOutputImage>
 ::Update(void)
 {
-  this->Execute(Dispatch<ImageDimension>());
+  this->Execute(Dispatch<ImageDimension>() );
 }
-
 
 /**
  * General N-dimensional implementation of example filter.
@@ -122,23 +134,23 @@ void ExampleImageFilter<TInputImage, TOutputImage>
  * instantiation.
  */
 template <typename TInputImage, typename TOutputImage>
-void ExampleImageFilter<TInputImage, TOutputImage>
+void
+ExampleImageFilter<TInputImage, TOutputImage>
 ::Execute(const DispatchBase&)
 {
   std::cout << "General N-d Execute() has been called." << std::endl;
 
   // Make sure the correct Execute() method has been called.
-  if((ImageDimension == 2) || (ImageDimension == 3))
+  if( (ImageDimension == 2) || (ImageDimension == 3) )
     {
     itksys_ios::ostringstream err;
     err << "Error: N-d filter implementation called for "
         << ImageDimension
         << "-d filter, even though specific implementation exists."
         << std::endl;
-    throw std::string(err.str().c_str());
+    throw std::string(err.str().c_str() );
     }
 }
-
 
 /**
  * 2-dimensional implementation of example filter.
@@ -146,7 +158,8 @@ void ExampleImageFilter<TInputImage, TOutputImage>
  * instantiation.
  */
 template <typename TInputImage, typename TOutputImage>
-void ExampleImageFilter<TInputImage, TOutputImage>
+void
+ExampleImageFilter<TInputImage, TOutputImage>
 ::Execute(Dispatch<2>)
 {
   std::cout << "2d-specific Execute() has been called." << std::endl;
@@ -158,10 +171,9 @@ void ExampleImageFilter<TInputImage, TOutputImage>
     err << "Error: 2-d filter implementation called for "
         << ImageDimension
         << "-d filter." << std::endl;
-    throw std::string(err.str().c_str());
+    throw std::string(err.str().c_str() );
     }
 }
-
 
 /**
  * 3-dimensional implementation of example filter.
@@ -169,7 +181,8 @@ void ExampleImageFilter<TInputImage, TOutputImage>
  * instantiation.
  */
 template <typename TInputImage, typename TOutputImage>
-void ExampleImageFilter<TInputImage, TOutputImage>
+void
+ExampleImageFilter<TInputImage, TOutputImage>
 ::Execute(Dispatch<3>)
 {
   std::cout << "3d-specific Execute() has been called." << std::endl;
@@ -181,10 +194,9 @@ void ExampleImageFilter<TInputImage, TOutputImage>
     err << "Error: 3-d filter implementation called for "
         << ImageDimension
         << "-d filter." << std::endl;
-    throw std::string(err.str().c_str());
+    throw std::string(err.str().c_str() );
     }
 }
-
 
 /**
  * Zero-dimensional implementation of filter.  This should never be called,
@@ -192,19 +204,20 @@ void ExampleImageFilter<TInputImage, TOutputImage>
  * fail to compile.
  */
 template <typename TInputImage, typename TOutputImage>
-void ExampleImageFilter<TInputImage, TOutputImage>
+void
+ExampleImageFilter<TInputImage, TOutputImage>
 ::Execute(Dispatch<0>)
 {
   // this_should_not_have_been_instantiated();
   throw std::string("The 0-Dispatch method should not have been called.");
 }
 
-
 /**
  * Filter dispatch test creates several ExampleImageFilter instantiations
  * and calls them to check if the dispatch rules are working correctly.
  */
-int itkFilterDispatchTest(int, char* [] )
+int
+itkFilterDispatchTest(int, char* [] )
 {
   bool passed = true;
 
@@ -215,10 +228,10 @@ int itkFilterDispatchTest(int, char* [] )
   typedef itk::Image<float, 5> Image5d;
 
   // Define a filter of each dimension.
-  typedef ExampleImageFilter<Image2d, Image2d>  Filter2d;
-  typedef ExampleImageFilter<Image3d, Image3d>  Filter3d;
-  typedef ExampleImageFilter<Image4d, Image4d>  Filter4d;
-  typedef ExampleImageFilter<Image5d, Image5d>  Filter5d;
+  typedef ExampleImageFilter<Image2d, Image2d> Filter2d;
+  typedef ExampleImageFilter<Image3d, Image3d> Filter3d;
+  typedef ExampleImageFilter<Image4d, Image4d> Filter4d;
+  typedef ExampleImageFilter<Image5d, Image5d> Filter5d;
 
   // Instantiate a filter of each dimension.
   Filter2d::Pointer filter2d = Filter2d::New();

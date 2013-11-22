@@ -20,14 +20,16 @@
 namespace itk
 {
 SegmentationRegion
-::SegmentationRegion(void):
+::SegmentationRegion(void) :
   m_RegionLabel(0),
   m_RegionArea(0)
-{}
+{
+}
 
 SegmentationRegion
 ::~SegmentationRegion()
-{}
+{
+}
 
 /**
  * PrintSelf
@@ -42,4 +44,5 @@ SegmentationRegion
   os << indent << "Region label            : " << m_RegionLabel << std::endl;
   os << indent << "Area of the region      : " << m_RegionArea << std::endl;
 }
+
 } // end namespace itk

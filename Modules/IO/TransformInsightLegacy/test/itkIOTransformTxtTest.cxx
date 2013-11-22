@@ -29,9 +29,11 @@
 #include "itksys/SystemTools.hxx"
 
 template<typename ScalarType>
-static int oneTest(const std::string & outputDirectory, const char *goodname,const char *badname)
+static int
+oneTest(const std::string & outputDirectory, const char *goodname,const char *badname)
 {
   unsigned int i;
+
   typedef itk::AffineTransform<ScalarType,4>  AffineTransformType;
   typedef itk::AffineTransform<ScalarType,10> AffineTransformTypeNotRegistered;
   typename AffineTransformType::Pointer affine = AffineTransformType::New();
@@ -79,7 +81,6 @@ static int oneTest(const std::string & outputDirectory, const char *goodname,con
     return EXIT_FAILURE;
     }
 
-
   try
     {
     typename itk::TransformFileReaderTemplate<ScalarType>::TransformListType *list;
@@ -98,7 +99,6 @@ static int oneTest(const std::string & outputDirectory, const char *goodname,con
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Creating bad writer" << std::endl;
   typename AffineTransformTypeNotRegistered::Pointer Bogus = AffineTransformTypeNotRegistered::New();
@@ -175,6 +175,7 @@ int
 secondTest( const std::string & outputDirectory )
 {
   std::filebuf fb;
+
   fb.open( (outputDirectory + "IllegalTransform.txt").c_str(), std::ios::out );
   std::ostream os( &fb );
   os << "#Insight Transform File V1.0"
@@ -216,7 +217,6 @@ secondTest( const std::string & outputDirectory )
   return EXIT_FAILURE;
 }
 
-
 int
 templatelessTest( const std::string & outputDirectory )
 {
@@ -233,8 +233,8 @@ templatelessTest( const std::string & outputDirectory )
   return EXIT_SUCCESS;
 }
 
-
-int itkIOTransformTxtTest(int argc, char* argv[])
+int
+itkIOTransformTxtTest(int argc, char* argv[])
 {
   if (argc < 2)
     {
@@ -246,8 +246,8 @@ int itkIOTransformTxtTest(int argc, char* argv[])
     itksys::SystemTools::ChangeDirectory(argv[1]);
     }
   const std::string outputDirectory = std::string(argv[1]) + "/";
-  const int result1 =  oneTest<float>( outputDirectory, "Transforms_float.txt", "TransformsBad_float.txt" );
-  const int result2 =  secondTest<float>( outputDirectory );
+  const int         result1 =  oneTest<float>( outputDirectory, "Transforms_float.txt", "TransformsBad_float.txt" );
+  const int         result2 =  secondTest<float>( outputDirectory );
 
   const int result3 =  oneTest<double>( outputDirectory, "Transforms_double.txt", "TransformsBad_double.txt" );
   const int result4 =  secondTest<double>( outputDirectory );
@@ -255,8 +255,8 @@ int itkIOTransformTxtTest(int argc, char* argv[])
   const int result5 = templatelessTest( outputDirectory );
 
   return (
-          ( !( result1 == EXIT_SUCCESS && result2 == EXIT_SUCCESS) ) &&
-          ( !( result3 == EXIT_SUCCESS && result4 == EXIT_SUCCESS) ) &&
-            !( result5 == EXIT_SUCCESS )
-          );
+    ( !( result1 == EXIT_SUCCESS && result2 == EXIT_SUCCESS) ) &&
+    ( !( result3 == EXIT_SUCCESS && result4 == EXIT_SUCCESS) ) &&
+    !( result5 == EXIT_SUCCESS )
+    );
 }

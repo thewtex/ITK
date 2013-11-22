@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TCellInterface >
-class QuadEdgeMeshPolygonCell:public TCellInterface
+class QuadEdgeMeshPolygonCell : public TCellInterface
 {
 public:
   /** Standard class typedefs. */
@@ -97,15 +97,30 @@ public:
   /** Object memory management methods. */
   QuadEdgeMeshPolygonCell(PointIdentifier nPoints = 0);
   QuadEdgeMeshPolygonCell(QuadEdgeType *e);
-  virtual ~QuadEdgeMeshPolygonCell();
+  virtual
+  ~QuadEdgeMeshPolygonCell();
 
   /** Accessors for m_Ident. */
-  void SetIdent(CellIdentifier cid) { m_Ident = cid; }
-  CellIdentifier GetIdent()          { return ( m_Ident ); }
+  void
+  SetIdent(CellIdentifier cid) {
+    m_Ident = cid;
+  }
+
+  CellIdentifier
+  GetIdent()          {
+    return ( m_Ident );
+  }
 
   /** Lnext ring entry accessors. */
-  QuadEdgeType * GetEdgeRingEntry() const { return ( m_EdgeRingEntry ); }
-  void SetEdgeRingEntry(QuadEdgeType *entry) { m_EdgeRingEntry = entry; }
+  QuadEdgeType *
+  GetEdgeRingEntry() const {
+    return ( m_EdgeRingEntry );
+  }
+
+  void
+  SetEdgeRingEntry(QuadEdgeType *entry) {
+    m_EdgeRingEntry = entry;
+  }
 
   /** Implement the standard CellInterface. */
   SelfAutoPointer New();
@@ -113,15 +128,20 @@ public:
   /** TCellInterface abstract methods definition. */
   virtual void Accept(CellIdentifier cellId, MultiVisitor *mv);
 
-  virtual CellGeometry GetType() const { return ( Superclass::POLYGON_CELL ); }
+  virtual CellGeometry
+  GetType() const {
+    return ( Superclass::POLYGON_CELL );
+  }
 
   /** itk topology related methods. */
-  static int GetTopologyId()
+  static int
+  GetTopologyId()
   {
     return ( Superclass::POLYGON_CELL );
   }
 
-  virtual unsigned int GetDimension() const
+  virtual unsigned int
+  GetDimension() const
   {
     return ( Self::CellDimension );
   }
@@ -135,7 +155,8 @@ public:
                                   CellAutoPointer & cell);
 
   /** Useless methods. */
-  virtual void MakeCopy(CellAutoPointer & cell) const
+  virtual void
+  MakeCopy(CellAutoPointer & cell) const
   {
     const PointIdentifier numberOfPoints = this->GetNumberOfPoints();
     Self *                newPolygonCell = new Self(numberOfPoints);
@@ -167,7 +188,8 @@ public:
 
   virtual PointIdentifier GetPointId(int localId) const;
 
-  virtual PointIdIterator PointIdsBegin()
+  virtual PointIdIterator
+  PointIdsBegin()
   {
     // NOTE ALEX: should update the array on the fly to make it faster
     MakePointIds();
@@ -181,7 +203,8 @@ public:
       }
   }
 
-  virtual PointIdIterator PointIdsEnd()
+  virtual PointIdIterator
+  PointIdsEnd()
   {
     // NOTE ALEX: should update the array on the fly to make it faster
     if ( m_PointIds.size() == 0 )
@@ -194,7 +217,8 @@ public:
       }
   }
 
-  virtual PointIdConstIterator PointIdsBegin() const
+  virtual PointIdConstIterator
+  PointIdsBegin() const
   {
     // NOTE ALEX: should update the array on the fly to make it faster
     MakePointIds();
@@ -208,7 +232,8 @@ public:
       }
   }
 
-  virtual PointIdConstIterator PointIdsEnd() const
+  virtual PointIdConstIterator
+  PointIdsEnd() const
   {
     // NOTE ALEX: should update the array on the fly to make it faster
     if ( m_PointIds.size() == 0 )
@@ -245,7 +270,8 @@ private:
   QuadEdgeMeshPolygonCell(const Self &); // Not impl.
   void operator=(const Self &);          // Not impl.
 
-  void MakePointIds() const
+  void
+  MakePointIds() const
   {
     m_PointIds.clear();
 

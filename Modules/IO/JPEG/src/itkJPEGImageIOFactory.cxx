@@ -31,7 +31,8 @@ JPEGImageIOFactory::JPEGImageIOFactory()
 }
 
 JPEGImageIOFactory::~JPEGImageIOFactory()
-{}
+{
+}
 
 const char *
 JPEGImageIOFactory::GetITKSourceVersion(void) const
@@ -50,9 +51,10 @@ JPEGImageIOFactory::GetDescription(void) const
 
 static bool JPEGImageIOFactoryHasBeenRegistered;
 
-void JPEGImageIOFactoryRegister__Private(void)
+void
+JPEGImageIOFactoryRegister__Private(void)
 {
-  if( ! JPEGImageIOFactoryHasBeenRegistered )
+  if( !JPEGImageIOFactoryHasBeenRegistered )
     {
     JPEGImageIOFactoryHasBeenRegistered = true;
     JPEGImageIOFactory::RegisterOneFactory();

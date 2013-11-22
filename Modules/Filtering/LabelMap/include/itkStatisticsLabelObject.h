@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TLabel, unsigned int VImageDimension >
-class StatisticsLabelObject:public ShapeLabelObject< TLabel, VImageDimension >
+class StatisticsLabelObject : public ShapeLabelObject< TLabel, VImageDimension >
 {
 public:
   /** Standard class typedefs */
@@ -95,7 +95,8 @@ public:
   itkStaticConstMacro(HISTOGRAM, AttributeType, 216);
   itkStaticConstMacro(WEIGHTED_FLATNESS, AttributeType, 217);
 
-  static AttributeType GetAttributeFromName(const std::string & s)
+  static AttributeType
+  GetAttributeFromName(const std::string & s)
   {
     if ( s == "Minimum" )
       {
@@ -175,7 +176,8 @@ public:
     return Superclass::GetAttributeFromName(s);
   }
 
-  static std::string GetNameFromAttribute(const AttributeType & a)
+  static std::string
+  GetNameFromAttribute(const AttributeType & a)
   {
     switch ( a )
       {
@@ -242,12 +244,14 @@ public:
 
   typedef typename Superclass::CentroidType CentroidType;
 
-  virtual void CopyAttributesFrom(const LabelObjectType *lo)
+  virtual void
+  CopyAttributesFrom(const LabelObjectType *lo)
   {
     Superclass::CopyAttributesFrom(lo);
 
     // copy the data of the current type if possible
     const Self *src = dynamic_cast< const Self * >( lo );
+
     if ( src == NULL )
       {
       return;
@@ -272,102 +276,122 @@ public:
     m_WeightedFlatness = src->m_WeightedFlatness;
   }
 
-  const double & GetMinimum() const
+  const double &
+  GetMinimum() const
   {
     return m_Minimum;
   }
 
-  void SetMinimum(const double & v)
+  void
+  SetMinimum(const double & v)
   {
     m_Minimum = v;
   }
 
-  const double & GetMaximum() const
+  const double &
+  GetMaximum() const
   {
     return m_Maximum;
   }
 
-  void SetMaximum(const double & v)
+  void
+  SetMaximum(const double & v)
   {
     m_Maximum = v;
   }
 
-  const double & GetMean() const
+  const double &
+  GetMean() const
   {
     return m_Mean;
   }
 
-  void SetMean(const double & v)
+  void
+  SetMean(const double & v)
   {
     m_Mean = v;
   }
 
-  const double & GetSum() const
+  const double &
+  GetSum() const
   {
     return m_Sum;
   }
 
-  void SetSum(const double & v)
+  void
+  SetSum(const double & v)
   {
     m_Sum = v;
   }
 
-  const double & GetStandardDeviation() const
+  const double &
+  GetStandardDeviation() const
   {
     return m_StandardDeviation;
   }
 
-  void SetStandardDeviation(const double & v)
+  void
+  SetStandardDeviation(const double & v)
   {
     m_StandardDeviation = v;
   }
 
-  const double & GetVariance() const
+  const double &
+  GetVariance() const
   {
     return m_Variance;
   }
 
-  void SetVariance(const double & v)
+  void
+  SetVariance(const double & v)
   {
     m_Variance = v;
   }
 
-  const double & GetMedian() const
+  const double &
+  GetMedian() const
   {
     return m_Median;
   }
 
-  void SetMedian(const double & v)
+  void
+  SetMedian(const double & v)
   {
     m_Median = v;
   }
 
-  const IndexType & GetMaximumIndex() const
+  const IndexType &
+  GetMaximumIndex() const
   {
     return m_MaximumIndex;
   }
 
-  void SetMaximumIndex(const IndexType & v)
+  void
+  SetMaximumIndex(const IndexType & v)
   {
     m_MaximumIndex = v;
   }
 
-  const IndexType & GetMinimumIndex() const
+  const IndexType &
+  GetMinimumIndex() const
   {
     return m_MinimumIndex;
   }
 
-  void SetMinimumIndex(const IndexType & v)
+  void
+  SetMinimumIndex(const IndexType & v)
   {
     m_MinimumIndex = v;
   }
 
-  const PointType & GetCenterOfGravity() const
+  const PointType &
+  GetCenterOfGravity() const
   {
     return m_CenterOfGravity;
   }
 
-  void SetCenterOfGravity(const PointType & v)
+  void
+  SetCenterOfGravity(const PointType & v)
   {
     m_CenterOfGravity = v;
   }
@@ -383,72 +407,86 @@ public:
     m_CentralMoments = v;
     }*/
 
-  const VectorType & GetWeightedPrincipalMoments() const
+  const VectorType &
+  GetWeightedPrincipalMoments() const
   {
     return m_WeightedPrincipalMoments;
   }
 
-  void SetWeightedPrincipalMoments(const VectorType & v)
+  void
+  SetWeightedPrincipalMoments(const VectorType & v)
   {
     m_WeightedPrincipalMoments = v;
   }
 
-  const MatrixType & GetWeightedPrincipalAxes() const
+  const MatrixType &
+  GetWeightedPrincipalAxes() const
   {
     return m_WeightedPrincipalAxes;
   }
 
-  void SetWeightedPrincipalAxes(const MatrixType & v)
+  void
+  SetWeightedPrincipalAxes(const MatrixType & v)
   {
     m_WeightedPrincipalAxes = v;
   }
 
-  const double & GetSkewness() const
+  const double &
+  GetSkewness() const
   {
     return m_Skewness;
   }
 
-  void SetSkewness(const double & v)
+  void
+  SetSkewness(const double & v)
   {
     m_Skewness = v;
   }
 
-  const double & GetKurtosis() const
+  const double &
+  GetKurtosis() const
   {
     return m_Kurtosis;
   }
 
-  void SetKurtosis(const double & v)
+  void
+  SetKurtosis(const double & v)
   {
     m_Kurtosis = v;
   }
 
-  const double & GetWeightedElongation() const
+  const double &
+  GetWeightedElongation() const
   {
     return m_WeightedElongation;
   }
 
-  void SetWeightedElongation(const double & v)
+  void
+  SetWeightedElongation(const double & v)
   {
     m_WeightedElongation = v;
   }
 
-  const HistogramType * GetHistogram() const
+  const HistogramType *
+  GetHistogram() const
   {
     return m_Histogram;
   }
 
-  void SetHistogram(const HistogramType *v)
+  void
+  SetHistogram(const HistogramType *v)
   {
     m_Histogram = v;
   }
 
-  const double & GetWeightedFlatness() const
+  const double &
+  GetWeightedFlatness() const
   {
     return m_WeightedFlatness;
   }
 
-  void SetWeightedFlatness(const double & v)
+  void
+  SetWeightedFlatness(const double & v)
   {
     m_WeightedFlatness = v;
   }
@@ -461,7 +499,8 @@ public:
   /** Get the affine transform from principal axes to physical axes
    * This method returns an affine transform which transforms from
    * the principal axes coordinate system to physical coordinates. */
-  AffineTransformPointer GetWeightedPrincipalAxesToPhysicalAxesTransform() const
+  AffineTransformPointer
+  GetWeightedPrincipalAxesToPhysicalAxesTransform() const
   {
     typename AffineTransformType::MatrixType matrix;
     typename AffineTransformType::OffsetType offset;
@@ -470,7 +509,8 @@ public:
       offset[i]  = m_CenterOfGravity[i];
       for ( unsigned int j = 0; j < ImageDimension; j++ )
         {
-        matrix[j][i] = m_WeightedPrincipalAxes[i][j];    // Note the transposition
+        matrix[j][i] = m_WeightedPrincipalAxes[i][j];    // Note the
+                                                         // transposition
         }
       }
 
@@ -486,7 +526,8 @@ public:
    * This method returns an affine transform which transforms from
    * the physical coordinate system to the principal axes coordinate
    * system. */
-  AffineTransformPointer GetPhysicalAxesToWeightedPrincipalAxesTransform(void) const
+  AffineTransformPointer
+  GetPhysicalAxesToWeightedPrincipalAxesTransform(void) const
   {
     typename AffineTransformType::MatrixType matrix;
     typename AffineTransformType::OffsetType offset;
@@ -495,7 +536,8 @@ public:
       offset[i]    = m_CenterOfGravity[i];
       for ( unsigned int j = 0; j < ImageDimension; j++ )
         {
-        matrix[j][i] = m_WeightedPrincipalAxes[i][j];    // Note the transposition
+        matrix[j][i] = m_WeightedPrincipalAxes[i][j];    // Note the
+                                                         // transposition
         }
       }
 
@@ -532,7 +574,8 @@ protected:
     m_WeightedFlatness = 0;
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
 

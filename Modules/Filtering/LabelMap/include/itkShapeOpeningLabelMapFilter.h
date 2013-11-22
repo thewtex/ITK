@@ -46,7 +46,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class ShapeOpeningLabelMapFilter:
+class ShapeOpeningLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -108,19 +108,22 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
 
 protected:
   ShapeOpeningLabelMapFilter();
-  ~ShapeOpeningLabelMapFilter() {}
+  ~ShapeOpeningLabelMapFilter() {
+  }
 
   void GenerateData();
 
   template< typename TAttributeAccessor >
-  void TemplatedGenerateData(const TAttributeAccessor & accessor)
+  void
+  TemplatedGenerateData(const TAttributeAccessor & accessor)
   {
     // Allocate the output
     this->AllocateOutputs();
@@ -137,7 +140,7 @@ protected:
     ProgressReporter progress( this, 0, output->GetNumberOfLabelObjects() );
 
     typename ImageType::Iterator it( output );
-    while ( ! it.IsAtEnd() )
+    while ( !it.IsAtEnd() )
       {
       typename LabelObjectType::LabelType label = it.GetLabel();
       LabelObjectType *labelObject = it.GetLabelObject();
@@ -171,6 +174,7 @@ protected:
 private:
   ShapeOpeningLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };                                          // end of class
 } // end namespace itk
 

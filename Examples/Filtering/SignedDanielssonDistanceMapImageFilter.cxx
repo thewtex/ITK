@@ -39,8 +39,8 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -64,16 +64,15 @@ int main( int argc, char * argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef  unsigned char   InputPixelType;
-  typedef  float           OutputPixelType;
-  typedef  unsigned short  VoronoiPixelType;
+  typedef  unsigned char  InputPixelType;
+  typedef  float          OutputPixelType;
+  typedef  unsigned short VoronoiPixelType;
   const unsigned int Dimension = 2;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
-  typedef itk::Image< VoronoiPixelType, Dimension >  VoronoiImageType;
+  typedef itk::Image< InputPixelType,  Dimension >  InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension >  OutputImageType;
+  typedef itk::Image< VoronoiPixelType, Dimension > VoronoiImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -85,16 +84,15 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::SignedDanielssonDistanceMapImageFilter<
-                                         InputImageType,
-                                         OutputImageType,
-                                         VoronoiImageType >  FilterType;
+      InputImageType,
+      OutputImageType,
+      VoronoiImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   typedef itk::RescaleIntensityImageFilter<
-                   OutputImageType, OutputImageType > RescalerType;
+      OutputImageType, OutputImageType > RescalerType;
 
   RescalerType::Pointer scaler = RescalerType::New();
 
@@ -118,7 +116,6 @@ int main( int argc, char * argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   //  The input to the filter is taken from a reader and its output is passed
   //  to a \doxygen{RescaleIntensityImageFilter} and then to a writer.
 
@@ -138,7 +135,6 @@ int main( int argc, char * argv[] )
     std::cerr << "Exception caught !" << std::endl;
     std::cerr <<     exp    << std::endl;
     }
-
 
   const char * voronoiMapFileName = argv[3];
 
@@ -162,18 +158,17 @@ int main( int argc, char * argv[] )
     std::cerr <<     exp    << std::endl;
     }
 
-
   //  The distance filter also produces an image of \doxygen{Offset} pixels
   //  representing the vectorial distance to the closest object in the scene.
   //  The type of this output image is defined by the VectorImageType
   //  trait of the filter type.
 
-  typedef FilterType::VectorImageType   OffsetImageType;
+  typedef FilterType::VectorImageType OffsetImageType;
 
   //  We can use this type for instantiating an \doxygen{ImageFileWriter} type
   //  and creating an object of this class in the following lines.
 
-  typedef itk::ImageFileWriter< OffsetImageType >  WriterOffsetType;
+  typedef itk::ImageFileWriter< OffsetImageType > WriterOffsetType;
   WriterOffsetType::Pointer offsetWriter = WriterOffsetType::New();
   offsetWriter->SetInput(  filter->GetVectorDistanceMap()  );
   offsetWriter->SetFileName( argv[4]  );
@@ -193,14 +188,18 @@ int main( int argc, char * argv[] )
   // \begin{figure}
   // \center
   // \includegraphics[width=0.32\textwidth]{Circle}
+  //
+  //
   // \includegraphics[width=0.32\textwidth]{SignedDanielssonDistanceMapImageFilterOutput}
   // \itkcaption[SignedDanielssonDistanceMapImageFilter
-  // output]{SignedDanielssonDistanceMapImageFilter applied on a binary circle image.
+  // output]{SignedDanielssonDistanceMapImageFilter applied on a binary circle
+  // image.
   // The intensity has been rescaled for purposes of display.}
   // \label{fig:SignedDanielssonDistanceMapImageFilterInputOutput}
   // \end{figure}
   //
-  //  Figure \ref{fig:SignedDanielssonDistanceMapImageFilterInputOutput} illustrates
+  //  Figure \ref{fig:SignedDanielssonDistanceMapImageFilterInputOutput}
+  // illustrates
   //  the effect of this filter. The
   //  input image and the distance map are shown.
   //

@@ -50,7 +50,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class RegionOfInterestImageFilter:
+class RegionOfInterestImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -97,7 +97,9 @@ public:
 
 protected:
   RegionOfInterestImageFilter();
-  ~RegionOfInterestImageFilter() {}
+  ~RegionOfInterestImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateInputRequestedRegion();

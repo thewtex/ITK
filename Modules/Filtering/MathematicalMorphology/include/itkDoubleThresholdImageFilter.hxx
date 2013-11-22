@@ -27,7 +27,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 DoubleThresholdImageFilter< TInputImage, TOutputImage >
-::DoubleThresholdImageFilter():
+::DoubleThresholdImageFilter() :
   m_NumberOfIterationsUsed(1)
 {
   m_Threshold1 = NumericTraits< InputPixelType >::NonpositiveMin();
@@ -51,6 +51,7 @@ DoubleThresholdImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -150,5 +151,6 @@ DoubleThresholdImageFilter< TInputImage, TOutputImage >
      << m_NumberOfIterationsUsed << std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
+
 } // end namespace itk
 #endif

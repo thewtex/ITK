@@ -53,7 +53,7 @@ namespace itk
  */
 template< typename TOutputImage,
           typename TTransformPrecisionType = double >
-class TransformToDisplacementFieldSource:
+class TransformToDisplacementFieldSource :
   public ImageSource< TOutputImage >
 {
 public:
@@ -168,7 +168,8 @@ public:
 
 protected:
   TransformToDisplacementFieldSource(void);
-  ~TransformToDisplacementFieldSource(void) {}
+  ~TransformToDisplacementFieldSource(void) {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -196,7 +197,7 @@ protected:
 private:
 
   TransformToDisplacementFieldSource(const Self &); //purposely not implemented
-  void operator=(const Self &);                    //purposely not implemented
+  void operator=(const Self &);                     //purposely not implemented
 
   /** Member variables. */
   RegionType           m_OutputRegion;    // region of the output image

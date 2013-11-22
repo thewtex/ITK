@@ -22,7 +22,6 @@
 #include "itkVideoFileWriter.h"
 #include "itkFileListVideoIOFactory.h"
 
-
 // Set up typedefs for test
 const unsigned int Dimension =                   2;
 typedef unsigned char                            InputPixelType;
@@ -32,7 +31,6 @@ typedef unsigned char                            OutputPixelType;
 typedef itk::Image< OutputPixelType, Dimension > OutputFrameType;
 typedef itk::VideoStream< OutputFrameType >      OutputVideoType;
 typedef itk::SizeValueType                       SizeValueType;
-
 
 /**
  * Helper function
@@ -45,13 +43,15 @@ namespace FrameDifferenceVideoFilterTest
 /**
  * Create a new frame and fill it with the indicated value
  */
-InputFrameType::Pointer CreateInputFrame(InputPixelType val)
+InputFrameType::Pointer
+CreateInputFrame(InputPixelType val)
 {
   InputFrameType::Pointer out = InputFrameType::New();
 
   InputFrameType::RegionType largestRegion;
-  InputFrameType::SizeType sizeLR;
-  InputFrameType::IndexType startLR;
+  InputFrameType::SizeType   sizeLR;
+  InputFrameType::IndexType  startLR;
+
   startLR.Fill(0);
   sizeLR[0] = 50;
   sizeLR[1] = 40;
@@ -63,7 +63,7 @@ InputFrameType::Pointer CreateInputFrame(InputPixelType val)
 
   // Fill with the desired value
   itk::ImageRegionIterator<InputFrameType> iter(out, largestRegion);
-  while(!iter.IsAtEnd())
+  while(!iter.IsAtEnd() )
     {
     iter.Set(val);
     ++iter;
@@ -75,20 +75,19 @@ InputFrameType::Pointer CreateInputFrame(InputPixelType val)
 } // end namespace FrameDifferenceVideoFilterTest
 } // end namespace itk
 
-
 /**
  * Main test
  */
-int itkFrameDifferenceVideoFilterTest( int itkNotUsed(argc), char* itkNotUsed(argv)[] )
+int
+itkFrameDifferenceVideoFilterTest( int itkNotUsed(argc), char* itkNotUsed(argv)[] )
 {
   // Instantiate the filter
   typedef itk::FrameDifferenceVideoFilter< InputVideoType, OutputVideoType > FilterType;
   FilterType::Pointer filter = FilterType::New();
 
-
   // Set up an input VideoStream
   InputVideoType::Pointer inputVideo = InputVideoType::New();
-  SizeValueType numInputFrames = 50;
+  SizeValueType           numInputFrames = 50;
   inputVideo->SetNumberOfBuffers(numInputFrames);
   itk::TemporalRegion inputTempRegion;
   inputTempRegion.SetFrameStart(0);
@@ -98,10 +97,9 @@ int itkFrameDifferenceVideoFilterTest( int itkNotUsed(argc), char* itkNotUsed(ar
   inputVideo->SetBufferedTemporalRegion(inputTempRegion);
   for (SizeValueType i = 0; i < numInputFrames; ++i)
     {
-    inputVideo->SetFrame(i, itk::FrameDifferenceVideoFilterTest::CreateInputFrame(i));
+    inputVideo->SetFrame(i, itk::FrameDifferenceVideoFilterTest::CreateInputFrame(i) );
     }
   filter->SetInput(inputVideo);
-
 
   //////
   // Test filter with difference of adjacent frames (the default)
@@ -117,13 +115,13 @@ int itkFrameDifferenceVideoFilterTest( int itkNotUsed(argc), char* itkNotUsed(ar
   if (outputStart != 0)
     {
     std::cerr << "output's LargestPossibleTemporalRegion incorrect start. Got: "
-      << outputStart << " Expected: 0" << std::endl;
+              << outputStart << " Expected: 0" << std::endl;
     return EXIT_FAILURE;
     }
   if (outputDuration != numInputFrames - 1)
     {
     std::cerr << "output's LargestPossibleTemporalRegion incorrect duration. Got: "
-      << outputDuration << " Expected: " << numInputFrames - 1 << std::endl;
+              << outputDuration << " Expected: " << numInputFrames - 1 << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -168,13 +166,13 @@ int itkFrameDifferenceVideoFilterTest( int itkNotUsed(argc), char* itkNotUsed(ar
   if (outputStart != 0)
     {
     std::cerr << "output's LargestPossibleTemporalRegion incorrect start. Got: "
-      << outputStart << " Expected: 0" << std::endl;
+              << outputStart << " Expected: 0" << std::endl;
     return EXIT_FAILURE;
     }
   if (outputDuration != numInputFrames - 2)
     {
     std::cerr << "output's LargestPossibleTemporalRegion incorrect duration. Got: "
-      << outputDuration << " Expected: " << numInputFrames - 2 << std::endl;
+              << outputDuration << " Expected: " << numInputFrames - 2 << std::endl;
     return EXIT_FAILURE;
     }
 

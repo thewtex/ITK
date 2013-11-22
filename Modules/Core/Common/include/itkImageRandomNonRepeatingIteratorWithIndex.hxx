@@ -24,27 +24,31 @@ namespace itk
 {
 template< typename TImage >
 ImageRandomNonRepeatingIteratorWithIndex< TImage >
-::ImageRandomNonRepeatingIteratorWithIndex():
+::ImageRandomNonRepeatingIteratorWithIndex() :
   ImageRandomNonRepeatingConstIteratorWithIndex< TImage >()
-{}
+{
+}
 
 template< typename TImage >
 ImageRandomNonRepeatingIteratorWithIndex< TImage >
-::ImageRandomNonRepeatingIteratorWithIndex(ImageType *ptr, const RegionType & region):
+::ImageRandomNonRepeatingIteratorWithIndex(ImageType *ptr, const RegionType & region) :
   ImageRandomNonRepeatingConstIteratorWithIndex< TImage >(ptr, region)
-{}
+{
+}
 
 template< typename TImage >
 ImageRandomNonRepeatingIteratorWithIndex< TImage >
-::ImageRandomNonRepeatingIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it):
+::ImageRandomNonRepeatingIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it) :
   ImageRandomNonRepeatingConstIteratorWithIndex< TImage >(it)
-{}
+{
+}
 
 template< typename TImage >
 ImageRandomNonRepeatingIteratorWithIndex< TImage >
-::ImageRandomNonRepeatingIteratorWithIndex(const ImageRandomNonRepeatingConstIteratorWithIndex< TImage > & it):
+::ImageRandomNonRepeatingIteratorWithIndex(const ImageRandomNonRepeatingConstIteratorWithIndex< TImage > & it) :
   ImageRandomNonRepeatingConstIteratorWithIndex< TImage >(it)
-{}
+{
+}
 
 template< typename TImage >
 ImageRandomNonRepeatingIteratorWithIndex< TImage > &
@@ -54,6 +58,7 @@ ImageRandomNonRepeatingIteratorWithIndex< TImage >
   this->ImageRandomNonRepeatingConstIteratorWithIndex< TImage >::operator=(it);
   return *this;
 }
+
 } // end namespace itk
 
 #endif

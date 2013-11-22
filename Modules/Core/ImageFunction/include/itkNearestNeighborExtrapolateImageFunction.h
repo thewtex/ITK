@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = float >
-class NearestNeighborExtrapolateImageFunction:
+class NearestNeighborExtrapolateImageFunction :
   public ExtrapolateImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -64,8 +64,8 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
   /** Index typedef support. */
-  typedef typename Superclass::IndexType      IndexType;
-  typedef typename IndexType::IndexValueType  IndexValueType;
+  typedef typename Superclass::IndexType     IndexType;
+  typedef typename IndexType::IndexValueType IndexValueType;
 
   /** ContinuousIndex typedef support. */
   typedef typename Superclass::ContinuousIndexType ContinuousIndexType;
@@ -77,7 +77,8 @@ public:
    * nearest neighbor within the image buffer.
    *
    */
-  virtual OutputType EvaluateAtContinuousIndex(
+  virtual OutputType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & index) const
   {
     IndexType nindex;
@@ -104,7 +105,8 @@ public:
    * nearest neighbor within the image buffer.
    *
    */
-  virtual OutputType EvaluateAtIndex(
+  virtual OutputType
+  EvaluateAtIndex(
     const IndexType & index) const
   {
     IndexType nindex;
@@ -128,10 +130,17 @@ public:
   }
 
 protected:
-  NearestNeighborExtrapolateImageFunction(){}
-  ~NearestNeighborExtrapolateImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  NearestNeighborExtrapolateImageFunction(){
+  }
+
+  ~NearestNeighborExtrapolateImageFunction(){
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   NearestNeighborExtrapolateImageFunction(const Self &); //purposely not

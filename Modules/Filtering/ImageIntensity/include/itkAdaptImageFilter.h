@@ -43,24 +43,30 @@ public:
   typedef TAccessor       AccessorType;
 
   /** Constructor and destructor. */
-  AccessorFunctor():m_Accessor() {}
-  ~AccessorFunctor() {}
+  AccessorFunctor() : m_Accessor() {
+  }
+
+  ~AccessorFunctor() {
+  }
 
   /** operator().  This is the "call" method of the functor. */
   typedef typename TAccessor::ExternalType OutputType;
-  inline OutputType operator()(const TInput & A) const
+  inline OutputType
+  operator()(const TInput & A) const
   {
     return m_Accessor.Get(A);
   }
 
   /** Get the accessor. The accessor is returned by reference. */
-  AccessorType & GetAccessor()
+  AccessorType &
+  GetAccessor()
   {
     return m_Accessor;
   }
 
   /** Assignment operator */
-  AccessorFunctor & operator=(const AccessorFunctor & functor)
+  AccessorFunctor &
+  operator=(const AccessorFunctor & functor)
   {
     m_Accessor = functor.m_Accessor;
     return *this;
@@ -71,18 +77,21 @@ public:
    * specify an accessor that has ivars set differently that the default
    * accessor.
    */
-  void SetAccessor(AccessorType & accessor)
+  void
+  SetAccessor(AccessorType & accessor)
   {
     m_Accessor = accessor;
   }
 
   /** operator!=.  Needed to determine if two accessors are the same. */
-  bool operator!=(const Self & functor) const
+  bool
+  operator!=(const Self & functor) const
   {
     return ( m_Accessor != functor.m_Accessor );
   }
 
-  bool operator==(const Self & other) const
+  bool
+  operator==(const Self & other) const
   {
     return !( *this != other );
   }
@@ -120,7 +129,7 @@ private:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage, typename TAccessor >
-class AdaptImageFilter:
+class AdaptImageFilter :
   public UnaryFunctorImageFilter< TInputImage, TOutputImage,
                                   Functor::AccessorFunctor< typename TInputImage::PixelType, TAccessor > >
 {
@@ -148,10 +157,14 @@ public:
   itkTypeMacro(AdaptImageFilter, UnaryFunctorImageFilter);
 
   /** Get the accessor. This is a convenience method so the user */
-  AccessorType & GetAccessor() { return this->GetFunctor().GetAccessor(); }
+  AccessorType &
+  GetAccessor() {
+    return this->GetFunctor().GetAccessor();
+  }
 
   /** Set the accessor. This is a convenience method so the user does */
-  void SetAccessor(AccessorType & accessor)
+  void
+  SetAccessor(AccessorType & accessor)
   {
     FunctorType functor;
 
@@ -165,12 +178,17 @@ public:
   }
 
 protected:
-  AdaptImageFilter() {}
-  virtual ~AdaptImageFilter() {}
+  AdaptImageFilter() {
+  }
+
+  virtual
+  ~AdaptImageFilter() {
+  }
 
 private:
   AdaptImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

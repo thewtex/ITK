@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMElement2DC0LinearLineStressTest(int argc, char *argv[])
+int
+itkFEMElement2DC0LinearLineStressTest(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -41,7 +41,10 @@ int itkFEMElement2DC0LinearLineStressTest(int argc, char *argv[])
   typedef FEMSpatialObjectReaderType::Pointer FEMSpatialObjectReaderPointer;
   FEMSpatialObjectReaderPointer SpatialReader = FEMSpatialObjectReaderType::New();
   SpatialReader->SetFileName( argv[1] );
-//  SpatialReader->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/2DC0LinearLineStressTest.meta");
+//
+//
+//
+// SpatialReader->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/2DC0LinearLineStressTest.meta");
   SpatialReader->Update();
 
   FEMSpatialObjectReaderType::ScenePointer myScene = SpatialReader->GetScene();
@@ -101,7 +104,10 @@ int itkFEMElement2DC0LinearLineStressTest(int argc, char *argv[])
   typedef FEMSpatialObjectWriterType::Pointer FEMSpatialObjectWriterPointer;
   FEMSpatialObjectWriterPointer SpatialWriter = FEMSpatialObjectWriterType::New();
   SpatialWriter->SetInput(femSODef);
-//  SpatialWriter->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/2DC0LinearLineStressTestWrite.meta");
+//
+//
+//
+// SpatialWriter->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/2DC0LinearLineStressTestWrite.meta");
   SpatialWriter->SetFileName( argv[2] );
   SpatialWriter->Update();
 

@@ -56,9 +56,9 @@ template< typename TInputImage, typename TOutputImage >
 const typename GrayscaleGeodesicDilateImageFilter< TInputImage, TOutputImage >::MarkerImageType *
 GrayscaleGeodesicDilateImageFilter< TInputImage, TOutputImage >
 ::GetMarkerImage()
-{
+  {
   return this->GetInput(0);
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -73,9 +73,9 @@ template< typename TInputImage, typename TOutputImage >
 const typename GrayscaleGeodesicDilateImageFilter< TInputImage, TOutputImage >::MaskImageType *
 GrayscaleGeodesicDilateImageFilter< TInputImage, TOutputImage >
 ::GetMaskImage()
-{
+  {
   return this->GetInput(1);
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -297,7 +297,7 @@ GrayscaleGeodesicDilateImageFilter< TInputImage, TOutputImage >
   // Neighborhood iterator.  Let's use a shaped neighborhood so we can
   // restrict the access to face connected neighbors. This iterator
   // will be applied to the marker image.
-  typedef ConstShapedNeighborhoodIterator< TInputImage > NeighborhoodIteratorType;
+  typedef ConstShapedNeighborhoodIterator< TInputImage >       NeighborhoodIteratorType;
   typedef typename NeighborhoodIteratorType::NeighborIndexType NeighborIndexType;
 
   // iterator for the marker image
@@ -418,5 +418,6 @@ GrayscaleGeodesicDilateImageFilter< TInputImage, TOutputImage >
      << m_NumberOfIterationsUsed << std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
+
 } // end namespace itk
 #endif

@@ -23,7 +23,8 @@
 
 #include "itkShapedFloodFilledImageFunctionConditionalConstIterator.h"
 
-int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest1(int argc, char *argv [] )
+int
+itkShapedFloodFilledImageFunctionConditionalConstIteratorTest1(int argc, char *argv [] )
 {
   if( argc < 2 )
     {
@@ -43,7 +44,7 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest1(int argc, cha
 
     typedef itk::BinaryThresholdImageFunction<ImageType> FunctionType;
     typedef itk::ShapedFloodFilledImageFunctionConditionalConstIterator<
-                  ImageType, FunctionType> ShapedFloodFilledIteratorType;
+        ImageType, FunctionType> ShapedFloodFilledIteratorType;
 
     typedef itk::ImageFileReader<ImageType> ReaderType;
 
@@ -66,11 +67,11 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest1(int argc, cha
     function->ThresholdAbove ( 1 ); // >= 1
 
     ShapedFloodFilledIteratorType shapedFloodIt(
-        reader->GetOutput(), function, seedList);
+      reader->GetOutput(), function, seedList);
     shapedFloodIt.SetFullyConnected(true); // 8-connected, default
     //
     // get the seeds and display them.
-    const ShapedFloodFilledIteratorType::SeedsContainerType &seeds(shapedFloodIt.GetSeeds());
+    const ShapedFloodFilledIteratorType::SeedsContainerType &seeds(shapedFloodIt.GetSeeds() );
     std::cout << "Iterator seeds";
     for(ShapedFloodFilledIteratorType::SeedsContainerType::const_iterator it =
           seeds.begin(); it != seeds.end(); it++)
@@ -96,7 +97,7 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest1(int argc, cha
 
     for (; !inIt.IsAtEnd(); ++inIt, ++outIt)
       {
-      if (inIt.Get() != outIt.Get())
+      if (inIt.Get() != outIt.Get() )
         {
         return EXIT_FAILURE;
         }

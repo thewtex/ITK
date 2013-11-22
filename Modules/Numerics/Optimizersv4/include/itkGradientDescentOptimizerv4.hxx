@@ -32,14 +32,14 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
 {
   this->m_LearningRate = NumericTraits<TInternalComputationValueType>::One;
 
-    // m_MaximumStepSizeInPhysicalUnits is used for automatic learning
-    // rate estimation. it may be initialized either by calling
-    // SetMaximumStepSizeInPhysicalUnits manually or by using m_ScalesEstimator
-    // automatically. and the former has higher priority than the latter.
+  // m_MaximumStepSizeInPhysicalUnits is used for automatic learning
+  // rate estimation. it may be initialized either by calling
+  // SetMaximumStepSizeInPhysicalUnits manually or by using m_ScalesEstimator
+  // automatically. and the former has higher priority than the latter.
   this->m_MaximumStepSizeInPhysicalUnits = NumericTraits<TInternalComputationValueType>::Zero;
 
-    // Initialize parameters for the convergence checker
-  this->m_MinimumConvergenceValue = 1e-8;//NumericTraits<TInternalComputationValueType>::epsilon();//1e-30;
+  // Initialize parameters for the convergence checker
+  this->m_MinimumConvergenceValue = 1e-8; //NumericTraits<TInternalComputationValueType>::epsilon();//1e-30;
   this->m_ConvergenceWindowSize = 50;
 
   this->m_DoEstimateScales = true;
@@ -54,8 +54,8 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
 template<typename TInternalComputationValueType>
 GradientDescentOptimizerv4Template<TInternalComputationValueType>
 ::~GradientDescentOptimizerv4Template()
-{}
-
+{
+}
 
 /**
 *PrintSelf
@@ -66,9 +66,10 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Learning rate:" << this->m_LearningRate << std::endl;
   os << indent << "MaximumStepSizeInPhysicalUnits: "
-  << this->m_MaximumStepSizeInPhysicalUnits << std::endl;
+     << this->m_MaximumStepSizeInPhysicalUnits << std::endl;
   if( this->m_ScalesEstimator.IsNull() )
     {
     os << indent << "No ScalesEstimator set." << std::endl;
@@ -80,9 +81,9 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
     }
   os << indent << "DoEstimateScales: " << this->m_DoEstimateScales << std::endl;
   os << indent << "DoEstimateLearningRateAtEachIteration: "
-  << this->m_DoEstimateLearningRateAtEachIteration << std::endl;
+     << this->m_DoEstimateLearningRateAtEachIteration << std::endl;
   os << indent << "DoEstimateLearningRateOnce: "
-  << this->m_DoEstimateLearningRateOnce << std::endl;
+     << this->m_DoEstimateLearningRateOnce << std::endl;
 }
 
 /**
@@ -97,10 +98,11 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
 
   /* Validate some settings */
   if ( this->m_ScalesEstimator.IsNotNull() &&
-      this->m_DoEstimateLearningRateOnce &&
-      this->m_DoEstimateLearningRateAtEachIteration )
+       this->m_DoEstimateLearningRateOnce &&
+       this->m_DoEstimateLearningRateAtEachIteration )
     {
-    itkExceptionMacro("Both m_DoEstimateLearningRateOnce and m_DoEstimateLearningRateAtEachIteration are enabled. Not allowed. ");
+    itkExceptionMacro(
+      "Both m_DoEstimateLearningRateOnce and m_DoEstimateLearningRateAtEachIteration are enabled. Not allowed. ");
     }
 
   /* Estimate the parameter scales if requested. */
@@ -111,13 +113,13 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
 
     /* If user hasn't set this, assign the default. */
     if ( this->m_MaximumStepSizeInPhysicalUnits <=
-        NumericTraits<TInternalComputationValueType>::epsilon())
+         NumericTraits<TInternalComputationValueType>::epsilon() )
       {
       this->m_MaximumStepSizeInPhysicalUnits = this->m_ScalesEstimator->EstimateMaximumStepSize();
       }
     }
 
-    // Initialize the convergence checker
+  // Initialize the convergence checker
   this->m_ConvergenceMonitoring = ConvergenceMonitoringType::New();
   this->m_ConvergenceMonitoring->SetWindowSize( this->m_ConvergenceWindowSize );
 
@@ -126,13 +128,13 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
 
   if( this->m_ReturnBestParametersAndValue )
     {
-    this->m_BestParameters = this->GetCurrentPosition( );
+    this->m_BestParameters = this->GetCurrentPosition();
     this->m_CurrentBestValue = NumericTraits< MeasureType >::max();
     }
 
   this->m_CurrentIteration = 0;
 
-  if( ! doOnlyInitialization )
+  if( !doOnlyInitialization )
     {
     this->ResumeOptimization();
     }
@@ -167,7 +169,7 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
   this->InvokeEvent( StartEvent() );
 
   this->m_Stop = false;
-  while( ! this->m_Stop )
+  while( !this->m_Stop )
     {
     /* Compute metric value/derivative. */
     try
@@ -182,7 +184,7 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
       this->m_StopConditionDescription << "Metric error during optimization";
       this->StopOptimization();
 
-        // Pass exception to caller
+      // Pass exception to caller
       throw err;
       }
 
@@ -202,7 +204,8 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
       this->m_ConvergenceValue = this->m_ConvergenceMonitoring->GetConvergenceValue();
       if (this->m_ConvergenceValue <= this->m_MinimumConvergenceValue)
         {
-        this->m_StopConditionDescription << "Convergence checker passed at iteration " << this->m_CurrentIteration << ".";
+        this->m_StopConditionDescription << "Convergence checker passed at iteration " << this->m_CurrentIteration <<
+          ".";
         this->m_StopCondition = Superclass::CONVERGENCE_CHECKER_PASSED;
         this->StopOptimization();
         break;
@@ -221,7 +224,7 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
     if ( this->m_ReturnBestParametersAndValue && this->m_CurrentMetricValue < this->m_CurrentBestValue )
       {
       this->m_CurrentBestValue = this->m_CurrentMetricValue;
-      this->m_BestParameters = this->GetCurrentPosition( );
+      this->m_BestParameters = this->GetCurrentPosition();
       }
 
     /* Update and check iteration count */
@@ -229,7 +232,8 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
 
     if ( this->m_CurrentIteration >= this->m_NumberOfIterations )
       {
-      this->m_StopConditionDescription << "Maximum number of iterations (" << this->m_NumberOfIterations << ") exceeded.";
+      this->m_StopConditionDescription << "Maximum number of iterations (" << this->m_NumberOfIterations <<
+        ") exceeded.";
       this->m_StopCondition = Superclass::MAXIMUM_NUMBER_OF_ITERATIONS;
       this->StopOptimization();
       break;
@@ -267,7 +271,7 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
     this->m_StopConditionDescription << "UpdateTransformParameters error";
     this->StopOptimization();
 
-      // Pass exception to caller
+    // Pass exception to caller
     throw err;
     }
 
@@ -305,11 +309,11 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
   /* Loop over the range. It is inclusive. */
   for ( IndexValueType j = subrange[0]; j <= subrange[1]; j++ )
     {
-      // scales is checked during StartOptmization for values <=
-      // machine epsilon.
-      // Take the modulo of the index to handle gradients from transforms
-      // with local support. The gradient array stores the gradient of local
-      // parameters at each local index with linear packing.
+    // scales is checked during StartOptmization for values <=
+    // machine epsilon.
+    // Take the modulo of the index to handle gradients from transforms
+    // with local support. The gradient array stores the gradient of local
+    // parameters at each local index with linear packing.
     IndexValueType index = j % scales.Size();
     this->m_Gradient[j] = this->m_Gradient[j] * factor[index];
     }
@@ -343,12 +347,12 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
     return;
     }
   if ( this->m_DoEstimateLearningRateAtEachIteration ||
-      (this->m_DoEstimateLearningRateOnce && this->m_CurrentIteration == 0) )
+       (this->m_DoEstimateLearningRateOnce && this->m_CurrentIteration == 0) )
     {
     TInternalComputationValueType stepScale
-    = this->m_ScalesEstimator->EstimateStepScale(this->m_Gradient);
+      = this->m_ScalesEstimator->EstimateStepScale(this->m_Gradient);
 
-    if (stepScale <= NumericTraits<TInternalComputationValueType>::epsilon())
+    if (stepScale <= NumericTraits<TInternalComputationValueType>::epsilon() )
       {
       this->m_LearningRate = NumericTraits<TInternalComputationValueType>::One;
       }
@@ -359,6 +363,6 @@ GradientDescentOptimizerv4Template<TInternalComputationValueType>
     }
 }
 
-}//namespace itk
+} //namespace itk
 
 #endif

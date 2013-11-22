@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TOutputMesh >
-class VTKPolyDataReader:public MeshSource< TOutputMesh >
+class VTKPolyDataReader : public MeshSource< TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -74,9 +74,9 @@ public:
 
   typedef typename TriangleCellType::SelfAutoPointer TriangleCellAutoPointer;
 
-  typedef std::pair< IdentifierType, IdentifierType >    IndexPairType;
-  typedef MapContainer< IndexPairType, IdentifierType >  PointMapType;
-  typedef typename PointType::VectorType                 VectorType;
+  typedef std::pair< IdentifierType, IdentifierType >   IndexPairType;
+  typedef MapContainer< IndexPairType, IdentifierType > PointMapType;
+  typedef typename PointType::VectorType                VectorType;
 
   /** Set the resolution level to be used for generating cells in the
    * Sphere. High values of this parameter will produce sphere with more
@@ -93,7 +93,9 @@ public:
 
 protected:
   VTKPolyDataReader();
-  ~VTKPolyDataReader() {}
+  ~VTKPolyDataReader() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Reads the file */

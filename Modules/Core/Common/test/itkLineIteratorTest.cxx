@@ -23,22 +23,22 @@
 #include "itkLineIterator.h"
 #include "itkTimeProbe.h"
 
-
-int itkLineIteratorTest(int argc, char*argv[])
+int
+itkLineIteratorTest(int argc, char*argv[])
 {
   const int Dimension = 2;
+
   typedef unsigned char                    PixelType;
   typedef itk::Image<PixelType, Dimension> ImageType;
   typedef ImageType::RegionType::IndexType IndexType;
   typedef IndexType::IndexValueType        IndexValueType;
 
- if (argc < 2)
+  if (argc < 2)
     {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "   baselinefilename" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Set up a test image
   ImageType::RegionType::IndexType index;
@@ -69,21 +69,21 @@ int itkLineIteratorTest(int argc, char*argv[])
   LineIteratorType across(output, startIndex, endIndex);
 
   // First test: currentIndex initialization
-  if (startIndex != across.GetIndex())
+  if (startIndex != across.GetIndex() )
     {
     std::cerr << "Error! Index should be startIndex.\n";
     return EXIT_FAILURE;
     }
 
   // Second test: IsAtEnd() is one pixel past the endIndex
-  if (across.IsAtEnd())
+  if (across.IsAtEnd() )
     {
     std::cerr << "Error! Iterator should not be at end.\n";
     return EXIT_FAILURE;
     }
 
   ++across;
-  if (!across.IsAtEnd())
+  if (!across.IsAtEnd() )
     {
     std::cerr << "Error! Iterator should be at end.\n";
     return EXIT_FAILURE;
@@ -93,7 +93,7 @@ int itkLineIteratorTest(int argc, char*argv[])
   // the point indexies
 
   std::ifstream baselineFile(argv[1]);
-  if (baselineFile.fail())
+  if (baselineFile.fail() )
     {
     std::cerr<< "Error opening file with name :"<< argv[1]<<std::endl;
     return EXIT_FAILURE;
@@ -104,10 +104,10 @@ int itkLineIteratorTest(int argc, char*argv[])
 
   baselineFile >> tmpIndex[0] >> tmpIndex[1];
   while( !baselineFile.eof() )
-  {
+    {
     baselineIndex.push_back(tmpIndex);
     baselineFile >> tmpIndex[0] >> tmpIndex[1];
-  }
+    }
 
   baselineFile.close();
 
@@ -120,56 +120,55 @@ int itkLineIteratorTest(int argc, char*argv[])
 
   std::vector<IndexType>::iterator itBaseline;
   itBaseline = baselineIndex.begin();
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
     it.Set(255);
     if (it.GetIndex() == *itBaseline) {
-        ++itBaseline;
-        ++it;
-       }
-    else{
-       std::cerr<< "different than baseline."<< std::endl;
-       return EXIT_FAILURE;
-       }
+      ++itBaseline;
+      ++it;
+      }
+    else {
+      std::cerr<< "different than baseline."<< std::endl;
+      return EXIT_FAILURE;
+      }
     }
 
   startIndex.Fill(50);
   endIndex[0] = 150;
   endIndex[1] = startIndex[1];
   it = LineIteratorType(output, startIndex, endIndex);
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
     it.Set(150);
     if (it.GetIndex() == *itBaseline) {
-        ++itBaseline;
-        ++it;
-       }
-    else{
-       std::cerr<< "different than baseline."<< std::endl;
-       return EXIT_FAILURE;
-       }
+      ++itBaseline;
+      ++it;
+      }
+    else {
+      std::cerr<< "different than baseline."<< std::endl;
+      return EXIT_FAILURE;
+      }
     }
 
   startIndex.Fill(120);
   endIndex[0] = 50;
   endIndex[1] = 100;
   it = LineIteratorType(output, startIndex, endIndex);
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
     it.Set(150);
     if (it.GetIndex() == *itBaseline) {
-        ++itBaseline;
-        ++it;
-       }
-    else{
-       std::cerr<< "different than baseline."<< std::endl;
-       return EXIT_FAILURE;
-       }
+      ++itBaseline;
+      ++it;
+      }
+    else {
+      std::cerr<< "different than baseline."<< std::endl;
+      return EXIT_FAILURE;
+      }
     }
 
   timer.Stop();
   std::cerr << "Line drawing took " << timer.GetMean() << " seconds.\n";
-
 
   return EXIT_SUCCESS;
 }

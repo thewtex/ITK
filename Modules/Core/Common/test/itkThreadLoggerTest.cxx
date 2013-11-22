@@ -21,20 +21,31 @@
 #include "itkStdStreamLogOutput.h"
 #include "itkThreadLogger.h"
 
-
 struct ThreadDataStruct
-{
+  {
   itk::LoggerBase* logger;
-};
+  };
 typedef std::vector<ThreadDataStruct> ThreadDataVec;
 
 class LogTester
 {
 public:
-  LogTester(){ this->m_Logger = NULL; }
-  itk::Logger* GetLogger() { return m_Logger; }
-  void SetLogger(itk::Logger* logger) { m_Logger = logger; }
-  void log() {
+  LogTester(){
+    this->m_Logger = NULL;
+  }
+
+  itk::Logger*
+  GetLogger() {
+    return m_Logger;
+  }
+
+  void
+  SetLogger(itk::Logger* logger) {
+    m_Logger = logger;
+  }
+
+  void
+  log() {
     itkLogMacro( DEBUG, "DEBUG message by itkLogMacro\n" );
     itkLogMacro( INFO, "INFO message by itkLogMacro\n" );
     itkLogMacro( WARNING, "WARNING message by itkLogMacro\n" );
@@ -42,7 +53,9 @@ public:
     itkLogMacro( FATAL, "FATAL message by itkLogMacro\n" );
     itkLogMacro( MUSTFLUSH, "MUSTFLUSH message by itkLogMacro\n" );
   }
-  static void logStatic(LogTester* tester)
+
+  static void
+  logStatic(LogTester* tester)
   {
     itkLogMacroStatic( tester, DEBUG, "DEBUG message by itkLogMacroStatic\n" );
     itkLogMacroStatic( tester, INFO, "INFO message by itkLogMacroStatic\n" );
@@ -56,58 +69,63 @@ private:
   itk::Logger* m_Logger;
 };
 
-ITK_THREAD_RETURN_TYPE ThreadedGenerateLogMessages(void* arg)
+ITK_THREAD_RETURN_TYPE
+ThreadedGenerateLogMessages(void* arg)
 {
   const itk::MultiThreader::ThreadInfoStruct* threadInfo =
-                   static_cast<itk::MultiThreader::ThreadInfoStruct*>(arg);
+    static_cast<itk::MultiThreader::ThreadInfoStruct*>(arg);
+
   if (threadInfo)
-  {
-    const unsigned int threadId = threadInfo->ThreadID;
-    std::string threadPrefix;
     {
+    const unsigned int threadId = threadInfo->ThreadID;
+    std::string        threadPrefix;
+      {
       std::ostringstream msg;
       msg << "<Thread " << threadId << "> ";
       threadPrefix = msg.str();
-    }
+      }
 
     const ThreadDataVec* dataVec = static_cast<ThreadDataVec*>(threadInfo->UserData);
     if (dataVec)
-    {
-      const ThreadDataStruct threadData = (*dataVec)[threadId];
       {
+      const ThreadDataStruct threadData = (*dataVec)[threadId];
+        {
         std::ostringstream msg;
         msg << threadPrefix << "unpacked arg\n";
-        threadData.logger->Write(itk::LoggerBase::INFO, msg.str());
+        threadData.logger->Write(itk::LoggerBase::INFO, msg.str() );
         threadData.logger->Flush();
         msg.str("");
         msg << threadPrefix << "Done logging\n";
-        threadData.logger->Write(itk::LoggerBase::INFO, msg.str());
+        threadData.logger->Write(itk::LoggerBase::INFO, msg.str() );
         //std::cout << msg.str() << std::endl;
-      }
-     // do stuff
-    } else {
+        }
+      // do stuff
+      } else {
       std::cerr << "ERROR: UserData was not of type ThreadDataVec*" << std::endl;
       return ITK_THREAD_RETURN_VALUE;
-    }
-  } else {
+      }
+    } else {
     std::cerr << "ERROR: arg was not of type itk::MultiThreader::ThreadInfoStruct*" << std::endl;
     return ITK_THREAD_RETURN_VALUE;
-  }
+    }
   return ITK_THREAD_RETURN_VALUE;
 }
 
-ThreadDataVec create_threaded_data(int num_threads, itk::LoggerBase* logger)
+ThreadDataVec
+create_threaded_data(int num_threads, itk::LoggerBase* logger)
 {
   ThreadDataVec threadData;
+
   for (int ii = 0; ii < num_threads; ++ii)
-  {
-    threadData.push_back(ThreadDataStruct());
+    {
+    threadData.push_back(ThreadDataStruct() );
     threadData[ii].logger = logger;
-  }
+    }
   return threadData;
 }
 
-int itkThreadLoggerTest( int argc, char * argv[] )
+int
+itkThreadLoggerTest( int argc, char * argv[] )
 {
   try
     {
@@ -119,9 +137,9 @@ int itkThreadLoggerTest( int argc, char * argv[] )
 
     int numthreads = 10;
     if (argc > 2)
-    {
+      {
       numthreads = atoi(argv[2]);
-    }
+      }
 
     // Create an ITK StdStreamLogOutputs
     itk::StdStreamLogOutput::Pointer coutput = itk::StdStreamLogOutput::New();
@@ -156,7 +174,9 @@ int itkThreadLoggerTest( int argc, char * argv[] )
     // Logging by the itkLogMacroStatic from a class with itk::ThreadLogger
     LogTester::logStatic(&tester);
 
-    std::cout << "  The printed order of 'Messages ##' below might not be predictable because of multi-threaded logging" << std::endl;
+    std::cout <<
+      "  The printed order of 'Messages ##' below might not be predictable because of multi-threaded logging" <<
+      std::endl;
     std::cout << "  But the logged messages will be in order." << std::endl;
     std::cout << "  Each line is an atom for synchronization." << std::endl;
     // Writing by the logger
@@ -173,7 +193,7 @@ int itkThreadLoggerTest( int argc, char * argv[] )
     std::cout << "  Flushing by the ThreadLogger is synchronized." << std::endl;
 
     std::cout << "Beginning multi-threaded portion of test." << std::endl;
-    ThreadDataVec threadData = create_threaded_data(numthreads, logger);
+    ThreadDataVec               threadData = create_threaded_data(numthreads, logger);
     itk::MultiThreader::Pointer threader = itk::MultiThreader::New();
     threader->SetGlobalMaximumNumberOfThreads(numthreads + 10);
     threader->SetNumberOfThreads(numthreads);

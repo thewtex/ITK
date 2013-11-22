@@ -23,22 +23,25 @@
 #else
 #include <unistd.h>
 inline
-void Sleep(unsigned int milleseconds)
+void
+Sleep(unsigned int milleseconds)
 {
   sleep(milleseconds / 1000);
 }
+
 #endif
 #else
 #define Sleep(x) // Empty
 #endif //defined(TEST_WITH_SLEEP)
 
-
-int itkMemoryProbesCollecterBaseTest(int, char *[])
+int
+itkMemoryProbesCollecterBaseTest(int, char *[])
 {
   const size_t megabyte = 1024L * 1024L;
 
   itk::MemoryProbesCollectorBase mcollecter;
-  itk::MemoryProbe probe;
+  itk::MemoryProbe               probe;
+
   mcollecter.Start("Update");
   Sleep(5000);
   mcollecter.Stop("Update");

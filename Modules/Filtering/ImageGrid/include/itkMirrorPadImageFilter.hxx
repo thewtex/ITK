@@ -33,7 +33,8 @@ namespace itk
  * is encoded in regIndices and regLimit), choose the next output region.
  */
 template< typename TInputImage, typename TOutputImage >
-int MirrorPadImageFilter< TInputImage, TOutputImage >
+int
+MirrorPadImageFilter< TInputImage, TOutputImage >
 ::GenerateNextOutputRegion(long *regIndices, long *regLimit,
                            std::vector< long > *indices,
                            std::vector< long > *sizes,
@@ -89,7 +90,8 @@ int MirrorPadImageFilter< TInputImage, TOutputImage >
  * is encoded in regIndices and regLimit), choose the next input region.
  */
 template< typename TInputImage, typename TOutputImage >
-int MirrorPadImageFilter< TInputImage, TOutputImage >
+int
+MirrorPadImageFilter< TInputImage, TOutputImage >
 ::GenerateNextInputRegion(long *regIndices, long *regLimit,
                           std::vector< long > *indices,
                           std::vector< long > *sizes,
@@ -340,7 +342,7 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
     regCtr++;
     offset = 0;
     outputRegionStart[regCtr] = outputRegionStart[regCtr - 1]
-                                + static_cast< long >( outputRegionSizes[regCtr - 1] );
+      + static_cast< long >( outputRegionSizes[regCtr - 1] );
     inputRegionStart[regCtr] = inputIndex;
     outputRegionSizes[regCtr] = inputSize;
     inputRegionSizes[regCtr] = inputSize;
@@ -350,7 +352,7 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
        > ( outputIndex + outputSize ) )
     {
     outputRegionSizes[regCtr] = outputIndex + outputSize
-                                - outputRegionStart[regCtr];
+      - outputRegionStart[regCtr];
     inputRegionSizes[regCtr] = outputRegionSizes[regCtr];
     if ( ( inputRegionSizes[regCtr] < inputSize )
          && this->RegionIsOdd(inputIndex, outputRegionStart[regCtr], inputSize) )
@@ -494,16 +496,16 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
     {
     numIn[dimCtr] = 1;  // Always assume exactly one inter region.
     numPre[dimCtr] =    // Count how many versions of input fit in pre-pad
-                     this->FindRegionsInArea( outputIndex[dimCtr], inputIndex[dimCtr],
-                                              static_cast< long >( inputSize[dimCtr] ),
-                                              inputIndex[dimCtr] - outputIndex[dimCtr]
-                                              - static_cast< long >( outputSize[dimCtr] ) );
+      this->FindRegionsInArea( outputIndex[dimCtr], inputIndex[dimCtr],
+                               static_cast< long >( inputSize[dimCtr] ),
+                               inputIndex[dimCtr] - outputIndex[dimCtr]
+                               - static_cast< long >( outputSize[dimCtr] ) );
     numPost[dimCtr] =   // Count how many versions of input fit in post-pad
-                      this->FindRegionsInArea( inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] ),
-                                               outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] ),
-                                               static_cast< long >( inputSize[dimCtr] ),
-                                               outputIndex[dimCtr] - inputIndex[dimCtr]
-                                               - static_cast< long >( inputSize[dimCtr] ) );
+      this->FindRegionsInArea( inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] ),
+                               outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] ),
+                               static_cast< long >( inputSize[dimCtr] ),
+                               outputIndex[dimCtr] - inputIndex[dimCtr]
+                               - static_cast< long >( inputSize[dimCtr] ) );
     inRegLimit[dimCtr] = numPre[dimCtr] + numIn[dimCtr] + numPost[dimCtr];
     outRegLimit[dimCtr] = numPre[dimCtr] + numIn[dimCtr] + numPost[dimCtr];
     outputRegionStart[dimCtr].resize(outRegLimit[dimCtr]);
@@ -581,7 +583,7 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
         {
         minIndex[dimCtr] = inputRegionStart[dimCtr][regCtr];
         maxIndex[dimCtr] = minIndex[dimCtr]
-                           + static_cast< long >( inputRegionSizes[dimCtr][regCtr] );
+          + static_cast< long >( inputRegionSizes[dimCtr][regCtr] );
         }
       else
         {
@@ -594,7 +596,7 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
              > maxIndex[dimCtr] )
           {
           maxIndex[dimCtr] = inputRegionStart[dimCtr][regCtr]
-                             + static_cast< long >( inputRegionSizes[dimCtr][regCtr] );
+            + static_cast< long >( inputRegionSizes[dimCtr][regCtr] );
           }
         }
       }
@@ -668,16 +670,16 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
     {
     numIn[dimCtr] = 1;  // Always assume exactly one inter region.
     numPre[dimCtr] =    // Count how many versions of input fit in pre-pad
-                     this->FindRegionsInArea( outputIndex[dimCtr], inputIndex[dimCtr],
-                                              static_cast< long >( inputSize[dimCtr] ),
-                                              inputIndex[dimCtr] - outputIndex[dimCtr]
-                                              - static_cast< long >( outputSize[dimCtr] ) );
+      this->FindRegionsInArea( outputIndex[dimCtr], inputIndex[dimCtr],
+                               static_cast< long >( inputSize[dimCtr] ),
+                               inputIndex[dimCtr] - outputIndex[dimCtr]
+                               - static_cast< long >( outputSize[dimCtr] ) );
     numPost[dimCtr] =   // Count how many versions of input fit in post-pad
-                      this->FindRegionsInArea( inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] ),
-                                               outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] ),
-                                               static_cast< long >( inputSize[dimCtr] ),
-                                               outputIndex[dimCtr] - inputIndex[dimCtr]
-                                               - static_cast< long >( inputSize[dimCtr] ) );
+      this->FindRegionsInArea( inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] ),
+                               outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] ),
+                               static_cast< long >( inputSize[dimCtr] ),
+                               outputIndex[dimCtr] - inputIndex[dimCtr]
+                               - static_cast< long >( inputSize[dimCtr] ) );
     inRegLimit[dimCtr] = numPre[dimCtr] + numIn[dimCtr] + numPost[dimCtr];
     inRegIndices[dimCtr] = inRegLimit[dimCtr] - 1;
     outRegLimit[dimCtr] = numPre[dimCtr] + numIn[dimCtr] + numPost[dimCtr];
@@ -761,11 +763,11 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
     // If both a valid output and input region are defined for the particular
     // defined region, then copy the input values to the output values.
     goodOutput = this->GenerateNextOutputRegion
-                   (outRegIndices, outRegLimit, outputRegionStart,
-                   outputRegionSizes, outputRegion);
+        (outRegIndices, outRegLimit, outputRegionStart,
+        outputRegionSizes, outputRegion);
     goodInput = this->GenerateNextInputRegion
-                  (inRegIndices, inRegLimit, inputRegionStart,
-                  inputRegionSizes, inputRegion);
+        (inRegIndices, inRegLimit, inputRegionStart,
+        inputRegionSizes, inputRegion);
     if ( goodInput && goodOutput )
       {
       for ( dimCtr = 0; dimCtr < ImageDimension; dimCtr++ )
@@ -797,6 +799,7 @@ MirrorPadImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

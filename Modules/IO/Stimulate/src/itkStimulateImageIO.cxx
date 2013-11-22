@@ -42,10 +42,12 @@ StimulateImageIO::StimulateImageIO()
 }
 
 StimulateImageIO::~StimulateImageIO()
-{}
+{
+}
 
-bool StimulateImageIO::OpenStimulateFileForReading(std::ifstream & os,
-                                                   const char *filename)
+bool
+StimulateImageIO::OpenStimulateFileForReading(std::ifstream & os,
+                                              const char *filename)
 
 {
   // Make sure that we have a file to
@@ -75,8 +77,9 @@ bool StimulateImageIO::OpenStimulateFileForReading(std::ifstream & os,
   return true;
 }
 
-bool StimulateImageIO::OpenStimulateFileForWriting(std::ofstream & os,
-                                                   const char *filename)
+bool
+StimulateImageIO::OpenStimulateFileForWriting(std::ofstream & os,
+                                              const char *filename)
 
 {
   // Make sure that we have a file to
@@ -109,7 +112,8 @@ bool StimulateImageIO::OpenStimulateFileForWriting(std::ofstream & os,
 
 // This method will only test if the header looks like a
 //Stimulate image file.
-bool StimulateImageIO::CanReadFile(const char *filename)
+bool
+StimulateImageIO::CanReadFile(const char *filename)
 {
   std::ifstream file;
   char          buffer[256];
@@ -157,7 +161,8 @@ bool StimulateImageIO::CanReadFile(const char *filename)
     }
 }
 
-void StimulateImageIO::Read(void *buffer)
+void
+StimulateImageIO::Read(void *buffer)
 {
   std::ifstream file;
 
@@ -248,7 +253,8 @@ void StimulateImageIO::Read(void *buffer)
   file_data.close();
 }
 
-void StimulateImageIO::InternalReadImageInformation(std::ifstream & file)
+void
+StimulateImageIO::InternalReadImageInformation(std::ifstream & file)
 {
   char        line[255];
   std::string text;
@@ -512,14 +518,16 @@ void StimulateImageIO::InternalReadImageInformation(std::ifstream & file)
     } //otherwise default spacing & origin are used.
 }
 
-void StimulateImageIO::ReadImageInformation()
+void
+StimulateImageIO::ReadImageInformation()
 {
   std::ifstream file;
 
   this->InternalReadImageInformation(file);
 }
 
-bool StimulateImageIO::CanWriteFile(const char *name)
+bool
+StimulateImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -546,7 +554,8 @@ bool StimulateImageIO::CanWriteFile(const char *name)
   return true;
 }
 
-void StimulateImageIO::Write(const void *buffer)
+void
+StimulateImageIO::Write(const void *buffer)
 {
   unsigned int i;
 
@@ -656,9 +665,12 @@ void StimulateImageIO::Write(const void *buffer)
   file.close();
 }
 
-void StimulateImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+StimulateImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "\nDisplayRange: " << m_DisplayRange[0] << " " << m_DisplayRange[1];
 }
+
 } // end namespace itk

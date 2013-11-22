@@ -37,7 +37,7 @@ class DiscreteLevelSetImage :
   public LevelSetImage< Index< VDimension >, VDimension, TOutput >
 {
 public:
-  typedef Index< VDimension >             IndexType;
+  typedef Index< VDimension > IndexType;
 
   typedef DiscreteLevelSetImage                           Self;
   typedef SmartPointer< Self >                            Pointer;
@@ -56,26 +56,32 @@ public:
   typedef typename Superclass::HessianType      HessianType;
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  /** Returns the gradient of the level set function at a given location inputIndex */
+  /** Returns the gradient of the level set function at a given location
+    inputIndex */
   virtual OutputType  Evaluate( const InputType& inputIndex ) const = 0;
 
-  /** Returns the image gradient of the level set function at a given location inputIndex */
+  /** Returns the image gradient of the level set function at a given location
+    inputIndex */
   virtual GradientType EvaluateGradient( const InputType& inputIndex ) const;
 
-  /** Returns the image hessian of the level set function at a given location inputIndex */
+  /** Returns the image hessian of the level set function at a given location
+    inputIndex */
   virtual HessianType EvaluateHessian( const InputType& inputIndex ) const;
 
-  /** Returns the image Laplacian of the level set function at a given location inputIndex */
+  /** Returns the image Laplacian of the level set function at a given location
+    inputIndex */
   virtual OutputRealType EvaluateLaplacian( const InputType& inputIndex ) const;
 
-  /** Returns the mean curvature of the level set function at a given location inputIndex */
+  /** Returns the mean curvature of the level set function at a given location
+    inputIndex */
   virtual OutputRealType EvaluateMeanCurvature( const InputType& inputIndex ) const;
 
   virtual GradientType EvaluateForwardGradient( const InputType& inputIndex ) const;
 
   virtual GradientType EvaluateBackwardGradient( const InputType& inputIndex ) const;
 
-  /** Returns the value of the level set function at a given location inputIndex */
+  /** Returns the value of the level set function at a given location inputIndex
+    */
   virtual void Evaluate( const InputType& inputIndex, LevelSetDataType& data ) const;
 
   /** Returns the gradient of the level set function at a given location inputIndex
@@ -105,7 +111,8 @@ public:
 protected:
   DiscreteLevelSetImage();
 
-  virtual ~DiscreteLevelSetImage();
+  virtual
+  ~DiscreteLevelSetImage();
 
   /** Initial the level set pointer */
   virtual void Initialize();
@@ -119,8 +126,9 @@ protected:
 private:
 
   DiscreteLevelSetImage( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
-  };
+  void operator =( const Self& );       // purposely not implemented
+
+};
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION

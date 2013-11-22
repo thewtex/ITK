@@ -22,15 +22,16 @@
 #include "itkEllipseSpatialObject.h"
 #include "itkGroupSpatialObject.h"
 
-int itkSceneSpatialObjectTest(int, char* [])
+int
+itkSceneSpatialObjectTest(int, char* [])
 {
   // Create the SceneSpatialObject
-  typedef itk::SceneSpatialObject<3>  SceneSpatialObjectType;
+  typedef itk::SceneSpatialObject<3> SceneSpatialObjectType;
   SceneSpatialObjectType::Pointer SceneSpatialObject = SceneSpatialObjectType::New();
   SceneSpatialObject->Print(std::cout);
 
   // Create two ellipses to put in the SceneSpatialObject
-  typedef itk::EllipseSpatialObject<3>   EllipseType;
+  typedef itk::EllipseSpatialObject<3> EllipseType;
   EllipseType::Pointer ellipse1 = EllipseType::New();
   EllipseType::Pointer ellipse2 = EllipseType::New();
 
@@ -53,11 +54,11 @@ int itkSceneSpatialObjectTest(int, char* [])
   SpatialObjectType::Pointer object = SpatialObjectType::New();
 
   std::cout << "Testing Typename: ";
-  if(strcmp(object->GetTypeName(),"GroupSpatialObject"))
-  {
+  if(strcmp(object->GetTypeName(),"GroupSpatialObject") )
+    {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::cout << "[PASSED]" << std::endl;
 
   object->GetRequestedRegion();
@@ -67,28 +68,28 @@ int itkSceneSpatialObjectTest(int, char* [])
 
   std::cout << "Testing  BoundingBoxChildren depth: ";
   if(object->GetBoundingBoxChildrenDepth() != 0)
-  {
+    {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::cout << "[PASSED]" << std::endl;
 
   std::cout << "Testing BoundingBoxChildrenName: ";
   if(object->GetBoundingBoxChildrenName() != "")
-  {
+    {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::cout << "[PASSED]" << std::endl;
 
   std::cout << "Testing Set/GetParentID: ";
   object->SetParentId(3);
 
   if(object->GetParentId() != 3)
-  {
+    {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::cout << "[PASSED]" << std::endl;
 
   std::cout << "Testing Set/GetSpacing: ";
@@ -99,13 +100,13 @@ int itkSceneSpatialObjectTest(int, char* [])
 
   object->SetSpacing(spacing);
   const double* res_spacing = object->GetSpacing();
-  if((res_spacing[0] != 1) ||
-     (res_spacing[1] != 2) ||
-     (res_spacing[2] != 3) )
-  {
+  if( (res_spacing[0] != 1) ||
+      (res_spacing[1] != 2) ||
+      (res_spacing[2] != 3) )
+    {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::cout << "Testing Clear(): ";
   // Testing the clear function

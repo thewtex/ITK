@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class ChangeLabelLabelMapFilter:
+class ChangeLabelLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -94,7 +94,8 @@ public:
 
 protected:
   ChangeLabelLabelMapFilter();
-  ~ChangeLabelLabelMapFilter() {}
+  ~ChangeLabelLabelMapFilter() {
+  }
 
   void GenerateData();
 
@@ -105,6 +106,7 @@ protected:
 private:
   ChangeLabelLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };                                         // end of class
 } // end namespace itk
 

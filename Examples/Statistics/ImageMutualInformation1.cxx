@@ -57,7 +57,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginLatex
 //
 // In this particular example we make use of classes from the Statistics
@@ -84,8 +83,8 @@
 #include "itkImageToHistogramFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -95,7 +94,6 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginLatex
   //
   // We define the pixel type and dimension of the images to be read.
@@ -103,12 +101,11 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char                                 PixelComponentType;
-  const unsigned int                                    Dimension = 2;
+  typedef unsigned char PixelComponentType;
+  const unsigned int Dimension = 2;
 
-  typedef itk::Image< PixelComponentType, Dimension >   ImageType;
+  typedef itk::Image< PixelComponentType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -118,7 +115,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >             ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
   ReaderType::Pointer reader2 = ReaderType::New();
@@ -127,23 +124,22 @@ int main( int argc, char * argv [] )
   reader2->SetFileName( argv[2] );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
-  // Using the \doxygen{JoinImageFilter} we use the two input images and put them
+  // Using the \doxygen{JoinImageFilter} we use the two input images and put
+  // them
   // together in an image of two components.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::JoinImageFilter< ImageType, ImageType >  JoinFilterType;
+  typedef itk::JoinImageFilter< ImageType, ImageType > JoinFilterType;
 
   JoinFilterType::Pointer joinFilter = JoinFilterType::New();
 
   joinFilter->SetInput1( reader1->GetOutput() );
   joinFilter->SetInput2( reader2->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -166,7 +162,6 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We prepare now the types to be used for the computation of the Joint
@@ -178,19 +173,19 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef JoinFilterType::OutputImageType               VectorImageType;
+  typedef JoinFilterType::OutputImageType VectorImageType;
 
   typedef itk::Statistics::ImageToHistogramFilter<
-                                       VectorImageType >  HistogramFilterType;
+      VectorImageType >  HistogramFilterType;
 
   HistogramFilterType::Pointer histogramFilter = HistogramFilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We pass the multiple components image as input to the histogram filter,
-  // and setup the marginal scale value that will define the precision to be used
+  // and setup the marginal scale value that will define the precision to be
+  // used
   // for classifying values into the histogram bins.
   //
   // Software Guide : EndLatex
@@ -201,17 +196,17 @@ int main( int argc, char * argv [] )
   histogramFilter->SetMarginalScale( 10.0 );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We must now define the number of bins to use for each one of the components
-  // in the joint image. For this purpose we take the \code{HistogramSizeType} from the
+  // in the joint image. For this purpose we take the \code{HistogramSizeType}
+  // from the
   // traits of the histogram filter type.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramSizeType   HistogramSizeType;
+  typedef HistogramFilterType::HistogramSizeType HistogramSizeType;
 
   HistogramSizeType size( 2 );
 
@@ -220,7 +215,6 @@ int main( int argc, char * argv [] )
 
   histogramFilter->SetHistogramSize( size );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -252,7 +246,6 @@ int main( int argc, char * argv [] )
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The histogram can be recovered from the filter by creating a variable
@@ -261,19 +254,20 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramType  HistogramType;
+  typedef HistogramFilterType::HistogramType HistogramType;
 
   const HistogramType * histogram = histogramFilter->GetOutput();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
   // We now walk over all the bins of the joint histogram and compute their
   // contribution to the value of the joint Entropy. For this purpose we use
-  // histogram iterators, and the \code{Begin()} and \code{End()} methods.  Since
+  // histogram iterators, and the \code{Begin()} and \code{End()} methods.
+  //  Since
   // the values returned from the histogram are measuring frequency we must
-  // convert them to an estimation of probability by dividing them over the total
+  // convert them to an estimation of probability by dividing them over the
+  // total
   // sum of frequencies returned by the \code{GetTotalFrequency()} method.
   //
   // Software Guide : EndLatex
@@ -285,12 +279,12 @@ int main( int argc, char * argv [] )
   const double Sum = histogram->GetTotalFrequency();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We initialize to zero the variable to use for accumulating the value of the
   // joint entropy, and then use the iterator for visiting all the bins of the
-  // joint histogram. For every bin we compute their contribution to the reduction
+  // joint histogram. For every bin we compute their contribution to the
+  // reduction
   // of uncertainty. Note that in order to avoid logarithmic operations on zero
   // values, we skip over those bins that have less than one count. The entropy
   // contribution must be computed using logarithms in base two in order to be
@@ -306,15 +300,14 @@ int main( int argc, char * argv [] )
     const double count = itr.GetFrequency();
     if( count > 0.0 )
       {
-      const double probability = count / Sum;
-      JointEntropy += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      const double                   probability = count / Sum;
+      JointEntropy += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
 
   std::cout << "Joint Entropy      = " << JointEntropy << " bits " << std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -331,7 +324,6 @@ int main( int argc, char * argv [] )
   histogramFilter->SetHistogramSize( size );
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -351,15 +343,14 @@ int main( int argc, char * argv [] )
     const double count = itr.GetFrequency();
     if( count > 0.0 )
       {
-      const double probability = count / Sum;
-      Entropy1 += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      const double               probability = count / Sum;
+      Entropy1 += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
 
   std::cout << "Image1 Entropy   = " << Entropy1 << " bits " << std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -376,10 +367,10 @@ int main( int argc, char * argv [] )
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
-  // The entropy is computed in a similar manner, just by visiting all the bins on
+  // The entropy is computed in a similar manner, just by visiting all the bins
+  // on
   // the histogram and accumulating their entropy contributions.
   //
   //
@@ -396,15 +387,14 @@ int main( int argc, char * argv [] )
     const double count = itr.GetFrequency();
     if( count > 0.0 )
       {
-      const double probability = count / Sum;
-      Entropy2 += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      const double               probability = count / Sum;
+      Entropy2 += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
 
   std::cout << "Image2 Entropy   = " << Entropy2 << " bits " << std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -419,21 +409,20 @@ int main( int argc, char * argv [] )
 
   std::cout << "Mutual Information = " << MutualInformation << " bits " << std::endl;
 
-
   // Software Guide : BeginLatex
   //
-  // or Normalized Mutual Information, where the value of Mutual Information gets
+  // or Normalized Mutual Information, where the value of Mutual Information
+  // gets
   // divided by the mean entropy of the input images.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   double NormalizedMutualInformation1 =
-                     2.0 * MutualInformation / ( Entropy1 + Entropy2 );
+    2.0 * MutualInformation / ( Entropy1 + Entropy2 );
   // Software Guide : EndCodeSnippet
 
   std::cout << "Normalized Mutual Information 1 = " << NormalizedMutualInformation1 <<  std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -446,9 +435,7 @@ int main( int argc, char * argv [] )
   double NormalizedMutualInformation2 = ( Entropy1 + Entropy2 ) / JointEntropy;
   // Software Guide : EndCodeSnippet
 
-
   std::cout << "Normalized Mutual Information 2 = " << NormalizedMutualInformation2 <<  std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -457,7 +444,6 @@ int main( int argc, char * argv [] )
   // defined.
   //
   // Software Guide : EndLatex
-
 
   return 0;
 

@@ -30,13 +30,14 @@
  *
  */
 
-int itkPointSetToPointSetRegistrationTest(int, char* [] )
+int
+itkPointSetToPointSetRegistrationTest(int, char* [] )
 {
 
 //------------------------------------------------------------
 // Create two simple point sets
 //------------------------------------------------------------
-  typedef itk::PointSet< float, 2 >   FixedPointSetType;
+  typedef itk::PointSet< float, 2 > FixedPointSetType;
   FixedPointSetType::Pointer fixedPointSet = FixedPointSetType::New();
 
   const unsigned int numberOfPoints = 500;
@@ -46,26 +47,25 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
   fixedPointSet->GetPoints()->Reserve( numberOfPoints );
   fixedPointSet->GetPointData()->Reserve( numberOfPoints );
 
-  FixedPointSetType::PointType  point;
+  FixedPointSetType::PointType point;
 
   unsigned int id = 0;
-  for(unsigned int i=0;i<numberOfPoints/2;i++)
+  for(unsigned int i=0; i<numberOfPoints/2; i++)
     {
     point[0]=0;
     point[1]=i;
     fixedPointSet->SetPoint( id++, point );
     }
-  for(unsigned int i=0;i<numberOfPoints/2;i++)
+  for(unsigned int i=0; i<numberOfPoints/2; i++)
     {
     point[0]=i;
     point[1]=0;
     fixedPointSet->SetPoint( id++, point );
     }
 
- // Moving Point Set
-  typedef itk::PointSet< float, 2 >  MovingPointSetType;
+  // Moving Point Set
+  typedef itk::PointSet< float, 2 > MovingPointSetType;
   MovingPointSetType::Pointer movingPointSet = MovingPointSetType::New();
-
 
   movingPointSet->SetPointData( MovingPointSetType::PointDataContainer::New() );
 
@@ -73,13 +73,13 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
   movingPointSet->GetPointData()->Reserve( numberOfPoints );
 
   id = 0;
-  for(unsigned int i=0;i<numberOfPoints/2;i++)
+  for(unsigned int i=0; i<numberOfPoints/2; i++)
     {
     point[0]=0;
     point[1]=i;
     movingPointSet->SetPoint( id++, point );
     }
-  for(unsigned int i=0;i<numberOfPoints/2;i++)
+  for(unsigned int i=0; i<numberOfPoints/2; i++)
     {
     point[0]=i;
     point[1]=0;
@@ -90,52 +90,47 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
 // Set up  the Metric
 //-----------------------------------------------------------
   typedef itk::EuclideanDistancePointMetric<
-    FixedPointSetType,
-    MovingPointSetType>
+      FixedPointSetType,
+      MovingPointSetType>
     MetricType;
 
-  typedef MetricType::TransformType                 TransformBaseType;
-  typedef TransformBaseType::ParametersType         ParametersType;
-  typedef TransformBaseType::JacobianType           JacobianType;
+  typedef MetricType::TransformType         TransformBaseType;
+  typedef TransformBaseType::ParametersType ParametersType;
+  typedef TransformBaseType::JacobianType   JacobianType;
 
-  MetricType::Pointer  metric = MetricType::New();
-
+  MetricType::Pointer metric = MetricType::New();
 
 //-----------------------------------------------------------
 // Set up a Transform
 //-----------------------------------------------------------
 
   typedef itk::TranslationTransform<
-    double,
-    2 >         TransformType;
+      double,
+      2 >         TransformType;
 
   TransformType::Pointer transform = TransformType::New();
-
 
   // Optimizer Type
   typedef itk::LevenbergMarquardtOptimizer OptimizerType;
 
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
+  OptimizerType::Pointer optimizer     = OptimizerType::New();
   optimizer->SetUseCostFunctionGradient(false);
 
   // Registration Method
   typedef itk::PointSetToPointSetRegistrationMethod<
-    FixedPointSetType,
-    MovingPointSetType >    RegistrationType;
+      FixedPointSetType,
+      MovingPointSetType >    RegistrationType;
 
-
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   // Scale the translation components of the Transform in the Optimizer
   OptimizerType::ScalesType scales( transform->GetNumberOfParameters() );
   scales.Fill( 1.0 );
 
-
-  unsigned long   numberOfIterations =   100;
-  double          gradientTolerance  =  1e-1; // convergence criterion
-  double          valueTolerance =  1e-1; // convergence criterion
-  double          epsilonFunction =  1e-9; // convergence criterion
-
+  unsigned long numberOfIterations =   100;
+  double        gradientTolerance  =  1e-1; // convergence criterion
+  double        valueTolerance =  1e-1;     // convergence criterion
+  double        epsilonFunction =  1e-9;    // convergence criterion
 
   optimizer->SetScales( scales );
   optimizer->SetNumberOfIterations( numberOfIterations );
@@ -157,7 +152,6 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
   registration->SetTransform(     transform     );
   registration->SetFixedPointSet( fixedPointSet );
   registration->SetMovingPointSet(   movingPointSet   );
-
 
 //------------------------------------------------------------
 // Set up transform parameters
@@ -185,10 +179,10 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
 
   std::cout << "Solution = " << transform->GetParameters() << std::endl;
 
-  if((vnl_math_abs(transform->GetParameters()[0])>1.0)
-    ||
-    (vnl_math_abs(transform->GetParameters()[1])>1.0)
-    )
+  if( (vnl_math_abs(transform->GetParameters()[0])>1.0)
+      ||
+      (vnl_math_abs(transform->GetParameters()[1])>1.0)
+      )
     {
     return EXIT_FAILURE;
     }
@@ -217,10 +211,10 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
   ddFilter->SetInput(binaryImage);
   ddFilter->Update();
 
-  metric->SetDistanceMap(ddFilter->GetOutput());
+  metric->SetDistanceMap(ddFilter->GetOutput() );
   metric->ComputeSquaredDistanceOn();
 
-   // initialize the offset/vector part
+  // initialize the offset/vector part
   for( unsigned int k = 0; k < 2; k++ )
     {
     parameters[k]= 10.0;
@@ -241,14 +235,13 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
 
   std::cout << "Solution = " << transform->GetParameters() << std::endl;
 
-  if((vnl_math_abs(transform->GetParameters()[0])>1.0)
-    ||
-    (vnl_math_abs(transform->GetParameters()[1])>1.0)
-    )
+  if( (vnl_math_abs(transform->GetParameters()[0])>1.0)
+      ||
+      (vnl_math_abs(transform->GetParameters()[1])>1.0)
+      )
     {
     return EXIT_FAILURE;
     }
-
 
   std::cout << "TEST DONE" << std::endl;
 

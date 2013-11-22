@@ -21,11 +21,13 @@
 #include "itkTestingMacros.h"
 
 template< typename TValueType >
-bool runTestByType()
+bool
+runTestByType()
 {
   bool passed = true;
 
   itk::OptimizerParameters<TValueType> params;
+
   params.SetSize(10);
   params.Fill(1.23);
   std::cout << "GetSize: " << params.GetSize() << std::endl;
@@ -33,7 +35,7 @@ bool runTestByType()
   /* Test different ctors */
 
   //Construct by size
-  itk::SizeValueType dim = 20;
+  itk::SizeValueType                   dim = 20;
   itk::OptimizerParameters<TValueType> paramsSize(dim);
   if( paramsSize.GetSize() != dim )
     {
@@ -43,33 +45,33 @@ bool runTestByType()
     }
 
   //Copy constructor
-  {
-  itk::OptimizerParameters<TValueType> paramsCopy( params );
-  for( itk::SizeValueType i=0; i < params.GetSize(); i++ )
     {
-    if( params[i] != paramsCopy[i] )
+    itk::OptimizerParameters<TValueType> paramsCopy( params );
+    for( itk::SizeValueType i=0; i < params.GetSize(); i++ )
       {
-      std::cerr << "Copy constructor failed. " << std::endl;
-      passed = false;
+      if( params[i] != paramsCopy[i] )
+        {
+        std::cerr << "Copy constructor failed. " << std::endl;
+        passed = false;
+        }
       }
     }
-  }
 
   //Constructor from array
   itk::Array<TValueType> array(dim);
   for( itk::SizeValueType i=0; i<dim; i++ )
-    { array[i]=i*3.19; }
-  {
-  itk::OptimizerParameters<TValueType> paramsCopy( array );
-  for( itk::SizeValueType i=0; i < params.GetSize(); i++ )
+            { array[i]=i*3.19; }
     {
-    if( array[i] != paramsCopy[i] )
+    itk::OptimizerParameters<TValueType> paramsCopy( array );
+    for( itk::SizeValueType i=0; i < params.GetSize(); i++ )
       {
-      std::cerr << "Constructor from Array failed. " << std::endl;
-      passed = false;
+      if( array[i] != paramsCopy[i] )
+        {
+        std::cerr << "Constructor from Array failed. " << std::endl;
+        passed = false;
+        }
       }
     }
-  }
 
   /* Test assignment operators from different types */
 
@@ -88,22 +90,22 @@ bool runTestByType()
   //Assign from VnlVector
   vnl_vector<TValueType> vector(dim);
   for( itk::SizeValueType i=0; i<dim; i++ )
-    { vector[i]=i*0.123; }
-  {
-  itk::OptimizerParameters<TValueType> paramsVnl;
-  paramsVnl = vector;
-  for( itk::SizeValueType i=0; i < paramsVnl.GetSize(); i++ )
+            { vector[i]=i*0.123; }
     {
-    if( vector[i] != paramsVnl[i] )
+    itk::OptimizerParameters<TValueType> paramsVnl;
+    paramsVnl = vector;
+    for( itk::SizeValueType i=0; i < paramsVnl.GetSize(); i++ )
       {
-      std::cerr << "Assignment from VnlVector failed. " << std::endl;
-      passed = false;
+      if( vector[i] != paramsVnl[i] )
+        {
+        std::cerr << "Assignment from VnlVector failed. " << std::endl;
+        passed = false;
+        }
       }
     }
-  }
 
   /* Test MoveDataPointer to point to different memory block */
-  TValueType  block[10] = {10,9,8,7,6,5,4,3,2,1};
+  TValueType block[10] = {10,9,8,7,6,5,4,3,2,1};
   params.MoveDataPointer( block );
   for( int i=0; i < 10; i++)
     {
@@ -134,8 +136,8 @@ bool runTestByType()
     if( params1[i] != params2[i] )
       {
       std::cerr << "Copy operator failed:" << std::endl
-              << "params1 " << params1 << std::endl
-              << "params2 " << params2 << std::endl;
+                << "params1 " << params1 << std::endl
+                << "params2 " << params2 << std::endl;
       passed = false;
       break;
       }
@@ -149,7 +151,8 @@ bool runTestByType()
   return passed;
 }
 
-int itkOptimizerParametersTest(int, char *[])
+int
+itkOptimizerParametersTest(int, char *[])
 {
   bool passed = true;
 

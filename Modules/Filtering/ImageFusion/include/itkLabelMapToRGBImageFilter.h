@@ -23,7 +23,6 @@
 #include "itkImage.h"
 #include "itkRGBPixel.h"
 
-
 namespace itk {
 
 /** \class LabelMapToRGBImageFilter
@@ -41,14 +40,14 @@ namespace itk {
  */
 template<typename TInputImage, typename TOutputImage=Image< RGBPixel<unsigned char>, TInputImage::ImageDimension > >
 class LabelMapToRGBImageFilter :
-    public LabelMapFilter<TInputImage, TOutputImage>
+  public LabelMapFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapToRGBImageFilter                   Self;
-  typedef LabelMapFilter<TInputImage, TOutputImage>  Superclass;
-  typedef SmartPointer<Self>                         Pointer;
-  typedef SmartPointer<const Self>                   ConstPointer;
+  typedef LabelMapToRGBImageFilter                  Self;
+  typedef LabelMapFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                        Pointer;
+  typedef SmartPointer<const Self>                  ConstPointer;
 
   /** Some convenient typedefs. */
   typedef TInputImage                              InputImageType;
@@ -59,11 +58,11 @@ public:
   typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
 
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
-  typedef typename OutputImageType::IndexType      IndexType;
+  typedef typename OutputImageType::Pointer      OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType   OutputImageRegionType;
+  typedef typename OutputImageType::PixelType    OutputImagePixelType;
+  typedef typename OutputImageType::IndexType    IndexType;
 
   typedef typename Functor::LabelToRGBFunctor< InputImagePixelType, OutputImagePixelType > FunctorType;
 
@@ -82,7 +81,8 @@ public:
 
 protected:
   LabelMapToRGBImageFilter();
-  ~LabelMapToRGBImageFilter() {};
+  ~LabelMapToRGBImageFilter() {
+  }
 
   virtual void BeforeThreadedGenerateData();
 
@@ -92,7 +92,7 @@ protected:
 
 private:
   LabelMapToRGBImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);           //purposely not implemented
 
 }; // end of class
 

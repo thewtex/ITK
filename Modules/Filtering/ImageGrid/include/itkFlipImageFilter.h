@@ -50,7 +50,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class FlipImageFilter:
+class FlipImageFilter :
   public ImageToImageFilter< TImage, TImage >
 {
 public:
@@ -112,7 +112,9 @@ public:
 
 protected:
   FlipImageFilter();
-  ~FlipImageFilter() {}
+  ~FlipImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** FlipImageFilter can be implemented as a multithreaded filter.

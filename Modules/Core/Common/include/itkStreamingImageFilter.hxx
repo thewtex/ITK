@@ -44,7 +44,8 @@ StreamingImageFilter< TInputImage, TOutputImage >
 template< typename TInputImage, typename TOutputImage >
 StreamingImageFilter< TInputImage, TOutputImage >
 ::~StreamingImageFilter()
-{}
+{
+}
 
 /**
  *
@@ -155,7 +156,7 @@ StreamingImageFilter< TInputImage, TOutputImage >
   /**
    * Allocate the output buffer.
    */
-  OutputImageType      *outputPtr = this->GetOutput(0);
+  OutputImageType *           outputPtr = this->GetOutput(0);
   const OutputImageRegionType outputRegion = outputPtr->GetRequestedRegion();
   outputPtr->SetBufferedRegion(outputRegion);
   outputPtr->Allocate();
@@ -186,7 +187,7 @@ StreamingImageFilter< TInputImage, TOutputImage >
    * Loop over the number of pieces, execute the upstream pipeline on each
    * piece, and copy the results into the output image.
    */
-  unsigned int         piece=0;
+  unsigned int piece=0;
   for (;
        piece < numDivisions && !this->GetAbortGenerateData();
        piece++ )
@@ -203,7 +204,6 @@ StreamingImageFilter< TInputImage, TOutputImage >
     // to what the pipeline might have enlarged it to) is used to
     // copy the regions from the input to output
     ImageAlgorithm::Copy( inputPtr, outputPtr, streamRegion, streamRegion );
-
 
     this->UpdateProgress( static_cast<float>(piece) / static_cast<float>(numDivisions) );
     }
@@ -239,6 +239,7 @@ StreamingImageFilter< TInputImage, TOutputImage >
   // Mark that we are no longer updating the data in this filter
   this->m_Updating = false;
 }
+
 } // end namespace itk
 
 #endif

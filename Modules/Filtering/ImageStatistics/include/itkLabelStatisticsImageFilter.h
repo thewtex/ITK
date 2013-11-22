@@ -57,7 +57,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TLabelImage >
-class LabelStatisticsImageFilter:
+class LabelStatisticsImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -199,7 +199,8 @@ public:
     }
 
     // added for completeness
-    LabelStatistics &operator= (const LabelStatistics& l)
+    LabelStatistics &
+    operator=(const LabelStatistics& l)
     {
       if(this != &l)
         {
@@ -243,39 +244,44 @@ public:
   itkGetConstMacro(UseHistograms, bool);
   itkBooleanMacro(UseHistograms);
 
-
-  virtual const ValidLabelValuesContainerType &GetValidLabelValues() const
+  virtual const ValidLabelValuesContainerType &
+  GetValidLabelValues() const
   {
     return m_ValidLabelValues;
   }
 
   /** Set the label image */
-  void SetLabelInput(const TLabelImage *input)
+  void
+  SetLabelInput(const TLabelImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TLabelImage * >( input ) );
   }
 
   /** Get the label image */
-  const LabelImageType * GetLabelInput() const
+  const LabelImageType *
+  GetLabelInput() const
   {
     return itkDynamicCastInDebugMode< LabelImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Does the specified label exist? Can only be called after a call
    * a call to Update(). */
-  bool HasLabel(LabelPixelType label) const
+  bool
+  HasLabel(LabelPixelType label) const
   {
     return m_LabelStatistics.find(label) != m_LabelStatistics.end();
   }
 
   /** Get the number of labels used */
-  MapSizeType GetNumberOfObjects() const
+  MapSizeType
+  GetNumberOfObjects() const
   {
     return m_LabelStatistics.size();
   }
 
-  MapSizeType GetNumberOfLabels() const
+  MapSizeType
+  GetNumberOfLabels() const
   {
     return this->GetNumberOfObjects();
   }
@@ -327,7 +333,9 @@ public:
 
 protected:
   LabelStatisticsImageFilter();
-  ~LabelStatisticsImageFilter(){}
+  ~LabelStatisticsImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Pass the input through unmodified. Do this by Grafting in the

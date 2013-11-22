@@ -51,4 +51,5 @@ CacheableScalarFunction
 
   m_CacheAvailable = true;
 }
+
 } // end of namespace itk

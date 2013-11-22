@@ -63,7 +63,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImageType >
-class AdaptiveHistogramEqualizationImageFilter:
+class AdaptiveHistogramEqualizationImageFilter :
   public BoxImageFilter< TImageType, TImageType >
 {
 public:
@@ -116,7 +116,10 @@ protected:
     m_UseLookupTable = false;
   }
 
-  virtual ~AdaptiveHistogramEqualizationImageFilter(){}
+  virtual
+  ~AdaptiveHistogramEqualizationImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
@@ -143,6 +146,7 @@ private:
 
   /** A function which is used in GenerateData(). */
   float CumulativeFunction(float u, float v);
+
 };
 } // end namespace itk
 

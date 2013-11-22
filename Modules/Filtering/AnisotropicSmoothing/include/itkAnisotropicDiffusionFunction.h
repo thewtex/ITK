@@ -136,7 +136,7 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TImage >
-class AnisotropicDiffusionFunction:
+class AnisotropicDiffusionFunction :
   public FiniteDifferenceFunction< TImage >
 {
 public:
@@ -171,54 +171,63 @@ public:
   /** Set/Get the time step. For this class of anisotropic diffusion filters,
       the time-step is supplied by the user and remains fixed for all
       updates. */
-  void SetTimeStep(const TimeStepType & t)
+  void
+  SetTimeStep(const TimeStepType & t)
   {
     m_TimeStep = t;
   }
 
-  const TimeStepType & GetTimeStep() const
+  const TimeStepType &
+  GetTimeStep() const
   {
     return m_TimeStep;
   }
 
   /** Set/Get the conductance parameter.  The conductance parameter. */
-  void SetConductanceParameter(const double & c)
+  void
+  SetConductanceParameter(const double & c)
   {
     m_ConductanceParameter = c;
   }
 
-  const double & GetConductanceParameter() const
+  const double &
+  GetConductanceParameter() const
   {
     return m_ConductanceParameter;
   }
 
   /** Set/Get the average gradient magnitude squared. */
-  const double & GetAverageGradientMagnitudeSquared() const
+  const double &
+  GetAverageGradientMagnitudeSquared() const
   {
     return m_AverageGradientMagnitudeSquared;
   }
 
-  void SetAverageGradientMagnitudeSquared(const double & c)
+  void
+  SetAverageGradientMagnitudeSquared(const double & c)
   {
     m_AverageGradientMagnitudeSquared = c;
   }
 
   /** Returns the time step supplied by the user.  We don't need to use the
    * global data supplied since we are returning a fixed value.  */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
   {
     return this->GetTimeStep();
   }
 
   /** The anisotropic diffusion classes don't use this particular parameter
    * so it's safe to return a null value. */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     return 0;
   }
 
   /** Does nothing.  No global data is used in this class of equations.   */
-  virtual void ReleaseGlobalDataPointer( void *itkNotUsed(GlobalData) ) const
+  virtual void
+  ReleaseGlobalDataPointer( void *itkNotUsed(GlobalData) ) const
   {
     /* do nothing */
   }
@@ -231,11 +240,14 @@ protected:
     m_TimeStep                 = 0.125f;  // default value
   }
 
-  ~AnisotropicDiffusionFunction() {}
+  ~AnisotropicDiffusionFunction() {
+  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "TimeStep: " << m_TimeStep << std::endl;
     os << indent << "ConductanceParameter: " << m_ConductanceParameter
        << std::endl;

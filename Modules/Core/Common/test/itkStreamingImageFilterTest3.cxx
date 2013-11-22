@@ -24,19 +24,19 @@
 #include "itkImageRegionSplitterMultidimensional.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-
-int itkStreamingImageFilterTest3(int argc, char*argv [] )
+int
+itkStreamingImageFilterTest3(int argc, char*argv [] )
 {
-   if( argc < 3 )
+  if( argc < 3 )
     {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputImageFile outputImageFile numberOfStreamDivisions" << std::endl;
     return EXIT_FAILURE;
     }
 
-   const std::string inputFilename = argv[1];
-   const std::string outputFilename = argv[2];
-   unsigned int numberOfStreamDivisions = atoi(argv[3]);
+  const std::string inputFilename = argv[1];
+  const std::string outputFilename = argv[2];
+  unsigned int      numberOfStreamDivisions = atoi(argv[3]);
 
   typedef unsigned char              PixelType;
   typedef itk::Image< PixelType, 2 > ImageType;
@@ -63,20 +63,18 @@ int itkStreamingImageFilterTest3(int argc, char*argv [] )
   streamer->SetNumberOfStreamDivisions( numberOfStreamDivisions );
   streamer->SetRegionSplitter( splitter );
 
-
   typedef itk::ImageFileWriter<ImageType> WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( outputFilename );
   writer->SetInput( streamer->GetOutput() );
   writer->Update();
 
-
   unsigned int expectedNumberOfStreams =
     splitter->GetNumberOfSplits(streamer->GetOutput()->GetLargestPossibleRegion(), numberOfStreamDivisions);
 
   std::cout << "ExpectedNumberOfStreams: " << expectedNumberOfStreams << std::endl;
 
-  if (!monitor->VerifyAllInputCanStream(expectedNumberOfStreams))
+  if (!monitor->VerifyAllInputCanStream(expectedNumberOfStreams) )
     {
     std::cout << "Filter failed to execute as expected!" << std::endl;
     std::cout << monitor;
@@ -84,6 +82,5 @@ int itkStreamingImageFilterTest3(int argc, char*argv [] )
     }
 
   return EXIT_SUCCESS;
-
 
 }

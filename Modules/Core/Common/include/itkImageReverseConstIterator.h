@@ -98,13 +98,13 @@ public:
                       TImage::ImageDimension);
 
   /** Index typedef support. */
-  typedef typename TImage::IndexType      IndexType;
+  typedef typename TImage::IndexType IndexType;
 
   /** Size typedef support. */
-  typedef typename TImage::SizeType      SizeType;
+  typedef typename TImage::SizeType SizeType;
 
   /** Offset typedef support. */
-  typedef typename TImage::OffsetType      OffsetType;
+  typedef typename TImage::OffsetType OffsetType;
 
   /** Region typedef support. */
   typedef typename TImage::RegionType RegionType;
@@ -133,7 +133,7 @@ public:
 
   /** Default Constructor. Need to provide a default constructor since we
    * provide a copy constructor. */
-  ImageReverseConstIterator():m_PixelAccessor(), m_PixelAccessorFunctor()
+  ImageReverseConstIterator() : m_PixelAccessor(), m_PixelAccessorFunctor()
   {
     m_Buffer = 0;
     m_Offset = 0;
@@ -143,7 +143,9 @@ public:
   }
 
   /** Default Destructor. */
-  virtual ~ImageReverseConstIterator() {}
+  virtual
+  ~ImageReverseConstIterator() {
+  }
 
   /** Copy Constructor. The copy constructor is provided to make sure the
    * handle to the image is properly reference counted. */
@@ -227,7 +229,8 @@ public:
 
   /** operator= is provided to make sure the handle to the image is properly
    * reference counted. */
-  Self & operator=(const Self & it)
+  Self &
+  operator=(const Self & it)
   {
     if(this != &it)
       {
@@ -247,7 +250,8 @@ public:
 
   /** operator= is provided to make sure the handle to the image is properly
    * reference counted. */
-  Self & operator=(const ImageConstIterator< TImage > & it)
+  Self &
+  operator=(const ImageConstIterator< TImage > & it)
   {
     m_Image = it.GetImage();
     m_Region = it.GetRegion();
@@ -276,8 +280,11 @@ public:
   }
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetImageIteratorDimension()
-  { return TImage::ImageDimension; }
+  static unsigned int
+  GetImageIteratorDimension()
+  {
+    return TImage::ImageDimension;
+  }
 
   /** Comparison operator. Two iterators are the same if they "point to" the
    * same memory location */
@@ -301,25 +308,38 @@ public:
    * This causes the index to be calculated from pointer arithmetic and is
    * therefore an expensive operation.
    * \sa SetIndex */
-  const IndexType GetIndex()
-  { return m_Image->ComputeIndex(m_Offset);  }
+  const IndexType
+  GetIndex()
+  {
+    return m_Image->ComputeIndex(m_Offset);
+  }
 
   /** Set the index. No bounds checking is performed.
    * \sa GetIndex */
-  virtual void SetIndex(const IndexType & ind)
-  { m_Offset = m_Image->ComputeOffset(ind); }
+  virtual void
+  SetIndex(const IndexType & ind)
+  {
+    m_Offset = m_Image->ComputeOffset(ind);
+  }
 
   /** Get the region that this iterator walks. ImageReverseConstIterators know the
    * beginning and the end of the region of the image to iterate over. */
-  const RegionType & GetRegion() const
-  { return m_Region; }
+  const RegionType &
+  GetRegion() const
+  {
+    return m_Region;
+  }
 
   /** Get the pixel value */
-  const PixelType Get(void) const
-  { return m_PixelAccessorFunctor.Get( *( m_Buffer + m_Offset ) ); }
+  const PixelType
+  Get(void) const
+  {
+    return m_PixelAccessorFunctor.Get( *( m_Buffer + m_Offset ) );
+  }
 
   /** Set the pixel value */
-  void Set(const PixelType & value) const
+  void
+  Set(const PixelType & value) const
   {
     this->m_PixelAccessorFunctor.Set(*( const_cast< InternalPixelType * >(
                                           this->m_Buffer + this->m_Offset ) ), value);
@@ -328,14 +348,20 @@ public:
   /** Return a const reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  const PixelType & Value(void) const
-  { return *( m_Buffer + m_Offset ); }
+  const PixelType &
+  Value(void) const
+  {
+    return *( m_Buffer + m_Offset );
+  }
 
   /** Return a reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  const PixelType & Value(void)
-  { return *( m_Buffer + m_Offset ); }
+  const PixelType &
+  Value(void)
+  {
+    return *( m_Buffer + m_Offset );
+  }
 
   /** Return an iterator for the beginning of the region. "Begin" for a reverse
    * iterator is the last pixel in the region.
@@ -344,7 +370,8 @@ public:
 
   /** Move an iterator to the beginning of the region. "Begin" for a reverse
    * iterator is the last pixel in the region. */
-  void GoToBegin()
+  void
+  GoToBegin()
   {
     m_Offset = m_BeginOffset;
   }
@@ -356,21 +383,24 @@ public:
 
   /** Move an iterator to the end of the region. "End" for a reverse iterator
    * is defined as one pixel before the first pixel in the region. */
-  void GoToEnd()
+  void
+  GoToEnd()
   {
     m_Offset = m_EndOffset;
   }
 
   /** Is the iterator at the beginning of the (reverse) region? "Begin" for
    * a reverse iterator is the last pixel in the region. */
-  bool IsAtBegin()
+  bool
+  IsAtBegin()
   {
     return ( m_Offset == m_BeginOffset );
   }
 
   /** Is the iterator at the end of the (reverse) region? "End" for a reverse
    * iterator is one pixel before the first pixel in the region. */
-  bool IsAtEnd()
+  bool
+  IsAtEnd()
   {
     return ( m_Offset == m_EndOffset );
   }

@@ -25,8 +25,8 @@
 #include "itkBalloonForceFilter.h"
 #include "itkSphereMeshSource.h"
 
-
-int itk2DDeformableTest(int, char* [])
+int
+itk2DDeformableTest(int, char* [])
 {
   // change the image size to your test images
   const itk::Size<2u>::SizeValueType WIDTH = 100;
@@ -36,43 +36,43 @@ int itk2DDeformableTest(int, char* [])
   const unsigned int myDimension = 2;
 
   // Declare the types of the images
-  typedef itk::Image<double, myDimension>           myImageType;
+  typedef itk::Image<double, myDimension> myImageType;
 
   // Declare the types of the output images
-  typedef itk::Image<unsigned short, myDimension>   binaryImageType;
+  typedef itk::Image<unsigned short, myDimension> binaryImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>       myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>        mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
   typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Declare the type of the Mesh
-  typedef itk::Mesh<double>   DMesh;
+  typedef itk::Mesh<double> DMesh;
 
   // Declare the type of the gradient image
   typedef itk::CovariantVector<double, myDimension> myGradientType;
   typedef itk::Image<myGradientType, myDimension>   myGradientImageType;
   typedef itk::Vector<double, 2>                    double2DVector;
 
-  typedef itk::SphereMeshSource<DMesh>  myMeshSource;
+  typedef itk::SphereMeshSource<DMesh> myMeshSource;
 
   typedef itk::GradientImageFilter<myImageType, double, double>
-                                              myGFilterType;
+    myGFilterType;
 
   typedef itk::GradientToMagnitudeImageFilter<myGradientImageType, myImageType>
-                                              myGToMFilterType;
+    myGToMFilterType;
 
-  typedef itk::BalloonForceFilter<DMesh, DMesh>  DFilter;
+  typedef itk::BalloonForceFilter<DMesh, DMesh> DFilter;
 
-  binaryImageType::Pointer       biimg=binaryImageType::New();
+  binaryImageType::Pointer biimg=binaryImageType::New();
 
-  binaryImageType::SizeType      bisize={{WIDTH,HEIGHT}};
-  binaryImageType::IndexType     biindex;
-  binaryImageType::RegionType    biregion;
+  binaryImageType::SizeType   bisize={{WIDTH,HEIGHT}};
+  binaryImageType::IndexType  biindex;
+  binaryImageType::RegionType biregion;
   biindex.Fill(0);
   biregion.SetSize(bisize);
   biregion.SetIndex(biindex);
@@ -85,7 +85,7 @@ int itk2DDeformableTest(int, char* [])
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
 
-  mySizeType size={{WIDTH,HEIGHT}};
+  mySizeType  size={{WIDTH,HEIGHT}};
   myIndexType start;
   start.Fill(0);
 
@@ -107,14 +107,13 @@ int itk2DDeformableTest(int, char* [])
   /////////////////////////////////////////////////////////////////////////
   // create user defined images for test
 
-
   while( !it.IsAtEnd() )
-  {
+    {
     it.Set( 0.0 );
     bit.Set( 0 );
     ++it;
     ++bit;
-  }
+    }
 
   size[0] = 60;
   size[1] = 60;
@@ -127,17 +126,17 @@ int itk2DDeformableTest(int, char* [])
   region.SetIndex( start );
   biregion.SetSize( size );
   biregion.SetIndex( start );
-  itk::ImageRegionIteratorWithIndex <myImageType> itb( inputImage, region );
+  itk::ImageRegionIteratorWithIndex <myImageType>     itb( inputImage, region );
   itk::ImageRegionIteratorWithIndex <binaryImageType> bitb( biimg, biregion );
 
   // Initialize the content the internal region
   while( !itb.IsAtEnd() )
-  {
+    {
     itb.Set( 100.0 );
     bitb.Set ( 255 );
     ++itb;
     ++bitb;
-  }
+    }
 
   //////////////////////////////////////////////////////////////////////////
   // calculate gradient map
@@ -155,14 +154,13 @@ int itk2DDeformableTest(int, char* [])
   drequestedRegion = dshrink->GetOutput()->GetRequestedRegion();
 
   typedef itk::GradientRecursiveGaussianImageFilter<
-                                            myImageType,
-                                            myGradientImageType
-                                            >  myFilterType;
-
+      myImageType,
+      myGradientImageType
+      >  myFilterType;
 
   // Create a  Filter
-  myFilterType::Pointer grfilter = myFilterType::New();
-  myGFilterType::Pointer gfilter = myGFilterType::New();
+  myFilterType::Pointer     grfilter = myFilterType::New();
+  myGFilterType::Pointer    gfilter = myGFilterType::New();
   myGToMFilterType::Pointer gtomfilter = myGToMFilterType::New();
 
   // Connect the input images
@@ -171,8 +169,8 @@ int itk2DDeformableTest(int, char* [])
   // Set sigma
   grfilter->SetSigma( 3.0 );
 
-  gtomfilter->SetInput(grfilter->GetOutput());
-  gfilter->SetInput(gtomfilter->GetOutput());
+  gtomfilter->SetInput(grfilter->GetOutput() );
+  gfilter->SetInput(gtomfilter->GetOutput() );
 
   gfilter->Update();
 
@@ -198,11 +196,11 @@ int itk2DDeformableTest(int, char* [])
 // deformable mesh fitting
 
   DFilter::Pointer m_dfilter = DFilter::New();
-  m_dfilter->SetInput(m_bmmeshsource->GetOutput());
-  m_dfilter->SetGradient(gfilter->GetOutput());
+  m_dfilter->SetInput(m_bmmeshsource->GetOutput() );
+  m_dfilter->SetGradient(gfilter->GetOutput() );
 
   double2DVector m_stiff;
-  myIndexType  modelcenter;
+  myIndexType    modelcenter;
   m_stiff[0] = 0.001;
   m_stiff[1] = 1;
   modelcenter[0] = 50;
@@ -229,9 +227,9 @@ int itk2DDeformableTest(int, char* [])
   std::cout << normals << " " << locations << " "
             << displacements << " " << derives << " " << forces << std::endl;
 
-  DMesh::PointsContainerPointer     points;
-  DMesh::CellsContainerPointer      cells;
-  DMesh::PointType                  node;
+  DMesh::PointsContainerPointer points;
+  DMesh::CellsContainerPointer  cells;
+  DMesh::PointType              node;
 
   std::cout << "Mesh Source: " << m_bmmeshsource;
 

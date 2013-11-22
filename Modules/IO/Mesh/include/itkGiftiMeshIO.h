@@ -37,22 +37,22 @@ namespace itk
  * \ingroup ITKIOMesh
  */
 
-class ITKIOMesh_EXPORT GiftiMeshIO:public MeshIOBase
+class ITKIOMesh_EXPORT GiftiMeshIO : public MeshIOBase
 {
 public:
   /** Standard class typedefs. */
-  typedef GiftiMeshIO                         Self;
-  typedef MeshIOBase                          Superclass;
-  typedef SmartPointer< const Self >          ConstPointer;
-  typedef SmartPointer< Self >                Pointer;
+  typedef GiftiMeshIO                Self;
+  typedef MeshIOBase                 Superclass;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
 
-  typedef Superclass::SizeValueType           SizeValueType;
-  typedef Matrix< double, 4, 4 >              DirectionType;
-  typedef RGBAPixel<float>                    RGBAPixelType;
-  typedef MapContainer<int, RGBAPixelType>    LabelColorContainer;
-  typedef MapContainer<int, std::string>      LabelNameContainer;
-  typedef LabelColorContainer::Pointer        LabelColorContainerPointer;
-  typedef LabelNameContainer::Pointer         LabelNameContainerPointer;
+  typedef Superclass::SizeValueType        SizeValueType;
+  typedef Matrix< double, 4, 4 >           DirectionType;
+  typedef RGBAPixel<float>                 RGBAPixelType;
+  typedef MapContainer<int, RGBAPixelType> LabelColorContainer;
+  typedef MapContainer<int, std::string>   LabelNameContainer;
+  typedef LabelColorContainer::Pointer     LabelColorContainerPointer;
+  typedef LabelNameContainer::Pointer      LabelNameContainerPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -69,8 +69,11 @@ public:
   itkGetConstReferenceMacro(Direction, DirectionType);
 
   LabelColorContainerPointer GetLabelColorTable();
+
   LabelNameContainerPointer  GetLabelNameTable();
+
   void SetLabelColorTable(const LabelColorContainer * colorMap);
+
   void SetLabelNameTable(const LabelNameContainer * labelMap);
 
   /*-------- This part of the interfaces deals with reading data. ----- */
@@ -120,12 +123,14 @@ public:
 
 protected:
   GiftiMeshIO();
-  virtual ~GiftiMeshIO();
+  virtual
+  ~GiftiMeshIO();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   template< typename TInput, typename TOutput >
-  void ConvertBuffer(TInput *input, TOutput *output, SizeValueType numberOfElements)
+  void
+  ConvertBuffer(TInput *input, TOutput *output, SizeValueType numberOfElements)
   {
     if ( input && output )
       {

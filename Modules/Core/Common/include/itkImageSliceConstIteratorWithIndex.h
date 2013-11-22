@@ -110,7 +110,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage >
-class ImageSliceConstIteratorWithIndex:public ImageConstIteratorWithIndex< TImage >
+class ImageSliceConstIteratorWithIndex : public ImageConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -130,12 +130,13 @@ public:
   typedef typename Superclass::AccessorType          AccessorType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
-  ImageSliceConstIteratorWithIndex():ImageConstIteratorWithIndex< TImage >() {}
+  ImageSliceConstIteratorWithIndex() : ImageConstIteratorWithIndex< TImage >() {
+  }
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
   ImageSliceConstIteratorWithIndex(const ImageType *ptr,
-                                   const RegionType & region):
+                                   const RegionType & region) :
     ImageConstIteratorWithIndex< TImage >(ptr, region)
   {
     m_Direction_A = 0;
@@ -149,7 +150,10 @@ public:
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageSliceConstIteratorWithIndex. */
   ImageSliceConstIteratorWithIndex(const ImageConstIteratorWithIndex< TImage > & it)
-  { this->ImageConstIteratorWithIndex< TImage >::operator=(it); }
+  {
+    this->ImageConstIteratorWithIndex< TImage >::operator=(it);
+
+  }
 
   /** Go to the next line
    * \sa operator++ \sa EndOfLine \sa End \sa NextSlice */

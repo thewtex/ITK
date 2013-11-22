@@ -34,20 +34,30 @@ template< typename TInput, typename TOutput >
 class Sin
 {
 public:
-  Sin() {}
-  ~Sin() {}
-  bool operator!=(const Sin &) const
+  Sin() {
+  }
+
+  ~Sin() {
+  }
+
+  bool
+  operator!=(const Sin &) const
   {
     return false;
   }
 
-  bool operator==(const Sin & other) const
+  bool
+  operator==(const Sin & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
-  { return (TOutput)vcl_sin( (double)A ); }
+  inline TOutput
+  operator()(const TInput & A) const
+  {
+    return (TOutput)vcl_sin( (double)A );
+  }
+
 };
 }
 /** \class SinImageFilter
@@ -64,7 +74,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class SinImageFilter:
+class SinImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Sin<
@@ -75,9 +85,9 @@ public:
   /** Standard class typedefs. */
   typedef SinImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Sin< typename TInputImage::PixelType,
-                  typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Sin< typename TInputImage::PixelType,
+                    typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -99,12 +109,17 @@ public:
 #endif
 
 protected:
-  SinImageFilter() {}
-  virtual ~SinImageFilter() {}
+  SinImageFilter() {
+  }
+
+  virtual
+  ~SinImageFilter() {
+  }
 
 private:
   SinImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

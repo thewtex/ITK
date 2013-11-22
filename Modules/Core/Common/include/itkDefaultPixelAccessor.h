@@ -55,8 +55,12 @@ class DefaultPixelAccessor
 {
 public:
 
-  DefaultPixelAccessor() {}
-  virtual ~DefaultPixelAccessor() {}
+  DefaultPixelAccessor() {
+  }
+
+  virtual
+  ~DefaultPixelAccessor() {
+  }
 
   /** External typedef. It defines the external aspect
    * that this class will exhibit. */
@@ -67,16 +71,26 @@ public:
   typedef TType InternalType;
 
   /** Set the pixel. */
-  inline void Set(TType & output, const TType & input) const
-  { output = input; }
+  inline void
+  Set(TType & output, const TType & input) const
+  {
+    output = input;
+  }
 
   /** Get the pixel. */
-  inline TType & Get(TType & input) const
-  { return input; }
+  inline TType &
+  Get(TType & input) const
+  {
+    return input;
+  }
 
   /** Get a const reference to the pixel. */
-  inline const TType & Get(const TType & input) const
-  { return input; }
+  inline const TType &
+  Get(const TType & input) const
+  {
+    return input;
+  }
+
 };
 } // end namespace itk
 

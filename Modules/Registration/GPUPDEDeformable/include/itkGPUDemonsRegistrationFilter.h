@@ -77,11 +77,11 @@ public:
   typedef GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField,
                                               TParentImageFilter > GPUSuperclass;
   typedef TParentImageFilter
-  CPUSuperclass;
+    CPUSuperclass;
   typedef SmartPointer< Self >
-  Pointer;
+    Pointer;
   typedef SmartPointer< const Self >
-  ConstPointer;
+    ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -103,13 +103,13 @@ public:
 
   /** Deformation field type. */
   typedef typename GPUSuperclass::DisplacementFieldType
-  DisplacementFieldType;
+    DisplacementFieldType;
   typedef typename GPUSuperclass::DisplacementFieldPointer
-  DisplacementFieldPointer;
+    DisplacementFieldPointer;
 
   /** FiniteDifferenceFunction type. */
   typedef typename GPUSuperclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** GPUDemonsRegistrationFilterFunction type. */
   typedef GPUDemonsRegistrationFunction< FixedImageType, MovingImageType,
@@ -140,6 +140,7 @@ protected:
   GPUDemonsRegistrationFilter();
   ~GPUDemonsRegistrationFilter() {
   }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration. */
@@ -169,10 +170,13 @@ public:
   typedef SmartPointer<const Self>           ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const {
+  virtual const char*
+  GetITKSourceVersion() const {
     return ITK_SOURCE_VERSION;
   }
-  const char* GetDescription() const {
+
+  const char*
+  GetDescription() const {
     return "A Factory for GPUDemonsRegistrationFilter";
   }
 
@@ -183,7 +187,8 @@ public:
   itkTypeMacro(GPUDemonsRegistrationFilterFactory, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GPUDemonsRegistrationFilterFactory::Pointer factory = GPUDemonsRegistrationFilterFactory::New();
 

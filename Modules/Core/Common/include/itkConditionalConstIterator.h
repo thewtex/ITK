@@ -70,7 +70,8 @@ public:
 
   /** operator= is provided to make sure the handle to the image is properly
    * reference counted. */
-  Self & operator=(const Self & it)
+  Self &
+  operator=(const Self & it)
   {
     m_IsAtEnd = it.m_IsAtEnd; // copy the end flag
     m_Image = it.m_Image;     // copy the smart pointer
@@ -79,7 +80,8 @@ public:
   }
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetIteratorDimension(void)
+  static unsigned int
+  GetIteratorDimension(void)
   {
     return Self::NDimension;
   }
@@ -100,7 +102,8 @@ public:
   ConditionalConstIterator();
 
   /** Destructor */
-  virtual ~ConditionalConstIterator();
+  virtual
+  ~ConditionalConstIterator();
 
 protected: //made protected so other iterators can access
   /** Smart pointer to the source image. */

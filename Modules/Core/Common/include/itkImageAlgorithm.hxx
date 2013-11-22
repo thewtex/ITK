@@ -23,20 +23,20 @@
 #include "itkImageRegionIterator.h"
 #include "itkImageScanlineIterator.h"
 
-
 namespace itk
 {
 
 template<typename InputImageType, typename OutputImageType >
-void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage, OutputImageType *outImage,
-                                     const typename InputImageType::RegionType &inRegion,
-                                     const typename OutputImageType::RegionType &outRegion,
-                                     FalseType )
+void
+ImageAlgorithm::DispatchedCopy( const InputImageType *inImage, OutputImageType *outImage,
+                                const typename InputImageType::RegionType &inRegion,
+                                const typename OutputImageType::RegionType &outRegion,
+                                FalseType )
 {
   if ( inRegion.GetSize()[0] == outRegion.GetSize()[0] )
     {
     itk::ImageScanlineConstIterator<InputImageType> it( inImage, inRegion );
-    itk::ImageScanlineIterator<OutputImageType> ot( outImage, outRegion );
+    itk::ImageScanlineIterator<OutputImageType>     ot( outImage, outRegion );
 
     while( !it.IsAtEnd() )
       {
@@ -53,7 +53,7 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage, OutputImageT
     }
 
   itk::ImageRegionConstIterator<InputImageType> it( inImage, inRegion );
-  itk::ImageRegionIterator<OutputImageType> ot( outImage, outRegion );
+  itk::ImageRegionIterator<OutputImageType>     ot( outImage, outRegion );
 
   while( !it.IsAtEnd() )
     {
@@ -64,11 +64,12 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage, OutputImageT
 }
 
 template<typename InputImageType, typename OutputImageType>
-void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
-                                     OutputImageType *outImage,
-                                     const typename InputImageType::RegionType &inRegion,
-                                     const typename OutputImageType::RegionType &outRegion,
-                                     TrueType )
+void
+ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
+                                OutputImageType *outImage,
+                                const typename InputImageType::RegionType &inRegion,
+                                const typename OutputImageType::RegionType &outRegion,
+                                TrueType )
 {
   typedef typename InputImageType::RegionType _RegionType;
   typedef typename InputImageType::IndexType  _IndexType;
@@ -92,8 +93,8 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
   const _RegionType &outBufferedRegion = outImage->GetBufferedRegion();
 
   // Compute the number of continuous pixel which can be copied.
-  size_t numberOfPixel = 1;
-  unsigned int    movingDirection = 0;
+  size_t       numberOfPixel = 1;
+  unsigned int movingDirection = 0;
   do
     {
     numberOfPixel *= inRegion.GetSize(movingDirection );
@@ -149,7 +150,7 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
       {
       // When reaching the end of the moving index in the copy region
       // dimension, carry to higher dimensions.
-      if ( static_cast<SizeValueType>(inCurrentIndex[i]  - inRegion.GetIndex(i)) >= inRegion.GetSize(i) )
+      if ( static_cast<SizeValueType>(inCurrentIndex[i]  - inRegion.GetIndex(i) ) >= inRegion.GetSize(i) )
         {
         inCurrentIndex[i] = inRegion.GetIndex(i);
         ++inCurrentIndex[i + 1];
@@ -160,7 +161,7 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
     ++outCurrentIndex[movingDirection];
     for ( unsigned int i = movingDirection; i + 1 < _RegionType::ImageDimension; ++i )
       {
-      if ( static_cast<SizeValueType>(outCurrentIndex[i]  - outRegion.GetIndex(i)) >= outRegion.GetSize(i) )
+      if ( static_cast<SizeValueType>(outCurrentIndex[i]  - outRegion.GetIndex(i) ) >= outRegion.GetSize(i) )
         {
         outCurrentIndex[i] = outRegion.GetIndex(i);
         ++outCurrentIndex[i + 1];
@@ -169,7 +170,6 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
 
     }
 }
-
 
 } // end namespace itk
 

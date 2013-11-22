@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-
 #include "itkFFTTest.h"
-
 
 #if defined(ITK_USE_FFTWF)
 // Test FFT using FFTW Libraries. The test is performed for 2 3d array one of
@@ -27,7 +25,8 @@
 // test function based on the second template argument   and  the size of these
 // dimensions are taken from the array.The data types used are float and
 // double.
-int itkFFTWF_FFTTest(int argc, char *argv[])
+int
+itkFFTWF_FFTTest(int argc, char *argv[])
 {
   typedef itk::Image< float, 1>               ImageF1;
   typedef itk::Image< std::complex<float>, 1> ImageCF1;
@@ -55,36 +54,36 @@ int itkFFTWF_FFTTest(int argc, char *argv[])
 
   unsigned int SizeOfDimensions1[] = { 4,4,4 };
   unsigned int SizeOfDimensions2[] = { 3,5,4 };
-  int rval = 0;
+  int          rval = 0;
   std::cerr << "FFTWF:float,1 (4,4,4)" << std::endl;
-  if((test_fft<float,1,
-      itk::FFTWForwardFFTImageFilter<ImageF1> ,
-      itk::FFTWInverseFFTImageFilter<ImageCF1> >(SizeOfDimensions1)) != 0)
+  if( (test_fft<float,1,
+                itk::FFTWForwardFFTImageFilter<ImageF1> ,
+                itk::FFTWInverseFFTImageFilter<ImageCF1> >(SizeOfDimensions1) ) != 0)
     rval++;
   std::cerr << "FFTWF:float,2 (4,4,4)" << std::endl;
-  if((test_fft<float,2,
-      itk::FFTWForwardFFTImageFilter<ImageF2> ,
-      itk::FFTWInverseFFTImageFilter<ImageCF2> >(SizeOfDimensions1)) != 0)
+  if( (test_fft<float,2,
+                itk::FFTWForwardFFTImageFilter<ImageF2> ,
+                itk::FFTWInverseFFTImageFilter<ImageCF2> >(SizeOfDimensions1) ) != 0)
     rval++;
   std::cerr << "FFTWF:float,3 (4,4,4)" << std::endl;
-  if((test_fft<float,3,
-      itk::FFTWForwardFFTImageFilter<ImageF3> ,
-      itk::FFTWInverseFFTImageFilter<ImageCF3> >(SizeOfDimensions1)) != 0)
+  if( (test_fft<float,3,
+                itk::FFTWForwardFFTImageFilter<ImageF3> ,
+                itk::FFTWInverseFFTImageFilter<ImageCF3> >(SizeOfDimensions1) ) != 0)
     rval++;
   std::cerr << "FFTWF:float,1 (3,5,4)" << std::endl;
-  if((test_fft<float,1,
-      itk::FFTWForwardFFTImageFilter<ImageF1> ,
-      itk::FFTWInverseFFTImageFilter<ImageCF1> >(SizeOfDimensions2)) != 0)
+  if( (test_fft<float,1,
+                itk::FFTWForwardFFTImageFilter<ImageF1> ,
+                itk::FFTWInverseFFTImageFilter<ImageCF1> >(SizeOfDimensions2) ) != 0)
     rval++;
   std::cerr << "FFTWF:float,2 (3,5,4)" << std::endl;
-  if((test_fft<float,2,
-      itk::FFTWForwardFFTImageFilter<ImageF2> ,
-      itk::FFTWInverseFFTImageFilter<ImageCF2> >(SizeOfDimensions2)) != 0)
+  if( (test_fft<float,2,
+                itk::FFTWForwardFFTImageFilter<ImageF2> ,
+                itk::FFTWInverseFFTImageFilter<ImageCF2> >(SizeOfDimensions2) ) != 0)
     rval++;
   std::cerr << "FFTWF:float,3 (3,5,4)" << std::endl;
-  if((test_fft<float,3,
-      itk::FFTWForwardFFTImageFilter<ImageF3> ,
-      itk::FFTWInverseFFTImageFilter<ImageCF3> >(SizeOfDimensions2)) != 0)
+  if( (test_fft<float,3,
+                itk::FFTWForwardFFTImageFilter<ImageF3> ,
+                itk::FFTWInverseFFTImageFilter<ImageCF3> >(SizeOfDimensions2) ) != 0)
     rval++;
 
   // Exercise the plan rigor methods
@@ -113,6 +112,5 @@ int itkFFTWF_FFTTest(int argc, char *argv[])
 
   return (rval == 0) ? 0 : -1;
 }
-
 
 #endif

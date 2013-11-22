@@ -31,7 +31,7 @@ namespace itk
  */
 template<typename TTransform>
 class BSplineExponentialDiffeomorphicTransformParametersAdaptor
-: public ConstantVelocityFieldTransformParametersAdaptor<TTransform>
+  : public ConstantVelocityFieldTransformParametersAdaptor<TTransform>
 {
 public:
 
@@ -46,12 +46,12 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( BSplineExponentialDiffeomorphicTransformParametersAdaptor,
-    BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor );
+                BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor );
 
-  typedef TTransform                               TransformType;
-  typedef typename TransformType::ScalarType       ScalarType;
-  typedef typename TransformType::SplineOrderType  SplineOrderType;
-  typedef typename TransformType::ArrayType        ArrayType;
+  typedef TTransform                              TransformType;
+  typedef typename TransformType::ScalarType      ScalarType;
+  typedef typename TransformType::SplineOrderType SplineOrderType;
+  typedef typename TransformType::ArrayType       ArrayType;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( SpaceDimension, unsigned int, TransformType::Dimension );
@@ -120,14 +120,21 @@ protected:
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
-  BSplineExponentialDiffeomorphicTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  BSplineExponentialDiffeomorphicTransformParametersAdaptor( const Self & ); //purposely
+                                                                             //
+                                                                             // not
+                                                                             //
+                                                                             // implemented
+  void operator=( const Self & );                                            //purposely
 
-  ArrayType                   m_NumberOfControlPointsForTheConstantVelocityField;
-  ModifiedTimeType            m_NumberOfControlPointsForTheConstantVelocityFieldSetTime;
+  // not
+  // implemented
 
-  ArrayType                   m_NumberOfControlPointsForTheUpdateField;
-  ModifiedTimeType            m_NumberOfControlPointsForTheUpdateFieldSetTime;
+  ArrayType        m_NumberOfControlPointsForTheConstantVelocityField;
+  ModifiedTimeType m_NumberOfControlPointsForTheConstantVelocityFieldSetTime;
+
+  ArrayType        m_NumberOfControlPointsForTheUpdateField;
+  ModifiedTimeType m_NumberOfControlPointsForTheUpdateFieldSetTime;
 
 }; //class BSplineExponentialDiffeomorphicTransformParametersAdaptor
 }  // namespace itk

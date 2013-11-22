@@ -256,7 +256,7 @@ NormalizedCorrelationImageToImageMetric<TFixedImage, TMovingImage>
       // which is equivalent to round up the point components.
       typedef typename OutputPointType::CoordRepType CoordRepType;
       typedef ContinuousIndex<CoordRepType, MovingImageType::ImageDimension>
-      MovingImageContinuousIndexType;
+        MovingImageContinuousIndexType;
 
       MovingImageContinuousIndexType tempIndex;
       this->m_MovingImage->TransformPhysicalPointToContinuousIndex(transformedPoint, tempIndex);
@@ -444,7 +444,7 @@ NormalizedCorrelationImageToImageMetric<TFixedImage, TMovingImage>
       // which is equivalent to round up the point components.
       typedef typename OutputPointType::CoordRepType CoordRepType;
       typedef ContinuousIndex<CoordRepType, MovingImageType::ImageDimension>
-      MovingImageContinuousIndexType;
+        MovingImageContinuousIndexType;
 
       MovingImageContinuousIndexType tempIndex;
       this->m_MovingImage->TransformPhysicalPointToContinuousIndex(transformedPoint, tempIndex);
@@ -509,6 +509,7 @@ NormalizedCorrelationImageToImageMetric<TFixedImage, TMovingImage>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "SubtractMean: " << m_SubtractMean << std::endl;
 }
 

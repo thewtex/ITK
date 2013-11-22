@@ -50,9 +50,10 @@
  *
  */
 template<unsigned int ImageDimensionality, typename TTransform>
-double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTransform::Pointer transform, double rotation,
-                              bool verbose,
-                              std::string & outputPath );
+double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTransform::Pointer transform,
+                                          double rotation,
+                                          bool verbose,
+                                          std::string & outputPath );
 
 namespace itk
 {
@@ -63,35 +64,36 @@ namespace itk
 
 template<typename TDomainPartitioner, typename TImageToImageMetric>
 class VanilaImageToImageMetricv4GetValueAndDerivativeThreader
-: public ImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric>
+  : public ImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric>
 {
 public:
   /** Standard class typedefs. */
-  typedef VanilaImageToImageMetricv4GetValueAndDerivativeThreader                                     Self;
-  typedef ImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric>  Superclass;
+  typedef VanilaImageToImageMetricv4GetValueAndDerivativeThreader                                    Self;
+  typedef ImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner, TImageToImageMetric> Superclass;
 
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
-  itkTypeMacro( VanilaImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreader );
+  itkTypeMacro( VanilaImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreader );
 
   itkNewMacro( Self );
 
-  typedef typename Superclass::DomainType     DomainType;
-  typedef typename Superclass::AssociateType  AssociateType;
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename Superclass::AssociateType AssociateType;
 
-  typedef typename Superclass::ImageToImageMetricv4Type         ImageToImageMetricv4Type;
-  typedef typename Superclass::VirtualPointType                 VirtualPointType;
-  typedef typename Superclass::VirtualIndexType                 VirtualIndexType;
-  typedef typename Superclass::FixedImagePointType              FixedImagePointType;
-  typedef typename Superclass::FixedImagePixelType              FixedImagePixelType;
-  typedef typename Superclass::FixedImageGradientType           FixedImageGradientType;
-  typedef typename Superclass::MovingImagePointType             MovingImagePointType;
-  typedef typename Superclass::MovingImagePixelType             MovingImagePixelType;
-  typedef typename Superclass::MovingImageGradientType          MovingImageGradientType;
-  typedef typename Superclass::MeasureType                      MeasureType;
-  typedef typename Superclass::DerivativeType                   DerivativeType;
-  typedef typename Superclass::DerivativeValueType              DerivativeValueType;
+  typedef typename Superclass::ImageToImageMetricv4Type ImageToImageMetricv4Type;
+  typedef typename Superclass::VirtualPointType         VirtualPointType;
+  typedef typename Superclass::VirtualIndexType         VirtualIndexType;
+  typedef typename Superclass::FixedImagePointType      FixedImagePointType;
+  typedef typename Superclass::FixedImagePixelType      FixedImagePixelType;
+  typedef typename Superclass::FixedImageGradientType   FixedImageGradientType;
+  typedef typename Superclass::MovingImagePointType     MovingImagePointType;
+  typedef typename Superclass::MovingImagePixelType     MovingImagePixelType;
+  typedef typename Superclass::MovingImageGradientType  MovingImageGradientType;
+  typedef typename Superclass::MeasureType              MeasureType;
+  typedef typename Superclass::DerivativeType           DerivativeType;
+  typedef typename Superclass::DerivativeValueType      DerivativeValueType;
 
 protected:
   VanilaImageToImageMetricv4GetValueAndDerivativeThreader()
@@ -101,25 +103,37 @@ protected:
   /** This function computes the local voxel-wise contribution of
    *  the metric to the global integral of the metric/derivative.
    */
-  virtual bool ProcessPoint(
-                             const VirtualIndexType &         itkNotUsed(virtualIndex),
-                             const VirtualPointType &         itkNotUsed(virtualPoint),
-                             const FixedImagePointType &      itkNotUsed(mappedFixedPoint),
-                             const FixedImagePixelType &      itkNotUsed(mappedFixedPixelValue),
-                             const FixedImageGradientType &   itkNotUsed(mappedFixedImageGradient),
-                             const MovingImagePointType &     itkNotUsed(mappedMovingPoint),
-                             const MovingImagePixelType &     itkNotUsed(mappedMovingPixelValue),
-                             const MovingImageGradientType &  itkNotUsed(mappedMovingImageGradient),
-                             MeasureType &                    itkNotUsed(metricValueReturn),
-                             DerivativeType &                 itkNotUsed(localDerivativeReturn),
-                             const ThreadIdType               itkNotUsed(threadID) ) const
+  virtual bool
+  ProcessPoint(
+    const VirtualIndexType &         itkNotUsed(virtualIndex),
+    const VirtualPointType &         itkNotUsed(virtualPoint),
+    const FixedImagePointType &      itkNotUsed(mappedFixedPoint),
+    const FixedImagePixelType &      itkNotUsed(mappedFixedPixelValue),
+    const FixedImageGradientType &   itkNotUsed(mappedFixedImageGradient),
+    const MovingImagePointType &     itkNotUsed(mappedMovingPoint),
+    const MovingImagePixelType &     itkNotUsed(mappedMovingPixelValue),
+    const MovingImageGradientType &  itkNotUsed(mappedMovingImageGradient),
+    MeasureType &                    itkNotUsed(metricValueReturn),
+    DerivativeType &                 itkNotUsed(localDerivativeReturn),
+    const ThreadIdType               itkNotUsed(threadID) ) const
   {
     return false;
   }
 
 private:
-  VanilaImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  VanilaImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); //
+                                                                           //
+                                                                           // purposely
+                                                                           //
+                                                                           // not
+                                                                           //
+                                                                           // implemented
+  void operator=( const Self & );                                          //
+
+  // purposely
+  // not
+  // implemented
+
 };
 
 /* \class VanillaImageToImageMetricv4
@@ -132,11 +146,11 @@ class VanillaImageToImageMetricv4 : public ImageToImageMetricv4<TFixedImage, TMo
 {
 public:
   /** Standard class typedefs. */
-  typedef VanillaImageToImageMetricv4                                     Self;
-  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>  Superclass;
+  typedef VanillaImageToImageMetricv4                                    Self;
+  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage> Superclass;
 
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -152,16 +166,16 @@ public:
   typedef typename Superclass::FixedImagePixelType    FixedImagePixelType;
   typedef typename Superclass::FixedImageGradientType FixedImageGradientType;
 
-  typedef typename Superclass::MovingImagePointType     MovingImagePointType;
-  typedef typename Superclass::MovingImagePixelType     MovingImagePixelType;
-  typedef typename Superclass::MovingImageGradientType  MovingImageGradientType;
+  typedef typename Superclass::MovingImagePointType    MovingImagePointType;
+  typedef typename Superclass::MovingImagePixelType    MovingImagePixelType;
+  typedef typename Superclass::MovingImageGradientType MovingImageGradientType;
 
-  typedef typename Superclass::MovingTransformType        MovingTransformType;
-  typedef typename Superclass::JacobianType               JacobianType;
-  typedef typename Superclass::VirtualImageType           VirtualImageType;
-  typedef typename Superclass::VirtualIndexType           VirtualIndexType;
-  typedef typename Superclass::VirtualPointType           VirtualPointType;
-  typedef typename Superclass::VirtualPointSetType        VirtualPointSetType;
+  typedef typename Superclass::MovingTransformType MovingTransformType;
+  typedef typename Superclass::JacobianType        JacobianType;
+  typedef typename Superclass::VirtualImageType    VirtualImageType;
+  typedef typename Superclass::VirtualIndexType    VirtualIndexType;
+  typedef typename Superclass::VirtualPointType    VirtualPointType;
+  typedef typename Superclass::VirtualPointSetType VirtualPointSetType;
 
   /* Image dimension accessors */
   itkStaticConstMacro(VirtualImageDimension, ImageDimensionType, TVirtualImage::ImageDimension);
@@ -175,32 +189,35 @@ protected:
     this->m_SparseGetValueAndDerivativeThreader = VanillaSparseGetValueAndDerivativeThreaderType::New();
   }
 
-  virtual ~VanillaImageToImageMetricv4()
+  virtual
+  ~VanillaImageToImageMetricv4()
   {
   }
 
-  friend double ::itkMetricImageGradientTestRunTest<VirtualImageDimension, MovingTransformType>(
-      unsigned int imageSize, typename MovingTransformType::Pointer transform, double rotation, bool verbose,
-      std::string & outputPath );
+  friend double::itkMetricImageGradientTestRunTest<VirtualImageDimension, MovingTransformType>(
+    unsigned int imageSize, typename MovingTransformType::Pointer transform, double rotation, bool verbose,
+    std::string & outputPath );
 
   typedef VanilaImageToImageMetricv4GetValueAndDerivativeThreader<
       ThreadedImageRegionPartitioner<Superclass::VirtualImageDimension>, Superclass>
-  VanillaDenseGetValueAndDerivativeThreaderType;
+    VanillaDenseGetValueAndDerivativeThreaderType;
 
   typedef VanilaImageToImageMetricv4GetValueAndDerivativeThreader<ThreadedIndexedContainerPartitioner, Superclass>
-  VanillaSparseGetValueAndDerivativeThreaderType;
+    VanillaSparseGetValueAndDerivativeThreaderType;
 
 private:
   VanillaImageToImageMetricv4( const Self & ); //purposely not implemented
-  void operator =( const Self & ); //purposely not implemented
+  void operator =( const Self & );             //purposely not implemented
+
 };
 
 }
 
 template<unsigned int ImageDimensionality, typename TTransform>
-double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTransform::Pointer transform, double rotation,
-                              bool verbose,
-                              std::string & outputPath )
+double
+itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTransform::Pointer transform, double rotation,
+                                   bool verbose,
+                                   std::string & outputPath )
 {
   // verbose = true;
 
@@ -237,9 +254,10 @@ double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTran
     it.Set( 0 );
     bool awayfromborder = true;
     for ( unsigned int j = 0; j < ImageDimensionality; j++ )
-     {
+      {
       if ( it.GetIndex()[j] < static_cast<typename ImageType::IndexValueType>(imageBorder)
-           || static_cast<unsigned int> (vcl_abs( static_cast<float> (it.GetIndex()[j]) - static_cast<float>(size[j]) ) ) < imageBorder )
+           || static_cast<unsigned int> (vcl_abs( static_cast<float> (it.GetIndex()[j]) -
+                                                  static_cast<float>(size[j]) ) ) < imageBorder )
         {
         awayfromborder = false;
         }
@@ -267,7 +285,7 @@ double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTran
   //      movingTransform = transform->GetInverseTransform();
 
   typename TTransform::Pointer movingTransform =
-      dynamic_cast<TTransform *>( transform->GetInverseTransform().GetPointer() );
+    dynamic_cast<TTransform *>( transform->GetInverseTransform().GetPointer() );
 
   // Write out the images if requested, for debugging only
   if (false)
@@ -357,10 +375,10 @@ double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTran
         {
         std::cout << "use gradient filter: " << metric->GetUseMovingImageGradientFilter() << std::endl;
         std::cout << "rotation: " << rotation << std::endl << "virtualIndex: " << virtualIndex << std::endl
-            << "virtualPoint: " << virtualPoint << std::endl
-            << "mappedMovingPoint: " << mappedMovingPoint << std::endl
-            << "mappedMovingGradient: " << mappedMovingImageGradient << std::endl
-            << "mappedMovingImageGradientGroundtruth: " << mappedMovingImageGradientGroundtruth << std::endl;
+                  << "virtualPoint: " << virtualPoint << std::endl
+                  << "mappedMovingPoint: " << mappedMovingPoint << std::endl
+                  << "mappedMovingGradient: " << mappedMovingImageGradient << std::endl
+                  << "mappedMovingImageGradientGroundtruth: " << mappedMovingImageGradientGroundtruth << std::endl;
         }
       } // if (b)
     }
@@ -368,15 +386,16 @@ double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTran
 }
 
 //////////////////////////////////////////////////////
-int itkMetricImageGradientTest( int argc, char *argv[] )
+int
+itkMetricImageGradientTest( int argc, char *argv[] )
 {
   typedef unsigned int DimensionSizeType;
   DimensionSizeType imageSize = 60;
-  unsigned int dimensionality = 3;
-  double minimumAverage = itk::NumericTraits<double>::max();
-  double rotationDegrees = static_cast<double>( 0.0 ); // (3.0);
-  double maxDegrees = static_cast<double>( 359.0 );
-  double degreeStep = static_cast<double>( 15.0 ); //(3.0);
+  unsigned int      dimensionality = 3;
+  double            minimumAverage = itk::NumericTraits<double>::max();
+  double            rotationDegrees = static_cast<double>( 0.0 ); // (3.0);
+  double            maxDegrees = static_cast<double>( 359.0 );
+  double            degreeStep = static_cast<double>( 15.0 ); //(3.0);
 
   std::string outputPath( "" );
   if ( argc >= 2 )
@@ -418,8 +437,9 @@ int itkMetricImageGradientTest( int argc, char *argv[] )
         typedef itk::VanillaImageToImageMetricv4<ImageType, ImageType> MetricType;
 
         average = itkMetricImageGradientTestRunTest<2, MetricType::MovingTransformType>( imageSize,
-            MetricType::MovingTransformType::Pointer( transform ), rotationDegrees, false,
-            outputPath );
+                                                                                         MetricType::MovingTransformType::Pointer(
+                                                                                           transform ), rotationDegrees, false,
+                                                                                         outputPath );
         }
 
       if ( dimensionality == 3 )
@@ -450,8 +470,9 @@ int itkMetricImageGradientTest( int argc, char *argv[] )
         typedef itk::VanillaImageToImageMetricv4<ImageType, ImageType> MetricType;
 
         average = itkMetricImageGradientTestRunTest<3, MetricType::MovingTransformType>( imageSize,
-            MetricType::MovingTransformType::Pointer( transform ), rotationDegrees, false,
-            outputPath );
+                                                                                         MetricType::MovingTransformType::Pointer(
+                                                                                           transform ), rotationDegrees, false,
+                                                                                         outputPath );
         }
 
       if ( average < minimumAverage )

@@ -31,7 +31,7 @@ namespace itk
  * Image Source that generates an image with constant pixel value.
  */
 template< class TOutputImage >
-class ConstantImageSource:public GenerateImageSource< TOutputImage >
+class ConstantImageSource : public GenerateImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -53,38 +53,43 @@ protected:
   {
     m_Value = NumericTraits< typename TOutputImage::PixelType >::Zero;
   }
-  ~ConstantImageSource(){}
+
+  ~ConstantImageSource(){
+  }
 
   /** Does the real work. */
   virtual void GenerateData();
 
 private:
   ConstantImageSource(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  void operator=(const Self &);      //purposely not implemented
 
   typename TOutputImage::PixelType m_Value;
 };
 
 template< class TOutputImage >
-void ConstantImageSource< TOutputImage >
+void
+ConstantImageSource< TOutputImage >
 ::GenerateData()
 {
   TOutputImage* out = this->GetOutput();
-  out->SetBufferedRegion(out->GetRequestedRegion());
+
+  out->SetBufferedRegion(out->GetRequestedRegion() );
   out->Allocate();
 
   out->FillBuffer( m_Value );
 }
 
-}// end namespace
+} // end namespace
 
 /**
  * Compares two image regions.
  * Assumes that the region is valid and buffered in both images.
  */
 template<class TImage>
-bool ImagesEqual(const TImage* img1, const TImage* img2,
-        const typename TImage::RegionType& region)
+bool
+ImagesEqual(const TImage* img1, const TImage* img2,
+            const typename TImage::RegionType& region)
 {
   if( !img1->GetBufferedRegion().IsInside(region) ) return false;
   if( !img2->GetBufferedRegion().IsInside(region) ) return false;
@@ -94,7 +99,7 @@ bool ImagesEqual(const TImage* img1, const TImage* img2,
 
   for(it1.GoToBegin(), it2.GoToBegin(); !it1.IsAtEnd(); ++it1, ++it2)
     {
-    if(it1.Get() != it2.Get())
+    if(it1.Get() != it2.Get() )
       {
       return false;
       }
@@ -102,10 +107,12 @@ bool ImagesEqual(const TImage* img1, const TImage* img2,
 
   return true;
 }
+
 template<class TImage>
-bool ImagesEqual(const TImage* img1, const TImage* img2)
+bool
+ImagesEqual(const TImage* img1, const TImage* img2)
 {
-  return ImagesEqual(img1, img2, img1->GetLargestPossibleRegion());
+  return ImagesEqual(img1, img2, img1->GetLargestPossibleRegion() );
 }
 
 /**
@@ -114,7 +121,8 @@ bool ImagesEqual(const TImage* img1, const TImage* img2)
  * compares the original image with the read image.
  */
 template<class TScalar, unsigned int TDimension>
-int TestStreamWrite(char *file1, unsigned int numberOfStreams = 0)
+int
+TestStreamWrite(char *file1, unsigned int numberOfStreams = 0)
 {
   typedef itk::Image<TScalar,TDimension> ImageType;
 
@@ -126,7 +134,7 @@ int TestStreamWrite(char *file1, unsigned int numberOfStreams = 0)
     }
   typename itk::ConstantImageSource<ImageType>::Pointer constValueImageSource;
   constValueImageSource = itk::ConstantImageSource<ImageType>::New();
-  constValueImageSource->SetValue(static_cast<TScalar>(23));
+  constValueImageSource->SetValue(static_cast<TScalar>(23) );
   constValueImageSource->SetSize(size);
 
   typename ImageType::SpacingValueType spacing[3] = {5.0f, 10.0f, 15.0f};
@@ -149,9 +157,9 @@ int TestStreamWrite(char *file1, unsigned int numberOfStreams = 0)
   writer->SetInput(consValueImage);
   writer->SetFileName(file1);
   if ( numberOfStreams > 0 )
-  {
+    {
     writer->SetNumberOfStreamDivisions( numberOfStreams );
-  }
+    }
   writer->Write();
 
   // Check if written file is correct
@@ -160,10 +168,10 @@ int TestStreamWrite(char *file1, unsigned int numberOfStreams = 0)
   reader->SetImageIO(vtkIO);
   reader->SetFileName(file1);
 
-  consValueImage->SetRequestedRegion(consValueImage->GetLargestPossibleRegion());
+  consValueImage->SetRequestedRegion(consValueImage->GetLargestPossibleRegion() );
   consValueImage->Update();
   reader->Update();
-  bool imagesEqual = ImagesEqual(consValueImage, reader->GetOutput());
+  bool imagesEqual = ImagesEqual(consValueImage, reader->GetOutput() );
 
   std::string componentType = itk::ImageIOBase::GetComponentTypeAsString( vtkIO->GetComponentType() );
 
@@ -185,7 +193,8 @@ int TestStreamWrite(char *file1, unsigned int numberOfStreams = 0)
  * compares the original image with the read image.
  */
 template<class TScalar, unsigned int TDimension>
-int TestStreamRead(char *file1, unsigned int numberOfStreams = 0)
+int
+TestStreamRead(char *file1, unsigned int numberOfStreams = 0)
 {
   typedef itk::Image<TScalar,TDimension> ImageType;
 
@@ -197,7 +206,7 @@ int TestStreamRead(char *file1, unsigned int numberOfStreams = 0)
     }
   typename itk::ConstantImageSource<ImageType>::Pointer constValueImageSource;
   constValueImageSource = itk::ConstantImageSource<ImageType>::New();
-  constValueImageSource->SetValue(static_cast<TScalar>(23));
+  constValueImageSource->SetValue(static_cast<TScalar>(23) );
   constValueImageSource->SetSize(size);
 
   typename ImageType::SpacingValueType spacing[3] = {5.0f, 10.0f, 15.0f};
@@ -233,7 +242,7 @@ int TestStreamRead(char *file1, unsigned int numberOfStreams = 0)
     }
 
   // Simulate streaming and compares regions
-  numberOfStreams = std::max(1u, std::min(static_cast<unsigned int>(size[TDimension-1]), numberOfStreams));
+  numberOfStreams = std::max(1u, std::min(static_cast<unsigned int>(size[TDimension-1]), numberOfStreams) );
   typename ImageType::SizeValueType width = (size[TDimension-1]+numberOfStreams-1) / numberOfStreams;
   typename ImageType::RegionType totalRegion = consValueImage->GetLargestPossibleRegion();
 
@@ -252,10 +261,10 @@ int TestStreamRead(char *file1, unsigned int numberOfStreams = 0)
     readImage->SetRequestedRegion(region);
     readImage->Update();
 
-    if(!ImagesEqual(readImage, consValueImage, region))
+    if(!ImagesEqual(readImage, consValueImage, region) )
       {
-          imagesEqual = false;
-          break;
+      imagesEqual = false;
+      break;
       }
     }
 
@@ -273,7 +282,8 @@ int TestStreamRead(char *file1, unsigned int numberOfStreams = 0)
   return EXIT_SUCCESS;
 }
 
-int itkVTKImageIOStreamTest(int argc, char* argv[] )
+int
+itkVTKImageIOStreamTest(int argc, char* argv[] )
 {
 
   if( argc < 2 )
@@ -284,7 +294,7 @@ int itkVTKImageIOStreamTest(int argc, char* argv[] )
     }
 
   unsigned int numberOfStreams = 2;
-  int status = 0;
+  int          status = 0;
 
 #define ReadWriteTestMACRO(scalarType) \
   status += TestStreamWrite<scalarType,2>(argv[1], 0); \

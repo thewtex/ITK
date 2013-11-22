@@ -47,14 +47,13 @@ itk::Matrix<double,3,3> TestCreateRotationMatrixFromAngles(const double alpha, c
   R(2,0)=-sb;    R(2,1)=sa*cb;           R(2,2)=ca*cb;
   itk::Matrix<double,3,3>::InternalMatrixType test =
     R.GetVnlMatrix() * R.GetTranspose();
-   if( !test.is_identity( 1.0e-10 ) )
+  if( !test.is_identity( 1.0e-10 ) )
     {
     std::cout << "Computed matrix is not orthogonal!!!" << std::endl;
     std::cout << R << std::endl;
     }
   return R;
 }
-
 
 itk::Versor<double> TestCreateRotationVersorFromAngles(const double alpha, const double beta, const double gamma)
 {
@@ -85,13 +84,15 @@ itk::Versor<double> TestCreateRotationVersorFromAngles(const double alpha, const
  * This test that the conversion to and from Rotaion Matrix and
  * Versor produces consistent results.
  */
-int RotationMatrixToVersorTest(void)
+int
+RotationMatrixToVersorTest(void)
 {
   int errorCount=0;
   //const double onedegree=1e-10*vnl_math::pi/180.0;
   const double onedegree=vnl_math::pi/180.0;
   //const double td=180.0/vnl_math::pi;
   double centers[6];
+
   centers[0]=0;
   centers[1]=vnl_math::pi*0.25;
   centers[2]=vnl_math::pi*0.5;
@@ -103,14 +104,17 @@ int RotationMatrixToVersorTest(void)
   const double small_degree_steps=onedegree/1000.0; //1/1000 of a degree
   for(int j = 0; j < 6; j++)
     {
-    for(double alpha=centers[j]-steps*small_degree_steps; alpha <= centers[j]+steps*small_degree_steps; alpha += small_degree_steps)
+    for(double alpha=centers[j]-steps*small_degree_steps; alpha <= centers[j]+steps*small_degree_steps;
+        alpha += small_degree_steps)
       {
-      for(double beta=centers[j]-steps*small_degree_steps; beta <= centers[j]+steps*small_degree_steps; beta += small_degree_steps)
+      for(double beta=centers[j]-steps*small_degree_steps; beta <= centers[j]+steps*small_degree_steps;
+          beta += small_degree_steps)
         {
-        for(double gamma=centers[j]-steps*small_degree_steps; gamma <= centers[j]+steps*small_degree_steps; gamma += small_degree_steps)
+        for(double gamma=centers[j]-steps*small_degree_steps; gamma <= centers[j]+steps*small_degree_steps;
+            gamma += small_degree_steps)
           {
           itk::Matrix<double,3,3> MR=TestCreateRotationMatrixFromAngles(alpha, beta, gamma);
-          itk::Versor<double> VR=TestCreateRotationVersorFromAngles(alpha, beta, gamma);
+          itk::Versor<double>     VR=TestCreateRotationVersorFromAngles(alpha, beta, gamma);
 
           itk::Point<double,3> testPoint;
           testPoint[0]=-1020.27;
@@ -119,16 +123,17 @@ int RotationMatrixToVersorTest(void)
 
           itk::Versor<double> VFROMMR;
           VFROMMR.Set(MR);
-          itk::Matrix<double,3,3> VRMatrix = VR.GetMatrix();
+          itk::Matrix<double,3,3>    VRMatrix = VR.GetMatrix();
           const itk::Point<double,3> newMRtestPoint=(MR)*testPoint;
           const itk::Point<double,3> newVRtestPoint=(VRMatrix)*testPoint;
 
-          const itk::Point<double,3> newVRFROMMRPoint=(VFROMMR.GetMatrix())*testPoint;
+          const itk::Point<double,3> newVRFROMMRPoint=(VFROMMR.GetMatrix() )*testPoint;
           const itk::Point<double,3> newVRFROMMRTransformPoint=VFROMMR.Transform(testPoint);
 
           const double error_newMRtestPoint_newVRtestPoint=(newMRtestPoint-newVRtestPoint).GetNorm();
           const double error_newMRtestPoint_newVRFROMMRPoint=(newMRtestPoint-newVRFROMMRPoint).GetNorm();
-          const double error_newVRFROMMRPoint_newVRFROMMRTransformPoint=(newVRFROMMRPoint-newVRFROMMRTransformPoint).GetNorm();
+          const double error_newVRFROMMRPoint_newVRFROMMRTransformPoint=
+            (newVRFROMMRPoint-newVRFROMMRTransformPoint).GetNorm();
 
           const double maxAllowedPointError=1e-5;
           if( ( error_newMRtestPoint_newVRtestPoint + error_newMRtestPoint_newVRFROMMRPoint
@@ -136,11 +141,13 @@ int RotationMatrixToVersorTest(void)
             {
             std::cout << "(alpha,beta,gamma)= (" << alpha << ","<< beta << "," << gamma << ")" << std::endl;
 
-            std::cout << newMRtestPoint << " " << newVRtestPoint << " " << newVRFROMMRPoint << " " << newVRFROMMRTransformPoint << std::endl;
+            std::cout << newMRtestPoint << " " << newVRtestPoint << " " << newVRFROMMRPoint << " " <<
+              newVRFROMMRTransformPoint << std::endl;
             std::cout << "ERRORS: " << error_newMRtestPoint_newVRtestPoint << " "
                       << error_newMRtestPoint_newVRFROMMRPoint << " "
                       << error_newVRFROMMRPoint_newVRFROMMRTransformPoint << std::endl;
-            std::cout << "MR=\n"<< MR << "\nVR=\n" << VR.GetMatrix() << "\nVFROMMR=\n" << VFROMMR.GetMatrix() << std::endl;
+            std::cout << "MR=\n"<< MR << "\nVR=\n" << VR.GetMatrix() << "\nVFROMMR=\n" << VFROMMR.GetMatrix() <<
+              std::endl;
             errorCount++;
             }
 
@@ -156,48 +163,49 @@ int RotationMatrixToVersorTest(void)
 //   Main code
 //
 //-------------------------
-int itkVersorTest(int, char* [] )
+int
+itkVersorTest(int, char* [] )
 {
 
-  typedef   double          ValueType;
+  typedef   double ValueType;
 
   const ValueType epsilon = 1e-12;
 
   //  Versor type
-  typedef    itk::Versor< ValueType >    VersorType;
+  typedef    itk::Versor< ValueType > VersorType;
 
   //  Vector type
-  typedef    VersorType::VectorType      VectorType;
+  typedef    VersorType::VectorType VectorType;
 
   //  Point type
-  typedef    VersorType::PointType      PointType;
+  typedef    VersorType::PointType PointType;
 
   //  Covariant Vector type
-  typedef    VersorType::CovariantVectorType      CovariantVectorType;
+  typedef    VersorType::CovariantVectorType CovariantVectorType;
 
   //  VnlVector type
-  typedef    VersorType::VnlVectorType       VnlVectorType;
+  typedef    VersorType::VnlVectorType VnlVectorType;
 
   //  VnlQuaternion type
-  typedef    VersorType::VnlQuaternionType   VnlQuaternionType;
+  typedef    VersorType::VnlQuaternionType VnlQuaternionType;
 
   //  Matrix type
-  typedef    VersorType::MatrixType          MatrixType;
+  typedef    VersorType::MatrixType MatrixType;
 
-  {
+    {
     std::cout << "Test default constructor... ";
     VersorType qa;
-    if( vcl_abs(qa.GetX()) > epsilon )
+    if( vcl_abs(qa.GetX() ) > epsilon )
       {
       std::cout << "Error ! " << std::endl;
       return EXIT_FAILURE;
       }
-    if( vcl_abs(qa.GetY()) > epsilon )
+    if( vcl_abs(qa.GetY() ) > epsilon )
       {
       std::cout << "Error ! " << std::endl;
       return EXIT_FAILURE;
       }
-    if( vcl_abs(qa.GetZ()) > epsilon )
+    if( vcl_abs(qa.GetZ() ) > epsilon )
       {
       std::cout << "Error ! " << std::endl;
       return EXIT_FAILURE;
@@ -208,20 +216,18 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-
-  {
+    {
     std::cout << "Test initialization and GetMatrix()... ";
     VersorType qa;
     qa.SetIdentity();
     MatrixType ma = qa.GetMatrix();
     std::cout << "Matrix = " << std::endl;
     std::cout <<    ma       << std::endl;
-  }
+    }
 
-
-  {
+    {
     std::cout << "Test for setting Axis and Angle...";
     VersorType qa;
     VectorType xa;
@@ -267,9 +273,9 @@ int itkVersorTest(int, char* [] )
       }
 
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-  {
+    {
     std::cout << "Test for setting Right part...";
     ValueType angle = vcl_atan(1.0)*30.0/45.0;
     ValueType sin2a = vcl_sin( angle/2.0 );
@@ -299,9 +305,9 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
- {
+    {
     std::cout << "Test for Square Root...";
 
     ValueType angle = vcl_atan(1.0)*30.0/45.0;
@@ -329,9 +335,9 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-  {
+    {
     std::cout << "Test for Transforming a vector...";
     VectorType xa;
     xa[0] = 2.5;
@@ -343,7 +349,7 @@ int itkVersorTest(int, char* [] )
     qa.Set( xa, angle );
 
     VectorType::ValueType xbInit[3] = {3.0, 7.0, 9.0};
-    VectorType xb = xbInit;
+    VectorType            xb = xbInit;
 
     VectorType xc= qa.Transform( xb );
 
@@ -364,9 +370,9 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-  {
+    {
     std::cout << "Test for Transforming a point...";
     VectorType xa;
     xa[0] = 2.5;
@@ -378,7 +384,7 @@ int itkVersorTest(int, char* [] )
     qa.Set( xa, angle );
 
     PointType::ValueType xbInit[3] = {3.0, 7.0, 9.0};
-    PointType xb = xbInit;
+    PointType            xb = xbInit;
 
     PointType xc = qa.Transform( xb );
 
@@ -399,10 +405,9 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-
-  {
+    {
     std::cout << "Test for Transforming a covariantvector...";
     VectorType xa;
     xa[0] = 2.5;
@@ -414,7 +419,7 @@ int itkVersorTest(int, char* [] )
     qa.Set( xa, angle );
 
     CovariantVectorType::ValueType xbInit[3] = {3.0, 7.0, 9.0};
-    CovariantVectorType xb = xbInit;
+    CovariantVectorType            xb = xbInit;
 
     CovariantVectorType xc = qa.Transform( xb );
 
@@ -435,9 +440,9 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-  {
+    {
     std::cout << "Test for Transforming a vnl_vector...";
     VectorType xa;
     xa[0] = 2.5;
@@ -472,14 +477,14 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-  {
+    {
     std::cout << "Test for Set components operations ...";
 
     // First, create a known versor
     VectorType::ValueType x1Init[3] = {2.5f, 1.5f, 3.5f};
-    VectorType x1 = x1Init;
+    VectorType            x1 = x1Init;
 
     ValueType angle1 = vcl_atan(1.0)/3.0; // 15 degrees in radians
 
@@ -532,15 +537,15 @@ int itkVersorTest(int, char* [] )
     std::cout << "Test for Set(x,y,z,w) with negative W.";
     // Check that a negative W results in negating
     // all the versor components.
-    x = - v1.GetX();
-    y = - v1.GetY();
-    z = - v1.GetZ();
-    w = - v1.GetW();
+    x = -v1.GetX();
+    y = -v1.GetY();
+    z = -v1.GetZ();
+    w = -v1.GetW();
 
     VersorType v3;
     v3.Set( x, y, z, w );
 
-     // Compare both versors
+    // Compare both versors
     if( vcl_abs( v1.GetX() - v3.GetX() ) > epsilon ||
         vcl_abs( v1.GetY() - v3.GetY() ) > epsilon ||
         vcl_abs( v1.GetZ() - v3.GetZ() ) > epsilon ||
@@ -552,24 +557,24 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-  {
+    {
     std::cout << "Test for Reciprocal and Conjugate Operations...";
 
     VectorType::ValueType x1Init[3] = {2.5f, 1.5f, 0.5f};
-    VectorType x1 = x1Init;
+    VectorType            x1 = x1Init;
 
     ValueType angle1 = vcl_atan(1.0)/3.0; // 15 degrees in radians
 
     VectorType::ValueType x2Init[3] = {1.5f, 0.5f, 0.5f};
-    VectorType x2 = x2Init;
+    VectorType            x2 = x2Init;
 
     ValueType angle2 = vcl_atan(1.0)/1.0; // 45 degrees in radians
 
-    VersorType  v1;
+    VersorType v1;
     v1.Set( x1, angle1 );
-    VersorType  v2;
+    VersorType v2;
     v2.Set( x2, angle2 );
 
     VersorType v2r = v2.GetReciprocal();
@@ -619,7 +624,6 @@ int itkVersorTest(int, char* [] )
     x1.Normalize();
     x2.Normalize();
 
-
     VersorType v3= v1 * v2;
     VersorType v4= v3 * v2r;
 
@@ -634,10 +638,9 @@ int itkVersorTest(int, char* [] )
       return EXIT_FAILURE;
       }
     std::cout << " PASSED !" << std::endl;
-  }
+    }
 
-
-  { // Test for the Set() matrix method
+    { // Test for the Set() matrix method
     std::cout << "Test for Set( MatrixType ) method ..." << std::endl;
     MatrixType mm;
     // Setting the matrix of a 90 degrees rotation around Z
@@ -667,7 +670,7 @@ int itkVersorTest(int, char* [] )
       std::cout << "vv  = " << vv << std::endl;
       return EXIT_FAILURE;
       }
-      //matrix no longer represents a rotation
+    //matrix no longer represents a rotation
     mm[0][0] = 1.0;
     try
       {
@@ -679,20 +682,21 @@ int itkVersorTest(int, char* [] )
       std::cout << "Caught expected exception: " << excp;
       }
     std::cout << " PASSED !" << std::endl;
-  }
-  {
-  std::cout << "Test for Set( MatrixType ) method with rotations that are susceptible to errors in conversion to/from the rotation matrix...";
-
-  const int RotationMatrixStabilityTestErrors=RotationMatrixToVersorTest();
-  if( RotationMatrixStabilityTestErrors > 0 )
-    {
-    std::cout << "Error in stability of converting to/from RotationMatrix with Set(Matrix) method ! " << std::endl;
-    std::cout << "Errors Found  = " << RotationMatrixStabilityTestErrors << std::endl;
-    return EXIT_FAILURE;
     }
-  std::cout << " PASSED !" << std::endl;
+    {
+    std::cout <<
+      "Test for Set( MatrixType ) method with rotations that are susceptible to errors in conversion to/from the rotation matrix...";
 
-  }
+    const int RotationMatrixStabilityTestErrors=RotationMatrixToVersorTest();
+    if( RotationMatrixStabilityTestErrors > 0 )
+      {
+      std::cout << "Error in stability of converting to/from RotationMatrix with Set(Matrix) method ! " << std::endl;
+      std::cout << "Errors Found  = " << RotationMatrixStabilityTestErrors << std::endl;
+      return EXIT_FAILURE;
+      }
+    std::cout << " PASSED !" << std::endl;
+
+    }
 
   return EXIT_SUCCESS;
 

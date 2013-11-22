@@ -22,7 +22,8 @@
 
 #include <iostream>
 
-int itkCyclicShiftImageFilterTest(int argc, char * argv[])
+int
+itkCyclicShiftImageFilterTest(int argc, char * argv[])
 {
   if ( argc != 4 )
     {
@@ -74,14 +75,14 @@ int itkCyclicShiftImageFilterTest(int argc, char * argv[])
   itk::ImageRegionConstIteratorWithIndex< ImageType > inputIter( reader->GetOutput(),
                                                                  reader->GetOutput()->GetLargestPossibleRegion() );
   ImageType::RegionType imageRegion = reader->GetOutput()->GetLargestPossibleRegion();
-  ImageType::SizeType imageSize = imageRegion.GetSize();
-  bool success = true;
+  ImageType::SizeType   imageSize = imageRegion.GetSize();
+  bool                  success = true;
 
   const ImageType *shiftFilterOutput = shiftFilter->GetOutput();
 
   for (; !inputIter.IsAtEnd(); ++inputIter )
     {
-    ImageType::IndexType inputIndex = inputIter.GetIndex();
+    ImageType::IndexType             inputIndex = inputIter.GetIndex();
     CyclicShiftFilterType::IndexType outputIndex( inputIndex );
 
     for ( unsigned int i = 0; i < Dimension; ++i )

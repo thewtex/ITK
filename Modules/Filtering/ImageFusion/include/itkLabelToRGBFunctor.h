@@ -110,7 +110,8 @@ public:
     m_BackgroundValue = NumericTraits< TLabel >::Zero;
   }
 
-  inline TRGBPixel operator()(const TLabel & p) const
+  inline TRGBPixel
+  operator()(const TLabel & p) const
   {
     // value is background
     // return a gray pixel with the same intensity than the label pixel
@@ -123,9 +124,11 @@ public:
     return m_Colors[p % m_Colors.size()];
   }
 
-  void AddColor(unsigned char r, unsigned char g, unsigned char b)
+  void
+  AddColor(unsigned char r, unsigned char g, unsigned char b)
   {
     TRGBPixel rgbPixel;
+
     NumericTraits<TRGBPixel>::SetLength(rgbPixel, 3);
 
     typedef typename TRGBPixel::ValueType ValueType;
@@ -139,41 +142,48 @@ public:
   }
 
   // Empty the color LUT
-  void ResetColors()
+  void
+  ResetColors()
   {
     m_Colors.clear();
   }
 
   // Get number of colors in the LUT
-  unsigned int GetNumberOfColors() const
+  unsigned int
+  GetNumberOfColors() const
   {
     return m_Colors.size();
   }
 
-  bool operator!=(const Self & l) const
+  bool
+  operator!=(const Self & l) const
   {
     const bool areDifferent = m_BackgroundColor != l.m_BackgroundColor
-                              || m_BackgroundValue != l.m_BackgroundValue;
+      || m_BackgroundValue != l.m_BackgroundValue;
 
     return areDifferent;
   }
 
-  bool operator==(const Self & other) const
+  bool
+  operator==(const Self & other) const
   {
     return !( *this != other );
   }
 
-  void SetBackgroundValue(TLabel v)
+  void
+  SetBackgroundValue(TLabel v)
   {
     m_BackgroundValue = v;
   }
 
-  void SetBackgroundColor(TRGBPixel rgb)
+  void
+  SetBackgroundColor(TRGBPixel rgb)
   {
     m_BackgroundColor = rgb;
   }
 
-  ~LabelToRGBFunctor() {}
+  ~LabelToRGBFunctor() {
+  }
 
   std::vector< TRGBPixel > m_Colors;
 

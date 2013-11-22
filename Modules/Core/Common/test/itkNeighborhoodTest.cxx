@@ -19,13 +19,14 @@
 #include "itkNeighborhood.h"
 #include "itkVector.h"
 
-
-static void println(const char *s)
+static void
+println(const char *s)
 {
   std::cout << std::endl << s << std::endl;
 }
 
-int itkNeighborhoodTest(int, char* [] )
+int
+itkNeighborhoodTest(int, char* [] )
 {
   unsigned int i;
 
@@ -65,7 +66,7 @@ int itkNeighborhoodTest(int, char* [] )
 
   println("TESTING WITH DEFAULT ALLOCATOR");
   itk::Neighborhood<float, 2> q;
-  itk::Size<2> rad;
+  itk::Size<2>                rad;
   rad[0] = 3;
   rad[1] = 2;
   q.SetRadius(rad);
@@ -102,7 +103,6 @@ int itkNeighborhoodTest(int, char* [] )
   std::cout << stride_3d.GetOffset(14)  << std::endl;
   std::cout << stride_3d.GetOffset(16)  << std::endl;
   std::cout << stride_3d.GetOffset(22)  << std::endl;
-
 
   println("ANOTHER TEST");
   itk::Neighborhood<float, 2> q2;

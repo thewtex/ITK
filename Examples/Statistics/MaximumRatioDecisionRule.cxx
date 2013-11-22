@@ -49,7 +49,8 @@
 #include <vector>
 // Software Guide : EndCodeSnippet
 
-int main(int, char*[])
+int
+main(int, char*[])
 {
   // Software Guide : BeginLatex
   //
@@ -62,7 +63,6 @@ int main(int, char*[])
   typedef itk::Statistics::MaximumRatioDecisionRule DecisionRuleType;
   DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //

@@ -66,9 +66,10 @@ SparseFieldLayer< TNodeType >
 {
   std::vector< RegionType > regionlist;
   unsigned int              size, regionsize;
+
   size = Size();
   regionsize = static_cast< unsigned int >(
-    vcl_ceil( static_cast< float >( size ) / static_cast< float >( num ) ) );
+      vcl_ceil( static_cast< float >( size ) / static_cast< float >( num ) ) );
   ConstIterator position = Begin();
   ConstIterator last = End();
 
@@ -88,6 +89,7 @@ SparseFieldLayer< TNodeType >
 
   return regionlist;
 }
+
 } // end namespace itk
 
 #endif

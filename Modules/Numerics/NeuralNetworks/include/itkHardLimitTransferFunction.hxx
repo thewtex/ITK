@@ -66,5 +66,4 @@ HardLimitTransferFunction<ScalarType>
 } // end namespace Statistics
 } // end namespace itk
 
-
 #endif

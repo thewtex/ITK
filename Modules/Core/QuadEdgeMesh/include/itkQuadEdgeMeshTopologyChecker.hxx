@@ -84,8 +84,8 @@ QuadEdgeMeshTopologyChecker< TMesh >
   // Note that genus can take a negative value...
   OffsetValueType twiceGenus =
     OffsetValueType(2) - OffsetValueType(numBounds)
-  - OffsetValueType(numFaces) + OffsetValueType(numEdges)
-  - OffsetValueType(numPoints);
+    - OffsetValueType(numFaces) + OffsetValueType(numEdges)
+    - OffsetValueType(numPoints);
 
   if ( twiceGenus % 2 )
     {
@@ -144,5 +144,6 @@ QuadEdgeMeshTopologyChecker< TMesh >
      << m_ExpectedGenus << std::endl;
   os << indent << "Mesh: " << m_Mesh << std::endl;
 }
+
 }
 #endif

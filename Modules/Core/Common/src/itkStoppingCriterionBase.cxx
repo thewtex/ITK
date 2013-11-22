@@ -22,11 +22,12 @@ namespace itk
 {
 StoppingCriterionBase::
 StoppingCriterionBase()
-{}
+{
+}
 
 StoppingCriterionBase::
 ~StoppingCriterionBase()
-{}
-
+{
+}
 
 }

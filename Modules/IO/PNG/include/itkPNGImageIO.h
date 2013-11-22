@@ -19,7 +19,6 @@
 #define __itkPNGImageIO_h
 #include "ITKIOPNGExport.h"
 
-
 #include "itkImageIOBase.h"
 
 namespace itk
@@ -32,7 +31,7 @@ namespace itk
  *
  * \ingroup ITKIOPNG
  */
-class ITKIOPNG_EXPORT PNGImageIO:public ImageIOBase
+class ITKIOPNG_EXPORT PNGImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -94,6 +93,7 @@ protected:
 private:
   PNGImageIO(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

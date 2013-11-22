@@ -34,16 +34,15 @@ namespace itk
  *  a Python function.
  */
 
-
 template <class TInputImage, class TOutputImage>
 class PyImageFilter : public ImageToImageFilter<TInputImage,TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef PyImageFilter                                 Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>  Superclass;
-  typedef SmartPointer<Self>                            Pointer;
-  typedef SmartPointer<const Self>                      ConstPointer;
+  typedef PyImageFilter                                Self;
+  typedef ImageToImageFilter<TInputImage,TOutputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -67,23 +66,23 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       TOutputImage::ImageDimension);
 
-
   void SetPyGenerateData(PyObject *obj);
 
 protected:
   PyImageFilter();
-  virtual ~PyImageFilter();
+  virtual
+  ~PyImageFilter();
   virtual void GenerateData();
 
 private:
-  PyImageFilter(const Self&); //purposely not implemented
+  PyImageFilter(const Self&);  //purposely not implemented
   void operator=(const Self&); //purposely not implemented
+
   PyObject *m_Object;
 
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkPyImageFilter.hxx"

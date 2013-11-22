@@ -36,7 +36,8 @@ LevelSetDomainPartitionImageWithKdTree< TImage >
 }
 
 template< typename TImage >
-void LevelSetDomainPartitionImageWithKdTree< TImage >
+void
+LevelSetDomainPartitionImageWithKdTree< TImage >
 ::PopulateListDomain()
 {
   if( this->m_KdTree.IsNotNull() )
@@ -50,7 +51,8 @@ void LevelSetDomainPartitionImageWithKdTree< TImage >
 }
 
 template< typename TImage >
-void LevelSetDomainPartitionImageWithKdTree< TImage >
+void
+LevelSetDomainPartitionImageWithKdTree< TImage >
 ::PopulateDomainWithKdTree()
 {
   Superclass::AllocateListDomain();
@@ -62,7 +64,7 @@ void LevelSetDomainPartitionImageWithKdTree< TImage >
   for ( lIt.GoToBegin(); !lIt.IsAtEnd(); ++lIt )
     {
     const ListIndexType & index = lIt.GetIndex();
-    ListPointType pt;
+    ListPointType         pt;
 
     this->m_ListDomain->TransformIndexToPhysicalPoint( index, pt );
 

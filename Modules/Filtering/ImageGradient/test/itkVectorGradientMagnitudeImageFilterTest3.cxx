@@ -21,7 +21,8 @@
 #include "itkImageFileWriter.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-int itkVectorGradientMagnitudeImageFilterTest3(int ac, char* av[] )
+int
+itkVectorGradientMagnitudeImageFilterTest3(int ac, char* av[] )
 {
   typedef itk::RGBPixel<unsigned char> RGBPixelType;
   typedef itk::Image<RGBPixelType, 3>  RGBImageType;

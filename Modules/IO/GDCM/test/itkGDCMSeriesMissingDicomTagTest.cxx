@@ -29,7 +29,8 @@
 #include "itkGDCMImageIO.h"
 #include "itkGDCMSeriesFileNames.h"
 
-int itkGDCMSeriesMissingDicomTagTest( int argc, char* argv[] )
+int
+itkGDCMSeriesMissingDicomTagTest( int argc, char* argv[] )
 {
   if( argc < 2)
     {
@@ -38,18 +39,18 @@ int itkGDCMSeriesMissingDicomTagTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::Image<unsigned short,3>            ImageType;
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
-  typedef itk::GDCMImageIO                        ImageIOType;
-  typedef itk::GDCMSeriesFileNames                SeriesFileNames;
+  typedef itk::Image<unsigned short,3>        ImageType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
+  typedef itk::GDCMImageIO                    ImageIOType;
+  typedef itk::GDCMSeriesFileNames            SeriesFileNames;
 
-  ImageIOType::Pointer gdcmIO = ImageIOType::New();
+  ImageIOType::Pointer     gdcmIO = ImageIOType::New();
   SeriesFileNames::Pointer it = SeriesFileNames::New();
 
   // Get the DICOM filenames from the directory
   // First add a restriction *before* selecting the input directory
   // since SetInputDirectory has a side effect of executing
-  gdcm::SerieHelper *sh = it->GetSeriesHelper( );
+  gdcm::SerieHelper *sh = it->GetSeriesHelper();
   sh->AddRestriction(0x0010, 0x0010, "Wes Turner", gdcm::GDCM_EQUAL);
   sh->AddRestriction(0x0020, 0x0013, "75", gdcm::GDCM_GREATEROREQUAL);
   sh->AddRestriction(0x0020, 0x0013, "77", gdcm::GDCM_LESSOREQUAL);
@@ -58,7 +59,7 @@ int itkGDCMSeriesMissingDicomTagTest( int argc, char* argv[] )
   ReaderType::Pointer reader = ReaderType::New();
 
   const ReaderType::FileNamesContainer & filenames = it->GetInputFileNames();
-  unsigned int numberOfFilenames =  filenames.size();
+  unsigned int                           numberOfFilenames =  filenames.size();
   std::cout << numberOfFilenames << std::endl;
   for(unsigned int fni = 0; fni<numberOfFilenames; fni++)
     {
@@ -93,13 +94,13 @@ int itkGDCMSeriesMissingDicomTagTest( int argc, char* argv[] )
   // This key artificially removed from the second file in the series.
   std::string missingKey("0008|0033");
   std::string val;
-  if(!itk::ExposeMetaData<std::string>( *((*dictArray)[0]) ,missingKey, val ))
+  if(!itk::ExposeMetaData<std::string>( *( (*dictArray)[0]) ,missingKey, val ) )
     {
     std::cerr << "Missing data object " << missingKey
               << "in first slice" << std::endl;
     return EXIT_FAILURE;
     }
-  if(itk::ExposeMetaData<std::string>( *((*dictArray)[1]) ,missingKey, val ))
+  if(itk::ExposeMetaData<std::string>( *( (*dictArray)[1]) ,missingKey, val ) )
     {
     std::cerr << "DataObject " << missingKey
               << "found in second slice where it should be missing" << std::endl;

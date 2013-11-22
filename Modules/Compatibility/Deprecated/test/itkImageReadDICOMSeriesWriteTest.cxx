@@ -22,8 +22,8 @@
 #include "itkGDCMSeriesFileNames.h"
 #include "itkImageSeriesReader.h"
 
-
-int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
+int
+itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -32,12 +32,11 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef signed short    PixelType;
-  const unsigned int      Dimension = 3;
-
-  typedef itk::Image< PixelType, Dimension >      ImageType;
-  typedef itk::ImageFileReader< ImageType >       ReaderType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
+  typedef itk::ImageFileReader< ImageType >  ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -54,9 +53,8 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-
-  typedef itk::GDCMImageIO                        ImageIOType;
-  typedef itk::NumericSeriesFileNames             NamesGeneratorType;
+  typedef itk::GDCMImageIO            ImageIOType;
+  typedef itk::NumericSeriesFileNames NamesGeneratorType;
 
   ImageIOType::Pointer gdcmIO = ImageIOType::New();
 
@@ -64,19 +62,18 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
 
   itksys::SystemTools::MakeDirectory( outputDirectory );
 
+  typedef signed short OutputPixelType;
+  const unsigned int OutputDimension = 2;
 
-  typedef signed short    OutputPixelType;
-  const unsigned int      OutputDimension = 2;
-
-  typedef itk::Image< OutputPixelType, OutputDimension >    Image2DType;
+  typedef itk::Image< OutputPixelType, OutputDimension > Image2DType;
 
   typedef itk::ImageSeriesWriter<
-                         ImageType, Image2DType >  SeriesWriterType;
+      ImageType, Image2DType >  SeriesWriterType;
 
   NamesGeneratorType::Pointer namesGenerator = NamesGeneratorType::New();
 
   itk::MetaDataDictionary & dict = gdcmIO->GetMetaDataDictionary();
-  std::string tagkey, value;
+  std::string               tagkey, value;
   tagkey = "0008|0060"; // Modality
   value = "MR";
   itk::EncapsulateMetaData<std::string>(dict, tagkey, value );
@@ -87,19 +84,16 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
   value = "DV";
   itk::EncapsulateMetaData<std::string>(dict, tagkey, value);
 
-
   SeriesWriterType::Pointer seriesWriter = SeriesWriterType::New();
 
   seriesWriter->SetInput( reader->GetOutput() );
   seriesWriter->SetImageIO( gdcmIO );
 
-
   ImageType::RegionType region =
-     reader->GetOutput()->GetLargestPossibleRegion();
+    reader->GetOutput()->GetLargestPossibleRegion();
 
   ImageType::IndexType start = region.GetIndex();
   ImageType::SizeType  size  = region.GetSize();
-
 
   std::string format = outputDirectory;
 
@@ -111,9 +105,7 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
   namesGenerator->SetEndIndex( start[2] + size[2] - 1 );
   namesGenerator->SetIncrementIndex( 1 );
 
-
   seriesWriter->SetFileNames( namesGenerator->GetFileNames() );
-
 
   try
     {
@@ -126,12 +118,11 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-
   //
   // Now, verify that we can read the slices back and
   // reconstruct the exact same image.
   //
-  typedef itk::ImageSeriesReader< ImageType >     SeriesReaderType;
+  typedef itk::ImageSeriesReader< ImageType > SeriesReaderType;
   SeriesReaderType::Pointer seriesReader = SeriesReaderType::New();
 
   //
@@ -149,10 +140,10 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
 
   nameGenerator->SetDirectory( argv[2] );
 
-  typedef std::vector< std::string >   FileNamesContainer;
+  typedef std::vector< std::string > FileNamesContainer;
   FileNamesContainer fileNames;
 
-  typedef std::vector< std::string >    SeriesIdContainer;
+  typedef std::vector< std::string > SeriesIdContainer;
 
   const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
 
@@ -172,7 +163,6 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   typedef itk::ImageRegionConstIterator< ImageType > IteratorType;
 

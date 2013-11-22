@@ -22,7 +22,8 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkFFTShiftImageFilter.h"
 
-int itkFFTShiftImageFilterTest(int argc, char * argv[])
+int
+itkFFTShiftImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 4 )
@@ -47,7 +48,7 @@ int itkFFTShiftImageFilterTest(int argc, char * argv[])
   typedef itk::FFTShiftImageFilter< IType, IType > FilterType;
   FilterType::Pointer filter = FilterType::New();
   // test default values
-  if ( filter->GetInverse( ) != false )
+  if ( filter->GetInverse() != false )
     {
     std::cerr << "Wrong default Inverse." << std::endl;
     return EXIT_FAILURE;
@@ -82,11 +83,10 @@ int itkFFTShiftImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-
   filter->SetInput( reader->GetOutput() );
 
   filter->SetInverse( static_cast<bool>( atoi( argv[3] ) ) );
-  if ( filter->GetInverse( ) != static_cast<bool>(atoi(argv[3])) )
+  if ( filter->GetInverse() != static_cast<bool>(atoi(argv[3]) ) )
     {
     std::cerr << "Set/Get Inverse problem." << std::endl;
     return EXIT_FAILURE;

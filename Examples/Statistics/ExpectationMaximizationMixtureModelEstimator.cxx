@@ -103,7 +103,8 @@
 #include "itkNormalVariateGenerator.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -122,7 +123,8 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   unsigned int numberOfClasses = 2;
-  typedef itk::Vector< double, 1 > MeasurementVectorType;
+
+  typedef itk::Vector< double, 1 >                             MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   sample->SetMeasurementVectorSize( 1 ); // length of measurement vectors
@@ -155,8 +157,8 @@ int main()
   normalGenerator->Initialize( 101 );
 
   MeasurementVectorType mv;
-  double mean = 100;
-  double standardDeviation = 30;
+  double                mean = 100;
+  double                standardDeviation = 30;
   for ( unsigned int i = 0; i < 100; ++i )
     {
     mv[0] = ( normalGenerator->GetVariate() * standardDeviation ) + mean;
@@ -216,7 +218,7 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ExpectationMaximizationMixtureModelEstimator<
-                           SampleType > EstimatorType;
+      SampleType > EstimatorType;
   EstimatorType::Pointer estimator = EstimatorType::New();
 
   estimator->SetSample( sample );

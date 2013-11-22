@@ -22,11 +22,12 @@
 
 #include "itkBlobSpatialObject.h"
 
-int itkBlobSpatialObjectTest(int, char* [])
+int
+itkBlobSpatialObjectTest(int, char* [])
 {
-  typedef itk::BlobSpatialObject<3>    BlobType;
-  typedef BlobType::Pointer            BlobPointer;
-  typedef itk::SpatialObjectPoint<3>   BlobPointType;
+  typedef itk::BlobSpatialObject<3>  BlobType;
+  typedef BlobType::Pointer          BlobPointer;
+  typedef itk::SpatialObjectPoint<3> BlobPointType;
 
   std::cout<<"=================================="<<std::endl;
   std::cout<<"Testing BlobSpatialObject:"<<std::endl<<std::endl;
@@ -35,7 +36,7 @@ int itkBlobSpatialObjectTest(int, char* [])
 
   unsigned int i;
   for( i=0; i<10; i++)
-  {
+    {
     BlobPointType p;
     p.SetPosition(i,i+1,i+2);
     p.SetBlue(i);
@@ -43,7 +44,7 @@ int itkBlobSpatialObjectTest(int, char* [])
     p.SetRed(i+2);
     p.SetAlpha(i+3);
     list.push_back(p);
-  }
+    }
 
   // For coverage
   BlobPointType p;
@@ -66,14 +67,14 @@ int itkBlobSpatialObjectTest(int, char* [])
   std::cout << "Number of Points: ";
 
   if(blob->GetPoints().size() != 10)
-  {
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
   else
-  {
+    {
     std::cout<<"[PASSED]"<<std::endl;
-  }
+    }
 
   // Point consistency
   std::cout << "Point consistency: ";
@@ -81,19 +82,19 @@ int itkBlobSpatialObjectTest(int, char* [])
   BlobType::PointListType::const_iterator it = blob->GetPoints().begin();
 
   i=0;
-  while(it != blob->GetPoints().end())
-  {
-    for(unsigned int d=0;d<3;d++)
+  while(it != blob->GetPoints().end() )
     {
-      if((*it).GetPosition()[d] != i+d)
+    for(unsigned int d=0; d<3; d++)
       {
+      if( (*it).GetPosition()[d] != i+d)
+        {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
     it++;
     i++;
-  }
+    }
 
   std::cout<<"[PASSED]"<<std::endl;
 
@@ -104,17 +105,17 @@ int itkBlobSpatialObjectTest(int, char* [])
   itk::Point<double,3> out;
   out[0]=0;out[1]=0;out[2]=0;
 
-  if(!blob->IsInside(in))
-  {
+  if(!blob->IsInside(in) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  if(blob->IsInside(out))
-  {
+  if(blob->IsInside(out) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::cout<<"[PASSED]"<<std::endl;
 
@@ -123,65 +124,63 @@ int itkBlobSpatialObjectTest(int, char* [])
   it = blob->GetPoints().begin();
 
   i=0;
-  while(it != blob->GetPoints().end())
-  {
-    for(unsigned int d=0;d<3;d++)
+  while(it != blob->GetPoints().end() )
     {
-      if((*it).GetBlue() != i)
+    for(unsigned int d=0; d<3; d++)
       {
+      if( (*it).GetBlue() != i)
+        {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
-      }
-      if((*it).GetGreen() != i+1)
-      {
+        }
+      if( (*it).GetGreen() != i+1)
+        {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
-      }
+        }
 
-      if((*it).GetRed() != i+2)
-      {
+      if( (*it).GetRed() != i+2)
+        {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
-      }
+        }
 
-      if((*it).GetAlpha() != i+3)
-      {
+      if( (*it).GetAlpha() != i+3)
+        {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
     it++;
     i++;
-  }
+    }
   std::cout<<"[PASSED]"<<std::endl;
 
   // Testing IsEvaluableAt()
   std::cout << "IsEvaluableAt: ";
-  if(!blob->IsEvaluableAt(in) || blob->IsEvaluableAt(out))
-  {
-     std::cout<<"[FAILED]"<<std::endl;
-     return EXIT_FAILURE;
-  }
+  if(!blob->IsEvaluableAt(in) || blob->IsEvaluableAt(out) )
+    {
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
+    }
   std::cout<<"[PASSED]"<<std::endl;
-
 
   // Testing IsEvaluableAt()
   std::cout << "ValueAt: ";
 
   double value;
-  if(!blob->ValueAt(in,value))
-  {
-     std::cout<<"[FAILED]"<<std::endl;
-     return EXIT_FAILURE;
-  }
+  if(!blob->ValueAt(in,value) )
+    {
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
+    }
 
   if(value != 1)
-  {
-     std::cout<<"[FAILED]"<<std::endl;
-     return EXIT_FAILURE;
-  }
+    {
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
+    }
   std::cout<<"[PASSED]"<<std::endl;
-
 
   return EXIT_SUCCESS;
 

@@ -33,7 +33,7 @@ namespace itk
  */
 template <
   typename TScalar = float, // Type for cordinate representation type (float or
-                             // double)
+                            // double)
   unsigned int NDimensions = 3>
 // Number of dimensions
 class ScaleLogarithmicTransform :

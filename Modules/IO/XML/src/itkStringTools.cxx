@@ -19,7 +19,7 @@
 #include "itkStringTools.h"
 
 #include <algorithm> // std::transform()
-#include <cctype> // std::toupper(), std::tolower()
+#include <cctype>    // std::toupper(), std::tolower()
 
 namespace itk
 {
@@ -28,7 +28,8 @@ namespace itk
 // helper functions for string manipulations
 /////////////////////////////////////////////////////////////////////////////
 
-/** Method to trim the spaces or user-specified characters on both ends of a string. */
+/** Method to trim the spaces or user-specified characters on both ends of a
+  string. */
 std::string&
 StringTools::Trim( std::string& str, const std::string& dislike )
 {
@@ -56,7 +57,8 @@ StringTools::Trim( std::string& str, const std::string& dislike )
   return str;
 }
 
-/** Method to trim the spaces or user-specified characters on left end of a string. */
+/** Method to trim the spaces or user-specified characters on left end of a
+  string. */
 std::string&
 StringTools::TrimLeft( std::string& str, const std::string& dislike )
 {
@@ -79,7 +81,8 @@ StringTools::TrimLeft( std::string& str, const std::string& dislike )
   return str;
 }
 
-/** Method to trim the spaces or user-specified characters on right end of a string. */
+/** Method to trim the spaces or user-specified characters on right end of a
+  string. */
 std::string&
 StringTools::TrimRight( std::string& str, const std::string& dislike )
 {
@@ -107,7 +110,8 @@ std::string&
 StringTools::ToUpperCase( std::string& str )
 {
   // explicit cast needed to resolve ambiguity
-  std::transform( str.begin(), str.end(), str.begin(), (int(*)(int))std::toupper );
+  std::transform( str.begin(), str.end(), str.begin(), (int (*)(int) ) std::toupper );
+
   return str;
 }
 
@@ -116,7 +120,8 @@ std::string&
 StringTools::ToLowerCase( std::string& str )
 {
   // explicit cast needed to resolve ambiguity
-  std::transform( str.begin(), str.end(), str.begin(), (int(*)(int))std::tolower );
+  std::transform( str.begin(), str.end(), str.begin(), (int (*)(int) ) std::tolower );
+
   return str;
 }
 
@@ -125,6 +130,7 @@ void
 StringTools::Split( const std::string& s, std::string& lpart, std::string& rpart, const std::string& delims )
 {
   std::string::size_type pos = s.find_first_of( delims );
+
   if ( pos != std::string::npos )
     {
     lpart = s.substr( 0, pos );
@@ -140,11 +146,13 @@ StringTools::Split( const std::string& s, std::string& lpart, std::string& rpart
     }
 }
 
-/** Method to split a string into a sequence of strings with user-defined delimiters. */
+/** Method to split a string into a sequence of strings with user-defined
+  delimiters. */
 void
 StringTools::Split( const std::string& s, std::vector<std::string>& result, const std::string& delims )
 {
   std::string str = s;
+
   while ( str.size() )
     {
     std::string::size_type pos = str.find_first_of( delims );
@@ -172,6 +180,7 @@ void
 StringTools::Split( const std::string& s, std::map<std::string,std::string>& result, const std::string& delims )
 {
   std::vector<std::string> items;
+
   Split( s, items, delims );
 
   for ( size_t i = 0; i < items.size(); i++ )

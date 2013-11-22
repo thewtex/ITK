@@ -24,7 +24,7 @@ namespace itk
 template< typename TScalar, unsigned int NDimensions >
 void
 ThinPlateSplineKernelTransform< TScalar, NDimensions >::ComputeG(const InputVectorType & x,
-                                                                     GMatrixType & gmatrix) const
+                                                                 GMatrixType & gmatrix) const
 {
   const TScalar r = x.GetNorm();
 
@@ -48,8 +48,8 @@ const
 
   for ( unsigned int lnd = 0; lnd < numberOfLandmarks; lnd++ )
     {
-    InputVectorType   position = thisPoint - sp->Value();
-    const TScalar r = position.GetNorm();
+    InputVectorType position = thisPoint - sp->Value();
+    const TScalar   r = position.GetNorm();
 
     for ( unsigned int odim = 0; odim < NDimensions; odim++ )
       {
@@ -58,5 +58,6 @@ const
     ++sp;
     }
 }
+
 } // namespace itk
 #endif

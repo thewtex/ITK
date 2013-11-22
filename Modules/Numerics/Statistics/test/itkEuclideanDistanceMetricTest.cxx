@@ -18,13 +18,14 @@
 
 #include "itkEuclideanDistanceMetric.h"
 
-int itkEuclideanDistanceMetricTest(int, char* [] )
+int
+itkEuclideanDistanceMetricTest(int, char* [] )
 {
   const unsigned int MeasurementVectorSize = 3;
 
-  typedef itk::Array< float  >  MeasurementVectorType;
+  typedef itk::Array< float  > MeasurementVectorType;
 
-  typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType >   DistanceMetricType;
+  typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType > DistanceMetricType;
 
   DistanceMetricType::Pointer distance = DistanceMetricType::New();
 
@@ -45,7 +46,7 @@ int itkEuclideanDistanceMetricTest(int, char* [] )
     {
     distance->Evaluate( measurementNew );
     std::cerr << "Attempting to compute distance w/o setting measurement vector"
-                 "size, Exception should have been thrown" << std::endl;
+      "size, Exception should have been thrown" << std::endl;
     }
   catch( itk::ExceptionObject & excp )
     {
@@ -74,8 +75,8 @@ int itkEuclideanDistanceMetricTest(int, char* [] )
   measurement[1] = 3.3;
   measurement[2] = 4.0;
 
-  double trueValue = 3.31662;
-  double distanceComputed = distance->Evaluate( measurement );
+  double       trueValue = 3.31662;
+  double       distanceComputed = distance->Evaluate( measurement );
   const double tolerance = 0.001;
 
   if( vcl_fabs( distanceComputed - trueValue) > tolerance )

@@ -19,7 +19,8 @@
 #include <iostream>
 #include "itkLabelObject.h"
 
-int itkLabelObjectTest(int argc, char * argv[])
+int
+itkLabelObjectTest(int argc, char * argv[])
 {
 
   if( argc != 1 )
@@ -33,7 +34,8 @@ int itkLabelObjectTest(int argc, char * argv[])
   typedef itk::LabelObject< unsigned long, dim > LabelObjectType;
   typedef LabelObjectType::IndexType             IndexType;
 
-  // testing AddLine(), GetNumberOfLines(), GetLineContainer() const and Optimize()
+  // testing AddLine(), GetNumberOfLines(), GetLineContainer() const and
+  // Optimize()
 
   LabelObjectType::Pointer lo = LabelObjectType::New();
 
@@ -69,7 +71,8 @@ int itkLabelObjectTest(int argc, char * argv[])
   idx[0] = 10;
   idx[1] = 1;
   idx[2] = 1;
-  // add this line with an itk::LabelLineObject to test the AddLine(LabelObjectLine) method
+  // add this line with an itk::LabelLineObject to test the
+  // AddLine(LabelObjectLine) method
   lo->AddLine( LabelObjectType::LineType(idx, 1) );
 
   lo->Optimize();
@@ -117,7 +120,7 @@ int itkLabelObjectTest(int argc, char * argv[])
 
   lo->Print(std::cerr);
 
-  while( ! it1.IsAtEnd() )
+  while( !it1.IsAtEnd() )
     {
     std::cout << it1.GetLine().GetIndex() << "-" << it1.GetLine().GetLength() << "    ";
     std::cout << it2.GetLine().GetIndex() << "-" << it2.GetLine().GetLength();
@@ -132,7 +135,7 @@ int itkLabelObjectTest(int argc, char * argv[])
     ++it2;
     }
 
-  if( ! it2.IsAtEnd() )
+  if( !it2.IsAtEnd() )
     {
     std::cerr << "it2 not at end" << std::endl;
     return EXIT_FAILURE;
@@ -181,7 +184,8 @@ int itkLabelObjectTest(int argc, char * argv[])
     {
     if( lo->GetIndex( i ) != idxs[i] )
       {
-      std::cerr << "Wrong index returned by GetIndex(" << i << "): " << lo->GetIndex( i ) << ". " << idxs[i] << " was expected." << std::endl;
+      std::cerr << "Wrong index returned by GetIndex(" << i << "): " << lo->GetIndex( i ) << ". " << idxs[i] <<
+        " was expected." << std::endl;
       return EXIT_FAILURE;
       }
     if( !lo->HasIndex( idxs[i] ) )
@@ -200,7 +204,6 @@ int itkLabelObjectTest(int argc, char * argv[])
     std::cerr << "label object shouldn't have the index " << idx << "!" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

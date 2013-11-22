@@ -24,28 +24,34 @@
 
 // class to support progress feeback
 
-
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::LightProcessObject * o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::LightProcessObject::Pointer m_Process;
 };
 
-
-int itkImagePCAShapeModelEstimatorTest(int, char* [] )
+int
+itkImagePCAShapeModelEstimatorTest(int, char* [] )
 {
   //Data definitions
   const itk::Size<2u>::SizeValueType IMGWIDTH = 2;
   const itk::Size<2u>::SizeValueType IMGHEIGHT = 2;
-  const unsigned int NDIMENSION = 2;
-  const unsigned int NUMTRAINIMAGES = 3;
-  const unsigned int NUMLARGESTPC = 2;
+  const unsigned int                 NDIMENSION = 2;
+  const unsigned int                 NUMTRAINIMAGES = 3;
+  const unsigned int                 NUMLARGESTPC = 2;
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   //------------------------------------------------------
   //Create 3 simple test images with
@@ -53,7 +59,6 @@ int itkImagePCAShapeModelEstimatorTest(int, char* [] )
   typedef itk::Image<double,NDIMENSION> InputImageType;
   typedef itk::Image<double,NDIMENSION> OutputImageType;
   typedef itk::Image<double,NDIMENSION> MeanImageType;
-
 
   typedef InputImageType::PixelType ImagePixelType;
 
@@ -190,16 +195,15 @@ int itkImagePCAShapeModelEstimatorTest(int, char* [] )
   std::cout << "" << std::endl;
   std::cout << "" << std::endl;
 
-
   //Print the MeanImage
   OutputImageType::Pointer outImage = applyPCAShapeEstimator->GetOutput( 0 );
-  OutputImageIterator outImageIt( outImage, outImage->GetBufferedRegion() );
+  OutputImageIterator      outImageIt( outImage, outImage->GetBufferedRegion() );
   outImageIt.GoToBegin();
 
   std::cout << "The mean image is:" << std::endl;
   while(!outImageIt.IsAtEnd() )
     {
-    std::cout << (double)(outImageIt.Get()) << ";"  << std::endl;
+    std::cout << (double)(outImageIt.Get() ) << ";"  << std::endl;
     ++outImageIt;
     }
   std::cout << "  " << std::endl;
@@ -208,14 +212,14 @@ int itkImagePCAShapeModelEstimatorTest(int, char* [] )
   for (unsigned int j=1; j< NUMLARGESTPC + 1; j++ )
     {
     OutputImageType::Pointer outImage2 = applyPCAShapeEstimator->GetOutput( j );
-    OutputImageIterator outImage2It( outImage2, outImage2->GetBufferedRegion() );
+    OutputImageIterator      outImage2It( outImage2, outImage2->GetBufferedRegion() );
     outImage2It.GoToBegin();
 
     std::cout << "" << std::endl;
     std::cout << "The eigen vector number: " << j << " is:" << std::endl;
     while(!outImage2It.IsAtEnd() )
       {
-      std::cout << (double) (outImage2It.Get()) << ";"  << std::endl;
+      std::cout << (double) (outImage2It.Get() ) << ";"  << std::endl;
       ++outImage2It;
       }
     std::cout << "  " << std::endl;
@@ -233,7 +237,6 @@ int itkImagePCAShapeModelEstimatorTest(int, char* [] )
     std::cout<< "Test failed" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

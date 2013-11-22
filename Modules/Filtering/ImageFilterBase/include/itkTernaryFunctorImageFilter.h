@@ -37,7 +37,7 @@ namespace itk
  */
 template< typename TInputImage1, typename TInputImage2,
           typename TInputImage3, typename TOutputImage, typename TFunction    >
-class TernaryFunctorImageFilter:
+class TernaryFunctorImageFilter :
   public InPlaceImageFilter< TInputImage1, TOutputImage >
 {
 public:
@@ -85,13 +85,17 @@ public:
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer). */
-  FunctorType & GetFunctor(void) { return m_Functor; }
+  FunctorType &
+  GetFunctor(void) {
+    return m_Functor;
+  }
 
   /** Get the functor object.  The functor is returned by reference.
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer.) */
-  const FunctorType & GetFunctor() const
+  const FunctorType &
+  GetFunctor() const
   {
     return m_Functor;
   }
@@ -102,7 +106,8 @@ public:
    * This method requires an operator==() be defined on the functor
    * (or the compiler's default implementation of operator==() being
    * appropriate). */
-  void SetFunctor(const FunctorType & functor)
+  void
+  SetFunctor(const FunctorType & functor)
   {
     if ( !( functor == m_Functor ) )
       {
@@ -134,7 +139,9 @@ public:
 
 protected:
   TernaryFunctorImageFilter();
-  virtual ~TernaryFunctorImageFilter() {}
+  virtual
+  ~TernaryFunctorImageFilter() {
+  }
 
   /** Validate the presence of all three inputs. If one or more inputs
    * are missing, throw an exception. */

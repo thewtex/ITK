@@ -64,15 +64,15 @@ namespace itk
  */
 template<typename TTransform>
 class TimeVaryingBSplineVelocityFieldTransformParametersAdaptor
-: public TransformParametersAdaptor<TTransform>
+  : public TransformParametersAdaptor<TTransform>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef TimeVaryingBSplineVelocityFieldTransformParametersAdaptor   Self;
-  typedef TransformParametersAdaptor<TTransform>                      Superclass;
-  typedef SmartPointer<Self>                                          Pointer;
-  typedef SmartPointer<const Self>                                    ConstPointer;
+  typedef TimeVaryingBSplineVelocityFieldTransformParametersAdaptor Self;
+  typedef TransformParametersAdaptor<TTransform>                    Superclass;
+  typedef SmartPointer<Self>                                        Pointer;
+  typedef SmartPointer<const Self>                                  ConstPointer;
 
   /** New macro for creation of through a Smart Pointer. */
   itkNewMacro( Self );
@@ -81,24 +81,26 @@ public:
   itkTypeMacro( TimeVaryingBSplineVelocityFieldTransformParametersAdaptor, TransformParametersAdaptor );
 
   /** Typedefs associated with the transform */
-  typedef TTransform                                     TransformType;
-  typedef typename TransformType::Pointer                TransformPointer;
-  typedef typename TransformType::ParametersType         ParametersType;
-  typedef typename TransformType::ParametersValueType    ParametersValueType;
+  typedef TTransform                                  TransformType;
+  typedef typename TransformType::Pointer             TransformPointer;
+  typedef typename TransformType::ParametersType      ParametersType;
+  typedef typename TransformType::ParametersValueType ParametersValueType;
 
-  typedef ParametersValueType                            RealType;
+  typedef ParametersValueType RealType;
 
-  typedef typename TransformType::TimeVaryingVelocityFieldControlPointLatticeType   TimeVaryingVelocityFieldControlPointLatticeType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::Pointer         TimeVaryingVelocityFieldControlPointLatticePointer;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::RegionType      RegionType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::IndexType       IndexType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::PixelType       VectorType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::PointType       OriginType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SpacingType     SpacingType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SizeType        SizeType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SizeValueType   SizeValueType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SizeType        MeshSizeType;
-  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::DirectionType   DirectionType;
+  typedef typename TransformType::TimeVaryingVelocityFieldControlPointLatticeType
+    TimeVaryingVelocityFieldControlPointLatticeType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::Pointer
+    TimeVaryingVelocityFieldControlPointLatticePointer;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::RegionType    RegionType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::IndexType     IndexType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::PixelType     VectorType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::PointType     OriginType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SpacingType   SpacingType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SizeType      SizeType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SizeValueType SizeValueType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::SizeType      MeshSizeType;
+  typedef typename TimeVaryingVelocityFieldControlPointLatticeType::DirectionType DirectionType;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( TotalDimension, unsigned int, TransformType::Dimension + 1 );
@@ -140,45 +142,53 @@ public:
   itkGetConstReferenceMacro( RequiredTransformDomainDirection, DirectionType );
 
   /** Get the required control point lattice origin. */
-  const OriginType GetRequiredControlPointLatticeOrigin() const
-    {
+  const OriginType
+  GetRequiredControlPointLatticeOrigin() const
+  {
     OriginType requiredLatticeOrigin;
+
     for( SizeValueType i = 0; i < TotalDimension; i++ )
       {
       requiredLatticeOrigin[i] = this->m_RequiredFixedParameters[TotalDimension + i];
       }
     return requiredLatticeOrigin;
-    }
+  }
 
   /** Get the required control point lattice spacing. */
-  const SpacingType GetRequiredControlPointLatticeSpacing() const
-    {
+  const SpacingType
+  GetRequiredControlPointLatticeSpacing() const
+  {
     SpacingType requiredLatticeSpacing;
+
     for( SizeValueType i = 0; i < TotalDimension; i++ )
       {
       RealType domainPhysicalDimensions = static_cast<RealType>( this->m_RequiredTransformDomainSize[i] - 1.0 ) *
         this->m_RequiredTransformDomainSpacing[i];
-      requiredLatticeSpacing[i] = domainPhysicalDimensions / static_cast<RealType>( this->m_RequiredTransformDomainMeshSize[i] );
+      requiredLatticeSpacing[i] = domainPhysicalDimensions /
+        static_cast<RealType>( this->m_RequiredTransformDomainMeshSize[i] );
       }
     return requiredLatticeSpacing;
-    }
+  }
 
   /** Get the required control point lattice size. */
-  const SizeType GetRequiredControlPointLatticeSize() const
-    {
+  const SizeType
+  GetRequiredControlPointLatticeSize() const
+  {
     SizeType requiredLatticeSize;
+
     for( SizeValueType i = 0; i < TotalDimension; i++ )
       {
       requiredLatticeSize[i] = static_cast<SizeValueType>( this->m_RequiredFixedParameters[i] );
       }
     return requiredLatticeSize;
-    }
+  }
 
   /** Get the required control point lattice direction. */
-  const DirectionType GetRequiredControlPointLatticeDirection() const
-    {
+  const DirectionType
+  GetRequiredControlPointLatticeDirection() const
+  {
     return this->m_RequiredTransformDomainDirection;
-    }
+  }
 
   /** Initialize the transform using the specified fixed parameters */
   virtual void AdaptTransformParameters();
@@ -192,19 +202,26 @@ protected:
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
 private:
-  TimeVaryingBSplineVelocityFieldTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  TimeVaryingBSplineVelocityFieldTransformParametersAdaptor( const Self & ); //purposely
+                                                                             //
+                                                                             // not
+                                                                             //
+                                                                             // implemented
+  void operator=( const Self & );                                            //purposely
+
+  // not
+  // implemented
 
   /** Helper function to set m_RequiredFixedParameters */
   void UpdateRequiredFixedParameters();
 
-  MeshSizeType                               m_RequiredTransformDomainMeshSize;
-  OriginType                                 m_RequiredTransformDomainOrigin;
-  DirectionType                              m_RequiredTransformDomainDirection;
-  SpacingType                                m_RequiredTransformDomainSpacing;
-  SizeType                                   m_RequiredTransformDomainSize;
+  MeshSizeType  m_RequiredTransformDomainMeshSize;
+  OriginType    m_RequiredTransformDomainOrigin;
+  DirectionType m_RequiredTransformDomainDirection;
+  SpacingType   m_RequiredTransformDomainSpacing;
+  SizeType      m_RequiredTransformDomainSize;
 
-  SizeValueType                              m_SplineOrder;
+  SizeValueType m_SplineOrder;
 
 }; //class TimeVaryingBSplineVelocityFieldTransformParametersAdaptor
 }  // namespace itk

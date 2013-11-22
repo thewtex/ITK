@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMSolverTest3D(int argc, char *argv[])
+int
+itkFEMSolverTest3D(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -41,7 +41,10 @@ int itkFEMSolverTest3D(int argc, char *argv[])
   typedef FEMSpatialObjectReaderType::Pointer FEMSpatialObjectReaderPointer;
   FEMSpatialObjectReaderPointer SpatialReader = FEMSpatialObjectReaderType::New();
   SpatialReader->SetFileName( argv[1] );
-//  SpatialReader->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/3DC0LinearHexahedronMembraneTest.meta");
+//
+//
+//
+// SpatialReader->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/3DC0LinearHexahedronMembraneTest.meta");
   SpatialReader->Update();
 
   FEMSpatialObjectReaderType::ScenePointer myScene = SpatialReader->GetScene();
@@ -104,7 +107,10 @@ int itkFEMSolverTest3D(int argc, char *argv[])
   FEMSpatialObjectWriterPointer SpatialWriter = FEMSpatialObjectWriterType::New();
   SpatialWriter->SetInput(femSODef);
   SpatialWriter->SetFileName( argv[2] );
-//  SpatialWriter->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/3DC0LinearHexahedronMembraneTestWrite.meta");
+//
+//
+//
+// SpatialWriter->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/3DC0LinearHexahedronMembraneTestWrite.meta");
   SpatialWriter->Update();
 
   std::cout << "Test PASSED!" << std::endl;

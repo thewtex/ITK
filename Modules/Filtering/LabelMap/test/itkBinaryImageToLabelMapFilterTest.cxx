@@ -24,8 +24,8 @@
 #include "itkTestingMacros.h"
 #include "itkSimpleFilterWatcher.h"
 
-
-int itkBinaryImageToLabelMapFilterTest( int argc, char * argv [] )
+int
+itkBinaryImageToLabelMapFilterTest( int argc, char * argv [] )
 {
 
   if( argc != 7 )
@@ -44,8 +44,8 @@ int itkBinaryImageToLabelMapFilterTest( int argc, char * argv [] )
 
   typedef itk::Image< BinaryPixelType, Dimension > ImageType;
 
-  typedef itk::LabelObject< LabelPixelType, Dimension >   LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType >                LabelMapType;
+  typedef itk::LabelObject< LabelPixelType, Dimension > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType >              LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
@@ -71,7 +71,6 @@ int itkBinaryImageToLabelMapFilterTest( int argc, char * argv [] )
 
   writer->SetFileName( argv[2] );
   writer->UseCompressionOn();
-
 
   imageToLabel->SetInput( reader->GetOutput() );
   labelToImage->SetInput( imageToLabel->GetOutput() );

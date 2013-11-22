@@ -32,16 +32,19 @@
 
 namespace itk
 {
-ThreadIdType MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
+ThreadIdType
+MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
 {
   int num;
+
   // If we are not multithreading, the number of threads should
   // always be 1
   num = 1;
   return num;
 }
 
-void MultiThreader::MultipleMethodExecute()
+void
+MultiThreader::MultipleMethodExecute()
 {
   ThreadIdType thread_loop;
 
@@ -66,7 +69,8 @@ void MultiThreader::MultipleMethodExecute()
   ( m_MultipleMethod[0] )( (void *)( &m_ThreadInfoArray[0] ) );
 }
 
-ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
+ThreadIdType
+MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
 {
   int id = 0;
 
@@ -107,7 +111,8 @@ ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   return id;
 }
 
-void MultiThreader::TerminateThread(ThreadIdType ThreadID)
+void
+MultiThreader::TerminateThread(ThreadIdType ThreadID)
 {
   if ( !m_SpawnedThreadActiveFlag[ThreadID] )
     {
@@ -141,4 +146,5 @@ MultiThreader
   // No threading library specified.  Do nothing.  The computation
   // will be run by the main execution thread.
 }
+
 } // end namespace itk

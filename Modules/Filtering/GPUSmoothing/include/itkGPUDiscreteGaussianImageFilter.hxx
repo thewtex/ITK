@@ -68,11 +68,11 @@ void
 GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 throw( InvalidRequestedRegionError )
-  {
+{
   // call the superclass' implementation of this method. this should
   // copy the output requested region to the input requested region
   CPUSuperclass::GenerateInputRequestedRegion();
-  }
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -83,6 +83,8 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
   typedef typename itk::GPUTraits< TOutputImage >::Type GPUOutputImage;
 
   typename GPUOutputImage::Pointer output =  dynamic_cast< GPUOutputImage * >( this->GetOutput() ); //this->ProcessObject::GetOutput(0)
+                                                                                                    //
+                                                                                                    //
                                                                                                     // );
 
   //typename TOutputImage::Pointer output = this->GetOutput();

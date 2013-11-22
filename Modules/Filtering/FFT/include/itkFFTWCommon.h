@@ -26,7 +26,8 @@
 #include "itkMutexLockHolder.h"
 
 #if !defined(FFTW_WISDOM_ONLY)
-// FFTW_WISDOM_ONLY is a "beyond guru" option that is only available in fftw 3.2.2
+// FFTW_WISDOM_ONLY is a "beyond guru" option that is only available in fftw
+// 3.2.2
 // to be compatible with all the fftw 3.x API, we need to define this away here:
 #error "FFTW 3.3.2 or later is required so that FFTW_WISDOM_ONLY is defined."
 #endif
@@ -53,8 +54,12 @@ class Proxy
   // empty -- only double and float specializations work
 
 protected:
-  Proxy() {};
-  ~Proxy() {};
+  Proxy() {
+  }
+
+  ~Proxy() {
+  }
+
 };
 
 #if defined( ITK_USE_FFTWF )
@@ -68,25 +73,28 @@ public:
   typedef fftwf_plan    PlanType;
   typedef Proxy<float>  Self;
 
-  static PlanType Plan_dft_c2r_1d(int n,
-                                  ComplexType *in,
-                                  PixelType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r_1d(int n,
+                  ComplexType *in,
+                  PixelType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     return Plan_dft_c2r(1, &n, in, out, flags, threads, canDestroyInput);
   }
 
-  static PlanType Plan_dft_c2r_2d(int nx,
-                                  int ny,
-                                  ComplexType *in,
-                                  PixelType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r_2d(int nx,
+                  int ny,
+                  ComplexType *in,
+                  PixelType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[2];
+
     sizes[0] = nx;
     sizes[1] = ny;
     PlanType plan = Plan_dft_c2r(2, sizes, in, out, flags, threads, canDestroyInput);
@@ -94,16 +102,18 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_c2r_3d(int nx,
-                                  int ny,
-                                  int nz,
-                                  ComplexType *in,
-                                  PixelType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r_3d(int nx,
+                  int ny,
+                  int nz,
+                  ComplexType *in,
+                  PixelType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[3];
+
     sizes[0] = nx;
     sizes[1] = ny;
     sizes[2] = nz;
@@ -112,20 +122,21 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_c2r(int rank,
-                               const int *n,
-                               ComplexType *in,
-                               PixelType *out,
-                               unsigned flags,
-                               int threads=1,
-                               bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r(int rank,
+               const int *n,
+               ComplexType *in,
+               PixelType *out,
+               unsigned flags,
+               int threads=1,
+               bool canDestroyInput=false)
   {
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
     fftwf_plan_with_nthreads(threads);
     // don't add FFTW_WISDOM_ONLY if the plan rigor is FFTW_ESTIMATE
     // because FFTW_ESTIMATE guarantee to not destroy the input
     unsigned roflags = flags;
-    if( ! (flags & FFTW_ESTIMATE) )
+    if( !(flags & FFTW_ESTIMATE) )
       {
       roflags = flags | FFTW_WISDOM_ONLY;
       }
@@ -158,26 +169,28 @@ public:
     return plan;
   }
 
-
-  static PlanType Plan_dft_r2c_1d(int n,
-                                  PixelType *in,
-                                  ComplexType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c_1d(int n,
+                  PixelType *in,
+                  ComplexType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     return Plan_dft_r2c(1, &n, in, out, flags, threads, canDestroyInput);
   }
 
-  static PlanType Plan_dft_r2c_2d(int nx,
-                                  int ny,
-                                  PixelType *in,
-                                  ComplexType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c_2d(int nx,
+                  int ny,
+                  PixelType *in,
+                  ComplexType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[2];
+
     sizes[0] = nx;
     sizes[1] = ny;
     PlanType plan = Plan_dft_r2c(2, sizes, in, out, flags, threads, canDestroyInput);
@@ -185,16 +198,18 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_r2c_3d(int nx,
-                                  int ny,
-                                  int nz,
-                                  PixelType *in,
-                                  ComplexType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c_3d(int nx,
+                  int ny,
+                  int nz,
+                  PixelType *in,
+                  ComplexType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[3];
+
     sizes[0] = nx;
     sizes[1] = ny;
     sizes[2] = nz;
@@ -203,13 +218,14 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_r2c(int rank,
-                               const int *n,
-                               PixelType *in,
-                               ComplexType *out,
-                               unsigned flags,
-                               int threads=1,
-                               bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c(int rank,
+               const int *n,
+               PixelType *in,
+               ComplexType *out,
+               unsigned flags,
+               int threads=1,
+               bool canDestroyInput=false)
   {
     //
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
@@ -217,7 +233,7 @@ public:
     // don't add FFTW_WISDOM_ONLY if the plan rigor is FFTW_ESTIMATE
     // because FFTW_ESTIMATE guarantee to not destroy the input
     unsigned roflags = flags;
-    if( ! (flags & FFTW_ESTIMATE) )
+    if( !(flags & FFTW_ESTIMATE) )
       {
       roflags = flags | FFTW_WISDOM_ONLY;
       }
@@ -250,27 +266,30 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_1d(int n,
-                                  ComplexType *in,
-                                  ComplexType *out,
-                                  int sign,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_1d(int n,
+              ComplexType *in,
+              ComplexType *out,
+              int sign,
+              unsigned flags,
+              int threads=1,
+              bool canDestroyInput=false)
   {
     return Plan_dft(1, &n, in, out,sign , flags, threads, canDestroyInput);
   }
 
-  static PlanType Plan_dft_2d(int nx,
-                                  int ny,
-                                  ComplexType *in,
-                                  ComplexType *out,
-                                  int sign,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_2d(int nx,
+              int ny,
+              ComplexType *in,
+              ComplexType *out,
+              int sign,
+              unsigned flags,
+              int threads=1,
+              bool canDestroyInput=false)
   {
     int * sizes = new int[2];
+
     sizes[0] = nx;
     sizes[1] = ny;
     PlanType plan = Plan_dft(2, sizes, in, out, sign, flags, threads, canDestroyInput);
@@ -278,17 +297,19 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_3d(int nx,
-                                  int ny,
-                                  int nz,
-                                  ComplexType *in,
-                                  ComplexType *out,
-                                  int sign,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_3d(int nx,
+              int ny,
+              int nz,
+              ComplexType *in,
+              ComplexType *out,
+              int sign,
+              unsigned flags,
+              int threads=1,
+              bool canDestroyInput=false)
   {
     int * sizes = new int[3];
+
     sizes[0] = nx;
     sizes[1] = ny;
     sizes[2] = nz;
@@ -297,21 +318,22 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft(int rank,
-                               const int *n,
-                               ComplexType *in,
-                               ComplexType *out,
-                               int sign,
-                               unsigned flags,
-                               int threads=1,
-                               bool canDestroyInput=false)
+  static PlanType
+  Plan_dft(int rank,
+           const int *n,
+           ComplexType *in,
+           ComplexType *out,
+           int sign,
+           unsigned flags,
+           int threads=1,
+           bool canDestroyInput=false)
   {
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
     fftwf_plan_with_nthreads(threads);
     // don't add FFTW_WISDOM_ONLY if the plan rigor is FFTW_ESTIMATE
     // because FFTW_ESTIMATE guarantee to not destroy the input
     unsigned roflags = flags;
-    if( ! (flags & FFTW_ESTIMATE) )
+    if( !(flags & FFTW_ESTIMATE) )
       {
       roflags = flags | FFTW_WISDOM_ONLY;
       }
@@ -344,20 +366,22 @@ public:
     return plan;
   }
 
-
-  static void Execute(PlanType p)
+  static void
+  Execute(PlanType p)
   {
     fftwf_execute(p);
   }
-  static void DestroyPlan(PlanType p)
+
+  static void
+  DestroyPlan(PlanType p)
   {
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
     fftwf_destroy_plan(p);
   }
+
 };
 
 #endif // ITK_USE_FFTWF
-
 
 #if defined( ITK_USE_FFTWD )
 template< >
@@ -369,25 +393,28 @@ public:
   typedef fftw_plan     PlanType;
   typedef Proxy<double> Self;
 
-  static PlanType Plan_dft_c2r_1d(int n,
-                                  ComplexType *in,
-                                  PixelType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r_1d(int n,
+                  ComplexType *in,
+                  PixelType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     return Plan_dft_c2r(1, &n, in, out, flags, threads, canDestroyInput);
   }
 
-  static PlanType Plan_dft_c2r_2d(int nx,
-                                  int ny,
-                                  ComplexType *in,
-                                  PixelType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r_2d(int nx,
+                  int ny,
+                  ComplexType *in,
+                  PixelType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[2];
+
     sizes[0] = nx;
     sizes[1] = ny;
     PlanType plan = Plan_dft_c2r(2, sizes, in, out, flags, threads, canDestroyInput);
@@ -395,16 +422,18 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_c2r_3d(int nx,
-                                  int ny,
-                                  int nz,
-                                  ComplexType *in,
-                                  PixelType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r_3d(int nx,
+                  int ny,
+                  int nz,
+                  ComplexType *in,
+                  PixelType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[3];
+
     sizes[0] = nx;
     sizes[1] = ny;
     sizes[2] = nz;
@@ -413,20 +442,21 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_c2r(int rank,
-                               const int *n,
-                               ComplexType *in,
-                               PixelType *out,
-                               unsigned flags,
-                               int threads=1,
-                               bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_c2r(int rank,
+               const int *n,
+               ComplexType *in,
+               PixelType *out,
+               unsigned flags,
+               int threads=1,
+               bool canDestroyInput=false)
   {
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
     fftw_plan_with_nthreads(threads);
     // don't add FFTW_WISDOM_ONLY if the plan rigor is FFTW_ESTIMATE
     // because FFTW_ESTIMATE guarantee to not destroy the input
     unsigned roflags = flags;
-    if( ! (flags & FFTW_ESTIMATE) )
+    if( !(flags & FFTW_ESTIMATE) )
       {
       roflags = flags | FFTW_WISDOM_ONLY;
       }
@@ -459,26 +489,28 @@ public:
     return plan;
   }
 
-
-  static PlanType Plan_dft_r2c_1d(int n,
-                                  PixelType *in,
-                                  ComplexType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c_1d(int n,
+                  PixelType *in,
+                  ComplexType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     return Plan_dft_r2c(1, &n, in, out, flags, threads, canDestroyInput);
   }
 
-  static PlanType Plan_dft_r2c_2d(int nx,
-                                  int ny,
-                                  PixelType *in,
-                                  ComplexType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c_2d(int nx,
+                  int ny,
+                  PixelType *in,
+                  ComplexType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[2];
+
     sizes[0] = nx;
     sizes[1] = ny;
     PlanType plan = Plan_dft_r2c(2, sizes, in, out, flags, threads, canDestroyInput);
@@ -486,16 +518,18 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_r2c_3d(int nx,
-                                  int ny,
-                                  int nz,
-                                  PixelType *in,
-                                  ComplexType *out,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c_3d(int nx,
+                  int ny,
+                  int nz,
+                  PixelType *in,
+                  ComplexType *out,
+                  unsigned flags,
+                  int threads=1,
+                  bool canDestroyInput=false)
   {
     int * sizes = new int[3];
+
     sizes[0] = nx;
     sizes[1] = ny;
     sizes[2] = nz;
@@ -504,20 +538,21 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_r2c(int rank,
-                               const int *n,
-                               PixelType *in,
-                               ComplexType *out,
-                               unsigned flags,
-                               int threads=1,
-                               bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_r2c(int rank,
+               const int *n,
+               PixelType *in,
+               ComplexType *out,
+               unsigned flags,
+               int threads=1,
+               bool canDestroyInput=false)
   {
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
     fftw_plan_with_nthreads(threads);
     // don't add FFTW_WISDOM_ONLY if the plan rigor is FFTW_ESTIMATE
     // because FFTW_ESTIMATE guarantee to not destroy the input
     unsigned roflags = flags;
-    if( ! (flags & FFTW_ESTIMATE) )
+    if( !(flags & FFTW_ESTIMATE) )
       {
       roflags = flags | FFTW_WISDOM_ONLY;
       }
@@ -550,27 +585,30 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_1d(int n,
-                                  ComplexType *in,
-                                  ComplexType *out,
-                                  int sign,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_1d(int n,
+              ComplexType *in,
+              ComplexType *out,
+              int sign,
+              unsigned flags,
+              int threads=1,
+              bool canDestroyInput=false)
   {
     return Plan_dft(1, &n, in, out,sign , flags, threads, canDestroyInput);
   }
 
-  static PlanType Plan_dft_2d(int nx,
-                                  int ny,
-                                  ComplexType *in,
-                                  ComplexType *out,
-                                  int sign,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_2d(int nx,
+              int ny,
+              ComplexType *in,
+              ComplexType *out,
+              int sign,
+              unsigned flags,
+              int threads=1,
+              bool canDestroyInput=false)
   {
     int * sizes = new int[2];
+
     sizes[0] = nx;
     sizes[1] = ny;
     PlanType plan = Plan_dft(2, sizes, in, out, sign, flags, threads, canDestroyInput);
@@ -578,17 +616,19 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft_3d(int nx,
-                                  int ny,
-                                  int nz,
-                                  ComplexType *in,
-                                  ComplexType *out,
-                                  int sign,
-                                  unsigned flags,
-                                  int threads=1,
-                                  bool canDestroyInput=false)
+  static PlanType
+  Plan_dft_3d(int nx,
+              int ny,
+              int nz,
+              ComplexType *in,
+              ComplexType *out,
+              int sign,
+              unsigned flags,
+              int threads=1,
+              bool canDestroyInput=false)
   {
     int * sizes = new int[3];
+
     sizes[0] = nx;
     sizes[1] = ny;
     sizes[2] = nz;
@@ -597,21 +637,22 @@ public:
     return plan;
   }
 
-  static PlanType Plan_dft(int rank,
-                               const int *n,
-                               ComplexType *in,
-                               ComplexType *out,
-                               int sign,
-                               unsigned flags,
-                               int threads=1,
-                               bool canDestroyInput=false)
+  static PlanType
+  Plan_dft(int rank,
+           const int *n,
+           ComplexType *in,
+           ComplexType *out,
+           int sign,
+           unsigned flags,
+           int threads=1,
+           bool canDestroyInput=false)
   {
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
     fftw_plan_with_nthreads(threads);
     // don't add FFTW_WISDOM_ONLY if the plan rigor is FFTW_ESTIMATE
     // because FFTW_ESTIMATE guarantee to not destroy the input
     unsigned roflags = flags;
-    if( ! (flags & FFTW_ESTIMATE) )
+    if( !(flags & FFTW_ESTIMATE) )
       {
       roflags = flags | FFTW_WISDOM_ONLY;
       }
@@ -644,16 +685,19 @@ public:
     return plan;
   }
 
-
-  static void Execute(PlanType p)
+  static void
+  Execute(PlanType p)
   {
     fftw_execute(p);
   }
-  static void DestroyPlan(PlanType p)
+
+  static void
+  DestroyPlan(PlanType p)
   {
     MutexLockHolder< FFTWGlobalConfiguration::MutexType > lock( FFTWGlobalConfiguration::GetLockMutex() );
     fftw_destroy_plan(p);
   }
+
 };
 
 #endif

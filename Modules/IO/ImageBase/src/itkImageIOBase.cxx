@@ -23,7 +23,7 @@
 
 namespace itk
 {
-ImageIOBase::ImageIOBase():
+ImageIOBase::ImageIOBase() :
   m_PixelType(SCALAR),
   m_ComponentType(UNKNOWNCOMPONENTTYPE),
   m_ByteOrder(OrderNotApplicable),
@@ -33,7 +33,8 @@ ImageIOBase::ImageIOBase():
   Reset(false);
 }
 
-void ImageIOBase::Reset(const bool)
+void
+ImageIOBase::Reset(const bool)
 {
   m_Initialized = false;
   m_FileName = "";
@@ -50,7 +51,8 @@ void ImageIOBase::Reset(const bool)
 }
 
 ImageIOBase::~ImageIOBase()
-{}
+{
+}
 
 const ImageIOBase::ArrayOfExtensionsType &
 ImageIOBase::GetSupportedWriteExtensions() const
@@ -64,18 +66,21 @@ ImageIOBase::GetSupportedReadExtensions() const
   return this->m_SupportedReadExtensions;
 }
 
-void ImageIOBase::AddSupportedReadExtension(const char *extension)
+void
+ImageIOBase::AddSupportedReadExtension(const char *extension)
 {
   this->m_SupportedReadExtensions.push_back(extension);
 }
 
-void ImageIOBase::AddSupportedWriteExtension(const char *extension)
+void
+ImageIOBase::AddSupportedWriteExtension(const char *extension)
 {
   this->m_SupportedWriteExtensions.push_back(extension);
 }
 
-void ImageIOBase::Resize(const unsigned int numDimensions,
-                         const unsigned int *dimensions)
+void
+ImageIOBase::Resize(const unsigned int numDimensions,
+                    const unsigned int *dimensions)
 {
   m_NumberOfDimensions = numDimensions;
   if ( dimensions != NULL )
@@ -88,7 +93,8 @@ void ImageIOBase::Resize(const unsigned int numDimensions,
     }
 }
 
-void ImageIOBase::SetDimensions(unsigned int i, unsigned int dim)
+void
+ImageIOBase::SetDimensions(unsigned int i, unsigned int dim)
 {
   if ( i >= m_Dimensions.size() )
     {
@@ -103,7 +109,8 @@ void ImageIOBase::SetDimensions(unsigned int i, unsigned int dim)
   m_Dimensions[i] = dim;
 }
 
-void ImageIOBase::SetOrigin(unsigned int i, double origin)
+void
+ImageIOBase::SetOrigin(unsigned int i, double origin)
 {
   if ( i >= m_Origin.size() )
     {
@@ -118,7 +125,8 @@ void ImageIOBase::SetOrigin(unsigned int i, double origin)
   m_Origin[i] = origin;
 }
 
-void ImageIOBase::SetSpacing(unsigned int i, double spacing)
+void
+ImageIOBase::SetSpacing(unsigned int i, double spacing)
 {
   if ( i >= m_Spacing.size() )
     {
@@ -133,7 +141,8 @@ void ImageIOBase::SetSpacing(unsigned int i, double spacing)
   m_Spacing[i] = spacing;
 }
 
-void ImageIOBase::SetDirection(unsigned int i, const std::vector< double > & direction)
+void
+ImageIOBase::SetDirection(unsigned int i, const std::vector< double > & direction)
 {
   if ( i >= m_Direction.size() )
     {
@@ -148,7 +157,8 @@ void ImageIOBase::SetDirection(unsigned int i, const std::vector< double > & dir
   m_Direction[i] = direction;
 }
 
-void ImageIOBase::SetDirection(unsigned int i, const vnl_vector< double > & direction)
+void
+ImageIOBase::SetDirection(unsigned int i, const vnl_vector< double > & direction)
 {
   if ( i >= m_Direction.size() )
     {
@@ -169,7 +179,8 @@ void ImageIOBase::SetDirection(unsigned int i, const vnl_vector< double > & dire
   m_Direction[i] = v;
 }
 
-const std::type_info & ImageIOBase::GetComponentTypeInfo() const
+const std::type_info &
+ImageIOBase::GetComponentTypeInfo() const
 {
   switch ( m_ComponentType )
     {
@@ -200,7 +211,8 @@ const std::type_info & ImageIOBase::GetComponentTypeInfo() const
   return typeid( ImageIOBase::UnknownType );
 }
 
-void ImageIOBase::ComputeStrides()
+void
+ImageIOBase::ComputeStrides()
 {
   m_Strides[0] = this->GetComponentSize();
   m_Strides[1] = m_NumberOfComponents * m_Strides[0];
@@ -268,7 +280,8 @@ ImageIOBase
   return m_Strides[3];
 }
 
-void ImageIOBase::SetNumberOfDimensions(unsigned int dim)
+void
+ImageIOBase::SetNumberOfDimensions(unsigned int dim)
 {
   if ( dim != m_NumberOfDimensions )
     {
@@ -324,7 +337,8 @@ ImageIOBase
   return true;
 }
 
-unsigned int ImageIOBase::GetPixelSize() const
+unsigned int
+ImageIOBase::GetPixelSize() const
 {
   if ( m_ComponentType == UNKNOWNCOMPONENTTYPE
        || m_PixelType == UNKNOWNPIXELTYPE )
@@ -337,7 +351,8 @@ unsigned int ImageIOBase::GetPixelSize() const
   return this->GetComponentSize() * this->GetNumberOfComponents();
 }
 
-unsigned int ImageIOBase::GetComponentSize() const
+unsigned int
+ImageIOBase::GetComponentSize() const
 {
   switch ( m_ComponentType )
     {
@@ -369,7 +384,8 @@ unsigned int ImageIOBase::GetComponentSize() const
   return 0;
 }
 
-std::string ImageIOBase::GetFileTypeAsString(FileType t) const
+std::string
+ImageIOBase::GetFileTypeAsString(FileType t) const
 {
   switch ( t )
     {
@@ -384,7 +400,8 @@ std::string ImageIOBase::GetFileTypeAsString(FileType t) const
   //Not reachable return s = "TypeNotApplicable";
 }
 
-std::string ImageIOBase::GetByteOrderAsString(ByteOrder t) const
+std::string
+ImageIOBase::GetByteOrderAsString(ByteOrder t) const
 {
   switch ( t )
     {
@@ -398,7 +415,8 @@ std::string ImageIOBase::GetByteOrderAsString(ByteOrder t) const
     }
 }
 
-std::string ImageIOBase::GetComponentTypeAsString(IOComponentType t)
+std::string
+ImageIOBase::GetComponentTypeAsString(IOComponentType t)
 {
   switch ( t )
     {
@@ -429,7 +447,8 @@ std::string ImageIOBase::GetComponentTypeAsString(IOComponentType t)
     }
 }
 
-ImageIOBase::IOComponentType ImageIOBase::GetComponentTypeFromString(const std::string &typeString)
+ImageIOBase::IOComponentType
+ImageIOBase::GetComponentTypeFromString(const std::string &typeString)
 {
   if(typeString.compare("unsigned_char") == 0)
     {
@@ -477,7 +496,8 @@ ImageIOBase::IOComponentType ImageIOBase::GetComponentTypeFromString(const std::
     }
 }
 
-std::string ImageIOBase::GetPixelTypeAsString(IOPixelType t)
+std::string
+ImageIOBase::GetPixelTypeAsString(IOPixelType t)
 {
   switch ( t )
     {
@@ -508,7 +528,8 @@ std::string ImageIOBase::GetPixelTypeAsString(IOPixelType t)
     }
 }
 
-ImageIOBase::IOPixelType ImageIOBase::GetPixelTypeFromString(const std::string &pixelString)
+ImageIOBase::IOPixelType
+ImageIOBase::GetPixelTypeFromString(const std::string &pixelString)
 {
   if(pixelString.compare("scalar") == 0)
     {
@@ -559,7 +580,8 @@ ImageIOBase::IOPixelType ImageIOBase::GetPixelTypeFromString(const std::string &
 namespace
 {
 template< typename TComponent >
-void WriteBuffer(std::ostream & os, const TComponent *buffer, ImageIOBase::SizeType num)
+void
+WriteBuffer(std::ostream & os, const TComponent *buffer, ImageIOBase::SizeType num)
 {
   const TComponent *ptr = buffer;
 
@@ -573,10 +595,12 @@ void WriteBuffer(std::ostream & os, const TComponent *buffer, ImageIOBase::SizeT
     os << PrintType(*ptr++) << " ";
     }
 }
+
 }
-void ImageIOBase::WriteBufferAsASCII(std::ostream & os, const void *buffer,
-                                     IOComponentType ctype,
-                                     ImageIOBase::SizeType numComp)
+void
+ImageIOBase::WriteBufferAsASCII(std::ostream & os, const void *buffer,
+                                IOComponentType ctype,
+                                ImageIOBase::SizeType numComp)
 {
   switch ( ctype )
     {
@@ -665,7 +689,8 @@ void ImageIOBase::WriteBufferAsASCII(std::ostream & os, const void *buffer,
 }
 
 template< typename TComponent >
-void ReadBuffer(std::istream & is, TComponent *buffer, ImageIOBase::SizeType num)
+void
+ReadBuffer(std::istream & is, TComponent *buffer, ImageIOBase::SizeType num)
 {
   typedef typename itk::NumericTraits< TComponent >::PrintType PrintType;
   PrintType   temp;
@@ -677,9 +702,10 @@ void ReadBuffer(std::istream & is, TComponent *buffer, ImageIOBase::SizeType num
     }
 }
 
-void ImageIOBase::ReadBufferAsASCII(std::istream & is, void *buffer,
-                                    IOComponentType ctype,
-                                    ImageIOBase::SizeType numComp)
+void
+ImageIOBase::ReadBufferAsASCII(std::istream & is, void *buffer,
+                               IOComponentType ctype,
+                               ImageIOBase::SizeType numComp)
 {
   switch ( ctype )
     {
@@ -759,7 +785,7 @@ void ImageIOBase::ReadBufferAsASCII(std::istream & is, void *buffer,
 
 namespace
 {
-SimpleFastMutexLock ioDefaultSplitterLock;
+SimpleFastMutexLock              ioDefaultSplitterLock;
 ImageRegionSplitterBase::Pointer ioDefaultSplitter;
 
 }
@@ -785,6 +811,7 @@ ImageIOBase::GetActualNumberOfSplitsForWritingCanStreamWrite(unsigned int number
                                                              const ImageIORegion & pasteRegion) const
 {
   const ImageRegionSplitterBase* splitter = this->GetImageRegionSplitter();
+
   return splitter->GetNumberOfSplits(pasteRegion, numberOfRequestedSplits);
 }
 
@@ -817,6 +844,7 @@ ImageIOBase::GetSplitRegionForWritingCanStreamWrite(unsigned int ithPiece,
   ImageIORegion splitRegion = pasteRegion;
 
   const ImageRegionSplitterBase* splitter = this->GetImageRegionSplitter();
+
   splitter->GetSplit( ithPiece, numberOfActualSplits, splitRegion );
 
   return splitRegion;
@@ -903,6 +931,7 @@ ImageIOBase
 ::GetDefaultDirection(unsigned int k) const
 {
   std::vector< double > axis;
+
   axis.resize( this->GetNumberOfDimensions() );
 
   // Fill up with the equivalent of a line from an Identity matrix
@@ -916,7 +945,8 @@ ImageIOBase
   return axis;
 }
 
-void ImageIOBase::PrintSelf(std::ostream & os, Indent indent) const
+void
+ImageIOBase::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 

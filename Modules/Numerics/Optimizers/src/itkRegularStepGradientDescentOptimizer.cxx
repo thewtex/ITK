@@ -48,6 +48,7 @@ RegularStepGradientDescentOptimizer
 
   this->SetCurrentPosition(newPosition);
 }
+
 } // end namespace itk
 
 #endif

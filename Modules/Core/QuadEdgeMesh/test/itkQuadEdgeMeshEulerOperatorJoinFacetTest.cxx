@@ -19,24 +19,25 @@
 #include "itkQuadEdgeMeshEulerOperatorJoinFacetFunction.h"
 #include "itkQuadEdgeMeshEulerOperatorsTestHelper.h"
 
-int itkQuadEdgeMeshEulerOperatorJoinFacetTest(int argc, char* argv[] )
+int
+itkQuadEdgeMeshEulerOperatorJoinFacetTest(int argc, char* argv[] )
 {
   (void)argc;
   (void)argv;
 
-  typedef itk::QuadEdgeMesh< double, 3 >                      MeshType;
-  typedef MeshType::Pointer                                   MeshPointer;
-  typedef MeshType::QEType                                    QEType;
-  typedef MeshType::PointIdentifier                           PointIdentifier;
-  typedef MeshType::PointType                                 PointType;
-  typedef MeshType::CellType                                  CellType;
-  typedef itk::QuadEdgeMeshLineCell< CellType >               LineCellType;
+  typedef itk::QuadEdgeMesh< double, 3 >        MeshType;
+  typedef MeshType::Pointer                     MeshPointer;
+  typedef MeshType::QEType                      QEType;
+  typedef MeshType::PointIdentifier             PointIdentifier;
+  typedef MeshType::PointType                   PointType;
+  typedef MeshType::CellType                    CellType;
+  typedef itk::QuadEdgeMeshLineCell< CellType > LineCellType;
 
   typedef itk::QuadEdgeMeshEulerOperatorJoinFacetFunction< MeshType, QEType>
     JoinFacet;
 
   // EULER OPERATOR TESTS
-  MeshPointer  mesh = MeshType::New();
+  MeshPointer mesh = MeshType::New();
   CreateSquareTriangularMesh<MeshType>( mesh );
 
   // The initial configuration and numbering of simpleSquare.vtk:
@@ -72,7 +73,7 @@ int itkQuadEdgeMeshEulerOperatorJoinFacetTest(int argc, char* argv[] )
 
   std::cout << "Checking JointFacet." << std::endl;
 
-  JoinFacet::Pointer joinFacet = JoinFacet::New( );
+  JoinFacet::Pointer joinFacet = JoinFacet::New();
 #ifndef NDEBUG
   std::cout << "     " << "Test No Mesh Input";
   if( joinFacet->Evaluate( (QEType*)1 ) )
@@ -140,16 +141,16 @@ int itkQuadEdgeMeshEulerOperatorJoinFacetTest(int argc, char* argv[] )
     }
 
   // Since the edge was internal we lost an edge and an face:
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 25, 55, 31, 1, 0 ) )
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 25, 55, 31, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( mesh->GetPoint( 12 ).GetValence( ) != 5 )
+  if ( mesh->GetPoint( 12 ).GetValence() != 5 )
     {
     std::cout << "FAILED [wrong valence of "
-              << mesh->GetPoint( 12 ).GetValence( )
+              << mesh->GetPoint( 12 ).GetValence()
               << " ]." << std::endl;
     return EXIT_FAILURE;
     }

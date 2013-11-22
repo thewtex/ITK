@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = float >
-class MahalanobisDistanceThresholdImageFunction:
+class MahalanobisDistanceThresholdImageFunction :
   public ImageFunction< TInputImage, bool, TCoordRep >
 {
 public:
@@ -152,7 +152,9 @@ public:
 
 protected:
   MahalanobisDistanceThresholdImageFunction();
-  ~MahalanobisDistanceThresholdImageFunction(){}
+  ~MahalanobisDistanceThresholdImageFunction(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -166,8 +168,8 @@ private:
 
   // This is intended only for Image of Vector pixel type.
   typedef Statistics::MahalanobisDistanceMembershipFunction<
-    PixelType
-    >  MahalanobisDistanceFunctionType;
+      PixelType
+      >  MahalanobisDistanceFunctionType;
 
   typedef typename MahalanobisDistanceFunctionType::Pointer MahalanobisDistanceFunctionPointer;
   MahalanobisDistanceFunctionPointer m_MahalanobisDistanceMembershipFunction;

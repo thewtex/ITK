@@ -30,8 +30,11 @@
 namespace itk
 {
 TextOutput::TextOutput()
-{}
+{
+}
 
 TextOutput::~TextOutput()
-{}
+{
+}
+
 }

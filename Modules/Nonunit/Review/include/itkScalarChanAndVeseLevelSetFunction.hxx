@@ -125,19 +125,19 @@ ScalarChanAndVeseLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
       {
       itInputIndex = this->m_SharedData->m_LevelSetDataPointerVector[*it]->GetIndex(globalIndex);
       hVal = this->m_SharedData->m_LevelSetDataPointerVector[*it]->m_HeavisideFunctionOfLevelSetImage->GetPixel(
-        itInputIndex);
+          itInputIndex);
       prod *= ( 1. - hVal );
 
       if ( *it == fId )
         {
         this->m_SharedData->m_LevelSetDataPointerVector[*it]->m_WeightedSumOfPixelValuesInsideLevelSet += featureVal
-                                                                                                          * hVal;
+          * hVal;
         this->m_SharedData->m_LevelSetDataPointerVector[*it]->m_WeightedNumberOfPixelsInsideLevelSet += hVal;
         }
       }
 
     this->m_SharedData->m_LevelSetDataPointerVector[fId]->m_WeightedSumOfPixelValuesOutsideLevelSet += featureVal
-                                                                                                       * prod;
+      * prod;
     this->m_SharedData->m_LevelSetDataPointerVector[fId]->m_WeightedNumberOfPixelsOutsideLevelSet += prod;
 
     ++fIt;
@@ -148,7 +148,7 @@ template< typename TInputImage, typename TFeatureImage, typename TSharedData >
 typename ScalarChanAndVeseLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
 ::ScalarValueType
 ScalarChanAndVeseLevelSetFunction< TInputImage, TFeatureImage, TSharedData >::ComputeInternalTerm(
-   const FeaturePixelType & iValue,
+  const FeaturePixelType & iValue,
   const
   FeatureIndexType & itkNotUsed(iIdx) )
 {
@@ -168,10 +168,13 @@ ScalarChanAndVeseLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
 {
   const unsigned int    fId = this->m_FunctionId;
   const ScalarValueType cBgrnd = this->m_SharedData->m_LevelSetDataPointerVector[fId]->m_BackgroundConstantValues; //
+                                                                                                                   //
+                                                                                                                   //
                                                                                                                    // background
   const ScalarValueType t = ( iValue - cBgrnd );
 
   return t * t;
 }
+
 } // end namespace itk
 #endif

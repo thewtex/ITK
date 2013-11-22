@@ -37,7 +37,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage, typename ResamplerType >
 BSplineUpsampleImageFilter< TInputImage, TOutputImage, ResamplerType >
 ::BSplineUpsampleImageFilter()
-{}
+{
+}
 
 /**
  * Standard "PrintSelf" method
@@ -204,6 +205,7 @@ BSplineUpsampleImageFilter< TInputImage, TOutputImage, ResamplerType >
                      << typeid( TOutputImage * ).name() );
     }
 }
+
 } // namespace itk
 
 #endif

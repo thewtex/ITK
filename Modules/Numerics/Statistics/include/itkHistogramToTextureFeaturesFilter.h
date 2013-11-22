@@ -100,7 +100,7 @@ namespace Statistics
 */
 
 template< typename THistogram >
-class HistogramToTextureFeaturesFilter:public ProcessObject
+class HistogramToTextureFeaturesFilter : public ProcessObject
 {
 public:
   /** Standard typedefs */
@@ -125,10 +125,10 @@ public:
   typedef typename HistogramType::RelativeFrequencyType RelativeFrequencyType;
 
   typedef typename HistogramType::TotalAbsoluteFrequencyType
-  TotalAbsoluteFrequencyType;
+    TotalAbsoluteFrequencyType;
 
   typedef typename HistogramType::TotalRelativeFrequencyType
-  TotalRelativeFrequencyType;
+    TotalRelativeFrequencyType;
 
   /** Container to hold relative frequencies of the histogram */
   typedef std::vector< RelativeFrequencyType > RelativeFrequencyContainerType;
@@ -203,7 +203,9 @@ public:
 
 protected:
   HistogramToTextureFeaturesFilter();
-  ~HistogramToTextureFeaturesFilter() {}
+  ~HistogramToTextureFeaturesFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Make a DataObject to be used for output output. */

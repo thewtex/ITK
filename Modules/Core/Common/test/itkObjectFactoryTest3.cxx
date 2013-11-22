@@ -27,8 +27,12 @@ public:
   typedef itk::SmartPointer<const Self> ConstPointer;
 
 protected:
-  FakeObject3() {}
-  ~FakeObject3() {}
+  FakeObject3() {
+  }
+
+  ~FakeObject3() {
+  }
+
 };
 
 class TestFactory3 : public itk::ObjectFactoryBase
@@ -40,8 +44,15 @@ public:
   typedef itk::SmartPointer<const Self> ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
-  const char* GetDescription() const { return m_Description.c_str(); }
+  virtual const char*
+  GetITKSourceVersion() const {
+    return ITK_SOURCE_VERSION;
+  }
+
+  const char*
+  GetDescription() const {
+    return m_Description.c_str();
+  }
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
@@ -50,7 +61,8 @@ public:
   itkTypeMacro(TestFactory3, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     TestFactory3::Pointer factory = TestFactory3::New();
     itk::ObjectFactoryBase::RegisterFactory(factory);
@@ -60,23 +72,25 @@ public:
   itkSetStringMacro( Description );
 
 private:
-  TestFactory3(const Self&);    //purposely not implemented
+  TestFactory3(const Self&);   //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   TestFactory3()
-    {
+  {
     this->RegisterOverride(typeid(FakeObject3).name(),
                            typeid(FakeObject3).name(),
                            "FakeObject3 factory override",
                            true,
-                           itk::CreateObjectFunction<FakeObject3>::New());
-    }
-  std::string  m_Description;
+                           itk::CreateObjectFunction<FakeObject3>::New() );
+  }
+
+  std::string m_Description;
 };
 
-typedef std::vector< std::string >  DescriptionListType;
+typedef std::vector< std::string > DescriptionListType;
 
-int ListRegisteredFactories( const std::string & TestName, const DescriptionListType & expectedList )
+int
+ListRegisteredFactories( const std::string & TestName, const DescriptionListType & expectedList )
 {
   typedef std::list<itk::ObjectFactoryBase *> FactoryListType;
 
@@ -115,7 +129,8 @@ int ListRegisteredFactories( const std::string & TestName, const DescriptionList
   return EXIT_SUCCESS;
 }
 
-int itkObjectFactoryTest3(int, char *[])
+int
+itkObjectFactoryTest3(int, char *[])
 {
   TestFactory3::Pointer factory1 = TestFactory3::New();
   TestFactory3::Pointer factory2 = TestFactory3::New();
@@ -152,7 +167,6 @@ int itkObjectFactoryTest3(int, char *[])
     return EXIT_FAILURE;
     }
 
-
   itk::ObjectFactoryBase::UnRegisterAllFactories();
   descriptionList.clear();
 
@@ -173,7 +187,6 @@ int itkObjectFactoryTest3(int, char *[])
     return EXIT_FAILURE;
     }
 
-
   itk::ObjectFactoryBase::RegisterFactory( factory5, itk::ObjectFactoryBase::INSERT_AT_BACK );
   descriptionList.push_back("factory5");
 
@@ -183,7 +196,6 @@ int itkObjectFactoryTest3(int, char *[])
     {
     return EXIT_FAILURE;
     }
-
 
   itk::ObjectFactoryBase::RegisterFactory( factory6, itk::ObjectFactoryBase::INSERT_AT_POSITION, 3 );
   descriptionList.clear();
@@ -201,7 +213,6 @@ int itkObjectFactoryTest3(int, char *[])
     return EXIT_FAILURE;
     }
 
-
   itk::ObjectFactoryBase::RegisterFactory( factory7, itk::ObjectFactoryBase::INSERT_AT_BACK );
   descriptionList.push_back("factory7");
 
@@ -211,7 +222,6 @@ int itkObjectFactoryTest3(int, char *[])
     {
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

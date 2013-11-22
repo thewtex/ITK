@@ -23,7 +23,6 @@
 #include "itkMahalanobisDistanceMembershipFunction.h"
 #include "itkMinimumDecisionRule.h"
 
-
 //Data definitons
 #define   IMGWIDTH            6
 #define   IMGHEIGHT           6
@@ -34,8 +33,8 @@
 #define   MAX_NUM_ITER        5
 #define   NEIGHBORHOOD_RAD    1
 
-
-int itkMRFImageFilterTest(int, char* [] )
+int
+itkMRFImageFilterTest(int, char* [] )
 {
 
   //------------------------------------------------------
@@ -72,8 +71,8 @@ int itkMRFImageFilterTest(int, char* [] )
   VecIterator outIt( vecImage, vecImage->GetBufferedRegion() );
 
   //Set up the vector to store the image  data
-  typedef VecImageType::PixelType     DataVector;
-  DataVector   dblVec;
+  typedef VecImageType::PixelType DataVector;
+  DataVector dblVec;
 
   int i,k;
   int halfWidth = (int) (vecImgSize[0])/2;
@@ -185,7 +184,7 @@ int itkMRFImageFilterTest(int, char* [] )
   // setup the iterators
   typedef ClassImageType::PixelType ClassImagePixelType;
 
-  typedef  itk::ImageRegionIterator<ClassImageType>  ClassImageIterator;
+  typedef  itk::ImageRegionIterator<ClassImageType> ClassImageIterator;
 
   ClassImageIterator classoutIt( classImage, classImage->GetBufferedRegion() );
   //--------------------------------------------------------------------------
@@ -257,7 +256,7 @@ int itkMRFImageFilterTest(int, char* [] )
   // Set the image model estimator (train the class models)
   //----------------------------------------------------------------------
   typedef itk::ImageGaussianModelEstimator<VecImageType,
-    MembershipFunctionType, ClassImageType>
+                                           MembershipFunctionType, ClassImageType>
     ImageGaussianModelEstimatorType;
 
   ImageGaussianModelEstimatorType::Pointer
@@ -290,7 +289,7 @@ int itkMRFImageFilterTest(int, char* [] )
   typedef VecImagePixelType MeasurementVectorType;
 
   typedef itk::ImageClassifierBase< VecImageType,
-    ClassImageType > ClassifierType;
+                                    ClassImageType > ClassifierType;
 
   typedef itk::ClassifierBase<VecImageType>::Pointer
     ClassifierBasePointer;
@@ -302,7 +301,7 @@ int itkMRFImageFilterTest(int, char* [] )
 
   // Set the decision rule
   myClassifier->
-    SetDecisionRule((itk::Statistics::DecisionRule *) myDecisionRule );
+  SetDecisionRule( (itk::Statistics::DecisionRule *) myDecisionRule );
 
   //Add the membership functions
   for( unsigned int ii=0; ii<NUM_CLASSES; ii++ )
@@ -339,11 +338,11 @@ int itkMRFImageFilterTest(int, char* [] )
 
   applyMRFImageFilter->Print(std::cout);
   std::cout << "Number of Iterations : " << applyMRFImageFilter->GetNumberOfIterations()
-    << std::endl;
+            << std::endl;
   std::cout << "Stop condition: (1) Maximum number of iterations (2) Error tolerance:  "
-    << applyMRFImageFilter->GetStopCondition() << std::endl;
+            << applyMRFImageFilter->GetStopCondition() << std::endl;
 
-  ClassImageType::Pointer  outClassImage = applyMRFImageFilter->GetOutput();
+  ClassImageType::Pointer outClassImage = applyMRFImageFilter->GetOutput();
 
   //Testing of different parameter access functions in the filter
   std::cout << "The number of classes labelled was: " <<
@@ -382,19 +381,19 @@ int itkMRFImageFilterTest(int, char* [] )
 
   typedef
     itk::NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< ClassImageType >
-      OutImageFacesCalculator;
+    OutImageFacesCalculator;
 
-  typedef  OutImageFacesCalculator::FaceListType     OutImageFaceListType;
+  typedef  OutImageFacesCalculator::FaceListType OutImageFaceListType;
 
-  typedef  OutImageFaceListType::iterator            OutImageFaceListIterator;
+  typedef  OutImageFaceListType::iterator OutImageFaceListIterator;
 
   OutImageNeighborhoodRadiusType outImageNeighborhoodRadius;
   outImageNeighborhoodRadius.Fill( 1 );
 
   //Define the face list for the input/labelled image
-  OutImageFacesCalculator     outImageFacesCalculator;
+  OutImageFacesCalculator outImageFacesCalculator;
 
-  OutImageFaceListType        outImageFaceList;
+  OutImageFaceListType outImageFaceList;
 
   //Compute the faces for the neighborhoods in the input/labelled image
   outImageFaceList =

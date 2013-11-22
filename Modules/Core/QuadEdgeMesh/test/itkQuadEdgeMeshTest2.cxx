@@ -18,18 +18,19 @@
 
 #include "itkQuadEdgeMesh.h"
 
-int itkQuadEdgeMeshTest2( int , char* [] )
+int
+itkQuadEdgeMeshTest2( int , char* [] )
 {
   std::cout << "Testing points and simple edges... " << std::ends;
 
-  typedef double                                   PixelType;
-  typedef itk::QuadEdgeMesh< PixelType, 3 >        MeshType;
-  typedef MeshType::CellType                       CellType;
-  typedef itk::QuadEdgeMeshLineCell< CellType >    LineType;
-  typedef LineType::QEType                         QuadEdgeType;
-  typedef CellType::CellAutoPointer                CellAutoPointer;
+  typedef double                                PixelType;
+  typedef itk::QuadEdgeMesh< PixelType, 3 >     MeshType;
+  typedef MeshType::CellType                    CellType;
+  typedef itk::QuadEdgeMeshLineCell< CellType > LineType;
+  typedef LineType::QEType                      QuadEdgeType;
+  typedef CellType::CellAutoPointer             CellAutoPointer;
 
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
 
   MeshType::PointType p0;
   MeshType::PointType p1;
@@ -67,8 +68,8 @@ int itkQuadEdgeMeshTest2( int , char* [] )
     return EXIT_FAILURE;
     }
 
-  if( ( mesh->GetNumberOfCells( ) != 0 )
-   && ( mesh->GetNumberOfEdges( ) != 3 ) )
+  if( ( mesh->GetNumberOfCells() != 0 )
+      && ( mesh->GetNumberOfEdges() != 3 ) )
     {
     std::cout << "Not all cells added." << std::endl;
     return EXIT_FAILURE;
@@ -76,15 +77,15 @@ int itkQuadEdgeMeshTest2( int , char* [] )
 
   typedef MeshType::CellsContainer::Iterator CellIterator;
   CellIterator cellIterator = mesh->GetCells()->Begin();
-  unsigned int ids[ ] = { 0, 1, 2, 1, 2, 0, 2, 0, 1 };
-  int itIds = 0;
+  unsigned int ids[]  = { 0, 1, 2, 1, 2, 0, 2, 0, 1 };
+  int          itIds = 0;
 
   while( cellIterator != mesh->GetCells()->End() )
     {
     MeshType::CellType* cellptr = cellIterator.Value();
-    LineType* lineCell = dynamic_cast< LineType* >( cellptr );
+    LineType*           lineCell = dynamic_cast< LineType* >( cellptr );
     lineCell->GetNameOfClass();
-    QuadEdgeType* QEGeom = lineCell->GetQEGeom( );
+    QuadEdgeType*              QEGeom = lineCell->GetQEGeom();
     QuadEdgeType::IteratorGeom git = QEGeom->BeginGeomLnext();
     while( git != QEGeom->EndGeomLnext() )
       {

@@ -32,11 +32,11 @@
 // PointSetToListSampleAdaptor object are points from the PointSet
 // object that is plugged into the adaptor object.
 //
-// To use an PointSetToListSampleAdaptor class, we include the header file for the
+// To use an PointSetToListSampleAdaptor class, we include the header file for
+// the
 // class.
 //
 // Software Guide : EndLatex
-
 
 // Software Guide : BeginCodeSnippet
 #include "itkPointSetToListSampleAdaptor.h"
@@ -54,7 +54,8 @@
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -83,7 +84,8 @@ int main()
   // template argument, we can change the coordinate value type of a point.
   // By specifying the \code{VPointDimension} template argument, we can
   // change the dimension of the point. As mentioned earlier, a
-  // \code{PointSetToListSampleAdaptor} object cares only about the points, and the
+  // \code{PointSetToListSampleAdaptor} object cares only about the points, and
+  // the
   // type of measurement vectors is the type of points. Therefore, we can
   // define the measurement vector type as in the following code snippet.
   //
@@ -126,7 +128,7 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::PointSetToListSampleAdaptor<
-                                                     PointSetType > SampleType;
+      PointSetType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   // Software Guide : EndCodeSnippet
 

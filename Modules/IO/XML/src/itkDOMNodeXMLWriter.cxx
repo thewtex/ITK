@@ -35,6 +35,7 @@ void
 DOMNodeXMLWriter::Update( std::ostream& os, std::string indent )
 {
   const InputType* input = this->GetInput();
+
   if ( input == NULL )
     {
     itkExceptionMacro( "input object is null" );
@@ -84,7 +85,7 @@ DOMNodeXMLWriter::Update( std::ostream& os, std::string indent )
       }
     // write the end tag
     os << indent << "</" << input->GetName() << ">" << std::endl;
-  }
+    }
   else
     {
     // write the special closing bracket for the start tag if it has no children
@@ -99,6 +100,7 @@ void
 DOMNodeXMLWriter::Update()
 {
   std::ofstream os( this->m_FileName.c_str() );
+
   if ( !os.is_open() )
     {
     itkExceptionMacro( "failed openning the output XML file" );

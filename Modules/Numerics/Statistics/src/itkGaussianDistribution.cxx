@@ -254,8 +254,8 @@ GaussianDistribution
 
   dt = vcl_sqrt( -2.0 * vcl_log(dp) );
   dx = dt
-       - ( ( .010328e+0 * dt + .802853e+0 ) * dt + 2.515517e+0 )
-       / ( ( ( .001308e+0 * dt + .189269e+0 ) * dt + 1.432788e+0 ) * dt + 1.e+0 );
+    - ( ( .010328e+0 * dt + .802853e+0 ) * dt + 2.515517e+0 )
+    / ( ( ( .001308e+0 * dt + .189269e+0 ) * dt + 1.432788e+0 ) * dt + 1.e+0 );
 
   /**  Step 2:  do 3 Newton steps to improve this */
 
@@ -506,5 +506,6 @@ GaussianDistribution
     os << indent << "Variance: (unknown)" << std::endl;
     }
 }
+
 } // end of namespace Statistics
 } // end namespace itk

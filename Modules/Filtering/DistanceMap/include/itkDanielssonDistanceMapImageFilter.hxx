@@ -77,10 +77,10 @@ typename
 DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::OutputImageType *
 DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetDistanceMap(void)
-{
+  {
   return dynamic_cast< OutputImageType * >(
-           this->ProcessObject::GetOutput(0) );
-}
+    this->ProcessObject::GetOutput(0) );
+  }
 
 /**
  *  Return Closest Points Map
@@ -90,10 +90,10 @@ typename
 DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::VoronoiImageType *
 DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetVoronoiMap(void)
-{
+  {
   return dynamic_cast< VoronoiImageType* >(
-           this->ProcessObject::GetOutput(1) );
-}
+    this->ProcessObject::GetOutput(1) );
+  }
 
 /**
  *  Return the distance vectors
@@ -103,10 +103,10 @@ typename
 DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::VectorImageType *
 DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetVectorDistanceMap(void)
-{
+  {
   return dynamic_cast< VectorImageType * >(
-           this->ProcessObject::GetOutput(2) );
-}
+    this->ProcessObject::GetOutput(2) );
+  }
 
 /**
  *  Prepare data for computation
@@ -149,7 +149,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
   typename OutputImageType::RegionType region  = voronoiMap->GetRequestedRegion();
 
   // find the largest of the image dimensions
-  SizeType size = region.GetSize();
+  SizeType      size = region.GetSize();
   SizeValueType maxLength = 0;
 
   for ( unsigned int dim = 0; dim < InputImageDimension; dim++ )
@@ -160,8 +160,8 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
       }
     }
 
-  ImageRegionConstIteratorWithIndex< InputImageType >  it(inputImage,  region);
-  ImageRegionIteratorWithIndex< VoronoiImageType >     ot(voronoiMap,  region);
+  ImageRegionConstIteratorWithIndex< InputImageType > it(inputImage,  region);
+  ImageRegionIteratorWithIndex< VoronoiImageType >    ot(voronoiMap,  region);
 
   it.GoToBegin();
   ot.GoToBegin();
@@ -221,8 +221,10 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
   itkDebugMacro(<< "PrepareData: Copy output to ct");
 
   // Iterate over the input image and distanceComponents image.
-  // Wherever the input image is non-zero, initialize the distanceComponents image to the minValue.
-  // Wherever the input image is zero, initialize the distanceComponents image to the maxValue.
+  // Wherever the input image is non-zero, initialize the distanceComponents
+  // image to the minValue.
+  // Wherever the input image is zero, initialize the distanceComponents image
+  // to the maxValue.
   it.GoToBegin();
   ct.GoToBegin();
   while ( !it.IsAtEnd() )
@@ -321,6 +323,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 
   double norm1 = 0.0;
   double norm2 = 0.0;
+
   for ( unsigned int i = 0; i < InputImageDimension; i++ )
     {
     double v1 = static_cast< double >(  offsetValueHere[i]  );
@@ -386,11 +389,14 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
   it.GoToBegin();
 
   // Set up an iterator for the input image.
-  // In this image, non-zero values are the background and zero values are the foreground.
+  // In this image, non-zero values are the background and zero values are the
+  // foreground.
   // The foreground values are where the distance map should be solved.
-  // We iterate over this input image so that all background (non-zero) values are ignored in the
+  // We iterate over this input image so that all background (non-zero) values
+  // are ignored in the
   // distance map computation.
-  InputImagePointer  inputImage  = dynamic_cast<const InputImageType  *>( ProcessObject::GetInput(0) );
+  InputImagePointer inputImage  =
+    dynamic_cast<const InputImageType  *>( ProcessObject::GetInput(0) );
   ReflectiveImageRegionConstIterator<const InputImageType> inputIt( inputImage, region );
   inputIt.SetBeginOffset( voffset );
   inputIt.SetEndOffset( voffset );
@@ -428,28 +434,28 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
     // The background pixels are set to a non-zero value.
     // We can ignore these pixels in the update step.
     if( !inputIt.Get() )
-    {
-    IndexType here = it.GetIndex();
-    for ( unsigned int dim = 0; dim < InputImageDimension; dim++ )
       {
-      if ( region.GetSize()[dim] <= 1 )
+      IndexType here = it.GetIndex();
+      for ( unsigned int dim = 0; dim < InputImageDimension; dim++ )
         {
-        continue;
-        }
-      if ( it.IsReflected(dim) )
-        {
-        offset[dim]++;
-        UpdateLocalDistance(distanceComponents, here, offset);
-        offset[dim] = 0;
-        }
-      else
-        {
-        offset[dim]--;
-        UpdateLocalDistance(distanceComponents, here, offset);
-        offset[dim] = 0;
+        if ( region.GetSize()[dim] <= 1 )
+          {
+          continue;
+          }
+        if ( it.IsReflected(dim) )
+          {
+          offset[dim]++;
+          UpdateLocalDistance(distanceComponents, here, offset);
+          offset[dim] = 0;
+          }
+        else
+          {
+          offset[dim]--;
+          UpdateLocalDistance(distanceComponents, here, offset);
+          offset[dim] = 0;
+          }
         }
       }
-    }
     ++it;
     ++i;
     ++inputIt;
@@ -475,6 +481,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
   os << indent << "Use Image Spacing : " << m_UseImageSpacing << std::endl;
   os << indent << "Squared Distance  : " << m_SquaredDistance << std::endl;
 }
+
 } // end namespace itk
 
 #endif

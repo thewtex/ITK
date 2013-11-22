@@ -33,7 +33,7 @@ namespace itk
  */
 template< typename TCoordRep, unsigned int VPointDimension, typename TQuadEdge =
             GeometricalQuadEdge< unsigned long, unsigned long, bool, bool, true > >
-class QuadEdgeMeshPoint:public Point< TCoordRep, VPointDimension >
+class QuadEdgeMeshPoint : public Point< TCoordRep, VPointDimension >
 {
 public:
   /** Standard typedefs. */
@@ -61,10 +61,13 @@ public:
 
 public:
   QuadEdgeMeshPoint();
-  virtual ~QuadEdgeMeshPoint() {}
+  virtual
+  ~QuadEdgeMeshPoint() {
+  }
+
   QuadEdgeMeshPoint(const Self & r);
   QuadEdgeMeshPoint(const Superclass & r);
-  QuadEdgeMeshPoint(const ValueType r[VPointDimension]):Superclass(r)
+  QuadEdgeMeshPoint(const ValueType r[VPointDimension]) : Superclass(r)
   {
     this->Initialize();
   }

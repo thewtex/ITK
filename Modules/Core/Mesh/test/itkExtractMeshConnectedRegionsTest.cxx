@@ -24,7 +24,8 @@
 /*
  * Test the mesh connectivity class.
  */
-int itkExtractMeshConnectedRegionsTest(int, char* [])
+int
+itkExtractMeshConnectedRegionsTest(int, char* [])
 {
 
   /**
@@ -32,7 +33,7 @@ int itkExtractMeshConnectedRegionsTest(int, char* [])
    */
 
   // A mesh with no pixel data.
-  typedef itk::Mesh< int >  MeshType;
+  typedef itk::Mesh< int > MeshType;
 
   typedef itk::ConnectedRegionsMeshFilter<MeshType,MeshType> ConnectFilterType;
   typedef itk::Point<float,3>                                PointType;
@@ -44,9 +45,9 @@ int itkExtractMeshConnectedRegionsTest(int, char* [])
 
   // Pass the mesh through the filter in a variety of ways.
   //
-  PointType::ValueType pInit[3] = {1,2,3};
-  PointType p = pInit;
-  ConnectFilterType::Pointer connect(ConnectFilterType::New());
+  PointType::ValueType       pInit[3] = {1,2,3};
+  PointType                  p = pInit;
+  ConnectFilterType::Pointer connect(ConnectFilterType::New() );
 
   connect->SetInput(inMesh);
   connect->SetClosestPoint(p);
@@ -58,13 +59,13 @@ int itkExtractMeshConnectedRegionsTest(int, char* [])
   connect->Update();
 
   // Create a Sphere for running the filter on real input data.
-  typedef itk::SphereMeshSource< MeshType >  SphereMeshSourceType;
+  typedef itk::SphereMeshSource< MeshType > SphereMeshSourceType;
 
   SphereMeshSourceType::Pointer meshSource = SphereMeshSourceType::New();
 
-  PointType center; center.Fill(0);
+  PointType            center; center.Fill(0);
   PointType::ValueType scaleInit[3] = {1,1,1};
-  PointType scale = scaleInit;
+  PointType            scale = scaleInit;
 
   meshSource->SetCenter(center);
   meshSource->SetResolutionX( 10 );

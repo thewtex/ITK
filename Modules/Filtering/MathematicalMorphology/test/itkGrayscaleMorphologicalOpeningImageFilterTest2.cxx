@@ -23,10 +23,11 @@
 #include "itkTextOutput.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkGrayscaleMorphologicalOpeningImageFilterTest2(int ac, char* av[] )
+int
+itkGrayscaleMorphologicalOpeningImageFilterTest2(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 7)
     {
@@ -42,7 +43,7 @@ int itkGrayscaleMorphologicalOpeningImageFilterTest2(int ac, char* av[] )
   reader->SetFileName(av[1]);
 
   // Create a filter
-  typedef itk::FlatStructuringElement<dim> SRType;
+  typedef itk::FlatStructuringElement<dim>                                              SRType;
   typedef itk::GrayscaleMorphologicalOpeningImageFilter< ImageType, ImageType, SRType > FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );

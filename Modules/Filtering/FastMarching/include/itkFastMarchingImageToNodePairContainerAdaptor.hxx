@@ -33,31 +33,32 @@ FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
   m_AliveValue( NumericTraits< OutputPixelType >::Zero ),
   m_TrialValue( NumericTraits< OutputPixelType >::Zero ),
   m_IsForbiddenImageBinaryMask( false )
-{}
+{
+}
 
 template< typename TInput, typename TOutput, typename TImage >
 void
 FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
 ::SetAliveImage( const ImageType* iImage )
-  {
+{
   m_AliveImage = iImage;
-  }
+}
 
 template< typename TInput, typename TOutput, typename TImage >
 void
 FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
 ::SetTrialImage( const ImageType* iImage )
-  {
+{
   m_TrialImage = iImage;
-  }
+}
 
 template< typename TInput, typename TOutput, typename TImage >
 void
 FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
 ::SetForbiddenImage( const ImageType* iImage )
-  {
+{
   m_ForbiddenImage = iImage;
-  }
+}
 
 template< typename TInput, typename TOutput, typename TImage >
 typename FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
@@ -90,9 +91,9 @@ template< typename TInput, typename TOutput, typename TImage >
 void
 FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
 ::Update()
-  {
+{
   this->GenerateData();
-  }
+}
 
 template< typename TInput, typename TOutput, typename TImage >
 void
@@ -116,7 +117,7 @@ FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
   if( m_ForbiddenImage.IsNotNull() )
     {
     SetPointsFromImage( m_ForbiddenImage, Traits::Forbidden,
-                       NumericTraits< OutputPixelType >::Zero );
+                        NumericTraits< OutputPixelType >::Zero );
     is_ok = true;
     }
 
@@ -130,11 +131,11 @@ template< typename TInput, typename TOutput, typename TImage >
 void
 FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
 ::SetPointsFromImage( const ImageType* image, const LabelType& iLabel,
-                     const OutputPixelType& iValue )
-  {
+                      const OutputPixelType& iValue )
+{
   if ( iLabel == Traits::Alive ||
-      iLabel == Traits::InitialTrial ||
-      iLabel == Traits::Forbidden )
+       iLabel == Traits::InitialTrial ||
+       iLabel == Traits::Forbidden )
     {
     NodePairContainerPointer nodes = NodePairContainerType::New();
     nodes->Initialize();
@@ -154,7 +155,7 @@ FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
           {
           nodes->push_back( NodePairType( it.GetIndex(), iValue ) );
           } //end if image iterator > zero
-        } // end for each pixel
+        }   // end for each pixel
       }
     else
       {
@@ -165,7 +166,7 @@ FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
           {
           nodes->push_back( NodePairType( it.GetIndex(), iValue ) );
           } //end if image iterator > zero
-        } // end for each pixel
+        }   // end for each pixel
       }
 
     switch( iLabel )
@@ -183,8 +184,7 @@ FastMarchingImageToNodePairContainerAdaptor< TInput, TOutput, TImage >
         break;
       }
     }
-  }
-
+}
 
 }
 

@@ -31,7 +31,7 @@ namespace itk
 
 template < typename TInputImage, typename TInputImageConverter >
 VTKVisualizeImageLevelSet< TInputImage, TInputImageConverter >
-::VTKVisualizeImageLevelSet():
+::VTKVisualizeImageLevelSet() :
   m_ScreenCapture( false ),
   m_ScreenCapturePrefix( "levelset_" )
 {
@@ -62,7 +62,7 @@ VTKVisualizeImageLevelSet< TInputImage, TInputImageConverter >
   this->m_InputImageConverter->SetInput( inputImage );
   this->m_InputImageConverter->Update();
 
-  vtkSmartPointer< vtkImageShiftScale >   ImageShiftScale = vtkSmartPointer< vtkImageShiftScale >::New();
+  vtkSmartPointer< vtkImageShiftScale > ImageShiftScale = vtkSmartPointer< vtkImageShiftScale >::New();
   ImageShiftScale->SetOutputScalarTypeToUnsignedChar();
 #if VTK_MAJOR_VERSION <= 5
   ImageShiftScale->SetInput( this->m_InputImageConverter->GetOutput() );
@@ -162,7 +162,7 @@ VTKVisualizeImageLevelSet< TInputImage, TInputImageConverter >
 
   if( this->m_ScreenCapture )
     {
-    std::string filename;
+    std::string       filename;
     std::stringstream yo;
     yo << this->m_ScreenCapturePrefix << std::setfill( '0' ) << std::setw( 5 ) << this->m_CurrentIteration;
     filename = yo.str();

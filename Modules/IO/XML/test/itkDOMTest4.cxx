@@ -27,7 +27,8 @@ because it is used here to verify the correctness of the query output.
 #include <iostream>
 #include "itkMacro.h"
 
-int itkDOMTest4( int argc, char* argv[] )
+int
+itkDOMTest4( int argc, char* argv[] )
 {
   if ( argc < 4 )
     {
@@ -44,14 +45,16 @@ int itkDOMTest4( int argc, char* argv[] )
     itk::DOMNode::Pointer dom = reader->GetModifiableOutput();
 
     std::string sQueryString = argv[2];
-    // itk_add_test has problem to supply an empty string, so we use a special string
+    // itk_add_test has problem to supply an empty string, so we use a special
+    // string
     if ( sQueryString == "[]" )
       {
       sQueryString = "";
       }
 
     std::string sGroundTruthPathString = argv[3];
-    // itk_add_test has problem to supply an empty string, so we use a special string
+    // itk_add_test has problem to supply an empty string, so we use a special
+    // string
     if ( sGroundTruthPathString == "[]" )
       {
       sGroundTruthPathString = "";

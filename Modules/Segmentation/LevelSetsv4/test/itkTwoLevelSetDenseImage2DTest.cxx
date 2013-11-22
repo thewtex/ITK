@@ -26,7 +26,8 @@
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 #include "itkLevelSetEvolution.h"
 
-int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
+int
+itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
 {
   if( argc < 6 )
     {
@@ -47,22 +48,22 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   typedef LevelSetType::OutputRealType                   LevelSetOutputRealType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
 
-  typedef itk::IdentifierType                            IdentifierType;
-  typedef std::list< IdentifierType >                    IdListType;
-  typedef itk::Image< IdListType, Dimension >            IdListImageType;
-  typedef itk::Image< short, Dimension >                 CacheImageType;
+  typedef itk::IdentifierType                 IdentifierType;
+  typedef std::list< IdentifierType >         IdListType;
+  typedef itk::Image< IdListType, Dimension > IdListImageType;
+  typedef itk::Image< short, Dimension >      CacheImageType;
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
-                                                         DomainMapImageFilterType;
+    DomainMapImageFilterType;
 
-  typedef itk::LevelSetContainer< IdentifierType, LevelSetType >      LevelSetContainerType;
+  typedef itk::LevelSetContainer< IdentifierType, LevelSetType > LevelSetContainerType;
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
-                                                                      ChanAndVeseInternalTermType;
+    ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType >
-                                                                      ChanAndVeseExternalTermType;
+    ChanAndVeseExternalTermType;
   typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >
-                                                                      TermContainerType;
+    TermContainerType;
 
-  typedef itk::LevelSetEquationContainer< TermContainerType >     EquationContainerType;
+  typedef itk::LevelSetEquationContainer< TermContainerType > EquationContainerType;
 
   typedef itk::LevelSetEvolution< EquationContainerType, LevelSetType > LevelSetEvolutionType;
 
@@ -79,16 +80,16 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   reader->Update();
   InputImageType::Pointer input = reader->GetOutput();
 
-  FastMarchingFilterType::Pointer  fastMarching = FastMarchingFilterType::New();
+  FastMarchingFilterType::Pointer fastMarching = FastMarchingFilterType::New();
 
   NodeContainer::Pointer seeds = NodeContainer::New();
 
-  ImageType::IndexType  seedPosition;
+  ImageType::IndexType seedPosition;
   seedPosition[0] = atoi( argv[2] );
   seedPosition[1] = atoi( argv[3] );
 
   const double initialDistance = atof( argv[4] );
-  const double seedValue = - initialDistance;
+  const double seedValue = -initialDistance;
 
   NodeType node;
   node.SetValue( seedValue );
@@ -121,7 +122,7 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   //  directly or indirectly.
   //
   InputImageType::RegionType inputBufferedRegion = input->GetBufferedRegion();
-  InputImageType::SizeType  inputBufferedRegionSize = inputBufferedRegion.GetSize();
+  InputImageType::SizeType   inputBufferedRegionSize = inputBufferedRegion.GetSize();
 
   fastMarching->SetOutputSize( inputBufferedRegionSize );
   fastMarching->Update();
@@ -145,10 +146,10 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   heaviside->SetEpsilon( 1.0 );
 
   // Map of levelset bases
-  LevelSetType::Pointer  level_set1 = LevelSetType::New();
+  LevelSetType::Pointer level_set1 = LevelSetType::New();
   level_set1->SetImage( fastMarching->GetOutput() );
 
-  LevelSetType::Pointer  level_set2 = LevelSetType::New();
+  LevelSetType::Pointer level_set2 = LevelSetType::New();
   level_set2->SetImage( fastMarching->GetOutput() );
 
   // Insert the levelsets in a levelset container
@@ -228,7 +229,7 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   equationContainer->SetLevelSetContainer( lscontainer );
 
   typedef itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
-      StoppingCriterionType;
+    StoppingCriterionType;
   StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( 10 );
 

@@ -61,7 +61,7 @@ namespace itk
  */
 template< typename TInputImage,
           typename TMembershipFunction >
-class ImageModelEstimatorBase:public LightProcessObject
+class ImageModelEstimatorBase : public LightProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -83,7 +83,7 @@ public:
   typedef typename TMembershipFunction::Pointer MembershipFunctionPointer;
 
   typedef std::vector< MembershipFunctionPointer >
-  MembershipFunctionPointerVector;
+    MembershipFunctionPointerVector;
 
   /** Type definitions for the training image. */
   typedef          TInputImage          InputImageType;
@@ -97,26 +97,30 @@ public:
   itkGetModifiableObjectMacro(InputImage, InputImageType);
 
   /** Set the classified image. */
-  void SetMembershipFunctions(MembershipFunctionPointerVector
-                              membershipFunctions)
+  void
+  SetMembershipFunctions(MembershipFunctionPointerVector
+                         membershipFunctions)
   {
     m_MembershipFunctions = membershipFunctions;
   }
 
   /** Method to get mean */
-  const MembershipFunctionPointerVector GetMembershipFunctions() const
+  const MembershipFunctionPointerVector
+  GetMembershipFunctions() const
   {
     return m_MembershipFunctions;
   }
 
   /** Method to number of membership functions */
-  unsigned int GetNumberOfMembershipFunctions()
+  unsigned int
+  GetNumberOfMembershipFunctions()
   {
     return static_cast< unsigned int >( m_MembershipFunctions.size() );
   }
 
   /** Method to reset the membership function mean */
-  void DeleteAllMembershipFunctions()
+  void
+  DeleteAllMembershipFunctions()
   {
     m_MembershipFunctions.resize(0);
   }
@@ -150,6 +154,7 @@ private:
 
   /** The core virtual function to perform modelling of the input data */
   virtual void EstimateModels() = 0;
+
 }; // class ImageModelEstimator
 } // namespace itk
 

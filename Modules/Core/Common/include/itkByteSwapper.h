@@ -47,7 +47,7 @@ namespace itk
  */
 
 template< typename T >
-class ByteSwapper:public Object
+class ByteSwapper : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -65,10 +65,17 @@ public:
   /** Query the machine Endian-ness. */
   static bool SystemIsBigEndian();
 
-  static bool SystemIsBE() { return SystemIsBigEndian(); }
+  static bool
+  SystemIsBE() {
+    return SystemIsBigEndian();
+  }
+
   static bool SystemIsLittleEndian();
 
-  static bool SystemIsLE() { return SystemIsLittleEndian(); }
+  static bool
+  SystemIsLE() {
+    return SystemIsLittleEndian();
+  }
 
   /** Generic swap method handles type T. The swapping is
    * done in-place. 2, 4 and 8 byte swapping
@@ -123,8 +130,11 @@ public:
                                                      OStreamType *fp);
 
 protected:
-  ByteSwapper() {}
-  ~ByteSwapper() {}
+  ByteSwapper() {
+  }
+
+  ~ByteSwapper() {
+  }
 
   /** Swap 2 bytes. */
   static void Swap2(void *p);
@@ -162,6 +172,7 @@ protected:
 private:
   ByteSwapper(const ByteSwapper &);    //purposely not implemented
   void operator=(const ByteSwapper &); //purposely not implemented
+
 };
 } // end namespace itk
 

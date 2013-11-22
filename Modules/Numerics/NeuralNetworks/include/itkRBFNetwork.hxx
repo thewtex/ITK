@@ -57,9 +57,10 @@ RBFNetwork<TMeasurementVector,TTargetVector>
 ::InitializeWeights()
 {
   Superclass::InitializeWeights();
+
   vnl_matrix<ValueType> rbf_weights(m_NumOfFirstHiddenNodes,m_NumOfInputNodes+1);
   rbf_weights.fill(0.0);
-  this->m_Weights[0]->SetWeightValues(rbf_weights.data_block());
+  this->m_Weights[0]->SetWeightValues(rbf_weights.data_block() );
 
   std::cout << "Setting rbf weights to zero" << std::endl;
 }
@@ -127,9 +128,12 @@ RBFNetwork<TMeasurementVector,TTargetVector>
   Superclass::AddWeightSet(InputLayerOutputWeights);
   Superclass::AddWeightSet(HiddenLayer1OutputWeights);
 
-  //HACK:  NOTE:  You can not set the WeightSets until after the layers are added to the network because
-  //       the LayerId's must have been set prior to the Weights being added to the layers.
-  //       The ordering of putting together the networks is crucial.  Layers must be added to network
+  //HACK:  NOTE:  You can not set the WeightSets until after the layers are
+  // added to the network because
+  //       the LayerId's must have been set prior to the Weights being added to
+  // the layers.
+  //       The ordering of putting together the networks is crucial.  Layers
+  // must be added to network
   //       prior to weights being added to layers.
   inputlayer->SetOutputWeightSet(InputLayerOutputWeights);
   hiddenlayer1->SetInputWeightSet(InputLayerOutputWeights);
@@ -227,7 +231,7 @@ RBFNetwork<TMeasurementVector,TTargetVector>
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
-  RBFNetwork<TMeasurementVector,TTargetVector>
+RBFNetwork<TMeasurementVector,TTargetVector>
 ::SetRadius(ValueType r)
 {
   m_Radii.push_back(r);
@@ -251,6 +255,5 @@ RBFNetwork<TMeasurementVector,TTargetVector>
 
 } // end namespace Statistics
 } // end namespace itk
-
 
 #endif

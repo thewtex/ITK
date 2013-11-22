@@ -46,7 +46,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class StandardDeviationPerComponentSampleFilter:
+class StandardDeviationPerComponentSampleFilter :
   public ProcessObject
 {
 public:
@@ -94,10 +94,12 @@ protected:
   StandardDeviationPerComponentSampleFilter(const Self &); //purposely not
                                                            // implemented
   void operator=(const Self &);                            //purposely not
-                                                           // implemented
+
+  // implemented
 
   StandardDeviationPerComponentSampleFilter();
-  virtual ~StandardDeviationPerComponentSampleFilter();
+  virtual
+  ~StandardDeviationPerComponentSampleFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DataObject pointer */

@@ -31,7 +31,8 @@ typedef itk::SizeValueType SizeValueType;
 // Usage: [Video Input] [Non-Video Input] [Video Output] [Width] [Height]
 //            [Num Frames] [FpS]
 
-int test_OpenCVVideoIOFactory ( char* input, char* output, SizeValueType cameraNumber )
+int
+test_OpenCVVideoIOFactory( char* input, char* output, SizeValueType cameraNumber )
 {
 
   int ret = EXIT_SUCCESS;
@@ -45,13 +46,13 @@ int test_OpenCVVideoIOFactory ( char* input, char* output, SizeValueType cameraN
   // framework since none of the factories get reigstered by default.
   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoIOFactory::New() );
 
-
   //////
   // Create the VideoIOBase for reading from a file
   //////
   std::cout << "Trying to create IO for reading from file..." << std::endl;
   itk::VideoIOBase::Pointer ioReadFile = itk::VideoIOFactory::CreateVideoIO(
-                                    itk::VideoIOFactory::ReadFileMode, input);
+      itk::VideoIOFactory::ReadFileMode, input);
+
   if (!ioReadFile)
     {
     std::cerr << "Did not create valid VideoIO for reading from file " << std::endl;
@@ -74,7 +75,7 @@ int test_OpenCVVideoIOFactory ( char* input, char* output, SizeValueType cameraN
     std::stringstream ss;
     ss << cameraNumber;
     itk::VideoIOBase::Pointer ioReadCamera = itk::VideoIOFactory::CreateVideoIO(
-                                      itk::VideoIOFactory::ReadCameraMode, ss.str().c_str());
+        itk::VideoIOFactory::ReadCameraMode, ss.str().c_str() );
     if (!ioReadCamera)
       {
       std::cerr << "Did not create valid VideoIO for reading from camera" << std::endl;
@@ -87,7 +88,7 @@ int test_OpenCVVideoIOFactory ( char* input, char* output, SizeValueType cameraN
   //////
   std::cout << "Trying to create IO for writing to file..." << std::endl;
   itk::VideoIOBase::Pointer ioWrite = itk::VideoIOFactory::CreateVideoIO(
-                                       itk::VideoIOFactory::WriteMode, output);
+      itk::VideoIOFactory::WriteMode, output);
   if (!ioWrite)
     {
     std::cerr << "Did not create valid VideoIO for writing " << std::endl;
@@ -98,7 +99,8 @@ int test_OpenCVVideoIOFactory ( char* input, char* output, SizeValueType cameraN
   return ret;
 }
 
-int itkOpenCVVideoIOFactoryTest ( int argc, char *argv[] )
+int
+itkOpenCVVideoIOFactoryTest( int argc, char *argv[] )
 {
   if (argc != 4)
     {
@@ -108,5 +110,5 @@ int itkOpenCVVideoIOFactoryTest ( int argc, char *argv[] )
 
   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoIOFactory::New() );
 
-  return test_OpenCVVideoIOFactory(argv[1], argv[2], atoi(argv[3]));
+  return test_OpenCVVideoIOFactory(argv[1], argv[2], atoi(argv[3]) );
 }

@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class DelaunayConformingQuadEdgeMeshFilter:
+class DelaunayConformingQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -103,7 +103,7 @@ public:
   typedef std::pair< bool, CriterionValueType > PriorityType;
 
   typedef MaxPriorityQueueElementWrapper<
-    OutputEdgeCellType *, PriorityType, long >            PriorityQueueItemType;
+      OutputEdgeCellType *, PriorityType, long >            PriorityQueueItemType;
 
   typedef PriorityQueueContainer< PriorityQueueItemType *,
                                   ElementWrapperPointerInterface< PriorityQueueItemType * >,
@@ -115,17 +115,19 @@ public:
   typedef typename QueueMapType::iterator                           QueueMapIterator;
 
   typedef QuadEdgeMeshEulerOperatorFlipEdgeFunction<
-    OutputMeshType, OutputQEType >                                  FlipEdgeFunctionType;
+      OutputMeshType, OutputQEType >                                  FlipEdgeFunctionType;
   typedef typename FlipEdgeFunctionType::Pointer FlipEdgeFunctionPointer;
 
-  void SetListOfConstrainedEdges(const OutputEdgeCellListType & iList)
+  void
+  SetListOfConstrainedEdges(const OutputEdgeCellListType & iList)
   {
     m_ListOfConstrainedEdges = iList;
   }
 
 protected:
   DelaunayConformingQuadEdgeMeshFilter();
-  virtual ~DelaunayConformingQuadEdgeMeshFilter();
+  virtual
+  ~DelaunayConformingQuadEdgeMeshFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   OutputEdgeCellListType m_ListOfConstrainedEdges;
@@ -209,7 +211,8 @@ private:
   DelaunayConformingQuadEdgeMeshFilter(const Self &); // Purposely not
                                                       // implemented
   void operator=(const Self &);                       // Purposely not
-                                                      // implemented
+
+  // implemented
 };                                                    //
 } // end namespace itk
 

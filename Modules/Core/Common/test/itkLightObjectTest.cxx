@@ -19,11 +19,11 @@
 #include "itkLightObject.h"
 
 // Excersise the LightObject methods
-int itkLightObjectTest(int, char* [] )
+int
+itkLightObjectTest(int, char* [] )
 {
 
-
-  typedef itk::LightObject    ObjectType;
+  typedef itk::LightObject ObjectType;
 
   ObjectType::Pointer light = ObjectType::New();
 
@@ -39,22 +39,22 @@ int itkLightObjectTest(int, char* [] )
   const int counts1 = light->GetReferenceCount();
   std::cout << counts1 << std::endl;
 
-  { // initialize scope for a SmartPointer
-      ObjectType::Pointer secondreference = light;
-      const int counts2 = light->GetReferenceCount();
-      if( counts2 != counts1+1 )
-        {
-        std::cerr << "Problem in Reference counting increment" << std::endl;
-        std::cout << "Test FAILED !" << std::endl;
-        return EXIT_FAILURE;
-        }
-      else
-        {
-        std::cout << "After assignment to another SmartPointer" << std::endl;
-        std::cout << "reference count is:  " << counts2 << std::endl;
-        }
-  } // terminate the scope for the SmartPointer. Reference count should
-    // decrement at this point.
+    { // initialize scope for a SmartPointer
+    ObjectType::Pointer secondreference = light;
+    const int           counts2 = light->GetReferenceCount();
+    if( counts2 != counts1+1 )
+      {
+      std::cerr << "Problem in Reference counting increment" << std::endl;
+      std::cout << "Test FAILED !" << std::endl;
+      return EXIT_FAILURE;
+      }
+    else
+      {
+      std::cout << "After assignment to another SmartPointer" << std::endl;
+      std::cout << "reference count is:  " << counts2 << std::endl;
+      }
+    } // terminate the scope for the SmartPointer. Reference count should
+      // decrement at this point.
 
   const int counts3 = light->GetReferenceCount();
   if( counts3 != counts1 )

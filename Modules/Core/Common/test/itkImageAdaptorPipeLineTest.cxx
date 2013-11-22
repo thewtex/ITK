@@ -24,14 +24,13 @@
 //
 //-------------------------------------------
 
-
 #include "itkImageAdaptor.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkRedPixelAccessor.h"
 #include "itkAddImageFilter.h"
 
-
-int itkImageAdaptorPipeLineTest(int, char* [] )
+int
+itkImageAdaptorPipeLineTest(int, char* [] )
 {
 
   //-------------------------------------------------------------
@@ -39,32 +38,28 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
   //-------------------------------------------------------------
 
   // Float Image typedefs
-  typedef   float                                    myFloatPixelType;
-  typedef   itk::Image<myFloatPixelType, 3>          myFloatImageType;
+  typedef   float                           myFloatPixelType;
+  typedef   itk::Image<myFloatPixelType, 3> myFloatImageType;
 
-  typedef   myFloatImageType::SizeType               mySizeType;
-  typedef   myFloatImageType::IndexType              myIndexType;
-  typedef   myFloatImageType::RegionType             myRegionType;
-
+  typedef   myFloatImageType::SizeType   mySizeType;
+  typedef   myFloatImageType::IndexType  myIndexType;
+  typedef   myFloatImageType::RegionType myRegionType;
 
   // RGBPixel Image typedefs
-  typedef   itk::RGBPixel<myFloatPixelType>           myRGBPixelPixelType;
-  typedef   itk::Image<myRGBPixelPixelType, 3>        myRGBPixelImageType;
-  typedef   itk::RedPixelAccessor<myFloatPixelType>   myAccessorType;
+  typedef   itk::RGBPixel<myFloatPixelType>         myRGBPixelPixelType;
+  typedef   itk::Image<myRGBPixelPixelType, 3>      myRGBPixelImageType;
+  typedef   itk::RedPixelAccessor<myFloatPixelType> myAccessorType;
   typedef   itk::ImageAdaptor<myRGBPixelImageType,
                               myAccessorType>         myAdaptorType;
   typedef itk::ImageRegionIteratorWithIndex<
-                                   myFloatImageType > myFloatIteratorType;
-
+      myFloatImageType > myFloatIteratorType;
 
   typedef itk::ImageRegionIteratorWithIndex<
-                                     myRGBPixelImageType >   myRGBPixelIteratorType;
-
+      myRGBPixelImageType >   myRGBPixelIteratorType;
 
   typedef itk::AddImageFilter< myAdaptorType,
                                myFloatImageType,
                                myFloatImageType >       myFilterType;
-
 
   //-------------------------------------------------------------
   //                 Create and Allocate the image
@@ -91,7 +86,7 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
   //                 Create and Initialize the RGBPixel image
   //-------------------------------------------------------------
 
-  myRGBPixelImageType::Pointer   myRGBPixelImage = myRGBPixelImageType::New();
+  myRGBPixelImageType::Pointer myRGBPixelImage = myRGBPixelImageType::New();
 
   myRGBPixelImage->SetLargestPossibleRegion( region );
   myRGBPixelImage->SetBufferedRegion( region );
@@ -107,15 +102,15 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
   initialRGBPixelValue.SetGreen( 20 );
 
   while( !it.IsAtEnd() )
-  {
+    {
     it.Set( initialRGBPixelValue );
     ++it;
-  }
+    }
 
   std::cout << "Initial RGBPixel Image Values : " << std::endl;
   it.GoToBegin();
   while( !it.IsAtEnd() )
-  {
+    {
     myIndexType index = it.GetIndex();
     std::cout <<  "[";
     std::cout.width(3);
@@ -131,8 +126,7 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
     std::cout.width(4);
     std::cout <<  it.Get().GetBlue() << std::endl;
     ++it;
-  }
-
+    }
 
   std::cout << "RGBPixel Image Initializaed" << std::endl;
 
@@ -140,7 +134,7 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
   //                 Create and Initialize the Float image
   //-------------------------------------------------------------
 
-  myFloatImageType::Pointer   myFloatImage = myFloatImageType::New();
+  myFloatImageType::Pointer myFloatImage = myFloatImageType::New();
 
   myFloatImage->SetLargestPossibleRegion( region );
   myFloatImage->SetBufferedRegion( region );
@@ -153,15 +147,15 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
   myFloatPixelType initialFloatValue = 5.0;
 
   while( !itf.IsAtEnd() )
-  {
+    {
     itf.Set( initialFloatValue );
     ++itf;
-  }
+    }
 
   std::cout << "Initial Float Image Values : " << std::endl;
   itf.GoToBegin();
   while( !itf.IsAtEnd() )
-  {
+    {
     myIndexType index = itf.GetIndex();
     std::cout <<  "[";
     std::cout.width(3);
@@ -173,10 +167,9 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
     std::cout.width(8);
     std::cout <<  itf.Get() << std::endl;
     ++itf;
-  }
+    }
 
   std::cout << "Float Image Initializaed" << std::endl;
-
 
   //-------------------------------------------------------------
   //         Create the adaptor and connect the image
@@ -190,11 +183,10 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
   //         Create the filter and connect the inputs
   //-------------------------------------------------------------
 
-  myFilterType::Pointer    filter   = myFilterType::New();
+  myFilterType::Pointer filter   = myFilterType::New();
 
   filter->SetInput1( myAdaptor );
   filter->SetInput2( myFloatImage );
-
 
   //-------------------------------------------------------------
   //      Set the requested region of  the Output image
@@ -223,11 +215,10 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
 
   myFloatIteratorType ito(  myFloatOutputImage, myFloatOutputImage->GetRequestedRegion() );
 
-
   std::cout << std::endl;
   std::cout << "Filter Output :" << std::endl;
   while( !ito.IsAtEnd() )
-  {
+    {
     myIndexType index = ito.GetIndex();
     std::cout <<  "[";
     std::cout.width(3);
@@ -239,7 +230,7 @@ int itkImageAdaptorPipeLineTest(int, char* [] )
     std::cout.width(8);
     std::cout <<  ito.Get() << std::endl;
     ++ito;
-  }
+    }
 
   return EXIT_SUCCESS;
 

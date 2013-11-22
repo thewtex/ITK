@@ -19,18 +19,18 @@
 #include <fstream>
 #include <cstdlib>
 
-
 #include <metaUtils.h>
 #include "itksys/SystemTools.hxx"
 
-int testMetaUtils(int argc, char * argv[])
+int
+testMetaUtils(int argc, char * argv[])
 {
   if (argc > 1)
     {
     itksys::SystemTools::ChangeDirectory(argv[1]);
     }
 
-  if(MET_SystemByteOrderMSB())
+  if(MET_SystemByteOrderMSB() )
     {
     std::cout << "MET_SYSTEM_BYTE_ORDER_MSB = TRUE" << std::endl;
     }
@@ -53,7 +53,7 @@ int testMetaUtils(int argc, char * argv[])
 
   MET_ValueEnumType metType = MET_USHORT;
   MET_ValueEnumType tmpMetType = MET_USHORT;
-  char tmpString[80];
+  char              tmpString[80];
   sprintf(tmpString, "MET_USHORT");
   std::cout << "MET_StringToType: ";
   MET_StringToType(tmpString, &tmpMetType);
@@ -64,7 +64,7 @@ int testMetaUtils(int argc, char * argv[])
 
   std::cout << "MET_TypeToString: ";
   MET_TypeToString(MET_USHORT, tmpString);
-  if(strcmp(tmpString, "MET_USHORT"))
+  if(strcmp(tmpString, "MET_USHORT") )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
@@ -85,30 +85,30 @@ int testMetaUtils(int argc, char * argv[])
   else
     std::cout << "PASSED" << std::endl;
   std::cout << "MET_StringToWordArray: 1: ";
-  if(strcmp(wordArray[0], "This"))
+  if(strcmp(wordArray[0], "This") )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
   std::cout << "MET_StringToWordArray: 2: ";
-  if(strcmp(wordArray[1], "is"))
+  if(strcmp(wordArray[1], "is") )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
   std::cout << "MET_StringToWordArray: 3: ";
-  if(strcmp(wordArray[2], "a"))
+  if(strcmp(wordArray[2], "a") )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
   std::cout << "MET_StringToWordArray: 4: ";
-  if(strcmp(wordArray[3], "test"))
+  if(strcmp(wordArray[3], "test") )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
 
   int i;
-  for(i=0;i<n;i++)
+  for(i=0; i<n; i++)
     {
-      delete[] wordArray[i];
+    delete[] wordArray[i];
     }
   delete[] wordArray;
 
@@ -117,7 +117,7 @@ int testMetaUtils(int argc, char * argv[])
 
   std::cout << "MET_GetFilePathTest: ";
   MET_GetFilePath(fName, tmpString);
-  if(strcmp(tmpString, "this/is/a/"))
+  if(strcmp(tmpString, "this/is/a/") )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
@@ -135,14 +135,14 @@ int testMetaUtils(int argc, char * argv[])
 
   std::cout << "MET_SetFileSuffix: ";
   MET_SetFileSuffix(fName, ".net");
-  if(strcmp(fName, "this/is/a/test.net"))
+  if(strcmp(fName, "this/is/a/test.net") )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
 
   std::ofstream fout("testMetaFileUtils.txt", std::ios::out);
 
-  MET_FieldRecordType * mF;
+  MET_FieldRecordType *              mF;
   std::vector<MET_FieldRecordType *> mFields;
 
   mF = new MET_FieldRecordType;
@@ -205,16 +205,16 @@ int testMetaUtils(int argc, char * argv[])
   mFields.push_back(mF);
 
   std::cout << "MET_Read: ";
-  if(!MET_Read(fin, &mFields))
+  if(!MET_Read(fin, &mFields) )
     std::cout << "FAILED" << std::endl;
   else
     std::cout << "PASSED" << std::endl;
 
   fieldIter = mFields.begin();
   int nDims;
-  if((*fieldIter)->defined)
+  if( (*fieldIter)->defined)
     {
-    nDims = (int)((*fieldIter)->value[0]);
+    nDims = (int)( (*fieldIter)->value[0]);
     if(nDims != 2)
       std::cout << "nDims not equal to 2" << std::endl;
     else
@@ -225,7 +225,7 @@ int testMetaUtils(int argc, char * argv[])
 
   double eSize[2];
   ++fieldIter;
-  if((*fieldIter)->defined)
+  if( (*fieldIter)->defined)
     {
     eSize[0] = (*fieldIter)->value[0];
     eSize[1] = (*fieldIter)->value[1];
@@ -237,26 +237,26 @@ int testMetaUtils(int argc, char * argv[])
   else
     std::cout << "ElementSize not defined" << std::endl;
 
-  int nNames=0;
+  int    nNames=0;
   char **names=NULL;
   ++fieldIter;
-  if((*fieldIter)->defined)
+  if( (*fieldIter)->defined)
     {
-    MET_StringToWordArray((char *)((*fieldIter)->value), &nNames, &names);
+    MET_StringToWordArray( (char *)( (*fieldIter)->value), &nNames, &names);
     if(nNames != 2)
       std::cout << "nNames wrong : " << nNames << std::endl;
     else
-      if(strcmp(names[0], "X-AXIS") || strcmp(names[1], "Y-AXIS"))
-        std::cout << "names wrong : _" << names[0] << "_, _" << names[1] << "_" << std::endl;
-      else
-        std::cout << "Names: Passed" << std::endl;
+    if(strcmp(names[0], "X-AXIS") || strcmp(names[1], "Y-AXIS") )
+      std::cout << "names wrong : _" << names[0] << "_, _" << names[1] << "_" << std::endl;
+    else
+      std::cout << "Names: Passed" << std::endl;
     }
   else
     std::cout << "DirNames not defined" << std::endl;
 
-  for(i=0;i<nNames;i++)
+  for(i=0; i<nNames; i++)
     {
-      delete[] names[i];
+    delete[] names[i];
     }
   delete[] names;
 

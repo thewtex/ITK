@@ -39,7 +39,9 @@ class LevelSetEvolutionUpdateLevelSetsThreader
 
 // For dense image level set.
 template< typename TImage, typename TLevelSetEvolution >
-class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
+class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >,
+                                                ThreadedImageRegionPartitioner< TImage::ImageDimension >,
+                                                TLevelSetEvolution >
   : public DomainThreader< ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
 {
 public:
@@ -76,13 +78,17 @@ protected:
   virtual void AfterThreadedExecution();
 
   typedef CompensatedSummation< LevelSetOutputRealType > RMSChangeAccumulatorType;
-  typedef std::vector< RMSChangeAccumulatorType > RMSChangeAccumulatorPerThreadType;
+  typedef std::vector< RMSChangeAccumulatorType >        RMSChangeAccumulatorPerThreadType;
 
   RMSChangeAccumulatorPerThreadType m_RMSChangeAccumulatorPerThread;
 
 private:
-  LevelSetEvolutionUpdateLevelSetsThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  LevelSetEvolutionUpdateLevelSetsThreader( const Self & ); // purposely not
+                                                            // implemented
+  void operator=( const Self & );                           // purposely not
+
+  // implemented
+
 };
 
 } // end namespace itk

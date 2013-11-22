@@ -87,7 +87,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class MovingHistogramImageFilterBase:
+class MovingHistogramImageFilterBase :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -139,7 +139,8 @@ public:
 
 protected:
   MovingHistogramImageFilterBase();
-  ~MovingHistogramImageFilterBase() {}
+  ~MovingHistogramImageFilterBase() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -177,14 +178,15 @@ public:
      * return true if the object is a worth choice for the best axis
      * than the object in parameter
      */
-    inline bool operator<(const DirectionCost & dc) const
+    inline bool
+    operator<(const DirectionCost & dc) const
     {
       if ( m_Count > dc.m_Count )
-            { return true; }
+                    { return true; }
       else if ( m_Count < dc.m_Count )
-            { return false; }
+                    { return false; }
       else //if (m_Count == dc.m_Count)
-            { return m_Dimension > dc.m_Dimension; }
+                    { return m_Dimension > dc.m_Dimension; }
     }
 
     int m_Dimension;

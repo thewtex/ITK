@@ -51,7 +51,10 @@ public:
   virtual ScalarType Evaluate(const ScalarType& input) const; //{return 0;};
 
   /** Evaluate the derivative at the specified input position */
-  virtual ScalarType EvaluateDerivative(const ScalarType& ) const{return 0;};
+  virtual ScalarType
+  EvaluateDerivative(const ScalarType& ) const {
+    return 0;
+  }
 
   itkSetMacro(Radius,ScalarType);
   itkGetConstReferenceMacro(Radius,ScalarType);
@@ -61,7 +64,8 @@ public:
 protected:
 
   MultiquadricRadialBasisFunction();
-  virtual ~MultiquadricRadialBasisFunction();
+  virtual
+  ~MultiquadricRadialBasisFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -77,8 +81,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMultiquadricRadialBasisFunction.hxx"
+#include "itkMultiquadricRadialBasisFunction.hxx"
 #endif
-
 
 #endif

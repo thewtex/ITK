@@ -49,6 +49,7 @@ public:
   FancyString( const char* s );
 
   FancyString& operator=( const std::string& str );
+
   FancyString& operator=( const char* s );
 
   /** Function to cast this type to "const char *". */
@@ -122,13 +123,16 @@ public:
   // helper functions for string manipulations
   /////////////////////////////////////////////////////////////////////////////
 
-  /** Method to trim the spaces or user-specified characters on both ends of a string. */
+  /** Method to trim the spaces or user-specified characters on both ends of a
+    string. */
   FancyString& Trim( const std::string& dislike = " \t\n\r" );
 
-  /** Method to trim the spaces or user-specified characters on left end of a string. */
+  /** Method to trim the spaces or user-specified characters on left end of a
+    string. */
   FancyString& TrimLeft( const std::string& dislike = " \t\n\r" );
 
-  /** Method to trim the spaces or user-specified characters on right end of a string. */
+  /** Method to trim the spaces or user-specified characters on right end of a
+    string. */
   FancyString& TrimRight( const std::string& dislike = " \t\n\r" );
 
   /** Method to covert lower-case characters to upper cases in a string. */
@@ -140,7 +144,8 @@ public:
   /** Method to split a string into two parts with user-defined delimiters. */
   void Split( std::string& lpart, std::string& rpart, const std::string& delims = "=:" ) const;
 
-  /** Method to split a string into a sequence of strings with user-defined delimiters. */
+  /** Method to split a string into a sequence of strings with user-defined
+    delimiters. */
   void Split( std::vector<std::string>& result, const std::string& delims = ";|" ) const;
 
   /**
@@ -160,6 +165,7 @@ public:
 
   /** Method to test whether a string contains a user-given sub-string. */
   bool ContainSub( const std::string& s2, bool ignoreCase = true );
+
 }; // class FancyString
 
 } // namespace itk

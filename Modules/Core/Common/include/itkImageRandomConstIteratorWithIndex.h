@@ -113,7 +113,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class ImageRandomConstIteratorWithIndex:public ImageConstIteratorWithIndex< TImage >
+class ImageRandomConstIteratorWithIndex : public ImageConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -137,7 +137,8 @@ public:
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageRandomConstIteratorWithIndex();
-  ~ImageRandomConstIteratorWithIndex() {}
+  ~ImageRandomConstIteratorWithIndex() {
+  }
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
@@ -152,37 +153,43 @@ public:
   ImageRandomConstIteratorWithIndex(const ImageConstIteratorWithIndex< TImage > & it)
   {
     this->ImageConstIteratorWithIndex< TImage >::operator=(it);
+
   }
 
   /** Move an iterator to the beginning of the region. */
-  void GoToBegin(void)
+  void
+  GoToBegin(void)
   {
     this->RandomJump();
     m_NumberOfSamplesDone = 0L;
   }
 
   /** Move an iterator to one position past the End of the region. */
-  void GoToEnd(void)
+  void
+  GoToEnd(void)
   {
     this->RandomJump();
     m_NumberOfSamplesDone = m_NumberOfSamplesRequested;
   }
 
   /** Is the iterator at the beginning of the region? */
-  bool IsAtBegin(void) const
+  bool
+  IsAtBegin(void) const
   {
     return ( m_NumberOfSamplesDone == 0L );
   }
 
   /** Is the iterator at the end of the region? */
-  bool IsAtEnd(void) const
+  bool
+  IsAtEnd(void) const
   {
     return ( m_NumberOfSamplesDone >= m_NumberOfSamplesRequested );
   }
 
   /** Increment (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator-- */
-  Self & operator++()
+  Self &
+  operator++()
   {
     this->RandomJump();
     m_NumberOfSamplesDone++;
@@ -191,7 +198,8 @@ public:
 
   /** Decrement (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator++ */
-  Self & operator--()
+  Self &
+  operator--()
   {
     this->RandomJump();
     m_NumberOfSamplesDone--;

@@ -21,7 +21,8 @@
 #include "vtkImageNoiseSource.h"
 #include "vtkSmartPointer.h"
 
-int itkVTKImageToImageFilterTest(int, char*[])
+int
+itkVTKImageToImageFilterTest(int, char*[])
 {
   typedef itk::Image<double, 2>                 ImageType;
   typedef vtkSmartPointer<vtkImageNoiseSource>  VTKNoiseType;
@@ -34,7 +35,7 @@ int itkVTKImageToImageFilterTest(int, char*[])
   noise_source->Update();
 
   ConnectorType::Pointer connector = ConnectorType::New();
-  connector->SetInput(noise_source->GetOutput());
+  connector->SetInput(noise_source->GetOutput() );
   connector->Update();
 
   connector->GetOutput()->Print(std::cout);

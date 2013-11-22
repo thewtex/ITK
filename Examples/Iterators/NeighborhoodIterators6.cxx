@@ -49,7 +49,8 @@
 //
 // Software Guide : EndLatex
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
@@ -65,16 +66,16 @@ int main( int argc, char ** argv )
   typedef itk::Image< PixelType, 2 >             ImageType;
   typedef itk::NeighborhoodIterator< ImageType > NeighborhoodIteratorType;
 
-  typedef itk::FastMarchingImageFilter<ImageType, ImageType>  FastMarchingFilterType;
+  typedef itk::FastMarchingImageFilter<ImageType, ImageType> FastMarchingFilterType;
 
   FastMarchingFilterType::Pointer fastMarching = FastMarchingFilterType::New();
 
-  typedef FastMarchingFilterType::NodeContainer  NodeContainer;
-  typedef FastMarchingFilterType::NodeType       NodeType;
+  typedef FastMarchingFilterType::NodeContainer NodeContainer;
+  typedef FastMarchingFilterType::NodeType      NodeType;
 
   NodeContainer::Pointer seeds = NodeContainer::New();
 
-  ImageType::IndexType  seedPosition;
+  ImageType::IndexType seedPosition;
 
   seedPosition[0] = 128;
   seedPosition[1] = 128;
@@ -82,7 +83,7 @@ int main( int argc, char ** argv )
 
   NodeType node;
 
-  const double seedValue = - initialDistance;
+  const double seedValue = -initialDistance;
 
   ImageType::SizeType size = {{256, 256}};
 
@@ -102,8 +103,8 @@ int main( int argc, char ** argv )
   noise->SetSize(size.m_Size);
   noise->SetMin(-.7);
   noise->SetMax(.8);
-  adder->SetInput1(noise->GetOutput());
-  adder->SetInput2(fastMarching->GetOutput());
+  adder->SetInput1(noise->GetOutput() );
+  adder->SetInput2(fastMarching->GetOutput() );
 
   try
     {
@@ -141,7 +142,7 @@ int main( int argc, char ** argv )
 // Software Guide : BeginCodeSnippet
   NeighborhoodIteratorType::RadiusType radius;
   radius.Fill(1);
-  NeighborhoodIteratorType it(radius, input, input->GetRequestedRegion());
+  NeighborhoodIteratorType it(radius, input, input->GetRequestedRegion() );
 
   it.SetLocation(index);
 // Software Guide : EndCodeSnippet
@@ -182,7 +183,6 @@ int main( int argc, char ** argv )
     }
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // Figure~\ref{fig:NeighborhoodExample6} shows the results of the algorithm
@@ -208,7 +208,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter< ImageType,
-    WriteImageType > RescaleFilterType;
+                                            WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 

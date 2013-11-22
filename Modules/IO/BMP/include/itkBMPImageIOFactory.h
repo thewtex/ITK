@@ -28,7 +28,7 @@ namespace itk
  * \brief Create instances of BMPImageIO objects using an object factory.
  * \ingroup ITKIOBMP
  */
-class ITKIOBMP_EXPORT BMPImageIOFactory:public ObjectFactoryBase
+class ITKIOBMP_EXPORT BMPImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +49,8 @@ public:
   itkTypeMacro(BMPImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     BMPImageIOFactory::Pointer BMPFactory = BMPImageIOFactory::New();
 
@@ -63,6 +64,7 @@ protected:
 private:
   BMPImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

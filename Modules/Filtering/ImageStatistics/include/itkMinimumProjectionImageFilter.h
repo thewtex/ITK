@@ -48,20 +48,26 @@ template< typename TInputPixel >
 class MinimumAccumulator
 {
 public:
-  MinimumAccumulator( SizeValueType ) {}
-  ~MinimumAccumulator(){}
+  MinimumAccumulator( SizeValueType ) {
+  }
 
-  inline void Initialize()
+  ~MinimumAccumulator(){
+  }
+
+  inline void
+  Initialize()
   {
     m_Minimum = NumericTraits< TInputPixel >::max();
   }
 
-  inline void operator()(const TInputPixel & input)
+  inline void
+  operator()(const TInputPixel & input)
   {
     m_Minimum = vnl_math_min(m_Minimum, input);
   }
 
-  inline TInputPixel GetValue()
+  inline TInputPixel
+  GetValue()
   {
     return m_Minimum;
   }
@@ -71,7 +77,7 @@ public:
 } // end namespace Function
 
 template< typename TInputImage, typename TOutputImage >
-class MinimumProjectionImageFilter:public
+class MinimumProjectionImageFilter : public
   ProjectionImageFilter< TInputImage, TOutputImage,
                          Functor::MinimumAccumulator< typename TInputImage::PixelType > >
 {
@@ -103,12 +109,17 @@ public:
 #endif
 
 protected:
-  MinimumProjectionImageFilter() {}
-  virtual ~MinimumProjectionImageFilter() {}
+  MinimumProjectionImageFilter() {
+  }
+
+  virtual
+  ~MinimumProjectionImageFilter() {
+  }
 
 private:
   MinimumProjectionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };                                            // end
                                               // MinimumProjectionImageFilter
 } //end namespace itk

@@ -41,12 +41,12 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
+  InputImagePointer input = const_cast<InputImageType *>(this->GetInput() );
+
   if ( !input )
-    { return; }
+              { return; }
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
-
 
 template <typename TInputImage, typename TOutputImage, typename TAttributeAccessor>
 void
@@ -54,9 +54,8 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
-
 
 template<typename TInputImage, typename TOutputImage, typename TAttributeAccessor>
 void
@@ -65,24 +64,24 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 {
   // Allocate the output
   this->AllocateOutputs();
-  OutputImageType * output = this->GetOutput();
+  OutputImageType *      output = this->GetOutput();
   const InputImageType * input = this->GetInput();
-  ProgressReporter progress( this, 0, output->GetRequestedRegion().GetNumberOfPixels() );
+  ProgressReporter       progress( this, 0, output->GetRequestedRegion().GetNumberOfPixels() );
 
   AttributeAccessorType accessor;
 
   output->FillBuffer( m_BackgroundValue );
 
   for( typename InputImageType::ConstIterator loit( input );
-       ! loit.IsAtEnd();
+       !loit.IsAtEnd();
        ++loit )
     {
-    typedef typename InputImageType::LabelObjectType  LabelObjectType;
-    const LabelObjectType * labelObject = loit.GetLabelObject();
+    typedef typename InputImageType::LabelObjectType LabelObjectType;
+    const LabelObjectType *    labelObject = loit.GetLabelObject();
     const AttributeValueType & attribute = accessor( labelObject );
 
     typename LabelObjectType::ConstIndexIterator it( labelObject );
-    while( ! it.IsAtEnd() )
+    while( !it.IsAtEnd() )
       {
       const IndexType idx = it.GetIndex();
       output->SetPixel( idx, static_cast<OutputImagePixelType>( attribute ) );
@@ -92,7 +91,6 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
     }
 }
 
-
 template<typename TInputImage, typename TOutputImage, typename TAttributeAccessor>
 void
 LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
@@ -100,8 +98,9 @@ LabelMapToAttributeImageFilter<TInputImage, TOutputImage, TAttributeAccessor>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "BackgroundValue: "  <<
+    static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

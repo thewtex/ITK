@@ -251,6 +251,7 @@ ImageRegistrationMethod< TFixedImage, TMovingImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Metric: " << m_Metric.GetPointer() << std::endl;
   os << indent << "Optimizer: " << m_Optimizer.GetPointer() << std::endl;
   os << indent << "Transform: " << m_Transform.GetPointer() << std::endl;
@@ -272,6 +273,7 @@ ImageRegistrationMethod< TFixedImage, TMovingImage >
 ::GenerateData()
 {
   ParametersType empty(1);
+
   empty.Fill(0.0);
   try
     {
@@ -296,9 +298,9 @@ template< typename TFixedImage, typename TMovingImage >
 const typename ImageRegistrationMethod< TFixedImage, TMovingImage >::TransformOutputType *
 ImageRegistrationMethod< TFixedImage, TMovingImage >
 ::GetOutput() const
-{
+  {
   return static_cast< const TransformOutputType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename TFixedImage, typename TMovingImage >
 DataObject::Pointer

@@ -32,7 +32,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkListSample.h"
 #include "itkNeighborhoodSampler.h"
@@ -49,7 +48,8 @@
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -64,7 +64,7 @@ int main()
   typedef int MeasurementType;
   const unsigned int MeasurementVectorLength = 2;
   typedef itk::Vector< MeasurementType , MeasurementVectorLength >
-                                                    MeasurementVectorType;
+    MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   sample->SetMeasurementVectorSize( MeasurementVectorLength );
@@ -111,7 +111,6 @@ int main()
 
   SamplerType::OutputType::Pointer output = sampler->GetOutput();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //

@@ -21,7 +21,8 @@
 #include "itkTIFFImageIO.h"
 
 template<typename T>
-bool BUG_12266( const std::string &fname, T*)
+bool
+BUG_12266( const std::string &fname, T*)
 {
   typedef T                               ImageType;
   typedef itk::ImageFileReader<ImageType> ReaderType;
@@ -50,13 +51,13 @@ bool BUG_12266( const std::string &fname, T*)
     return EXIT_FAILURE;
     }
 
-
   return true;
 }
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-template<typename T> int DoIt( int, char * argv[], typename T::Pointer)
+template<typename T> int
+DoIt( int, char * argv[], typename T::Pointer)
 {
   typename itk::ImageFileReader<T>::Pointer reader
     = itk::ImageFileReader<T>::New();
@@ -81,7 +82,6 @@ template<typename T> int DoIt( int, char * argv[], typename T::Pointer)
 
   BUG_12266<T>( argv[1], NULL );
 
-
   typename T::Pointer image = reader->GetOutput();
   image->Print(std::cout );
 
@@ -105,7 +105,8 @@ template<typename T> int DoIt( int, char * argv[], typename T::Pointer)
   return EXIT_SUCCESS;
 }
 
-int itkTIFFImageIOTest( int argc, char* argv[] )
+int
+itkTIFFImageIOTest( int argc, char* argv[] )
 {
 
   unsigned int dimension = 2;

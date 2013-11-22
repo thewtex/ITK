@@ -31,7 +31,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInputPointSet, typename TOutputImage >
-class PointSetToImageFilter:public ImageSource< TOutputImage >
+class PointSetToImageFilter : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -141,7 +141,10 @@ protected:
   PointSetToImageFilter();
   ~PointSetToImageFilter();
 
-  virtual void GenerateOutputInformation(){}  // do nothing
+  virtual void
+  GenerateOutputInformation(){
+  }                                           // do nothing
+
   virtual void GenerateData();
 
   SizeType m_Size;
@@ -160,6 +163,7 @@ protected:
 private:
   PointSetToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

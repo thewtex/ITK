@@ -58,20 +58,19 @@ const typename ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::InputImage1Type *
 ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput1()
-{
+  {
   return this->GetInput();
-}
-
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 const typename ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::InputImage2Type *
 ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput2()
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage2 * >
-    ( this->ProcessObject::GetInput(1) );
-}
+           ( this->ProcessObject::GetInput(1) );
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 void
@@ -105,6 +104,7 @@ ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -124,17 +124,17 @@ ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
   progress->SetMiniPipelineFilter(this);
 
   typedef ContourDirectedMeanDistanceImageFilter< InputImage1Type, InputImage2Type >
-  Filter12Type;
+    Filter12Type;
 
   typename Filter12Type::Pointer filter12 = Filter12Type::New();
 
   filter12->SetInput1( this->GetInput1() );
   filter12->SetInput2( this->GetInput2() );
 
- filter12->SetUseImageSpacing( m_UseImageSpacing );
+  filter12->SetUseImageSpacing( m_UseImageSpacing );
 
   typedef ContourDirectedMeanDistanceImageFilter< InputImage2Type, InputImage1Type >
-  Filter21Type;
+    Filter21Type;
 
   typename Filter21Type::Pointer filter21 = Filter21Type::New();
 
@@ -175,5 +175,6 @@ ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
   os << indent << "MeanDistance: "
      << m_MeanDistance << std::endl;
 }
+
 } // end namespace itk
 #endif

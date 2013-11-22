@@ -86,5 +86,6 @@ VectorNeighborhoodInnerProduct< TImage >
 
   return sum;
 }
+
 } // end namespace itk
 #endif

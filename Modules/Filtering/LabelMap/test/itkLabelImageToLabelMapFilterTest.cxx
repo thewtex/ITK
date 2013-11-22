@@ -19,7 +19,8 @@
 #include <iostream>
 #include "itkLabelImageToLabelMapFilter.h"
 
-int itkLabelImageToLabelMapFilterTest(int argc, char * argv[])
+int
+itkLabelImageToLabelMapFilterTest(int argc, char * argv[])
 {
 
   if( argc != 1 )
@@ -66,7 +67,7 @@ int itkLabelImageToLabelMapFilterTest(int argc, char * argv[])
   idxHorizontal[1] = 7;
   idxVertical[0] = 7;
 
-    for (int ctr=0; ctr<11; ctr++)
+  for (int ctr=0; ctr<11; ctr++)
     {
     idxHorizontal[0] = ctr;
     idxVertical[1] = ctr;
@@ -80,7 +81,7 @@ int itkLabelImageToLabelMapFilterTest(int argc, char * argv[])
   LabelImageToLabelMapFilterType::Pointer conversion = LabelImageToLabelMapFilterType::New();
   conversion->SetInput( image );
   conversion->SetBackgroundValue( 255 );
-  conversion->Update( );
+  conversion->Update();
 
   itkAssertOrThrowMacro( ( conversion->GetBackgroundValue() == 255 ), "Error conversion background value." )
 

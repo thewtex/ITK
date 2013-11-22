@@ -41,7 +41,8 @@ MRCImageIOFactory::MRCImageIOFactory()
 }
 
 MRCImageIOFactory::~MRCImageIOFactory()
-{}
+{
+}
 
 const char *
 MRCImageIOFactory::GetITKSourceVersion(void) const
@@ -60,7 +61,8 @@ MRCImageIOFactory::GetDescription(void) const
 
 static bool MRCImageIOFactoryHasBeenRegistered;
 
-void MRCImageIOFactoryRegister__Private(void)
+void
+MRCImageIOFactoryRegister__Private(void)
 {
   if( !MRCImageIOFactoryHasBeenRegistered )
     {

@@ -40,9 +40,9 @@ template< typename TIdentifier, typename TLevelSet >
 const typename
 LevelSetContainerBase< TIdentifier, TLevelSet >::LevelSetContainerType&
 LevelSetContainerBase< TIdentifier, TLevelSet >::GetContainer() const
-{
+  {
   return m_Container;
-}
+  }
 
 template< typename TIdentifier, typename TLevelSet >
 void
@@ -105,7 +105,8 @@ LevelSetContainerBase< TIdentifier, TLevelSet >
 }
 
 template< typename TIdentifier, typename TLevelSet >
-bool LevelSetContainerBase< TIdentifier, TLevelSet >
+bool
+LevelSetContainerBase< TIdentifier, TLevelSet >
 ::AddLevelSet( const LevelSetIdentifierType& iId,
                LevelSetType * iLevelSet,
                const bool iForce )

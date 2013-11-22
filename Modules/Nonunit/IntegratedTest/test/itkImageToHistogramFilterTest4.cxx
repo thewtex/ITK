@@ -31,7 +31,8 @@
 #include "itkSimpleFilterWatcher.h"
 
 template<typename TVectorImage>
-int itkImageToHistogramFilterTest4Templated( int argc, char * argv [] )
+int
+itkImageToHistogramFilterTest4Templated( int argc, char * argv [] )
 {
 
   if( argc < 4 )
@@ -41,15 +42,14 @@ int itkImageToHistogramFilterTest4Templated( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
+  typedef unsigned char PixelComponentType;
+  const unsigned int Dimension = 3;
+  typedef itk::Vector< PixelComponentType, 2 > VectorPixelType;
 
-  typedef unsigned char                                   PixelComponentType;
-  const unsigned int                                      Dimension = 3;
-  typedef itk::Vector< PixelComponentType, 2 >            VectorPixelType;
+  typedef itk::Image< unsigned char, Dimension > ImageType;
+  typedef TVectorImage                           VectorImageType;
 
-  typedef itk::Image< unsigned char, Dimension >   ImageType;
-  typedef TVectorImage                             VectorImageType;
-
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
@@ -58,21 +58,22 @@ int itkImageToHistogramFilterTest4Templated( int argc, char * argv [] )
 
   typedef itk::ComposeImageFilter< ImageType, VectorImageType > ComposeType;
   typename ComposeType::Pointer compose = ComposeType::New();
-  compose->SetInput1(reader->GetOutput());
-  compose->SetInput2(reader2->GetOutput());
+  compose->SetInput1(reader->GetOutput() );
+  compose->SetInput2(reader2->GetOutput() );
 
-  typedef itk::Statistics::ImageToHistogramFilter< VectorImageType >   HistogramFilterType;
+  typedef itk::Statistics::ImageToHistogramFilter< VectorImageType > HistogramFilterType;
   typename HistogramFilterType::Pointer histogramFilter = HistogramFilterType::New();
   histogramFilter->SetInput(  compose->GetOutput()  );
   itk::SimpleFilterWatcher watcher(histogramFilter, "histogramFilter");
 
-  typedef typename HistogramFilterType::HistogramType       HistogramType;
-  typedef typename HistogramFilterType::HistogramSizeType   SizeType;
+  typedef typename HistogramFilterType::HistogramType     HistogramType;
+  typedef typename HistogramFilterType::HistogramSizeType SizeType;
 
-  // use a 3D image to check the behavior of HistogramToImageFilter when the image
+  // use a 3D image to check the behavior of HistogramToImageFilter when the
+  // image
   // is of greater dimension than the histogram
-  typedef itk::Image< float, 3 > FloatImageType;
-  typedef itk::HistogramToLogProbabilityImageFilter< HistogramType, FloatImageType >   ImageFilterType;
+  typedef itk::Image< float, 3 >                                                     FloatImageType;
+  typedef itk::HistogramToLogProbabilityImageFilter< HistogramType, FloatImageType > ImageFilterType;
   typename ImageFilterType::Pointer imageFilter = ImageFilterType::New();
   imageFilter->SetInput( histogramFilter->GetOutput() );
   itk::SimpleFilterWatcher watcher2(imageFilter, "imageFilter");
@@ -81,7 +82,7 @@ int itkImageToHistogramFilterTest4Templated( int argc, char * argv [] )
   typename RescaleType::Pointer rescale = RescaleType::New();
   rescale->SetInput( imageFilter->GetOutput() );
 
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   typename WriterType::Pointer writer = WriterType::New();
   writer->SetInput( rescale->GetOutput() );
   writer->SetFileName( argv[3] );
@@ -96,16 +97,18 @@ int itkImageToHistogramFilterTest4Templated( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  // print the image produced by HistogramToLogProbabilityImageFilter for visual inspection
+  // print the image produced by HistogramToLogProbabilityImageFilter for visual
+  // inspection
   imageFilter->GetOutput()->Print(std::cout);
 
   return EXIT_SUCCESS;
 }
 
-
-int itkImageToHistogramFilterTest4( int argc, char * argv [] )
+int
+itkImageToHistogramFilterTest4( int argc, char * argv [] )
 {
   std::string command = argv[1];
+
   argc--;
   argv++;
   if( command == "Vector" )

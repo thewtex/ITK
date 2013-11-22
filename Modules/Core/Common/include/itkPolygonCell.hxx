@@ -428,6 +428,7 @@ PolygonCell< TCellInterface >
   edgePointer.TakeOwnership(edge);
   return true;
 }
+
 } // end namespace itk
 
 #endif

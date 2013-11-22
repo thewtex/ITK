@@ -68,29 +68,29 @@ class ObjectToObjectOptimizerBaseTemplate : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef ObjectToObjectOptimizerBaseTemplate         Self;
-  typedef Object                                      Superclass;
-  typedef SmartPointer< Self >                        Pointer;
-  typedef SmartPointer< const Self >                  ConstPointer;
+  typedef ObjectToObjectOptimizerBaseTemplate Self;
+  typedef Object                              Superclass;
+  typedef SmartPointer< Self >                Pointer;
+  typedef SmartPointer< const Self >          ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ObjectToObjectOptimizerBaseTemplate, Object);
 
   /**  Scale type. */
-  typedef OptimizerParameters< TInternalComputationValueType >          ScalesType;
+  typedef OptimizerParameters< TInternalComputationValueType > ScalesType;
 
   /**  Parameters type. */
-  typedef OptimizerParameters< TInternalComputationValueType >          ParametersType;
+  typedef OptimizerParameters< TInternalComputationValueType > ParametersType;
 
   /** Metric function type */
-  typedef ObjectToObjectMetricBaseTemplate< TInternalComputationValueType >  MetricType;
+  typedef ObjectToObjectMetricBaseTemplate< TInternalComputationValueType > MetricType;
   typedef typename MetricType::Pointer                                      MetricTypePointer;
 
   /** Number of parameters type */
-  typedef typename MetricType::NumberOfParametersType        NumberOfParametersType;
+  typedef typename MetricType::NumberOfParametersType NumberOfParametersType;
 
   /** Measure type */
-  typedef typename MetricType::MeasureType                   MeasureType;
+  typedef typename MetricType::MeasureType MeasureType;
 
   /** Accessors for Metric */
   itkSetObjectMacro( Metric, MetricType );
@@ -153,29 +153,30 @@ protected:
 
   /** Default constructor */
   ObjectToObjectOptimizerBaseTemplate();
-  virtual ~ObjectToObjectOptimizerBaseTemplate();
+  virtual
+  ~ObjectToObjectOptimizerBaseTemplate();
 
-  MetricTypePointer             m_Metric;
-  ThreadIdType                  m_NumberOfThreads;
+  MetricTypePointer m_Metric;
+  ThreadIdType      m_NumberOfThreads;
 
   /** Metric measure value at a given iteration, as most recently evaluated. */
-  MeasureType                   m_CurrentMetricValue;
+  MeasureType m_CurrentMetricValue;
 
   /** Scales. Size is expected to be == metric->GetNumberOfLocalParameters().
    * See the main documentation for more details. */
-  ScalesType                    m_Scales;
+  ScalesType m_Scales;
 
   /** Parameter weights. These are applied to local parameters, at the same time
    * as scales. See main documentation.
    * If not set by user, the array remains empty and treated as identity to simplify
    * the reuse of an optimizer with transforms with different numbers of parameters. */
-  ScalesType                    m_Weights;
+  ScalesType m_Weights;
 
   /** Flag to avoid unnecessary arithmetic when scales are identity. */
-  bool                          m_ScalesAreIdentity;
+  bool m_ScalesAreIdentity;
 
   /** Flag to avoid unnecessary arithmetic when weights are identity. */
-  bool                          m_WeightsAreIdentity;
+  bool m_WeightsAreIdentity;
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 

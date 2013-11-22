@@ -33,7 +33,7 @@ template< typename TElement >
 RingBuffer< TElement >
 ::RingBuffer()
   : m_HeadIndex(0),
-    m_PointerVector()
+  m_PointerVector()
 {
   // Default to 3 buffers
   this->SetNumberOfBuffers(3);
@@ -45,7 +45,6 @@ RingBuffer< TElement >
 {
 }
 
-
 //
 // PrintSelf
 //
@@ -55,14 +54,13 @@ RingBuffer< TElement >
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
+
   os << indent << "RingBuffer:" << std::endl;
   os << indent << "NumberOfBuffers: " << this->m_PointerVector.size()
      << std::endl;
 }
 
-
 //-PUBLIC METHODS--------------------------------------------------------------
-
 
 //
 // MoveHead
@@ -79,7 +77,6 @@ RingBuffer< TElement >
   this->Modified();
 }
 
-
 //
 // MoveHeadForward
 //
@@ -90,7 +87,6 @@ RingBuffer< TElement >
 {
   this->MoveHead(1);
 }
-
 
 //
 // MoveHeadBackward
@@ -103,7 +99,6 @@ RingBuffer< TElement >
   this->MoveHead(-1);
 }
 
-
 //
 // BufferIsFull
 //
@@ -115,7 +110,7 @@ RingBuffer< TElement >
   size_t bufferIndex =
     static_cast<size_t>( this->GetOffsetBufferIndex(offset) );
 
-  return !(this->m_PointerVector[bufferIndex].IsNull());
+  return !(this->m_PointerVector[bufferIndex].IsNull() );
 }
 
 //
@@ -133,7 +128,6 @@ RingBuffer< TElement >
   // Return the resulting image
   return this->m_PointerVector[bufferIndex];
 }
-
 
 //
 // SetBufferContents
@@ -155,7 +149,6 @@ RingBuffer< TElement >
   this->Modified();
 }
 
-
 //
 // GetNumberOfBuffers
 //
@@ -166,7 +159,6 @@ RingBuffer< TElement >
 {
   return this->m_PointerVector.size();
 }
-
 
 //
 // SetNumberOfBuffers
@@ -214,7 +206,6 @@ RingBuffer< TElement >
   this->Modified();
 }
 
-
 //-PROTECTED METHODS-----------------------------------------------------------
 
 //
@@ -227,14 +218,15 @@ RingBuffer< TElement >
 {
   OffsetValueType moddedOffset = vnl_math_abs(offset) % this->GetNumberOfBuffers();
   OffsetValueType signedHeadIndex = static_cast<OffsetValueType>(m_HeadIndex);
+
   if (offset >= 0)
     {
     return ( signedHeadIndex + moddedOffset) % this->GetNumberOfBuffers();
     }
   else
     {
-    return ( signedHeadIndex + (this->GetNumberOfBuffers() - moddedOffset))
-              % this->GetNumberOfBuffers();
+    return ( signedHeadIndex + (this->GetNumberOfBuffers() - moddedOffset) )
+           % this->GetNumberOfBuffers();
     }
 }
 

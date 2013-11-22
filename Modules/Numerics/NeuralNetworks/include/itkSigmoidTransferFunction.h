@@ -66,7 +66,8 @@ public:
 protected:
 
   SigmoidTransferFunction();
-  virtual ~SigmoidTransferFunction();
+  virtual
+  ~SigmoidTransferFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -83,7 +84,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkSigmoidTransferFunction.hxx"
+#include "itkSigmoidTransferFunction.hxx"
 #endif
 
 #endif

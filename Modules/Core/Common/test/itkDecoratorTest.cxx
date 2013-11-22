@@ -30,9 +30,11 @@ operator<<(std::basic_ostream<CharType, TraitsType>&os, const std::vector<Member
   os << "vector<" << typeid(MemberType).name() << "> with " << p.size() << " elements " << std::endl;
   return os;
 }
+
 }
 
-int itkDecoratorTest(int, char* [] )
+int
+itkDecoratorTest(int, char* [] )
 {
   int status = 0;
 
@@ -54,8 +56,8 @@ int itkDecoratorTest(int, char* [] )
   typedef itk::DataObjectDecorator<TransformType> TransformObjectType;
 
   TransformObjectType::Pointer decoratedTransform = TransformObjectType::New();
-  TransformType::Pointer transformObject = TransformType::New();
-  const TransformType * constTransformObject = transformObject;
+  TransformType::Pointer       transformObject = TransformType::New();
+  const TransformType *        constTransformObject = transformObject;
 
   transformObject->Scale( 5.0 );
 
@@ -85,17 +87,17 @@ int itkDecoratorTest(int, char* [] )
   // The following code block will NOT cause a memory leak because the
   // ownership of the dynamically allocated memory is passed to the
   // AutoPointerDataObjectDecorator
-  {
-  VectorPointer vp;
-  vp = new VectorType;
-  vp->resize(3);
-  std::cout << *vp << std::endl;
+    {
+    VectorPointer vp;
+    vp = new VectorType;
+    vp->resize(3);
+    std::cout << *vp << std::endl;
 
-  VectorPointerObjectType::Pointer vop = VectorPointerObjectType::New();
-  vop->Set(vp);
+    VectorPointerObjectType::Pointer vop = VectorPointerObjectType::New();
+    vop->Set(vp);
 
-  std::cout << vop;
-  }
+    std::cout << vop;
+    }
 
   std::cout << "----------------------------------------------------"
             << std::endl;
@@ -103,7 +105,8 @@ int itkDecoratorTest(int, char* [] )
   // The following code block will cause a memory leak because the
   // decorator does not deallocate the memory that was passed in on a
   // pointer. The AutoPointerDataObjectDecorator does delete the memory.
-  //typedef itk::SimpleDataObjectDecorator<VectorPointer> VectorPointerObjectType2;
+  //typedef itk::SimpleDataObjectDecorator<VectorPointer>
+  // VectorPointerObjectType2;
   //{
   //VectorPointer vp2;
   //vp2 = new VectorType;

@@ -37,7 +37,8 @@ namespace VideoToVideoFilterTest
 /**
  * Create a new frame and fill it with the indicated value
  */
-InputFrameType::Pointer CreateInputFrame(InputPixelType val)
+InputFrameType::Pointer
+CreateInputFrame(InputPixelType val)
 {
   InputFrameType::Pointer out = InputFrameType::New();
 
@@ -75,14 +76,14 @@ class DummyVideoToVideoFilter :
 public:
 
   /** Standard class typedefs */
-  typedef TInputVideoStream                                InputVideoStreamType;
-  typedef TOutputVideoStream                               OutputVideoStreamType;
+  typedef TInputVideoStream  InputVideoStreamType;
+  typedef TOutputVideoStream OutputVideoStreamType;
   typedef DummyVideoToVideoFilter< InputVideoStreamType,
                                    OutputVideoStreamType > Self;
-  typedef VideoSource< OutputVideoStreamType >             Superclass;
-  typedef SmartPointer< Self >                             Pointer;
-  typedef SmartPointer< const Self >                       ConstPointer;
-  typedef WeakPointer< const Self >                        ConstWeakPointer;
+  typedef VideoSource< OutputVideoStreamType > Superclass;
+  typedef SmartPointer< Self >                 Pointer;
+  typedef SmartPointer< const Self >           ConstPointer;
+  typedef WeakPointer< const Self >            ConstWeakPointer;
 
   typedef typename TInputVideoStream::FrameType  InputFrameType;
   typedef typename InputFrameType::RegionType    InputFrameSpatialRegionType;
@@ -105,7 +106,8 @@ protected:
   }
 
   /** Override ThreadedGenerateData */
-  virtual void ThreadedGenerateData(
+  virtual void
+  ThreadedGenerateData(
     const OutputFrameSpatialRegionType& outputRegionForThread,
     int threadId)
   {
@@ -170,7 +172,8 @@ protected:
 /**
  * Test the basic functionality of temporal data objects
  */
-int itkVideoToVideoFilterTest( int, char* [] )
+int
+itkVideoToVideoFilterTest( int, char* [] )
 {
 
   //////
@@ -179,7 +182,7 @@ int itkVideoToVideoFilterTest( int, char* [] )
 
   // Instantiate a filter
   typedef itk::VideoToVideoFilterTest::
-  DummyVideoToVideoFilter< InputVideoType, OutputVideoType > VideoFilterType;
+    DummyVideoToVideoFilter< InputVideoType, OutputVideoType > VideoFilterType;
   VideoFilterType::Pointer filter = VideoFilterType::New();
 
   // Set up an input video stream
@@ -261,7 +264,7 @@ int itkVideoToVideoFilterTest( int, char* [] )
     // Make sure nothing set outside of requested spatial region
     OutputFrameType::IndexType idx;
     idx.Fill(0);
-    if (frame->GetRequestedRegion().IsInside(idx))
+    if (frame->GetRequestedRegion().IsInside(idx) )
       {
       std::cerr << "Filter set pixel outside of requested region" << std::endl;
       return EXIT_FAILURE;

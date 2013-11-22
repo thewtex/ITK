@@ -47,17 +47,17 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class BorderQuadEdgeMeshFilter:
+class BorderQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Basic types. */
-  typedef BorderQuadEdgeMeshFilter    Self;
+  typedef BorderQuadEdgeMeshFilter Self;
   typedef QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh,
                                             TOutputMesh >
-                                      Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   typedef TInputMesh                                  InputMeshType;
   typedef typename InputMeshType::ConstPointer        InputMeshConstPointer;
@@ -76,9 +76,9 @@ public:
   typedef typename InputMeshType::PointIdList         InputPointIdList;
   typedef typename InputMeshType::PointsContainer     InputPointsContainer;
   typedef typename InputMeshType::PointsContainerConstIterator
-  InputPointsContainerConstIterator;
+    InputPointsContainerConstIterator;
   typedef typename InputMeshType::CellsContainerConstIterator
-  InputCellsContainerConstIterator;
+    InputCellsContainerConstIterator;
 
   typedef TOutputMesh                              OutputMeshType;
   typedef typename OutputMeshType::Pointer         OutputMeshPointer;
@@ -94,9 +94,9 @@ public:
   typedef typename OutputMeshType::PointIdList     OutputPointIdList;
   typedef typename OutputMeshType::PointsContainer OutputPointsContainer;
   typedef typename OutputMeshType::PointsContainerConstIterator
-  OutputPointsContainerConstIterator;
+    OutputPointsContainerConstIterator;
   typedef typename OutputMeshType::CellsContainerConstIterator
-  OutputCellsContainerConstIterator;
+    OutputCellsContainerConstIterator;
 
   itkNewMacro(Self);
   itkTypeMacro(BorderQuadEdgeMeshFilter, QuadEdgeMeshToQuadEdgeMeshFilter);
@@ -138,7 +138,9 @@ public:
 protected:
   BorderQuadEdgeMeshFilter();
 
-  virtual ~BorderQuadEdgeMeshFilter() {}
+  virtual
+  ~BorderQuadEdgeMeshFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -169,7 +171,8 @@ protected:
 
 private:
   BorderQuadEdgeMeshFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely ont implemented
+  void operator=(const Self &);           //purposely ont implemented
+
 };
 } // end namespace itk
 

@@ -49,7 +49,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class NormalizedMutualInformationHistogramImageToImageMetric:
+class NormalizedMutualInformationHistogramImageToImageMetric :
   public HistogramImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -89,8 +89,12 @@ public:
 protected:
   /** Constructor is protected to ensure that \c New() function is used to
       create instances. */
-  NormalizedMutualInformationHistogramImageToImageMetric(){}
-  virtual ~NormalizedMutualInformationHistogramImageToImageMetric(){}
+  NormalizedMutualInformationHistogramImageToImageMetric(){
+  }
+
+  virtual
+  ~NormalizedMutualInformationHistogramImageToImageMetric(){
+  }
 
   /** Evaluates the normalized mutual information from the histogram. */
   virtual MeasureType EvaluateMeasure(HistogramType & histogram) const;
@@ -99,6 +103,7 @@ private:
   // Purposely not implemented.
   NormalizedMutualInformationHistogramImageToImageMetric(Self const &);
   void operator=(Self const &); // Purposely not implemented.
+
 };
 } // End namespace itk.
 

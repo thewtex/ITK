@@ -40,7 +40,8 @@ ImageToRGBVTKImageFilter< TInputImage >
 template< typename TInputImage >
 ImageToRGBVTKImageFilter< TInputImage >
 ::~ImageToRGBVTKImageFilter()
-{}
+{
+}
 
 /**
  * Set an itk::Image as input
@@ -74,6 +75,7 @@ ImageToRGBVTKImageFilter< TInputImage >
 ::Update()
 {
   int dimension[3];
+
   dimension[0] = 0;
   dimension[1] = 0;
   dimension[2] = 0;
@@ -84,7 +86,7 @@ ImageToRGBVTKImageFilter< TInputImage >
   spacing[2] = 0.;
 
   InputRegionType region = m_Input->GetLargestPossibleRegion();
-  InputSizeType itk_size = region.GetSize();
+  InputSizeType   itk_size = region.GetSize();
 
   InputSpacingType itk_spacing = m_Input->GetSpacing();
 
@@ -117,7 +119,7 @@ ImageToRGBVTKImageFilter< TInputImage >
         for( int z = 0; z < dimension[2]; z++ )
           {
           InputPixelType* vtkpixel =
-              static_cast<InputPixelType*>(m_Output->GetScalarPointer(x,y,z));
+            static_cast<InputPixelType*>(m_Output->GetScalarPointer(x,y,z) );
           InputIndexType index;
           index[0] = x;
           index[1] = y;
@@ -132,7 +134,7 @@ ImageToRGBVTKImageFilter< TInputImage >
       else
         {
         InputPixelType* vtkpixel =
-            static_cast<InputPixelType*>(m_Output->GetScalarPointer(x,y,0));
+          static_cast<InputPixelType*>(m_Output->GetScalarPointer(x,y,0) );
         InputIndexType index;
         index[0] = x;
         index[1] = y;

@@ -33,7 +33,7 @@
     return TopologyId;                                                                               \
     }                                                                                                \
   virtual void Accept(CellIdentifier cellid, typename CellInterface< PixelType,                      \
-                                                                    CellTraits >::MultiVisitor * mv) \
+                                                                     CellTraits >::MultiVisitor * mv) \
     {                                                                                                \
     typename CellInterfaceVisitor< PixelType, CellTraits >::Pointer v =                              \
       mv->GetVisitor(TopologyId);                                                                    \
@@ -50,7 +50,7 @@
   typedef AutoPointer< const Self > ConstSelfAutoPointer; \
   typedef AutoPointer< Self >       SelfAutoPointer;      \
   typedef Self *                    RawPointer;           \
-  typedef const Self *ConstRawPointer
+  typedef const Self *              ConstRawPointer
 
 // Define a macro for the common typedefs required by the
 // classes deriving form CellInterface (excluded).
@@ -65,7 +65,7 @@
   typedef typename Superclass::CellTraits           CellTraits;             \
   typedef typename Superclass::CoordRepType         CoordRepType;           \
   typedef typename Superclass::InterpolationWeightType                      \
-  InterpolationWeightType;                                                  \
+    InterpolationWeightType;                                                  \
   typedef typename Superclass::PointIdentifier       PointIdentifier;       \
   typedef typename Superclass::PointIdIterator       PointIdIterator;       \
   typedef typename Superclass::PointIdConstIterator  PointIdConstIterator;  \
@@ -78,9 +78,9 @@
   typedef typename Superclass::UsingCellsContainer   UsingCellsContainer;   \
   typedef typename Superclass::CellGeometry          CellGeometry;          \
   typedef typename Superclass::ParametricCoordArrayType                     \
-  ParametricCoordArrayType;                                                 \
+    ParametricCoordArrayType;                                                 \
   typedef typename Superclass::ShapeFunctionsArrayType                      \
-  ShapeFunctionsArrayType;                                                  \
+    ShapeFunctionsArrayType;                                                  \
   itkStaticConstMacro(PointDimension, unsigned int, Superclass::PointDimension)
 
 namespace itk
@@ -165,7 +165,7 @@ public:
    * \ingroup MeshAccess
    * \ingroup ITKCommon
    */
-  class MultiVisitor:public LightObject
+  class MultiVisitor : public LightObject
   {
 public:
     /**  Visitor type, because VisualC++ 6.0 does not like
@@ -178,7 +178,10 @@ public:
 
     /** Method for creation through the object factory.   */
     //itkNewMacro(Self);
-    static Pointer New(void) { Pointer smartPtr = new Self; smartPtr->UnRegister(); return smartPtr; }
+    static Pointer
+    New(void) {
+      Pointer smartPtr = new Self; smartPtr->UnRegister(); return smartPtr;
+    }
 
     /** Run-time type information (and related methods).   */
     itkTypeMacro(MultiVisitor, LightObject);
@@ -186,10 +189,11 @@ public:
     /** Typedefs for the visitor class.   */
     typedef typename VisitorType::Pointer VisitorPointer;
     typedef typename std::map< int, VisitorPointer >::value_type
-    VisitorPointerValueType;
+      VisitorPointerValueType;
 
 public:
-    VisitorType * GetVisitor(int id)
+    VisitorType *
+    GetVisitor(int id)
     {
       if ( id < LAST_ITK_CELL )
         {
@@ -207,7 +211,8 @@ public:
       return 0;
     }
 
-    void AddVisitor(VisitorType *v)
+    void
+    AddVisitor(VisitorType *v)
     {
       int id = v->GetCellTopologyId();
 
@@ -221,7 +226,9 @@ public:
         }
     }
 
-    virtual ~MultiVisitor() {}
+    virtual
+    ~MultiVisitor() {
+    }
 
 protected:
     VisitorPointer m_Visitors[LAST_ITK_CELL];      // fixed array set to the
@@ -296,14 +303,18 @@ protected:
   /** Get/Set the point id list used by the cell */
   typedef itk::Array<PointIdentifier> PointIdentifierContainerType;
   PointIdentifierContainerType GetPointIdsContainer() const;
+
   void SetPointIdsContainer( const PointIdentifierContainerType & );
 
   /** Given the parametric coordinates of a point in the cell
    * (pCoords[CellDimension]), get the closest cell boundary feature of
    * topological dimension CellDimension-1.  If the "inside" pointer is not
    * NULL, the flag is set to indicate whether the point is inside the cell. */
-  virtual bool GetClosestBoundary(CoordRepType[], bool *, CellAutoPointer &)
-  { return false; }
+  virtual bool
+  GetClosestBoundary(CoordRepType[], bool *, CellAutoPointer &)
+  {
+    return false;
+  }
 
   /** Given the geometric coordinates of a point (coord[PointDimension]),
    * return whether it is inside the cell.  Also perform the following
@@ -321,20 +332,25 @@ protected:
    *
    *  - Get the interpolation weights for the cell
    *     (Returns through pointer to array: weights[NumberOfPoints]). */
-  virtual bool EvaluatePosition(CoordRepType *,
-                                PointsContainer *,
-                                CoordRepType *,
-                                CoordRepType[],
-                                double *,
-                                InterpolationWeightType *)
-  { return bool(); }
+  virtual bool
+  EvaluatePosition(CoordRepType *,
+                   PointsContainer *,
+                   CoordRepType *,
+                   CoordRepType[],
+                   double *,
+                   InterpolationWeightType *)
+  {
+    return bool();
+  }
 
   /** Given the parametric coordinates of a point in the cell
    *  determine the value of its Shape Functions
    *  returned through an itkArray<InterpolationWeightType>).  */
-  virtual void EvaluateShapeFunctions(
+  virtual void
+  EvaluateShapeFunctions(
     const ParametricCoordArrayType &,
-    ShapeFunctionsArrayType  &) const {}
+    ShapeFunctionsArrayType  &) const {
+  }
 
   /** Intersect the cell with a line given by an origin (origin[PointDimension])
    * and direction (direction[PointDimension]).  The intersection point
@@ -351,21 +367,30 @@ protected:
    *     (returned through pointer to array: pCoords[CellDimension]).
    *
    * Returns whether an intersection exists within the given tolerance. */
-  virtual bool IntersectWithLine(CoordRepType[PointDimension],
-                                 CoordRepType[PointDimension],
-                                 CoordRepType,
-                                 CoordRepType[PointDimension],
-                                 CoordRepType *,
-                                 CoordRepType[]) { return bool(); }
+  virtual bool
+  IntersectWithLine(CoordRepType[PointDimension],
+                    CoordRepType[PointDimension],
+                    CoordRepType,
+                    CoordRepType[PointDimension],
+                    CoordRepType *,
+                    CoordRepType[]) {
+    return bool();
+  }
 
   /** Compute cell bounding box and store in the user-provided array.
    * Array is ordered (xmin, xmax,  ymin, ymax, ....).  A pointer to the
    * array is returned for convenience.  This allows code like:
    * "CoordRep* bounds = cell->GetBoundingBox(new CoordRep[6]);". */
-  CoordRepType * GetBoundingBox(CoordRepType[PointDimension * 2]) { return NULL; }
+  CoordRepType *
+  GetBoundingBox(CoordRepType[PointDimension * 2]) {
+    return NULL;
+  }
 
   /** Compute the square of the diagonal length of the bounding box. */
-  CoordRepType GetBoundingBoxDiagonalLength2(void) { return NULL; }
+  CoordRepType
+  GetBoundingBoxDiagonalLength2(void) {
+    return NULL;
+  }
 
   /** Intersect the given bounding box (bounds[PointDimension*2]) with a line
    * given by an origin (origin[PointDimension]) and direction
@@ -379,11 +404,14 @@ protected:
    *     (returned through "t" pointer).
    *
    * Returns whether an intersection exists. */
-  virtual bool IntersectBoundingBoxWithLine(CoordRepType[PointDimension * 2],
-                                            CoordRepType[PointDimension],
-                                            CoordRepType[PointDimension],
-                                            CoordRepType[PointDimension],
-                                            CoordRepType *) { return bool(); }
+  virtual bool
+  IntersectBoundingBoxWithLine(CoordRepType[PointDimension * 2],
+                               CoordRepType[PointDimension],
+                               CoordRepType[PointDimension],
+                               CoordRepType[PointDimension],
+                               CoordRepType *) {
+    return bool();
+  }
 
   /** Interface to the boundary form of the cell to set/get UsingCells.
    * See the boundary wrapper source for more information. */
@@ -432,8 +460,13 @@ protected:
   itkTypeMacro(CellInterface, LightObject);
 
 public:
-  CellInterface() {}
-  virtual ~CellInterface() {}
+  CellInterface() {
+  }
+
+  virtual
+  ~CellInterface() {
+  }
+
   /** Cell internal utility routines. */
 
   /** Get the geometric position of a point. */
@@ -446,6 +479,7 @@ protected:
 private:
   CellInterface(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 /** \class CellTraitsInfo

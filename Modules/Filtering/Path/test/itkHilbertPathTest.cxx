@@ -18,7 +18,8 @@
 
 #include "itkHilbertPath.h"
 
-int itkHilbertPathTest( int, char*[] )
+int
+itkHilbertPathTest( int, char*[] )
 {
 
   // Test dimension = 2
@@ -38,8 +39,8 @@ int itkHilbertPathTest( int, char*[] )
       if( d != path->EvaluateInverse( index ) )
         {
         std::cerr << "Incorrect match-up for path index (" << d
-          << ") and multi-dimensional index (" << index << ")"
-          << " dimension = 2 " << std::endl;
+                  << ") and multi-dimensional index (" << index << ")"
+                  << " dimension = 2 " << std::endl;
         return EXIT_FAILURE;
         }
       }
@@ -61,8 +62,8 @@ int itkHilbertPathTest( int, char*[] )
       if( d != path->EvaluateInverse( index ) )
         {
         std::cerr << "Incorrect match-up for path index (" << d
-          << ") and multi-dimensional index (" << index << ")"
-          << " dimension = 3 " << std::endl;
+                  << ") and multi-dimensional index (" << index << ")"
+                  << " dimension = 3 " << std::endl;
         return EXIT_FAILURE;
         }
       }
@@ -84,8 +85,8 @@ int itkHilbertPathTest( int, char*[] )
       if( d != path->EvaluateInverse( index ) )
         {
         std::cerr << "Incorrect match-up for path index (" << d
-          << ") and multi-dimensional index (" << index << ")"
-          << " dimension = 4 " << std::endl;
+                  << ") and multi-dimensional index (" << index << ")"
+                  << " dimension = 4 " << std::endl;
         return EXIT_FAILURE;
         }
       }

@@ -26,7 +26,8 @@ namespace itk
 //----------------------------------------------------------------------------
 // Constructor
 template< typename TInputImage, typename TOutputImage >
-IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >::IterativeInverseDisplacementFieldImageFilter()
+IterativeInverseDisplacementFieldImageFilter< TInputImage,
+                                              TOutputImage >::IterativeInverseDisplacementFieldImageFilter()
 {
   m_NumberOfIterations = 5;
   m_StopValue = 0;
@@ -35,7 +36,8 @@ IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >::Itera
 
 //----------------------------------------------------------------------------
 template< typename TInputImage, typename TOutputImage >
-void IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
+void
+IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
   const unsigned int ImageDimension = InputImageType::ImageDimension;
@@ -242,7 +244,8 @@ void IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
 
 //----------------------------------------------------------------------------
 template< typename TInputImage, typename TOutputImage >
-void IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
+void
+IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -252,6 +255,7 @@ void IterativeInverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
   os << indent << "Elapsed time:         " << m_Time << " sec" << std::endl;
   os << std::endl;
 }
+
 } // end namespace itk
 
 #endif

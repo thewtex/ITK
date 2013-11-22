@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage, typename TOutputImage >
-class LabelMapToBinaryImageFilter:
+class LabelMapToBinaryImageFilter :
   public LabelMapFilter< TInputImage, TOutputImage >
 {
 public:
@@ -94,32 +94,37 @@ public:
 
   /** Set/Get the background image top be used to restore the background values
     */
-  void SetBackgroundImage(const OutputImageType *input)
+  void
+  SetBackgroundImage(const OutputImageType *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< OutputImageType * >( input ) );
   }
 
-  OutputImageType * GetBackgroundImage()
+  OutputImageType *
+  GetBackgroundImage()
   {
     return static_cast< OutputImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Set the input image */
-  void SetInput1(const InputImageType *input)
+  void
+  SetInput1(const InputImageType *input)
   {
     this->SetInput(input);
   }
 
   /** Set the marker image */
-  void SetInput2(const OutputImageType *input)
+  void
+  SetInput2(const OutputImageType *input)
   {
     this->SetBackgroundImage(input);
   }
 
 protected:
   LabelMapToBinaryImageFilter();
-  ~LabelMapToBinaryImageFilter() {}
+  ~LabelMapToBinaryImageFilter() {
+  }
 
   /** LabelMapToBinaryImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of

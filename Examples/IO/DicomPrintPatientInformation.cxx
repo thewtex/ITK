@@ -27,10 +27,12 @@
 #include "itkImageFileReader.h"
 #include "itkMetaDataObject.h"
 
-std::string FindDicomTag( const std::string & entryId, const itk::GDCMImageIO::Pointer dicomIO )
+std::string
+FindDicomTag( const std::string & entryId, const itk::GDCMImageIO::Pointer dicomIO )
 {
   std::string tagvalue;
-  bool found = dicomIO->GetValueFromTag(entryId, tagvalue);
+  bool        found = dicomIO->GetValueFromTag(entryId, tagvalue);
+
   if ( !found )
     {
     tagvalue = "NOT FOUND";
@@ -38,8 +40,8 @@ std::string FindDicomTag( const std::string & entryId, const itk::GDCMImageIO::P
   return tagvalue;
 }
 
-
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -47,11 +49,11 @@ int main( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef signed short       PixelType;
-  const unsigned int         Dimension = 2;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 2;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
-  typedef itk::ImageFileReader< ImageType >       ReaderType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
+  typedef itk::ImageFileReader< ImageType >  ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -70,7 +72,6 @@ int main( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-
   std::string patientName  = FindDicomTag("0010|0010", dicomIO);
   std::string patientID    = FindDicomTag("0010|0020", dicomIO);
   std::string patientSex   = FindDicomTag("0010|0040", dicomIO);
@@ -80,7 +81,6 @@ int main( int argc, char* argv[] )
   std::string manufacturer = FindDicomTag("0008|0070", dicomIO);
   std::string institution  = FindDicomTag("0008|0080", dicomIO);
   std::string model        = FindDicomTag("0008|1090", dicomIO);
-
 
   std::cout << "Patient Name : " << patientName  << std::endl;
   std::cout << "Patient ID   : " << patientID    << std::endl;

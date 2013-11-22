@@ -20,7 +20,8 @@
 
 #include "itkQuaternionRigidTransform.h"
 
-int itkQuaternionRigidTransformTest(int, char * [] )
+int
+itkQuaternionRigidTransformTest(int, char * [] )
 {
 
   typedef double                                        CoordinateType;
@@ -476,8 +477,8 @@ int itkQuaternionRigidTransformTest(int, char * [] )
     quaternionRigid->SetParameters( parameters );
       {
       TransformType::Pointer inverseQuaternionRigid = TransformType::New();
-      const bool inverseIsValid=quaternionRigid->GetInverse(inverseQuaternionRigid);
-      if( ! inverseIsValid )
+      const bool             inverseIsValid=quaternionRigid->GetInverse(inverseQuaternionRigid);
+      if( !inverseIsValid )
         {
         std::cerr << "Error computing inverse transform" << std::endl;
         std::cerr << " [ FAILED ] " << std::endl;
@@ -506,7 +507,8 @@ int itkQuaternionRigidTransformTest(int, char * [] )
 
     }
 
-  /* Create a Rigid 3D transform with a defined center and a rotation given by a Matrix */
+  /* Create a Rigid 3D transform with a defined center and a rotation given by a
+    Matrix */
     {
     TransformType::Pointer           rotation = TransformType::New();
     TransformType::VnlQuaternionType qrotation;

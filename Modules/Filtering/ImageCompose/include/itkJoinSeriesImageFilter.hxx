@@ -55,12 +55,12 @@ JoinSeriesImageFilter< TInputImage, TOutputImage >
 
   typename InputImageType::ConstPointer image = this->GetInput();
 
-   if( image.IsNull() )
-     {
-     itkExceptionMacro( << "Input not set as expected!" );
-     }
+  if( image.IsNull() )
+    {
+    itkExceptionMacro( << "Input not set as expected!" );
+    }
 
-   const unsigned int numComponents = image->GetNumberOfComponentsPerPixel();
+  const unsigned int numComponents = image->GetNumberOfComponentsPerPixel();
 
   for( IndexValueType idx = 1; idx < this->GetNumberOfInputs(); ++idx )
     {
@@ -72,7 +72,6 @@ JoinSeriesImageFilter< TInputImage, TOutputImage >
       // an invalid requested region exception will be generated later.
       continue;
       }
-
 
     if( numComponents != image->GetNumberOfComponentsPerPixel() )
       {
@@ -261,7 +260,6 @@ JoinSeriesImageFilter< TInputImage, TOutputImage >
   const IndexValueType begin = outputRegionForThread.GetIndex(InputImageDimension);
   const IndexValueType end =  begin + outputRegionForThread.GetSize(InputImageDimension);
 
-
   TOutputImage *output = this->GetOutput();
 
   for ( IndexValueType idx = begin; idx < end; ++idx )
@@ -271,6 +269,7 @@ JoinSeriesImageFilter< TInputImage, TOutputImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -135,14 +135,17 @@ public:
   ImageConstIteratorWithOnlyIndex(const TImage *ptr,const RegionType & region);
 
   /** Default Destructor. */
-  virtual ~ImageConstIteratorWithOnlyIndex() {};
+  virtual
+  ~ImageConstIteratorWithOnlyIndex() {
+  }
 
   /** operator= is provided to make sure the handle to the image is properly
    * reference counted. */
   Self & operator=(const Self & it);
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetImageDimension()
+  static unsigned int
+  GetImageDimension()
   {
     return ImageDimension;
   }
@@ -207,21 +210,24 @@ public:
 
   /** Get the index. This provides a read only reference to the index.
    * \sa SetIndex */
-  const IndexType & GetIndex() const
+  const IndexType &
+  GetIndex() const
   {
     return m_PositionIndex;
   }
 
   /** Get the region that this iterator walks. ImageIterators know the
    * beginning and the end of the region of the image to iterate over. */
-  const RegionType & GetRegion() const
+  const RegionType &
+  GetRegion() const
   {
     return m_Region;
   }
 
   /** Set the index. No bounds checking is performed.
    * \sa GetIndex */
-  void SetIndex(const IndexType & ind)
+  void
+  SetIndex(const IndexType & ind)
   {
     m_PositionIndex = ind;
   }
@@ -241,19 +247,22 @@ public:
   void GoToReverseBegin(void);
 
   /** Is the iterator at the beginning of the region? */
-  bool IsAtReverseEnd(void) const
+  bool
+  IsAtReverseEnd(void) const
   {
     return !m_Remaining;
   }
 
   /** Is the iterator at the end of the region? */
-  bool IsAtEnd(void) const
+  bool
+  IsAtEnd(void) const
   {
     return !m_Remaining;
   }
 
   /** Are there data remaining in the region ? */
-  bool Remaining()
+  bool
+  Remaining()
   {
     return m_Remaining;
   }

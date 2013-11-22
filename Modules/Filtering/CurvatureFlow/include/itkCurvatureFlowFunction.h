@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKCurvatureFlow
  */
 template< typename TImage >
-class CurvatureFlowFunction:
+class CurvatureFlowFunction :
   public FiniteDifferenceFunction< TImage >
 {
 public:
@@ -88,7 +88,8 @@ public:
    * holds the state of any global values needed to calculate the time step,
    * while the equation object performs the actual calculations.  The global
    * data should also be initialized in this method. */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *ans = new GlobalDataStruct();
 
@@ -100,16 +101,25 @@ public:
    * data pointer, it passes it to this method, which frees the memory.
    * The solver cannot free the memory because it does not know the type
    * to which the pointer points. */
-  virtual void ReleaseGlobalDataPointer(void *GlobalData) const
-  { delete (GlobalDataStruct *)GlobalData; }
+  virtual void
+  ReleaseGlobalDataPointer(void *GlobalData) const
+  {
+    delete (GlobalDataStruct *)GlobalData;
+  }
 
   /** Set the time step parameter */
-  void SetTimeStep(const TimeStepType & t)
-  { m_TimeStep = t; }
+  void
+  SetTimeStep(const TimeStepType & t)
+  {
+    m_TimeStep = t;
+  }
 
   /** Get the time step parameter */
-  const TimeStepType & GetTimeStep() const
-  { return m_TimeStep; }
+  const TimeStepType &
+  GetTimeStep() const
+  {
+    return m_TimeStep;
+  }
 
   /** This method computes the solution update for each pixel that does not
    * lie on a the data set boundary. */
@@ -130,14 +140,16 @@ protected:
       m_MaxChange = NumericTraits< ScalarValueType >::Zero;
     }
 
-    ~GlobalDataStruct() {}
+    ~GlobalDataStruct() {
+    }
 
     ScalarValueType m_MaxChange;
-  };
+    };
   /// @endcond
 
   CurvatureFlowFunction();
-  ~CurvatureFlowFunction() {}
+  ~CurvatureFlowFunction() {
+  }
 
 private:
   CurvatureFlowFunction(const Self &); //purposely not implemented

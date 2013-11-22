@@ -43,7 +43,8 @@ FiniteDifferenceImageFilter< TInputImage, TOutputImage >
 template< typename TInputImage, typename TOutputImage >
 FiniteDifferenceImageFilter< TInputImage, TOutputImage >
 ::~FiniteDifferenceImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -211,7 +212,7 @@ FiniteDifferenceImageFilter< TInputImage, TOutputImage >
   v_it = valid.begin();
 
   // find minimum value
-   while( t_it != t_end )
+  while( t_it != t_end )
     {
     if( *v_it && ( *t_it < oMin ) )
       {
@@ -313,6 +314,7 @@ FiniteDifferenceImageFilter< TInputImage, TOutputImage >
     }
   os << std::endl;
 }
+
 } // end namespace itk
 
 #endif

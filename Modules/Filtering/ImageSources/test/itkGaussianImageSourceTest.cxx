@@ -20,10 +20,12 @@
 #include "itkGaussianImageSource.h"
 #include "itkTestingMacros.h"
 
-int itkGaussianImageSourceTest(int, char* [] )
+int
+itkGaussianImageSourceTest(int, char* [] )
 {
   // This can be changed!
-  const unsigned int    Dimension = 3;
+  const unsigned int Dimension = 3;
+
   typedef unsigned char PixelType;
 
   // Image typedef
@@ -32,11 +34,11 @@ int itkGaussianImageSourceTest(int, char* [] )
   // Create a gaussian image source
   typedef itk::GaussianImageSource< ImageType > GaussianSourceType;
   GaussianSourceType::Pointer source = GaussianSourceType::New();
-  FilterWatcher watcher(source, "source");
+  FilterWatcher               watcher(source, "source");
 
-  ImageType::SpacingValueType   spacing[] = { 1.2f, 1.3f, 1.4f };
-  ImageType::PointValueType     origin[] = { 1.0f, 4.0f, 2.0f };
-  ImageType::SizeValueType      size[] = {  130,  150,  120 };
+  ImageType::SpacingValueType spacing[] = { 1.2f, 1.3f, 1.4f };
+  ImageType::PointValueType   origin[] = { 1.0f, 4.0f, 2.0f };
+  ImageType::SizeValueType    size[] = {  130,  150,  120 };
 
   GaussianSourceType::ArrayType mean;
   mean[0] = size[0]/2.0f + origin[0];
@@ -117,8 +119,8 @@ int itkGaussianImageSourceTest(int, char* [] )
     {
     std::cerr << "Mean disagrees with parameters array." << std::endl;
     std::cerr << "Mean: " << source->GetMean() << ", parameters: ["
-             << params[3] << ", " << params[4] << ", " << params[5]
-             << "]" << std::endl;
+              << params[3] << ", " << params[4] << ", " << params[5]
+              << "]" << std::endl;
     return EXIT_FAILURE;
     }
 

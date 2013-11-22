@@ -26,32 +26,33 @@
 #include "itkSobelEdgeDetectionImageFilter.h"
 #include "itkGradientRecursiveGaussianImageFilter.h"
 
-int itkDeformableSimplexMesh3DGradientConstraintForceFilterTest(int , char * [] )
+int
+itkDeformableSimplexMesh3DGradientConstraintForceFilterTest(int , char * [] )
 {
 
   // Declare the type of the input and output mesh
-  typedef itk::DefaultDynamicMeshTraits<double, 3, 3,double,double>\
-                                                        TriangleMeshTraits;
+  typedef itk::DefaultDynamicMeshTraits<double, 3, 3,double,double> \
+    TriangleMeshTraits;
   typedef itk::DefaultDynamicMeshTraits<double, 3, 3, double,double>
-                                                        SimplexMeshTraits;
+    SimplexMeshTraits;
   typedef itk::Mesh<double,3, TriangleMeshTraits>       TriangleMeshType;
   typedef itk::SimplexMesh<double,3, SimplexMeshTraits> SimplexMeshType;
 
   // declare triangle mesh source
-  typedef itk::RegularSphereMeshSource<TriangleMeshType>  SphereMeshSourceType;
-  typedef SphereMeshSourceType::PointType                 PointType;
-  typedef SphereMeshSourceType::VectorType                VectorType;
+  typedef itk::RegularSphereMeshSource<TriangleMeshType> SphereMeshSourceType;
+  typedef SphereMeshSourceType::PointType                PointType;
+  typedef SphereMeshSourceType::VectorType               VectorType;
 
   // declare the triangle to simplex mesh filter
   typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType> SimplexFilterType;
 
   // note : image is volume of 20x20x20 starting at 0,0,0 so make sure
   // the mesh sits on image in space
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
-  PointType center;
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
+  PointType                     center;
   center.Fill(10);
   PointType::ValueType scaleInit[3] = {5,5,5};
-  VectorType scale = scaleInit;
+  VectorType           scale = scaleInit;
 
   mySphereMeshSource->SetCenter(center);
   mySphereMeshSource->SetResolution( 2 );
@@ -66,10 +67,10 @@ int itkDeformableSimplexMesh3DGradientConstraintForceFilterTest(int , char * [] 
 
   std::cout << "Creating dummy image...";
 
-  typedef itk::Image<float,3>                       OriginalImageType;
-  typedef OriginalImageType::PixelType              PixelType;
-  typedef OriginalImageType::IndexType              IndexType;
-  typedef OriginalImageType::SizeType               ImageSizeType;
+  typedef itk::Image<float,3>          OriginalImageType;
+  typedef OriginalImageType::PixelType PixelType;
+  typedef OriginalImageType::IndexType IndexType;
+  typedef OriginalImageType::SizeType  ImageSizeType;
 
   OriginalImageType::Pointer originalImage = OriginalImageType::New();
 
@@ -78,39 +79,38 @@ int itkDeformableSimplexMesh3DGradientConstraintForceFilterTest(int , char * [] 
   originalImage->SetRegions( imageSize );
   originalImage->Allocate();
 
-
   IndexType index;
   for (int x = 0; x < 20; x++)
-  {
-    for (int y = 0; y < 20; y++)
     {
-      for (int z = 0; z < 20; z++)
+    for (int y = 0; y < 20; y++)
       {
+      for (int z = 0; z < 20; z++)
+        {
         index[0] = x;
         index[1] = y;
         index[2] = z;
         if ( ( (x == 5 || x == 15) && y >= 5 && y <= 15 && z >= 5 && z <= 15)  ||
              ( (y == 5 || y == 15) && x >= 5 && x <= 15 && z >= 5 && z <= 15)  ||
              ( (z == 5 || z == 15) && y >= 5 && y <= 15 && x >= 5 && x <= 15)
-           )
-        {
+             )
+          {
           originalImage->SetPixel(index, 1);
-        }
+          }
         else
-        {
+          {
           originalImage->SetPixel(index, 0);
+          }
         }
       }
     }
-  }
 
-  typedef itk::SobelEdgeDetectionImageFilter<OriginalImageType,OriginalImageType>   EdgeFilterType;
+  typedef itk::SobelEdgeDetectionImageFilter<OriginalImageType,OriginalImageType> EdgeFilterType;
 
   EdgeFilterType::Pointer edgeFilter = EdgeFilterType::New();
   edgeFilter->SetInput( originalImage );
   edgeFilter->Update();
 
-  typedef DeformFilterType::GradientImageType       GradientImageType;
+  typedef DeformFilterType::GradientImageType                                            GradientImageType;
   typedef itk::GradientRecursiveGaussianImageFilter<OriginalImageType,GradientImageType> GradientFilterType;
 
   GradientFilterType::Pointer gradientFilter = GradientFilterType::New();
@@ -134,7 +134,6 @@ int itkDeformableSimplexMesh3DGradientConstraintForceFilterTest(int , char * [] 
   SimplexMeshType::Pointer deformResult =  deformFilter->GetOutput();
 
   std::cout << "Deformation Result: " << deformResult << std::endl;
-
 
   std::cout << "[TEST DONE]" << std::endl;
   return EXIT_SUCCESS;

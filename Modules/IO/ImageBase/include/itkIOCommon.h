@@ -19,7 +19,6 @@
 #define __itkIOCommon_h
 #include "ITKIOImageBaseExport.h"
 
-
 #include "itkIntTypes.h"
 #include "itkProcessObject.h"
 #include "itkSpatialOrientation.h"
@@ -60,6 +59,7 @@ public:
 
   /** Calculate the size, in bytes, that the atomic pixel type occupies. */
   static unsigned int ComputeSizeOfAtomicPixelType(const AtomicPixelType pixelType);
+
 };
 
 extern ITKIOImageBase_EXPORT const char *const ITK_OnDiskStorageTypeName;

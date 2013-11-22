@@ -39,7 +39,8 @@ Element3DMembrane1DOF<TBaseClass>
 template <typename TBaseClass>
 void
 Element3DMembrane1DOF<TBaseClass>
-::GetStrainDisplacementMatrix(MatrixType & /*HACK B*/, const MatrixType & /*HACK shapeDgl*/) const
+::GetStrainDisplacementMatrix(MatrixType & /*HACK B*/, const MatrixType & /*HACK
+                                                                            shapeDgl*/) const
 {
   //HACK:  Comment.
 }
@@ -78,7 +79,8 @@ Element3DMembrane1DOF<TBaseClass>
 }
 
 template <typename TBaseClass>
-void Element3DMembrane1DOF<TBaseClass>
+void
+Element3DMembrane1DOF<TBaseClass>
 ::GetStiffnessMatrix(MatrixType & Ke) const
 {
   Superclass::GetStiffnessMatrix(Ke);
@@ -90,6 +92,7 @@ Element3DMembrane1DOF<TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Materials: " << this->m_Mat << std::endl;
 }
 

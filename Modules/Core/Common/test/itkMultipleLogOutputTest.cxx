@@ -21,8 +21,8 @@
 #include "itkStdStreamLogOutput.h"
 #include "itkMultipleLogOutput.h"
 
-
-int itkMultipleLogOutputTest( int argc, char *argv [] )
+int
+itkMultipleLogOutputTest( int argc, char *argv [] )
 {
   try
     {
@@ -32,11 +32,10 @@ int itkMultipleLogOutputTest( int argc, char *argv [] )
       return EXIT_FAILURE;
       }
 
-
     // Create an ITK StdStreamLogOutput
     itk::StdStreamLogOutput::Pointer coutput = itk::StdStreamLogOutput::New();
     itk::StdStreamLogOutput::Pointer foutput = itk::StdStreamLogOutput::New();
-    itk::MultipleLogOutput::Pointer m_output = itk::MultipleLogOutput::New();
+    itk::MultipleLogOutput::Pointer  m_output = itk::MultipleLogOutput::New();
 
     std::cout << "Testing itk::MultipleLogOutput" << std::endl;
     coutput->SetStream(std::cout);

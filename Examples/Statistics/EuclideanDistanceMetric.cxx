@@ -19,7 +19,8 @@
 // Software Guide : BeginLatex
 // \index{itk::Statistics::EuclideanDistanceMetric}
 //
-// The Euclidean distance function (\subdoxygen{Statistics}{EuclideanDistanceMetric}
+// The Euclidean distance function
+// (\subdoxygen{Statistics}{EuclideanDistanceMetric}
 // requires as template parameter the type of the measurement vector. We can
 // use this function for any subclass of the \doxygen{FixedArray}. As a
 // subclass of the \subdoxygen{Statistics}{DistanceMetric}, it has two basic
@@ -53,7 +54,8 @@
 //
 // Software Guide : EndLatex
 
-int main(int, char*[])
+int
+main(int, char*[])
 {
   // Software Guide : BeginCodeSnippet
   typedef itk::Array< float > MeasurementVectorType;
@@ -92,8 +94,8 @@ int main(int, char*[])
 
   // Software Guide : BeginCodeSnippet
   DistanceMetricType::OriginType originPoint( 2 );
-  MeasurementVectorType queryPointA( 2 );
-  MeasurementVectorType queryPointB( 2 );
+  MeasurementVectorType          queryPointA( 2 );
+  MeasurementVectorType          queryPointB( 2 );
 
   originPoint[0] = 0;
   originPoint[1] = 0;
@@ -104,7 +106,6 @@ int main(int, char*[])
   queryPointB[0] = 3;
   queryPointB[1] = 3;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //

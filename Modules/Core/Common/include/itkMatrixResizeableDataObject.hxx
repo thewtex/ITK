@@ -25,12 +25,15 @@ namespace itk
 template< typename TItemType >
 MatrixResizeableDataObject< TItemType >
 ::MatrixResizeableDataObject()
-{}
+{
+}
 
 template< typename TItemType >
 MatrixResizeableDataObject< TItemType >
 ::~MatrixResizeableDataObject()
-{}
+{
+}
+
 } // end namespace itk
 
 #endif

@@ -138,10 +138,11 @@ protected:
 #ifdef ITKV3_COMPATIBILITY
   /** \deprecated This method must be made protected here because it is not a safe way of
    * initializing the Versor */
-  itkLegacyMacro( virtual void SetRotationMatrix(const MatrixType & matrix) );
+  itkLegacyMacro( virtual void SetRotationMatrix(const MatrixType &matrix) );
 #endif
 
-  void SetVarVersor(const VersorType & newVersor)
+  void
+  SetVarVersor(const VersorType & newVersor)
   {
     m_Versor = newVersor;
   }

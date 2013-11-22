@@ -64,7 +64,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class BinaryErodeImageFilter:
+class BinaryErodeImageFilter :
   public BinaryMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -114,18 +114,27 @@ public:
   /** Set the value in the image to consider as "foreground". Defaults to
    * maximum value of PixelType. This is an alias to the
    * ForegroundValue in the superclass. */
-  void SetErodeValue(const InputPixelType & value)
-  { this->SetForegroundValue(value); }
+  void
+  SetErodeValue(const InputPixelType & value)
+  {
+    this->SetForegroundValue(value);
+  }
 
   /** Get the value in the image considered as "foreground". Defaults to
    * maximum value of PixelType. This is an alias to the
    * ForegroundValue in the superclass. */
-  InputPixelType GetErodeValue() const
-  { return this->GetForegroundValue(); }
+  InputPixelType
+  GetErodeValue() const
+  {
+    return this->GetForegroundValue();
+  }
 
 protected:
   BinaryErodeImageFilter();
-  virtual ~BinaryErodeImageFilter(){}
+  virtual
+  ~BinaryErodeImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
@@ -136,6 +145,7 @@ protected:
 private:
   BinaryErodeImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

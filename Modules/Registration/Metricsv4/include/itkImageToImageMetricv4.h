@@ -166,73 +166,80 @@ namespace itk
  */
 template<typename TFixedImage,typename TMovingImage,typename TVirtualImage = TFixedImage,
          typename TInternalComputationValueType = double,
-         typename TMetricTraits = DefaultImageToImageMetricTraitsv4< TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType >
+         typename TMetricTraits =
+           DefaultImageToImageMetricTraitsv4< TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType >
          >
 class ImageToImageMetricv4
-  : public ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension, TVirtualImage, TInternalComputationValueType>
+  : public ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension, TVirtualImage,
+                                TInternalComputationValueType>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef ImageToImageMetricv4                                                                                                     Self;
-  typedef ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension, TVirtualImage, TInternalComputationValueType>  Superclass;
-  typedef SmartPointer<Self>                                                                                                       Pointer;
-  typedef SmartPointer<const Self>                                                                                                 ConstPointer;
+  typedef ImageToImageMetricv4
+    Self;
+  typedef ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension, TVirtualImage,
+                               TInternalComputationValueType> Superclass;
+  typedef SmartPointer<Self>
+    Pointer;
+  typedef SmartPointer<const Self>
+    ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ImageToImageMetricv4, ObjectToObjectMetric);
 
   /** Type used internally for computations */
-  /** It should be possible to derive the internal computation type from the class object. */
-  typedef TInternalComputationValueType                     InternalComputationValueType;
+  /** It should be possible to derive the internal computation type from the
+    class object. */
+  typedef TInternalComputationValueType InternalComputationValueType;
 
   /** Type used for representing parameter values  */
   typedef typename Superclass::CoordinateRepresentationType CoordinateRepresentationType;
 
   /**  Type of the parameters. */
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   /** Graident source type */
   typedef typename Superclass::GradientSourceType GradientSourceType;
 
   /** Dimension type */
-  typedef typename Superclass::DimensionType      DimensionType;
-  typedef typename Superclass::DimensionType      ImageDimensionType;
+  typedef typename Superclass::DimensionType DimensionType;
+  typedef typename Superclass::DimensionType ImageDimensionType;
 
   /** Transform types from Superclass*/
-  typedef typename Superclass::FixedTransformType            FixedTransformType;
-  typedef typename Superclass::FixedTransformPointer         FixedTransformPointer;
-  typedef typename Superclass::FixedInputPointType           FixedInputPointType;
-  typedef typename Superclass::FixedOutputPointType          FixedOutputPointType;
-  typedef typename Superclass::FixedTransformParametersType  FixedTransformParametersType;
+  typedef typename Superclass::FixedTransformType           FixedTransformType;
+  typedef typename Superclass::FixedTransformPointer        FixedTransformPointer;
+  typedef typename Superclass::FixedInputPointType          FixedInputPointType;
+  typedef typename Superclass::FixedOutputPointType         FixedOutputPointType;
+  typedef typename Superclass::FixedTransformParametersType FixedTransformParametersType;
 
-  typedef typename Superclass::MovingTransformType            MovingTransformType;
-  typedef typename Superclass::MovingTransformPointer         MovingTransformPointer;
-  typedef typename Superclass::MovingInputPointType           MovingInputPointType;
-  typedef typename Superclass::MovingOutputPointType          MovingOutputPointType;
-  typedef typename Superclass::MovingTransformParametersType  MovingTransformParametersType;
+  typedef typename Superclass::MovingTransformType           MovingTransformType;
+  typedef typename Superclass::MovingTransformPointer        MovingTransformPointer;
+  typedef typename Superclass::MovingInputPointType          MovingInputPointType;
+  typedef typename Superclass::MovingOutputPointType         MovingOutputPointType;
+  typedef typename Superclass::MovingTransformParametersType MovingTransformParametersType;
 
-  typedef typename Superclass::JacobianType                   JacobianType;
-  typedef typename Superclass::FixedTransformJacobianType     FixedTransformJacobianType;
-  typedef typename Superclass::MovingTransformJacobianType    MovingTransformJacobianType;
+  typedef typename Superclass::JacobianType                JacobianType;
+  typedef typename Superclass::FixedTransformJacobianType  FixedTransformJacobianType;
+  typedef typename Superclass::MovingTransformJacobianType MovingTransformJacobianType;
 
   /** Image-accessor typedefs */
-  typedef TFixedImage                             FixedImageType;
-  typedef typename FixedImageType::PixelType      FixedImagePixelType;
-  typedef FixedImagePixelType                     FixedPixelType;
-  typedef typename FixedImageType::Pointer        FixedImagePointer;
-  typedef typename FixedImageType::ConstPointer   FixedImageConstPointer;
-  typedef typename FixedImageType::PointType      FixedImagePointType;
-  typedef typename FixedImageType::IndexType      FixedImageIndexType;
-  typedef TMovingImage                            MovingImageType;
-  typedef typename MovingImageType::PixelType     MovingImagePixelType;
-  typedef MovingImagePixelType                    MovingPixelType;
-  typedef typename MovingImageType::Pointer       MovingImagePointer;
-  typedef typename MovingImageType::ConstPointer  MovingImageConstPointer;
-  typedef typename MovingImageType::PointType     MovingImagePointType;
-  typedef typename MovingImageType::RegionType    MovingImageRegionType;
-  typedef typename MovingImageType::IndexType     MovingImageIndexType;
+  typedef TFixedImage                            FixedImageType;
+  typedef typename FixedImageType::PixelType     FixedImagePixelType;
+  typedef FixedImagePixelType                    FixedPixelType;
+  typedef typename FixedImageType::Pointer       FixedImagePointer;
+  typedef typename FixedImageType::ConstPointer  FixedImageConstPointer;
+  typedef typename FixedImageType::PointType     FixedImagePointType;
+  typedef typename FixedImageType::IndexType     FixedImageIndexType;
+  typedef TMovingImage                           MovingImageType;
+  typedef typename MovingImageType::PixelType    MovingImagePixelType;
+  typedef MovingImagePixelType                   MovingPixelType;
+  typedef typename MovingImageType::Pointer      MovingImagePointer;
+  typedef typename MovingImageType::ConstPointer MovingImageConstPointer;
+  typedef typename MovingImageType::PointType    MovingImagePointType;
+  typedef typename MovingImageType::RegionType   MovingImageRegionType;
+  typedef typename MovingImageType::IndexType    MovingImageIndexType;
 
   /** Types for the virtual domain */
   typedef typename Superclass::VirtualImageType       VirtualImageType;
@@ -259,9 +266,9 @@ public:
 
   /**  Type for the mask of the fixed image. Only pixels that are "inside"
        this mask will be considered for the computation of the metric */
-  typedef SpatialObject< itkGetStaticConstMacro(FixedImageDimension) >  FixedImageMaskType;
-  typedef typename FixedImageMaskType::Pointer                          FixedImageMaskPointer;
-  typedef typename FixedImageMaskType::ConstPointer                     FixedImageMaskConstPointer;
+  typedef SpatialObject< itkGetStaticConstMacro(FixedImageDimension) > FixedImageMaskType;
+  typedef typename FixedImageMaskType::Pointer                         FixedImageMaskPointer;
+  typedef typename FixedImageMaskType::ConstPointer                    FixedImageMaskConstPointer;
 
   /**  Type for the mask of the moving image. Only pixels that are "inside"
        this mask will be considered for the computation of the metric */
@@ -271,24 +278,24 @@ public:
 
   /** Type of the point set used for sparse sampling. */
   typedef PointSet<typename FixedImageType::PixelType, itkGetStaticConstMacro(FixedImageDimension)>
-                                                                        FixedSampledPointSetType;
-  typedef typename FixedSampledPointSetType::Pointer                    FixedSampledPointSetPointer;
-  typedef typename FixedSampledPointSetType::ConstPointer               FixedSampledPointSetConstPointer;
+    FixedSampledPointSetType;
+  typedef typename FixedSampledPointSetType::Pointer      FixedSampledPointSetPointer;
+  typedef typename FixedSampledPointSetType::ConstPointer FixedSampledPointSetConstPointer;
 
   /**  Type of the Interpolator Base class */
   typedef InterpolateImageFunction< FixedImageType,
                                     CoordinateRepresentationType >
-                                                      FixedInterpolatorType;
+    FixedInterpolatorType;
   typedef InterpolateImageFunction< MovingImageType,
                                     CoordinateRepresentationType >
-                                                      MovingInterpolatorType;
-  typedef typename FixedInterpolatorType::Pointer     FixedInterpolatorPointer;
-  typedef typename MovingInterpolatorType::Pointer    MovingInterpolatorPointer;
+    MovingInterpolatorType;
+  typedef typename FixedInterpolatorType::Pointer  FixedInterpolatorPointer;
+  typedef typename MovingInterpolatorType::Pointer MovingInterpolatorPointer;
 
   /** Image derivatives types */
-  typedef typename MetricTraits::FixedImageGradientType    FixedImageGradientType;
-  typedef typename MetricTraits::MovingImageGradientType   MovingImageGradientType;
-  typedef typename MetricTraits::VirtualImageGradientType  VirtualImageGradientType;
+  typedef typename MetricTraits::FixedImageGradientType   FixedImageGradientType;
+  typedef typename MetricTraits::MovingImageGradientType  MovingImageGradientType;
+  typedef typename MetricTraits::VirtualImageGradientType VirtualImageGradientType;
 
   typedef CovariantVector<typename FixedImageGradientType::ValueType, FixedImageDimension>
     FixedImageComponentGradientType;
@@ -321,10 +328,9 @@ public:
   typedef typename MetricTraits::MovingImageGradientFilterType MovingImageGradientFilterType;
 
   typedef typename FixedImageGradientFilterType::Pointer
-                                              FixedImageGradientFilterPointer;
+    FixedImageGradientFilterPointer;
   typedef typename MovingImageGradientFilterType::Pointer
-                                              MovingImageGradientFilterPointer;
-
+    MovingImageGradientFilterPointer;
 
   /** Default image gradient filter types */
   typedef typename MetricTraits::DefaultFixedImageGradientFilter  DefaultFixedImageGradientFilter;
@@ -333,21 +339,21 @@ public:
   /** Image gradient calculator types. The TOutput template parameter
    * is chosen to match that of CentralDiffererenceImageFunction. */
   typedef typename MetricTraits::FixedImageGradientCalculatorType
-                                            FixedImageGradientCalculatorType;
+    FixedImageGradientCalculatorType;
   typedef typename MetricTraits::MovingImageGradientCalculatorType
-                                            MovingImageGradientCalculatorType;
+    MovingImageGradientCalculatorType;
 
   typedef typename FixedImageGradientCalculatorType::Pointer
-                                            FixedImageGradientCalculatorPointer;
+    FixedImageGradientCalculatorPointer;
   typedef typename MovingImageGradientCalculatorType::Pointer
-                                            MovingImageGradientCalculatorPointer;
+    MovingImageGradientCalculatorPointer;
 
   /** Default image gradient calculator types */
   typedef typename MetricTraits::DefaultFixedImageGradientCalculator  DefaultFixedImageGradientCalculator;
   typedef typename MetricTraits::DefaultMovingImageGradientCalculator DefaultMovingImageGradientCalculator;
 
   /**  Type of the measure. */
-  typedef typename Superclass::MeasureType    MeasureType;
+  typedef typename Superclass::MeasureType MeasureType;
 
   /**  Type of the metric derivative. */
   typedef typename Superclass::DerivativeType DerivativeType;
@@ -355,7 +361,7 @@ public:
 
   /** Type to represent the number of parameters that are being optimized at
    * any given iteration of the optimizer. */
-  typedef typename Superclass::NumberOfParametersType   NumberOfParametersType;
+  typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
   /* Get/Set the Fixed Image.  */
   itkSetConstObjectMacro(FixedImage, FixedImageType);
@@ -432,6 +438,7 @@ public:
    * when multithreaded.  The actual number of threads used (may be less than
    * this value) can be obtained with \c GetNumberOfThreadsUsed. */
   virtual void SetMaximumNumberOfThreads( const ThreadIdType threads );
+
   virtual ThreadIdType GetMaximumNumberOfThreads() const;
 
   /** Get Fixed Gradient Image. */
@@ -499,7 +506,8 @@ public:
    * For informational purposes. */
   itkGetConstReferenceMacro(NumberOfSkippedFixedSampledPoints, SizeValueType);
 
-  virtual bool SupportsArbitraryVirtualDomainSamples( void ) const
+  virtual bool
+  SupportsArbitraryVirtualDomainSamples( void ) const
   {
     return true;
   }
@@ -508,24 +516,28 @@ protected:
   /* Interpolators for image gradient filters. */
   typedef LinearInterpolateImageFunction< FixedImageGradientImageType,
                                           CoordinateRepresentationType >
-                                                  FixedImageGradientInterpolatorType;
+    FixedImageGradientInterpolatorType;
   typedef LinearInterpolateImageFunction< MovingImageGradientImageType,
                                           CoordinateRepresentationType >
-                                                  MovingImageGradientInterpolatorType;
+    MovingImageGradientInterpolatorType;
 
-  friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< VirtualImageDimension >, Self >;
+  friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner<
+                                                                        VirtualImageDimension >, Self >;
   friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedIndexedContainerPartitioner, Self >;
-  friend class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >, Self >;
+  friend class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >,
+                                                                  Self >;
   friend class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Self >;
 
   /* A DenseGetValueAndDerivativeThreader
    * Derived classes must define this class and assign it in their constructor
    * if threaded processing in GetValueAndDerivative is performed. */
-  typename ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >, Self >::Pointer m_DenseGetValueAndDerivativeThreader;
+  typename ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >,
+                                                              Self >::Pointer m_DenseGetValueAndDerivativeThreader;
   /* A SparseGetValueAndDerivativeThreader
    * Derived classes must define this class and assign it in their constructor
    * if threaded processing in GetValueAndDerivative is performed. */
-  typename ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Self >::Pointer m_SparseGetValueAndDerivativeThreader;
+  typename ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner,
+                                                              Self >::Pointer m_SparseGetValueAndDerivativeThreader;
 
   /** Perform any initialization required before each evaluation of
    * \c GetValueAndDerivative. This is distinct from Initialize, which
@@ -541,21 +553,24 @@ protected:
    * Parameters \c mappedFixedPoint and \c mappedFixedPixelValue are  returned.
    */
   bool TransformAndEvaluateFixedPoint(
-                         const VirtualPointType & virtualPoint,
-                         FixedImagePointType & mappedFixedPoint,
-                         FixedImagePixelType & mappedFixedPixelValue ) const;
+    const VirtualPointType & virtualPoint,
+    FixedImagePointType & mappedFixedPoint,
+    FixedImagePixelType & mappedFixedPixelValue ) const;
 
-  /** Transform and evaluate a point from VirtualImage domain to MovingImage domain. */
+  /** Transform and evaluate a point from VirtualImage domain to MovingImage
+    domain. */
   bool TransformAndEvaluateMovingPoint(
-                         const VirtualPointType & virtualPoint,
-                         MovingImagePointType & mappedMovingPoint,
-                         MovingImagePixelType & mappedMovingPixelValue ) const;
+    const VirtualPointType & virtualPoint,
+    MovingImagePointType & mappedMovingPoint,
+    MovingImagePixelType & mappedMovingPixelValue ) const;
 
   /** Compute image derivatives for a Fixed point. */
-  virtual void ComputeFixedImageGradientAtPoint( const FixedImagePointType & mappedPoint, FixedImageGradientType & gradient ) const;
+  virtual void ComputeFixedImageGradientAtPoint( const FixedImagePointType & mappedPoint,
+                                                 FixedImageGradientType & gradient ) const;
 
   /** Compute image derivatives for a moving point. */
-  virtual void ComputeMovingImageGradientAtPoint( const MovingImagePointType & mappedPoint, MovingImageGradientType & gradient ) const;
+  virtual void ComputeMovingImageGradientAtPoint( const MovingImagePointType & mappedPoint,
+                                                  MovingImageGradientType & gradient ) const;
 
   /** Computes the gradients of the fixed image, using the
    * GradientFilter, assigning the output to
@@ -578,6 +593,7 @@ protected:
   /** Initialize the default image gradient filters. This must only
    * be called once the fixed and moving images have been set. */
   virtual void InitializeDefaultFixedImageGradientFilter(void);
+
   virtual void InitializeDefaultMovingImageGradientFilter(void);
 
   /** Get accessor for flag to calculate derivative. */
@@ -587,41 +603,41 @@ protected:
   MovingImageConstPointer m_MovingImage;
 
   /** Pointers to interpolators */
-  FixedInterpolatorPointer                                m_FixedInterpolator;
-  MovingInterpolatorPointer                               m_MovingInterpolator;
+  FixedInterpolatorPointer  m_FixedInterpolator;
+  MovingInterpolatorPointer m_MovingInterpolator;
   typename FixedImageGradientInterpolatorType::Pointer    m_FixedImageGradientInterpolator;
   typename MovingImageGradientInterpolatorType::Pointer   m_MovingImageGradientInterpolator;
 
   /** Flag to control use of precomputed gradient filter image or gradient
    * calculator for image gradient calculations. */
-  bool                          m_UseFixedImageGradientFilter;
-  bool                          m_UseMovingImageGradientFilter;
+  bool m_UseFixedImageGradientFilter;
+  bool m_UseMovingImageGradientFilter;
 
   /** Gradient filters */
-  FixedImageGradientFilterPointer   m_FixedImageGradientFilter;
-  MovingImageGradientFilterPointer  m_MovingImageGradientFilter;
+  FixedImageGradientFilterPointer  m_FixedImageGradientFilter;
+  MovingImageGradientFilterPointer m_MovingImageGradientFilter;
 
   /** Pointer to default gradient filter. Used for easier
    * initialization of the default filter. */
   typename DefaultFixedImageGradientFilter::Pointer
-                                             m_DefaultFixedImageGradientFilter;
+  m_DefaultFixedImageGradientFilter;
   typename DefaultMovingImageGradientFilter::Pointer
-                                             m_DefaultMovingImageGradientFilter;
+  m_DefaultMovingImageGradientFilter;
 
   /** Pointer to default gradient calculators. Used for easier
    * initialization of the default filter. */
   typename DefaultFixedImageGradientCalculator::Pointer
-                                             m_DefaultFixedImageGradientCalculator;
+  m_DefaultFixedImageGradientCalculator;
   typename DefaultMovingImageGradientCalculator::Pointer
-                                             m_DefaultMovingImageGradientCalculator;
+  m_DefaultMovingImageGradientCalculator;
 
   /** Gradient images to store gradient filter output. */
-  mutable FixedImageGradientImagePointer    m_FixedImageGradientImage;
-  mutable MovingImageGradientImagePointer   m_MovingImageGradientImage;
+  mutable FixedImageGradientImagePointer  m_FixedImageGradientImage;
+  mutable MovingImageGradientImagePointer m_MovingImageGradientImage;
 
   /** Image gradient calculators */
-  FixedImageGradientCalculatorPointer   m_FixedImageGradientCalculator;
-  MovingImageGradientCalculatorPointer  m_MovingImageGradientCalculator;
+  FixedImageGradientCalculatorPointer  m_FixedImageGradientCalculator;
+  MovingImageGradientCalculatorPointer m_MovingImageGradientCalculator;
 
   /** Derivative results holder. User a raw pointer so we can point it
    * to a user-provided object. This is used in internal methods so
@@ -629,21 +645,22 @@ protected:
    * safely sharing a derivative object between metrics during multi-variate
    * analsys, for memory efficiency.
    * Will be NULL if not set. */
-  mutable DerivativeType *                m_DerivativeResult;
+  mutable DerivativeType * m_DerivativeResult;
 
   /** Masks */
-  FixedImageMaskConstPointer              m_FixedImageMask;
-  MovingImageMaskConstPointer             m_MovingImageMask;
+  FixedImageMaskConstPointer  m_FixedImageMask;
+  MovingImageMaskConstPointer m_MovingImageMask;
 
   /** Sampled point sets */
-  FixedSampledPointSetConstPointer        m_FixedSampledPointSet;
-  VirtualPointSetPointer                  m_VirtualSampledPointSet;
+  FixedSampledPointSetConstPointer m_FixedSampledPointSet;
+  VirtualPointSetPointer           m_VirtualSampledPointSet;
 
   /** Flag to use FixedSampledPointSet, i.e. Sparse sampling. */
-  bool                                    m_UseFixedSampledPointSet;
+  bool m_UseFixedSampledPointSet;
 
   ImageToImageMetricv4();
-  virtual ~ImageToImageMetricv4();
+  virtual
+  ~ImageToImageMetricv4();
 
   void PrintSelf(std::ostream& os, Indent indent) const;
 
@@ -652,53 +669,60 @@ private:
   void MapFixedSampledPointSetToVirtual( void );
 
   /** Transform a point. Avoid cast if possible */
-  void LocalTransformPoint(const typename FixedTransformType::OutputPointType &virtualPoint,
-                           typename FixedTransformType::OutputPointType &mappedFixedPoint) const
-    {
-      mappedFixedPoint = this->m_FixedTransform->TransformPoint(virtualPoint);
-    }
+  void
+  LocalTransformPoint(const typename FixedTransformType::OutputPointType &virtualPoint,
+                      typename FixedTransformType::OutputPointType &mappedFixedPoint) const
+  {
+    mappedFixedPoint = this->m_FixedTransform->TransformPoint(virtualPoint);
+  }
+
   // cast the virtual point
   template <typename TVirtualPoint>
-  void LocalTransformPoint(const TVirtualPoint &virtualPoint,
-                           typename FixedTransformType::OutputPointType  &mappedFixedPoint) const
-    {
-      typename FixedTransformType::OutputPointType localVirtualPoint;
+  void
+  LocalTransformPoint(const TVirtualPoint &virtualPoint,
+                      typename FixedTransformType::OutputPointType  &mappedFixedPoint) const
+  {
+    typename FixedTransformType::OutputPointType localVirtualPoint;
 
-      localVirtualPoint.CastFrom(virtualPoint);
+    localVirtualPoint.CastFrom(virtualPoint);
 
-      mappedFixedPoint = this->m_FixedTransform->TransformPoint( localVirtualPoint );
-    }
+    mappedFixedPoint = this->m_FixedTransform->TransformPoint( localVirtualPoint );
+  }
+
   // cast the mapped Fixed Point
   template <typename TFixedImagePoint>
-  void LocalTransformPoint(const typename FixedTransformType::OutputPointType &virtualPoint,
-                           TFixedImagePoint &mappedFixedPoint) const
-    {
-      typename FixedTransformType::OutputPointType localMappedFixedPoint;
-      localMappedFixedPoint.CastFrom(mappedFixedPoint);
-      localMappedFixedPoint = this->m_FixedTransform->TransformPoint( virtualPoint );
-      mappedFixedPoint.CastFrom(localMappedFixedPoint);
-    }
+  void
+  LocalTransformPoint(const typename FixedTransformType::OutputPointType &virtualPoint,
+                      TFixedImagePoint &mappedFixedPoint) const
+  {
+    typename FixedTransformType::OutputPointType localMappedFixedPoint;
+    localMappedFixedPoint.CastFrom(mappedFixedPoint);
+    localMappedFixedPoint = this->m_FixedTransform->TransformPoint( virtualPoint );
+    mappedFixedPoint.CastFrom(localMappedFixedPoint);
+  }
+
   // cast both mapped and fixed point.
   template <typename TVirtualPoint,typename TFixedImagePoint>
-  void LocalTransformPoint(const TVirtualPoint &virtualPoint,
-                           TFixedImagePoint &mappedFixedPoint) const
-    {
-      typename FixedTransformType::OutputPointType localVirtualPoint;
-      typename FixedTransformType::OutputPointType localMappedFixedPoint;
+  void
+  LocalTransformPoint(const TVirtualPoint &virtualPoint,
+                      TFixedImagePoint &mappedFixedPoint) const
+  {
+    typename FixedTransformType::OutputPointType localVirtualPoint;
+    typename FixedTransformType::OutputPointType localMappedFixedPoint;
 
-      localVirtualPoint.CastFrom(virtualPoint);
-      localMappedFixedPoint.CastFrom(mappedFixedPoint);
+    localVirtualPoint.CastFrom(virtualPoint);
+    localMappedFixedPoint.CastFrom(mappedFixedPoint);
 
-      localMappedFixedPoint = this->m_FixedTransform->TransformPoint( localVirtualPoint );
-      mappedFixedPoint.CastFrom(localMappedFixedPoint);
-    }
+    localMappedFixedPoint = this->m_FixedTransform->TransformPoint( localVirtualPoint );
+    mappedFixedPoint.CastFrom(localMappedFixedPoint);
+  }
 
   /** Flag for warning about use of GetValue. Will be removed when
    *  GetValue implementation is improved. */
   mutable bool m_HaveMadeGetValueWarning;
 
   ImageToImageMetricv4(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);       //purposely not implemented
 
   /** Keep track of the number of sampled fixed points that are
    * deemed invalid during conversion to virtual domain.
@@ -711,19 +735,19 @@ private:
   MetricTraits m_MetricTraits;
 
   /** Flag to know if derivative should be calculated */
-  mutable bool        m_ComputeDerivative;
+  mutable bool m_ComputeDerivative;
 
   /** Only floating-point images are currently supported. To support integer images,
    * several small changes must be made */
-  #ifdef ITK_USE_CONCEPT_CHECKING
+#ifdef ITK_USE_CONCEPT_CHECKING
   typedef typename PixelTraits<FixedImagePixelType>::ValueType  FixedImagePixelValueType;
   typedef typename PixelTraits<MovingImagePixelType>::ValueType MovingImagePixelValueType;
   itkConceptMacro( OnlyDefinedForFloatingPointTypes0, ( itk::Concept::IsFloatingPoint<FixedImagePixelValueType> ) );
   itkConceptMacro( OnlyDefinedForFloatingPointTypes1, ( itk::Concept::IsFloatingPoint<MovingImagePixelValueType> ) );
-  #endif // ITK_USE_CONCEPT_CHECKING
+#endif   // ITK_USE_CONCEPT_CHECKING
 
 };
-}//namespace itk
+} //namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageToImageMetricv4.hxx"

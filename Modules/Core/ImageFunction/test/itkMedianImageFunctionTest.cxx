@@ -16,25 +16,26 @@
  *
  *=========================================================================*/
 
-
 #include "itkMedianImageFunction.h"
 
-int itkMedianImageFunctionTest(int, char* [] )
+int
+itkMedianImageFunctionTest(int, char* [] )
 {
 
   const unsigned int Dimension = 3;
-  typedef unsigned char   PixelType;
+
+  typedef unsigned char PixelType;
 
   typedef itk::Image< PixelType, Dimension >    ImageType;
   typedef itk::MedianImageFunction< ImageType > FunctionType;
 
   // Create and allocate the image
-  ImageType::Pointer      image = ImageType::New();
-  ImageType::SizeType     size;
-  ImageType::IndexType    start;
-  ImageType::RegionType   region;
-  const int sizeDim(50);
-  const int centerIndex(sizeDim/2);
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+  ImageType::RegionType region;
+  const int             sizeDim(50);
+  const int             centerIndex(sizeDim/2);
   size[0] = 50;
   size[1] = 50;
   size[2] = 50;
@@ -54,13 +55,13 @@ int itkMedianImageFunctionTest(int, char* [] )
 
   function->SetInputImage( image );
 
-  ImageType::IndexType    index;
+  ImageType::IndexType index;
 
   index[0] = centerIndex;
   index[1] = centerIndex;
   index[2] = centerIndex;
 
-  FunctionType::OutputType  median;
+  FunctionType::OutputType median;
 
   median = function->EvaluateAtIndex( index );
   std::cout << "function->EvaluateAtIndex( index ): "
@@ -103,8 +104,8 @@ int itkMedianImageFunctionTest(int, char* [] )
 
   // first, put something in the neighborhood outside the current
   // neighborhood that will change the median result
-  unsigned char voxelval(28);
-  ImageType::IndexType    index2;
+  unsigned char        voxelval(28);
+  ImageType::IndexType index2;
   for(index2[0] = centerIndex-2; index2[0] < centerIndex+3; index2[0]++)
     {
     for(index2[1] = centerIndex-2; index2[1] < centerIndex+3; index2[1]++)
@@ -112,9 +113,9 @@ int itkMedianImageFunctionTest(int, char* [] )
       for(index2[2] = centerIndex-2; index2[2] < centerIndex+3; index2[2]++)
         {
         // don't change voxels inside default neighborhood
-        if((index2[0] < centerIndex - 1 || index2[0] > centerIndex + 1) ||
-           (index2[1] < centerIndex - 1 || index2[1] > centerIndex + 1) ||
-           (index2[2] < centerIndex - 1 || index2[2] > centerIndex + 1))
+        if( (index2[0] < centerIndex - 1 || index2[0] > centerIndex + 1) ||
+            (index2[1] < centerIndex - 1 || index2[1] > centerIndex + 1) ||
+            (index2[2] < centerIndex - 1 || index2[2] > centerIndex + 1) )
           {
           image->SetPixel(index2,voxelval);
           voxelval++;
@@ -152,7 +153,6 @@ int itkMedianImageFunctionTest(int, char* [] )
     std::cerr << "Error in mean computation" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test PASSED ! " << std::endl;
   return EXIT_SUCCESS;

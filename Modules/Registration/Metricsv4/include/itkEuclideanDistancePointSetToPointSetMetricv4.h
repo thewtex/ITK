@@ -39,16 +39,16 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 template<typename TFixedPointSet, typename TMovingPointSet = TFixedPointSet>
-class EuclideanDistancePointSetToPointSetMetricv4:
+class EuclideanDistancePointSetToPointSetMetricv4 :
   public PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef EuclideanDistancePointSetToPointSetMetricv4                  Self;
-  typedef PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>  Superclass;
-  typedef SmartPointer<Self>                                           Pointer;
-  typedef SmartPointer<const Self>                                     ConstPointer;
+  typedef EuclideanDistancePointSetToPointSetMetricv4                 Self;
+  typedef PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet> Superclass;
+  typedef SmartPointer<Self>                                          Pointer;
+  typedef SmartPointer<const Self>                                    ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -57,12 +57,12 @@ public:
   itkTypeMacro( EuclideanDistancePointSetToPointSetMetricv4, PointSetToPointSetMetricv4 );
 
   /** Types transferred from the base class */
-  typedef typename Superclass::MeasureType          MeasureType;
-  typedef typename Superclass::DerivativeType       DerivativeType;
-  typedef typename Superclass::LocalDerivativeType  LocalDerivativeType;
-  typedef typename Superclass::PointType            PointType;
-  typedef typename Superclass::PixelType            PixelType;
-  typedef typename Superclass::PointIdentifier      PointIdentifier;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::LocalDerivativeType LocalDerivativeType;
+  typedef typename Superclass::PointType           PointType;
+  typedef typename Superclass::PixelType           PixelType;
+  typedef typename Superclass::PointIdentifier     PointIdentifier;
 
   /**
    * Calculates the local metric value for a single point.
@@ -73,18 +73,24 @@ public:
    * Calculates the local value and derivative for a single point.
    */
   virtual void GetLocalNeighborhoodValueAndDerivative( const PointType &,
-    MeasureType &, LocalDerivativeType &, const PixelType & pixel = 0 ) const;
+                                                       MeasureType &, LocalDerivativeType &, const PixelType & pixel =
+                                                         0 ) const;
 
 protected:
   EuclideanDistancePointSetToPointSetMetricv4();
-  virtual ~EuclideanDistancePointSetToPointSetMetricv4();
+  virtual
+  ~EuclideanDistancePointSetToPointSetMetricv4();
 
   /** PrintSelf function */
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
-  EuclideanDistancePointSetToPointSetMetricv4(const Self &); //purposely not implemented
-  void operator=(const Self &);               //purposely not implemented
+  EuclideanDistancePointSetToPointSetMetricv4(const Self &); //purposely not
+                                                             // implemented
+  void operator=(const Self &);                              //purposely not
+
+  // implemented
+
 };
 } // end namespace itk
 

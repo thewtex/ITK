@@ -20,7 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkImageToHistogramFilterTest2( int argc, char * argv [] )
+int
+itkImageToHistogramFilterTest2( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -30,18 +31,19 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
+  typedef unsigned char PixelComponentType;
 
-  typedef unsigned char                         PixelComponentType;
+  typedef itk::RGBPixel< PixelComponentType > RGBPixelType;
 
-  typedef itk::RGBPixel< PixelComponentType >   RGBPixelType;
-
-  const unsigned int                            Dimension = 2;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image< RGBPixelType, Dimension > RGBImageType;
 
-  const unsigned int                            MeasurementVectorSize = 3; // RGB
+  const unsigned int MeasurementVectorSize = 3;                            //
+                                                                           //
+                                                                           // RGB
 
-  typedef itk::ImageFileReader< RGBImageType >  ReaderType;
+  typedef itk::ImageFileReader< RGBImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -58,13 +60,12 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
-  typedef itk::Statistics::ImageToHistogramFilter< RGBImageType >   HistogramFilterType;
+  typedef itk::Statistics::ImageToHistogramFilter< RGBImageType > HistogramFilterType;
 
   HistogramFilterType::Pointer histogramFilter = HistogramFilterType::New();
-  itk::SimpleFilterWatcher watcher(histogramFilter, "filter");
+  itk::SimpleFilterWatcher     watcher(histogramFilter, "filter");
 
-  typedef HistogramFilterType::HistogramMeasurementVectorType  HistogramMeasurementVectorType;
+  typedef HistogramFilterType::HistogramMeasurementVectorType HistogramMeasurementVectorType;
 
   // Setting bin mins and max
   HistogramMeasurementVectorType histogramBinMinimum( MeasurementVectorSize );
@@ -80,8 +81,7 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
   histogramFilter->SetHistogramBinMinimum( histogramBinMinimum );
   histogramFilter->SetHistogramBinMaximum( histogramBinMaximum );
 
-
-  typedef HistogramFilterType::HistogramSizeType   SizeType;
+  typedef HistogramFilterType::HistogramSizeType SizeType;
 
   SizeType size( MeasurementVectorSize );
 
@@ -105,8 +105,7 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
-  typedef HistogramFilterType::HistogramType  HistogramType;
+  typedef HistogramFilterType::HistogramType HistogramType;
   const HistogramType * histogram = histogramFilter->GetOutput();
 
   std::ofstream outputFile;
@@ -114,7 +113,6 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
 
   const unsigned int histogramSize = histogram->Size();
   outputFile << "Histogram size " << histogramSize << std::endl;
-
 
   unsigned int channel = 0;  // red channel
 
@@ -125,7 +123,6 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
     outputFile << "bin = " << bin << " frequency = ";
     outputFile << histogram->GetFrequency( bin, channel ) << std::endl;
     }
-
 
   size[0] =   1;  // number of bins for the Red   channel
   size[1] = 255;  // number of bins for the Green channel
@@ -143,7 +140,6 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
   channel = 1;  // green channel
 
   outputFile << "Histogram of the green component" << std::endl;
@@ -153,7 +149,6 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
     outputFile << "bin = " << bin << " frequency = ";
     outputFile << histogram->GetFrequency( bin, channel ) << std::endl;
     }
-
 
   size[0] =   1;  // number of bins for the Red   channel
   size[1] =   1;  // number of bins for the Green channel
@@ -170,7 +165,6 @@ int itkImageToHistogramFilterTest2( int argc, char * argv [] )
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   channel = 2;  // blue channel
 

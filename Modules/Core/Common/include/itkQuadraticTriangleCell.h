@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TCellInterface >
-class QuadraticTriangleCell:public TCellInterface, private QuadraticTriangleCellTopology
+class QuadraticTriangleCell : public TCellInterface, private QuadraticTriangleCellTopology
 {
 public:
   /** Standard class typedefs. */
@@ -60,8 +60,12 @@ public:
   itkStaticConstMacro(CellDimension, unsigned int, 2);
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::QUADRATIC_TRIANGLE_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::QUADRATIC_TRIANGLE_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -112,7 +116,8 @@ public:
       }
   }
 
-  ~QuadraticTriangleCell() {}
+  ~QuadraticTriangleCell() {
+  }
 
 protected:
   /** Store the number of points needed for a triangle. */
@@ -121,6 +126,7 @@ protected:
 private:
   QuadraticTriangleCell(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

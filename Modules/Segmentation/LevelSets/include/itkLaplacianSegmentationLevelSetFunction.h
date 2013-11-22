@@ -31,14 +31,14 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TFeatureImageType = TImageType >
-class LaplacianSegmentationLevelSetFunction:
+class LaplacianSegmentationLevelSetFunction :
   public SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 {
 public:
   /** Standard class typedefs. */
   typedef LaplacianSegmentationLevelSetFunction Self;
   typedef SegmentationLevelSetFunction< TImageType, TFeatureImageType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
   typedef TFeatureImageType          FeatureImageType;
@@ -61,7 +61,8 @@ public:
 
   virtual void CalculateSpeedImage();
 
-  virtual void Initialize(const RadiusType & r)
+  virtual void
+  Initialize(const RadiusType & r)
   {
     Superclass::Initialize(r);
 
@@ -76,7 +77,8 @@ public:
    * otherwise. in fact, SegmentationLevelSetImageFilter tries to set
    * it when SetFeatureScaling is called.
    */
-  void SetAdvectionWeight(const ScalarValueType value)
+  void
+  SetAdvectionWeight(const ScalarValueType value)
   {
     if ( value == NumericTraits< ScalarValueType >::Zero )
       {
@@ -93,12 +95,15 @@ protected:
     this->SetCurvatureWeight(1.0);
   }
 
-  virtual ~LaplacianSegmentationLevelSetFunction() {}
+  virtual
+  ~LaplacianSegmentationLevelSetFunction() {
+  }
 
   LaplacianSegmentationLevelSetFunction(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 };
 } // end namespace itk
 

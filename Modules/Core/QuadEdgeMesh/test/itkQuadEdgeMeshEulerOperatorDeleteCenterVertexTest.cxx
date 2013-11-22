@@ -20,24 +20,25 @@
 #include "itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction.h"
 #include "itkQuadEdgeMeshEulerOperatorsTestHelper.h"
 
-int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
+int
+itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
 {
   (void)argc;
   (void)argv;
 
-  typedef itk::QuadEdgeMesh< double, 3 >                      MeshType;
-  typedef MeshType::Pointer                                   MeshPointer;
-  typedef MeshType::QEType                                    QEType;
-  typedef MeshType::PointIdentifier                           PointIdentifier;
-  typedef MeshType::PointType                                 PointType;
-  typedef MeshType::CellType                                  CellType;
-  typedef itk::QuadEdgeMeshLineCell< CellType >               LineCellType;
+  typedef itk::QuadEdgeMesh< double, 3 >        MeshType;
+  typedef MeshType::Pointer                     MeshPointer;
+  typedef MeshType::QEType                      QEType;
+  typedef MeshType::PointIdentifier             PointIdentifier;
+  typedef MeshType::PointType                   PointType;
+  typedef MeshType::CellType                    CellType;
+  typedef itk::QuadEdgeMeshLineCell< CellType > LineCellType;
 
   typedef itk::QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction< MeshType,
-    QEType> DeleteCenterVertex;
+                                                                    QEType> DeleteCenterVertex;
 
   typedef itk::QuadEdgeMeshEulerOperatorCreateCenterVertexFunction< MeshType,
-    QEType> CreateCenterVertex;
+                                                                    QEType> CreateCenterVertex;
 
   /////////////////////////////////////////
   //
@@ -75,7 +76,7 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
   MeshPointer mesh = MeshType::New();
   CreateSquareTriangularMesh<MeshType>( mesh );
 
-  DeleteCenterVertex::Pointer deleteCenterVertex = DeleteCenterVertex::New( );
+  DeleteCenterVertex::Pointer deleteCenterVertex = DeleteCenterVertex::New();
   std::cout << "     " << "Test No Mesh Input";
   if( deleteCenterVertex->Evaluate( (QEType*)1 ) )
     {
@@ -105,8 +106,8 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
   std::cout << "OK" << std::endl;
 
     {
-    MeshPointer  specialmesh = MeshType::New();
-    PointType pts3[4];
+    MeshPointer specialmesh = MeshType::New();
+    PointType   pts3[4];
     pts3[ 0][0] = 0.0;  pts3[ 0][1] = 0.0;  pts3[ 0][2] = 0.0;
     pts3[ 1][0] = 1.0;  pts3[ 1][1] = 0.0;  pts3[ 1][2] = 0.0;
     pts3[ 2][0] = 0.0;  pts3[ 2][1] = 1.0;  pts3[ 2][2] = 0.0;
@@ -116,10 +117,10 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
       specialmesh->SetPoint( i, pts3[i] );
       }
     int specialCells[12] =
-    {  0,  1,  2,
-       0,  2,  3,
-       3,  1,  0,
-       1,  3,  2 };
+                {  0,  1,  2,
+                0,  2,  3,
+                3,  1,  0,
+                1,  3,  2 };
 
     CellType::CellAutoPointer cellpointer;
     typedef itk::QuadEdgeMeshPolygonCell< CellType > QEPolygonCellType;
@@ -151,9 +152,9 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  mesh->DeletePoint( deleteCenterVertex->GetOldPointID( ) );
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 24, 50, 27, 1, 0 ) )
+  mesh->DeletePoint( deleteCenterVertex->GetOldPointID() );
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 24, 50, 27, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
@@ -193,9 +194,9 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  mesh->DeletePoint( deleteCenterVertex->GetOldPointID( ) );
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 24, 50, 27, 1, 0 ) )
+  mesh->DeletePoint( deleteCenterVertex->GetOldPointID() );
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 24, 50, 27, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
@@ -212,8 +213,8 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 25, 56, 32, 1, 0 ) )
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 25, 56, 32, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
@@ -233,7 +234,7 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
   if( !AssertTopologicalInvariants< MeshType >
-          ( mesh, 25, 55, 30, 2, 0 ) )
+        ( mesh, 25, 55, 30, 2, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
@@ -249,14 +250,14 @@ int itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest(int argc, char* argv[] )
 
   CreateSquareTriangularMesh<MeshType>( mesh );
   if( !deleteCenterVertex->Evaluate(
-    createCenterVertex->Evaluate( mesh->FindEdge( 0, 1 ) ) ) )
+        createCenterVertex->Evaluate( mesh->FindEdge( 0, 1 ) ) ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  mesh->DeletePoint( deleteCenterVertex->GetOldPointID( ) );
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 25, 56, 32, 1, 0 ) )
+  mesh->DeletePoint( deleteCenterVertex->GetOldPointID() );
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 25, 56, 32, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;

@@ -31,7 +31,8 @@ DICOMImageIO2Factory::DICOMImageIO2Factory()
 }
 
 DICOMImageIO2Factory::~DICOMImageIO2Factory()
-{}
+{
+}
 
 const char *
 DICOMImageIO2Factory::GetITKSourceVersion(void) const
@@ -44,4 +45,5 @@ DICOMImageIO2Factory::GetDescription() const
 {
   return "DICOM ImageIO Factory, allows the loading of DICOM images into Insight";
 }
+
 } // end namespace itk

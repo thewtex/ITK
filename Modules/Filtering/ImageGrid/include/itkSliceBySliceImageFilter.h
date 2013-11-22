@@ -73,12 +73,12 @@ namespace itk
 template< typename TInputImage,
           typename TOutputImage,
           typename TInputFilter = ImageToImageFilter<
-            Image< typename TInputImage::PixelType,  TInputImage::ImageDimension - 1 >,
-            Image< typename TOutputImage::PixelType,  TOutputImage ::ImageDimension - 1 > >,
+              Image< typename TInputImage::PixelType,  TInputImage::ImageDimension - 1 >,
+              Image< typename TOutputImage::PixelType,  TOutputImage::ImageDimension - 1 > >,
           class TOutputFilter = typename TInputFilter::Superclass,
           class TInternalInputImage = typename TInputFilter::InputImageType,
           class TInternalOutputImage = typename TOutputFilter::OutputImageType >
-class SliceBySliceImageFilter:
+class SliceBySliceImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -133,20 +133,24 @@ public:
 
   void SetFilter(InputFilterType *filter);
 
-  InputFilterType * GetFilter()
+  InputFilterType *
+  GetFilter()
   {
     return this->m_InputFilter;
   }
 
-  const InputFilterType * GetFilter() const
+  const InputFilterType *
+  GetFilter() const
   {
     return this->m_InputFilter;
   }
 
   void SetInputFilter(InputFilterType *filter);
+
   itkGetModifiableObjectMacro(InputFilter, InputFilterType);
 
   void SetOutputFilter(OutputFilterType *filter);
+
   itkGetModifiableObjectMacro(OutputFilter, OutputFilterType);
 
   /** The index of the slice currently processed by the filter. This is intended to be
@@ -157,7 +161,8 @@ public:
 
 protected:
   SliceBySliceImageFilter();
-  ~SliceBySliceImageFilter() {}
+  ~SliceBySliceImageFilter() {
+  }
 
   void VerifyInputInformation();
 

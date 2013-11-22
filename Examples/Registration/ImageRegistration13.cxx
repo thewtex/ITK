@@ -23,7 +23,6 @@
 //
 // Software Guide : EndLatex
 
-
 #include "itkImageRegistrationMethod.h"
 
 #include "itkCenteredRigid2DTransform.h"
@@ -35,13 +34,11 @@
 
 #include "itkRegularStepGradientDescentOptimizer.h"
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
 #include "itkResampleImageFilter.h"
 #include "itkCastImageFilter.h"
-
 
 //  The following section of code implements a Command observer
 //  used to monitor the evolution of the registration process.
@@ -50,39 +47,44 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>   Pointer;
+  typedef  CommandIterationUpdate Self;
+  typedef  itk::Command           Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
-  typedef itk::RegularStepGradientDescentOptimizer  OptimizerType;
-  typedef   const OptimizerType *                   OptimizerPointer;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
+  typedef   const OptimizerType *                  OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << optimizer->GetCurrentPosition() << std::endl;
-    }
+  }
+
 };
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 3 )
     {
@@ -95,11 +97,11 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  const    unsigned int    Dimension = 2;
-  typedef  unsigned char   PixelType;
+  const    unsigned int Dimension = 2;
+  typedef  unsigned char PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   // Software Guide : BeginLatex
   // The CenteredRigid2DTransform applies a rigid transform in 2D space.
@@ -110,34 +112,31 @@ int main( int argc, char *argv[] )
   // Software Guide : EndCodeSnippet
 
   typedef itk::LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double             > InterpolatorType;
+      MovingImageType,
+      double             > InterpolatorType;
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType    > RegistrationType;
-
+      FixedImageType,
+      MovingImageType    > RegistrationType;
 
   // Software Guide : BeginCodeSnippet
   typedef itk::MattesMutualInformationImageToImageMetric<
-                                          FixedImageType,
-                                          MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginCodeSnippet
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
+  TransformType::Pointer transform     = TransformType::New();
+  OptimizerType::Pointer optimizer     = OptimizerType::New();
   // Software Guide : EndCodeSnippet
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetOptimizer(     optimizer     );
   registration->SetTransform(     transform     );
   registration->SetInterpolator(  interpolator  );
 
-
   MetricType::Pointer metric = MetricType::New();
   registration->SetMetric( metric  );
-
 
   metric->SetNumberOfHistogramBins( 20 );
   metric->SetNumberOfSpatialSamples( 10000 );
@@ -155,12 +154,12 @@ int main( int argc, char *argv[] )
     {
     // Define whether to cache the BSpline weights and indexes corresponding to
     // each one of the samples used to compute the metric. Enabling caching will
-    // make the algorithm run faster but it will have a cost on the amount of memory
+    // make the algorithm run faster but it will have a cost on the amount of
+    // memory
     // that needs to be allocated. This option is only relevant when using the
     // BSplineTransform.
     metric->SetUseCachingOfBSplineWeights( atoi( argv[5] ) );
     }
-
 
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
   typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
@@ -177,7 +176,7 @@ int main( int argc, char *argv[] )
   fixedImageReader->Update();
 
   registration->SetFixedImageRegion(
-       fixedImageReader->GetOutput()->GetBufferedRegion() );
+    fixedImageReader->GetOutput()->GetBufferedRegion() );
 
   // Software Guide : BeginLatex
   // The \doxygen{CenteredRigid2DTransform} is initialized by 5 parameters,
@@ -197,10 +196,10 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
   typedef itk::CenteredTransformInitializer<
-            TransformType, FixedImageType,
-            MovingImageType >  TransformInitializerType;
+      TransformType, FixedImageType,
+      MovingImageType >  TransformInitializerType;
   TransformInitializerType::Pointer initializer
-                                            = TransformInitializerType::New();
+    = TransformInitializerType::New();
   initializer->SetTransform(   transform );
 
   initializer->SetFixedImage(  fixedImageReader->GetOutput() );
@@ -210,7 +209,6 @@ int main( int argc, char *argv[] )
   // Software Guide : EndCodeSnippet
 
   transform->SetAngle( 0.0 );
-
 
   registration->SetInitialTransformParameters( transform->GetParameters() );
 
@@ -222,7 +220,7 @@ int main( int argc, char *argv[] )
   // a translation.
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef OptimizerType::ScalesType       OptimizerScalesType;
+  typedef OptimizerType::ScalesType OptimizerScalesType;
   OptimizerScalesType optimizerScales( transform->GetNumberOfParameters() );
 
   const double translationScale = 1.0 / 128.0;
@@ -245,7 +243,6 @@ int main( int argc, char *argv[] )
   //
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
-
 
   try
     {
@@ -290,10 +287,9 @@ int main( int argc, char *argv[] )
   std::cout << " Iterations    = " << numberOfIterations << std::endl;
   std::cout << " Metric value  = " << bestValue          << std::endl;
 
-
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   TransformType::Pointer finalTransform = TransformType::New();
 
@@ -313,12 +309,11 @@ int main( int argc, char *argv[] )
   resample->SetOutputDirection( fixedImage->GetDirection() );
   resample->SetDefaultPixelValue( 100 );
 
-
   typedef itk::Image< PixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-  WriterType::Pointer      writer =  WriterType::New();
+  WriterType::Pointer writer =  WriterType::New();
 
   writer->SetFileName( argv[3] );
 

@@ -81,7 +81,7 @@ template<
   unsigned int VDimension = 3,
   typename TMeshTraits = DefaultStaticMeshTraits< TPixelType, VDimension, VDimension >
   >
-class PointSet:public DataObject
+class PointSet : public DataObject
 {
 public:
   /** Standard class typedefs. */
@@ -165,8 +165,8 @@ public:
 
   /** Access routines to fill the Points container, and get information
    * from it. */
-  void SetPoint(PointIdentifier, PointType);
-  bool GetPoint(PointIdentifier, PointType *) const;
+  void      SetPoint(PointIdentifier, PointType);
+  bool      GetPoint(PointIdentifier, PointType *) const;
   PointType GetPoint(PointIdentifier) const;
 
   /** Access routines to fill the PointData container, and get information
@@ -206,7 +206,9 @@ public:
 protected:
   /** Constructor for use by New() method. */
   PointSet();
-  ~PointSet() {}
+  ~PointSet() {
+  }
+
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   // If the RegionType is ITK_UNSTRUCTURED_REGION, then the following
@@ -228,6 +230,7 @@ protected:
 private:
   PointSet(const Self &);       //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };                              // End Class: PointSet
 } // end namespace itk
 

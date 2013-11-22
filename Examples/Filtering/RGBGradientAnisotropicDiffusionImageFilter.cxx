@@ -30,10 +30,10 @@
 //  curvature anisotropic diffusion filter on an image with
 //  \doxygen{RGBPixel} type.
 //
-//  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!RGB Images}
+//  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!RGB
+// Images}
 //
 //  Software Guide : EndLatex
-
 
 //  Software Guide : BeginLatex
 //
@@ -47,7 +47,6 @@
 #include "itkVectorGradientAnisotropicDiffusionImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  Also the headers for \code{Image} and \code{RGBPixel} type are required.
@@ -58,7 +57,6 @@
 #include "itkRGBPixel.h"
 #include "itkImage.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -77,8 +75,8 @@
 #include "itkVectorCastImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -87,7 +85,6 @@ int main( int argc, char * argv[] )
     std::cerr << "numberOfIterations  timeStep  " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -100,24 +97,28 @@ int main( int argc, char * argv[] )
   typedef itk::Image< InputPixelType, 2 > InputImageType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The filter type is now instantiated and a filter object is created by the
   //  \code{New()} method.
   //
-  //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!instantiation}
+  //
+  //
+  //
+  // \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!instantiation}
   //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!New()}
-  //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Pointer}
+  //
+  //
+  //
+  // \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Pointer}
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VectorGradientAnisotropicDiffusionImageFilter<
-                       InputImageType, InputImageType >  FilterType;
+      InputImageType, InputImageType >  FilterType;
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -127,16 +128,14 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   const unsigned int numberOfIterations = atoi( argv[3] );
   const double       timeStep = atof( argv[4] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -146,11 +145,26 @@ int main( int argc, char * argv[] )
   //  \code{SetNumberOfIterations()} and \code{SetTimeStep()} respectively.
   //  The filter can be executed by invoking \code{Update()}.
   //
-  //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Update()}
-  //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetTimeStep()}
-  //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetNumberOfIterations()}
-  //  \index{SetTimeStep()!itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
-  //  \index{SetNumberOfIterations()!itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
+  //
+  //
+  //
+  // \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Update()}
+  //
+  //
+  //
+  // \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetTimeStep()}
+  //
+  //
+  //
+  // \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetNumberOfIterations()}
+  //
+  //
+  //
+  // \index{SetTimeStep()!itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
+  //
+  //
+  //
+  // \index{SetNumberOfIterations()!itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
   //
   //  Software Guide : EndLatex
 
@@ -173,13 +187,12 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel< unsigned char >   WritePixelType;
-  typedef itk::Image< WritePixelType, 2 >  WriteImageType;
+  typedef itk::RGBPixel< unsigned char >  WritePixelType;
+  typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::VectorCastImageFilter<
-                InputImageType, WriteImageType >  CasterType;
+      InputImageType, WriteImageType >  CasterType;
   CasterType::Pointer caster = CasterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -188,9 +201,8 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   caster->SetInput( filter->GetOutput() );
   writer->SetInput( caster->GetOutput() );
@@ -198,13 +210,15 @@ int main( int argc, char * argv[] )
   writer->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure} \center
   // \includegraphics[width=0.44\textwidth]{VisibleWomanHeadSlice}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{RGBGradientAnisotropicDiffusionImageFilterOutput}
-  // \itkcaption[VectorGradientAnisotropicDiffusionImageFilter on RGB] {Effect of
+  // \itkcaption[VectorGradientAnisotropicDiffusionImageFilter on RGB] {Effect
+  // of
   // the VectorGradientAnisotropicDiffusionImageFilter on a RGB image from a
   // cryogenic section of the Visible Woman data set.}
   // \label{fig:RGBVectorGradientAnisotropicDiffusionImageFilterInputOutput}

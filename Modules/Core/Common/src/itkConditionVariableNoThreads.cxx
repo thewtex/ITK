@@ -27,15 +27,19 @@ ConditionVariable::~ConditionVariable()
 {
 }
 
-void ConditionVariable::Signal()
+void
+ConditionVariable::Signal()
 {
 }
 
-void ConditionVariable::Broadcast()
+void
+ConditionVariable::Broadcast()
 {
 }
 
-void ConditionVariable::Wait(SimpleMutexLock *mutex)
+void
+ConditionVariable::Wait(SimpleMutexLock *mutex)
 {
 }
+
 } //end of namespace itk

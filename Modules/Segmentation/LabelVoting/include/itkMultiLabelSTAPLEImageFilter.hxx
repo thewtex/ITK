@@ -33,6 +33,7 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
 ::PrintSelf(std::ostream& os, Indent  indent) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "HasLabelForUndecidedPixels = "
      << this->m_HasLabelForUndecidedPixels << std::endl;
   os << indent << "LabelForUndecidedPixels = "
@@ -59,6 +60,7 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
 ::EnlargeOutputRequestedRegion( DataObject *data )
 {
   Superclass::EnlargeOutputRequestedRegion( data );
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -122,16 +124,16 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
 
   typename OutputImageType::Pointer votingOutput;
 
-  { // begin scope for local filter allocation
-  LabelVotingFilterPointer votingFilter = LabelVotingFilterType::New();
+    { // begin scope for local filter allocation
+    LabelVotingFilterPointer votingFilter = LabelVotingFilterType::New();
 
-  for ( unsigned int k = 0; k < numberOfInputs; ++k )
-    {
-    votingFilter->SetInput( k, this->GetInput( k ) );
-    }
-  votingFilter->Update();
-  votingOutput = votingFilter->GetOutput();
-  } // begin scope for local filter allocation; de-allocate filter
+    for ( unsigned int k = 0; k < numberOfInputs; ++k )
+      {
+      votingFilter->SetInput( k, this->GetInput( k ) );
+      }
+    votingFilter->Update();
+    votingOutput = votingFilter->GetOutput();
+    } // begin scope for local filter allocation; de-allocate filter
 
   OutputIteratorType out =
     OutputIteratorType( votingOutput, votingOutput->GetRequestedRegion() );
@@ -143,7 +145,7 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
     InputConstIteratorType in =
       InputConstIteratorType( this->GetInput( k ), votingOutput->GetRequestedRegion() );
 
-    for ( out.GoToBegin(); ! out.IsAtEnd(); ++out, ++in )
+    for ( out.GoToBegin(); !out.IsAtEnd(); ++out, ++in )
       {
       ++(this->m_ConfusionMatrixArray[k][in.Get()][out.Get()]);
       }
@@ -184,7 +186,9 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
     {
     if ( this->m_PriorProbabilities.GetSize() < this->m_TotalLabelCount )
       {
-      itkExceptionMacro ( "m_PriorProbabilities array has wrong size " << m_PriorProbabilities << "; should be at least " << 1+this->m_TotalLabelCount );
+      itkExceptionMacro (
+        "m_PriorProbabilities array has wrong size " << m_PriorProbabilities << "; should be at least " << 1+
+        this->m_TotalLabelCount );
       }
     }
   else
@@ -195,8 +199,9 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
     const unsigned int numberOfInputs = this->GetNumberOfInputs();
     for ( unsigned int k = 0; k < numberOfInputs; ++k )
       {
-      InputConstIteratorType in = InputConstIteratorType( this->GetInput( k ), this->GetOutput()->GetRequestedRegion() );
-      for ( in.GoToBegin(); ! in.IsAtEnd(); ++in )
+      InputConstIteratorType in =
+        InputConstIteratorType( this->GetInput( k ), this->GetOutput()->GetRequestedRegion() );
+      for ( in.GoToBegin(); !in.IsAtEnd(); ++in )
         {
         ++(this->m_PriorProbabilities[in.Get()]);
         }
@@ -217,9 +222,9 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
 {
   // determine the maximum label in all input images
   this->m_TotalLabelCount =
-    static_cast<size_t>(this->ComputeMaximumInputValue()) + 1;
+    static_cast<size_t>(this->ComputeMaximumInputValue() ) + 1;
 
-  if ( ! this->m_HasLabelForUndecidedPixels )
+  if ( !this->m_HasLabelForUndecidedPixels )
     {
     this->m_LabelForUndecidedPixels = this->m_TotalLabelCount;
     }
@@ -245,13 +250,14 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
   for ( unsigned int k = 0; k < numberOfInputs; ++k )
     {
     it[k] = InputConstIteratorType
-      ( this->GetInput( k ), output->GetRequestedRegion() );
+        ( this->GetInput( k ), output->GetRequestedRegion() );
     }
 
   // allocate array for pixel class weights
   WeightsType* W = new WeightsType[ this->m_TotalLabelCount ];
 
-  for ( unsigned int iteration = 0; (!this->m_HasMaximumNumberOfIterations) || (iteration < this->m_MaximumNumberOfIterations); ++iteration )
+  for ( unsigned int iteration = 0;
+        (!this->m_HasMaximumNumberOfIterations) || (iteration < this->m_MaximumNumberOfIterations); ++iteration )
     {
     // reset updated confusion matrix
     for ( unsigned int k = 0; k < numberOfInputs; ++k )
@@ -266,7 +272,7 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
       }
 
     // use it[0] as indicator for image pixel count
-    while ( ! it[0].IsAtEnd() )
+    while ( !it[0].IsAtEnd() )
       {
       // the following is the E step
       for ( OutputPixelType ci = 0; ci < this->m_TotalLabelCount; ++ci )
@@ -345,9 +351,9 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
           {
           const WeightsType thisParameterUpdate =
             vnl_math_abs( this->m_UpdatedConfusionMatrixArray[k][j][ci] -
-           this->m_ConfusionMatrixArray[k][j][ci] );
+                          this->m_ConfusionMatrixArray[k][j][ci] );
 
-            maximumUpdate = vnl_math_max( maximumUpdate, thisParameterUpdate );
+          maximumUpdate = vnl_math_max( maximumUpdate, thisParameterUpdate );
 
           this->m_ConfusionMatrixArray[k][j][ci] =
             this->m_UpdatedConfusionMatrixArray[k][j][ci];
@@ -402,7 +408,7 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
 
     // now determine the label with the maximum W
     OutputPixelType winningLabel = this->m_TotalLabelCount;
-    WeightsType winningLabelW = 0;
+    WeightsType     winningLabelW = 0;
     for ( OutputPixelType ci = 0; ci < this->m_TotalLabelCount; ++ci )
       {
       if ( W[ci] > winningLabelW )
@@ -410,7 +416,7 @@ MultiLabelSTAPLEImageFilter< TInputImage, TOutputImage, TWeights >
         winningLabelW = W[ci];
         winningLabel = ci;
         }
-      else if ( ! ( W[ci] < winningLabelW ) )
+      else if ( !( W[ci] < winningLabelW ) )
         {
         winningLabel = this->m_TotalLabelCount;
         }

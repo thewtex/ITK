@@ -22,11 +22,11 @@
 
 #include "itksys/ios/sstream"
 
-
-int itkThresholdImageFilterTest(int, char* [] )
+int
+itkThresholdImageFilterTest(int, char* [] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   // Uncomment the following if you want to see each message independently
   // itk::OutputWindow::GetInstance()->PromptUserOn();
@@ -52,7 +52,7 @@ int itkThresholdImageFilterTest(int, char* [] )
     {
     itk::ThresholdImageFilter<FloatImage2DType>::Pointer threshold;
     threshold = itk::ThresholdImageFilter<FloatImage2DType>::New();
-    threshold->SetInput(random->GetOutput());
+    threshold->SetInput(random->GetOutput() );
 
     // Exercise threshold setting functions
     threshold->ThresholdAbove( 10.0 );
@@ -66,11 +66,11 @@ int itkThresholdImageFilterTest(int, char* [] )
     threshold->Update();
 
     std::cout << "Input spacing: " << random->GetOutput()->GetSpacing()[0]
-      << ", "
-      << random->GetOutput()->GetSpacing()[1] << std::endl;
+              << ", "
+              << random->GetOutput()->GetSpacing()[1] << std::endl;
     std::cout << "Output spacing: " << threshold->GetOutput()->GetSpacing()[0]
-      << ", "
-      << threshold->GetOutput()->GetSpacing()[1] << std::endl;
+              << ", "
+              << threshold->GetOutput()->GetSpacing()[1] << std::endl;
 
     os = new itksys_ios::ostringstream();
     *os << "Filter: " << threshold.GetPointer();
@@ -80,7 +80,6 @@ int itkThresholdImageFilterTest(int, char* [] )
     *os << "Output #0: " << threshold->GetOutput(0);
     itk::OutputWindow::GetInstance()->DisplayText( os->str().c_str() );
     delete os;
-
 
     itk::OutputWindow::GetInstance()->DisplayText( "Ending Test #1: filter goes out of scope" );
     itk::OutputWindow::GetInstance()->DisplayText( "End of Test #1 -----------------------------------" );
@@ -93,7 +92,7 @@ int itkThresholdImageFilterTest(int, char* [] )
 
     itk::ThresholdImageFilter<FloatImage2DType>::Pointer threshold;
     threshold = itk::ThresholdImageFilter<FloatImage2DType>::New();
-    threshold->SetInput(random->GetOutput());
+    threshold->SetInput(random->GetOutput() );
     threshold->Update();
 
     os = new itksys_ios::ostringstream();
@@ -112,13 +111,14 @@ int itkThresholdImageFilterTest(int, char* [] )
   itk::OutputWindow::GetInstance()->DisplayText( "End of Test #2 -----------------------------------");
 
   // Test #3, user disconnects a data object from the pipeline
-  itk::OutputWindow::GetInstance()->DisplayText( "Test #3: user disconnects a data object from the pipeline  -----------------" );
+  itk::OutputWindow::GetInstance()->DisplayText(
+    "Test #3: user disconnects a data object from the pipeline  -----------------" );
     {
     FloatImage2DType::Pointer keep;
 
     itk::ThresholdImageFilter<FloatImage2DType>::Pointer threshold;
     threshold = itk::ThresholdImageFilter<FloatImage2DType>::New();
-    threshold->SetInput(random->GetOutput());
+    threshold->SetInput(random->GetOutput() );
     threshold->Update();
 
     os = new itksys_ios::ostringstream;
@@ -141,13 +141,13 @@ int itkThresholdImageFilterTest(int, char* [] )
   itk::OutputWindow::GetInstance()->DisplayText( "Test #4: threshold values  -----------------" );
     {
     typedef itk::Image<int,1> IntImage1DType;
-    IntImage1DType::Pointer input = IntImage1DType::New();
+    IntImage1DType::Pointer          input = IntImage1DType::New();
     IntImage1DType::SpacingValueType inputSpacing[1] = {0.7};
     input->SetSpacing( inputSpacing );
     IntImage1DType::PointValueType inputOrigin[1] = {15};
     input->SetOrigin(inputOrigin);
     IntImage1DType::SizeValueType inputSize = 1;
-    IntImage1DType::RegionType inputRegion;
+    IntImage1DType::RegionType    inputRegion;
     inputRegion.SetSize(0, inputSize);
     input->SetRegions(inputRegion);
     input->Allocate();

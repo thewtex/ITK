@@ -18,7 +18,6 @@
 #ifndef __itkJPEG2000ImageIO_h
 #define __itkJPEG2000ImageIO_h
 
-
 #include <fstream>
 #include "itkStreamingImageIOBase.h"
 #include "itkAutoPointer.h"
@@ -46,7 +45,7 @@ class JPEG2000ImageIOInternal;
  *  \ingroup IOFilters
  * \ingroup ITKReview
  */
-class JPEG2000ImageIO:public StreamingImageIOBase
+class JPEG2000ImageIO : public StreamingImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -115,13 +114,14 @@ private:
   JPEG2000ImageIO(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
 
-  AutoPointer< JPEG2000ImageIOInternal >  m_Internal;
+  AutoPointer< JPEG2000ImageIOInternal > m_Internal;
 
   typedef ImageIORegion::SizeValueType  SizeValueType;
   typedef ImageIORegion::IndexValueType IndexValueType;
 
   void ComputeRegionInTileBoundaries(unsigned int dimension,
                                      SizeValueType tileSize, ImageIORegion & streamableRegion) const;
+
 };
 } // end namespace itk
 

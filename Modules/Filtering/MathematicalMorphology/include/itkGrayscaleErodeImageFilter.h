@@ -50,7 +50,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class GrayscaleErodeImageFilter:
+class GrayscaleErodeImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -90,9 +90,9 @@ public:
     };
 
   typedef MovingHistogramErodeImageFilter< TInputImage, TOutputImage, TKernel >
-  HistogramFilterType;
+    HistogramFilterType;
   typedef BasicErodeImageFilter< TInputImage, TOutputImage, TKernel >
-  BasicFilterType;
+    BasicFilterType;
 
   typedef FlatStructuringElement< itkGetStaticConstMacro(ImageDimension) > FlatKernelType;
 
@@ -131,7 +131,9 @@ public:
 
 protected:
   GrayscaleErodeImageFilter();
-  ~GrayscaleErodeImageFilter() {}
+  ~GrayscaleErodeImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();

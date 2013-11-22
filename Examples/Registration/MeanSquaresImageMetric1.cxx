@@ -30,11 +30,9 @@
 //
 // Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 // Software Guide : BeginLatex
 //
@@ -49,8 +47,8 @@
 #include "itkNearestNeighborInterpolateImageFunction.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -67,14 +65,13 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  const     unsigned int   Dimension = 2;
-  typedef   unsigned char  PixelType;
+  const     unsigned int Dimension = 2;
+  typedef   unsigned char PixelType;
 
-  typedef itk::Image< PixelType, Dimension >   ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer fixedReader  = ReaderType::New();
   ReaderType::Pointer movingReader = ReaderType::New();
@@ -103,11 +100,10 @@ int main( int argc, char * argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::MeanSquaresImageToImageMetric<
-                            ImageType, ImageType >  MetricType;
+      ImageType, ImageType >  MetricType;
 
   MetricType::Pointer metric = MetricType::New();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -117,23 +113,20 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::TranslationTransform< double, Dimension >  TransformType;
+  typedef itk::TranslationTransform< double, Dimension > TransformType;
 
   TransformType::Pointer transform = TransformType::New();
 
-
   typedef itk::NearestNeighborInterpolateImageFunction<
-                                 ImageType, double >  InterpolatorType;
+      ImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 // Software Guide : EndCodeSnippet
-
 
   transform->SetIdentity();
 
   ImageType::ConstPointer fixedImage  = fixedReader->GetOutput();
   ImageType::ConstPointer movingImage = movingReader->GetOutput();
-
 
 // Software Guide : BeginLatex
 //
@@ -163,7 +156,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
 // Software Guide : BeginLatex
 //
 // Finally we select a region of the parametric space to explore. In this case
@@ -190,7 +182,6 @@ int main( int argc, char * argv[] )
       }
     }
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -230,7 +221,6 @@ int main( int argc, char * argv[] )
 //
 //
 // Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

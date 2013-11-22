@@ -29,9 +29,9 @@
  *
  */
 
-
 template<typename DataType>
-bool DoRegistration ()
+bool
+DoRegistration()
 {
 
   bool pass = true;
@@ -39,51 +39,50 @@ bool DoRegistration ()
   const unsigned int dimension = 2;
 
   // Fixed Image Type
-  typedef itk::Image<DataType,dimension>               FixedImageType;
+  typedef itk::Image<DataType,dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<DataType,dimension>               MovingImageType;
+  typedef itk::Image<DataType,dimension> MovingImageType;
 
   // Size Type
-  typedef typename MovingImageType::SizeType                 SizeType;
+  typedef typename MovingImageType::SizeType SizeType;
 
   // Transform Type
   typedef itk::AffineTransform< double, dimension > TransformType;
   typedef typename TransformType::ParametersType    ParametersType;
 
-  typedef typename FixedImageType::PixelType     FixedImagePixelType;
-  typedef typename MovingImageType::PixelType    MovingImagePixelType;
+  typedef typename FixedImageType::PixelType  FixedImagePixelType;
+  typedef typename MovingImageType::PixelType MovingImagePixelType;
 
   // ImageSource
   typedef itk::testhelper::ImageRegistrationMethodImageSource<
-                                  FixedImagePixelType,
-                                  MovingImagePixelType,
-                                  dimension >       ImageSourceType;
+      FixedImagePixelType,
+      MovingImagePixelType,
+      dimension >       ImageSourceType;
   // Transform Type
   typedef itk::AffineTransform< double, dimension > TransformType;
   typedef typename TransformType::ParametersType    ParametersType;
 
   // Optimizer Type
-  typedef itk::GradientDescentOptimizer             OptimizerType;
+  typedef itk::GradientDescentOptimizer OptimizerType;
 
   // Metric Type
   typedef itk::MeanSquaresImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
   // Interpolation technique
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double >             InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double >             InterpolatorType;
 
   // Registration Method
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
   typedef itk::CommandIterationUpdate<
-                                  OptimizerType >    CommandIterationType;
-
+      OptimizerType >    CommandIterationType;
 
   typename MetricType::Pointer         metric        = MetricType::New();
   typename TransformType::Pointer      transform     = TransformType::New();
@@ -112,9 +111,9 @@ bool DoRegistration ()
   registration->SetMovingImage(   movingImage   );
   registration->SetInterpolator(  interpolator  );
 
-
   // Select the Region of Interest over which the Metric will be computed
-  // Registration time will be proportional to the number of pixels in this region.
+  // Registration time will be proportional to the number of pixels in this
+  // region.
   metric->SetFixedImageRegion( fixedImage->GetBufferedRegion() );
 
   // Instantiate an Observer to report the progress of the Optimization
@@ -125,10 +124,9 @@ bool DoRegistration ()
   OptimizerType::ScalesType scales( transform->GetNumberOfParameters() );
   scales.Fill( 1.0 );
 
-
-  unsigned long   numberOfIterations =  100;
-  double          translationScale   = 1e-6;
-  double          learningRate       = 1e-8;
+  unsigned long numberOfIterations =  100;
+  double        translationScale   = 1e-6;
+  double        learningRate       = 1e-8;
 
   for( unsigned int i=0; i<dimension; i++)
     {
@@ -165,7 +163,7 @@ bool DoRegistration ()
   // We know that for the Affine transform the Translation parameters are at
   // the end of the list of parameters.
   const unsigned int offsetOrder = finalParameters.Size()-actualParameters.Size();
-  const double tolerance = 1.0;  // equivalent to 1 pixel.
+  const double       tolerance = 1.0; // equivalent to 1 pixel.
 
   for(unsigned int i=0; i<numbeOfParameters; i++)
     {
@@ -182,11 +180,14 @@ bool DoRegistration ()
   return pass;
 
 }
-int itkImageRegistrationMethodTest_16(int itkNotUsed(argc), char*[] itkNotUsed(argv) )
+
+int
+itkImageRegistrationMethodTest_16(int itkNotUsed(argc), char*[] itkNotUsed(argv) )
 {
   bool result_uc, result_c, result_us, result_s,
     result_ui, result_i, result_ul, result_l,
     result_f, result_d;
+
   result_uc = DoRegistration<unsigned char>();
   result_c  = DoRegistration<char>();
   result_us = DoRegistration<unsigned short>();

@@ -36,12 +36,13 @@ typedef itk::CellInterface< int, CellTraits > CellInterfaceType;
  * Typedef the generic cell type for the mesh.  It is an abstract class,
  * so we can only use information from it, like get its pointer type.
  */
-typedef MeshType::CellType              CellType;
-typedef CellType::CellAutoPointer       CellAutoPointer;
+typedef MeshType::CellType        CellType;
+typedef CellType::CellAutoPointer CellAutoPointer;
 
 // Test the cell interface
 
-template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
+template<typename TCell> int
+TestCellInterface(std::string name, TCell *aCell)
 {
   CellAutoPointer cell(aCell,true);
 
@@ -50,6 +51,7 @@ template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
   std::cout << "    Dimension: " << cell->GetDimension() << std::endl;
   std::cout << "    NumberOfPoints: " << cell->GetNumberOfPoints() << std::endl;
   std::cout << "    NumberOfBoundaryFeatures:" << std::endl;
+
   for (unsigned int i = 0; i < cell->GetDimension(); i++)
     {
     std::cout << "      " << i << ": " << cell->GetNumberOfBoundaryFeatures(i) << std::endl;
@@ -83,7 +85,7 @@ template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
   // Add point ids
   std::cout << "    SetPointIds" << std::endl;
 
-  typedef typename TCell::PointIdentifier   PointIdentifier;
+  typedef typename TCell::PointIdentifier PointIdentifier;
 
   PointIdentifier *pointIds = new PointIdentifier[cell->GetNumberOfPoints() * 2];
 
@@ -133,11 +135,12 @@ template<typename TCell> int TestCellInterface(std::string name, TCell *aCell)
     }
   std::cout << std::endl;
 
-
   delete[] pointIds;
   return EXIT_SUCCESS;
 }
-int itkCellInterfaceTest(int, char* [] )
+
+int
+itkCellInterfaceTest(int, char* [] )
 {
   int status;
 
@@ -198,14 +201,14 @@ int itkCellInterfaceTest(int, char* [] )
     }
 
   typedef itk::PolygonCell<CellInterfaceType> PolygonCellType;
-  status = TestCellInterface("PolygonCell with 0 vertices", new PolygonCellType());
+  status = TestCellInterface("PolygonCell with 0 vertices", new PolygonCellType() );
   if (status != 0)
     {
     return EXIT_FAILURE;
     }
 
   typedef itk::PolygonCell<CellInterfaceType> PolygonCellType;
-  status = TestCellInterface("PolygonCell with 5 vertices", new PolygonCellType(5));
+  status = TestCellInterface("PolygonCell with 5 vertices", new PolygonCellType(5) );
   if (status != 0)
     {
     return EXIT_FAILURE;

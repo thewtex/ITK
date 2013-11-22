@@ -24,7 +24,8 @@
 #include "itkMorphologicalWatershedImageFilter.h"
 #include "itkLabelOverlayImageFilter.h"
 
-int itkMorphologicalWatershedImageFilterTest(int argc, char * argv[])
+int
+itkMorphologicalWatershedImageFilterTest(int argc, char * argv[])
 {
   if( argc < 6 )
     {
@@ -45,37 +46,36 @@ int itkMorphologicalWatershedImageFilterTest(int argc, char * argv[])
   reader->SetFileName( argv[1] );
 
   typedef itk::MorphologicalWatershedImageFilter<
-    ImageType, ImageType > FilterType;
+      ImageType, ImageType > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
 
   // test default values
-  if ( filter->GetMarkWatershedLine( ) != true )
+  if ( filter->GetMarkWatershedLine() != true )
     {
     std::cerr << "Wrong default MarkWatershedLine." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( filter->GetFullyConnected( ) != false )
+  if ( filter->GetFullyConnected() != false )
     {
     std::cerr << "Wrong default FullyConnected." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( filter->GetLevel( ) != 0 )
+  if ( filter->GetLevel() != 0 )
     {
     std::cerr << "Wrong default Level." << std::endl;
     return EXIT_FAILURE;
     }
 
-
   filter->SetMarkWatershedLine( atoi( argv[3] ) );
-  if ( filter->GetMarkWatershedLine( ) != (bool)atoi(argv[3]) )
+  if ( filter->GetMarkWatershedLine() != (bool)atoi(argv[3]) )
     {
     std::cerr << "Set/Get MarkWatershedLine problem." << std::endl;
     return EXIT_FAILURE;
     }
   filter->SetFullyConnected( atoi( argv[4] ) );
-  if ( filter->GetFullyConnected( ) != (bool)atoi(argv[4]) )
+  if ( filter->GetFullyConnected() != (bool)atoi(argv[4]) )
     {
     std::cerr << "Set/Get FullyConnected problem." << std::endl;
     return EXIT_FAILURE;
@@ -83,7 +83,7 @@ int itkMorphologicalWatershedImageFilterTest(int argc, char * argv[])
 
   filter->SetLevel( atoi( argv[5] ) );
 
-  if ( filter->GetLevel( ) != atoi(argv[5]) )
+  if ( filter->GetLevel() != atoi(argv[5]) )
     {
     std::cerr << "Set/Get Level problem." << std::endl;
     return EXIT_FAILURE;
@@ -108,7 +108,7 @@ int itkMorphologicalWatershedImageFilterTest(int argc, char * argv[])
   max->Compute();
 
   typedef itk::IntensityWindowingImageFilter<
-    ImageType, ImageType > RescaleType;
+      ImageType, ImageType > RescaleType;
 
   RescaleType::Pointer rescale = RescaleType::New();
   rescale->SetInput( filter->GetOutput() );
@@ -134,11 +134,11 @@ int itkMorphologicalWatershedImageFilterTest(int argc, char * argv[])
 
   if( argc > 6 )
     {
-    typedef itk::RGBPixel< unsigned char >     RGBPixelType;
-    typedef itk::Image< RGBPixelType, dim >    RGBImageType;
+    typedef itk::RGBPixel< unsigned char >  RGBPixelType;
+    typedef itk::Image< RGBPixelType, dim > RGBImageType;
 
     typedef itk::LabelOverlayImageFilter<
-      ImageType, ImageType, RGBImageType> OverlayType;
+        ImageType, ImageType, RGBImageType> OverlayType;
 
     OverlayType::Pointer overlay = OverlayType::New();
     overlay->SetInput( reader->GetOutput() );

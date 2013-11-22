@@ -72,7 +72,7 @@ namespace itk
  */
 
 template< typename TComponent, unsigned int NDimension = 3 >
-class SymmetricSecondRankTensor:public
+class SymmetricSecondRankTensor : public
   FixedArray< TComponent, NDimension *( NDimension + 1 ) / 2 >
 {
 public:
@@ -105,25 +105,33 @@ public:
                                   EigenValuesArrayType, EigenVectorsMatrixType >  SymmetricEigenAnalysisType;
 
   /** Default constructor has nothing to do. */
-  SymmetricSecondRankTensor() { this->Fill(0); }
+  SymmetricSecondRankTensor() {
+    this->Fill(0);
+  }
 
-  SymmetricSecondRankTensor (const ComponentType & r) { this->Fill(r); }
+  SymmetricSecondRankTensor (const ComponentType & r) {
+    this->Fill(r);
+  }
 
   /** Constructor to enable casting...  */
   template< typename TCoordRepB >
-  SymmetricSecondRankTensor(const SymmetricSecondRankTensor< TCoordRepB, NDimension > & pa):
-    BaseArray(pa) {}
+  SymmetricSecondRankTensor(const SymmetricSecondRankTensor< TCoordRepB, NDimension > & pa) :
+    BaseArray(pa) {
+  }
 
   typedef ComponentType ComponentArrayType[itkGetStaticConstMacro(InternalDimension)];
 
   /** Pass-through constructor for the Array base class. */
-  SymmetricSecondRankTensor(const ComponentArrayType r):BaseArray(r) {}
+  SymmetricSecondRankTensor(const ComponentArrayType r) : BaseArray(r) {
+  }
 
   /** Templated Pass-through assignment  for the Array base class. */
   template< typename TCoordRepB >
-  Self & operator=(const SymmetricSecondRankTensor< TCoordRepB, NDimension > & pa)
+  Self &
+  operator=(const SymmetricSecondRankTensor< TCoordRepB, NDimension > & pa)
   {
     BaseArray::operator=(pa);
+
     return *this;
   }
 
@@ -152,16 +160,23 @@ public:
   const Self & operator/=(const RealValueType & scalar);
 
   /** Return the number of components. */
-  static unsigned int GetNumberOfComponents()
+  static unsigned int
+  GetNumberOfComponents()
   {
     return itkGetStaticConstMacro(InternalDimension);
   }
 
   /** Return the value for the Nth component. */
-  ComponentType GetNthComponent(int c) const { return this->operator[](c); }
+  ComponentType
+  GetNthComponent(int c) const {
+    return this->operator[](c);
+  }
 
   /** Set the Nth component to v. */
-  void SetNthComponent(int c, const ComponentType & v) {  this->operator[](c) = v; }
+  void
+  SetNthComponent(int c, const ComponentType & v) {
+    this->operator[](c) = v;
+  }
 
   /** Matrix notation, in const and non-const forms. */
   ValueType & operator()(unsigned int row, unsigned int col);
@@ -188,13 +203,17 @@ public:
    */
   template<typename TMatrixValueType>
   Self Rotate( const Matrix<TMatrixValueType, NDimension, NDimension> & m) const;
+
   template<typename TMatrixValueType>
-  Self Rotate( const vnl_matrix_fixed<TMatrixValueType, NDimension, NDimension> & m) const
+  Self
+  Rotate( const vnl_matrix_fixed<TMatrixValueType, NDimension, NDimension> & m) const
   {
     return this->Rotate( static_cast<Matrix<TMatrixValueType, NDimension, NDimension> >(m) );
   }
+
   template<typename TMatrixValueType>
-  Self Rotate( const vnl_matrix<TMatrixValueType> & m) const
+  Self
+  Rotate( const vnl_matrix<TMatrixValueType> & m) const
   {
     return this->Rotate( static_cast<Matrix<TMatrixValueType> >(m) );
   }
@@ -215,11 +234,12 @@ typedef std::istream InputStreamType;
 
 template< typename TComponent, unsigned int NDimension  >
 OutputStreamType & operator<<(OutputStreamType & os,
-                                         const SymmetricSecondRankTensor< TComponent, NDimension > & c);
+                              const SymmetricSecondRankTensor< TComponent, NDimension > & c);
 
 template< typename TComponent, unsigned int NDimension  >
 InputStreamType & operator>>(InputStreamType & is,
-                                        SymmetricSecondRankTensor< TComponent, NDimension > & c);
+                             SymmetricSecondRankTensor< TComponent, NDimension > & c);
+
 } // end namespace itk
 
 #include "itkNumericTraitsTensorPixel.h"

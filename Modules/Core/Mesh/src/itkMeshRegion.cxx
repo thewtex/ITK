@@ -34,5 +34,7 @@ MeshRegion
  */
 MeshRegion
 ::~MeshRegion()
-{}
+{
+}
+
 } // end namespace itk

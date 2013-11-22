@@ -127,6 +127,7 @@ VectorNeighborhoodOperatorImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

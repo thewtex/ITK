@@ -21,26 +21,26 @@ This file test the various inclusion strategies available
 to itkFloodFilledSpatialFunctionConditionalIterator.
 */
 
-
 #include "itkImageRegionIterator.h"
 #include "itkSphereSpatialFunction.h"
 #include "itkFloodFilledSpatialFunctionConditionalIterator.h"
 
-int itkFloodFilledSpatialFunctionTest(int, char* [])
+int
+itkFloodFilledSpatialFunctionTest(int, char* [])
 {
   const unsigned int dim = 2;
 
   // Image typedef
   typedef itk::Image< bool, dim > ImageType;
 
-  typedef ImageType::SizeValueType      SizeValueType;
-  typedef ImageType::SpacingValueType   SpacingValueType;
-  typedef ImageType::PointValueType     PointValueType;
+  typedef ImageType::SizeValueType    SizeValueType;
+  typedef ImageType::SpacingValueType SpacingValueType;
+  typedef ImageType::PointValueType   PointValueType;
 
   // Image size and spacing parameters
-  SizeValueType     sourceImageSize[]  = { 5, 5};
-  SpacingValueType  sourceImageSpacing[] = { 1.0,1.0 };
-  PointValueType    sourceImageOrigin[] = { 0,0 };
+  SizeValueType    sourceImageSize[]  = { 5, 5};
+  SpacingValueType sourceImageSpacing[] = { 1.0,1.0 };
+  PointValueType   sourceImageOrigin[] = { 0,0 };
 
   // Creates the sourceImage (but doesn't set the size or allocate memory)
   ImageType::Pointer sourceImage = ImageType::New();
@@ -59,7 +59,8 @@ int itkFloodFilledSpatialFunctionTest(int, char* [])
   // Resize the region
   largestPossibleRegion.SetSize( sourceImageSizeObject );
 
-  // Set the largest legal region size (i.e. the size of the whole sourceImage) to what we just defined
+  // Set the largest legal region size (i.e. the size of the whole sourceImage)
+  // to what we just defined
   sourceImage->SetLargestPossibleRegion( largestPossibleRegion );
 
   // Set the buffered region
@@ -96,7 +97,7 @@ int itkFloodFilledSpatialFunctionTest(int, char* [])
     spatialFunc->SetCenter(center);
 
     // Create and initialize a spatial function iterator
-    ImageType::IndexType seedPos;
+    ImageType::IndexType            seedPos;
     const ImageType::IndexValueType pos[] = {2,2};
     seedPos.SetIndex(pos);
 
@@ -105,27 +106,27 @@ int itkFloodFilledSpatialFunctionTest(int, char* [])
 
     ItType sfi = ItType(sourceImage, spatialFunc, seedPos);
 
-    switch(strat){
-    case 0:
-      {
+    switch(strat) {
+      case 0:
+        {
         sfi.SetOriginInclusionStrategy();
-      }
-    break;
-    case 1:
-      {
+        }
+        break;
+      case 1:
+        {
         sfi.SetCenterInclusionStrategy();
-      }
-    break;
-    case 2:
-      {
+        }
+        break;
+      case 2:
+        {
         sfi.SetCompleteInclusionStrategy();
-      }
-    break;
-    case 3:
-      {
+        }
+        break;
+      case 3:
+        {
         sfi.SetIntersectInclusionStrategy();
-      }
-    } // end switch inclusion strategy
+        }
+      } // end switch inclusion strategy
 
     // Iterate through the entire image and set interior pixels to 1
     for( sfi.GoToBegin(); !( sfi.IsAtEnd() ); ++sfi)

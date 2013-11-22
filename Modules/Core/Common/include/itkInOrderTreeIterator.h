@@ -23,7 +23,7 @@
 namespace itk
 {
 template< typename TTreeType >
-class InOrderTreeIterator:public TreeIteratorBase< TTreeType >
+class InOrderTreeIterator : public TreeIteratorBase< TTreeType >
 {
 public:
 
@@ -57,19 +57,22 @@ private:
 
   /** Find the next node */
   const TreeNodeType * FindNextNode() const;
+
 };
 
 /** Constructor */
 template< typename TTreeType >
-InOrderTreeIterator< TTreeType >::InOrderTreeIterator(TTreeType & start):
+InOrderTreeIterator< TTreeType >::InOrderTreeIterator(TTreeType & start) :
   TreeIteratorBase< TTreeType >(start)
-{}
+{
+}
 
 /** Constructor */
 template< typename TTreeType >
-InOrderTreeIterator< TTreeType >::InOrderTreeIterator(TTreeType *tree, TreeNodeType *start):
+InOrderTreeIterator< TTreeType >::InOrderTreeIterator(TTreeType *tree, TreeNodeType *start) :
   TreeIteratorBase< TTreeType >(tree, start)
-{}
+{
+}
 
 /** Get the type of the iterator */
 template< typename TTreeType >
@@ -81,7 +84,8 @@ InOrderTreeIterator< TTreeType >::GetType() const
 
 /** Return true if the next node exists */
 template< typename TTreeType >
-bool InOrderTreeIterator< TTreeType >::HasNext() const
+bool
+InOrderTreeIterator< TTreeType >::HasNext() const
 {
   if ( const_cast< TreeNodeType * >( FindNextNode() ) != NULL )
     {
@@ -94,16 +98,16 @@ bool InOrderTreeIterator< TTreeType >::HasNext() const
 template< typename TTreeType >
 const typename InOrderTreeIterator< TTreeType >::ValueType &
 InOrderTreeIterator< TTreeType >::Next()
-{
+  {
   this->m_Position =  const_cast< TreeNodeType * >( FindNextNode() );
   return this->m_Position->Get();
-}
+  }
 
 /** Find the next node */
 template< typename TTreeType >
 const typename InOrderTreeIterator< TTreeType >::TreeNodeType *
 InOrderTreeIterator< TTreeType >::FindNextNode() const
-{
+  {
   if ( this->m_Position == NULL )
     {
     return NULL;
@@ -158,17 +162,19 @@ InOrderTreeIterator< TTreeType >::FindNextNode() const
       }
     }
   return NULL;
-}
+  }
 
 /** Clone function */
 template< typename TTreeType >
-TreeIteratorBase< TTreeType > *InOrderTreeIterator< TTreeType >::Clone()
+TreeIteratorBase< TTreeType > *
+InOrderTreeIterator< TTreeType >::Clone()
 {
   InOrderTreeIterator *clone = new InOrderTreeIterator( const_cast< TTreeType * >( this->m_Tree ) );
 
   *clone = *this;
   return clone;
 }
+
 } // end namespace itk
 
 #endif

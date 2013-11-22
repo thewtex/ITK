@@ -24,9 +24,11 @@
 // If NormalizeAcrossScale works correctly, the filter should yield the
 // same Hxx across different scales.
 
-int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
+int
+itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
 {
   const unsigned int Dimension = 3;
+
   typedef double                          PixelType;
   typedef itk::Image<PixelType,Dimension> ImageType;
   typedef itk::Index<Dimension>           IndexType;
@@ -66,7 +68,7 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
   typedef itk::ImageRegionIteratorWithIndex<ImageType> IteratorType;
 
   const unsigned int numberOfScales = 4;
-  double scales[numberOfScales];
+  double             scales[numberOfScales];
   scales[0] = 1.0;
   scales[1] = 2.0;
   scales[2] = 3.0;
@@ -76,18 +78,20 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
   // gaussian should produce the same results
   for (unsigned int i=0; i<numberOfScales; i++)
     {
-    IteratorType it(inputImage, inputImage->GetRequestedRegion());
+    IteratorType it(inputImage, inputImage->GetRequestedRegion() );
 
     PointType point;
-    double objectSize = scales[i];
+    double    objectSize = scales[i];
 
-    // Fill the image with a 1D Gaussian along X with sigma equal to the current scale
-    // The Gaussian is not normalized, since it should have the same peak value across
+    // Fill the image with a 1D Gaussian along X with sigma equal to the current
+    // scale
+    // The Gaussian is not normalized, since it should have the same peak value
+    // across
     // scales, only sigma should change
-    while(!it.IsAtEnd())
+    while(!it.IsAtEnd() )
       {
       inputImage->TransformIndexToPhysicalPoint(it.GetIndex(),point);
-      double value = vcl_exp(-point[0]*point[0] / (2.0*objectSize*objectSize));
+      double value = vcl_exp(-point[0]*point[0] / (2.0*objectSize*objectSize) );
       it.Set(value);
       ++it;
       }
@@ -105,7 +109,8 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
 
     HessianImageType::Pointer outputImage = filter->GetOutput();
 
-    // Get the value at the center of the image, the location of the peak of the Gaussian
+    // Get the value at the center of the image, the location of the peak of the
+    // Gaussian
     PointType center;
     center.Fill(0.0);
 
@@ -125,15 +130,14 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
       }
     }
 
-
   // maintaining the size of the object and gaussian, in physical
   // size, should maintain the value, while the size of the image changes.
- for (unsigned int i=0; i<numberOfScales; i++)
+  for (unsigned int i=0; i<numberOfScales; i++)
     {
-    IteratorType it(inputImage, inputImage->GetRequestedRegion());
+    IteratorType it(inputImage, inputImage->GetRequestedRegion() );
 
     PointType point;
-    double objectSize = 5.0;
+    double    objectSize = 5.0;
 
     spacing.Fill(scales[i]/5.0);
 
@@ -141,12 +145,13 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
 
     // Fill the image with a 1D Gaussian along X with sigma equal to
     // the object size.
-    // The Gaussian is not normalized, since it should have the same peak value across
+    // The Gaussian is not normalized, since it should have the same peak value
+    // across
     // scales, only sigma should change
-    while(!it.IsAtEnd())
+    while(!it.IsAtEnd() )
       {
       inputImage->TransformIndexToPhysicalPoint(it.GetIndex(),point);
-      double value = vcl_exp(-point[0]*point[0] / (2.0*objectSize*objectSize));
+      double value = vcl_exp(-point[0]*point[0] / (2.0*objectSize*objectSize) );
       it.Set(value);
       ++it;
       }
@@ -164,7 +169,8 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
 
     HessianImageType::Pointer outputImage = filter->GetOutput();
 
-    // Get the value at the center of the image, the location of the peak of the Gaussian
+    // Get the value at the center of the image, the location of the peak of the
+    // Gaussian
     PointType center;
     center.Fill(0.0);
 
@@ -183,7 +189,6 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
       return EXIT_FAILURE;
       }
     }
-
 
   return EXIT_SUCCESS;
 }

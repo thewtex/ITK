@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT Directory:public Object
+class ITKCommon_EXPORT Directory : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -46,8 +46,11 @@ public:
   typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
-  static Pointer New()
-  { Pointer n = new Self; n->UnRegister(); return n; }
+  static Pointer
+  New()
+  {
+    Pointer n = new Self; n->UnRegister(); return n;
+  }
 
   /** Return the class name as a string. */
   itkTypeMacro(Directory, Object);

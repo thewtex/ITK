@@ -123,6 +123,7 @@ RescaleIntensityImageFilter< TInputImage, TOutputImage >
   this->GetFunctor().SetFactor(m_Scale);
   this->GetFunctor().SetOffset(m_Shift);
 }
+
 } // end namespace itk
 
 #endif

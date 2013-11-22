@@ -50,19 +50,20 @@ namespace itk
  * \sa ConvolutionImageFilter
  *
  */
-template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage, typename TInternalPrecision=double >
+template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage,
+          typename TInternalPrecision=double >
 class FFTConvolutionImageFilter :
   public ConvolutionImageFilterBase< TInputImage, TKernelImage, TOutputImage >
 
 {
 public:
-  typedef FFTConvolutionImageFilter                       Self;
+  typedef FFTConvolutionImageFilter Self;
   typedef ConvolutionImageFilterBase< TInputImage,
                                       TKernelImage,
                                       TOutputImage >
-                                                          Superclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -104,7 +105,8 @@ public:
 
 protected:
   FFTConvolutionImageFilter();
-  ~FFTConvolutionImageFilter() {}
+  ~FFTConvolutionImageFilter() {
+  }
 
   /** Because the inputs are real, we can use the specialized filters
    * for real-to-complex Fourier transforms. */
@@ -186,7 +188,8 @@ protected:
 
 private:
   FFTConvolutionImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);         //purposely not implemented
+  void operator=(const Self &);            //purposely not implemented
+
 };
 }
 

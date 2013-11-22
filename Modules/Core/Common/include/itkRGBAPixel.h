@@ -56,7 +56,7 @@ namespace itk
  */
 
 template< typename TComponent = unsigned short >
-class RGBAPixel:public FixedArray< TComponent, 4 >
+class RGBAPixel : public FixedArray< TComponent, 4 >
 {
 public:
   /** Standard class typedefs. */
@@ -77,13 +77,21 @@ public:
   typedef typename NumericTraits< ComponentType >::RealType LuminanceType;
 
   /** Default constructor has nothing to do. */
-  RGBAPixel() { this->Fill(0); }
-  RGBAPixel (const ComponentType & r) { this->Fill(r); }
+  RGBAPixel() {
+    this->Fill(0);
+  }
+
+  RGBAPixel (const ComponentType & r) {
+    this->Fill(r);
+  }
 
   /** Pass-through constructor for the Array base class. */
   template< typename TRGBAPixelValueType >
-  RGBAPixel(const RGBAPixel< TRGBAPixelValueType > & r):BaseArray(r) {}
-  RGBAPixel(const ComponentType r[4]):BaseArray(r) {}
+  RGBAPixel(const RGBAPixel< TRGBAPixelValueType > & r) : BaseArray(r) {
+  }
+
+  RGBAPixel(const ComponentType r[4]) : BaseArray(r) {
+  }
 
   /** Pass-through assignment operator for the Array base class. */
   RGBAPixel & operator=(const Self & r);
@@ -104,13 +112,20 @@ public:
   bool operator==(const Self & vec) const;
 
   /** Return the number of componentsxquery-rep. */
-  static unsigned int GetNumberOfComponents() { return 4; }
+  static unsigned int
+  GetNumberOfComponents() {
+    return 4;
+  }
 
   /** Return the value for the Nth component. */
-  ComponentType GetNthComponent(int c) const { return this->operator[](c); }
+  ComponentType
+  GetNthComponent(int c) const {
+    return this->operator[](c);
+  }
 
   /** Return the value for the Nth component. */
-  ComponentType GetScalarValue() const
+  ComponentType
+  GetScalarValue() const
   {
     return static_cast< ComponentType >( vcl_sqrt(
                                            static_cast< double >( this->operator[](0) )
@@ -122,52 +137,85 @@ public:
   }
 
   /** Set the Nth component to v. */
-  void SetNthComponent(int c, const ComponentType & v) {  this->operator[](c) = v; }
+  void
+  SetNthComponent(int c, const ComponentType & v) {
+    this->operator[](c) = v;
+  }
 
   /** Set the Red component. */
-  void SetRed(ComponentType red) { this->operator[](0) = red; }
+  void
+  SetRed(ComponentType red) {
+    this->operator[](0) = red;
+  }
 
   /** Set the Green component. */
-  void SetGreen(ComponentType green) { this->operator[](1) = green; }
+  void
+  SetGreen(ComponentType green) {
+    this->operator[](1) = green;
+  }
 
   /** Set the Blue component. */
-  void SetBlue(ComponentType blue) { this->operator[](2) = blue; }
+  void
+  SetBlue(ComponentType blue) {
+    this->operator[](2) = blue;
+  }
 
   /** Set the Alpha component. */
-  void SetAlpha(ComponentType alpha) { this->operator[](3) = alpha; }
-
-  /** Set the four components. */
-  void Set(ComponentType red, ComponentType green, ComponentType blue, ComponentType alpha)
-  {
-    this->operator[](0) = red;
-    this->operator[](1) = green;
-    this->operator[](2) = blue;
+  void
+  SetAlpha(ComponentType alpha) {
     this->operator[](3) = alpha;
   }
 
+  /** Set the four components. */
+  void
+  Set(ComponentType red, ComponentType green, ComponentType blue, ComponentType alpha)
+  {
+    this->operator[](0) = red;
+    this->operator[](1) = green;
+
+    this->operator[](2) = blue;
+
+    this->operator[](3) = alpha;
+
+  }
+
   /** Get the Red component. */
-  const ComponentType & GetRed(void) const { return this->operator[](0); }
+  const ComponentType &
+  GetRed(void) const {
+    return this->operator[](0);
+  }
 
   /** Get the Green component. */
-  const ComponentType & GetGreen(void) const { return this->operator[](1); }
+  const ComponentType &
+  GetGreen(void) const {
+    return this->operator[](1);
+  }
 
   /** Get the Blue component. */
-  const ComponentType & GetBlue(void) const { return this->operator[](2); }
+  const ComponentType &
+  GetBlue(void) const {
+    return this->operator[](2);
+  }
 
   /** Get the Alpha component. */
-  const ComponentType & GetAlpha(void) const { return this->operator[](3); }
+  const ComponentType &
+  GetAlpha(void) const {
+    return this->operator[](3);
+  }
 
   /** Get Luminance out of RGB */
   LuminanceType GetLuminance(void) const;
+
 };
 
 template< typename TComponent  >
 std::ostream & operator<<(std::ostream & os,
-                                     const RGBAPixel< TComponent > & c);
+                          const RGBAPixel< TComponent > & c);
 
 template< typename TComponent  >
 std::istream & operator>>(std::istream & is,
-                                     RGBAPixel< TComponent > & c);
+                          RGBAPixel< TComponent > & c);
+
 } // end namespace itk
 
 //

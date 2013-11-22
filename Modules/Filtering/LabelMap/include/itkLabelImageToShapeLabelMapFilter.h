@@ -47,7 +47,7 @@ namespace itk
 template< typename TInputImage, typename TOutputImage =
             LabelMap< ShapeLabelObject< typename TInputImage::PixelType,
                                         TInputImage::ImageDimension > > >
-class LabelImageToShapeLabelMapFilter:
+class LabelImageToShapeLabelMapFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -77,11 +77,11 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, TInputImage::ImageDimension);
 
   typedef LabelImageToLabelMapFilter< InputImageType, OutputImageType >
-  LabelizerType;
+    LabelizerType;
   typedef Image< typename OutputImageType::PixelType, itkGetStaticConstMacro(OutputImageDimension) >
-  ShapeLabelFilterOutput;
+    ShapeLabelFilterOutput;
   typedef ShapeLabelMapFilter< TOutputImage, ShapeLabelFilterOutput >
-  LabelObjectValuatorType;
+    LabelObjectValuatorType;
 
   /** Standard New method. */
   itkNewMacro(Self);
@@ -125,7 +125,9 @@ public:
 
 protected:
   LabelImageToShapeLabelMapFilter();
-  ~LabelImageToShapeLabelMapFilter() {}
+  ~LabelImageToShapeLabelMapFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** LabelImageToShapeLabelMapFilter needs the entire input be available.

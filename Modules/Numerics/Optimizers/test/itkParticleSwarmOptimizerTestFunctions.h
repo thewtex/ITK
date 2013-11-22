@@ -50,7 +50,8 @@ public:
   {
   }
 
-  double GetValue( const ParametersType & parameters ) const
+  double
+  GetValue( const ParametersType & parameters ) const
   {
     double val;
 
@@ -65,14 +66,16 @@ public:
     return val;
   }
 
-  void GetDerivative( const ParametersType & itkNotUsed(parameters),
-                      DerivativeType & itkNotUsed(derivative) ) const
+  void
+  GetDerivative( const ParametersType & itkNotUsed(parameters),
+                 DerivativeType & itkNotUsed(derivative) ) const
   {
     throw itk::ExceptionObject( __FILE__, __LINE__,
                                 "no derivative available" );
   }
 
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return 1;
   }
@@ -120,7 +123,8 @@ public:
     m_Intercept[1]    = -8;
   }
 
-  double GetValue( const ParametersType & parameters ) const
+  double
+  GetValue( const ParametersType & parameters ) const
   {
     return 0.5 * ( m_A(0, 0) * parameters[0] * parameters[0]
                    + m_A(0, 1) * parameters[0] * parameters[1]
@@ -129,14 +133,16 @@ public:
            - m_Intercept[0] * parameters[0] - m_Intercept[1] * parameters[1];
   }
 
-  void GetDerivative( const ParametersType & itkNotUsed(parameters),
-                      DerivativeType & itkNotUsed(derivative) ) const
+  void
+  GetDerivative( const ParametersType & itkNotUsed(parameters),
+                 DerivativeType & itkNotUsed(derivative) ) const
   {
     throw itk::ExceptionObject( __FILE__, __LINE__,
                                 "no derivative available" );
   }
 
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return 2;
   }
@@ -169,21 +175,24 @@ public:
   {
   }
 
-  double GetValue( const ParametersType & parameters ) const
+  double
+  GetValue( const ParametersType & parameters ) const
   {
     return (1 - parameters[0]) * (1 - parameters[0])
            + 100 * (parameters[1] - parameters[0] * parameters[0])
            * (parameters[1] - parameters[0] * parameters[0]);
   }
 
-  void GetDerivative( const ParametersType & itkNotUsed(parameters),
-                      DerivativeType & itkNotUsed(derivative) ) const
+  void
+  GetDerivative( const ParametersType & itkNotUsed(parameters),
+                 DerivativeType & itkNotUsed(derivative) ) const
   {
     throw itk::ExceptionObject( __FILE__, __LINE__,
                                 "no derivative available" );
   }
 
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return 2;
   }
@@ -198,19 +207,22 @@ public:
   typedef itk::SmartPointer<Self>              Pointer;
   itkNewMacro( Self );
 
-  void Reset()
+  void
+  Reset()
   {
     m_IterationNumber = 0;
   }
 
   itkSetMacro( PrintOptimizer, bool );
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
   {
     Execute( (const itk::Object *)caller, event);
   }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
   {
     const itk::ParticleSwarmOptimizerBase *optimizer =
       dynamic_cast<const itk::ParticleSwarmOptimizerBase *>( object );

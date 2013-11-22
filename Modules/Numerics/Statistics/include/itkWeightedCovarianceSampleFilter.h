@@ -40,7 +40,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class WeightedCovarianceSampleFilter:
+class WeightedCovarianceSampleFilter :
   public CovarianceSampleFilter< TSample >
 {
 public:
@@ -90,7 +90,8 @@ public:
 
 protected:
   WeightedCovarianceSampleFilter();
-  virtual ~WeightedCovarianceSampleFilter();
+  virtual
+  ~WeightedCovarianceSampleFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();

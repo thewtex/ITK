@@ -34,22 +34,30 @@ template< typename TInput, typename TOutput >
 class Acos
 {
 public:
-  Acos() {}
-  ~Acos() {}
-  bool operator!=(const Acos &) const
+  Acos() {
+  }
+
+  ~Acos() {
+  }
+
+  bool
+  operator!=(const Acos &) const
   {
     return false;
   }
 
-  bool operator==(const Acos & other) const
+  bool
+  operator==(const Acos & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( vcl_acos( static_cast< double >( A ) ) );
   }
+
 };
 }
 
@@ -76,7 +84,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class AcosImageFilter:
+class AcosImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Acos<
@@ -110,12 +118,17 @@ public:
 #endif
 
 protected:
-  AcosImageFilter() {}
-  virtual ~AcosImageFilter() {}
+  AcosImageFilter() {
+  }
+
+  virtual
+  ~AcosImageFilter() {
+  }
 
 private:
   AcosImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

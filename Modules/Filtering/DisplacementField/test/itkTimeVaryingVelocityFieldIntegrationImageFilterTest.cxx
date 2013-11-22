@@ -18,11 +18,12 @@
 
 #include "itkTimeVaryingVelocityFieldIntegrationImageFilter.h"
 
-int itkTimeVaryingVelocityFieldIntegrationImageFilterTest( int, char* [] )
+int
+itkTimeVaryingVelocityFieldIntegrationImageFilterTest( int, char* [] )
 {
-  typedef itk::Vector<double, 3>      VectorType;
-  typedef itk::Image<VectorType, 3>   DisplacementFieldType;
-  typedef itk::Image<VectorType, 4>   TimeVaryingVelocityFieldType;
+  typedef itk::Vector<double, 3>    VectorType;
+  typedef itk::Image<VectorType, 3> DisplacementFieldType;
+  typedef itk::Image<VectorType, 4> TimeVaryingVelocityFieldType;
 
   TimeVaryingVelocityFieldType::PointType origin;
   origin.Fill( 0.0 );
@@ -44,7 +45,6 @@ int itkTimeVaryingVelocityFieldIntegrationImageFilterTest( int, char* [] )
   timeVaryingVelocityField->SetRegions( size );
   timeVaryingVelocityField->Allocate();
   timeVaryingVelocityField->FillBuffer( displacement1 );
-
 
   typedef itk::TimeVaryingVelocityFieldIntegrationImageFilter
     <TimeVaryingVelocityFieldType, DisplacementFieldType> IntegratorType;

@@ -20,7 +20,8 @@
 #include "itkVTKPolyDataMeshIO.h"
 #include "itkSymmetricSecondRankTensor.h"
 
-int itkMeshFileWriteReadTensorTest( int argc, char* argv[] )
+int
+itkMeshFileWriteReadTensorTest( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -70,7 +71,6 @@ int itkMeshFileWriteReadTensorTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
   std::cout << "End of VTKPolyDataMeshIO 2D test. Completed successfully!" << std::endl << std::endl;
-
 
   // Test the 3D case
   std::cout << "Testing VTKPolyDataMeshIO for a mesh with 3D tensor pixels..." << std::endl;

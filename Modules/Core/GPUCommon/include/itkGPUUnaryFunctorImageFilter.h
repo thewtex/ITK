@@ -35,7 +35,7 @@ namespace itk
 template< typename TInputImage, typename TOutputImage, typename TFunction, typename TParentImageFilter =
             InPlaceImageFilter< TInputImage, TOutputImage > >
 class GPUUnaryFunctorImageFilter : public GPUInPlaceImageFilter< TInputImage, TOutputImage,
-                                                                            TParentImageFilter >
+                                                                 TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
@@ -64,15 +64,19 @@ public:
   typedef typename     OutputImageType::RegionType OutputImageRegionType;
   typedef typename     OutputImageType::PixelType  OutputImagePixelType;
 
-  FunctorType & GetFunctor() {
+  FunctorType &
+  GetFunctor() {
     return m_Functor;
   }
-  const FunctorType & GetFunctor() const {
+
+  const FunctorType &
+  GetFunctor() const {
     return m_Functor;
   }
 
   /** Set the functor object. */
-  void SetFunctor(const FunctorType & functor)
+  void
+  SetFunctor(const FunctorType & functor)
   {
     if ( m_Functor != functor )
       {
@@ -84,7 +88,9 @@ public:
 protected:
   GPUUnaryFunctorImageFilter() {
   }
-  virtual ~GPUUnaryFunctorImageFilter() {
+
+  virtual
+  ~GPUUnaryFunctorImageFilter() {
   }
 
   virtual void GenerateOutputInformation();

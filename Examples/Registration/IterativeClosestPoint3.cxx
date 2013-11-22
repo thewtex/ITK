@@ -39,7 +39,8 @@
 #include <iostream>
 #include <fstream>
 
-int main(int argc, char * argv[] )
+int
+main(int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -47,20 +48,20 @@ int main(int argc, char * argv[] )
     std::cerr << "Arguments Missing. " << std::endl;
     std::cerr <<
       "Usage:  IterativeClosestPoint3   fixedPointsFile  movingPointsFile "
-      << std::endl;
+              << std::endl;
     return 1;
     }
 
   const unsigned int Dimension = 2;
 
-  typedef itk::PointSet< float, Dimension >   PointSetType;
+  typedef itk::PointSet< float, Dimension > PointSetType;
 
   PointSetType::Pointer fixedPointSet  = PointSetType::New();
   PointSetType::Pointer movingPointSet = PointSetType::New();
 
-  typedef PointSetType::PointType     PointType;
+  typedef PointSetType::PointType PointType;
 
-  typedef PointSetType::PointsContainer  PointsContainer;
+  typedef PointSetType::PointsContainer PointsContainer;
 
   PointsContainer::Pointer fixedPointContainer  = PointsContainer::New();
   PointsContainer::Pointer movingPointContainer = PointsContainer::New();
@@ -69,7 +70,7 @@ int main(int argc, char * argv[] )
   PointType movingPoint;
 
   // Read the file containing coordinates of fixed points.
-  std::ifstream   fixedFile;
+  std::ifstream fixedFile;
   fixedFile.open( argv[1] );
   if( fixedFile.fail() )
     {
@@ -88,10 +89,10 @@ int main(int argc, char * argv[] )
     }
   fixedPointSet->SetPoints( fixedPointContainer );
   std::cout << "Number of fixed Points = "
-        << fixedPointSet->GetNumberOfPoints() << std::endl;
+            << fixedPointSet->GetNumberOfPoints() << std::endl;
 
   // Read the file containing coordinates of moving points.
-  std::ifstream   movingFile;
+  std::ifstream movingFile;
   movingFile.open( argv[2] );
   if( movingFile.fail() )
     {
@@ -110,51 +111,51 @@ int main(int argc, char * argv[] )
     }
   movingPointSet->SetPoints( movingPointContainer );
   std::cout << "Number of moving Points = "
-      << movingPointSet->GetNumberOfPoints() << std::endl;
+            << movingPointSet->GetNumberOfPoints() << std::endl;
 
 //-----------------------------------------------------------
 // Set up  the Metric
 //-----------------------------------------------------------
   typedef itk::EuclideanDistancePointMetric<
-                                    PointSetType,
-                                    PointSetType>
-                                                    MetricType;
+      PointSetType,
+      PointSetType>
+    MetricType;
 
-  typedef MetricType::TransformType                 TransformBaseType;
-  typedef TransformBaseType::ParametersType         ParametersType;
-  typedef TransformBaseType::JacobianType           JacobianType;
+  typedef MetricType::TransformType         TransformBaseType;
+  typedef TransformBaseType::ParametersType ParametersType;
+  typedef TransformBaseType::JacobianType   JacobianType;
 
-  MetricType::Pointer  metric = MetricType::New();
+  MetricType::Pointer metric = MetricType::New();
 
 //-----------------------------------------------------------
 // Set up a Transform
 //-----------------------------------------------------------
 
-  typedef itk::TranslationTransform< double, Dimension >      TransformType;
+  typedef itk::TranslationTransform< double, Dimension > TransformType;
 
   TransformType::Pointer transform = TransformType::New();
 
   // Optimizer Type
   typedef itk::LevenbergMarquardtOptimizer OptimizerType;
 
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
+  OptimizerType::Pointer optimizer     = OptimizerType::New();
   optimizer->SetUseCostFunctionGradient(false);
 
   // Registration Method
   typedef itk::PointSetToPointSetRegistrationMethod<
-                                            PointSetType,
-                                            PointSetType >
-                                                    RegistrationType;
+      PointSetType,
+      PointSetType >
+    RegistrationType;
 
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   // Scale the translation components of the Transform in the Optimizer
   OptimizerType::ScalesType scales( transform->GetNumberOfParameters() );
   scales.Fill( 0.01 );
 
   const unsigned long numberOfIterations =  100;
-  const double        gradientTolerance  =  1e-5;    // convergence criterion
-  const double        valueTolerance     =  1e-5;    // convergence criterion
+  const double        gradientTolerance  =  1e-5;   // convergence criterion
+  const double        valueTolerance     =  1e-5;   // convergence criterion
   const double        epsilonFunction    =  1e-6;   // convergence criterion
 
   optimizer->SetScales( scales );
@@ -188,14 +189,14 @@ int main(int argc, char * argv[] )
   //  filter expects an image as input.
   //
   //-------------------------------------------------
-  typedef itk::Image< unsigned char,  Dimension >  BinaryImageType;
+  typedef itk::Image< unsigned char,  Dimension > BinaryImageType;
 
   typedef itk::PointSetToImageFilter<
-                            PointSetType,
-                            BinaryImageType> PointsToImageFilterType;
+      PointSetType,
+      BinaryImageType> PointsToImageFilterType;
 
   PointsToImageFilterType::Pointer
-                  pointsToImageFilter = PointsToImageFilterType::New();
+    pointsToImageFilter = PointsToImageFilterType::New();
 
   pointsToImageFilter->SetInput( fixedPointSet );
 
@@ -210,9 +211,9 @@ int main(int argc, char * argv[] )
   pointsToImageFilter->Update();
   BinaryImageType::Pointer binaryImage = pointsToImageFilter->GetOutput();
 
-  typedef itk::Image< unsigned short, Dimension >  DistanceImageType;
+  typedef itk::Image< unsigned short, Dimension > DistanceImageType;
   typedef itk::DanielssonDistanceMapImageFilter<
-            BinaryImageType, DistanceImageType> DistanceFilterType;
+      BinaryImageType, DistanceImageType> DistanceFilterType;
 
   DistanceFilterType::Pointer distanceFilter = DistanceFilterType::New();
   distanceFilter->SetInput( binaryImage );

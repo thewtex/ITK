@@ -21,7 +21,8 @@
 
 #include <iostream>
 
-int itkVectorImageReadWriteTest(int argc, char * argv [])
+int
+itkVectorImageReadWriteTest(int argc, char * argv [])
 {
 
   if ( argc < 2 )
@@ -40,9 +41,9 @@ int itkVectorImageReadWriteTest(int argc, char * argv [])
   typedef itk::ImageFileReader< ImageType >  ReaderType;
   typedef itk::ImageFileWriter< ImageType >  WriterType;
 
-  ImageType::Pointer   inputImage  = ImageType::New();
-  ReaderType::Pointer  reader      = ReaderType::New();
-  WriterType::Pointer  writer      = WriterType::New();
+  ImageType::Pointer  inputImage  = ImageType::New();
+  ReaderType::Pointer reader      = ReaderType::New();
+  WriterType::Pointer writer      = WriterType::New();
 
   // In this test, we will create a 9x9 image of vectors with pixels (4,4)
   // and (1,6) set to 'vector1'. We will filter it using
@@ -115,7 +116,6 @@ int itkVectorImageReadWriteTest(int argc, char * argv [])
 
   itk::ImageIOBase::Pointer io = reader->GetModifiableImageIO();
 
-
   std::cout << "ImageIO Pixel Information: "
             << io->GetPixelTypeAsString( io->GetPixelType() ) << " "
             << io->GetComponentTypeAsString( io->GetComponentType() ) << " "
@@ -133,9 +133,9 @@ int itkVectorImageReadWriteTest(int argc, char * argv [])
 
   std::cout << "Test << operator:: Vector1 = " << vector1 << "[PASSED]" << std::endl;
   std::cout << "Test NumericTraits<Vector<double,4>>::Zero " <<
-                        itk::NumericTraits< PixelType >::Zero << std::endl;
+    itk::NumericTraits< PixelType >::Zero << std::endl;
   std::cout << "Test NumericTraits <Vector <double,4 > >::One " <<
-                        itk::NumericTraits< PixelType >::One << std::endl;
+    itk::NumericTraits< PixelType >::One << std::endl;
 
   return EXIT_SUCCESS;
 }

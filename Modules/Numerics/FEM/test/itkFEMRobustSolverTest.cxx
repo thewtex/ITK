@@ -22,7 +22,6 @@
 #include "itkFEMElement2DC0LinearQuadrilateralStrain.h"
 #include "itkImageToRectilinearFEMObjectFilter.h"
 
-
 /**
  * RobustSolver requires a FEMObject as input.
  * In this test, we create a FEMObject manually based on a simple 2D mesh and feature points.
@@ -48,38 +47,39 @@
  *  0     1   2   3   4
  *
  */
-int itkFEMRobustSolverTest(int, char *[])
+int
+itkFEMRobustSolverTest(int, char *[])
 {
   const unsigned int DataDimension = 2;
   const unsigned int ParameterDimension = 2;
 
   /** Solver typedef suppot */
-  typedef itk::fem::RobustSolver<DataDimension>    SolverType;
+  typedef itk::fem::RobustSolver<DataDimension> SolverType;
 
   /** FEMObject typedef suppport */
-  typedef itk::fem::FEMObject<DataDimension>       FEMObjectType;
+  typedef itk::fem::FEMObject<DataDimension> FEMObjectType;
 
   /** FEM element typedef support */
-  typedef itk::fem::Element2DC0LinearQuadrilateralStrain     ElementType;
+  typedef itk::fem::Element2DC0LinearQuadrilateralStrain ElementType;
 
   /** FEM node typedef support */
-  typedef itk::fem::Element::Node            NodeType;
+  typedef itk::fem::Element::Node NodeType;
 
   /** FEM Load typedef support */
-  typedef itk::fem::LoadNoisyLandmark          LoadType;
+  typedef itk::fem::LoadNoisyLandmark LoadType;
 
   /** FEM material typedef support */
-  typedef itk::fem::MaterialLinearElasticity           MaterialType;
+  typedef itk::fem::MaterialLinearElasticity MaterialType;
 
   /** FEM element typedef support */
-  typedef itk::fem::Element::VectorType                  FEMVectorType;
-  typedef itk::fem::Element::MatrixType                  FEMMatrixType;
+  typedef itk::fem::Element::VectorType FEMVectorType;
+  typedef itk::fem::Element::MatrixType FEMMatrixType;
 
   /** FEM container typedef support */
-  typedef FEMObjectType::LoadContainerType        LoadContainerType;
-  typedef FEMObjectType::NodeContainerType        NodeContainerType;
-  typedef FEMObjectType::ElementContainerType     ElementContainerType;
-  typedef FEMObjectType::MaterialContainerType    MaterialContainerType;
+  typedef FEMObjectType::LoadContainerType     LoadContainerType;
+  typedef FEMObjectType::NodeContainerType     NodeContainerType;
+  typedef FEMObjectType::ElementContainerType  ElementContainerType;
+  typedef FEMObjectType::MaterialContainerType MaterialContainerType;
 
   /** intepolation grid typedef support */
   typedef itk::Image<itk::fem::Element::ConstPointer, ParameterDimension> InterpolationGridType;
@@ -123,7 +123,7 @@ int itkFEMRobustSolverTest(int, char *[])
   unsigned int elementDimensionY = 2;
 
   FEMVectorType point(ParameterDimension);
-  unsigned int globalNumbering = 0;
+  unsigned int  globalNumbering = 0;
 
   for(unsigned int j = 0; j <= elementDimensionY; j++)
     {
@@ -166,15 +166,15 @@ int itkFEMRobustSolverTest(int, char *[])
 
       ElementType::Pointer quadrilateral = ElementType::New();
 
-      quadrilateral->SetNode(0, femObject->GetNode(leftBottomNodeIndex));
-      quadrilateral->SetNode(1, femObject->GetNode(rightBottomNodeIndex));
-      quadrilateral->SetNode(2, femObject->GetNode(rigthUpperNodeIndex));
-      quadrilateral->SetNode(3, femObject->GetNode(leftUpperNodeIndex));
+      quadrilateral->SetNode(0, femObject->GetNode(leftBottomNodeIndex) );
+      quadrilateral->SetNode(1, femObject->GetNode(rightBottomNodeIndex) );
+      quadrilateral->SetNode(2, femObject->GetNode(rigthUpperNodeIndex) );
+      quadrilateral->SetNode(3, femObject->GetNode(leftUpperNodeIndex) );
 
       quadrilateral->SetGlobalNumber(globalNumbering);
       quadrilateral->SetMaterial( static_cast<MaterialType *>( femObject->GetMaterial(0).GetPointer() ) );
 
-      femObject->AddNextElement(quadrilateral.GetPointer());
+      femObject->AddNextElement(quadrilateral.GetPointer() );
 
       globalNumbering++;
       }
@@ -220,7 +220,8 @@ int itkFEMRobustSolverTest(int, char *[])
   // displacement assoaiate with the feature point inside the element
   displacement1[0] = 1.0;
   displacement1[1] = 1.0;
-  // displacement associated with the fature point, coincidentally being the node of the mesh
+  // displacement associated with the fature point, coincidentally being the
+  // node of the mesh
   displacement2[0] = 1.0;
   displacement2[1] = 1.0;
   // displacement associated with the feature point on the right boundary
@@ -243,52 +244,54 @@ int itkFEMRobustSolverTest(int, char *[])
   load3->SetSource(featurePoint3);
   load3->SetRealDisplacement(displacement3);
 
-  femObject->AddNextLoad(itk::fem::Load::Pointer(load0));
-  femObject->AddNextLoad(itk::fem::Load::Pointer(load1));
-  femObject->AddNextLoad(itk::fem::Load::Pointer(load2));
-  femObject->AddNextLoad(itk::fem::Load::Pointer(load3));
+  femObject->AddNextLoad(itk::fem::Load::Pointer(load0) );
+  femObject->AddNextLoad(itk::fem::Load::Pointer(load1) );
+  femObject->AddNextLoad(itk::fem::Load::Pointer(load2) );
+  femObject->AddNextLoad(itk::fem::Load::Pointer(load3) );
 
   /** finialize mesh to produce global DOF */
   femObject->FinalizeMesh();
 
   /** set interpolation grid */
 
-  InterpolationGridType::PointType        origin;
+  InterpolationGridType::PointType origin;
   origin[0] = 0.0;
   origin[1] = 0.0;
   solver->SetOrigin(origin);
 
-  InterpolationGridType::SpacingType      spacing;
+  InterpolationGridType::SpacingType spacing;
   spacing[0] = 1.0;
   spacing[1] = 1.0;
   solver->SetSpacing(spacing);
 
-  InterpolationGridType::SizeType         size;
+  InterpolationGridType::SizeType size;
   size[0] = 5;
   size[1] = 5;
-  InterpolationGridType::IndexType        start;
+  InterpolationGridType::IndexType start;
   start[0] = 0;
   start[1] = 0;
-  InterpolationGridType::RegionType       region;
+  InterpolationGridType::RegionType region;
   region.SetSize(size);
   region.SetIndex(start);
   solver->SetRegion(region);
 
-  InterpolationGridType::DirectionType    direction;
+  InterpolationGridType::DirectionType direction;
   direction[0][0] = 1.0;
   direction[0][1] = 0.0;
   direction[1][0] = 0.0;
   direction[1][1] = 1.0;
   solver->SetDirection(direction);
 
-  // if the feature points are the grid point of the interpolation grid, set true.
-  // note that since feature points come from the image, this setting is always true.
+  // if the feature points are the grid point of the interpolation grid, set
+  // true.
+  // note that since feature points come from the image, this setting is always
+  // true.
   solver->SetUseInterpolationGrid(true);
 
   solver->SetInput( femObject );
   solver->Update();
 
-  int numOfDOF = femObject->GetNumberOfDegreesOfFreedom();
+  int           numOfDOF = femObject->GetNumberOfDegreesOfFreedom();
   FEMVectorType solution(numOfDOF);
 
   bool  hasError = false;
@@ -304,7 +307,8 @@ int itkFEMRobustSolverTest(int, char *[])
 
     if( vcl_fabs(groundTruthSolution[i] - solution[i]) > 0.0001 )
       {
-      std::cerr << "ERROR: Index " << i << ". Groundtruth " << groundTruthSolution[i] << " Solution " << solution[i] << std::endl;
+      std::cerr << "ERROR: Index " << i << ". Groundtruth " << groundTruthSolution[i] << " Solution " << solution[i] <<
+        std::endl;
       hasError = true;
       }
     }

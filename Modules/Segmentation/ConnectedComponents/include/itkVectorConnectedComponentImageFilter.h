@@ -51,25 +51,38 @@ class SimilarVectorsFunctor
 {
 public:
   SimilarVectorsFunctor()
-  { m_Threshold = itk::NumericTraits< typename TInput::ValueType >::Zero; }
+  {
+    m_Threshold = itk::NumericTraits< typename TInput::ValueType >::Zero;
+  }
 
-  ~SimilarVectorsFunctor() {}
+  ~SimilarVectorsFunctor() {
+  }
 
-  void SetDistanceThreshold(const typename TInput::ValueType & thresh)
-  { m_Threshold = thresh; }
-  typename TInput::ValueType GetDistanceThreshold() { return ( m_Threshold ); }
+  void
+  SetDistanceThreshold(const typename TInput::ValueType & thresh)
+  {
+    m_Threshold = thresh;
+  }
 
-  bool operator!=(const SimilarVectorsFunctor &) const
+  typename TInput::ValueType
+  GetDistanceThreshold() {
+    return ( m_Threshold );
+  }
+
+  bool
+  operator!=(const SimilarVectorsFunctor &) const
   {
     return false;
   }
 
-  bool operator==(const SimilarVectorsFunctor & other) const
+  bool
+  operator==(const SimilarVectorsFunctor & other) const
   {
     return !( *this != other );
   }
 
-  bool operator()(const TInput & a, const TInput & b) const
+  bool
+  operator()(const TInput & a, const TInput & b) const
   {
     typedef typename NumericTraits<typename TInput::ValueType>::RealType RealValueType;
     RealValueType dotProduct = NumericTraits<RealValueType>::Zero;
@@ -95,7 +108,7 @@ protected:
  * \ingroup ITKConnectedComponents
  */
 template< typename TInputImage, typename TOutputImage, typename TMaskImage = TInputImage >
-class VectorConnectedComponentImageFilter:
+class VectorConnectedComponentImageFilter :
   public ConnectedComponentFunctorImageFilter< TInputImage, TOutputImage,
                                                Functor::SimilarVectorsFunctor< typename TInputImage::ValueType >,
                                                TMaskImage >
@@ -117,11 +130,17 @@ public:
 
   typedef typename TInputImage::PixelType::ValueType InputValueType;
 
-  virtual void SetDistanceThreshold(const InputValueType & thresh)
-  { this->GetFunctor().SetDistanceThreshold(thresh); }
+  virtual void
+  SetDistanceThreshold(const InputValueType & thresh)
+  {
+    this->GetFunctor().SetDistanceThreshold(thresh);
+  }
 
-  virtual InputValueType GetDistanceThreshold()
-  { return ( this->GetFunctor().GetDistanceThreshold() ); }
+  virtual InputValueType
+  GetDistanceThreshold()
+  {
+    return ( this->GetFunctor().GetDistanceThreshold() );
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -133,12 +152,17 @@ public:
 #endif
 
 protected:
-  VectorConnectedComponentImageFilter() {}
-  virtual ~VectorConnectedComponentImageFilter() {}
+  VectorConnectedComponentImageFilter() {
+  }
+
+  virtual
+  ~VectorConnectedComponentImageFilter() {
+  }
 
 private:
   VectorConnectedComponentImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

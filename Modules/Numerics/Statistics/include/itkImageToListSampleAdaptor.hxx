@@ -35,7 +35,7 @@ template< typename TImage >
 const typename ImageToListSampleAdaptor< TImage >::MeasurementVectorType &
 ImageToListSampleAdaptor< TImage >
 ::GetMeasurementVector(InstanceIdentifier id) const
-{
+  {
   if ( m_Image.IsNull() )
     {
     itkExceptionMacro("Image has not been set yet");
@@ -44,7 +44,7 @@ ImageToListSampleAdaptor< TImage >
                                    m_Image->GetPixel( m_Image->ComputeIndex(id) ) );
 
   return m_MeasurementVectorInternal;
-}
+  }
 
 /** returns the number of measurement vectors in this container*/
 template< typename TImage >
@@ -134,6 +134,7 @@ ImageToListSampleAdaptor< TImage >
 
   return this->Size();
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

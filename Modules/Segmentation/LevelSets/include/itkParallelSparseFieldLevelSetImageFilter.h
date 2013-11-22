@@ -81,27 +81,32 @@ public:
 
   itkStaticConstMacro(Dimension, unsigned int, NeighborhoodType::Dimension);
 
-  const RadiusType & GetRadius() const
+  const RadiusType &
+  GetRadius() const
   {
     return m_Radius;
   }
 
-  const unsigned int & GetArrayIndex(unsigned int i) const
+  const unsigned int &
+  GetArrayIndex(unsigned int i) const
   {
     return m_ArrayIndex[i];
   }
 
-  const OffsetType & GetNeighborhoodOffset(unsigned int i) const
+  const OffsetType &
+  GetNeighborhoodOffset(unsigned int i) const
   {
     return m_NeighborhoodOffset[i];
   }
 
-  const unsigned int & GetSize() const
+  const unsigned int &
+  GetSize() const
   {
     return m_Size;
   }
 
-  unsigned int GetStride(unsigned int i)
+  unsigned int
+  GetStride(unsigned int i)
   {
     return m_StrideTable[i];
   }
@@ -246,7 +251,7 @@ private:
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputImage >
-class ParallelSparseFieldLevelSetImageFilter:
+class ParallelSparseFieldLevelSetImageFilter :
   public FiniteDifferenceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -316,7 +321,8 @@ public:
   itkSetMacro(IsoSurfaceValue, ValueType);
   itkGetConstMacro(IsoSurfaceValue, ValueType);
 
-  LayerPointerType GetActiveListForIndex(const IndexType index)
+  LayerPointerType
+  GetActiveListForIndex(const IndexType index)
   {
     // get the 'z' value for the index
     const unsigned int indexZ = index[m_SplitAxis];
@@ -340,7 +346,9 @@ public:
 
 protected:
   ParallelSparseFieldLevelSetImageFilter();
-  ~ParallelSparseFieldLevelSetImageFilter() {}
+  ~ParallelSparseFieldLevelSetImageFilter() {
+  }
+
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Connectivity information for examining neighbor pixels.   */
@@ -426,7 +434,9 @@ protected:
   void CopyInputToOutput();
 
   /** Reserves memory in the update buffer */
-  void AllocateUpdateBuffer() {}
+  void
+  AllocateUpdateBuffer() {
+  }
 
   /** Constructs the sparse field layers and initializes their values. Also
    *  creates data structures that are NOT local to a thread. */
@@ -506,7 +516,7 @@ protected:
     std::vector< TimeStepType > TimeStepList;
     std::vector< bool > ValidTimeStepList;
     TimeStepType TimeStep;
-  };
+    };
 
   /** This method calculates the change and does the update, i.e. one iteration
    *  of this iterative solver.  A barrier class is used to synchronize
@@ -520,11 +530,12 @@ protected:
    * output values are applied during each iteration.  The default simply
    * follows the standard finite difference scheme of scaling the change by the
    * timestep and adding to the value of the previous iteration. */
-  inline virtual ValueType ThreadedCalculateUpdateValue(const ThreadIdType itkNotUsed(ThreadId),
-                                                        const IndexType itkNotUsed(index),
-                                                        const TimeStepType & dt,
-                                                        const ValueType & value,
-                                                        const ValueType & change)
+  inline virtual ValueType
+  ThreadedCalculateUpdateValue(const ThreadIdType itkNotUsed(ThreadId),
+                               const IndexType itkNotUsed(index),
+                               const TimeStepType & dt,
+                               const ValueType & value,
+                               const ValueType & change)
   {
     return ( value + static_cast< ValueType >( dt ) * change );
   }
@@ -533,19 +544,22 @@ protected:
   // The pixel at 'index' is entering the active layer for thread 'ThreadId'.
   // The outputimage at 'index' will have the value as given by the
   // 'value' parameter.
-  virtual void ThreadedProcessPixelEnteringActiveLayer( const IndexType& itkNotUsed(index),
-                                                        const ValueType& itkNotUsed(value),
+  virtual void ThreadedProcessPixelEnteringActiveLayer( const IndexType &itkNotUsed(index),
+                                                        const ValueType &itkNotUsed(value),
                                                         ThreadIdType itkNotUsed(ThreadId) );
 
   /** This method is not implemented or necessary for this solver */
-  void ApplyUpdate(const TimeStepType&) {}
+  void
+  ApplyUpdate(const TimeStepType&) {
+  }
 
   /** Does the actual work of updating the output from the UpdateContainer over
    *  an output region supplied by the multithreading mechanism.  */
   virtual void ThreadedApplyUpdate(const TimeStepType& dt, ThreadIdType ThreadId);
 
   /** This method is not implemented or necessary for this solver */
-  TimeStepType CalculateChange()
+  TimeStepType
+  CalculateChange()
   {
     return NumericTraits< TimeStepType >::Zero;
   }
@@ -561,15 +575,15 @@ protected:
    *  2. This function also constructs the up/down lists for nodes that are moving
    *  out of the active layer. */
   void ThreadedUpdateActiveLayerValues( const TimeStepType& dt,
-    LayerType   *StatusUpList,
-    LayerType   *StatusDownList,
-    ThreadIdType ThreadId);
+                                        LayerType   *StatusUpList,
+                                        LayerType   *StatusDownList,
+                                        ThreadIdType ThreadId);
 
   /** Make a copy of the nodes in the FromList and insert them into the ToList.
     */
   void CopyInsertList( ThreadIdType ThreadId,
-    LayerPointerType FromListPtr,
-    LayerPointerType ToListPtr);
+                       LayerPointerType FromListPtr,
+                       LayerPointerType ToListPtr);
 
   /** Delete all nodes in the List */
   void ClearList(ThreadIdType ThreadId, LayerPointerType ListPtr);
@@ -748,7 +762,7 @@ protected:
      *  BUT also by the thread's neighbors. So they are NOT truly "local" data. */
     int m_Semaphore[2];
 
-    SimpleMutexLock            m_Lock[2];
+    SimpleMutexLock m_Lock[2];
     ConditionVariable::Pointer m_Condition[2];
 
     /** Indicates whether to use m_Semaphore[0] or m_Semaphore[1] for
@@ -756,7 +770,7 @@ protected:
     unsigned int m_SemaphoreArrayNumber;
 
     char m_Pad2[128];
-  };
+    };
 
   /** An array storing the individual (local) data structures for each thread.
     */

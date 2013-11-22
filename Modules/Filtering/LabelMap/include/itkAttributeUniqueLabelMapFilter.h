@@ -43,9 +43,9 @@ namespace itk {
  * \ingroup ITKLabelMap
  */
 template<typename TImage, typename TAttributeAccessor=
-    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+           typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class AttributeUniqueLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -65,7 +65,7 @@ public:
   typedef TAttributeAccessor                                 AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
 
-  typedef typename LabelObjectType::LineType  LineType;
+  typedef typename LabelObjectType::LineType LineType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -86,7 +86,7 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
   /**
@@ -100,7 +100,8 @@ public:
 
 protected:
   AttributeUniqueLabelMapFilter();
-  ~AttributeUniqueLabelMapFilter() {};
+  ~AttributeUniqueLabelMapFilter() {
+  }
 
   void GenerateData();
 
@@ -110,40 +111,43 @@ protected:
 
 private:
   AttributeUniqueLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                //purposely not implemented
 
   struct LineOfLabelObject
     {
     typedef typename LabelObjectType::LineType LineType;
 
     LineOfLabelObject( const LineType l, LabelObjectType * lo )
-      {
+    {
       this->line = l;
       this->labelObject = lo;
-      }
-    LineType          line;
+    }
+
+    LineType line;
     LabelObjectType * labelObject;
     };
 
   class LineOfLabelObjectComparator
+  {
+public:
+    bool
+    operator()( const LineOfLabelObject & lla, const LineOfLabelObject & llb )
     {
-    public:
-      bool operator()( const LineOfLabelObject & lla, const LineOfLabelObject & llb )
+      for( int i=ImageDimension-1; i>=0; i-- )
         {
-        for( int i=ImageDimension-1; i>=0; i-- )
+        if( lla.line.GetIndex()[i] > llb.line.GetIndex()[i] )
           {
-          if( lla.line.GetIndex()[i] > llb.line.GetIndex()[i] )
-            {
-            return true;
-            }
-          else if( lla.line.GetIndex()[i] < llb.line.GetIndex()[i] )
-            {
-            return false;
-            }
+          return true;
           }
-        return false;
+        else if( lla.line.GetIndex()[i] < llb.line.GetIndex()[i] )
+          {
+          return false;
+          }
         }
-    };
+      return false;
+    }
+
+  };
 
 }; // end of class
 

@@ -42,7 +42,7 @@ namespace itk
  */
 
 template< typename TElementIdentifier, typename TElement >
-class ImportImageContainer:public Object
+class ImportImageContainer : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -62,7 +62,10 @@ public:
   itkTypeMacro(ImportImageContainer, Object);
 
   /** Get the pointer from which the image data is imported. */
-  TElement * GetImportPointer() { return m_ImportPointer; }
+  TElement *
+  GetImportPointer() {
+    return m_ImportPointer;
+  }
 
   /** Set the pointer from which the image data is imported.  "num" is
    * the number of pixels in the block of memory. If
@@ -74,25 +77,40 @@ public:
                         bool LetContainerManageMemory = false);
 
   /** Index operator. This version can be an lvalue. */
-  TElement & operator[](const ElementIdentifier id)
-  { return m_ImportPointer[id]; }
+  TElement &
+  operator[](const ElementIdentifier id)
+  {
+    return m_ImportPointer[id];
+  }
 
   /** Index operator. This version can only be an rvalue */
-  const TElement & operator[](const ElementIdentifier id) const
-  { return m_ImportPointer[id]; }
+  const TElement &
+  operator[](const ElementIdentifier id) const
+  {
+    return m_ImportPointer[id];
+  }
 
   /** Return a pointer to the beginning of the buffer.  This is used by
    * the image iterator class. */
-  TElement * GetBufferPointer()
-  { return m_ImportPointer; }
+  TElement *
+  GetBufferPointer()
+  {
+    return m_ImportPointer;
+  }
 
   /** Get the capacity of the container. */
-  ElementIdentifier Capacity(void) const
-  { return m_Capacity; }
+  ElementIdentifier
+  Capacity(void) const
+  {
+    return m_Capacity;
+  }
 
   /** Get the number of elements currently stored in the container. */
-  ElementIdentifier Size(void) const
-  { return m_Size; }
+  ElementIdentifier
+  Size(void) const
+  {
+    return m_Size;
+  }
 
   /** Tell the container to allocate enough memory to allow at least
    * as many elements as the size given to be stored.  If new memory
@@ -134,7 +152,8 @@ public:
 
 protected:
   ImportImageContainer();
-  virtual ~ImportImageContainer();
+  virtual
+  ~ImportImageContainer();
 
   /** PrintSelf routine. Normally this is a protected internal method. It is
    * made public here so that Image can call this method.  Users should not
@@ -165,7 +184,10 @@ protected:
    * since it only changes the m_ImportPointer member but not the m_Size
    * and m_Capacity members. It should typically be used only to override
    * AllocateElements and DeallocateManagedMemory. */
-  void SetImportPointer(TElement *ptr){ m_ImportPointer = ptr; }
+  void
+  SetImportPointer(TElement *ptr){
+    m_ImportPointer = ptr;
+  }
 
 private:
   ImportImageContainer(const Self &); //purposely not implemented

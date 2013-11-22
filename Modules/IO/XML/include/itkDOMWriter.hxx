@@ -38,11 +38,16 @@ DOMWriter<TInput>::DOMWriter() : m_Input( NULL )
   this->m_Logger->AddLogOutput( defout );
   // settings that may be important
   this->m_Logger->SetName( this->GetNameOfClass() );
-  this->m_Logger->SetPriorityLevel( Logger::NOTSET ); // log everything
-  this->m_Logger->SetLevelForFlushing( Logger::MUSTFLUSH ); // never flush (MUSTFLUSH actually leads to no flush, a bug in Logger)
+  this->m_Logger->SetPriorityLevel( Logger::NOTSET );       // log everything
+  this->m_Logger->SetLevelForFlushing( Logger::MUSTFLUSH ); // never flush
+                                                            // (MUSTFLUSH
+                                                            // actually leads to
+                                                            // no flush, a bug
+                                                            // in Logger)
   // some other settings
   this->m_Logger->SetTimeStampFormat( Logger::HUMANREADABLE );
-  this->m_Logger->SetHumanReadableFormat( "%Y-%b-%d %H:%M:%S" ); // time stamp format
+  this->m_Logger->SetHumanReadableFormat( "%Y-%b-%d %H:%M:%S" ); // time stamp
+                                                                 // format
 }
 
 /** Set the input object to be written. */
@@ -59,9 +64,9 @@ DOMWriter<TInput>::SetInput( const InputType* input )
 template< typename TInput >
 const typename DOMWriter<TInput>::InputType *
 DOMWriter<TInput>::GetInput() const
-{
+  {
   return this->m_Input;
-}
+  }
 
 /**
  * Function called by Update() or end-users to write the input object to a DOM object.
@@ -123,7 +128,8 @@ DOMWriter<TInput>::Update()
   // this is to make sure that the output directory is created if it does exist
   FileTools::CreateFile( fn );
 
-  // save the current working directory (WD), and change the WD to where the XML file is located
+  // save the current working directory (WD), and change the WD to where the XML
+  // file is located
   FancyString sOldWorkingDir = itksys::SystemTools::GetCurrentWorkingDirectory();
   FancyString sNewWorkingDir = itksys::SystemTools::GetFilenamePath( fn );
   itksys::SystemTools::ChangeDirectory( sNewWorkingDir );

@@ -21,28 +21,28 @@
 #include "itkAffineTransform.h"
 #include "itkResampleImageFilter.h"
 
-int itkResampleImageTest(int, char* [] )
+int
+itkResampleImageTest(int, char* [] )
 {
 
   const unsigned int NDimensions = 2;
 
-  typedef float                               PixelType;
-  typedef itk::Image<PixelType, NDimensions>  ImageType;
-  typedef ImageType::IndexType                ImageIndexType;
-  typedef ImageType::Pointer                  ImagePointerType;
-  typedef ImageType::RegionType               ImageRegionType;
-  typedef ImageType::SizeType                 ImageSizeType;
-  typedef double                              CoordRepType;
+  typedef float                              PixelType;
+  typedef itk::Image<PixelType, NDimensions> ImageType;
+  typedef ImageType::IndexType               ImageIndexType;
+  typedef ImageType::Pointer                 ImagePointerType;
+  typedef ImageType::RegionType              ImageRegionType;
+  typedef ImageType::SizeType                ImageSizeType;
+  typedef double                             CoordRepType;
 
-  typedef itk::AffineTransform<CoordRepType,NDimensions>               AffineTransformType;
-  typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType>  InterpolatorType;
-
+  typedef itk::AffineTransform<CoordRepType,NDimensions>              AffineTransformType;
+  typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType> InterpolatorType;
 
   // Create and configure an image
   ImagePointerType image = ImageType::New();
-  ImageIndexType  index = {{0,  0}};
-  ImageSizeType   size  = {{18, 12}};
-  ImageRegionType region;
+  ImageIndexType   index = {{0,  0}};
+  ImageSizeType    size  = {{18, 12}};
+  ImageRegionType  region;
   region.SetSize ( size );
   region.SetIndex( index );
   image->SetLargestPossibleRegion( region );
@@ -51,7 +51,7 @@ int itkResampleImageTest(int, char* [] )
 
   // Fill image with a ramp
   itk::ImageRegionIteratorWithIndex<ImageType> iter(image, region);
-  PixelType value;
+  PixelType                                    value;
   for (iter.GoToBegin(); !iter.IsAtEnd(); ++iter)
     {
     index = iter.GetIndex();
@@ -89,14 +89,13 @@ int itkResampleImageTest(int, char* [] )
   // Run the resampling filter
   resample->Update();
 
-
   // Check if desired results were obtained
-  bool passed = true;
+  bool                  passed = true;
   ImageType::RegionType region2;
   region2 = resample->GetOutput()->GetRequestedRegion();
   itk::ImageRegionIteratorWithIndex<ImageType>
-      iter2(resample->GetOutput(), region2);
-  PixelType pixval;
+               iter2(resample->GetOutput(), region2);
+  PixelType    pixval;
   const double tolerance = 1e-30;
   for (iter2.GoToBegin(); !iter2.IsAtEnd(); ++iter2)
     {
@@ -152,9 +151,9 @@ int itkResampleImageTest(int, char* [] )
   if (!passed) {
     std::cout << "Resampling test failed" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
- std::cout << "Test passed." << std::endl;
- return EXIT_SUCCESS;
+  std::cout << "Test passed." << std::endl;
+  return EXIT_SUCCESS;
 
 }

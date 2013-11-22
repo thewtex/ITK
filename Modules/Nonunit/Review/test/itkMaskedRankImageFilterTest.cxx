@@ -23,10 +23,11 @@
 #include "itkTextOutput.h"
 #include "itkFilterWatcher.h"
 
-int itkMaskedRankImageFilterTest(int ac, char* av[] )
+int
+itkMaskedRankImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 5)
     {
@@ -46,7 +47,7 @@ int itkMaskedRankImageFilterTest(int ac, char* av[] )
   // Create a filter
   typedef itk::MaskedRankImageFilter<ImageType,ImageType,ImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher filterWatch(filter);
+  FilterWatcher       filterWatch(filter);
 
   typedef FilterType::RadiusType RadiusType;
 
@@ -121,15 +122,16 @@ int itkMaskedRankImageFilterTest(int ac, char* av[] )
   filter->SetBackgroundMaskValue( 1 );
   if ( filter->GetBackgroundMaskValue() != 1 )
     {
-    std::cerr << "Background mask value value is not the expected one: " << filter->GetBackgroundMaskValue() << std::endl;
+    std::cerr << "Background mask value value is not the expected one: " << filter->GetBackgroundMaskValue() <<
+      std::endl;
     return EXIT_FAILURE;
     }
 
   try
     {
     int r = atoi( av[4] );
-    filter->SetInput(input->GetOutput());
-    filter->SetMaskImage(input2->GetOutput());
+    filter->SetInput(input->GetOutput() );
+    filter->SetMaskImage(input2->GetOutput() );
     filter->SetRadius( r );
     filter->SetRank( 0.5 );
     filter->SetMaskValue( 255 );

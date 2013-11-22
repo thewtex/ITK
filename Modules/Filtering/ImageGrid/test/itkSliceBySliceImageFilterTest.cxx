@@ -24,17 +24,18 @@
 #include "itkTestingMacros.h"
 #include "itkMedianImageFilter.h"
 
-
-void sliceCallBack(itk::Object* object, const itk::EventObject &, void*)
+void
+sliceCallBack(itk::Object* object, const itk::EventObject &, void*)
 {
   // the same typedefs than in the main function - should be done in a nicer way
-  const int                 Dimension = 3;
-  typedef unsigned char     PixelType;
+  const int Dimension = 3;
+
+  typedef unsigned char PixelType;
 
   typedef itk::Image< PixelType, Dimension >                   ImageType;
   typedef itk::SliceBySliceImageFilter< ImageType, ImageType > FilterType;
   typedef itk::MedianImageFilter< FilterType::InternalInputImageType,
-    FilterType::InternalOutputImageType >                      MedianType;
+                                  FilterType::InternalOutputImageType >                      MedianType;
 
   // real stuff begins here
   // get the slice by slice filter and the median filter
@@ -49,7 +50,8 @@ void sliceCallBack(itk::Object* object, const itk::EventObject &, void*)
   median->SetRadius( radius );
 }
 
-int itkSliceBySliceImageFilterTest(int argc, char * argv[])
+int
+itkSliceBySliceImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 4 )
@@ -58,12 +60,12 @@ int itkSliceBySliceImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-  const int                 Dimension = 3;
-  typedef unsigned char     PixelType;
+  const int Dimension = 3;
+  typedef unsigned char PixelType;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 
-  typedef itk::ImageFileReader< ImageType >       ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
@@ -97,7 +99,7 @@ int itkSliceBySliceImageFilterTest(int argc, char * argv[])
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[2] );
 
-  unsigned int slicingDimension;
+  unsigned int       slicingDimension;
   std::istringstream istrm( argv[3] );
   istrm >> slicingDimension;
   filter->SetDimension( slicingDimension );
@@ -114,7 +116,6 @@ int itkSliceBySliceImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-
   // set up a requested region of just one pixel and verify that was
   // all that was produced.
   std::cout << "Testing with requested region..." << std::endl;
@@ -129,11 +130,9 @@ int itkSliceBySliceImageFilterTest(int argc, char * argv[])
     rr.SetSize(i,1);
     }
 
-
-  monitor->SetInput(median->GetOutput());
+  monitor->SetInput(median->GetOutput() );
   filter->SetOutputFilter(monitor);
   filter->GetOutput()->SetRequestedRegion(rr);
-
 
   try
     {
@@ -159,7 +158,7 @@ int itkSliceBySliceImageFilterTest(int argc, char * argv[])
   //
   // Exercise exceptions
   //
-  bool caughtException;
+  bool                caughtException;
   FilterType::Pointer badFilter = FilterType::New();
 
   std::cout << "Testing with no filter set..." << std::endl;

@@ -49,20 +49,26 @@ template< typename TInputPixel >
 class MaximumAccumulator
 {
 public:
-  MaximumAccumulator( SizeValueType ) {}
-  ~MaximumAccumulator(){}
+  MaximumAccumulator( SizeValueType ) {
+  }
 
-  inline void Initialize()
+  ~MaximumAccumulator(){
+  }
+
+  inline void
+  Initialize()
   {
     m_Maximum = NumericTraits< TInputPixel >::NonpositiveMin();
   }
 
-  inline void operator()(const TInputPixel & input)
+  inline void
+  operator()(const TInputPixel & input)
   {
     m_Maximum = vnl_math_max(m_Maximum, input);
   }
 
-  inline TInputPixel GetValue()
+  inline TInputPixel
+  GetValue()
   {
     return m_Maximum;
   }
@@ -72,7 +78,7 @@ public:
 } // end namespace Function
 
 template< typename TInputImage, typename TOutputImage >
-class MaximumProjectionImageFilter:
+class MaximumProjectionImageFilter :
   public ProjectionImageFilter< TInputImage, TOutputImage,
                                 Functor::MaximumAccumulator< typename TInputImage::PixelType > >
 {
@@ -103,12 +109,17 @@ public:
 #endif
 
 protected:
-  MaximumProjectionImageFilter() {}
-  virtual ~MaximumProjectionImageFilter() {}
+  MaximumProjectionImageFilter() {
+  }
+
+  virtual
+  ~MaximumProjectionImageFilter() {
+  }
 
 private:
   MaximumProjectionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };                                            // end
                                               // MaximumProjectionImageFilter
 } //end namespace itk

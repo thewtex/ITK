@@ -21,11 +21,11 @@
 #include "itkBinaryMedianImageFilter.h"
 #include "itkTextOutput.h"
 
-int itkBinaryMedianImageFilterTest(int, char* [] )
+int
+itkBinaryMedianImageFilterTest(int, char* [] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
-
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   typedef itk::Image<unsigned short,2> ImageType;
 
@@ -58,10 +58,9 @@ int itkBinaryMedianImageFilterTest(int, char* [] )
   // Create a median image
   itk::BinaryMedianImageFilter<ImageType, ImageType>::Pointer median;
   median = itk::BinaryMedianImageFilter<ImageType,ImageType>::New();
-  median->SetInput( thresholder->GetOutput());
+  median->SetInput( thresholder->GetOutput() );
   median->SetForegroundValue( foreground );
   median->SetBackgroundValue( background );
-
 
   // define the neighborhood size used for the median filter (5x5)
   ImageType::SizeType neighRadius;
@@ -74,39 +73,38 @@ int itkBinaryMedianImageFilterTest(int, char* [] )
 
   itk::ImageRegionIterator<ImageType> it;
   it = itk::ImageRegionIterator<ImageType>(random->GetOutput(),
-                               random->GetOutput()->GetBufferedRegion());
+                                           random->GetOutput()->GetBufferedRegion() );
   std::cout << "Input image" << std::endl;
   unsigned int i;
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }
     }
 
   it = itk::ImageRegionIterator<ImageType>(thresholder->GetOutput(),
-                               thresholder->GetOutput()->GetBufferedRegion());
+                                           thresholder->GetOutput()->GetBufferedRegion() );
   std::cout << "Binary image" << std::endl;
 
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }
     }
 
-
   std::cout << "Output image" << std::endl;
   it = itk::ImageRegionIterator<ImageType>(median->GetOutput(),
-                               median->GetOutput()->GetBufferedRegion());
+                                           median->GetOutput()->GetBufferedRegion() );
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }

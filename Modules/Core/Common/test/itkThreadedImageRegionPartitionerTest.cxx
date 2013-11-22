@@ -20,19 +20,21 @@
 /*
  * Main test entry function
  */
-int itkThreadedImageRegionPartitionerTest(int , char* [])
+int
+itkThreadedImageRegionPartitionerTest(int , char* [])
 {
   const unsigned int Dimension = 2;
 
   typedef itk::ThreadedImageRegionPartitioner< Dimension > ThreadedImageRegionPartitionerType;
-  ThreadedImageRegionPartitionerType::Pointer threadedImageRegionPartitioner = ThreadedImageRegionPartitionerType::New();
+  ThreadedImageRegionPartitionerType::Pointer threadedImageRegionPartitioner =
+    ThreadedImageRegionPartitionerType::New();
 
   typedef ThreadedImageRegionPartitionerType::DomainType ImageRegionType;
 
-  typedef ImageRegionType::SizeType   SizeType;
-  typedef ImageRegionType::IndexType  IndexType;
+  typedef ImageRegionType::SizeType  SizeType;
+  typedef ImageRegionType::IndexType IndexType;
 
-  SizeType size;
+  SizeType  size;
   IndexType index;
 
   size.Fill(97);
@@ -44,7 +46,7 @@ int itkThreadedImageRegionPartitionerTest(int , char* [])
   completeRegion.SetIndex( index );
 
   // Define the expected results
-  ImageRegionType expectedRegion;
+  ImageRegionType                expectedRegion;
   std::vector< ImageRegionType > expectedSubRegions;
   size[1] = 25;
   expectedRegion.SetIndex( index );
@@ -66,7 +68,7 @@ int itkThreadedImageRegionPartitionerTest(int , char* [])
   expectedSubRegions.push_back( expectedRegion );
 
   const itk::ThreadIdType totalThreads = 4;
-  ImageRegionType subRegion;
+  ImageRegionType         subRegion;
   for( itk::ThreadIdType i = 0; i < totalThreads; ++i )
     {
     threadedImageRegionPartitioner->PartitionDomain( i,

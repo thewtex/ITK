@@ -20,20 +20,21 @@
 #include "itkListSample.h"
 #include "itkNeighborhoodSampler.h"
 
-int itkNeighborhoodSamplerTest1(int, char* [] )
+int
+itkNeighborhoodSamplerTest1(int, char* [] )
 {
 
   const unsigned int MeasurementVectorSize = 17;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >  MeasurementVectorType;
+      float, MeasurementVectorSize >  MeasurementVectorType;
 
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   typedef itk::Statistics::NeighborhoodSampler< SampleType > FilterType;
 
-  typedef FilterType::RadiusType              RadiusType;
-  typedef FilterType::InputRadiusObjectType   InputRadiusObjectType;
+  typedef FilterType::RadiusType            RadiusType;
+  typedef FilterType::InputRadiusObjectType InputRadiusObjectType;
 
   SampleType::Pointer sample = SampleType::New();
 
@@ -60,7 +61,6 @@ int itkNeighborhoodSamplerTest1(int, char* [] )
     std::cerr << "GetInput() didn't matched SetInput()" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Testing the settings of the Radius.
   const RadiusType radius1 = 237;
@@ -98,7 +98,6 @@ int itkNeighborhoodSamplerTest1(int, char* [] )
     std::cerr << "GetRadiusInput() test for value consistency 2 failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   InputRadiusObjectType::Pointer radiusObject1 =
     InputRadiusObjectType::New();
@@ -164,12 +163,10 @@ int itkNeighborhoodSamplerTest1(int, char* [] )
   radiusObject1->Set( 100 );
   filter->SetRadiusInput( radiusObject1 );
 
-
   //
   // Exercise the Print() method
   //
   filter->Print( std::cout );
-
 
   filter->Update();
 

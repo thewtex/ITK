@@ -18,7 +18,6 @@
 #ifndef __itkTIFFImageIOFactory_h
 #define __itkTIFFImageIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -28,7 +27,7 @@ namespace itk
  * \brief Create instances of TIFFImageIO objects using an object factory.
  * \ingroup ITKIOTIFF
  */
-class TIFFImageIOFactory:public ObjectFactoryBase
+class TIFFImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -44,12 +43,17 @@ public:
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
-  static TIFFImageIOFactory * FactoryNew() { return new TIFFImageIOFactory; }
+  static TIFFImageIOFactory *
+  FactoryNew() {
+    return new TIFFImageIOFactory;
+  }
+
   /** Run-time type information (and related methods). */
   itkTypeMacro(TIFFImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     TIFFImageIOFactory::Pointer TIFFFactory = TIFFImageIOFactory::New();
 
@@ -63,6 +67,7 @@ protected:
 private:
   TIFFImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

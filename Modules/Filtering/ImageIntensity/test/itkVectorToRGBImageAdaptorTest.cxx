@@ -25,7 +25,6 @@
  *
  */
 
-
 #include "itkVectorToRGBImageAdaptor.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
@@ -34,26 +33,26 @@
 //   Main code
 //
 //-------------------------
-int itkVectorToRGBImageAdaptorTest(int, char* [] ) {
-
+int
+itkVectorToRGBImageAdaptorTest(int, char* [] ) {
 
 //-------------------------------------
 //     Typedefs for convenience
 //-------------------------------------
 
-typedef float  ValueType;
+  typedef float ValueType;
 
-const unsigned int numberOfComponents = 3;
+  const unsigned int numberOfComponents = 3;
 
-typedef itk::Vector< ValueType,
-                     numberOfComponents >   VectorPixelType;
+  typedef itk::Vector< ValueType,
+                       numberOfComponents >   VectorPixelType;
 
-const unsigned int ImageDimension = 2;
+  const unsigned int ImageDimension = 2;
 
-typedef itk::Image< VectorPixelType, ImageDimension >         ImageType;
-typedef itk::VectorToRGBImageAdaptor< ImageType >             ImageAdaptorType;
-typedef itk::ImageRegionIteratorWithIndex< ImageType >        IteratorType;
-typedef itk::ImageRegionIteratorWithIndex< ImageAdaptorType > RGBIteratorType;
+  typedef itk::Image< VectorPixelType, ImageDimension >         ImageType;
+  typedef itk::VectorToRGBImageAdaptor< ImageType >             ImageAdaptorType;
+  typedef itk::ImageRegionIteratorWithIndex< ImageType >        IteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< ImageAdaptorType > RGBIteratorType;
 
   ImageType::SizeType size;
   size[0] = 2;
@@ -69,13 +68,12 @@ typedef itk::ImageRegionIteratorWithIndex< ImageAdaptorType > RGBIteratorType;
 
   ImageType::Pointer image = ImageType::New();
 
-
   image->SetLargestPossibleRegion( region );
   image->SetBufferedRegion( region );
   image->SetRequestedRegion( region );
   image->Allocate();
 
-  IteratorType  it1( image, image->GetRequestedRegion() );
+  IteratorType it1( image, image->GetRequestedRegion() );
 
   // Value to initialize the pixels
   ImageType::PixelType vector;
@@ -86,32 +84,31 @@ typedef itk::ImageRegionIteratorWithIndex< ImageAdaptorType > RGBIteratorType;
   // Initializing all the pixel in the image
   it1.GoToBegin();
   while( !it1.IsAtEnd() )
-  {
+    {
     it1.Set( vector );
     ++it1;
-  }
+    }
 
   // Reading the values to verify the image content
   std::cout << "--- Before --- " << std::endl;
   it1.GoToBegin();
   while( !it1.IsAtEnd() )
-  {
+    {
     const ImageType::PixelType c( it1.Get() );
     std::cout << c[0] << "  ";
     std::cout << c[1] << "  ";
     std::cout << c[2] << std::endl;
     ++it1;
-  }
+    }
 
   ImageAdaptorType::Pointer adaptor = ImageAdaptorType::New();
   adaptor->SetImage( image );
 
-
-  RGBIteratorType  it2( adaptor, adaptor->GetRequestedRegion() );
+  RGBIteratorType it2( adaptor, adaptor->GetRequestedRegion() );
 
   // Set the values of the image, using the adaptor
 
-  typedef ImageAdaptorType::AccessorType::ExternalType  RGBPixelType;
+  typedef ImageAdaptorType::AccessorType::ExternalType RGBPixelType;
 
   RGBPixelType color;
 
@@ -121,24 +118,22 @@ typedef itk::ImageRegionIteratorWithIndex< ImageAdaptorType > RGBIteratorType;
 
   it2.GoToBegin();
   while( !it2.IsAtEnd() )
-  {
+    {
     it2.Set( color );
     ++it2;
-  }
-
+    }
 
   std::cout << "--- After --- " << std::endl;
 
   it1.GoToBegin();
   while( !it1.IsAtEnd() )
-  {
+    {
     const ImageType::PixelType c( it1.Get() );
     std::cout << c[0] << "  ";
     std::cout << c[1] << "  ";
     std::cout << c[2] << std::endl;
     ++it1;
-  }
-
+    }
 
   return EXIT_SUCCESS;
 }

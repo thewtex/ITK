@@ -112,12 +112,12 @@ typename BayesianClassifierImageFilter< TInputVectorImage, TLabelsType,
 BayesianClassifierImageFilter< TInputVectorImage, TLabelsType,
                                TPosteriorsPrecisionType, TPriorsPrecisionType >
 ::GetPosteriorImage()
-{
+  {
   PosteriorsImageType *ptr = dynamic_cast< PosteriorsImageType * >(
-    this->ProcessObject::GetOutput(1) );
+      this->ProcessObject::GetOutput(1) );
 
   return ptr;
-}
+  }
 
 template< typename TInputVectorImage, typename TLabelsType,
           typename TPosteriorsPrecisionType, typename TPriorsPrecisionType >
@@ -396,6 +396,7 @@ BayesianClassifierImageFilter< TInputVectorImage, TLabelsType,
     ++itrPosteriorsImage;
     }
 }
+
 } // end namespace itk
 
 #endif

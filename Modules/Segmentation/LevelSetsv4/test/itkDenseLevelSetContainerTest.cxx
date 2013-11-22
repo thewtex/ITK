@@ -18,7 +18,8 @@
 
 #include "itkLevelSetContainer.h"
 
-int itkDenseLevelSetContainerTest( int , char* [] )
+int
+itkDenseLevelSetContainerTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
 
@@ -30,7 +31,7 @@ int itkDenseLevelSetContainerTest( int , char* [] )
   typedef itk::LevelSetContainer< NameType, LevelSetType > NamedLevelSetContainerType;
 
   NamedLevelSetContainerType::Pointer name_container =
-      NamedLevelSetContainerType::New();
+    NamedLevelSetContainerType::New();
 
   name_container->AddLevelSet( "Lung", LevelSetType::New() );
   name_container->AddLevelSet( "Heart", LevelSetType::New() );

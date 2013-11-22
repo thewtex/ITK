@@ -117,6 +117,7 @@ QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction< TMesh, TQEType >::Evaluate(
 
   return ( h );
 }
+
 } // namespace itk
 
 #endif

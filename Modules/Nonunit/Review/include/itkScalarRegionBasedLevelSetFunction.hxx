@@ -50,7 +50,7 @@ ScalarRegionBasedLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
       {
       otherIndex = this->m_SharedData->m_LevelSetDataPointerVector[*it]->GetIndex(globalIndex);
       hVal = this->m_SharedData->m_LevelSetDataPointerVector[*it]->m_HeavisideFunctionOfLevelSetImage->GetPixel(
-        otherIndex);
+          otherIndex);
 
       sum += ( 1 - hVal );
       product *= ( 1 - hVal );
@@ -99,7 +99,7 @@ ScalarRegionBasedLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
       {
       itInputIndex = this->m_SharedData->m_LevelSetDataPointerVector[*it]->GetIndex(globalIndex);
       hVal = this->m_SharedData->m_LevelSetDataPointerVector[*it]->m_HeavisideFunctionOfLevelSetImage->GetPixel(
-        itInputIndex);
+          itInputIndex);
       product *= ( 1 - hVal );
       }
     }
@@ -114,5 +114,6 @@ ScalarRegionBasedLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
 
   this->m_SharedData->m_LevelSetDataPointerVector[fId]->m_HeavisideFunctionOfLevelSetImage->SetPixel(inputIndex, newH);
 }
+
 } // end namespace itk
 #endif

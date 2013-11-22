@@ -39,7 +39,7 @@ void
 DistanceToCentroidMembershipFunction< TVector >
 ::SetCentroid(const CentroidType & centroid)
 {
-  if (centroid != m_DistanceMetric->GetOrigin())
+  if (centroid != m_DistanceMetric->GetOrigin() )
     {
     m_DistanceMetric->SetOrigin(centroid);
     this->Modified();
@@ -59,9 +59,9 @@ template< typename TVector >
 const typename DistanceToCentroidMembershipFunction< TVector >::CentroidType &
 DistanceToCentroidMembershipFunction< TVector >
 ::GetCentroid() const
-{
+  {
   return m_DistanceMetric->GetOrigin();
-}
+  }
 
 template< typename TVector >
 double
@@ -77,9 +77,10 @@ DistanceToCentroidMembershipFunction< TVector >
 ::InternalClone() const
 {
   LightObject::Pointer loPtr = Superclass::InternalClone();
+
   typename Self::Pointer membershipFunction =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(membershipFunction.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(membershipFunction.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -101,6 +102,7 @@ DistanceToCentroidMembershipFunction< TVector >
 
   os << indent << "Distance Metric: " << m_DistanceMetric.GetPointer() << std::endl;
 }
+
 } // end namespace Statistics
 } // end of namespace itk
 #endif

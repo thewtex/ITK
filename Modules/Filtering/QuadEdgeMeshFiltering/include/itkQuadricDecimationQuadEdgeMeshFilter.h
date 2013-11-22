@@ -29,7 +29,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInput, typename TOutput, typename TCriterion >
-class QuadricDecimationQuadEdgeMeshFilter:
+class QuadricDecimationQuadEdgeMeshFilter :
   public EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
 {
 public:
@@ -37,7 +37,7 @@ public:
   typedef SmartPointer< Self >                Pointer;
   typedef SmartPointer< const Self >          ConstPointer;
   typedef EdgeDecimationQuadEdgeMeshFilter<
-    TInput, TOutput, TCriterion >             Superclass;
+      TInput, TOutput, TCriterion >             Superclass;
 
   /** Run-time type information (and related methods).   */
   itkTypeMacro(QuadricDecimationQuadEdgeMeshFilter, EdgeDecimationQuadEdgeMeshFilter);
@@ -76,10 +76,10 @@ public:
   typedef typename Superclass::OperatorPointer OperatorPointer;
 
   typedef QuadEdgeMeshDecimationQuadricElementHelper< OutputPointType >
-  QuadricElementType;
+    QuadricElementType;
 
   typedef std::map< OutputPointIdentifier, QuadricElementType >
-  QuadricElementMapType;
+    QuadricElementMapType;
 
   typedef typename QuadricElementMapType::iterator QuadricElementMapIterator;
 
@@ -88,14 +88,16 @@ protected:
   QuadricDecimationQuadEdgeMeshFilter();
 
   /** \brief Destructor */
-  virtual ~QuadricDecimationQuadEdgeMeshFilter();
+  virtual
+  ~QuadricDecimationQuadEdgeMeshFilter();
 
   /** \brief Compute the quadric error at the origin of the edge
    *  \param[in] iEdge input edge
    *  \param[in,out] oQ quadric element to be modified
    *  \param[in] outputMesh mesh to be processed
    */
-  inline void QuadricAtOrigin(OutputQEType *iEdge, QuadricElementType & oQ, OutputMeshType *outputMesh)
+  inline void
+  QuadricAtOrigin(OutputQEType *iEdge, QuadricElementType & oQ, OutputMeshType *outputMesh)
   {
     OutputPointIdentifier id[3];
 
@@ -117,7 +119,8 @@ protected:
    * \param[in] iEdge input edge
    * \return measure value, here the corresponding quadric error
    */
-  inline MeasureType MeasureEdge(OutputQEType *iEdge)
+  inline MeasureType
+  MeasureEdge(OutputQEType *iEdge)
   {
     OutputPointIdentifier id_org = iEdge->GetOrigin();
     OutputPointIdentifier id_dest = iEdge->GetDestination();
@@ -151,8 +154,11 @@ protected:
   virtual void Initialize();
 
 private:
-  QuadricDecimationQuadEdgeMeshFilter(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  QuadricDecimationQuadEdgeMeshFilter(const Self &); // purposely not
+                                                     // implemented
+  void operator=(const Self &);                      // purposely not
+
+  // implemented
 
   QuadricElementMapType m_Quadric;
 };

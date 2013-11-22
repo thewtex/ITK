@@ -21,7 +21,8 @@
 //  In order to initialize deformable registration algorithm it is often
 //  convenient to generate a displacemnt field from a set of feature
 //  correspondances provided by the user. The following example illustrates how
-//  to use the \doxygen{itkLandmarkDisplacementFieldSource} class in order to generate a
+//  to use the \doxygen{itkLandmarkDisplacementFieldSource} class in order to
+// generate a
 //  displacement field from the specification of two sets of landmarks.
 //  Landmarks from one set are associated one-to-one to the landmarks in the
 //  other set. Each landmark pair defines one displacement vector. This class
@@ -44,8 +45,8 @@
 
 #include <fstream>
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -57,19 +58,17 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   float          VectorComponentType;
+  const     unsigned int Dimension = 2;
+  typedef   float VectorComponentType;
 
-  typedef   itk::Vector< VectorComponentType, Dimension >    VectorType;
+  typedef   itk::Vector< VectorComponentType, Dimension > VectorType;
 
-  typedef   itk::Image< VectorType,  Dimension >   DisplacementFieldType;
+  typedef   itk::Image< VectorType,  Dimension > DisplacementFieldType;
 
+  typedef   unsigned char                      PixelType;
+  typedef   itk::Image< PixelType, Dimension > FixedImageType;
 
-  typedef   unsigned char                            PixelType;
-  typedef   itk::Image< PixelType, Dimension >       FixedImageType;
-
-  typedef   itk::ImageFileReader< FixedImageType >   FixedReaderType;
-
+  typedef   itk::ImageFileReader< FixedImageType > FixedReaderType;
 
   FixedReaderType::Pointer fixedReader = FixedReaderType::New();
 
@@ -86,12 +85,11 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   FixedImageType::ConstPointer fixedImage = fixedReader->GetOutput();
 
   typedef itk::LandmarkDisplacementFieldSource<
-                                DisplacementFieldType
-                                             >  FilterType;
+      DisplacementFieldType
+      >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -107,9 +105,9 @@ int main( int argc, char * argv[] )
   typedef FilterType::LandmarkPointType        LandmarkPointType;
 
   LandmarkContainerType::Pointer sourceLandmarks
-                                               = LandmarkContainerType::New();
+    = LandmarkContainerType::New();
   LandmarkContainerType::Pointer targetLandmarks
-                                               = LandmarkContainerType::New();
+    = LandmarkContainerType::New();
   std::ifstream pointsFile;
   pointsFile.open( argv[1] );
 

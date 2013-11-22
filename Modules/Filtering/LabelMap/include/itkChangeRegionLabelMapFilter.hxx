@@ -51,8 +51,9 @@ ChangeRegionLabelMapFilter< TInputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
-        { return; }
+                { return; }
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
 
@@ -62,6 +63,7 @@ ChangeRegionLabelMapFilter< TInputImage >
 ::GenerateOutputInformation()
 {
   Superclass::GenerateOutputInformation();
+
   this->GetOutput()->SetLargestPossibleRegion(m_Region);
 }
 
@@ -110,7 +112,7 @@ ChangeRegionLabelMapFilter< TInputImage >
     }
 
   typename LabelObjectType::ConstLineIterator lit( tmp );
-  while( ! lit.IsAtEnd() )
+  while( !lit.IsAtEnd() )
     {
     const IndexType      idx = lit.GetLine().GetIndex();
     const IndexValueType length = lit.GetLine().GetLength();
@@ -162,8 +164,10 @@ ChangeRegionLabelMapFilter< TInputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Region: " << m_Region << std::endl;
 }
+
 } // end namespace itk
 
 #endif

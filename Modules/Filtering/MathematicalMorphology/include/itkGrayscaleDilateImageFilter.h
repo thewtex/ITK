@@ -50,7 +50,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class GrayscaleDilateImageFilter:
+class GrayscaleDilateImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -82,9 +82,9 @@ public:
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
 
   typedef MovingHistogramDilateImageFilter< TInputImage, TOutputImage, TKernel >
-  HistogramFilterType;
+    HistogramFilterType;
   typedef BasicDilateImageFilter< TInputImage, TOutputImage, TKernel >
-  BasicFilterType;
+    BasicFilterType;
 
   typedef FlatStructuringElement< itkGetStaticConstMacro(ImageDimension) > FlatKernelType;
 
@@ -131,7 +131,9 @@ public:
 
 protected:
   GrayscaleDilateImageFilter();
-  ~GrayscaleDilateImageFilter() {}
+  ~GrayscaleDilateImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();

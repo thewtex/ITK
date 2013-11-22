@@ -24,7 +24,8 @@ namespace fem
 {
 
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer LoadPoint::CreateAnother(void) const
+::itk::LightObject::Pointer
+LoadPoint::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -38,7 +39,8 @@ namespace fem
   return smartPtr;
 }
 
-void LoadPoint::SetPoint(const vnl_vector<Float> p)
+void
+LoadPoint::SetPoint(const vnl_vector<Float> p)
 {
   this->m_Point = p;
 }
@@ -48,7 +50,8 @@ vnl_vector<itk::fem::Element::Float> LoadPoint::GetPoint()
   return this->m_Point;
 }
 
-void LoadPoint::SetForce(const vnl_vector<Float> f)
+void
+LoadPoint::SetForce(const vnl_vector<Float> f)
 {
   this->m_ForcePoint = f;
 }
@@ -59,7 +62,8 @@ vnl_vector<itk::fem::Element::Float> LoadPoint::GetForce()
 }
 
 /* Method modified from the Landmark Load version */
-void LoadPoint::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
+void
+LoadPoint::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
 {
   const unsigned int NnDOF = element->GetNumberOfDegreesOfFreedomPerNode();
   const unsigned int Nnodes = element->GetNumberOfNodes();
@@ -87,9 +91,11 @@ void LoadPoint::ApplyLoad(Element::ConstPointer element, Element::VectorType & F
     }
 }
 
-void LoadPoint::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadPoint::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Point: " << this->m_Point << std::endl;
   os << indent << "Force Point: " << this->m_ForcePoint << std::endl;
 }

@@ -93,7 +93,7 @@ CumulativeGaussianCostFunction
   // Interpolation between table lookup entries.
   else
     {
-      // Tabulated error function evaluated for 0 to 299.
+    // Tabulated error function evaluated for 0 to 299.
     double y[300] =
       {
       0,          .011283416, .022564575, .033841222, .045111106, .056371978, .067621594, .07885772,  .090078126,
@@ -188,11 +188,11 @@ CumulativeGaussianCostFunction
   for ( unsigned int i = 0; i < m_RangeDimension; i++ )
     {
     m_Measure[i] =  parameters.get(2)
-                   + ( ( parameters.get(3)
-                         - parameters.get(2) )
-                       * ( EvaluateCumulativeGaussian( ( i
-                                                         - parameters.get(0) )
-                                                       / ( parameters.get(1) * vcl_sqrt(2.0) ) ) + 1 ) / 2 );
+      + ( ( parameters.get(3)
+            - parameters.get(2) )
+          * ( EvaluateCumulativeGaussian( ( i
+                                            - parameters.get(0) )
+                                          / ( parameters.get(1) * vcl_sqrt(2.0) ) ) + 1 ) / 2 );
     }
 
   return m_Measure;
@@ -247,8 +247,10 @@ CumulativeGaussianCostFunction
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Range Dimension = " << m_RangeDimension
      << std::endl;
 }
+
 } // end namespace itk
 #endif

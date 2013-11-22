@@ -41,9 +41,9 @@ namespace itk {
  * \ingroup ITKLabelMap
  */
 template<typename TImage, typename TMarkerImage, typename TAttributeAccessor=
-  typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+           typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class BinaryReconstructionLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -60,10 +60,10 @@ public:
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
 
-  typedef TMarkerImage                              MarkerImageType;
-  typedef typename MarkerImageType::Pointer         MarkerImagePointer;
-  typedef typename MarkerImageType::ConstPointer    MarkerImageConstPointer;
-  typedef typename MarkerImageType::PixelType       MarkerImagePixelType;
+  typedef TMarkerImage                           MarkerImageType;
+  typedef typename MarkerImageType::Pointer      MarkerImagePointer;
+  typedef typename MarkerImageType::ConstPointer MarkerImageConstPointer;
+  typedef typename MarkerImageType::PixelType    MarkerImagePixelType;
 
   typedef TAttributeAccessor AttributeAccessorType;
 
@@ -86,33 +86,37 @@ public:
     (Concept::Convertible<int, PixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<PixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
-   /** Set the marker image */
-  void SetMarkerImage(TMarkerImage *input)
-    {
+  /** Set the marker image */
+  void
+  SetMarkerImage(TMarkerImage *input)
+  {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast<TMarkerImage *>(input) );
-    }
+  }
 
   /** Get the marker image */
-  MarkerImageType * GetMarkerImage()
-    {
-    return static_cast<MarkerImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
-    }
+  MarkerImageType *
+  GetMarkerImage()
+  {
+    return static_cast<MarkerImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1) ) );
+  }
 
-   /** Set the input image */
-  void SetInput1(TImage *input)
-    {
+  /** Set the input image */
+  void
+  SetInput1(TImage *input)
+  {
     this->SetInput( input );
-    }
+  }
 
   /** Set the marker image */
-  void SetInput2(TMarkerImage *input)
-    {
+  void
+  SetInput2(TMarkerImage *input)
+  {
     this->SetMarkerImage( input );
-    }
+  }
 
   /**
    * Set/Get the value used as "foreground" in the output image.
@@ -123,7 +127,8 @@ public:
 
 protected:
   BinaryReconstructionLabelMapFilter();
-  ~BinaryReconstructionLabelMapFilter() {};
+  ~BinaryReconstructionLabelMapFilter() {
+  }
 
   virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
@@ -131,7 +136,7 @@ protected:
 
 private:
   BinaryReconstructionLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                     //purposely not implemented
 
   MarkerImagePixelType m_ForegroundValue;
 

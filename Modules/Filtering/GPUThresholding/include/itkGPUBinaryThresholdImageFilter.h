@@ -44,26 +44,34 @@ public:
   ~GPUBinaryThreshold() {
   }
 
-  void SetLowerThreshold(const TInput & thresh)
+  void
+  SetLowerThreshold(const TInput & thresh)
   {
     m_LowerThreshold = thresh;
   }
-  void SetUpperThreshold(const TInput & thresh)
+
+  void
+  SetUpperThreshold(const TInput & thresh)
   {
     m_UpperThreshold = thresh;
   }
-  void SetInsideValue(const TOutput & value)
+
+  void
+  SetInsideValue(const TOutput & value)
   {
     m_InsideValue = value;
   }
-  void SetOutsideValue(const TOutput & value)
+
+  void
+  SetOutsideValue(const TOutput & value)
   {
     m_OutsideValue = value;
   }
 
   /** Setup GPU kernel arguments for this functor.
    * Returns current argument index to set additional arguments in the GPU kernel */
-  int SetGPUKernelArguments(GPUKernelManager::Pointer KernelManager, int KernelHandle)
+  int
+  SetGPUKernelArguments(GPUKernelManager::Pointer KernelManager, int KernelHandle)
   {
     KernelManager->SetKernelArg(KernelHandle, 0, sizeof(TInput), &(m_LowerThreshold) );
     KernelManager->SetKernelArg(KernelHandle, 1, sizeof(TInput), &(m_UpperThreshold) );
@@ -129,7 +137,8 @@ public:
 
 protected:
   GPUBinaryThresholdImageFilter();
-  virtual ~GPUBinaryThresholdImageFilter() {
+  virtual
+  ~GPUBinaryThresholdImageFilter() {
   }
 
   /** This method is used to set the state of the filter before
@@ -161,10 +170,13 @@ public:
   typedef SmartPointer<const Self>             ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const {
+  virtual const char*
+  GetITKSourceVersion() const {
     return ITK_SOURCE_VERSION;
   }
-  const char* GetDescription() const {
+
+  const char*
+  GetDescription() const {
     return "A Factory for GPUBinaryThresholdImageFilter";
   }
 
@@ -175,7 +187,8 @@ public:
   itkTypeMacro(GPUBinaryThresholdImageFilterFactory, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GPUBinaryThresholdImageFilterFactory::Pointer factory = GPUBinaryThresholdImageFilterFactory::New();
 

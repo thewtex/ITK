@@ -40,8 +40,9 @@ namespace itk
  * \wikiexample{SpectralAnalysis/CrossCorrelationInFourierDomain,Compute the cross-correlation of two images in the Fourier domain}
  * \endwiki
  */
-template< typename TInputImage, typename TOutputImage=Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
-class VnlForwardFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
+class VnlForwardFFTImageFilter :
   public ForwardFFTImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -82,14 +83,17 @@ public:
 #endif
 
 protected:
-  VnlForwardFFTImageFilter() {}
-  ~VnlForwardFFTImageFilter() {}
+  VnlForwardFFTImageFilter() {
+  }
+
+  ~VnlForwardFFTImageFilter() {
+  }
 
   virtual void GenerateData();
 
 private:
   VnlForwardFFTImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                          //purposely not implemented
+  void operator=(const Self &);           //purposely not implemented
 
   typedef vnl_vector< vcl_complex< InputPixelType > > SignalVectorType;
 };

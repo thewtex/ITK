@@ -74,18 +74,35 @@ public:
     m_InsideValue    = NumericTraits< TOutput >::max();
   }
 
-  ~BinaryThreshold() {}
+  ~BinaryThreshold() {
+  }
 
-  void SetLowerThreshold(const TInput & thresh)
-  { m_LowerThreshold = thresh; }
-  void SetUpperThreshold(const TInput & thresh)
-  { m_UpperThreshold = thresh; }
-  void SetInsideValue(const TOutput & value)
-  { m_InsideValue = value; }
-  void SetOutsideValue(const TOutput & value)
-  { m_OutsideValue = value; }
+  void
+  SetLowerThreshold(const TInput & thresh)
+  {
+    m_LowerThreshold = thresh;
+  }
 
-  bool operator!=(const BinaryThreshold & other) const
+  void
+  SetUpperThreshold(const TInput & thresh)
+  {
+    m_UpperThreshold = thresh;
+  }
+
+  void
+  SetInsideValue(const TOutput & value)
+  {
+    m_InsideValue = value;
+  }
+
+  void
+  SetOutsideValue(const TOutput & value)
+  {
+    m_OutsideValue = value;
+  }
+
+  bool
+  operator!=(const BinaryThreshold & other) const
   {
     if ( m_LowerThreshold != other.m_LowerThreshold
          || m_UpperThreshold != other.m_UpperThreshold
@@ -97,12 +114,14 @@ public:
     return false;
   }
 
-  bool operator==(const BinaryThreshold & other) const
+  bool
+  operator==(const BinaryThreshold & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     if ( m_LowerThreshold <= A && A <= m_UpperThreshold )
       {
@@ -120,7 +139,7 @@ private:
 }
 
 template< typename TInputImage, typename TOutputImage >
-class BinaryThresholdImageFilter:
+class BinaryThresholdImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::BinaryThreshold<
@@ -205,7 +224,10 @@ public:
 
 protected:
   BinaryThresholdImageFilter();
-  virtual ~BinaryThresholdImageFilter() {}
+  virtual
+  ~BinaryThresholdImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method is used to set the state of the filter before

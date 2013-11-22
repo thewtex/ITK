@@ -50,17 +50,18 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 7 )
     {
-      std::cerr << "Missing parameters. " << std::endl;
-      std::cerr << "Usage: " << std::endl;
-      std::cerr << argv[0]
-                << " inputImageFile outputImageFile startX startY sizeX sizeY"
-                << std::endl;
-      return -1;
+    std::cerr << "Missing parameters. " << std::endl;
+    std::cerr << "Usage: " << std::endl;
+    std::cerr << argv[0]
+              << " inputImageFile outputImageFile startX startY sizeX sizeY"
+              << std::endl;
+    return -1;
     }
 
   // Software Guide : BeginLatex
@@ -107,10 +108,10 @@ int main( int argc, char *argv[] )
   inputRegion.SetIndex( inputStart );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
-  // The destination region in the output image is defined using the input region
+  // The destination region in the output image is defined using the input
+  // region
   // size, but a different start index.  The starting index for the destination
   // region is the corner of the newly generated image.
   //
@@ -128,7 +129,6 @@ int main( int argc, char *argv[] )
   outputRegion.SetIndex( outputStart );
   // Software Guide : EndCodeSnippet
 
-
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
@@ -142,8 +142,8 @@ int main( int argc, char *argv[] )
     return -1;
     }
 
-    // Check that the region is contained within the input image.
-  if ( ! reader->GetOutput()->GetRequestedRegion().IsInside( inputRegion ) )
+  // Check that the region is contained within the input image.
+  if ( !reader->GetOutput()->GetRequestedRegion().IsInside( inputRegion ) )
     {
     std::cerr << "Error" << std::endl;
     std::cerr << "The region " << inputRegion << "is not contained within the input image region "
@@ -169,8 +169,8 @@ int main( int argc, char *argv[] )
   ImageType::Pointer outputImage = ImageType::New();
   outputImage->SetRegions( outputRegion );
   const ImageType::SpacingType& spacing = reader->GetOutput()->GetSpacing();
-  const ImageType::PointType& inputOrigin = reader->GetOutput()->GetOrigin();
-  double   outputOrigin[ Dimension ];
+  const ImageType::PointType&   inputOrigin = reader->GetOutput()->GetOrigin();
+  double                        outputOrigin[ Dimension ];
 
   for(unsigned int i=0; i< Dimension; i++)
     {
@@ -182,15 +182,16 @@ int main( int argc, char *argv[] )
   outputImage->Allocate();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // \index{Iterators!construction of} \index{Iterators!and image regions}
   // The necessary images and region definitions are now in place.  All that is
-  // left to do is to create the iterators and perform the copy.  Note that image
+  // left to do is to create the iterators and perform the copy.  Note that
+  // image
   // iterators are not accessed via smart pointers so they are light-weight
   // objects that are instantiated on the stack.  Also notice how the input and
-  // output iterators are defined over the \emph{same corresponding region}.  Though the
+  // output iterators are defined over the \emph{same corresponding region}.
+  //  Though the
   // images are different sizes, they both contain the same target subregion.
   //
   // Software Guide : EndLatex
@@ -209,7 +210,6 @@ int main( int argc, char *argv[] )
     ++outputIt;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -246,7 +246,8 @@ int main( int argc, char *argv[] )
   //
   // \small
   // \begin{verbatim}
-  // ImageRegionIterator FatMRISlice.png ImageRegionIteratorOutput.png 20 70 210 140
+  // ImageRegionIterator FatMRISlice.png ImageRegionIteratorOutput.png 20 70 210
+  // 140
   // \end{verbatim}
   // \normalsize
   //
@@ -257,7 +258,8 @@ int main( int argc, char *argv[] )
   // \centering
   // \includegraphics[width=0.4\textwidth]{FatMRISlice}
   // \includegraphics[width=0.3\textwidth]{ImageRegionIteratorOutput}
-  // \itkcaption[Copying an image subregion using ImageRegionIterator]{Cropping a
+  // \itkcaption[Copying an image subregion using ImageRegionIterator]{Cropping
+  // a
   // region from an image.  The original image is shown at left.  The image on
   // the right is the result of applying the ImageRegionIterator example code.}
   // \protect\label{fig:ImageRegionIteratorOutput}

@@ -64,7 +64,7 @@ VideoSource<TOutputVideoStream>
 template<typename TOutputVideoStream>
 typename VideoSource< TOutputVideoStream >::OutputVideoStreamType*
 VideoSource<TOutputVideoStream>::GetOutput()
-{
+  {
   // Make sure there is at least 1 output
   if (this->GetNumberOfOutputs() < 1)
     {
@@ -74,7 +74,7 @@ VideoSource<TOutputVideoStream>::GetOutput()
 
   // Return the output
   return this->GetOutput(0);
-}
+  }
 
 //
 // GetOutput(idx)

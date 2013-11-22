@@ -58,19 +58,19 @@ const typename HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::InputImage1Type *
 HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput1()
-{
+  {
   return this->GetInput();
-}
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 const typename HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::InputImage2Type *
 HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput2()
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage2 * >
-    ( this->ProcessObject::GetInput(1) );
-}
+           ( this->ProcessObject::GetInput(1) );
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 void
@@ -104,6 +104,7 @@ HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -116,15 +117,15 @@ HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
 
   // Pass the first input through as the output
   InputImage1Pointer image = const_cast< TInputImage1 * >( this->GetInput1() );
-  this->GraftOutput(image);
 
+  this->GraftOutput(image);
 
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
   progress->SetMiniPipelineFilter(this);
 
   typedef DirectedHausdorffDistanceImageFilter< InputImage1Type, InputImage2Type >
-  Filter12Type;
+    Filter12Type;
   typename Filter12Type::Pointer filter12 = Filter12Type::New();
   filter12->SetInput1( this->GetInput1() );
   filter12->SetInput2( this->GetInput2() );
@@ -132,7 +133,7 @@ HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
   filter12->SetUseImageSpacing(m_UseImageSpacing);
 
   typedef DirectedHausdorffDistanceImageFilter< InputImage2Type, InputImage1Type >
-  Filter21Type;
+    Filter21Type;
   typename Filter21Type::Pointer filter21 = Filter21Type::New();
   filter21->SetInput1( this->GetInput2() );
   filter21->SetInput2( this->GetInput1() );
@@ -157,7 +158,8 @@ HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
     {
     m_HausdorffDistance = distance21;
     }
-  m_AverageHausdorffDistance = ( filter12->GetAverageHausdorffDistance() + filter21->GetAverageHausdorffDistance() ) * 0.5;
+  m_AverageHausdorffDistance =
+    ( filter12->GetAverageHausdorffDistance() + filter21->GetAverageHausdorffDistance() ) * 0.5;
 }
 
 template< typename TInputImage1, typename TInputImage2 >
@@ -174,5 +176,6 @@ HausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
   os << indent << "Use Image Spacing : "
      << m_UseImageSpacing << std::endl;
 }
+
 } // end namespace itk
 #endif

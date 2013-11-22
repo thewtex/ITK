@@ -48,7 +48,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TGradientImage = TInputImage, typename TOutputImage = TInputImage >
-class RobustAutomaticThresholdImageFilter:
+class RobustAutomaticThresholdImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -86,7 +86,7 @@ public:
   typedef typename TOutputImage::RegionType OutputImageRegionType;
 
   typedef RobustAutomaticThresholdCalculator< TInputImage, TGradientImage >
-  CalculatorType;
+    CalculatorType;
 
   /** Image related typedefs. */
   itkStaticConstMacro(InputImageDimension, unsigned int,
@@ -124,33 +124,39 @@ public:
 #endif
 
   /** Set the gradient image */
-  void SetGradientImage(GradientImageType *input)
+  void
+  SetGradientImage(GradientImageType *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< GradientImageType * >( input ) );
   }
 
   /** Get the gradient image */
-  GradientImageType * GetGradientImage()
+  GradientImageType *
+  GetGradientImage()
   {
     return static_cast< GradientImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Set the input image */
-  void SetInput1(TInputImage *input)
+  void
+  SetInput1(TInputImage *input)
   {
     this->SetInput(input);
   }
 
   /** Set the gradient image */
-  void SetInput2(GradientImageType *input)
+  void
+  SetInput2(GradientImageType *input)
   {
     this->SetGradientImage(input);
   }
 
 protected:
   RobustAutomaticThresholdImageFilter();
-  ~RobustAutomaticThresholdImageFilter(){}
+  ~RobustAutomaticThresholdImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateInputRequestedRegion();

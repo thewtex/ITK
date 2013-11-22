@@ -18,7 +18,6 @@
 #ifndef __itkWatershedSegmentTable_h
 #define __itkWatershedSegmentTable_h
 
-
 #include "itkDataObject.h"
 #include <list>
 #include "itkOneWayEquivalencyTable.h"
@@ -44,7 +43,7 @@ namespace watershed
  * \ingroup ITKWatersheds
  */
 template< typename TScalar >
-class SegmentTable:public DataObject
+class SegmentTable : public DataObject
 {
 public:
   /** Define smart pointers for this object */
@@ -60,13 +59,18 @@ public:
   /** The value type for lists of adjacencies contained in each table
       entry */
   struct edge_pair_t {
-    edge_pair_t() {}
-    edge_pair_t(IdentifierType l, ScalarType s):label(l), height(s) {}
+    edge_pair_t() {
+    }
+
+    edge_pair_t(IdentifierType l, ScalarType s) : label(l), height(s) {
+    }
+
     IdentifierType label;
     ScalarType height;
 
     /** Necessary operator for sorting the adjacency lists */
-    bool operator<(const edge_pair_t & o) const
+    bool
+    operator<(const edge_pair_t & o) const
     {
       if ( this->height < o.height )
         {
@@ -77,7 +81,8 @@ public:
         return false;
         }
     }
-  };
+
+    };
 
   /** Structure for storing lists of adjacencies (edges) and their
       saliencies. */
@@ -87,11 +92,11 @@ public:
   struct segment_t {
     ScalarType min;
     edge_list_t edge_list;
-  };
+    };
 
   /** Define the container type for the table */
   typedef itksys::hash_map< IdentifierType, segment_t,
-    itksys::hash< IdentifierType > >           HashMapType;
+                            itksys::hash< IdentifierType > >           HashMapType;
   typedef typename HashMapType::iterator       Iterator;
   typedef typename HashMapType::const_iterator ConstIterator;
   typedef typename HashMapType::value_type     ValueType;
@@ -108,7 +113,8 @@ public:
 
   /** Lookup a segment in the table.  Returns a pointer to the
    * entry.  On failure, returns a null pointer.   */
-  segment_t * Lookup(const IdentifierType a)
+  segment_t *
+  Lookup(const IdentifierType a)
   {
     Iterator result = m_HashMap.find(a);
 
@@ -118,7 +124,8 @@ public:
 
   /** Lookup a segment in the table.  Returns a const pointer
    * to the entry.  On failure, returns a null pointer.   */
-  const segment_t * Lookup(const IdentifierType a) const
+  const segment_t *
+  Lookup(const IdentifierType a) const
   {
     ConstIterator result = m_HashMap.find(a);
 
@@ -128,54 +135,80 @@ public:
 
   /** Returns TRUE if the entry key is found in the table.  FALSE if the key is
    * not found in the table.   */
-  bool IsEntry(const IdentifierType a) const
+  bool
+  IsEntry(const IdentifierType a) const
   {
     if ( m_HashMap.find(a) == m_HashMap.end() ) { return false; }
     else { return true; }
   }
 
   /** Deletes an entry from the table.   */
-  void Erase(const IdentifierType a)
-  {  m_HashMap.erase(a); }
+  void
+  Erase(const IdentifierType a)
+  {
+    m_HashMap.erase(a);
+  }
 
   /** Removes all the entries in the table.   */
-  void Clear()
-  {      m_HashMap.clear();    }
+  void
+  Clear()
+  {
+    m_HashMap.clear();
+  }
 
   /** Returns true if the table is empty and false if the table is not empty.
    */
-  bool Empty() const
-  {      return m_HashMap.empty();    }
+  bool
+  Empty() const
+  {
+    return m_HashMap.empty();
+  }
 
   /** Sorts all the entries in the edge lists from least to greatest saliency.
    */
   void SortEdgeLists();
 
   /** Returns the number of entries in the table.   */
-  typename HashMapType::size_type  Size() const
-  {      return m_HashMap.size();     }
+  typename HashMapType::size_type
+  Size() const
+  {
+    return m_HashMap.size();
+  }
 
   /** Merges two entries of the table.  from->to  */
   //  void Merge(const IdentifierType from, const IdentifierType to);
 
   /** Returns an iterator pointing to the first element in the (unordered)
       table. */
-  Iterator Begin() { return m_HashMap.begin(); }
+  Iterator
+  Begin() {
+    return m_HashMap.begin();
+  }
 
   /** Returns an iterator pointing to one element past the last element in the
    * (unordered table).   */
-  Iterator End()   { return m_HashMap.end();   }
+  Iterator
+  End()   {
+    return m_HashMap.end();
+  }
 
   /** Returns a const iterator pointing to the first element in the (unordered)
    * table.  */
-  ConstIterator Begin() const { return m_HashMap.begin(); }
+  ConstIterator
+  Begin() const {
+    return m_HashMap.begin();
+  }
 
   /** Returns a const iterator pointing to one element past the last element in
    * the  (unordered table).   */
-  ConstIterator End()   const { return m_HashMap.end();   }
+  ConstIterator
+  End()   const {
+    return m_HashMap.end();
+  }
 
   /** Convenience methods for debugging   */
-  unsigned int GetSegmentMemorySize() const
+  unsigned int
+  GetSegmentMemorySize() const
   {
     return sizeof( segment_t );
   }
@@ -184,34 +217,46 @@ public:
 
   /** Set/Get the maximum depth of image on which this segment table is based.
    * (Should set really be calling modified? jc 11/16/01) */
-  void SetMaximumDepth(ScalarType s)
+  void
+  SetMaximumDepth(ScalarType s)
   {
     m_MaximumDepth = s;
     this->Modified();
   }
 
-  ScalarType GetMaximumDepth() const
-  { return m_MaximumDepth; }
+  ScalarType
+  GetMaximumDepth() const
+  {
+    return m_MaximumDepth;
+  }
 
   /** Copies the contents of another segment table into this segment table.
       This is really operator= in disguise, although superclass information is
       not copied. */
-  void Copy(const Self & o)
+  void
+  Copy(const Self & o)
   {
     m_HashMap = o.m_HashMap;
     m_MaximumDepth = o.m_MaximumDepth;
   }
 
 protected:
-  SegmentTable() {}
-  virtual ~SegmentTable() {}
+  SegmentTable() {
+  }
+
+  virtual
+  ~SegmentTable() {
+  }
 
   HashMapType m_HashMap;
 
   ScalarType m_MaximumDepth;
 
 private:
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {
+  }
+
 };
 } // end namespace watershed
 } // end namespace itk

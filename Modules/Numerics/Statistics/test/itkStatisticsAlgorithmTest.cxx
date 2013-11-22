@@ -19,13 +19,14 @@
 #include "itkListSample.h"
 #include "itkStatisticsAlgorithm.h"
 
-int itkStatisticsAlgorithmTest( int, char * [] )
+int
+itkStatisticsAlgorithmTest( int, char * [] )
 {
   std::cout << "StatisticsAlgorithm Test \n \n";
 
   const unsigned int measurementVectorSize = 2;
 
-  typedef itk::Array< float > MeasurementVectorType;
+  typedef itk::Array< float >                                  MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   SampleType::Pointer sample = SampleType::New();
@@ -77,7 +78,6 @@ int itkStatisticsAlgorithmTest( int, char * [] )
     std::cout << excp << std::endl;
     }
 
-
   MeasurementVectorType measure( measurementVectorSize );
 
   MeasurementVectorType realUpper( measurementVectorSize );
@@ -114,7 +114,6 @@ int itkStatisticsAlgorithmTest( int, char * [] )
       }
     }
 
-
   // Now testing the real algorithm
   try
     {
@@ -129,7 +128,6 @@ int itkStatisticsAlgorithmTest( int, char * [] )
     std::cout << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   const float epsilon = 1e-5;
 

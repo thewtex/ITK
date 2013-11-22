@@ -56,7 +56,8 @@
 // Software Guide : BeginLatex
 // Software Guide : EndLatex
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -72,12 +73,11 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short       PixelType;
-  const unsigned int         Dimension = 2;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 2;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   if( argc == 3 )
     {
@@ -95,7 +95,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >     ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
   // Software Guide : EndCodeSnippet
@@ -108,7 +108,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO       ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
   ImageIOType::Pointer dicomIO = ImageIOType::New();
   // Software Guide : EndCodeSnippet
 
@@ -156,7 +156,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::MetaDataDictionary   DictionaryType;
+  typedef itk::MetaDataDictionary DictionaryType;
 
   const  DictionaryType & dictionary = dicomIO->GetMetaDataDictionary();
   // Software Guide : EndCodeSnippet
@@ -174,7 +174,8 @@ int main( int argc, char* argv[] )
 
   // Software Guide : BeginLatex
   //
-  // We instantiate the iterators that will make possible to walk through all the
+  // We instantiate the iterators that will make possible to walk through all
+  // the
   // entries of the MetaDataDictionary.
   //
   // Software Guide : EndLatex
@@ -186,29 +187,35 @@ int main( int argc, char* argv[] )
 
   //  Software Guide : BeginLatex
   //
-  // For each one of the entries in the dictionary, we check first if its element
-  // can be converted to a string, a \code{dynamic\_cast} is used for this purpose.
+  // For each one of the entries in the dictionary, we check first if its
+  // element
+  // can be converted to a string, a \code{dynamic\_cast} is used for this
+  // purpose.
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   while( itr != end )
     {
-    itk::MetaDataObjectBase::Pointer  entry = itr->second;
+    itk::MetaDataObjectBase::Pointer entry = itr->second;
 
     MetaDataStringType::Pointer entryvalue =
       dynamic_cast<MetaDataStringType *>( entry.GetPointer() );
     // Software Guide : EndCodeSnippet
 
-
     // Software Guide : BeginLatex
     //
-    // For those entries that can be converted, we take their DICOM tag and pass it
-    // to the \code{GetLabelFromTag()} method of the GDCMImageIO class. This method
-    // checks the DICOM dictionary and returns the string label associated to the
+    // For those entries that can be converted, we take their DICOM tag and pass
+    // it
+    // to the \code{GetLabelFromTag()} method of the GDCMImageIO class. This
+    // method
+    // checks the DICOM dictionary and returns the string label associated to
+    // the
     // tag that we are providing in the \code{tagkey} variable. If the label is
-    // found, it is returned in \code{labelId} variable. The method itself return
-    // false if the tagkey is not found in the dictionary.  For example "0010|0010"
+    // found, it is returned in \code{labelId} variable. The method itself
+    // return
+    // false if the tagkey is not found in the dictionary.  For example
+    // "0010|0010"
     // in \code{tagkey} becomes "Patient's Name" in \code{labelId}.
     //
     // Software Guide : EndLatex
@@ -218,12 +225,13 @@ int main( int argc, char* argv[] )
       {
       std::string tagkey   = itr->first;
       std::string labelId;
-      bool found =  itk::GDCMImageIO::GetLabelFromTag( tagkey, labelId );
+      bool        found =  itk::GDCMImageIO::GetLabelFromTag( tagkey, labelId );
       // Software Guide : EndCodeSnippet
 
       // Software Guide : BeginLatex
       //
-      // The actual value of the dictionary entry is obtained as a string with the
+      // The actual value of the dictionary entry is obtained as a string with
+      // the
       // \code{GetMetaDataObjectValue()} method.
       //
       // \index{MetaDataObject!GetMetaDataObjectValue()}
@@ -236,7 +244,8 @@ int main( int argc, char* argv[] )
 
       // Software Guide : BeginLatex
       //
-      // At this point we can print out an entry by concatenating the DICOM Name or
+      // At this point we can print out an entry by concatenating the DICOM Name
+      // or
       // label, the numeric tag and its actual value.
       //
       // Software Guide : EndLatex
@@ -275,8 +284,8 @@ int main( int argc, char* argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  std::string entryId = "0010|0010";
-    DictionaryType::ConstIterator tagItr = dictionary.Find( entryId );
+  std::string                   entryId = "0010|0010";
+  DictionaryType::ConstIterator tagItr = dictionary.Find( entryId );
   // Software Guide : EndCodeSnippet
   // Software Guide : BeginLatex
   //
@@ -289,14 +298,14 @@ int main( int argc, char* argv[] )
   if( tagItr != end )
     {
     MetaDataStringType::ConstPointer entryvalue =
-     dynamic_cast<const MetaDataStringType *>(
-                                 tagItr->second.GetPointer() );
+      dynamic_cast<const MetaDataStringType *>(
+        tagItr->second.GetPointer() );
     // Software Guide : EndCodeSnippet
-
 
     // Software Guide : BeginLatex
     //
-    // If the dynamic cast succeed, then we can print out the values of the label,
+    // If the dynamic cast succeed, then we can print out the values of the
+    // label,
     // the tag and the actual value.
     //
     // Software Guide : EndLatex
@@ -313,7 +322,8 @@ int main( int argc, char* argv[] )
 
   // Software Guide : BeginLatex
   //
-  //  Another way to read a specific tag is to use the encapsulation above MetaDataDictionary
+  //  Another way to read a specific tag is to use the encapsulation above
+  // MetaDataDictionary
   //  Note that this is stricly equivalent to the above code.
   //
   // Software Guide : EndLatex
@@ -341,7 +351,6 @@ int main( int argc, char* argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // For a full description of the DICOM dictionary please look at the file.
@@ -360,13 +369,13 @@ int main( int argc, char* argv[] )
 
   // Software Guide : BeginCodeSnippet
   itk::ImageIOBase::IOPixelType pixelType
-                                       = reader->GetImageIO()->GetPixelType();
+    = reader->GetImageIO()->GetPixelType();
   itk::ImageIOBase::IOComponentType componentType
-                                   = reader->GetImageIO()->GetComponentType();
+    = reader->GetImageIO()->GetComponentType();
   std::cout << "PixelType: " << reader->GetImageIO()
-                               ->GetPixelTypeAsString(pixelType) << std::endl;
+    ->GetPixelTypeAsString(pixelType) << std::endl;
   std::cout << "Component Type: " << reader->GetImageIO()
-                       ->GetComponentTypeAsString(componentType) << std::endl;
+    ->GetComponentTypeAsString(componentType) << std::endl;
   // Software Guide : EndCodeSnippet
 
   return EXIT_SUCCESS;

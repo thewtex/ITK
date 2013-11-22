@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkFastMarchingImageToNodePairContainerAdaptor.h"
 #include "itkFastMarchingImageFilterBase.h"
 #include "itkFastMarchingThresholdStoppingCriterion.h"
@@ -24,27 +23,34 @@
 #include "itkTextOutput.h"
 #include "itkCommand.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
-int itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
+int
+itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
 {
   (void) argc;
   (void) argv;
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   // create a fastmarching object
   typedef float PixelType;
@@ -53,7 +59,7 @@ int itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
   typedef itk::Image< PixelType, Dimension > FloatImageType;
 
   typedef itk::FastMarchingThresholdStoppingCriterion< FloatImageType, FloatImageType >
-      CriterionType;
+    CriterionType;
 
   typedef itk::FastMarchingImageFilterBase< FloatImageType, FloatImageType >
     FastMarchingType;
@@ -64,7 +70,7 @@ int itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
   FastMarchingType::Pointer marcher = FastMarchingType::New();
   marcher->SetStoppingCriterion( criterion );
 
-  ShowProgressObject progressWatch(marcher);
+  ShowProgressObject                                    progressWatch(marcher);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -80,7 +86,7 @@ int itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
   marcher->SetOutputSize( size );
 
   // setup a speed image of ones
-  FloatImageType::Pointer speedImage = FloatImageType::New();
+  FloatImageType::Pointer    speedImage = FloatImageType::New();
   FloatImageType::RegionType region;
   region.SetSize( size );
   speedImage->SetLargestPossibleRegion( region );
@@ -131,9 +137,9 @@ int itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
   MaskImage->Allocate();
 
   itk::ImageRegionIterator<FloatImageType>
-    speedIter( speedImage, speedImage->GetBufferedRegion() );
+  speedIter( speedImage, speedImage->GetBufferedRegion() );
   itk::ImageRegionIteratorWithIndex<FloatImageType>
-    maskIter( MaskImage, MaskImage->GetBufferedRegion() );
+  maskIter( MaskImage, MaskImage->GetBufferedRegion() );
   while ( !speedIter.IsAtEnd() )
     {
     speedIter.Set( 1.0 );
@@ -156,7 +162,7 @@ int itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
   marcher->SetInput( speedImage );
 
   typedef itk::FastMarchingImageToNodePairContainerAdaptor< FloatImageType,
-      FloatImageType, FloatImageType > AdaptorType;
+                                                            FloatImageType, FloatImageType > AdaptorType;
 
   AdaptorType::Pointer adaptor = AdaptorType::New();
   adaptor->SetIsForbiddenImageBinaryMask( true );
@@ -183,14 +189,14 @@ int itkFastMarchingImageFilterRealTest2(int argc, char* argv[] )
   // check the results
   FloatImageType::Pointer output = marcher->GetOutput();
   itk::ImageRegionIterator<FloatImageType>
-    iterator( output, output->GetBufferedRegion() );
+  iterator( output, output->GetBufferedRegion() );
 
   bool passed = true;
 
   while( !iterator.IsAtEnd() )
     {
     FloatImageType::IndexType tempIndex = iterator.GetIndex();
-    double outputValue = static_cast< double >( iterator.Get() );
+    double                    outputValue = static_cast< double >( iterator.Get() );
 
     if( ( ( tempIndex[0] > 22 ) && ( tempIndex [0] < 42 ) && ( tempIndex[1] > 27 ) && ( tempIndex[1] < 37 ) ) ||
         ( ( tempIndex[1] > 22 ) && ( tempIndex [1] < 42 ) && ( tempIndex[0] > 27 ) && ( tempIndex[0] < 37 ) ) )

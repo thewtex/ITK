@@ -32,19 +32,25 @@ namespace itk
 /**
  * Initialize static member that controls warning display.
  */
-bool Object:: m_GlobalWarningDisplay = true;
+bool Object::m_GlobalWarningDisplay = true;
 
 class Observer
 {
 public:
   Observer(Command *c,
            const EventObject *event,
-           unsigned long tag):m_Command(c),
+           unsigned long tag) : m_Command(c),
     m_Event(event),
     m_Tag(tag)
-  {}
-  virtual ~Observer()
-  { delete m_Event; }
+  {
+  }
+
+  virtual
+  ~Observer()
+  {
+    delete m_Event;
+  }
+
   Command::Pointer   m_Command;
   const EventObject *m_Event;
   unsigned long      m_Tag;
@@ -53,7 +59,10 @@ public:
 class SubjectImplementation
 {
 public:
-  SubjectImplementation() { m_Count = 0; }
+  SubjectImplementation() {
+    m_Count = 0;
+  }
+
   ~SubjectImplementation();
   unsigned long AddObserver(const EventObject & event, Command *cmd);
 
@@ -494,7 +503,7 @@ Object
  * to the most recently modified object.
  */
 Object
-::Object():
+::Object() :
   LightObject(),
   m_Debug(false),
   m_SubjectImplementation(NULL),
@@ -564,4 +573,5 @@ Object
     }
   *m_MetaDataDictionary = rhs;
 }
+
 } // end namespace itk

@@ -19,7 +19,8 @@
 #include "itkConfigure.h"
 
 //
-// This example is based on the on that was contributed by Stephan in the users list
+// This example is based on the on that was contributed by Stephan in the users
+// list
 //
 //     http://public.kitware.com/pipermail/insight-users/2005-June/013482.html
 //
@@ -43,11 +44,13 @@
 
 #if !defined(ITK_USE_FFTWF)
 //#error "This example only works when single precision FFTW is used
-//Changing WorkPixeltype to double and changing this conditional to ITK_USE_FFTWD
+//Changing WorkPixeltype to double and changing this conditional to
+// ITK_USE_FFTWD
 //will also work.
 #endif
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc != 3 )
     {
@@ -62,10 +65,10 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  const unsigned int      Dimension = 2;
+  const unsigned int Dimension = 2;
   //  typedef unsigned char   OutputPixelType;
-  typedef unsigned short  OutputPixelType;
-  typedef float           WorkPixelType;
+  typedef unsigned short OutputPixelType;
+  typedef float          WorkPixelType;
 
   typedef itk::Image< WorkPixelType,  Dimension > InputImageType;
   typedef itk::Image< WorkPixelType,  Dimension > WorkImageType;
@@ -99,13 +102,13 @@ int main( int argc, char * argv[] )
   typedef itk::FFTWInverseFFTImageFilter < ComplexImageType > invFFTFilterType;
 
   invFFTFilterType::Pointer fftoutput = invFFTFilterType::New();
-  fftoutput->SetInput(fftinput->GetOutput()); // try to recover the input image
+  fftoutput->SetInput(fftinput->GetOutput() ); // try to recover the input image
   fftoutput->Update();
 
   // Rescale the output to suit the output image type
   typedef itk::RescaleIntensityImageFilter<
-                                      WorkImageType,
-                                      OutputImageType > RescaleFilterType;
+      WorkImageType,
+      OutputImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer intensityrescaler = RescaleFilterType::New();
 
@@ -116,13 +119,20 @@ int main( int argc, char * argv[] )
   intensityrescaler->SetOutputMaximum( 65535 );
 
   // Write the output
-  writer->SetInput(intensityrescaler->GetOutput());
+  writer->SetInput(intensityrescaler->GetOutput() );
   writer->Update();
 
-  //DEBUG: std::cout << "inputreader "<<inputreader->GetOutput()->GetLargestPossibleRegion().GetSize() << std::endl;
-  //DEBUG: std::cout << "fftinput " <<fftinput->GetOutput()->GetLargestPossibleRegion().GetSize() << std::endl;
-  //DEBUG: std::cout << "fftoutput " <<fftoutput->GetOutput()->GetLargestPossibleRegion().GetSize() << std::endl;
-  //DEBUG: std::cout << "intensityrescaller " <<intensityrescaler->GetOutput()->GetLargestPossibleRegion().GetSize() << std::endl;
+  //DEBUG: std::cout << "inputreader
+  // "<<inputreader->GetOutput()->GetLargestPossibleRegion().GetSize() <<
+  // std::endl;
+  //DEBUG: std::cout << "fftinput "
+  // <<fftinput->GetOutput()->GetLargestPossibleRegion().GetSize() << std::endl;
+  //DEBUG: std::cout << "fftoutput "
+  // <<fftoutput->GetOutput()->GetLargestPossibleRegion().GetSize() <<
+  // std::endl;
+  //DEBUG: std::cout << "intensityrescaller "
+  // <<intensityrescaler->GetOutput()->GetLargestPossibleRegion().GetSize() <<
+  // std::endl;
   return EXIT_SUCCESS;
 
 }

@@ -22,7 +22,8 @@
 #include "itkBinaryMorphologicalOpeningImageFilter.h"
 #include "itkBinaryBallStructuringElement.h"
 
-int itkBinaryMorphologicalOpeningImageFilterTest(int argc, char * argv[])
+int
+itkBinaryMorphologicalOpeningImageFilterTest(int argc, char * argv[])
 {
   if( argc < 6 )
     {
@@ -35,18 +36,18 @@ int itkBinaryMorphologicalOpeningImageFilterTest(int argc, char * argv[])
   const int dim = 2;
 
   // Verify that the input and output pixel types can be different
-  typedef unsigned short                      InputPixelType;
-  typedef itk::Image< InputPixelType, dim >   InputImageType;
+  typedef unsigned short                    InputPixelType;
+  typedef itk::Image< InputPixelType, dim > InputImageType;
 
-  typedef unsigned char                       OutputPixelType;
-  typedef itk::Image< OutputPixelType, dim >  OutputImageType;
+  typedef unsigned char                      OutputPixelType;
+  typedef itk::Image< OutputPixelType, dim > OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
   typedef itk::BinaryBallStructuringElement< InputPixelType, dim > KernelType;
-  KernelType ball;
+  KernelType           ball;
   KernelType::SizeType ballSize;
   ballSize.Fill( atoi( argv[3] ) );
   ball.SetRadius( ballSize );

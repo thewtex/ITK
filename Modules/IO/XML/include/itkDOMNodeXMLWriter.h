@@ -61,10 +61,10 @@ class DOMNodeXMLWriter : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef DOMNodeXMLWriter            Self;
-  typedef Object                      Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef DOMNodeXMLWriter           Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -101,7 +101,7 @@ protected:
 
 private:
   DOMNodeXMLWriter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);   //purposely not implemented
 
   /** Variable to hold the output XML file name. */
   std::string m_FileName;
@@ -109,16 +109,20 @@ private:
   /** Variable to hold the input DOM object. */
   ConstInputPointer m_Input;
 
-  /** Variable to hold the indentation (i.e. number of white spaces) for a child node w.r.t. its parent. */
+  /** Variable to hold the indentation (i.e. number of white spaces) for a child
+    node w.r.t. its parent. */
   std::string m_IndentStep;
 };
 
 } // namespace itk
 
-/** The operator "<<" is overloaded such that a DOM object can be conveniently write to an output stream. */
-inline std::ostream& operator<<( std::ostream& os, const itk::DOMNode& object )
+/** The operator "<<" is overloaded such that a DOM object can be conveniently
+  write to an output stream. */
+inline std::ostream&
+operator<<( std::ostream& os, const itk::DOMNode& object )
 {
   itk::DOMNodeXMLWriter::Pointer writer = itk::DOMNodeXMLWriter::New();
+
   writer->SetInput( &object );
   writer->Update( os );
   return os;

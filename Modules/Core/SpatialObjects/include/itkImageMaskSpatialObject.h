@@ -35,7 +35,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class ImageMaskSpatialObject:
+class ImageMaskSpatialObject :
   public ImageSpatialObject< TDimension, unsigned char >
 {
 public:
@@ -58,7 +58,7 @@ public:
   typedef typename Superclass::InterpolatorType InterpolatorType;
 
   typedef itk::ImageSliceConstIteratorWithIndex< ImageType >
-  SliceIteratorType;
+    SliceIteratorType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -89,9 +89,11 @@ protected:
   void operator=(const Self &);         //purposely not implemented
 
   ImageMaskSpatialObject();
-  virtual ~ImageMaskSpatialObject();
+  virtual
+  ~ImageMaskSpatialObject();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end of namespace itk
 

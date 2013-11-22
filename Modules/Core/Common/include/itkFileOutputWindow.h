@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT FileOutputWindow:public OutputWindow
+class ITKCommon_EXPORT FileOutputWindow : public OutputWindow
 {
 public:
   /** Standard class typedefs. */
@@ -74,7 +74,8 @@ public:
 
 protected:
   FileOutputWindow();
-  virtual ~FileOutputWindow();
+  virtual
+  ~FileOutputWindow();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void Initialize();
@@ -89,6 +90,7 @@ protected:
 private:
   FileOutputWindow(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -48,7 +48,8 @@ static unsigned int test_regiongrowKLM4D();
 // This tests KLM region growing segmentation
 //
 
-int itkRegionGrow2DTest(int, char * [] )
+int
+itkRegionGrow2DTest(int, char * [] )
 {
   int pass;
 
@@ -91,7 +92,8 @@ int itkRegionGrow2DTest(int, char * [] )
   return EXIT_SUCCESS;
 }
 
-unsigned int test_RegionGrowKLMExceptionHandling()
+unsigned int
+test_RegionGrowKLMExceptionHandling()
 {
   itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
@@ -126,7 +128,7 @@ unsigned int test_RegionGrowKLMExceptionHandling()
   // Set the filter with valid inputs
 
   typedef itk::KLMRegionGrowImageFilter<ImageType5D, ImageType5D>
-  KLMRegionGrowImageFilterType5D;
+    KLMRegionGrowImageFilterType5D;
 
   KLMRegionGrowImageFilterType5D::Pointer
     exceptionTestingFilter5D = KLMRegionGrowImageFilterType5D::New();
@@ -208,7 +210,8 @@ unsigned int test_RegionGrowKLMExceptionHandling()
   return EXIT_SUCCESS;
 }
 
-unsigned int test_regiongrowKLM1D()
+unsigned int
+test_regiongrowKLM1D()
 {
   itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
@@ -268,7 +271,7 @@ unsigned int test_regiongrowKLM1D()
   // Set up the filter
 
   typedef itk::KLMRegionGrowImageFilter<ImageType, OutputImageType>
-  KLMRegionGrowImageFilterType;
+    KLMRegionGrowImageFilterType;
 
   KLMRegionGrowImageFilterType::Pointer KLMFilter =
     KLMRegionGrowImageFilterType::New();
@@ -293,7 +296,7 @@ unsigned int test_regiongrowKLM1D()
     } \
   std::cout << std::endl << "Filter has been udpated" << std::endl
 
-  std::cout << std::endl << "First test, lambda = 0" << std::endl;
+    std::cout << std::endl << "First test, lambda = 0" << std::endl;
 
   KLMFilter->SetMaximumLambda( 0 );
   int nregions = 2;
@@ -829,7 +832,8 @@ unsigned int test_regiongrowKLM1D()
   return EXIT_SUCCESS;
 }
 
-unsigned int test_regiongrowKLM2D()
+unsigned int
+test_regiongrowKLM2D()
 {
   itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
@@ -907,7 +911,7 @@ unsigned int test_regiongrowKLM2D()
   // Set up the filter
 
   typedef itk::KLMRegionGrowImageFilter<ImageType, OutputImageType>
-  KLMRegionGrowImageFilterType;
+    KLMRegionGrowImageFilterType;
 
   KLMRegionGrowImageFilterType::Pointer KLMFilter =
     KLMRegionGrowImageFilterType::New();
@@ -1066,7 +1070,7 @@ unsigned int test_regiongrowKLM2D()
   typedef itk::ImageRegionIterator<LabelledImageType> LabelImageIterator;
 
   LabelImageIterator
-  labelIt( labelledImage, labelledImage->GetBufferedRegion() );
+    labelIt( labelledImage, labelledImage->GetBufferedRegion() );
 
   LabelType pixelLabel;
   LabelType m = 1;
@@ -1167,7 +1171,7 @@ unsigned int test_regiongrowKLM2D()
   LabelledImageType::Pointer labelledImage2 = KLMFilter->GetLabelledImage();
 
   LabelImageIterator
-  labelIt2( labelledImage2, labelledImage2->GetBufferedRegion() );
+    labelIt2( labelledImage2, labelledImage2->GetBufferedRegion() );
 
   k = 0;
   while( !labelIt2.IsAtEnd() )
@@ -1273,7 +1277,7 @@ unsigned int test_regiongrowKLM2D()
   std::cout << "Extracting and checking label image" << std::endl;
 
   typedef itk::Statistics::ScalarImageToHistogramGenerator<LabelledImageType>
-  HistogramGeneratorType;
+    HistogramGeneratorType;
 
   HistogramGeneratorType::Pointer histogramGenerator =
     HistogramGeneratorType::New();
@@ -1335,7 +1339,8 @@ unsigned int test_regiongrowKLM2D()
 
 } // End test_regiongrow2D()
 
-unsigned int test_regiongrowKLM3D()
+unsigned int
+test_regiongrowKLM3D()
 {
   itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
@@ -1459,7 +1464,7 @@ unsigned int test_regiongrowKLM3D()
   // Set up the filter
 
   typedef itk::KLMRegionGrowImageFilter<ImageType, OutputImageType>
-  KLMRegionGrowImageFilterType;
+    KLMRegionGrowImageFilterType;
 
   KLMRegionGrowImageFilterType::Pointer KLMFilter =
     KLMRegionGrowImageFilterType::New();
@@ -1706,7 +1711,7 @@ unsigned int test_regiongrowKLM3D()
   typedef itk::ImageRegionIterator<LabelledImageType> LabelImageIterator;
 
   LabelImageIterator
-  labelIt( labelledImage, labelledImage->GetBufferedRegion() );
+    labelIt( labelledImage, labelledImage->GetBufferedRegion() );
 
   LabelType pixelLabel;
   LabelType m = 1;
@@ -1806,7 +1811,7 @@ unsigned int test_regiongrowKLM3D()
   LabelledImageType::Pointer labelledImage2 = KLMFilter->GetLabelledImage();
 
   LabelImageIterator
-  labelIt2( labelledImage2, labelledImage2->GetBufferedRegion() );
+    labelIt2( labelledImage2, labelledImage2->GetBufferedRegion() );
 
   k = 0;
   while( !labelIt2.IsAtEnd() )
@@ -1911,7 +1916,7 @@ unsigned int test_regiongrowKLM3D()
   std::cout << "Extracting and checking label image" << std::endl;
 
   typedef itk::Statistics::ScalarImageToHistogramGenerator<LabelledImageType>
-  HistogramGeneratorType;
+    HistogramGeneratorType;
 
   HistogramGeneratorType::Pointer histogramGenerator =
     HistogramGeneratorType::New();
@@ -1974,7 +1979,8 @@ unsigned int test_regiongrowKLM3D()
 } // End test_regiongrow3D()
 
 #ifndef _GLIBCXX_DEBUG
-unsigned int test_regiongrowKLM4D()
+unsigned int
+test_regiongrowKLM4D()
 {
   itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
@@ -2013,7 +2019,7 @@ unsigned int test_regiongrowKLM4D()
   // Set up the filter
 
   typedef itk::KLMRegionGrowImageFilter<ImageType, OutputImageType>
-  KLMRegionGrowImageFilterType;
+    KLMRegionGrowImageFilterType;
 
   KLMRegionGrowImageFilterType::Pointer KLMFilter =
     KLMRegionGrowImageFilterType::New();
@@ -2133,7 +2139,7 @@ unsigned int test_regiongrowKLM4D()
   typedef itk::ImageRegionIterator<LabelledImageType> LabelImageIterator;
 
   LabelImageIterator
-  labelIt( labelledImage, labelledImage->GetBufferedRegion() );
+    labelIt( labelledImage, labelledImage->GetBufferedRegion() );
 
   LabelType pixelLabel;
   LabelType m = 1;
@@ -2221,7 +2227,7 @@ unsigned int test_regiongrowKLM4D()
   LabelledImageType::Pointer labelledImage2 = KLMFilter->GetLabelledImage();
 
   LabelImageIterator
-  labelIt2( labelledImage2, labelledImage2->GetBufferedRegion() );
+    labelIt2( labelledImage2, labelledImage2->GetBufferedRegion() );
 
   k = 0;
   inIt.GoToBegin();
@@ -2320,7 +2326,7 @@ unsigned int test_regiongrowKLM4D()
   std::cout << "Extracting and checking label image" << std::endl;
 
   typedef itk::Statistics::ScalarImageToHistogramGenerator<LabelledImageType>
-  HistogramGeneratorType;
+    HistogramGeneratorType;
 
   HistogramGeneratorType::Pointer histogramGenerator =
     HistogramGeneratorType::New();

@@ -28,7 +28,9 @@ class MRCImageIOTester
 public:
   virtual int Test(int argc, char* argv[] );
 
-  virtual ~MRCImageIOTester(){ }
+  virtual
+  ~MRCImageIOTester(){
+  }
 
   static bool Write( const std::string &filePrefix, std::string &outputPath );
 
@@ -39,7 +41,8 @@ public:
 };
 
 template <typename TImageType>
-bool MRCImageIOTester<TImageType>
+bool
+MRCImageIOTester<TImageType>
 ::Write( const std::string &filePrefix, std::string &outputPath )
 {
   try
@@ -56,7 +59,7 @@ bool MRCImageIOTester<TImageType>
     image->SetRegions( m_ImageSize );
     image->Allocate();
 
-    unsigned int cnt = 0;
+    unsigned int                          cnt = 0;
     itk::ImageRegionIterator< ImageType > i( image, image->GetLargestPossibleRegion() );
     i.GoToBegin();
     while (!i.IsAtEnd() )
@@ -140,7 +143,8 @@ bool MRCImageIOTester<TImageType>
 }
 
 template <typename TImageType>
-bool MRCImageIOTester<TImageType>
+bool
+MRCImageIOTester<TImageType>
 ::Read( const std::string &filePrefix,
         std::string &outputPath,
         unsigned int index )
@@ -275,7 +279,8 @@ bool MRCImageIOTester<TImageType>
 }
 
 // int MRCImageIOTester::Test(int argc, char* argv[] )
-int itkMRCImageIOTest(int argc, char* argv[])
+int
+itkMRCImageIOTest(int argc, char* argv[])
 {
 
   if( argc < 2 )

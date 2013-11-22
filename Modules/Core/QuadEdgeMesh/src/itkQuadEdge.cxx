@@ -485,4 +485,5 @@ QuadEdge
     }
   return 0;
 }
+
 } // end namespace itk

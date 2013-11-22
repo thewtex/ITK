@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkDerivativeOperator.h"
 
 namespace itk {
@@ -24,11 +23,12 @@ template< typename TPixel, unsigned int VDimension = 2>
 class DerivativeOperatorTestHelper : public DerivativeOperator< TPixel, VDimension >
 {
 public:
-  typedef DerivativeOperator< TPixel, VDimension >  Superclass;
-  typedef typename Superclass::CoefficientVector    CoefficientVector;
+  typedef DerivativeOperator< TPixel, VDimension > Superclass;
+  typedef typename Superclass::CoefficientVector   CoefficientVector;
 
-  bool CheckCoefficients( const CoefficientVector & expected )
-    {
+  bool
+  CheckCoefficients( const CoefficientVector & expected )
+  {
     CoefficientVector coefficients = this->GenerateCoefficients();
 
     if( expected.size() != coefficients.size() )
@@ -50,14 +50,17 @@ public:
         }
       }
     return true;
-    }
+  }
+
 };
 }
 
-int itkDerivativeOperatorTest(int, char* [] )
+int
+itkDerivativeOperatorTest(int, char* [] )
 {
-  const unsigned int  Dimension = 1;
-  typedef float       PixelType;
+  const unsigned int Dimension = 1;
+
+  typedef float PixelType;
 
   typedef itk::DerivativeOperatorTestHelper< PixelType, Dimension > OperatorType;
 
@@ -93,7 +96,7 @@ int itkDerivativeOperatorTest(int, char* [] )
   expected1.push_back( -0.5 );
 
   // Check actual coefficient values
-  if( ! op1.CheckCoefficients( expected1 ) )
+  if( !op1.CheckCoefficients( expected1 ) )
     {
     return EXIT_FAILURE;
     }
@@ -102,7 +105,7 @@ int itkDerivativeOperatorTest(int, char* [] )
   OperatorType op1b( op1 );
 
   // Check actual coefficient values
-  if( ! op1b.CheckCoefficients( expected1 ) )
+  if( !op1b.CheckCoefficients( expected1 ) )
     {
     std::cerr << "Copy constructor failed" << std::endl;
     return EXIT_FAILURE;
@@ -112,7 +115,7 @@ int itkDerivativeOperatorTest(int, char* [] )
   OperatorType op1c( op1 );
 
   // Check actual coefficient values
-  if( ! op1c.CheckCoefficients( expected1 ) )
+  if( !op1c.CheckCoefficients( expected1 ) )
     {
     std::cerr << "Operator assignment failed" << std::endl;
     return EXIT_FAILURE;
@@ -129,11 +132,10 @@ int itkDerivativeOperatorTest(int, char* [] )
   op2.SetOrder(2);
 
   // Check actual coefficient values
-  if( ! op2.CheckCoefficients( expected2 ) )
+  if( !op2.CheckCoefficients( expected2 ) )
     {
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

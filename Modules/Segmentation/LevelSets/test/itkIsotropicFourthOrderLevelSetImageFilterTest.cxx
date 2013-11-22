@@ -19,7 +19,8 @@
 #include "itkIsotropicFourthOrderLevelSetImageFilter.h"
 #include <iostream>
 
-int itkIsotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
+int
+itkIsotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
 {
   typedef itk::Image<float, 2> ImageType;
   typedef ImageType::IndexType IndexType;
@@ -45,22 +46,22 @@ int itkIsotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
       if ( (index[0]>=32) && (index[0]<=96) &&
            (index[1]>=32) && (index[1]<=96) )
         {
-        im_init->SetPixel (index, static_cast<float>(-1));
+        im_init->SetPixel (index, static_cast<float>(-1) );
 
         }
       else
         {
-        im_init->SetPixel (index, static_cast<float>(1));
+        im_init->SetPixel (index, static_cast<float>(1) );
         }
       }
 
   typedef itk::IsotropicFourthOrderLevelSetImageFilter<ImageType,
-    ImageType> FilterType;
+                                                       ImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetMaxFilterIteration (250);
 
   filter->SetInput(im_init);
-  std::cout<<"max iteration = "<<(filter->GetMaxFilterIteration())<<"\n";
+  std::cout<<"max iteration = "<<(filter->GetMaxFilterIteration() )<<"\n";
   std::cout<<"Starting processing.\n";
   filter->Update();
   filter->Print(std::cout);

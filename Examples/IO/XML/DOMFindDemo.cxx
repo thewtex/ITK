@@ -43,7 +43,8 @@
 #include <iostream>
 #include "itkMacro.h"
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if ( argc < 3 )
     {
@@ -60,10 +61,11 @@ int main( int argc, char* argv[] )
     itk::DOMNode::Pointer dom = reader->GetModifiableOutput();
 
     // the following code demonstrates the DOM function Find("QueryString");
-    // it navigates through the loaded XML document by typing a query string on the console and
+    // it navigates through the loaded XML document by typing a query string on
+    // the console and
     // displaying the returned result.
     itk::DOMNode::Pointer dom1 = dom;
-    std::string query = "";
+    std::string           query = "";
     do
       {
       std::cout << "query = \"" << query << "\"" << std::endl;

@@ -36,7 +36,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -48,16 +49,16 @@ int main( int argc, char * argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The next step is to decide which pixel types to use for the input and output
+  //  The next step is to decide which pixel types to use for the input and
+  // output
   //  images.
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef  unsigned char  InputPixelType;
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char InputPixelType;
+  typedef  unsigned char OutputPixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -67,10 +68,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -81,9 +81,8 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::OtsuThresholdImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -95,9 +94,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -106,11 +104,9 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -128,7 +124,6 @@ int main( int argc, char * argv[] )
   writer->SetInput( filter->GetOutput() );
   reader->SetFileName( argv[1] );
 
-
   //  Software Guide : BeginLatex
   //
   //  The image obtained with the reader is passed as input to the
@@ -142,7 +137,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -167,7 +161,6 @@ int main( int argc, char * argv[] )
   filter->SetInsideValue(  insideValue  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The execution of the filter is triggered by invoking the \code{Update()}
@@ -181,7 +174,6 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We print out here the Threshold value that was computed internally by the
@@ -194,14 +186,14 @@ int main( int argc, char * argv[] )
   std::cout << "Threshold = " << threshold << std::endl;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
   // \includegraphics[width=0.44\textwidth]{OtsuThresholdImageFilterOutput}
-  // \itkcaption[OtsuThresholdImageFilter output]{Effect of the OtsuThresholdImageFilter on a slice from a MRI
+  // \itkcaption[OtsuThresholdImageFilter output]{Effect of the
+  // OtsuThresholdImageFilter on a slice from a MRI
   // proton density image  of the brain.}
   // \label{fig:OtsuThresholdImageFilterInputOutput}
   // \end{figure}

@@ -61,7 +61,8 @@ public:
   itkGetMacro(NumberOfIterations, unsigned int);
 
   /** Returns the time step used for dynamic problems. */
-  virtual Float GetTimeStep(void) const
+  virtual Float
+  GetTimeStep(void) const
   {
     return this->m_TimeStep;
   }
@@ -71,14 +72,18 @@ public:
    *
    * \param dt New time step.
    */
-  virtual void SetTimeStep(Float dt)
+  virtual void
+  SetTimeStep(Float dt)
   {
     this->m_TimeStep = dt;
   }
 
 protected:
   SolverHyperbolic();
-  virtual ~SolverHyperbolic() { }
+  virtual
+  ~SolverHyperbolic() {
+  }
+
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /**
@@ -102,7 +107,6 @@ protected:
    * equations.
    */
   virtual void FinalizeMatrixAfterAssembly( void );
-
 
   /** Method invoked by the pipeline in order to trigger the computation. */
   void  GenerateData();
@@ -128,14 +132,15 @@ protected:
   enum { solution_d=0, solution_v=1, solution_a=2};
   enum { vector_dhat=2, vector_vhat=3, vector_ahat=4, vector_tmp=5 };
 
-  Float          m_TimeStep;
-  Float          m_Gamma;
-  Float          m_Beta;
-  unsigned int   m_NumberOfIterations;
+  Float        m_TimeStep;
+  Float        m_Gamma;
+  Float        m_Beta;
+  unsigned int m_NumberOfIterations;
 
 private:
   SolverHyperbolic(const Self &);    // purposely not implemented
   void operator=(const Self &);      // purposely not implemented
+
 };
 
 } // end namespace fem
@@ -144,6 +149,5 @@ private:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMSolverHyperbolic.hxx"
 #endif
-
 
 #endif // #ifndef __itkFEMSolverHyperbolic_h

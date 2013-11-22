@@ -25,7 +25,6 @@
 namespace itk
 {
 
-
 template< typename TInputImage, typename TOutputImage >
 CastImageFilter< TInputImage, TOutputImage >
 ::CastImageFilter()
@@ -50,7 +49,6 @@ CastImageFilter< TInputImage, TOutputImage >
   Superclass::GenerateData();
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 void
 CastImageFilter< TInputImage, TOutputImage >
@@ -58,7 +56,7 @@ CastImageFilter< TInputImage, TOutputImage >
                        ThreadIdType threadId)
 {
   const TInputImage *inputPtr = this->GetInput();
-  TOutputImage *outputPtr = this->GetOutput(0);
+  TOutputImage *     outputPtr = this->GetOutput(0);
 
   // Define the portion of the input to walk for this thread, using
   // the CallCopyOutputRegionToInputRegion method allows for the input
@@ -72,7 +70,6 @@ CastImageFilter< TInputImage, TOutputImage >
 
   ImageAlgorithm::Copy( inputPtr, outputPtr, inputRegionForThread, outputRegionForThread );
 }
-
 
 } // end namespace itk
 

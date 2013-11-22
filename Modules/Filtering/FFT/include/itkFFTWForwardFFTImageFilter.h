@@ -50,18 +50,19 @@ namespace itk
  * \sa FFTWGlobalConfiguration
  * \sa ForwardFFTImageFilter
  */
-template< typename TInputImage, typename TOutputImage=Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
-class FFTWForwardFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
+class FFTWForwardFFTImageFilter :
   public ForwardFFTImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef TInputImage                          InputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename InputImageType::SizeType    InputSizeType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename OutputImageType::SizeType   OutputSizeType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename InputImageType::SizeType   InputSizeType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename OutputImageType::SizeType  OutputSizeType;
 
   typedef FFTWForwardFFTImageFilter                          Self;
   typedef ForwardFFTImageFilter< TInputImage, TOutputImage > Superclass;
@@ -93,21 +94,25 @@ public:
    *
    * /sa FFTWGlobalConfiguration
    */
-  virtual void SetPlanRigor( const int & value )
+  virtual void
+  SetPlanRigor( const int & value )
   {
     // Use that method to check the value
     FFTWGlobalConfiguration::GetPlanRigorName( value );
+
     if( m_PlanRigor != value )
       {
       m_PlanRigor = value;
       this->Modified();
       }
   }
+
   itkGetConstReferenceMacro( PlanRigor, int );
 
 protected:
   FFTWForwardFFTImageFilter();
-  ~FFTWForwardFFTImageFilter() {}
+  ~FFTWForwardFFTImageFilter() {
+  }
 
   virtual void GenerateData();
 

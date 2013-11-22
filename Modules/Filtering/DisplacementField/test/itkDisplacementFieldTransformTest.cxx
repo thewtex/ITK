@@ -23,11 +23,12 @@
 
 const unsigned int dimensions = 2;
 typedef itk::DisplacementFieldTransform<double, dimensions>
-DisplacementTransformType;
+  DisplacementTransformType;
 typedef DisplacementTransformType::ScalarType ScalarType;
 
 template <typename TPoint>
-bool samePoint( const TPoint & p1, const TPoint & p2, double epsilon = 1e-8 )
+bool
+samePoint( const TPoint & p1, const TPoint & p2, double epsilon = 1e-8 )
 {
   bool pass = true;
 
@@ -42,7 +43,8 @@ bool samePoint( const TPoint & p1, const TPoint & p2, double epsilon = 1e-8 )
 }
 
 template <typename TVector>
-bool sameVector( const TVector & p1, const TVector & p2, double epsilon = 1e-8 )
+bool
+sameVector( const TVector & p1, const TVector & p2, double epsilon = 1e-8 )
 {
   bool pass = true;
 
@@ -57,7 +59,8 @@ bool sameVector( const TVector & p1, const TVector & p2, double epsilon = 1e-8 )
 }
 
 template <typename TVector>
-bool sameVariableVector( const TVector & p1, const TVector & p2, double epsilon = 1e-8 )
+bool
+sameVariableVector( const TVector & p1, const TVector & p2, double epsilon = 1e-8 )
 {
   bool pass = true;
 
@@ -79,7 +82,8 @@ bool sameVariableVector( const TVector & p1, const TVector & p2, double epsilon 
 }
 
 template <typename TTensor>
-bool sameTensor( const TTensor & p1, const TTensor & p2, double epsilon = 1e-8 )
+bool
+sameTensor( const TTensor & p1, const TTensor & p2, double epsilon = 1e-8 )
 {
   bool pass = true;
 
@@ -94,7 +98,8 @@ bool sameTensor( const TTensor & p1, const TTensor & p2, double epsilon = 1e-8 )
 }
 
 template <typename TArray2D>
-bool sameArray2D( const TArray2D & a1, const TArray2D & a2, double epsilon = 1e-8 )
+bool
+sameArray2D( const TArray2D & a1, const TArray2D & a2, double epsilon = 1e-8 )
 {
   bool pass = true;
 
@@ -115,7 +120,8 @@ bool sameArray2D( const TArray2D & a1, const TArray2D & a2, double epsilon = 1e-
   return pass;
 }
 
-int itkDisplacementFieldTransformTest(int, char *[] )
+int
+itkDisplacementFieldTransformTest(int, char *[] )
 {
 
   std::cout.precision(12);
@@ -153,15 +159,16 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   std::cout << "Fixed parameters:  " << fixedParameters << std::endl;
   displacementTransform->SetFixedParameters( fixedParameters );
 
-  DisplacementFieldType::SizeType size2 = displacementTransform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
-  DisplacementFieldType::PointType origin2 = displacementTransform->GetDisplacementField()->GetOrigin();
+  DisplacementFieldType::SizeType size2 =
+    displacementTransform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
+  DisplacementFieldType::PointType     origin2 = displacementTransform->GetDisplacementField()->GetOrigin();
   DisplacementFieldType::DirectionType direction2 = displacementTransform->GetDisplacementField()->GetDirection();
-  DisplacementFieldType::SpacingType spacing2 = displacementTransform->GetDisplacementField()->GetSpacing();
+  DisplacementFieldType::SpacingType   spacing2 = displacementTransform->GetDisplacementField()->GetSpacing();
 
   size = field->GetLargestPossibleRegion().GetSize();
-  DisplacementFieldType::PointType origin = field->GetOrigin();
+  DisplacementFieldType::PointType     origin = field->GetOrigin();
   DisplacementFieldType::DirectionType direction = field->GetDirection();
-  DisplacementFieldType::SpacingType spacing = field->GetSpacing();
+  DisplacementFieldType::SpacingType   spacing = field->GetSpacing();
 
   if( size != size2 )
     {
@@ -183,7 +190,6 @@ int itkDisplacementFieldTransformTest(int, char *[] )
     std::cerr << "Incorrect direction from fixed parameters." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   /* Initialize Affine transform and use to create displacement field */
   typedef itk::CenteredAffineTransform<double, 2> AffineTransformType;
@@ -260,7 +266,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
 
   /* Test ComputeJacobianWithRespectToParameters. Should return identity */
   DisplacementTransformType::JacobianType
-  identity(dimensions, dimensions), testIdentity;
+    identity(dimensions, dimensions), testIdentity;
   identity.Fill(0);
   for( unsigned int i = 0; i < dimensions; i++ )
     {
@@ -271,7 +277,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   if( !sameArray2D( identity, testIdentity, 1e-10 ) )
     {
     std::cout << "Failed returning identity for "
-    "ComputeJacobianWithRespectToParameters( point, ... )"
+      "ComputeJacobianWithRespectToParameters( point, ... )"
               << std::endl;
     return EXIT_FAILURE;
     }
@@ -282,7 +288,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   if( !sameArray2D( identity, testIdentity, 1e-10 ) )
     {
     std::cout << "Failed returning identity for "
-    "ComputeJacobianWithRespectToParameters( index, ... )"
+      "ComputeJacobianWithRespectToParameters( index, ... )"
               << std::endl;
     return EXIT_FAILURE;
     }
@@ -412,8 +418,8 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   if( !sameVariableVector( deformcVVector, deformcVVectorTruth, 0.1 ) )
     {
     std::cout
-    << "Failed transforming variable length covariant vector 1. Should be "
-    << deformcVVectorTruth << std::endl;
+      << "Failed transforming variable length covariant vector 1. Should be "
+      << deformcVVectorTruth << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -499,11 +505,11 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   /* Test UpdateTransformParameters */
   std::cout << "Testing UpdateTransformParameters..." << std::endl;
   DisplacementTransformType::DerivativeType
-  derivative( displacementTransform->GetNumberOfParameters() );
+    derivative( displacementTransform->GetNumberOfParameters() );
   DisplacementTransformType::DerivativeType
-  updateTruth( displacementTransform->GetNumberOfParameters() );
+    updateTruth( displacementTransform->GetNumberOfParameters() );
   DisplacementTransformType::ParametersType
-  params( displacementTransform->GetNumberOfParameters() );
+    params( displacementTransform->GetNumberOfParameters() );
   derivative.Fill(1.2);
   ScalarType testFactor = 1.5;
   for( unsigned int i = 0;
@@ -534,7 +540,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   if( displacementTransform->IsLinear() )
     {
     std::cout << "DisplacementFieldTransform returned 'true' for IsLinear()."
-    " Expected 'false'." << std::endl;
+      " Expected 'false'." << std::endl;
     return EXIT_FAILURE;
     }
 

@@ -49,7 +49,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageToHistogramFilter.h"
 #include "itkImage.h"
@@ -58,7 +57,8 @@
 
 #include "itkImageFileReader.h"
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -69,7 +69,6 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginLatex
   //
   // We declare now the type used for the components of the RGB pixel,
@@ -78,17 +77,16 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char                         PixelComponentType;
+  typedef unsigned char PixelComponentType;
 
-  typedef itk::RGBPixel< PixelComponentType >   RGBPixelType;
+  typedef itk::RGBPixel< PixelComponentType > RGBPixelType;
 
-  const unsigned int                            Dimension = 2;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image< RGBPixelType, Dimension > RGBImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< RGBImageType >  ReaderType;
+  typedef itk::ImageFileReader< RGBImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -105,7 +103,6 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginLatex
   //
   // Using the type of the color image, and in general of any vector image, we
@@ -115,15 +112,13 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ImageToHistogramFilter<
-                                 RGBImageType >   HistogramFilterType;
+      RGBImageType >   HistogramFilterType;
 
   HistogramFilterType::Pointer histogramFilter =
-                                           HistogramFilterType::New();
+    HistogramFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -137,7 +132,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramSizeType   SizeType;
+  typedef HistogramFilterType::HistogramSizeType SizeType;
 
   SizeType size(3);
 
@@ -147,7 +142,6 @@ int main( int argc, char * argv [] )
 
   histogramFilter->SetHistogramSize( size );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -176,7 +170,6 @@ int main( int argc, char * argv [] )
   histogramFilter->SetHistogramBinMaximum( binMaximum );
   //Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The input to the histogram filter is taken from the output of an image
@@ -189,7 +182,6 @@ int main( int argc, char * argv [] )
   histogramFilter->SetInput(  reader->GetOutput()  );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The marginal scale is defined in the histogram filter. This value will
@@ -200,7 +192,6 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginCodeSnippet
   histogramFilter->SetMarginalScale( 10.0 );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -213,7 +204,6 @@ int main( int argc, char * argv [] )
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // At this point, we can recover the histogram by calling the
@@ -224,15 +214,15 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramType  HistogramType;
+  typedef HistogramFilterType::HistogramType HistogramType;
 
   const HistogramType * histogram = histogramFilter->GetOutput();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
-  // We can verify that the computed histogram has the requested size by invoking
+  // We can verify that the computed histogram has the requested size by
+  // invoking
   // its \code{Size()} method.
   //
   // Software Guide : EndLatex
@@ -243,14 +233,12 @@ int main( int argc, char * argv [] )
   std::cout << "Histogram size " << histogramSize << std::endl;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The values of the histogram can now be saved into a file by walking through
   // all of the histogram bins and pushing them into a std::ofstream.
   //
   // Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   std::ofstream histogramFile;
@@ -269,7 +257,7 @@ int main( int argc, char * argv [] )
     if (frequency != 0)
       {
       HistogramType::IndexType index;
-      index = histogram->GetIndex(itr.GetInstanceIdentifier());
+      index = histogram->GetIndex(itr.GetInstanceIdentifier() );
       std::cout << "Index = " << index << ", Frequency = " << frequency
                 << std::endl;
       }
@@ -279,18 +267,17 @@ int main( int argc, char * argv [] )
   histogramFile.close();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
-  // Note that here the histogram is saved as a block of memory in a raw file. At
+  // Note that here the histogram is saved as a block of memory in a raw file.
+  // At
   // this point you can use visualization software in order to explore the
-  // histogram in a display that would be equivalent to a scatter plot of the RGB
+  // histogram in a display that would be equivalent to a scatter plot of the
+  // RGB
   // components of the input color image.
   //
   // Software Guide : EndLatex
 
-
   return 0;
-
 
 }

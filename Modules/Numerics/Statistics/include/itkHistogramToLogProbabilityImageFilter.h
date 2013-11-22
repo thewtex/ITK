@@ -57,12 +57,15 @@ public:
   // Returns pixels of float..
   typedef  TOutput OutputPixelType;
 
-  HistogramLogProbabilityFunction():
-    m_TotalFrequency(1) {}
+  HistogramLogProbabilityFunction() :
+    m_TotalFrequency(1) {
+  }
 
-  ~HistogramLogProbabilityFunction() {}
+  ~HistogramLogProbabilityFunction() {
+  }
 
-  inline OutputPixelType operator()(const TInput & A) const
+  inline OutputPixelType
+  operator()(const TInput & A) const
   {
     if ( A )
       {
@@ -78,12 +81,14 @@ public:
       }
   }
 
-  void SetTotalFrequency(SizeValueType n)
+  void
+  SetTotalFrequency(SizeValueType n)
   {
     m_TotalFrequency = n;
   }
 
-  SizeValueType GetTotalFrequency() const
+  SizeValueType
+  GetTotalFrequency() const
   {
     return m_TotalFrequency;
   }
@@ -94,9 +99,10 @@ private:
 }
 
 template< typename THistogram, typename TImage=Image< double, 3 > >
-class HistogramToLogProbabilityImageFilter:
+class HistogramToLogProbabilityImageFilter :
   public HistogramToImageFilter< THistogram, TImage,
-                                 Function::HistogramLogProbabilityFunction< SizeValueType, typename TImage::PixelType > >
+                                 Function::HistogramLogProbabilityFunction< SizeValueType,
+                                                                            typename TImage::PixelType > >
 {
 public:
 
@@ -105,8 +111,9 @@ public:
 
   /** Standard "Superclass" typedef. */
   typedef HistogramToImageFilter< THistogram, TImage,
-                                 Function::HistogramLogProbabilityFunction< SizeValueType, typename TImage::PixelType > >
-  Superclass;
+                                  Function::HistogramLogProbabilityFunction< SizeValueType,
+                                                                             typename TImage::PixelType > >
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -118,14 +125,19 @@ public:
   itkNewMacro(Self);
 
 protected:
-  HistogramToLogProbabilityImageFilter() {}
-  virtual ~HistogramToLogProbabilityImageFilter() {}
+  HistogramToLogProbabilityImageFilter() {
+  }
+
+  virtual
+  ~HistogramToLogProbabilityImageFilter() {
+  }
 
 private:
   HistogramToLogProbabilityImageFilter(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 };
 } // end namespace itk
 

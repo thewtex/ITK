@@ -18,7 +18,6 @@
 #ifndef __itkPolygonGroupSpatialObjectXMLFile_h
 #define __itkPolygonGroupSpatialObjectXMLFile_h
 
-
 #include "itkPolygonGroupSpatialObject.h"
 #include "itkXMLFile.h"
 namespace itk
@@ -32,7 +31,7 @@ typedef PolygonGroupSpatialObject< 3 > PGroupSpatialObjectType;
  * creates a corresponding PolygonGroupSpatialObject
  * \ingroup ITKIOSpatialObjects
  */
-class PolygonGroupSpatialObjectXMLFileReader:
+class PolygonGroupSpatialObjectXMLFileReader :
   public XMLReader< PGroupSpatialObjectType >
 {
 public:
@@ -57,8 +56,12 @@ public:
   virtual int CanReadFile(const char *name);
 
 protected:
-  PolygonGroupSpatialObjectXMLFileReader() {}
-  virtual ~PolygonGroupSpatialObjectXMLFileReader() {}
+  PolygonGroupSpatialObjectXMLFileReader() {
+  }
+
+  virtual
+  ~PolygonGroupSpatialObjectXMLFileReader() {
+  }
 
   virtual void StartElement(const char *name, const char **atts);
 
@@ -70,7 +73,8 @@ private:
   PolygonGroupSpatialObjectXMLFileReader(const Self &); //purposely not
                                                         // implemented
   void operator=(const Self &);                         //purposely not
-                                                        // implemented
+
+  // implemented
 
   PGroupSpatialObjectType::Pointer  m_PGroup;
   PolygonSpatialObjectType::Pointer m_CurPoly;
@@ -84,7 +88,7 @@ private:
  * based on a PolygonGroupSpatialObject.
  * \ingroup ITKIOSpatialObjects
  */
-class PolygonGroupSpatialObjectXMLFileWriter:
+class PolygonGroupSpatialObjectXMLFileWriter :
   public XMLWriterBase< PGroupSpatialObjectType >
 {
 public:
@@ -108,14 +112,19 @@ public:
   virtual int WriteFile();
 
 protected:
-  PolygonGroupSpatialObjectXMLFileWriter() {}
-  virtual ~PolygonGroupSpatialObjectXMLFileWriter() {}
+  PolygonGroupSpatialObjectXMLFileWriter() {
+  }
+
+  virtual
+  ~PolygonGroupSpatialObjectXMLFileWriter() {
+  }
 
 private:
   PolygonGroupSpatialObjectXMLFileWriter(const Self &); //purposely not
                                                         // implemented
   void operator=(const Self &);                         //purposely not
-                                                        // implemented
+
+  // implemented
 };
 }
 #endif

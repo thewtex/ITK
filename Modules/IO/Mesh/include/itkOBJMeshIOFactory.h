@@ -28,7 +28,7 @@ namespace itk
    * \brief Create instances of OBJMeshIO objects using an object factory.
    * \ingroup ITKIOMesh
    */
-class ITKIOMesh_EXPORT OBJMeshIOFactory:public ObjectFactoryBase
+class ITKIOMesh_EXPORT OBJMeshIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,12 +49,13 @@ public:
   itkTypeMacro(OBJMeshIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
-    {
+  static void
+  RegisterOneFactory(void)
+  {
     OBJMeshIOFactory::Pointer objFactory = OBJMeshIOFactory::New();
 
     ObjectFactoryBase::RegisterFactory(objFactory);
-    }
+  }
 
 protected:
   OBJMeshIOFactory();
@@ -65,6 +66,7 @@ protected:
 private:
   OBJMeshIOFactory(const Self &); // purposely not implemented
   void operator=(const Self &);   // purposely not implemented
+
 };
 } // end namespace itk
 

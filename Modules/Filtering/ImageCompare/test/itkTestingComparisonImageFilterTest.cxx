@@ -26,7 +26,8 @@
 #include "itkDifferenceImageFilter.h"
 #endif
 
-int itkTestingComparisonImageFilterTest(int argc, char *argv [] )
+int
+itkTestingComparisonImageFilterTest(int argc, char *argv [] )
 {
   if( argc < 6 )
     {
@@ -36,19 +37,17 @@ int itkTestingComparisonImageFilterTest(int argc, char *argv [] )
     return EXIT_FAILURE;
     }
 
-
   // Test using an unsigned integral pixel type and generate a signed
   // integral pixel type
-  typedef   signed   short  InputPixelType;
-  typedef   unsigned short  OutputPixelType;
+  typedef   signed   short InputPixelType;
+  typedef   unsigned short OutputPixelType;
 
   const unsigned int Dimension = 2;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
   ReaderType::Pointer reader2 = ReaderType::New();
@@ -58,8 +57,8 @@ int itkTestingComparisonImageFilterTest(int argc, char *argv [] )
 
 #ifdef ITKV3_COMPATIBILITY
   typedef itk::DifferenceImageFilter<
-                             InputImageType,
-                             OutputImageType >  DiffFilterType;
+      InputImageType,
+      OutputImageType >  DiffFilterType;
   DiffFilterType::Pointer testInit=DiffFilterType::New();
   // setup the testInit
   testInit->SetDifferenceThreshold( atoi( argv[4] ) );
@@ -71,11 +70,10 @@ int itkTestingComparisonImageFilterTest(int argc, char *argv [] )
   testInit->Update();
 #endif
 
-
   // Define the filter
   typedef itk::Testing::ComparisonImageFilter<
-                             InputImageType,
-                             OutputImageType >  FilterType;
+      InputImageType,
+      OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -90,7 +88,7 @@ int itkTestingComparisonImageFilterTest(int argc, char *argv [] )
   filter->SetTestInput(  reader2->GetOutput() );
 
   // Write the output
-  typedef itk::ImageFileWriter< OutputImageType >       WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 

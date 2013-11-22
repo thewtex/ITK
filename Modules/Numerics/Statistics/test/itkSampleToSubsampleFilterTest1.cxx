@@ -29,32 +29,38 @@ class SubsamplerTester : public SampleToSubsampleFilter< TSample >
 {
 public:
   /** Standard class typedefs. */
-  typedef SubsamplerTester                    Self;
-  typedef SampleToSubsampleFilter<TSample>    Superclass;
-  typedef SmartPointer< Self >                Pointer;
-  typedef SmartPointer< const Self >          ConstPointer;
+  typedef SubsamplerTester                 Self;
+  typedef SampleToSubsampleFilter<TSample> Superclass;
+  typedef SmartPointer< Self >             Pointer;
+  typedef SmartPointer< const Self >       ConstPointer;
 
   /** Standard macros */
   itkTypeMacro(SubsamplerTester,SampleToSubsampleFilter);
   itkNewMacro(Self);
 
 protected:
-  SubsamplerTester() {}
-  virtual ~SubsamplerTester() {}
-  void PrintSelf(std::ostream& os, Indent indent) const
-    {
+  SubsamplerTester() {
+  }
+
+  virtual
+  ~SubsamplerTester() {
+  }
+
+  void
+  PrintSelf(std::ostream& os, Indent indent) const
+  {
     this->Superclass::PrintSelf(os,indent);
     os << "Superclass = " <<  this->Superclass::GetNameOfClass() << std::endl;
-    }
+  }
 
-  void GenerateData()
-    {
-    }
+  void
+  GenerateData()
+  {
+  }
 
 private:
   SubsamplerTester(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
-
+  void operator=(const Self&);   //purposely not implemented
 
 };
 
@@ -62,19 +68,18 @@ private:
 } // end of Standard namespace
 } // end of itk namespace
 
-
-int itkSampleToSubsampleFilterTest1(int, char* [] )
+int
+itkSampleToSubsampleFilterTest1(int, char* [] )
 {
 
   const unsigned int MeasurementVectorSize = 17;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >  MeasurementVectorType;
+      float, MeasurementVectorSize >  MeasurementVectorType;
 
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   typedef itk::Statistics::itkSampleToSubsampleFilter1Namespace::SubsamplerTester< SampleType > FilterType;
-
 
   SampleType::Pointer sample = SampleType::New();
 
@@ -102,15 +107,12 @@ int itkSampleToSubsampleFilterTest1(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   //
   // Exercise the Print() method
   //
   filter->Print( std::cout );
 
-
   filter->Update();
-
 
   // Exercise the GetNameOfClass() method in the
   // SampleToSubsampleFilter:

@@ -29,14 +29,15 @@
 #include "itkArrowSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 // The \doxygen{ArrowSpatialObject}, like many SpatialObjects, is templated
 // over the dimensionality of the object.
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
-  typedef itk::ArrowSpatialObject<3>   ArrowType;
+  typedef itk::ArrowSpatialObject<3> ArrowType;
   ArrowType::Pointer myArrow = ArrowType::New();
 // Software Guide : EndCodeSnippet
 
@@ -50,7 +51,8 @@ int main( int , char *[] )
 
 // Software Guide : BeginLatex
 // The direction of the arrow can be set using the SetDirection() function.
-// The SetDirection() function modifies the ObjectToParentTransform (not the IndexToObjectTransform).
+// The SetDirection() function modifies the ObjectToParentTransform (not the
+// IndexToObjectTransform).
 // By default the direction is set along the X axis (first direction).
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet

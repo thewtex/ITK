@@ -103,7 +103,7 @@ namespace Statistics
 
 template< typename TImageType,
           typename THistogramFrequencyContainer = DenseFrequencyContainer2 >
-class ScalarImageToTextureFeaturesFilter:public ProcessObject
+class ScalarImageToTextureFeaturesFilter : public ProcessObject
 {
 public:
   /** Standard typedefs */
@@ -129,13 +129,13 @@ public:
   typedef typename OffsetVector::ConstPointer          OffsetVectorConstPointer;
 
   typedef ScalarImageToCooccurrenceMatrixFilter<
-    ImageType, FrequencyContainerType >               CooccurrenceMatrixFilterType;
+      ImageType, FrequencyContainerType >               CooccurrenceMatrixFilterType;
 
   typedef typename CooccurrenceMatrixFilterType::HistogramType HistogramType;
   typedef HistogramToTextureFeaturesFilter< HistogramType >    TextureFeaturesFilterType;
 
-  typedef short                                                  TextureFeatureName;
-  typedef VectorContainer< unsigned char, TextureFeatureName >   FeatureNameVector;
+  typedef short                                                TextureFeatureName;
+  typedef VectorContainer< unsigned char, TextureFeatureName > FeatureNameVector;
 
   typedef typename FeatureNameVector::Pointer      FeatureNameVectorPointer;
   typedef typename FeatureNameVector::ConstPointer FeatureNameVectorConstPointer;
@@ -147,7 +147,7 @@ public:
 
   /** Type of DataObjects used for scalar outputs */
   typedef DataObjectDecorator< FeatureValueVector >
-  FeatureValueVectorDataObjectType;
+    FeatureValueVectorDataObjectType;
 
   const FeatureValueVectorDataObjectType * GetFeatureMeansOutput() const;
 
@@ -197,7 +197,10 @@ public:
 
 protected:
   ScalarImageToTextureFeaturesFilter();
-  virtual ~ScalarImageToTextureFeaturesFilter() {}
+  virtual
+  ~ScalarImageToTextureFeaturesFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void FastCompute();

@@ -22,27 +22,27 @@
 #include "itkPhasedArray3DSpecialCoordinatesImage.h"
 #include "itkResampleImageFilter.h"
 
-
 enum {NDimensions = 3};
 
-typedef float                                                 PixelType;
-typedef itk::PhasedArray3DSpecialCoordinatesImage<PixelType>  InputImageType;
-typedef itk::Image<PixelType, NDimensions>                    ImageType;
-typedef InputImageType::Pointer             InputImagePointerType;
-typedef ImageType::Pointer                  ImagePointerType;
-typedef ImageType::RegionType               ImageRegionType;
-typedef ImageType::SizeType                 ImageSizeType;
-typedef ImageType::IndexType                ImageIndexType;
-typedef double                              CoordRepType;
+typedef float                                                PixelType;
+typedef itk::PhasedArray3DSpecialCoordinatesImage<PixelType> InputImageType;
+typedef itk::Image<PixelType, NDimensions>                   ImageType;
+typedef InputImageType::Pointer                              InputImagePointerType;
+typedef ImageType::Pointer                                   ImagePointerType;
+typedef ImageType::RegionType                                ImageRegionType;
+typedef ImageType::SizeType                                  ImageSizeType;
+typedef ImageType::IndexType                                 ImageIndexType;
+typedef double                                               CoordRepType;
 
-
-int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
+int
+itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
 {
   // Create and configure an image
   InputImagePointerType image = InputImageType::New();
-  ImageIndexType  index = {{0,  0,  0}};
-  ImageSizeType   size  = {{13, 13, 9}};
-  ImageRegionType region;
+  ImageIndexType        index = {{0,  0,  0}};
+  ImageSizeType         size  = {{13, 13, 9}};
+  ImageRegionType       region;
+
   region.SetSize ( size );
   region.SetIndex( index );
   image->SetLargestPossibleRegion( region );
@@ -56,7 +56,7 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
   // Fill image with isoshells
   std::cout << "\nOriginal 3D Phased Array Data" << std::endl;
   itk::ImageRegionIteratorWithIndex<InputImageType> iter(image, region);
-  PixelType value;
+  PixelType                                         value;
   for (; !iter.IsAtEnd(); ++iter) {
     index = iter.GetIndex();
     //value = index[0] + index[1] + index[2];
@@ -67,9 +67,9 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
       std::cout << std::setw(14) << value;
       if ( int(index[1]) == int(size[1]-1) ) {
         std::cout << std::endl;
+        }
       }
     }
-  }
 
   // Create and configure a resampling filter
   itk::ResampleImageFilter< InputImageType, ImageType >::Pointer resample;
@@ -102,7 +102,7 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
   ImageType::RegionType region2;
   region2 = resample->GetOutput()->GetRequestedRegion();
   itk::ImageRegionIteratorWithIndex<ImageType>
-      iter2(resample->GetOutput(), region2);
+  iter2(resample->GetOutput(), region2);
   for (; !iter2.IsAtEnd(); ++iter2) {
     index  = iter2.GetIndex();
     value  = iter2.Get();
@@ -111,7 +111,7 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
       std::cout << std::setw(14) << value;
       if ( int(index[1]) == int(cubeSize[1]-1) ) {
         std::cout << std::endl;
-      }
+        }
       // check the values down a portion of the z-axis
       if( index[1] == int(cubeSize[1]-1)/2 && 2 <= index[2] && index[2] <= 5 ) {
         if( value != (index[2]-1)*2 ) {
@@ -120,10 +120,10 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
                     << ", expecting " << (index[2]-1)*2 << ")"
                     << std::endl;
           passed = false;
+          }
         }
       }
     }
-  }
   if( !passed )
     std::cout << "Forward Sampling Failed!!!\n\n" << std::endl;
   else
@@ -134,10 +134,11 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
   // Create and configure a back-resampling filter
   itk::ResampleImageFilter< ImageType, InputImageType >::Pointer backResample;
   backResample = itk::ResampleImageFilter< ImageType, InputImageType >::New();
-  backResample->SetInput(resample->GetOutput());
+  backResample->SetInput(resample->GetOutput() );
   backResample->SetSize(size);
   // ResampleImageFilter was not designed for special-coordinates images, so we
-  // MUST provide the physical-spacing parameters ourselves before calling Update.
+  // MUST provide the physical-spacing parameters ourselves before calling
+  // Update.
   image2 = backResample->GetOutput();
   image2->SetAzimuthAngularSeparation( 5.0*2.0*vnl_math::pi/360.0 );
   image2->SetElevationAngularSeparation( 5.0*2.0*vnl_math::pi/360.0 );
@@ -149,7 +150,7 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
   // Check how close we were to the original image
   std::cout << "\nResampled recovery of 3D Phased Array Data from Cartesian space" << std::endl;
   itk::ImageRegionIteratorWithIndex<InputImageType>
-      iter3(backResample->GetOutput(), region);
+  iter3(backResample->GetOutput(), region);
   for (; !iter3.IsAtEnd(); ++iter3) {
     index  = iter3.GetIndex();
     value  = iter3.Get();
@@ -158,7 +159,7 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
       std::cout << std::setw(14) << value;
       if ( int(index[1]) == int(size[1]-1) ) {
         std::cout << std::endl;
-      }
+        }
       // check the values down the z-axis
       if( index[1] == int(size[1]-1)/2 ) {
         if( value != index[2] ) {
@@ -167,10 +168,10 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
                     << ", expecting " << index[2] << ")"
                     << std::endl;
           passed = false;
+          }
         }
       }
     }
-  }
   if( !passed )
     std::cout << "Resampling back to Phased Array coordinates Failed!!!\n\n" << std::endl;
   else
@@ -179,9 +180,9 @@ int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
   if (!passed) {
     std::cout << "Resampling PhasedArray3DSpecialCoordinatesImage test failed" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
- std::cout << "Test passed." << std::endl;
- return EXIT_SUCCESS;
+  std::cout << "Test passed." << std::endl;
+  return EXIT_SUCCESS;
 
 }

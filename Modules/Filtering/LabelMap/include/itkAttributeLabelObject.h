@@ -24,7 +24,6 @@
 namespace itk
 {
 
-
 namespace Functor {
 
 template< typename TLabelObject >
@@ -34,19 +33,21 @@ public:
   typedef TLabelObject                                 LabelObjectType;
   typedef typename LabelObjectType::AttributeValueType AttributeValueType;
 
-  inline const AttributeValueType operator()( const LabelObjectType * labelObject )
-    {
+  inline const AttributeValueType
+  operator()( const LabelObjectType * labelObject )
+  {
     return labelObject->GetAttribute();
-    }
+  }
 
-  inline void operator()( LabelObjectType * labelObject, AttributeValueType value )
-    {
+  inline void
+  operator()( LabelObjectType * labelObject, AttributeValueType value )
+  {
     labelObject->SetAttribute( value );
-    }
+  }
+
 };
 
 }
-
 
 /** \class AttributeLabelObject
  *  \brief A LabelObject with a generic attribute
@@ -98,55 +99,58 @@ public:
 
   typedef TAttributeValue AttributeValueType;
 
-  void SetAttribute( const AttributeValueType & v )
-    {
+  void
+  SetAttribute( const AttributeValueType & v )
+  {
     m_Attribute = v;
-    }
+  }
 
-  const AttributeValueType & GetAttribute() const
-    {
+  const AttributeValueType &
+  GetAttribute() const
+  {
     return m_Attribute;
-    }
+  }
 
-  AttributeValueType GetAttribute()
-    {
+  AttributeValueType
+  GetAttribute()
+  {
     return m_Attribute;
-    }
+  }
 
-
-  virtual void CopyAttributesFrom( const LabelObjectType * lo )
-    {
+  virtual void
+  CopyAttributesFrom( const LabelObjectType * lo )
+  {
     Superclass::CopyAttributesFrom( lo );
 
     // copy the data of the current type if possible
     const Self * src = dynamic_cast<const Self *>( lo );
+
     if( src == NULL )
       {
       return;
       }
     m_Attribute = src->m_Attribute;
-    }
+  }
 
 protected:
   AttributeLabelObject()
-    {
+  {
     // how to initialize the attribute ?
-    }
+  }
 
-
-  void PrintSelf(std::ostream& os, Indent indent) const
-    {
+  void
+  PrintSelf(std::ostream& os, Indent indent) const
+  {
     Superclass::PrintSelf( os, indent );
 
     os << indent << "Attribute: " << m_Attribute << std::endl;
-    }
+  }
 
 private:
   AttributeLabelObject(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);       //purposely not implemented
 
   AttributeValueType m_Attribute;
-
 
 };
 

@@ -37,7 +37,7 @@ namespace itk
  *
  * \ingroup ITKIOMesh
  */
-class ITKIOMesh_EXPORT MeshIOFactory:public Object
+class ITKIOMesh_EXPORT MeshIOFactory : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -71,6 +71,7 @@ protected:
 private:
   MeshIOFactory(const Self &);  // purposely not implemented
   void operator=(const Self &); // purposely not implemented
+
 };
 } // end namespace itk
 

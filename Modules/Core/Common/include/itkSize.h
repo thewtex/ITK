@@ -63,7 +63,10 @@ public:
   itkStaticConstMacro(Dimension, unsigned int, VDimension);
 
   /** Get the dimension of the size object. */
-  static unsigned int GetSizeDimension(void) { return VDimension; }
+  static unsigned int
+  GetSizeDimension(void) {
+    return VDimension;
+  }
 
   /** Add two sizes.  */
   const Self
@@ -72,7 +75,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VDimension; i++ )
-          { result[i] = m_Size[i] + vec.m_Size[i]; }
+                  { result[i] = m_Size[i] + vec.m_Size[i]; }
     return result;
   }
 
@@ -81,7 +84,7 @@ public:
   operator+=(const Self & vec)
   {
     for ( unsigned int i = 0; i < VDimension; i++ )
-          { m_Size[i] += vec.m_Size[i]; }
+                  { m_Size[i] += vec.m_Size[i]; }
     return *this;
   }
 
@@ -92,7 +95,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VDimension; i++ )
-          { result[i] = m_Size[i] - vec.m_Size[i]; }
+                  { result[i] = m_Size[i] - vec.m_Size[i]; }
     return result;
   }
 
@@ -101,7 +104,7 @@ public:
   operator-=(const Self & vec)
   {
     for ( unsigned int i = 0; i < VDimension; i++ )
-          { m_Size[i] -= vec.m_Size[i]; }
+                  { m_Size[i] -= vec.m_Size[i]; }
     return *this;
   }
 
@@ -112,7 +115,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VDimension; i++ )
-          { result[i] = m_Size[i] * vec.m_Size[i]; }
+                  { result[i] = m_Size[i] * vec.m_Size[i]; }
     return result;
   }
 
@@ -121,7 +124,7 @@ public:
   operator*=(const Self & vec)
   {
     for ( unsigned int i = 0; i < VDimension; i++ )
-          { m_Size[i] *= vec.m_Size[i]; }
+                  { m_Size[i] *= vec.m_Size[i]; }
     return *this;
   }
 
@@ -132,7 +135,7 @@ public:
     bool same = 1;
 
     for ( unsigned int i = 0; i < VDimension && same; i++ )
-          { same = ( m_Size[i] == vec.m_Size[i] ); }
+                  { same = ( m_Size[i] == vec.m_Size[i] ); }
     return same;
   }
 
@@ -143,29 +146,39 @@ public:
     bool same = 1;
 
     for ( unsigned int i = 0; i < VDimension && same; i++ )
-          { same = ( m_Size[i] == vec.m_Size[i] ); }
+                  { same = ( m_Size[i] == vec.m_Size[i] ); }
     return !same;
   }
 
   /** Access an element of the size. Elements are numbered
    * 0, ..., VDimension-1. No bounds checking is performed. */
-  SizeValueType & operator[](unsigned int dim)
-  { return m_Size[dim]; }
+  SizeValueType &
+  operator[](unsigned int dim)
+  {
+    return m_Size[dim];
+  }
 
   /** Access an element of the size. Elements are numbered
    * 0, ..., VDimension-1. This version can only be an rvalue.
    * No bounds checking is performed. */
-  SizeValueType operator[](unsigned int dim) const
-  { return m_Size[dim]; }
+  SizeValueType
+  operator[](unsigned int dim) const
+  {
+    return m_Size[dim];
+  }
 
   /** Get the size. This provides a read only reference to the size.
    * \sa SetSize */
-  const SizeValueType * GetSize() const { return m_Size; }
+  const SizeValueType *
+  GetSize() const {
+    return m_Size;
+  }
 
   /** Set the size.
    * Try to prototype this function so that val has to point to a block of
    * memory that is the appropriate size. \sa GetSize */
-  void SetSize(const SizeValueType val[VDimension])
+  void
+  SetSize(const SizeValueType val[VDimension])
   {
     std::copy(val,
               val+VDimension,
@@ -178,8 +191,11 @@ public:
    * from Tcl and Python where C++ notation is not very convenient.
    * \warning No bound checking is performed.
    * \sa SetSize() \sa GetElement() */
-  void SetElement(unsigned long element, SizeValueType val)
-  { m_Size[element] = val;  }
+  void
+  SetElement(unsigned long element, SizeValueType val)
+  {
+    m_Size[element] = val;
+  }
 
   /** Get an element of the Size.
    * gets the value of one of the elements in the size
@@ -187,13 +203,19 @@ public:
    * from Tcl and Python where C++ notation is not very convenient.
    * \warning No bound checking is performed
    * \sa GetSize() \sa SetElement() */
-  SizeValueType GetElement(unsigned long element) const
-  { return m_Size[element]; }
+  SizeValueType
+  GetElement(unsigned long element) const
+  {
+    return m_Size[element];
+  }
 
   /** Set one value for the index in all dimensions.  Useful for initializing
    * an offset to zero. */
-  void Fill(SizeValueType value)
-  { for ( unsigned int i = 0; i < VDimension; ++i ) { m_Size[i] = value; } }
+  void
+  Fill(SizeValueType value)
+  {
+    for ( unsigned int i = 0; i < VDimension; ++i ) { m_Size[i] = value; }
+  }
 
   /** Size is an "aggregate" class.  Its data is public (m_Size)
    * allowing for fast and convenient instantiations/assignments.
@@ -218,7 +240,8 @@ public:
 };
 
 template< unsigned int VDimension >
-std::ostream & operator<<(std::ostream & os, const Size< VDimension > & size)
+std::ostream &
+operator<<(std::ostream & os, const Size< VDimension > & size)
 {
   os << "[";
   for ( unsigned int i = 0; i + 1 < VDimension; ++i )
@@ -232,6 +255,7 @@ std::ostream & operator<<(std::ostream & os, const Size< VDimension > & size)
   os << "]";
   return os;
 }
+
 } // end namespace itk
 
 #endif

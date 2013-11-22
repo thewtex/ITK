@@ -58,6 +58,7 @@ MutualInformationImageToImageMetric<TFixedImage, TMovingImage>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NumberOfSpatialSamples: ";
   os << m_NumberOfSpatialSamples << std::endl;
   os << indent << "FixedImageStandardDeviation: ";

@@ -22,7 +22,6 @@
 #include "itkMeshSource.h"
 #include "itkTetrahedronCell.h"
 
-
 namespace itk
 {
 
@@ -40,10 +39,10 @@ class VTKTetrahedralMeshReader : public MeshSource<TOutputMesh>
 {
 public:
   /** Standard "Self" typedef. */
-  typedef VTKTetrahedralMeshReader  Self;
-  typedef MeshSource<TOutputMesh>   Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef VTKTetrahedralMeshReader Self;
+  typedef MeshSource<TOutputMesh>  Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -52,10 +51,10 @@ public:
   itkTypeMacro(VTKTetrahedralMeshReader, MeshSource);
 
   /** Hold on to the type information specified by the template parameters. */
-  typedef TOutputMesh                          OutputMeshType;
-  typedef typename OutputMeshType::MeshTraits  MeshTraits;
-  typedef typename OutputMeshType::PointType   PointType;
-  typedef typename MeshTraits::PixelType       PixelType;
+  typedef TOutputMesh                         OutputMeshType;
+  typedef typename OutputMeshType::MeshTraits MeshTraits;
+  typedef typename OutputMeshType::PointType  PointType;
+  typedef typename MeshTraits::PixelType      PixelType;
 
   /** Some convenient typedefs. */
   typedef typename OutputMeshType::Pointer         OutputMeshPointer;
@@ -73,11 +72,10 @@ public:
     PointsContainer;
 
   /** Define the tetrahedron cell types which form the volume  */
-  typedef TetrahedronCell<CellType>   TetrahedronCellType;
+  typedef TetrahedronCell<CellType> TetrahedronCellType;
 
   typedef typename TetrahedronCellType::SelfAutoPointer
     TetrahedronCellAutoPointer;
-
 
   /** Set the resolution level to be used for generating cells in the
    * Sphere. High values of this parameter will produce sphere with more
@@ -102,7 +100,7 @@ protected:
 
 private:
   VTKTetrahedralMeshReader(const Self&); // purposely not implemented
-  void operator=(const Self&); // purposely not implemented
+  void operator=(const Self&);           // purposely not implemented
 
   /** Filename to read */
   std::string m_FileName;

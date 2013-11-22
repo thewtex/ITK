@@ -24,7 +24,8 @@
  * Helper function to prevent compiler's unused variable warning.
  */
 template <typename T>
-void IgnoreUnusedVariable(const T&)
+void
+IgnoreUnusedVariable(const T&)
 {
 }
 
@@ -33,27 +34,34 @@ extern "C" {
 }
 
 struct eqstr
-{
-  bool operator()(const char* s1, const char* s2) const
+  {
+  bool
+  operator()(const char* s1, const char* s2) const
   {
     return strcmp(s1, s2) == 0;
   }
-};
 
-void lookup(const itksys::hash_set<const char*, itksys::hash<const char*>, eqstr>& Set,
-            const char* word)
+  };
+
+void
+lookup(const itksys::hash_set<const char*, itksys::hash<const char*>, eqstr>& Set,
+       const char* word)
 {
   itksys::hash_set<const char*, itksys::hash<const char*>, eqstr>::const_iterator it
     = Set.find(word);
   std::cout << word << ": "
-       << (it != Set.end() ? "present" : "not present")
-       << std::endl;
+            << (it != Set.end() ? "present" : "not present")
+            << std::endl;
 }
 
-inline void println(const char *s)
-{ std::cout << std::endl << s << std::endl; }
+inline void
+println(const char *s)
+{
+  std::cout << std::endl << s << std::endl;
+}
 
-int itkHashTableTest(int, char* [] )
+int
+itkHashTableTest(int, char* [] )
 {
   println("Testing itksys::hash");
   itksys::hash<const char*> H;
@@ -90,7 +98,7 @@ int itkHashTableTest(int, char* [] )
   Set.insert("the horror");
   Set.count("apple");
   Set.find("kiwi");
-  HashSetType::iterator hsh_it = Set.begin();
+  HashSetType::iterator       hsh_it = Set.begin();
   HashSetType::const_iterator hst_const_it;
   hst_const_it = Set.end();
   HashSetType SetCopy;
@@ -130,7 +138,7 @@ int itkHashTableTest(int, char* [] )
   months.insert(p);
   months.count("january");
   months.find("june");
-  HashMapType::iterator map_it = months.begin();
+  HashMapType::iterator       map_it = months.begin();
   HashMapType::const_iterator map_const_it;
   map_const_it = months.end();
   HashMapType MapCopy;

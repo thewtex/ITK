@@ -50,7 +50,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class WrapPadImageFilter:
+class WrapPadImageFilter :
   public PadImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -99,7 +99,8 @@ public:
 
 protected:
   WrapPadImageFilter();
-  ~WrapPadImageFilter() {}
+  ~WrapPadImageFilter() {
+  }
 
 private:
   WrapPadImageFilter(const Self &); //purposely not implemented

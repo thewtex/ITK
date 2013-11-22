@@ -29,7 +29,8 @@
 //  caution. You probably don't want to appear in the newspapers as the
 //  responsible of a surgery mistake in which a doctor extirpates the left
 //  kidney when it should have extracted the right one\footnote{\emph{Wrong
-//  side} surgery accounts for $2\%$ of the reported medical errors in the United
+//  side} surgery accounts for $2\%$ of the reported medical errors in the
+// United
 //  States. Trivial... but equally dangerous.} . If that prospect doesn't
 //  scares you, maybe it is time for you to reconsider your career in medical
 //  image processing. Flipping effects that may seem innocuous at first view may
@@ -40,7 +41,6 @@
 //  \index{itk::FlipImageFilter}
 //
 //  Software Guide : EndLatex
-
 
 #include "itkImage.h"
 #include "itkImageFileReader.h"
@@ -54,13 +54,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkFlipImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -68,7 +67,6 @@ int main( int argc, char * argv[] )
     std::cerr << argv[0] << "  inputImageFile   outputImageFile   flipAxisX   flipAxisY" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -78,14 +76,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char  PixelType;
+  typedef   unsigned char PixelType;
 
-  typedef itk::Image< PixelType,  2 >   ImageType;
+  typedef itk::Image< PixelType,  2 > ImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -105,11 +102,10 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::FlipImageFilter< ImageType >  FilterType;
+  typedef itk::FlipImageFilter< ImageType > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -122,7 +118,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef FilterType::FlipAxesArrayType     FlipAxesArrayType;
+  typedef FilterType::FlipAxesArrayType FlipAxesArrayType;
 
   FlipAxesArrayType flipArray;
 
@@ -144,13 +140,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -158,7 +152,8 @@ int main( int argc, char * argv[] )
   // \center
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
   // \includegraphics[width=0.44\textwidth]{FlipImageFilterOutput}
-  // \itkcaption[Effect of the MedianImageFilter]{Effect of the FlipImageFilter on a slice
+  // \itkcaption[Effect of the MedianImageFilter]{Effect of the FlipImageFilter
+  // on a slice
   // from a MRI proton density brain image.}
   // \label{fig:FlipImageFilterOutput}
   // \end{figure}
@@ -168,7 +163,6 @@ int main( int argc, char * argv[] )
   //  means that the $Y$ axis was flipped while the $X$ axis was conserved.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

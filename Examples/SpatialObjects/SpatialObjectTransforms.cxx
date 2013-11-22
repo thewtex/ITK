@@ -35,7 +35,8 @@
 
 #include "itkSpatialObject.h"
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 
 // Software Guide : BeginLatex
@@ -46,17 +47,16 @@ int main( int , char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::SpatialObject<2>             SpatialObjectType;
-  typedef SpatialObjectType::TransformType  TransformType;
+  typedef itk::SpatialObject<2>            SpatialObjectType;
+  typedef SpatialObjectType::TransformType TransformType;
 
-  SpatialObjectType::Pointer object1 = SpatialObjectType ::New();
+  SpatialObjectType::Pointer object1 = SpatialObjectType::New();
   object1->GetProperty()->SetName("First Object");
 
-  SpatialObjectType::Pointer object2 = SpatialObjectType ::New();
+  SpatialObjectType::Pointer object2 = SpatialObjectType::New();
   object2->GetProperty()->SetName("Second Object");
   object1->AddSpatialObject(object2);
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -79,14 +79,21 @@ int main( int , char *[] )
 // spacing, orientation, and offset of the indices).
 //
 // The ObjectToParentTransform transforms points from the object-specific
-// ``physical" space to the ``physical" space of its parent object. As one can see from the
-// figure ~\ref{fig:SpatialObjectTransforms}, the ObjectToParentTransform is composed of two
-// transforms: ObjectToNodeTransform and NodeToParentNodeTransform. The ObjectToNodeTransform
-// is not applied to the children, but the NodeToParentNodeTransform is. Therefore, if one
-// sets the ObjectToParentTransform, the NodeToParentNodeTransform is actually set.
+// ``physical" space to the ``physical" space of its parent object. As one can
+// see from the
+// figure ~\ref{fig:SpatialObjectTransforms}, the ObjectToParentTransform is
+// composed of two
+// transforms: ObjectToNodeTransform and NodeToParentNodeTransform. The
+// ObjectToNodeTransform
+// is not applied to the children, but the NodeToParentNodeTransform is.
+// Therefore, if one
+// sets the ObjectToParentTransform, the NodeToParentNodeTransform is actually
+// set.
 //
-// The ObjectToWorldTransform maps points from the reference system of the SpatialObject
-// into the global coordinate system. This is useful when the position of the object is known
+// The ObjectToWorldTransform maps points from the reference system of the
+// SpatialObject
+// into the global coordinate system. This is useful when the position of the
+// object is known
 // only in the global coordinate frame. Note that by setting this transform,
 // the ObjectToParent transform is recomputed.
 //
@@ -108,7 +115,6 @@ int main( int , char *[] )
   object2->GetIndexToObjectTransform()->SetScale(scale);
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // Next, we apply an offset on the ObjectToParentTransform of the child object
@@ -124,7 +130,6 @@ int main( int , char *[] )
   object2->GetObjectToParentTransform()->SetOffset(Object2ToObject1Offset);
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // To realize the previous operations on the transformations, we should
@@ -136,7 +141,6 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   object2->ComputeObjectToWorldTransform();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -187,7 +191,6 @@ int main( int , char *[] )
   std::cout << object2->GetIndexToWorldTransform()->GetOffset() << std::endl;
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // Then, we decide to translate the first object which is the parent of the
@@ -205,7 +208,6 @@ int main( int , char *[] )
   object1->GetObjectToParentTransform()->SetOffset(Object1ToWorldOffset);
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // Next we invoke \code{ComputeObjectToWorldTransform()} on the modified
@@ -216,7 +218,6 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   object1->ComputeObjectToWorldTransform();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -229,7 +230,8 @@ int main( int , char *[] )
 // \label{fig:SpatialObjectExampleTransforms}
 // \end{figure}
 //
-// Figure~\ref{fig:SpatialObjectExampleTransforms} shows our set of transformations.
+// Figure~\ref{fig:SpatialObjectExampleTransforms} shows our set of
+// transformations.
 //
 // Finally, we display the resulting affine transformations.
 // Software Guide : EndLatex

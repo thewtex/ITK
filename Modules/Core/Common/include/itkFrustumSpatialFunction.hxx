@@ -39,7 +39,8 @@ FrustumSpatialFunction< VImageDimension, TInput >::FrustumSpatialFunction()
 
 template< unsigned int VImageDimension, typename TInput >
 FrustumSpatialFunction< VImageDimension, TInput >::~FrustumSpatialFunction()
-{}
+{
+}
 
 template< unsigned int VImageDimension, typename TInput >
 typename FrustumSpatialFunction< VImageDimension, TInput >::OutputType
@@ -148,6 +149,7 @@ FrustumSpatialFunction< VImageDimension, TInput >::PrintSelf(std::ostream & os, 
   os << indent << "BottomPlane: " << m_BottomPlane << std::endl;
   os << indent << "RotationPlane: " << m_RotationPlane << std::endl;
 }
+
 } // end namespace itk
 
 #endif

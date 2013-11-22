@@ -44,7 +44,8 @@
 #include "itkSpatialObjectPoint.h"
 // Software Guide : EndCodeSnippet
 
-int main( int, char *[] )
+int
+main( int, char *[] )
 {
 // Software Guide : BeginLatex
 //
@@ -53,9 +54,9 @@ int main( int, char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::BlobSpatialObject<3>    BlobType;
-  typedef BlobType::Pointer            BlobPointer;
-  typedef itk::SpatialObjectPoint<3>   BlobPointType;
+  typedef itk::BlobSpatialObject<3>  BlobType;
+  typedef BlobType::Pointer          BlobPointer;
+  typedef itk::SpatialObjectPoint<3> BlobPointType;
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
@@ -67,7 +68,7 @@ int main( int, char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
- BlobType::PointListType list;
+  BlobType::PointListType list;
 
   for( unsigned int i=0; i<4; i++)
     {
@@ -104,11 +105,10 @@ int main( int, char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-   BlobType::PointListType pointList = blob->GetPoints();
-   std::cout << "The blob contains " << pointList.size();
-   std::cout << " points" << std::endl;
+  BlobType::PointListType pointList = blob->GetPoints();
+  std::cout << "The blob contains " << pointList.size();
+  std::cout << " points" << std::endl;
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -120,7 +120,7 @@ int main( int, char *[] )
 
 // Software Guide : BeginCodeSnippet
   BlobType::PointListType::const_iterator it = blob->GetPoints().begin();
-  while(it != blob->GetPoints().end())
+  while(it != blob->GetPoints().end() )
     {
     std::cout << "Position = " << (*it).GetPosition() << std::endl;
     std::cout << "Color = " << (*it).GetColor() << std::endl;

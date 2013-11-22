@@ -36,7 +36,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkAutoCropLabelMapFilterTest2( int argc, char * argv [] )
+int
+itkAutoCropLabelMapFilterTest2( int argc, char * argv [] )
 {
 
   if( argc != 6 )
@@ -47,7 +48,7 @@ int itkAutoCropLabelMapFilterTest2( int argc, char * argv [] )
     }
 
   const unsigned int dim = 2;
-  typedef unsigned char   PixelType;
+  typedef unsigned char PixelType;
 
   typedef itk::Image< PixelType, dim > ImageType;
 

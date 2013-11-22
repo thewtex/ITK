@@ -33,7 +33,6 @@
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  The header files of all the cell types involved should be loaded along with
@@ -46,15 +45,14 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkMesh.h"
 #include "itkLineCell.h"
 #include "itkTetrahedronCell.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -67,10 +65,9 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float                             PixelType;
-  typedef itk::Mesh< PixelType, 3 >         MeshType;
+  typedef float                     PixelType;
+  typedef itk::Mesh< PixelType, 3 > MeshType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -85,13 +82,12 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellType                CellType;
-  typedef itk::VertexCell< CellType >       VertexType;
-  typedef itk::LineCell< CellType >         LineType;
-  typedef itk::TriangleCell< CellType >     TriangleType;
-  typedef itk::TetrahedronCell< CellType >  TetrahedronType;
+  typedef MeshType::CellType               CellType;
+  typedef itk::VertexCell< CellType >      VertexType;
+  typedef itk::LineCell< CellType >        LineType;
+  typedef itk::TriangleCell< CellType >    TriangleType;
+  typedef itk::TetrahedronCell< CellType > TetrahedronType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -118,12 +114,12 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
 
-  MeshType::PointType   point0;
-  MeshType::PointType   point1;
-  MeshType::PointType   point2;
-  MeshType::PointType   point3;
+  MeshType::PointType point0;
+  MeshType::PointType point1;
+  MeshType::PointType point2;
+  MeshType::PointType point3;
 
   point0[0] = -1; point0[1] = -1; point0[2] = -1;
   point1[0] =  1; point1[1] =  1; point1[2] = -1;
@@ -135,7 +131,6 @@ int main(int, char *[])
   mesh->SetPoint( 2, point2 );
   mesh->SetPoint( 3, point3 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -151,7 +146,6 @@ int main(int, char *[])
   //  \index{itk::TetrahedronCell!SetPointId()}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   CellType::CellAutoPointer cellpointer;
@@ -174,7 +168,6 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   cellpointer.TakeOwnership( new TriangleType );
   cellpointer->SetPointId( 0, 0 );
@@ -182,7 +175,6 @@ int main(int, char *[])
   cellpointer->SetPointId( 2, 2 );
   mesh->SetCell( 1, cellpointer );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -198,21 +190,19 @@ int main(int, char *[])
   mesh->SetCell( 2, cellpointer );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The third triangle connects points { 0, 3, 1 }
   //
   //  Software Guide : EndLatex
 
-   // Software Guide : BeginCodeSnippet
+  // Software Guide : BeginCodeSnippet
   cellpointer.TakeOwnership( new TriangleType );
   cellpointer->SetPointId( 0, 0 );
   cellpointer->SetPointId( 1, 3 );
   cellpointer->SetPointId( 2, 1 );
   mesh->SetCell( 3, cellpointer );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -275,7 +265,6 @@ int main(int, char *[])
   mesh->SetCell( 10, cellpointer );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally the zero dimensional cells represented by the
@@ -301,11 +290,9 @@ int main(int, char *[])
   mesh->SetCell( 14, cellpointer );
   // Software Guide : EndCodeSnippet
 
-
   // Print out the number of points and the number of cells.
   std::cout << "# Points= " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "# Cell  = " << mesh->GetNumberOfCells() << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -321,7 +308,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::PointsContainer::ConstIterator  PointIterator;
+  typedef MeshType::PointsContainer::ConstIterator PointIterator;
   PointIterator pointIterator = mesh->GetPoints()->Begin();
   PointIterator pointEnd      = mesh->GetPoints()->End();
 
@@ -331,7 +318,6 @@ int main(int, char *[])
     ++pointIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -346,7 +332,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellsContainer::ConstIterator  CellIterator;
+  typedef MeshType::CellsContainer::ConstIterator CellIterator;
 
   CellIterator cellIterator = mesh->GetCells()->Begin();
   CellIterator cellEnd      = mesh->GetCells()->End();
@@ -358,7 +344,6 @@ int main(int, char *[])
     ++cellIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -394,7 +379,7 @@ int main(int, char *[])
     std::cout << " points   " << std::endl;
 
     // Software Guide : BeginCodeSnippet
-    typedef CellType::PointIdIterator     PointIdIterator;
+    typedef CellType::PointIdIterator PointIdIterator;
 
     PointIdIterator pointIditer = cell->PointIdsBegin();
     PointIdIterator pointIdend  = cell->PointIdsEnd();
@@ -409,7 +394,6 @@ int main(int, char *[])
     ++cellIterator;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that the point-identifier is obtained from the iterator using the
@@ -417,7 +401,6 @@ int main(int, char *[])
   //  notation used by cell-iterators.
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -471,7 +454,6 @@ int main(int, char *[])
   mesh->SetBoundaryAssignment( dimension, cellId, featureId++, 13 );
   mesh->SetBoundaryAssignment( dimension, cellId, featureId++, 14 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -567,12 +549,10 @@ int main(int, char *[])
   n2 = mesh->GetNumberOfCellBoundaryFeatures( 2, cellId );
   // Software Guide : EndCodeSnippet
 
-
   std::cout << "Number of boundary features of the cellId= " << cellId << std::endl;
   std::cout << "Dimension 0 = " << n0 << std::endl;
   std::cout << "Dimension 1 = " << n1 << std::endl;
   std::cout << "Dimension 2 = " << n2 << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -592,7 +572,7 @@ int main(int, char *[])
   for(unsigned int b0=0; b0 < n0; b0++)
     {
     MeshType::CellIdentifier id;
-    bool found = mesh->GetBoundaryAssignment( dimension, cellId, b0, &id );
+    bool                     found = mesh->GetBoundaryAssignment( dimension, cellId, b0, &id );
     if( found ) std::cout << id << std::endl;
     }
   // Software Guide : EndCodeSnippet
@@ -602,7 +582,7 @@ int main(int, char *[])
   for(unsigned int b1=0; b1 < n1; b1++)
     {
     MeshType::CellIdentifier id;
-    bool found = mesh->GetBoundaryAssignment( dimension, cellId, b1, &id );
+    bool                     found = mesh->GetBoundaryAssignment( dimension, cellId, b1, &id );
     if( found )
       {
       std::cout << id << std::endl;
@@ -614,13 +594,12 @@ int main(int, char *[])
   for(unsigned int b2=0; b2 < n2; b2++)
     {
     MeshType::CellIdentifier id;
-    bool found = mesh->GetBoundaryAssignment( dimension, cellId, b2, &id );
+    bool                     found = mesh->GetBoundaryAssignment( dimension, cellId, b2, &id );
     if( found )
       {
       std::cout << id << std::endl;
       }
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -646,7 +625,7 @@ int main(int, char *[])
   for(unsigned int b1=0; b1 < n1; b1++)
     {
     MeshType::CellIdentifier id;
-    bool found = mesh->GetBoundaryAssignment( dimension, cellId, b1, &id );
+    bool                     found = mesh->GetBoundaryAssignment( dimension, cellId, b1, &id );
     if( found )
       {
       std::cout << id << std::endl;

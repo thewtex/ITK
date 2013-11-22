@@ -33,7 +33,7 @@ CenteredRigid2DTransform<TScalar>
 // Constructor with arguments
 template <typename TScalar>
 CenteredRigid2DTransform<TScalar>::CenteredRigid2DTransform(unsigned int spaceDimension,
-                                                                unsigned int parametersDimension) :
+                                                            unsigned int parametersDimension) :
   Superclass(spaceDimension, parametersDimension)
 {
 }

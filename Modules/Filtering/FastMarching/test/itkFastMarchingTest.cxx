@@ -20,35 +20,42 @@
 #include "itkTextOutput.h"
 #include "itkCommand.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
-int itkFastMarchingTest(int, char* [] )
+int
+itkFastMarchingTest(int, char* [] )
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   // create a fastmarching object
   typedef float                   PixelType;
   typedef itk::Image<PixelType,2> FloatImage;
   typedef itk::FastMarchingImageFilter<FloatImage,FloatImage>
-                                  FloatFMType;
+    FloatFMType;
 
   FloatFMType::Pointer marcher = FloatFMType::New();
 
-  ShowProgressObject progressWatch(marcher);
+  ShowProgressObject                                    progressWatch(marcher);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -78,7 +85,6 @@ int itkFastMarchingTest(int, char* [] )
   alivePoints->InsertElement(1, node);
 
   marcher->SetAlivePoints( alivePoints );
-
 
   // setup trial points
   NodeContainer::Pointer trialPoints = NodeContainer::New();
@@ -119,7 +125,7 @@ int itkFastMarchingTest(int, char* [] )
   marcher->SetOutputSize( size );
 
   // setup a speed image of ones
-  FloatImage::Pointer speedImage = FloatImage::New();
+  FloatImage::Pointer    speedImage = FloatImage::New();
   FloatImage::RegionType region;
   region.SetSize( size );
   speedImage->SetLargestPossibleRegion( region );
@@ -127,7 +133,7 @@ int itkFastMarchingTest(int, char* [] )
   speedImage->Allocate();
 
   itk::ImageRegionIterator<FloatImage>
-    speedIter( speedImage, speedImage->GetBufferedRegion() );
+  speedIter( speedImage, speedImage->GetBufferedRegion() );
   for (; !speedIter.IsAtEnd(); ++speedIter )
     {
     speedIter.Set( 1.0 );
@@ -146,7 +152,7 @@ int itkFastMarchingTest(int, char* [] )
   // check the results
   FloatImage::Pointer output = marcher->GetOutput();
   itk::ImageRegionIterator<FloatImage>
-    iterator( output, output->GetBufferedRegion() );
+  iterator( output, output->GetBufferedRegion() );
 
   bool passed = true;
 
@@ -154,15 +160,15 @@ int itkFastMarchingTest(int, char* [] )
     {
 
     FloatImage::IndexType tempIndex;
-    double distance;
-    float outputValue;
+    double                distance;
+    float                 outputValue;
 
     tempIndex = iterator.GetIndex();
     tempIndex -= offset0;
     distance = 0.0;
     for ( int j = 0; j < 2; j++ )
       {
-        distance += tempIndex[j] * tempIndex[j];
+      distance += tempIndex[j] * tempIndex[j];
       }
     distance = vcl_sqrt( distance );
 

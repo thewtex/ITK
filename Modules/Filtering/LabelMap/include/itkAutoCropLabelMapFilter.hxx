@@ -66,11 +66,11 @@ AutoCropLabelMapFilter< TInputImage >
   // iterate over all the lines
   typename InputImageType::ConstIterator loit( inputImage );
 
-  while ( ! loit.IsAtEnd() )
+  while ( !loit.IsAtEnd() )
     {
-    const LabelObjectType *labelObject = loit.GetLabelObject();
+    const LabelObjectType *                     labelObject = loit.GetLabelObject();
     typename LabelObjectType::ConstLineIterator lit( labelObject );
-    while ( ! lit.IsAtEnd() )
+    while ( !lit.IsAtEnd() )
       {
       const IndexType & idx = lit.GetLine().GetIndex();
       const typename TInputImage::IndexValueType length = lit.GetLine().GetLength();
@@ -97,9 +97,8 @@ AutoCropLabelMapFilter< TInputImage >
     ++loit;
     }
 
-
   // final computation
-  SizeType regionSize;
+  SizeType             regionSize;
   InputImageRegionType cropRegion;
 
   for ( unsigned int i = 0; i < ImageDimension; i++ )
@@ -129,6 +128,7 @@ AutoCropLabelMapFilter< TImage >
 
   os << indent << "Crop Border: "  << m_CropBorder << std::endl;
 }
+
 } // end namespace itk
 
 #endif

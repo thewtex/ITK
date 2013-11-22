@@ -166,7 +166,7 @@ DisplacementFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage
   // cast might not be necessary, but CastImagefilter is optimized for
   // the case where the InputImageType == OutputImageType
   typename VectorCastImageFilter< TInputImage, RealVectorImageType >::Pointer
-    caster = VectorCastImageFilter< TInputImage, RealVectorImageType >::New();
+  caster = VectorCastImageFilter< TInputImage, RealVectorImageType >::New();
   caster->SetInput( this->GetInput() );
   caster->Update();
   m_RealValuedInputImage = caster->GetOutput();
@@ -245,6 +245,7 @@ DisplacementFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage
   unsigned int i;
 
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_UseImageSpacing = "          << m_UseImageSpacing
      << std::endl;
   os << indent << "m_RequestedNumberOfThreads = " << m_RequestedNumberOfThreads
@@ -266,6 +267,7 @@ DisplacementFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage
   os << indent << "m_RealValuedInputImage = "          << m_RealValuedInputImage.GetPointer()
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -28,7 +28,7 @@ namespace watershed
 {
 template< typename TScalar >
 SegmentTreeGenerator< TScalar >
-::SegmentTreeGenerator():m_Merge(false), m_FloodLevel(0.0),
+::SegmentTreeGenerator() : m_Merge(false), m_FloodLevel(0.0),
   m_ConsumeInput(false), m_HighestCalculatedFloodLevel(0.0)
 {
   typename SegmentTreeType::Pointer st =
@@ -47,7 +47,8 @@ SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::SetFloodLevel(double val)
 {
   // Clamp level between 0.0 and 1.0
@@ -68,7 +69,8 @@ void SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::GenerateData()
 {
   //Reset persistent ivars.
@@ -106,7 +108,8 @@ void SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::MergeEquivalencies()
 {
   typename SegmentTableType::Pointer segTable = this->GetInputSegmentTable();
@@ -137,7 +140,8 @@ void SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::CompileMergeList(SegmentTableTypePointer segments,
                    SegmentTreeTypePointer mergeList)
 {
@@ -150,7 +154,7 @@ void SegmentTreeGenerator< TScalar >
   typename SegmentTableType::Iterator segment_ptr;
   IdentifierType labelFROM;
   IdentifierType labelTO;
-  ScalarType    threshold = static_cast< ScalarType >( m_FloodLevel * segments->GetMaximumDepth() );
+  ScalarType     threshold = static_cast< ScalarType >( m_FloodLevel * segments->GetMaximumDepth() );
   m_MergedSegmentsTable->Flatten();
 
   segments->PruneEdgeLists(threshold);
@@ -176,7 +180,7 @@ void SegmentTreeGenerator< TScalar >
     tempMerge.from     = labelFROM;
     tempMerge.to       = labelTO;
     tempMerge.saliency = ( *segment_ptr ).second.edge_list.front().height
-                         - ( *segment_ptr ).second.min;
+      - ( *segment_ptr ).second.min;
     if ( tempMerge.saliency < threshold )
       {
       mergeList->PushBack(tempMerge);
@@ -189,7 +193,8 @@ void SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::ExtractMergeHierarchy(SegmentTableTypePointer segments,
                         SegmentTreeTypePointer heap)
 {
@@ -266,12 +271,12 @@ void SegmentTreeGenerator< TScalar >
         {
         tempMerge.from = toSegLabel;  // The new, composite segment
         tempMerge.to   = m_MergedSegmentsTable->RecursiveLookup(
-          toSeg->edge_list.front().label);
+            toSeg->edge_list.front().label);
         while ( tempMerge.to == tempMerge.from )
           {   // We don't want to merge to ourself.
           toSeg->edge_list.pop_front();
           tempMerge.to = m_MergedSegmentsTable->RecursiveLookup(
-            toSeg->edge_list.front().label);
+              toSeg->edge_list.front().label);
           }
         tempMerge.saliency =
           ( toSeg->edge_list.front().height ) - toSeg->min;
@@ -288,7 +293,8 @@ void SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::PruneMergeSegments(SegmentTableTypePointer segments,
                      OneWayEquivalencyTableTypePointer eqT,
                      const IdentifierType FROM, const IdentifierType TO,
@@ -296,7 +302,7 @@ void SegmentTreeGenerator< TScalar >
 {
   typename SegmentTableType::edge_list_t::iterator edgeTOi, edgeFROMi,
   edgeTEMPi;
-  HashMapType seen_table;
+  HashMapType    seen_table;
   IdentifierType labelTO, labelFROM;
 
   // Lookup both entries.
@@ -416,14 +422,15 @@ void SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::MergeSegments(SegmentTableTypePointer segments,
                 OneWayEquivalencyTableTypePointer eqT,
                 const IdentifierType FROM, const IdentifierType TO)
 {
   typename SegmentTableType::edge_list_t::iterator edgeTOi, edgeFROMi,
   edgeTEMPi;
-  HashMapType seen_table;
+  HashMapType    seen_table;
   IdentifierType labelTO, labelFROM;
 
   // Lookup both entries.
@@ -545,12 +552,15 @@ void SegmentTreeGenerator< TScalar >
 }
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::GenerateOutputRequestedRegion( DataObject *itkNotUsed(output) )
-{}
+{
+}
 
 template< typename TScalar >
-void SegmentTreeGenerator< TScalar >
+void
+SegmentTreeGenerator< TScalar >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
@@ -573,12 +583,14 @@ SegmentTreeGenerator< TScalar >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "FloodLevel: " << m_FloodLevel << std::endl;
   os << indent << "Merge: " << m_Merge << std::endl;
   os << indent << "ConsumeInput: " << m_ConsumeInput << std::endl;
   os << indent << "HighestCalculatedFloodLevel: "
      << m_HighestCalculatedFloodLevel << std::endl;
 }
+
 } // end namespace watershed
 } // end namespace itk
 

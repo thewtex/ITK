@@ -33,22 +33,32 @@ template< typename TInput1, typename TInput2, typename TInput3, typename TOutput
 class ModulusSquare3
 {
 public:
-  ModulusSquare3() {}
-  ~ModulusSquare3() {}
-  bool operator!=(const ModulusSquare3 &) const
+  ModulusSquare3() {
+  }
+
+  ~ModulusSquare3() {
+  }
+
+  bool
+  operator!=(const ModulusSquare3 &) const
   {
     return false;
   }
 
-  bool operator==(const ModulusSquare3 & other) const
+  bool
+  operator==(const ModulusSquare3 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A,
-                            const TInput2 & B,
-                            const TInput3 & C) const
-  { return (TOutput)( A * A + B * B + C * C ); }
+  inline TOutput
+  operator()(const TInput1 & A,
+             const TInput2 & B,
+             const TInput3 & C) const
+  {
+    return (TOutput)( A * A + B * B + C * C );
+  }
+
 };
 }
 /** \class TernaryMagnitudeSquaredImageFilter
@@ -63,7 +73,7 @@ public:
  */
 template< typename TInputImage1, typename TInputImage2,
           typename TInputImage3, typename TOutputImage >
-class TernaryMagnitudeSquaredImageFilter:
+class TernaryMagnitudeSquaredImageFilter :
   public
   TernaryFunctorImageFilter< TInputImage1, TInputImage2,
                              TInputImage3, TOutputImage,
@@ -77,13 +87,13 @@ public:
   /** Standard class typedefs. */
   typedef TernaryMagnitudeSquaredImageFilter Self;
   typedef TernaryFunctorImageFilter<
-    TInputImage1, TInputImage2,
-    TInputImage3, TOutputImage,
-    Functor::ModulusSquare3<
-      typename TInputImage1::PixelType,
-      typename TInputImage2::PixelType,
-      typename TInputImage3::PixelType,
-      typename TOutputImage::PixelType >   >  Superclass;
+      TInputImage1, TInputImage2,
+      TInputImage3, TOutputImage,
+      Functor::ModulusSquare3<
+        typename TInputImage1::PixelType,
+        typename TInputImage2::PixelType,
+        typename TInputImage3::PixelType,
+        typename TOutputImage::PixelType >   >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -96,12 +106,17 @@ public:
                TernaryFunctorImageFilter);
 
 protected:
-  TernaryMagnitudeSquaredImageFilter() {}
-  virtual ~TernaryMagnitudeSquaredImageFilter() {}
+  TernaryMagnitudeSquaredImageFilter() {
+  }
+
+  virtual
+  ~TernaryMagnitudeSquaredImageFilter() {
+  }
 
 private:
   TernaryMagnitudeSquaredImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
+
 };
 } // end namespace itk
 

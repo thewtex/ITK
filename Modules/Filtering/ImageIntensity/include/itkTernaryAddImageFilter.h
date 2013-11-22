@@ -33,22 +33,32 @@ template< typename TInput1, typename TInput2, typename TInput3, typename TOutput
 class Add3
 {
 public:
-  Add3() {}
-  ~Add3() {}
-  bool operator!=(const Add3 &) const
+  Add3() {
+  }
+
+  ~Add3() {
+  }
+
+  bool
+  operator!=(const Add3 &) const
   {
     return false;
   }
 
-  bool operator==(const Add3 & other) const
+  bool
+  operator==(const Add3 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A,
-                            const TInput2 & B,
-                            const TInput3 & C) const
-  { return (TOutput)( A + B + C ); }
+  inline TOutput
+  operator()(const TInput1 & A,
+             const TInput2 & B,
+             const TInput3 & C) const
+  {
+    return (TOutput)( A + B + C );
+  }
+
 };
 }
 /** \class TernaryAddImageFilter
@@ -63,7 +73,7 @@ public:
  */
 template< typename TInputImage1, typename TInputImage2,
           typename TInputImage3, typename TOutputImage >
-class TernaryAddImageFilter:
+class TernaryAddImageFilter :
   public
   TernaryFunctorImageFilter< TInputImage1, TInputImage2,
                              TInputImage3, TOutputImage,
@@ -76,12 +86,12 @@ public:
   /** Standard class typedefs. */
   typedef TernaryAddImageFilter Self;
   typedef TernaryFunctorImageFilter<
-    TInputImage1, TInputImage2,
-    TInputImage3, TOutputImage,
-    Functor::Add3< typename TInputImage1::PixelType,
-                   typename TInputImage2::PixelType,
-                   typename TInputImage3::PixelType,
-                   typename TOutputImage::PixelType >   >  Superclass;
+      TInputImage1, TInputImage2,
+      TInputImage3, TOutputImage,
+      Functor::Add3< typename TInputImage1::PixelType,
+                     typename TInputImage2::PixelType,
+                     typename TInputImage3::PixelType,
+                     typename TOutputImage::PixelType >   >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -94,12 +104,17 @@ public:
                TernaryFunctorImageFilter);
 
 protected:
-  TernaryAddImageFilter() {}
-  virtual ~TernaryAddImageFilter() {}
+  TernaryAddImageFilter() {
+  }
+
+  virtual
+  ~TernaryAddImageFilter() {
+  }
 
 private:
   TernaryAddImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

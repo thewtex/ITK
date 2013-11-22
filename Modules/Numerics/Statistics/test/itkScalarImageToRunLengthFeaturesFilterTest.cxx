@@ -21,14 +21,14 @@
 
 #include "itkScalarImageToRunLengthFeaturesFilter.h"
 
-int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
+int
+itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
 {
 
   //Data definitions
-  const unsigned int  IMGWIDTH         =  5;
-  const unsigned int  IMGHEIGHT        =  5;
-  const unsigned int  NDIMENSION       =  2;
-
+  const unsigned int IMGWIDTH         =  5;
+  const unsigned int IMGHEIGHT        =  5;
+  const unsigned int NDIMENSION       =  2;
 
   //------------------------------------------------------
   //Create a simple test images
@@ -36,7 +36,6 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
   typedef itk::Image<unsigned char, NDIMENSION> InputImageType;
 
   typedef itk::ImageRegionIterator< InputImageType > InputImageIterator;
-
 
   InputImageType::Pointer image = InputImageType::New();
 
@@ -101,7 +100,7 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
     {
 
     typedef itk::Statistics::ScalarImageToRunLengthFeaturesFilter<
-      InputImageType> RunLengthFilterType;
+        InputImageType> RunLengthFilterType;
 
     // First test: just use the defaults.
     RunLengthFilterType::Pointer texFilter = RunLengthFilterType::New();
@@ -158,7 +157,7 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
       passed = false;
       }
 
-     //Test the Use_PixelContainer boolean
+    //Test the Use_PixelContainer boolean
     texFilter->SetFastCalculations( false );
     if ( texFilter->GetFastCalculations() != false )
       {
@@ -166,7 +165,7 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
       return EXIT_FAILURE;
       }
 
-    texFilter->FastCalculationsOn(  );
+    texFilter->FastCalculationsOn();
     if ( texFilter->GetFastCalculations() != true )
       {
       std::cerr << "Error in Set/Get FastCalculationsOn method" << std::endl;
@@ -201,30 +200,32 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
     means = texFilter->GetFeatureMeans();
     stds = texFilter->GetFeatureStandardDeviations();
 
-    double expectedMeans[10] = { 0.76, 7, 10.4, 20, 0.0826667, 15.4, 0.0628267,
-        11.704, 0.578667, 107.8 };
-    double expectedDeviations[10] = { 0.415692, 10.3923, 4.50333, 8.66025, 0, 0, 0.0343639, 6.40166,
-        0.859097, 160.041494 };
+    double expectedMeans[10] =
+          { 0.76, 7, 10.4, 20, 0.0826667, 15.4, 0.0628267,
+          11.704, 0.578667, 107.8 };
+    double expectedDeviations[10] =
+          { 0.415692, 10.3923, 4.50333, 8.66025, 0, 0, 0.0343639, 6.40166,
+          0.859097, 160.041494 };
     RunLengthFilterType::FeatureValueVector::ConstIterator mIt;
     RunLengthFilterType::FeatureValueVector::ConstIterator sIt;
 
     int counter;
     for (counter = 0, mIt = means->Begin(); mIt != means->End(); ++mIt, counter++)
       {
-      if ( vnl_math_abs(expectedMeans[counter] - mIt.Value()) > 0.0001 )
+      if ( vnl_math_abs(expectedMeans[counter] - mIt.Value() ) > 0.0001 )
         {
         std::cerr << "Error. Mean for feature " << counter << " is " << mIt.Value() <<
-        ", expected " << expectedMeans[counter] << "." << std::endl;
+          ", expected " << expectedMeans[counter] << "." << std::endl;
         passed = false;
         }
       }
 
-    for (counter = 0, sIt = stds->Begin(); sIt != stds->End(); ++sIt, counter ++)
+    for (counter = 0, sIt = stds->Begin(); sIt != stds->End(); ++sIt, counter++)
       {
-      if ( vnl_math_abs(expectedDeviations[counter] - sIt.Value()) > 0.0001 )
+      if ( vnl_math_abs(expectedDeviations[counter] - sIt.Value() ) > 0.0001 )
         {
         std::cerr << "Error. Deviation for feature " << counter << " is " << sIt.Value() <<
-        ", expected " << expectedDeviations[counter] << "." << std::endl;
+          ", expected " << expectedDeviations[counter] << "." << std::endl;
         passed = false;
         }
       }
@@ -236,37 +237,37 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
     stds = texFilter->GetFeatureStandardDeviations();
 
     double expectedMeans2[10] = { 1, 1, 13, 25, 0.0826667, 15.4, 0.0826667,
-        15.4, 0.0826667, 15.4 };
+                                  15.4, 0.0826667, 15.4 };
     double expectedDeviations2[10] = { 0 };
 
     for (counter = 0, mIt = means->Begin(); mIt != means->End(); ++mIt, counter++)
       {
-      if ( vnl_math_abs(expectedMeans2[counter] - mIt.Value()) > 0.0001 )
+      if ( vnl_math_abs(expectedMeans2[counter] - mIt.Value() ) > 0.0001 )
         {
         std::cerr << "Error2. Mean for feature " << counter << " is "
-          << mIt.Value() << ", expected " << expectedMeans2[counter] <<
+                  << mIt.Value() << ", expected " << expectedMeans2[counter] <<
           "." << std::endl;
         passed = false;
         }
       }
 
-    for (counter = 0, sIt = stds->Begin(); sIt != stds->End(); ++sIt, counter ++)
+    for (counter = 0, sIt = stds->Begin(); sIt != stds->End(); ++sIt, counter++)
       {
       if ( vnl_math_abs( expectedDeviations2[counter] - sIt.Value() ) > 0.0001 )
         {
         std::cerr << "Error2. Deviation for feature " << counter << " is "
-          << sIt.Value() << ", expected " << expectedDeviations2[counter]
-          << "." << std::endl;
+                  << sIt.Value() << ", expected " << expectedDeviations2[counter]
+                  << "." << std::endl;
         passed = false;
         }
       }
 
 //    //Rerun the feature generation setting an offset
-    RunLengthFilterType::OffsetType   offset;
+    RunLengthFilterType::OffsetType offset;
     offset[0] = -1;
     offset[1] =  -1;
 
-    RunLengthFilterType::OffsetVectorPointer   offsets;
+    RunLengthFilterType::OffsetVectorPointer offsets;
 
     offsets = RunLengthFilterType::OffsetVector::New();
 
@@ -279,7 +280,7 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
     RunLengthFilterType::OffsetVector::ConstIterator vIt2;
 
     for (vIt = offsets->Begin(), vIt2 = offsets2->Begin(); vIt != offsets->End();
-      ++vIt,++vIt2)
+         ++vIt,++vIt2)
       {
       if ( vIt.Value() != vIt2.Value() )
         {
@@ -301,34 +302,34 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
     stds = texFilter->GetFeatureStandardDeviations();
 
     double expectedMeans3[10] = { 1, 1, 13, 25, 0.0826667, 15.4, 0.0826667,
-        15.4, 0.0826667, 15.4 };
+                                  15.4, 0.0826667, 15.4 };
     double expectedDeviations3[10] = { 0 };
 
     for (counter = 0, mIt = means->Begin(); mIt != means->End(); ++mIt, counter++)
       {
-      if ( vnl_math_abs(expectedMeans3[counter] - mIt.Value()) > 0.0001 )
+      if ( vnl_math_abs(expectedMeans3[counter] - mIt.Value() ) > 0.0001 )
         {
         std::cerr << "Error3. Mean for feature " << counter << " is " << mIt.Value() <<
-        ", expected " << expectedMeans3[counter] << "." << std::endl;
+          ", expected " << expectedMeans3[counter] << "." << std::endl;
         passed = false;
         }
       }
 
-    for (counter = 0, sIt = stds->Begin(); sIt != stds->End(); ++sIt, counter ++)
+    for (counter = 0, sIt = stds->Begin(); sIt != stds->End(); ++sIt, counter++)
       {
       if ( vnl_math_abs(expectedDeviations3[counter] - sIt.Value() ) > 0.0001 )
         {
         std::cerr << "Error3. Deviation for feature " << counter << " is " << sIt.Value() <<
-        ", expected " << expectedDeviations3[counter] << "." << std::endl;
+          ", expected " << expectedDeviations3[counter] << "." << std::endl;
         passed = false;
         }
       }
 
     //Test Set/Get Requested features
-    typedef RunLengthFilterType::RunLengthFeaturesFilterType   RunLengthFeaturesFilterType;
+    typedef RunLengthFilterType::RunLengthFeaturesFilterType RunLengthFeaturesFilterType;
 
     RunLengthFilterType::FeatureNameVectorPointer requestedFeatures =
-                                                RunLengthFilterType::FeatureNameVector::New();
+      RunLengthFilterType::FeatureNameVector::New();
 
     requestedFeatures->push_back(RunLengthFeaturesFilterType::ShortRunEmphasis);
     requestedFeatures->push_back(RunLengthFeaturesFilterType::GreyLevelNonuniformity);
@@ -337,7 +338,7 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
     texFilter->Print( std::cout, 3 );
 
     const RunLengthFilterType::FeatureNameVector* requestedFeatures2 =
-                                                texFilter->GetRequestedFeatures();
+      texFilter->GetRequestedFeatures();
 
     RunLengthFilterType::FeatureNameVector::ConstIterator fIt;
 

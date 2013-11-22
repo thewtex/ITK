@@ -34,7 +34,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class Optimizer:public Object
+class Optimizer : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -78,14 +78,19 @@ public:
   itkGetConstReferenceMacro(CurrentPosition, ParametersType);
 
   /** Start optimization. */
-  virtual void StartOptimization() {}
+  virtual void
+  StartOptimization() {
+  }
 
   /** Get the reason for termination */
   virtual const std::string GetStopConditionDescription() const;
 
 protected:
   Optimizer();
-  virtual ~Optimizer() {}
+  virtual
+  ~Optimizer() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Set the current position. */

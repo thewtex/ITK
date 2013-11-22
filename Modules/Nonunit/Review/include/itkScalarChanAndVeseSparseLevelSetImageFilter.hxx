@@ -111,7 +111,7 @@ ScalarChanAndVeseSparseLevelSetImageFilter< TInputImage, TFeatureImage, TOutputI
 
   // Estimate the progress of the filter
   this->UpdateProgress( ( (float)this->m_ElapsedIterations
-                       / (float)this->m_NumberOfIterations ) );
+                          / (float)this->m_NumberOfIterations ) );
 }
 
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction,
@@ -132,6 +132,7 @@ ScalarChanAndVeseSparseLevelSetImageFilter< TInputImage, TFeatureImage, TOutputI
 
   iterator.SetPixel(idx, newValue, status);
 }
+
 } /* end namespace itk */
 
 #endif

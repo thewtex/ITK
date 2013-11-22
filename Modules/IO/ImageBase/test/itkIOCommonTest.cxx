@@ -20,16 +20,17 @@
 #include <cstring>
 #include "itksys/SystemTools.hxx"
 
-bool CheckFileNameParsing(const std::string & fileName,
-                          const std::string & correctNameOnly,
-                          const std::string & correctExtension,
-                          const std::string & correctPath)
+bool
+CheckFileNameParsing(const std::string & fileName,
+                     const std::string & correctNameOnly,
+                     const std::string & correctExtension,
+                     const std::string & correctPath)
 {
   // the current kwsys way...
   std::cout << "(kwsys) Extracting...file name...";
   std::string fileNameString =
     itksys::SystemTools::GetFilenameWithoutLastExtension
-    (itksys::SystemTools::GetFilenameName(fileName));
+      (itksys::SystemTools::GetFilenameName(fileName) );
   char* nameOnly = new char[fileNameString.size() + 1];
   std::strncpy(nameOnly, fileNameString.c_str(),fileNameString.size() + 1);
   std::cout << "extension...";
@@ -38,6 +39,7 @@ bool CheckFileNameParsing(const std::string & fileName,
   // NB: remove the period (kwsys leaves it on, ITK precedent was to
   // remove it)
   char* extension = new char[extensionString.size()+1];
+
   if (extensionString.length()>0)
     {
     std::strncpy(extension, extensionString.c_str()+1,extensionString.size()+1);
@@ -60,13 +62,13 @@ bool CheckFileNameParsing(const std::string & fileName,
   // NB: add trailing slash iff the result is non-empty (kwsys always
   // removes it, ITK precedent was to keep it)
   if (pathString.size() > 1)
-  {
+    {
 #if defined(_WIN32)
     pathString = pathString + "\\";
 #else
     pathString = pathString + "/";
 #endif
-  }
+    }
   char* path = new char[pathString.size() + 1];
   std::strncpy(path, pathString.c_str(),pathString.size() + 1);
   std::cout << "DONE" << std::endl;
@@ -133,7 +135,8 @@ bool CheckFileNameParsing(const std::string & fileName,
   return correctParse;
 }
 
-int itkIOCommonTest(int , char* [])
+int
+itkIOCommonTest(int , char* [])
 {
   bool success = true;
 

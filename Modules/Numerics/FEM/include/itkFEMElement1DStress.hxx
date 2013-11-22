@@ -79,6 +79,7 @@ Element1DStress<TBaseClass>
   MatrixType T(2, 2 * Ndims, 0.0);
 
   VectorType d = this->GetNodeCoordinates(1) - this->GetNodeCoordinates(0);
+
   d = d / d.magnitude();
   for( unsigned int i = 0; i < Ndims; i++ )
     {
@@ -100,6 +101,7 @@ Element1DStress<TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Young Modulus: " << this->m_mat << std::endl;
 }
 

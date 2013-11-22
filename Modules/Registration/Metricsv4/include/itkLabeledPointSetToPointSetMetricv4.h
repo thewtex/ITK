@@ -50,16 +50,16 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 template<typename TFixedPointSet, typename TMovingPointSet = TFixedPointSet>
-class LabeledPointSetToPointSetMetricv4:
+class LabeledPointSetToPointSetMetricv4 :
   public PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef LabeledPointSetToPointSetMetricv4                            Self;
-  typedef PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>  Superclass;
-  typedef SmartPointer<Self>                                           Pointer;
-  typedef SmartPointer<const Self>                                     ConstPointer;
+  typedef LabeledPointSetToPointSetMetricv4                           Self;
+  typedef PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet> Superclass;
+  typedef SmartPointer<Self>                                          Pointer;
+  typedef SmartPointer<const Self>                                    ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -67,23 +67,23 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro( LabeledPointSetToPointSetMetricv4, PointSetToPointSetMetricv4 );
 
-  typedef TFixedPointSet                              FixedPointSetType;
-  typedef typename FixedPointSetType::Pointer         FixedPointSetPointer;
-  typedef TMovingPointSet                             MovingPointSetType;
-  typedef typename MovingPointSetType::Pointer        MovingPointSetPointer;
+  typedef TFixedPointSet                       FixedPointSetType;
+  typedef typename FixedPointSetType::Pointer  FixedPointSetPointer;
+  typedef TMovingPointSet                      MovingPointSetType;
+  typedef typename MovingPointSetType::Pointer MovingPointSetPointer;
 
   /** Types transferred from the base class */
-  typedef typename Superclass::MeasureType            MeasureType;
-  typedef typename Superclass::DerivativeType         DerivativeType;
-  typedef typename Superclass::LocalDerivativeType    LocalDerivativeType;
-  typedef typename Superclass::PointType              PointType;
-  typedef typename Superclass::PointIdentifier        PointIdentifier;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::LocalDerivativeType LocalDerivativeType;
+  typedef typename Superclass::PointType           PointType;
+  typedef typename Superclass::PointIdentifier     PointIdentifier;
 
-  typedef typename Superclass::PixelType              LabelType;
-  typedef std::vector<LabelType>                      LabelSetType;
+  typedef typename Superclass::PixelType LabelType;
+  typedef std::vector<LabelType>         LabelSetType;
 
-  typedef Superclass                                  PointSetMetricType;
-  typedef typename PointSetMetricType::Pointer        PointSetMetricPointer;
+  typedef Superclass                           PointSetMetricType;
+  typedef typename PointSetMetricType::Pointer PointSetMetricPointer;
 
   /**
    * Initialize the metric by making sure that all the components
@@ -102,7 +102,7 @@ public:
    * is used to segregate the computation.
    */
   virtual void GetLocalNeighborhoodValueAndDerivative( const PointType &,
-    MeasureType &, LocalDerivativeType &, const LabelType & ) const;
+                                                       MeasureType &, LocalDerivativeType &, const LabelType & ) const;
 
   /**
    * Set/get the specific unlabeled point set metric type.  Default is
@@ -118,14 +118,15 @@ public:
 
 protected:
   LabeledPointSetToPointSetMetricv4();
-  virtual ~LabeledPointSetToPointSetMetricv4();
+  virtual
+  ~LabeledPointSetToPointSetMetricv4();
 
   /** PrintSelf function */
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   LabeledPointSetToPointSetMetricv4(const Self &); //purposely not implemented
-  void operator=(const Self &);               //purposely not implemented
+  void operator=(const Self &);                    //purposely not implemented
 
   /**
    * Private function to find the common label set for the moving
@@ -145,12 +146,12 @@ private:
    */
   MovingPointSetPointer GetLabeledMovingPointSet( const LabelType ) const;
 
-  PointSetMetricPointer                         m_PointSetMetric;
-  std::vector<PointSetMetricPointer>            m_PointSetMetricClones;
+  PointSetMetricPointer              m_PointSetMetric;
+  std::vector<PointSetMetricPointer> m_PointSetMetricClones;
 
-  LabelSetType                                  m_FixedPointSetLabels;
-  LabelSetType                                  m_MovingPointSetLabels;
-  LabelSetType                                  m_CommonPointSetLabels;
+  LabelSetType m_FixedPointSetLabels;
+  LabelSetType m_MovingPointSetLabels;
+  LabelSetType m_CommonPointSetLabels;
 
 };
 } // end namespace itk

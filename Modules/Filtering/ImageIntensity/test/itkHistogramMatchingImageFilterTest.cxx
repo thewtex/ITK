@@ -26,7 +26,8 @@
  * reference image.
  */
 
-double refPattern( unsigned long offset )
+double
+refPattern( unsigned long offset )
 {
   if ( offset < 40  ) { return 5.0;  }
   if ( offset < 160 ) { return 10.0; }
@@ -35,7 +36,8 @@ double refPattern( unsigned long offset )
   return 0.0;
 }
 
-double srcPattern( unsigned long offset )
+double
+srcPattern( unsigned long offset )
 {
   if ( offset < 40  ) { return 5.0  * 1.5; }
   if ( offset < 160 ) { return 10.0 * 0.9; }
@@ -43,6 +45,7 @@ double srcPattern( unsigned long offset )
   if ( offset < 320 ) { return 20.0 * 0.8; }
   return 0.0;
 }
+
 namespace
 {
 
@@ -52,16 +55,23 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
-
 template <typename TScalar>
-int itkHistogramMatchingImageFilterTest()
+int
+itkHistogramMatchingImageFilterTest()
 {
 
   typedef TScalar PixelType;
@@ -110,7 +120,6 @@ int itkHistogramMatchingImageFilterTest()
     ++counter;
     }
 
-
   typedef itk::HistogramMatchingImageFilter<ImageType,ImageType> FilterType;
   typename FilterType::Pointer filter = FilterType::New();
 
@@ -120,7 +129,7 @@ int itkHistogramMatchingImageFilterTest()
   filter->SetNumberOfMatchPoints( 8 );
   filter->ThresholdAtMeanIntensityOn();
 
-  ShowProgressObject progressWatch(filter);
+  ShowProgressObject                                    progressWatch(filter);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -151,7 +160,6 @@ int itkHistogramMatchingImageFilterTest()
     ++refIter;
     }
 
-
   // Exercise auxiliary functions
   std::cout << "Exercise auxiliary functions" << std::endl;
   std::cout << filter->GetNumberOfHistogramLevels() << std::endl;
@@ -181,7 +189,9 @@ int itkHistogramMatchingImageFilterTest()
   return EXIT_SUCCESS;
 
 }
-int itkHistogramMatchingImageFilterTest(int, char* [] )
+
+int
+itkHistogramMatchingImageFilterTest(int, char* [] )
 {
   if(itkHistogramMatchingImageFilterTest<float>() != EXIT_SUCCESS)
     {

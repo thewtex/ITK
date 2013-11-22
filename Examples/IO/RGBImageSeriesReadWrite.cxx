@@ -41,8 +41,8 @@
 #include "itkPNGImageIO.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 4 )
@@ -51,7 +51,6 @@ int main( int argc, char ** argv )
     std::cerr << argv[0] << "first last  outputRGBImageFile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Software Guide : BeginLatex
   //
@@ -64,10 +63,10 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel< unsigned char >        PixelType;
+  typedef itk::RGBPixel< unsigned char > PixelType;
   const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >    ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -81,13 +80,12 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >  SeriesReaderType;
-  typedef itk::ImageFileWriter<   ImageType >  WriterType;
+  typedef itk::ImageSeriesReader< ImageType > SeriesReaderType;
+  typedef itk::ImageFileWriter<   ImageType > WriterType;
 
   SeriesReaderType::Pointer seriesReader = SeriesReaderType::New();
   WriterType::Pointer       writer       = WriterType::New();
   // Software Guide : EndCodeSnippet
-
 
   const unsigned int first = atoi( argv[1] );
   const unsigned int last  = atoi( argv[2] );
@@ -97,13 +95,14 @@ int main( int argc, char ** argv )
   // Software Guide : BeginLatex
   //
   // We use a NumericSeriesFileNames class in order to generate the filenames of
-  // the slices to be read. Later on in this example we will reuse this object in
+  // the slices to be read. Later on in this example we will reuse this object
+  // in
   // order to generate the filenames of the slices to be written.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::NumericSeriesFileNames    NameGeneratorType;
+  typedef itk::NumericSeriesFileNames NameGeneratorType;
 
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
 
@@ -173,7 +172,8 @@ int main( int argc, char ** argv )
   // Software Guide : BeginLatex
   //
   // We now proceed to save the same volumetric dataset as a set of slices. This
-  // is done only to illustrate the process for saving a volume as a series of 2D
+  // is done only to illustrate the process for saving a volume as a series of
+  // 2D
   // individual datasets. The type of the series writer must be instantiated
   // taking into account that the input file is a 3D volume and the output files
   // are 2D images.  Additionally, the output of the series reader is connected
@@ -182,7 +182,7 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< PixelType, 2 >     Image2DType;
+  typedef itk::Image< PixelType, 2 > Image2DType;
 
   typedef itk::ImageSeriesWriter< ImageType, Image2DType > SeriesWriterType;
 

@@ -21,18 +21,18 @@
 
 #include <iostream>
 
-
 namespace
 {
-
 
 // we validate the results against just converting the numbers to
 // doubles. This will work for all integers less then 32-bit but is
 // not always exact with larger integers.
 template < typename T1, typename T2 >
-bool DoCastWithRangeCheckTestVerify( const T2 value, const T1 = 0 )
+bool
+DoCastWithRangeCheckTestVerify( const T2 value, const T1 = 0 )
 {
   T1 ret;
+
   // tying to convert T2 to T1
   try
     {
@@ -59,16 +59,16 @@ bool DoCastWithRangeCheckTestVerify( const T2 value, const T1 = 0 )
 
     }
 
-
   return true;
 }
 
-
 template < typename T1, typename T2 >
-bool DoCastWithRangeCheckTestExulstive( const T1* = 0, const T2* = 0 )
+bool
+DoCastWithRangeCheckTestExulstive( const T1* = 0, const T2* = 0 )
 {
   // test convert T2 to T1
   bool pass = true;
+
   for (T2 i = itk::NumericTraits<T2>::NonpositiveMin(); i != itk::NumericTraits<T2>::max(); ++i )
     {
     pass &= DoCastWithRangeCheckTestVerify<T1, T2>( i );
@@ -78,12 +78,14 @@ bool DoCastWithRangeCheckTestExulstive( const T1* = 0, const T2* = 0 )
 }
 
 template < typename T1, typename T2 >
-bool DoCastWithRangeCheckTest( const T1* = 0, const T2* = 0 )
+bool
+DoCastWithRangeCheckTest( const T1* = 0, const T2* = 0 )
 {
   int minus_one = -1;
 
   // test convert T2 to T1
   bool pass = true;
+
   pass &= DoCastWithRangeCheckTestVerify<T1, T2>( itk::NumericTraits<T2>::NonpositiveMin() );
   pass &= DoCastWithRangeCheckTestVerify<T1, T2>( itk::NumericTraits<T2>::max() );
   pass &= DoCastWithRangeCheckTestVerify<T1, T2>( itk::NumericTraits<T2>::Zero );
@@ -94,7 +96,8 @@ bool DoCastWithRangeCheckTest( const T1* = 0, const T2* = 0 )
 }
 
 template < typename T1 >
-bool DoCastWithRangeCheckTestForTypes( const T1* = 0 )
+bool
+DoCastWithRangeCheckTestForTypes( const T1* = 0 )
 {
   // call method for all type to be converted to type T1
   bool pass = true;
@@ -116,21 +119,21 @@ bool DoCastWithRangeCheckTestForTypes( const T1* = 0 )
 
 } // end namespace
 
-int itkMathCastWithRangeCheckTest( int, char *[] )
+int
+itkMathCastWithRangeCheckTest( int, char *[] )
 {
   bool pass = true;
 
-   try
+  try
     {
-    itk::Math::CastWithRangeCheck<short, int>( int(itk::NumericTraits<short>::max())+10 );
+    itk::Math::CastWithRangeCheck<short, int>( int(itk::NumericTraits<short>::max() )+10 );
     pass = false;
-    std::cout << "failed to through exception with " <<  int(itk::NumericTraits<short>::max())+10 << " to int ";
+    std::cout << "failed to through exception with " <<  int(itk::NumericTraits<short>::max() )+10 << " to int ";
     }
-   catch( ... )
-     {
-     std::cout << "caught exception as expected" << std::endl;
-     }
-
+  catch( ... )
+    {
+    std::cout << "caught exception as expected" << std::endl;
+    }
 
   DoCastWithRangeCheckTestExulstive<signed char, unsigned char>();
   DoCastWithRangeCheckTestExulstive<unsigned char, signed char>();
@@ -138,7 +141,6 @@ int itkMathCastWithRangeCheckTest( int, char *[] )
   DoCastWithRangeCheckTestExulstive<signed char, signed short>();
 
   DoCastWithRangeCheckTestExulstive<unsigned int, signed char>();
-
 
   pass &= DoCastWithRangeCheckTestForTypes<unsigned char>();
   pass &= DoCastWithRangeCheckTestForTypes<signed char>();

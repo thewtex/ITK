@@ -29,7 +29,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< typename TInputSpatialObject >
-class SpatialObjectDuplicator:public Object
+class SpatialObjectDuplicator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -53,7 +53,7 @@ public:
                       SpatialObjectType::ObjectDimension);
 
   typedef SpatialObject< itkGetStaticConstMacro(ObjectDimension) >
-  InternalSpatialObjectType;
+    InternalSpatialObjectType;
 
   /** Get/Set the input SpatialObject. */
   itkSetConstObjectMacro(Input, SpatialObjectType);
@@ -66,7 +66,10 @@ public:
 
 protected:
   SpatialObjectDuplicator();
-  virtual ~SpatialObjectDuplicator() {}
+  virtual
+  ~SpatialObjectDuplicator() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void CopyObject(const InternalSpatialObjectType *source,

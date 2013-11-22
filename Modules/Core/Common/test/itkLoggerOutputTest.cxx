@@ -21,8 +21,8 @@
 #include "itkStdStreamLogOutput.h"
 #include "itkLoggerOutput.h"
 
-
-int itkLoggerOutputTest( int argc, char *argv [] )
+int
+itkLoggerOutputTest( int argc, char *argv [] )
 {
   try
     {
@@ -31,7 +31,6 @@ int itkLoggerOutputTest( int argc, char *argv [] )
       std::cout << "Usage: " << argv[0] << " logFilename" << std::endl;
       return EXIT_FAILURE;
       }
-
 
     // Create an ITK StdStreamLogOutputs
     itk::StdStreamLogOutput::Pointer coutput = itk::StdStreamLogOutput::New();
@@ -62,7 +61,8 @@ int itkLoggerOutputTest( int argc, char *argv [] )
     // Create an ITK LoggerOutput and then test it.
     itk::LoggerOutput::Pointer pOver = itk::LoggerOutput::New();
     pOver->OverrideITKWindow();
-    pOver->SetLogger(logger);  // redirect messages from ITK OutputWindow -> logger2
+    pOver->SetLogger(logger);  // redirect messages from ITK OutputWindow ->
+                               // logger2
 
     // test message for ITK OutputWindow
     itk::OutputWindow::GetInstance()->DisplayText("** This is from ITK OutputWindow **\n");

@@ -133,15 +133,15 @@ TimeVaryingBSplineVelocityFieldTransform<TScalar, NDimensions>
   if( update.Size() != numberOfParameters )
     {
     itkExceptionMacro( "Parameter update size, " << update.Size()
-      << ", must be same as transform parameter size, "
-      << numberOfParameters << std::endl );
+                                                 << ", must be same as transform parameter size, "
+                                                 << numberOfParameters << std::endl );
     }
 
   DerivativeType scaledUpdate = update;
   scaledUpdate *= factor;
 
   const SizeValueType numberOfPixels = static_cast<SizeValueType>( scaledUpdate.Size() / NDimensions );
-  const bool importFilterWillReleaseMemory = false;
+  const bool          importFilterWillReleaseMemory = false;
 
   DisplacementVectorType *updateFieldPointer = reinterpret_cast<DisplacementVectorType *>( scaledUpdate.data_block() );
 
@@ -181,6 +181,7 @@ TimeVaryingBSplineVelocityFieldTransform<TScalar, NDimensions>
   os << indent << "  origin: " << this->m_VelocityFieldOrigin << std::endl;
   os << indent << "  direction: " << this->m_VelocityFieldDirection << std::endl;
 }
+
 } // namespace itk
 
 #endif

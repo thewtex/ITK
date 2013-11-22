@@ -28,7 +28,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInput, typename TOutput, typename TCriterion >
-class SquaredEdgeLengthDecimationQuadEdgeMeshFilter:
+class SquaredEdgeLengthDecimationQuadEdgeMeshFilter :
   public EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
 {
 public:
@@ -36,7 +36,7 @@ public:
   typedef SmartPointer< Self >                          Pointer;
   typedef SmartPointer< const Self >                    ConstPointer;
   typedef EdgeDecimationQuadEdgeMeshFilter<
-    TInput, TOutput, TCriterion >                       Superclass;
+      TInput, TOutput, TCriterion >                       Superclass;
 
   /** Run-time type information (and related methods).   */
   itkTypeMacro(SquaredEdgeLengthDecimationQuadEdgeMeshFilter, EdgeDecimationQuadEdgeMeshFilter);
@@ -71,7 +71,8 @@ public:
 
 protected:
   SquaredEdgeLengthDecimationQuadEdgeMeshFilter();
-  virtual ~SquaredEdgeLengthDecimationQuadEdgeMeshFilter();
+  virtual
+  ~SquaredEdgeLengthDecimationQuadEdgeMeshFilter();
 
   /**
    * Compute the measure value for iEdge.
@@ -79,8 +80,9 @@ protected:
    * \param[in] iEdge
    * \return measure value, here the squared edge length
    */
-  inline MeasureType MeasureEdge(OutputQEType *iEdge)
-    {
+  inline MeasureType
+  MeasureEdge(OutputQEType *iEdge)
+  {
     OutputPointIdentifier id_org = iEdge->GetOrigin();
     OutputPointIdentifier id_dest = iEdge->GetDestination();
 
@@ -88,7 +90,7 @@ protected:
     OutputPointType dest = this->m_OutputMesh->GetPoint(id_dest);
 
     return static_cast< MeasureType >( org.SquaredEuclideanDistanceTo(dest) );
-    }
+  }
 
   /**
    * Calculate the position of the remaining vertex from collapsing iEdge.
@@ -99,8 +101,11 @@ protected:
   OutputPointType Relocate(OutputQEType *iEdge);
 
 private:
-  SquaredEdgeLengthDecimationQuadEdgeMeshFilter(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  SquaredEdgeLengthDecimationQuadEdgeMeshFilter(const Self &); // purposely not
+                                                               // implemented
+  void operator=(const Self &);                                // purposely not
+
+  // implemented
 
 };
 }

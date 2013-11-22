@@ -60,6 +60,7 @@ ImageReverseConstIterator< TImage >
 
   return it;
 }
+
 #endif
 } // end namespace itk
 

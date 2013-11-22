@@ -43,6 +43,7 @@ MeanReciprocalSquareDifferenceImageToImageMetric< TFixedImage, TMovingImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Lambda factor = " << m_Lambda << std::endl;
   os << "Delta  value  = " << m_Delta  << std::endl;
 }
@@ -156,6 +157,7 @@ MeanReciprocalSquareDifferenceImageToImageMetric< TFixedImage, TMovingImage >
   Value      = this->GetValue(parameters);
   this->GetDerivative(parameters, Derivative);
 }
+
 } // end namespace itk
 
 #endif

@@ -47,7 +47,6 @@ FrameDifferenceVideoFilter()
   this->TemporalProcessObject::m_FrameSkipPerOutput = 1;
 }
 
-
 //
 // PrintSelf
 //
@@ -57,11 +56,11 @@ FrameDifferenceVideoFilter<TInputVideoStream, TOutputVideoStream>::
 PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent
      << "FrameOffset: " << this->TemporalProcessObject::m_UnitInputNumberOfFrames - 1
      << std::endl;
 }
-
 
 //
 // SetFrameOffset
@@ -78,7 +77,6 @@ SetFrameOffset(SizeValueType numFrames)
   this->Modified();
 }
 
-
 //
 // GetFrameOffset
 //
@@ -90,7 +88,6 @@ GetFrameOffset()
   return this->TemporalProcessObject::m_UnitInputNumberOfFrames - 1;
 }
 
-
 //
 // ThreadedGenerateData
 //
@@ -98,12 +95,12 @@ template<typename TInputVideoStream, typename TOutputVideoStream>
 void
 FrameDifferenceVideoFilter<TInputVideoStream, TOutputVideoStream>::
 ThreadedGenerateData(const OutputFrameSpatialRegionType& outputRegionForThread,
-                     int itkNotUsed(threadId))
+                     int itkNotUsed(threadId) )
 {
   // Get the input and output video streams
   const InputVideoStreamType* input = this->GetInput();
-  OutputVideoStreamType* output = this->GetOutput();
-  SizeValueType numFrames = this->TemporalProcessObject::m_UnitInputNumberOfFrames;
+  OutputVideoStreamType*      output = this->GetOutput();
+  SizeValueType               numFrames = this->TemporalProcessObject::m_UnitInputNumberOfFrames;
 
   // Get output frame number
   typename OutputVideoStreamType::TemporalRegionType outReqTempRegion =
@@ -124,28 +121,28 @@ ThreadedGenerateData(const OutputFrameSpatialRegionType& outputRegionForThread,
   // Get iterators for the input frames
   typedef ImageRegionConstIterator<InputFrameType> ConstIterType;
   OutputFrameSpatialRegionType inputRegion;
-  inputRegion.SetSize(outputRegionForThread.GetSize());
-  inputRegion.SetIndex(outputRegionForThread.GetIndex());
+  inputRegion.SetSize(outputRegionForThread.GetSize() );
+  inputRegion.SetIndex(outputRegionForThread.GetIndex() );
   ConstIterType I0Iter(input->GetFrame(inputStart), inputRegion);
   ConstIterType I1Iter(input->GetFrame(inputStart + numFrames - 1), inputRegion);
 
   // Get the output frame and its iterator
-  OutputFrameType* outFrame = output->GetFrame(outputFrameNumber);
+  OutputFrameType*                          outFrame = output->GetFrame(outputFrameNumber);
   itk::ImageRegionIterator<OutputFrameType> outIter(outFrame, outputRegionForThread);
 
   // Average the input frames at each pixel of the output region
   typedef typename NumericTraits<InputPixelType>::RealType InputPixelRealType;
-  while(!outIter.IsAtEnd())
+  while(!outIter.IsAtEnd() )
     {
     // Compute the signed difference as a real value
-    InputPixelRealType val = static_cast<InputPixelRealType>(I0Iter.Get()) -
-                             static_cast<InputPixelRealType>(I1Iter.Get());
+    InputPixelRealType val = static_cast<InputPixelRealType>(I0Iter.Get() ) -
+      static_cast<InputPixelRealType>(I1Iter.Get() );
 
     // Square it
     val *= val;
 
     // Set the output
-    outIter.Set(static_cast<OutputPixelType>(val));
+    outIter.Set(static_cast<OutputPixelType>(val) );
 
     // Update the iterators
     ++outIter;
@@ -153,7 +150,6 @@ ThreadedGenerateData(const OutputFrameSpatialRegionType& outputRegionForThread,
     ++I1Iter;
     }
 }
-
 
 } // end namespace itk
 

@@ -50,7 +50,7 @@ namespace watershed
  * \ingroup ITKWatersheds
  */
 template< typename TScalar, unsigned int TImageDimension >
-class EquivalenceRelabeler:
+class EquivalenceRelabeler :
   public ProcessObject
 {
 public:
@@ -73,33 +73,42 @@ public:
   itkTypeMacro(WatershedEquivalenceRelabeler, ProcessObject);
 
   /** Set/Get the image to relabel.   */
-  void SetInputImage(ImageType *img)
-  { this->ProcessObject::SetNthInput(0, img); }
-  const ImageType * GetInputImage(void)
+  void
+  SetInputImage(ImageType *img)
+  {
+    this->ProcessObject::SetNthInput(0, img);
+  }
+
+  const ImageType *
+  GetInputImage(void)
   {
     return static_cast< ImageType * >
            ( this->ProcessObject::GetInput(0) );
   }
 
   /** Set/Get the output image */
-  void SetOutputImage(ImageType *img)
+  void
+  SetOutputImage(ImageType *img)
   {
     this->ProcessObject::SetNthOutput(0, img);
   }
 
-  typename ImageType::Pointer GetOutputImage()
+  typename ImageType::Pointer
+  GetOutputImage()
   {
     return static_cast< ImageType * >
            ( this->ProcessObject::GetOutput(0) );
   }
 
   /** Set/Get the table to use in relabeling the input image.   */
-  void SetEquivalencyTable(EquivalencyTableType *et)
+  void
+  SetEquivalencyTable(EquivalencyTableType *et)
   {
     this->ProcessObject::SetNthInput(1, et);
   }
 
-  EquivalencyTableType::Pointer GetEquivalencyTable()
+  EquivalencyTableType::Pointer
+  GetEquivalencyTable()
   {
     return static_cast< EquivalencyTableType * >
            ( this->ProcessObject::GetInput(1) );
@@ -122,14 +131,23 @@ protected:
     this->ProcessObject::SetNthOutput( 0, img.GetPointer() );
   }
 
-  virtual ~EquivalenceRelabeler() {}
-  EquivalenceRelabeler(const Self &) {}
-  void operator=(const Self &) {}
+  virtual
+  ~EquivalenceRelabeler() {
+  }
+
+  EquivalenceRelabeler(const Self &) {
+  }
+
+  void
+  operator=(const Self &) {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateOutputRequestedRegion(DataObject *output);
 
   void GenerateInputRequestedRegion();
+
 };
 } // end namespace watershed
 } // end namespace itk

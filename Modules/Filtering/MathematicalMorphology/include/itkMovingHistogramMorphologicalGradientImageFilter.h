@@ -33,30 +33,39 @@ public:
   {
   }
 
-  ~MorphologicalGradientHistogram(){}
+  ~MorphologicalGradientHistogram(){
+  }
 
-  inline void AddBoundary() {}
+  inline void
+  AddBoundary() {
+  }
 
-  inline void RemoveBoundary() {}
+  inline void
+  RemoveBoundary() {
+  }
 
   typedef std::map< TInputPixel, SizeValueType > MapType;
 
-  inline void AddPixel(const TInputPixel & p)
+  inline void
+  AddPixel(const TInputPixel & p)
   {
     m_Map[p]++;
   }
 
-  inline void RemovePixel(const TInputPixel & p)
+  inline void
+  RemovePixel(const TInputPixel & p)
   {
     m_Map[p]--;
   }
 
-  inline TInputPixel GetValue(const TInputPixel &)
+  inline TInputPixel
+  GetValue(const TInputPixel &)
   {
     return GetValue();
   }
 
-  inline TInputPixel GetValue()
+  inline TInputPixel
+  GetValue()
   {
     // clean the map
     typename MapType::iterator mapIt = m_Map.begin();
@@ -86,14 +95,14 @@ public:
     return 0;
   }
 
-  static bool UseVectorBasedAlgorithm()
+  static bool
+  UseVectorBasedAlgorithm()
   {
     return false;
   }
 
   MapType m_Map;
 };
-
 
 template< typename TInputPixel >
 class VectorMorphologicalGradientHistogram
@@ -108,14 +117,19 @@ public:
     m_Count = 0;
   }
 
-  ~VectorMorphologicalGradientHistogram(){}
+  ~VectorMorphologicalGradientHistogram(){
+  }
 
-  inline void AddBoundary() {}
+  inline void
+  AddBoundary() {
+  }
 
-  inline void RemoveBoundary() {}
+  inline void
+  RemoveBoundary() {
+  }
 
-
-  inline void AddPixel(const TInputPixel & p)
+  inline void
+  AddPixel(const TInputPixel & p)
   {
     m_Vector[p - NumericTraits < TInputPixel > ::NonpositiveMin()]++;
     if ( p > m_Max )
@@ -129,7 +143,8 @@ public:
     m_Count++;
   }
 
-  inline void RemovePixel(const TInputPixel & p)
+  inline void
+  RemovePixel(const TInputPixel & p)
   {
     m_Vector[p - NumericTraits < TInputPixel > ::NonpositiveMin()]--;
     m_Count--;
@@ -151,12 +166,14 @@ public:
       }
   }
 
-  inline TInputPixel GetValue(const TInputPixel &)
+  inline TInputPixel
+  GetValue(const TInputPixel &)
   {
     return GetValue();
   }
 
-  inline TInputPixel GetValue()
+  inline TInputPixel
+  GetValue()
   {
     if ( m_Count > 0 )
       {
@@ -168,7 +185,8 @@ public:
       }
   }
 
-  static bool UseVectorBasedAlgorithm()
+  static bool
+  UseVectorBasedAlgorithm()
   {
     return true;
   }
@@ -181,7 +199,8 @@ public:
 
 /** \cond HIDE_SPECIALIZATION_DOCUMENTATION */
 
-// now create MorphologicalGradientHistogram specilizations using the VectorMorphologicalGradientHistogram
+// now create MorphologicalGradientHistogram specilizations using the
+// VectorMorphologicalGradientHistogram
 // as base class
 
 template<>
@@ -222,7 +241,7 @@ class MorphologicalGradientHistogram<bool>:
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class MovingHistogramMorphologicalGradientImageFilter:
+class MovingHistogramMorphologicalGradientImageFilter :
   public MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel,
                                      typename  Function::MorphologicalGradientHistogram< typename TInputImage::
                                                                                          PixelType > >
@@ -262,18 +281,25 @@ public:
 
   /** Return true if the vector based algorithm is used, and
    * false if the map based algorithm is used */
-  static bool GetUseVectorBasedAlgorithm()
-  { return Function::MorphologicalGradientHistogram< typename TInputImage::PixelType >::UseVectorBasedAlgorithm(); }
+  static bool
+  GetUseVectorBasedAlgorithm()
+  {
+    return Function::MorphologicalGradientHistogram< typename TInputImage::PixelType >::UseVectorBasedAlgorithm();
+  }
 
 protected:
-  MovingHistogramMorphologicalGradientImageFilter() {}
-  ~MovingHistogramMorphologicalGradientImageFilter() {}
+  MovingHistogramMorphologicalGradientImageFilter() {
+  }
+
+  ~MovingHistogramMorphologicalGradientImageFilter() {
+  }
 
 private:
   MovingHistogramMorphologicalGradientImageFilter(const Self &); //purposely not
                                                                  // implemented
   void operator=(const Self &);                                  //purposely not
-                                                                 // implemented
+
+  // implemented
 };                                                               // end of class
 } // end namespace itk
 

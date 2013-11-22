@@ -43,7 +43,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class LabelMapToLabelImageFilter:
+class LabelMapToLabelImageFilter :
   public LabelMapFilter< TInputImage, TOutputImage >
 {
 public:
@@ -54,12 +54,12 @@ public:
   typedef SmartPointer< const Self >                  ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef typename Superclass::InputImageType          InputImageType;
-  typedef typename Superclass::InputImagePointer       InputImagePointer;
-  typedef typename Superclass::InputImageConstPointer  InputImageConstPointer;
-  typedef typename Superclass::InputImageRegionType    InputImageRegionType;
-  typedef typename Superclass::InputImagePixelType     InputImagePixelType;
-  typedef typename Superclass::LabelObjectType         LabelObjectType;
+  typedef typename Superclass::InputImageType         InputImageType;
+  typedef typename Superclass::InputImagePointer      InputImagePointer;
+  typedef typename Superclass::InputImageConstPointer InputImageConstPointer;
+  typedef typename Superclass::InputImageRegionType   InputImageRegionType;
+  typedef typename Superclass::InputImagePixelType    InputImagePixelType;
+  typedef typename Superclass::LabelObjectType        LabelObjectType;
 
   typedef typename Superclass::OutputImageType         OutputImageType;
   typedef typename Superclass::OutputImagePointer      OutputImagePointer;
@@ -85,7 +85,8 @@ public:
 
 protected:
   LabelMapToLabelImageFilter();
-  ~LabelMapToLabelImageFilter() {}
+  ~LabelMapToLabelImageFilter() {
+  }
 
   virtual void BeforeThreadedGenerateData();
 
@@ -94,6 +95,7 @@ protected:
 private:
   LabelMapToLabelImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
   OutputImageType *m_OutputImage;
 };                                          // end of class
 } // end namespace itk

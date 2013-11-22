@@ -31,6 +31,7 @@ ParticleSwarmOptimizerDOMReader::GenerateData( const DOMNodeType* inputdom, cons
   LoggerType* logger = this->GetLogger();
 
   OutputType* output = this->GetOutput();
+
   if ( output == NULL )
     {
     logger->Info( "creating the output PSO object ...\n" );
@@ -43,14 +44,18 @@ ParticleSwarmOptimizerDOMReader::GenerateData( const DOMNodeType* inputdom, cons
     logger->Info( "filling an existing output PSO object ...\n" );
     }
 
-  // Two functions can be used to read a single value or a std::vector/itk::Array from a FancyString:
+  // Two functions can be used to read a single value or a
+  // std::vector/itk::Array from a FancyString:
   //   1. s.ToData( s, data );
   //   2. s >> data;
   // The two functions are identical when reading a single value.
-  // For std::vector/itk::Array, version 1 read all data elements in the string, while version 2
-  // reads a fixed number of data elements that is specified by data.size() or data.GetSize().
+  // For std::vector/itk::Array, version 1 read all data elements in the string,
+  // while version 2
+  // reads a fixed number of data elements that is specified by data.size() or
+  // data.GetSize().
   //
-  // During data reading, a std::ios_base::failure exception will be thrown if error occurred due to
+  // During data reading, a std::ios_base::failure exception will be thrown if
+  // error occurred due to
   // wrong data format, missing data elements (for std::vector/itk::Array), etc.
   try
     {

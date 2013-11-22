@@ -29,13 +29,15 @@ OtsuThresholdCalculator< THistogram, TOutput >
 ::GenerateData(void)
 {
   this->UpdateProgress(0.0);
-  // Compute the Otsu threshold using the OtsuMultipleThresholdsCalculator to ensure code reusability.
+  // Compute the Otsu threshold using the OtsuMultipleThresholdsCalculator to
+  // ensure code reusability.
   m_OtsuMultipleThresholdsCalculator->SetInputHistogram( this->GetInput() );
   m_OtsuMultipleThresholdsCalculator->SetNumberOfThresholds( 1 );
   m_OtsuMultipleThresholdsCalculator->Compute();
   this->GetOutput()->Set( static_cast<OutputType>( m_OtsuMultipleThresholdsCalculator->GetOutput()[0] ) );
   this->UpdateProgress(1.0);
 }
+
 } // end namespace itk
 
 #endif

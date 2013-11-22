@@ -32,9 +32,11 @@
 #endif
 
 template< typename T >
-std::string GetClampTypeName()
+std::string
+GetClampTypeName()
 {
   std::string name;
+
 #ifdef GCC_USEDEMANGLE
   char const *mangledName = typeid( T ).name();
   int         status;
@@ -48,12 +50,12 @@ std::string GetClampTypeName()
   return name;
 }
 
-
 template < typename TInputPixelType, typename TOutputPixelType >
-bool TestClampFromTo()
+bool
+TestClampFromTo()
 {
-  typedef itk::Image< TInputPixelType, 3 >                        InputImageType;
-  typedef itk::Image< TOutputPixelType, 3 >                       OutputImageType;
+  typedef itk::Image< TInputPixelType, 3 >                         InputImageType;
+  typedef itk::Image< TOutputPixelType, 3 >                        OutputImageType;
   typedef itk::ClampImageFilter< InputImageType, OutputImageType > FilterType;
 
   typedef itk::RandomImageSource< InputImageType > SourceType;
@@ -69,8 +71,8 @@ bool TestClampFromTo()
   typedef itk::ImageRegionConstIterator< InputImageType >  InputIteratorType;
   typedef itk::ImageRegionConstIterator< OutputImageType > OutputIteratorType;
 
-  InputIteratorType  it( source->GetOutput(),
-                         source->GetOutput()->GetLargestPossibleRegion() );
+  InputIteratorType it( source->GetOutput(),
+                        source->GetOutput()->GetLargestPossibleRegion() );
   OutputIteratorType ot( filter->GetOutput(),
                          filter->GetOutput()->GetLargestPossibleRegion() );
 
@@ -126,9 +128,9 @@ bool TestClampFromTo()
   return success;
 }
 
-
 template < typename TInputPixelType >
-bool TestClampFrom()
+bool
+TestClampFrom()
 {
   bool success =
     TestClampFromTo< TInputPixelType, char >() &&
@@ -153,30 +155,31 @@ bool TestClampFrom()
 }
 
 template < typename TInputPixelType, typename TOutputPixelType >
-bool TestClampFromToWithCustomBounds()
+bool
+TestClampFromToWithCustomBounds()
 {
-  typedef itk::Image< TInputPixelType, 3 >                        InputImageType;
-  typedef itk::Image< TOutputPixelType, 3 >                       OutputImageType;
+  typedef itk::Image< TInputPixelType, 3 >                         InputImageType;
+  typedef itk::Image< TOutputPixelType, 3 >                        OutputImageType;
   typedef itk::ClampImageFilter< InputImageType, OutputImageType > FilterType;
 
   typedef itk::RandomImageSource< InputImageType > SourceType;
   typename SourceType::Pointer source = SourceType::New();
-  source->SetMin(static_cast< TInputPixelType >(0));
-  source->SetMax(static_cast< TInputPixelType >(20));
+  source->SetMin(static_cast< TInputPixelType >(0) );
+  source->SetMax(static_cast< TInputPixelType >(20) );
 
   typename InputImageType::SizeValueType randomSize[3] = {18, 17, 23};
   source->SetSize( randomSize );
 
   typename FilterType::Pointer filter = FilterType::New();
-  filter->SetBounds(static_cast< TOutputPixelType>(5), static_cast< TOutputPixelType>(15));
+  filter->SetBounds(static_cast< TOutputPixelType>(5), static_cast< TOutputPixelType>(15) );
   filter->SetInput( source->GetOutput() );
   filter->UpdateLargestPossibleRegion();
 
   typedef itk::ImageRegionConstIterator< InputImageType >  InputIteratorType;
   typedef itk::ImageRegionConstIterator< OutputImageType > OutputIteratorType;
 
-  InputIteratorType  it( source->GetOutput(),
-                         source->GetOutput()->GetLargestPossibleRegion() );
+  InputIteratorType it( source->GetOutput(),
+                        source->GetOutput()->GetLargestPossibleRegion() );
   OutputIteratorType ot( filter->GetOutput(),
                          filter->GetOutput()->GetLargestPossibleRegion() );
 
@@ -196,7 +199,6 @@ bool TestClampFromToWithCustomBounds()
     double dInValue = static_cast< double >( inValue );
     double expectedMin = filter->GetLowerBound();
     double expectedMax = filter->GetUpperBound();
-
 
     if ( dInValue < expectedMin )
       {
@@ -233,9 +235,9 @@ bool TestClampFromToWithCustomBounds()
   return success;
 }
 
-
 template < typename TInputPixelType >
-bool TestClampFromWithCustomBounds()
+bool
+TestClampFromWithCustomBounds()
 {
   bool success =
     TestClampFromToWithCustomBounds< TInputPixelType, char >() &&
@@ -254,8 +256,8 @@ bool TestClampFromWithCustomBounds()
   return success;
 }
 
-
-int itkClampImageFilterTest( int, char* [] )
+int
+itkClampImageFilterTest( int, char* [] )
 {
   std::cout << "itkClampImageFilterTest Start" << std::endl;
 
@@ -287,6 +289,7 @@ int itkClampImageFilterTest( int, char* [] )
     TestClampFromWithCustomBounds< double >();
 
   std::cout << std::endl;
+
   if ( !success )
     {
     std::cout << "An itkClampImageFilter test FAILED." << std::endl;

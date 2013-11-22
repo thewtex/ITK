@@ -32,9 +32,11 @@
 #endif
 
 template< typename T >
-std::string GetCastTypeName()
+std::string
+GetCastTypeName()
 {
   std::string name;
+
 #ifdef GCC_USEDEMANGLE
   char const *mangledName = typeid( T ).name();
   int         status;
@@ -48,9 +50,9 @@ std::string GetCastTypeName()
   return name;
 }
 
-
 template < typename TInputPixelType, typename TOutputPixelType >
-bool TestCastFromTo()
+bool
+TestCastFromTo()
 {
   typedef itk::Image< TInputPixelType, 3 >                        InputImageType;
   typedef itk::Image< TOutputPixelType, 3 >                       OutputImageType;
@@ -69,8 +71,8 @@ bool TestCastFromTo()
   typedef itk::ImageRegionConstIterator< InputImageType >  InputIteratorType;
   typedef itk::ImageRegionConstIterator< OutputImageType > OutputIteratorType;
 
-  InputIteratorType  it( source->GetOutput(),
-                         source->GetOutput()->GetLargestPossibleRegion() );
+  InputIteratorType it( source->GetOutput(),
+                        source->GetOutput()->GetLargestPossibleRegion() );
   OutputIteratorType ot( filter->GetOutput(),
                          filter->GetOutput()->GetLargestPossibleRegion() );
 
@@ -112,9 +114,9 @@ bool TestCastFromTo()
   return success;
 }
 
-
 template < typename TInputPixelType >
-bool TestCastFrom()
+bool
+TestCastFrom()
 {
   bool success =
     TestCastFromTo< TInputPixelType, char >() &&
@@ -133,15 +135,16 @@ bool TestCastFrom()
   return success;
 }
 
-bool TestVectorImageCast()
+bool
+TestVectorImageCast()
 {
   // This function casts a VectorImage<float, 2>
   // to a VectorImage<unsigned char, 2>
   std::cout << "Casting from a VectorImage<float, 2> \
                 to VectorImage<unsigned char, 2> ..." << std::endl;
 
-  typedef itk::VectorImage<unsigned char, 2>  UnsignedCharVectorImageType;
-  typedef itk::VectorImage<float, 2>          FloatVectorImageType;
+  typedef itk::VectorImage<unsigned char, 2> UnsignedCharVectorImageType;
+  typedef itk::VectorImage<float, 2>         FloatVectorImageType;
 
   // Create a 1x3 image of 2D vectors
   FloatVectorImageType::Pointer image = FloatVectorImageType::New();
@@ -165,29 +168,29 @@ bool TestVectorImageCast()
   image->FillBuffer(vec);
 
   typedef itk::CastImageFilter< FloatVectorImageType,
-               UnsignedCharVectorImageType > CastImageFilterType;
+                                UnsignedCharVectorImageType > CastImageFilterType;
   CastImageFilterType::Pointer castImageFilter = CastImageFilterType::New();
   castImageFilter->SetInput(image);
   castImageFilter->Update();
 
   // Setup iterators for the original and casted images
   itk::ImageRegionConstIterator<UnsignedCharVectorImageType>
-       castedImageIterator(castImageFilter->GetOutput(),
-       castImageFilter->GetOutput()->GetLargestPossibleRegion());
+  castedImageIterator(castImageFilter->GetOutput(),
+                      castImageFilter->GetOutput()->GetLargestPossibleRegion() );
 
   itk::ImageRegionConstIterator<FloatVectorImageType>
-    originalImageIterator(image, image->GetLargestPossibleRegion());
+  originalImageIterator(image, image->GetLargestPossibleRegion() );
 
   // Compare both dimensions of all of the pixels from the manually
   // casted original image to the corresponding pixels in the filter-casted
   // image
   bool success = true;
-  while(!originalImageIterator.IsAtEnd())
+  while(!originalImageIterator.IsAtEnd() )
     {
     if(static_cast<unsigned char>(originalImageIterator.Get()[0]) !=
-                                  castedImageIterator.Get()[0] ||
+       castedImageIterator.Get()[0] ||
        static_cast<unsigned char>(originalImageIterator.Get()[1]) !=
-                                  castedImageIterator.Get()[1])
+       castedImageIterator.Get()[1])
       {
       std::cerr << "Error in TestVectorImageCast!" << std::endl;
       success = false;
@@ -208,8 +211,8 @@ bool TestVectorImageCast()
   return success;
 }
 
-
-int itkCastImageFilterTest( int, char* [] )
+int
+itkCastImageFilterTest( int, char* [] )
 {
   std::cout << "itkCastImageFilterTest Start" << std::endl;
 
@@ -229,6 +232,7 @@ int itkCastImageFilterTest( int, char* [] )
     TestVectorImageCast();
 
   std::cout << std::endl;
+
   if ( !success )
     {
     std::cout << "An itkCastImageFilter test FAILED." << std::endl;

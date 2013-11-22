@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMLoadGravConstTest(int argc, char *argv[])
+int
+itkFEMLoadGravConstTest(int argc, char *argv[])
 {
   if(argc < 1)
     {

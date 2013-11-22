@@ -91,6 +91,7 @@ BinaryThresholdImageFunction< TInputImage, TCoordRep >
   os << indent << "Lower: " << m_Lower << std::endl;
   os << indent << "Upper: " << m_Upper << std::endl;
 }
+
 } // end namespace itk
 
 #endif

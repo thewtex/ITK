@@ -28,14 +28,14 @@
  *
  * Dspace handle: http://hdl.handle.net/1926/48 */
 
-
 // itk header files
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkThresholdMaximumConnectedComponentsImageFilter.h"
 
-int itkThresholdMaximumConnectedComponentsImageFilterTest( int argc,
-                                                           char * argv [] )
+int
+itkThresholdMaximumConnectedComponentsImageFilterTest( int argc,
+                                                       char * argv [] )
 {
   if( argc < 3 )
     {
@@ -44,7 +44,6 @@ int itkThresholdMaximumConnectedComponentsImageFilterTest( int argc,
     std::cerr << " 3: minimumPixelArea" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   typedef unsigned char InputPixelType;
   typedef unsigned char OutputPixelType;
@@ -58,11 +57,11 @@ int itkThresholdMaximumConnectedComponentsImageFilterTest( int argc,
 
   InputPixelType maxLabel = itk::NumericTraits<InputPixelType>::max();
   InputPixelType minLabel =
-                 itk::NumericTraits<InputPixelType>::NonpositiveMin();
+    itk::NumericTraits<InputPixelType>::NonpositiveMin();
 
   const unsigned int minimumPixelArea = atoi( argv[3] );
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
 
   reader->SetFileName( argv[1] );
@@ -93,7 +92,7 @@ int itkThresholdMaximumConnectedComponentsImageFilterTest( int argc,
   unsigned int thresholdValue;
 
   typedef itk::ThresholdMaximumConnectedComponentsImageFilter< InputImageType>
-  ThresholdType;
+    ThresholdType;
   ThresholdType::Pointer automaticThreshold = ThresholdType::New();
 
   automaticThreshold->SetInput( reader->GetOutput() );
@@ -125,9 +124,9 @@ int itkThresholdMaximumConnectedComponentsImageFilterTest( int argc,
 
   // *****************************************************************
   // Image File Writer
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-  WriterType::Pointer writer = WriterType::New( );
+  WriterType::Pointer writer = WriterType::New();
   writer->SetInput( automaticThreshold->GetOutput() );
 
   writer->SetFileName( argv[2] );

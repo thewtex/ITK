@@ -54,27 +54,31 @@ IPLCommonImageIO::~IPLCommonImageIO()
   delete m_FilenameList;
 }
 
-void IPLCommonImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+IPLCommonImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
 
-bool IPLCommonImageIO::CanWriteFile(const char *)
+bool
+IPLCommonImageIO::CanWriteFile(const char *)
 {
   return false;
 }
 
-unsigned int IPLCommonImageIO::GetComponentSize() const
+unsigned int
+IPLCommonImageIO::GetComponentSize() const
 {
   return sizeof( short int );
 }
 
 #ifdef __THIS_CODE_BELONGS_ELSEWHERE__
-static void SwapZeroCornerToIRP(const itk::IOCommon::ValidOriginFlags original,
-                                short int *const imageBuffer,
-                                const int XDim,
-                                const int YDim,
-                                const int ZDim)
+static void
+SwapZeroCornerToIRP(const itk::IOCommon::ValidOriginFlags original,
+                    short int *const imageBuffer,
+                    const int XDim,
+                    const int YDim,
+                    const int ZDim)
 {
   short int ***pntrs = new (short int **)[ZDim];
 
@@ -175,7 +179,8 @@ static void SwapZeroCornerToIRP(const itk::IOCommon::ValidOriginFlags original,
 }
 
 #endif
-void IPLCommonImageIO::Read(void *buffer)
+void
+IPLCommonImageIO::Read(void *buffer)
 {
   short int *                   img_buffer = (short int *)buffer;
   IPLFileNameList::IteratorType it = m_FilenameList->begin();
@@ -203,12 +208,14 @@ void IPLCommonImageIO::Read(void *buffer)
     // So, on LittleEndian systems, SwapFromSystemToBigEndian will swap.
     // On BigEndian systems, SwapFromSystemToBigEndian will do nothing.
     itk::ByteSwapper< short int >::SwapRangeFromSystemToBigEndian( img_buffer,
-                                                                   m_FilenameList->GetXDim() * m_FilenameList->GetYDim() );
+                                                                   m_FilenameList->GetXDim() *
+                                                                   m_FilenameList->GetYDim() );
     img_buffer += m_FilenameList->GetXDim() * m_FilenameList->GetYDim();
     }
 }
 
-GEImageHeader * IPLCommonImageIO::ReadHeader(const char *)
+GEImageHeader *
+IPLCommonImageIO::ReadHeader(const char *)
 {
   //
   // must be redefined in a child class
@@ -216,7 +223,8 @@ GEImageHeader * IPLCommonImageIO::ReadHeader(const char *)
   return 0;
 }
 
-bool IPLCommonImageIO::CanReadFile(const char *)
+bool
+IPLCommonImageIO::CanReadFile(const char *)
 {
   //
   // must be redefined in child class or you'll never read anything ;-)
@@ -224,7 +232,8 @@ bool IPLCommonImageIO::CanReadFile(const char *)
   return false;
 }
 
-void IPLCommonImageIO::ReadImageInformation()
+void
+IPLCommonImageIO::ReadImageInformation()
 {
   std::string FileNameToRead = this->GetFileName();
   //
@@ -243,7 +252,7 @@ void IPLCommonImageIO::ReadImageInformation()
   // if anything fails in the header read, just let
   // exceptions propagate up.
 
-  bool isCT = false;
+  bool        isCT = false;
   std::string modality = m_ImageHeader->modality;
   if( modality == "CT" )
     {
@@ -258,8 +267,9 @@ void IPLCommonImageIO::ReadImageInformation()
                    m_ImageHeader->imageXres,
                    m_ImageHeader->imageYres,
                    m_ImageHeader->seriesNumber,
-                   (isCT)?m_ImageHeader->examNumber:
-                   m_ImageHeader->echoNumber);  // If CT use examNumber, otherwise use echoNumber.
+                   (isCT) ? m_ImageHeader->examNumber :
+                   m_ImageHeader->echoNumber);  // If CT use examNumber,
+                                                // otherwise use echoNumber.
 
   // Add header info to metadictionary
 
@@ -331,9 +341,9 @@ void IPLCommonImageIO::ReadImageInformation()
       // throw an exception, and we'd just want to skip it.
       continue;
       }
-    if( (((isCT)?curImageHeader->examNumber:curImageHeader->echoNumber)
-        == m_FilenameList->GetKey2()) &&
-        (curImageHeader->seriesNumber == m_FilenameList->GetKey1()))
+    if( ( ( (isCT) ? curImageHeader->examNumber : curImageHeader->echoNumber)
+          == m_FilenameList->GetKey2() ) &&
+        (curImageHeader->seriesNumber == m_FilenameList->GetKey1() ) )
       {
       AddElementToList(curImageHeader->filename,
                        curImageHeader->sliceLocation,
@@ -343,8 +353,10 @@ void IPLCommonImageIO::ReadImageInformation()
                        curImageHeader->imageXres,
                        curImageHeader->imageYres,
                        curImageHeader->seriesNumber,
-                       (isCT)?curImageHeader->examNumber:
-                       curImageHeader->echoNumber);  // If CT use examNumber, otherwise use echoNumber.
+                       (isCT) ? curImageHeader->examNumber :
+                       curImageHeader->echoNumber);  // If CT use examNumber,
+                                                     // otherwise use
+                                                     // echoNumber.
       }
     delete curImageHeader;
     }
@@ -385,12 +397,14 @@ void IPLCommonImageIO::ReadImageInformation()
   this->ModifyImageInformation();
 }
 
-void IPLCommonImageIO::SortImageListByNameAscend()
+void
+IPLCommonImageIO::SortImageListByNameAscend()
 {
   m_FilenameList->SetSortOrder(IPLFileNameList::SortByNameAscend);
 }
 
-void IPLCommonImageIO::SortImageListByNameDescend()
+void
+IPLCommonImageIO::SortImageListByNameDescend()
 {
   m_FilenameList->SetSortOrder(IPLFileNameList::SortByNameDescend);
 }
@@ -448,7 +462,8 @@ IPLCommonImageIO
   return 0;
 }
 
-int IPLCommonImageIO
+int
+IPLCommonImageIO
 ::GetIntAt(std::ifstream & f, std::streamoff Offset, int *ip,
            bool throw_exception)
 {
@@ -466,7 +481,8 @@ int IPLCommonImageIO
   return 0;
 }
 
-int IPLCommonImageIO
+int
+IPLCommonImageIO
 ::GetShortAt(std::ifstream & f, std::streamoff Offset, short *ip,
              bool throw_exception)
 {
@@ -484,7 +500,8 @@ int IPLCommonImageIO
   return 0;
 }
 
-int IPLCommonImageIO
+int
+IPLCommonImageIO
 ::GetFloatAt(std::ifstream & f, std::streamoff Offset, float *ip,
              bool throw_exception)
 {
@@ -502,7 +519,8 @@ int IPLCommonImageIO
   return 0;
 }
 
-int IPLCommonImageIO
+int
+IPLCommonImageIO
 ::GetDoubleAt(std::ifstream & f, std::streamoff Offset, double *ip,
               bool throw_exception)
 {
@@ -520,7 +538,8 @@ int IPLCommonImageIO
   return 0;
 }
 
-short IPLCommonImageIO::hdr2Short(char *hdr)
+short
+IPLCommonImageIO::hdr2Short(char *hdr)
 {
   short shortValue;
 
@@ -529,7 +548,8 @@ short IPLCommonImageIO::hdr2Short(char *hdr)
   return ( shortValue );
 }
 
-int IPLCommonImageIO
+int
+IPLCommonImageIO
 ::hdr2Int(char *hdr)
 {
   int intValue;
@@ -539,7 +559,8 @@ int IPLCommonImageIO
   return ( intValue );
 }
 
-float IPLCommonImageIO
+float
+IPLCommonImageIO
 ::hdr2Float(char *hdr)
 {
   float floatValue;
@@ -550,7 +571,8 @@ float IPLCommonImageIO
   return ( floatValue );
 }
 
-double IPLCommonImageIO
+double
+IPLCommonImageIO
 ::hdr2Double(char *hdr)
 {
   double doubleValue;
@@ -561,7 +583,8 @@ double IPLCommonImageIO
   return ( doubleValue );
 }
 
-int IPLCommonImageIO
+int
+IPLCommonImageIO
 ::AddElementToList(char const *const filename,
                    const float sliceLocation,
                    const int offset,
@@ -598,33 +621,37 @@ int IPLCommonImageIO
   return 1;
 }
 
-void IPLCommonImageIO
+void
+IPLCommonImageIO
 ::sortImageListAscend()
 {
   m_FilenameList->sortImageListAscend();
 }
 
-void IPLCommonImageIO
+void
+IPLCommonImageIO
 ::sortImageListDescend()
 {
   m_FilenameList->sortImageListDescend();
 }
 
-int IPLCommonImageIO
+int
+IPLCommonImageIO
 ::statTimeToAscii(void *clock, char *timeString,int len)
 {
 
-  time_t tclock = (time_t)*( (int *)clock );
+  time_t             tclock = (time_t)*( (int *)clock );
   const char * const asciiTime = ctime (&tclock);
 
   strncpy (timeString, asciiTime, len);
   timeString[len-1] = '\0';
   char *newline;
-  if((newline = strrchr(timeString,'\n')) != 0 ||
-     (newline = strrchr(timeString,'\r')))
+  if( (newline = strrchr(timeString,'\n') ) != 0 ||
+      (newline = strrchr(timeString,'\r') ) )
     {
     *newline = '\0';
     }
   return 1;
 }
+
 } // end namespace itk

@@ -20,30 +20,30 @@
 #include "itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunction.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-enum{ VectorDimension = 3 };
-enum{ ImageDimension = 3 };
+enum { VectorDimension = 3 };
+enum { ImageDimension = 3 };
 typedef itk::Vector<unsigned short,VectorDimension> PixelType;
 typedef itk::Image<PixelType,ImageDimension>        ImageType;
 typedef double                                      CoordRepType;
 
 typedef itk::VectorLinearInterpolateNearestNeighborExtrapolateImageFunction<
-  ImageType,CoordRepType> InterpolatorType;
+    ImageType,CoordRepType> InterpolatorType;
 
 typedef InterpolatorType::IndexType           IndexType;
 typedef InterpolatorType::PointType           PointType;
 typedef InterpolatorType::ContinuousIndexType ContinuousIndexType;
 typedef InterpolatorType::OutputType          OutputType;
 
-
 /**
  * Test a geometric point. Returns true if test has passed,
  * returns false otherwise
  */
-bool TestGeometricPoint(
-const InterpolatorType * interp,
-const PointType& point,
-bool itkNotUsed( isInside ),
-OutputType trueValue )
+bool
+TestGeometricPoint(
+  const InterpolatorType * interp,
+  const PointType& point,
+  bool itkNotUsed( isInside ),
+  OutputType trueValue )
 {
 
   std::cout << " Point: " << point;
@@ -53,18 +53,20 @@ OutputType trueValue )
 
   if( bvalue != true )
     {
-    std::cout << "*** Error: inside should always be true for VectorLinearInterpolateNearestNeighborExtrapolateImageFunction" << std::endl;
+    std::cout <<
+      "*** Error: inside should always be true for VectorLinearInterpolateNearestNeighborExtrapolateImageFunction" <<
+      std::endl;
     return false;
     }
 
   if( bvalue )
     {
-    int k;
+    int        k;
     OutputType value = interp->Evaluate( point );
     std::cout << " Value: ";
     for( k = 0; k < VectorDimension - 1; k++ )
       {
-       std::cout << value[k] << ", ";
+      std::cout << value[k] << ", ";
       }
     std::cout << value[k] << std::endl;
 
@@ -81,7 +83,7 @@ OutputType trueValue )
       std::cout << " *** Error: Value should be: ";
       for( k = 0; k < VectorDimension - 1; k++ )
         {
-         std::cout << trueValue[k] << ", ";
+        std::cout << trueValue[k] << ", ";
         }
       std::cout << trueValue[k] << std::endl;
       return false;
@@ -94,16 +96,16 @@ OutputType trueValue )
 
 }
 
-
 /**
  * Test a continuous index. Returns true if test has passed,
  * returns false otherwise
  */
-bool TestContinuousIndex(
-const InterpolatorType * interp,
-const ContinuousIndexType& index,
-bool isInside,
-OutputType trueValue )
+bool
+TestContinuousIndex(
+  const InterpolatorType * interp,
+  const ContinuousIndexType& index,
+  bool isInside,
+  OutputType trueValue )
 {
 
   std::cout << " Index: " << index;
@@ -113,18 +115,20 @@ OutputType trueValue )
 
   if( bvalue != true )
     {
-    std::cout << "*** Error: inside should always be true for VectorLinearInterpolateNearestNeighborExtrapolateImageFunction" << std::endl;
+    std::cout <<
+      "*** Error: inside should always be true for VectorLinearInterpolateNearestNeighborExtrapolateImageFunction" <<
+      std::endl;
     return false;
     }
 
   if( isInside )
     {
-    int k;
+    int        k;
     OutputType value = interp->EvaluateAtContinuousIndex( index );
     std::cout << " Value: ";
     for( k = 0; k < VectorDimension - 1; k++ )
       {
-       std::cout << value[k] << ", ";
+      std::cout << value[k] << ", ";
       }
     std::cout << value[k] << std::endl;
 
@@ -141,7 +145,7 @@ OutputType trueValue )
       std::cout << " *** Error: Value should be: ";
       for( k = 0; k < VectorDimension - 1; k++ )
         {
-         std::cout << trueValue[k] << ", ";
+        std::cout << trueValue[k] << ", ";
         }
       std::cout << trueValue[k] << std::endl;
       return false;
@@ -154,19 +158,21 @@ OutputType trueValue )
 
 }
 
-int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, char* [] )
+int
+itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, char* [] )
 {
   int flag = 0;
 
   std::cout << "Testing vector image interpolation: " << std::endl;
 
   ImageType::SizeType size = { { 20, 40, 80 } };
-  double origin [3] = { 0.5,   0.5,   0.5};
-  double spacing[3] = { 0.1,   0.05 , 0.025};
+  double              origin [3] = { 0.5,   0.5,   0.5};
+  double              spacing[3] = { 0.1,   0.05 , 0.025};
 
   // Create a test image
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer    image = ImageType::New();
   ImageType::RegionType region;
+
   region.SetSize( size );
 
   image->SetLargestPossibleRegion( region );
@@ -180,9 +186,9 @@ int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, c
   typedef itk::ImageRegionIteratorWithIndex<ImageType> Iterator;
   Iterator iter( image, region );
 
-  IndexType index;
+  IndexType      index;
   unsigned short value;
-  PixelType pixel;
+  PixelType      pixel;
 
   for(; !iter.IsAtEnd(); ++iter)
     {
@@ -215,19 +221,19 @@ int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, c
   /* Test evaluation at continuous indices and corresponding
      geometric points */
   std::cout << "Evaluate at: " << std::endl;
-  OutputType output;
+  OutputType          output;
   ContinuousIndexType cindex;
-  PointType point;
-  bool passed;
+  PointType           point;
+  bool                passed;
 
   // an integer position inside the image
-  {
-  itk::SpacePrecisionType darray[3] = {10, 20, 40};
-  double temp[3] = {70, 140, 210};
-  output = OutputType( temp );
-  cindex = ContinuousIndexType(darray);
-  passed = TestContinuousIndex( interp, cindex, true, output );
-  }
+    {
+    itk::SpacePrecisionType darray[3] = {10, 20, 40};
+    double                  temp[3] = {70, 140, 210};
+    output = OutputType( temp );
+    cindex = ContinuousIndexType(darray);
+    passed = TestContinuousIndex( interp, cindex, true, output );
+    }
 
   if( !passed ) flag = 1;
 
@@ -247,11 +253,10 @@ int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, c
     flag = 1;
     }
 
-
   // position at the image border
     {
     itk::SpacePrecisionType darray[3] = {0, 20, 40};
-    double temp[3] = {60, 120, 180};
+    double                  temp[3] = {60, 120, 180};
     output = OutputType( temp );
     cindex = ContinuousIndexType(darray);
     passed = TestContinuousIndex( interp, cindex, true, output );
@@ -268,7 +273,7 @@ int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, c
     {
     const itk::SpacePrecisionType epsilon = 1.0e-10;
     const itk::SpacePrecisionType darray[3] = {19 - epsilon, 20, 40};
-    const double temp[3] = {79, 158, 237};
+    const double                  temp[3] = {79, 158, 237};
     output = OutputType( temp );
     cindex = ContinuousIndexType(darray);
     passed = TestContinuousIndex( interp, cindex, true, output );
@@ -284,7 +289,7 @@ int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, c
   // position outside the image
     {
     const itk::SpacePrecisionType darray[3] = {20, 20, 40};
-    const double temp[3] = {79, 158, 237};
+    const double                  temp[3] = {79, 158, 237};
     output = OutputType( temp );
     cindex = ContinuousIndexType(darray);
     passed = TestContinuousIndex( interp, cindex, false, output );
@@ -300,7 +305,7 @@ int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, c
   // at non-integer position
     {
     itk::SpacePrecisionType darray[3] = {5.25, 12.5, 42.0};
-    double temp[3] = {59.75, 119.5, 179.25};
+    double                  temp[3] = {59.75, 119.5, 179.25};
     output = OutputType( temp );
     cindex = ContinuousIndexType(darray);
     passed = TestContinuousIndex( interp, cindex, true, output );
@@ -312,7 +317,6 @@ int itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest(int, c
   passed = TestGeometricPoint( interp, point, true, output );
 
   if( !passed ) flag = 1;
-
 
   /* Return results of test */
   if (flag != 0)

@@ -54,6 +54,7 @@ LBFGSOptimizer
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Trace: ";
   if ( m_Trace )
     {
@@ -242,8 +243,8 @@ LBFGSOptimizer
   // We also scale the initial vnlCompatibleParameters up if scales are defined.
   // This compensates for later scaling them down in the cost function adaptor
   // and at the end of this function.
-  InternalParametersType vnlCompatibleParameters(currentPositionInternalValue.size());
-  const ScalesType & scales = this->GetScales();
+  InternalParametersType vnlCompatibleParameters(currentPositionInternalValue.size() );
+  const ScalesType &     scales = this->GetScales();
   if ( m_ScalesInitialized )
     {
     this->GetNonConstCostFunctionAdaptor()->SetScales(scales);
@@ -340,6 +341,7 @@ LBFGSOptimizer::GetStopConditionDescription() const
     return std::string("");
     }
 }
+
 } // end namespace itk
 
 #endif

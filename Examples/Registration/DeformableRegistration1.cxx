@@ -33,12 +33,10 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkFEMRegistrationFilter.h"
 
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -49,15 +47,13 @@
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginCodeSnippet
-typedef itk::Image<unsigned char, 2>                       DiskImageType;
-typedef itk::Image<float, 2>                               ImageType;
-typedef itk::fem::Element2DC0LinearQuadrilateralMembrane   ElementType;
-typedef itk::fem::Element2DC0LinearTriangularMembrane      ElementType2;
-typedef itk::fem::FEMObject<2>                             FEMObjectType;
+typedef itk::Image<unsigned char, 2>                     DiskImageType;
+typedef itk::Image<float, 2>                             ImageType;
+typedef itk::fem::Element2DC0LinearQuadrilateralMembrane ElementType;
+typedef itk::fem::Element2DC0LinearTriangularMembrane    ElementType2;
+typedef itk::fem::FEMObject<2>                           FEMObjectType;
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -68,15 +64,13 @@ typedef itk::fem::FEMObject<2>                             FEMObjectType;
 //
 //  SoftwareGuide : EndLatex
 
-
 //  SoftwareGuide : BeginCodeSnippet
-typedef itk::Image<unsigned char, 3>                    fileImage3DType;
-typedef itk::Image<float, 3>                            Image3DType;
-typedef itk::fem::Element3DC0LinearHexahedronMembrane   Element3DType;
-typedef itk::fem::Element3DC0LinearTetrahedronMembrane  Element3DType2;
-typedef itk::fem::FEMObject<3>                          FEMObject3DType;
+typedef itk::Image<unsigned char, 3>                   fileImage3DType;
+typedef itk::Image<float, 3>                           Image3DType;
+typedef itk::fem::Element3DC0LinearHexahedronMembrane  Element3DType;
+typedef itk::fem::Element3DC0LinearTetrahedronMembrane Element3DType2;
+typedef itk::fem::FEMObject<3>                         FEMObject3DType;
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -86,29 +80,28 @@ typedef itk::fem::FEMObject<3>                          FEMObject3DType;
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginCodeSnippet
 typedef itk::fem::FEMRegistrationFilter<ImageType,ImageType,FEMObjectType>
-                                                             RegistrationType;
+  RegistrationType;
 //  Software Guide : EndCodeSnippet
 
-
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
   const char *fixedImageName, *movingImageName;
+
   if ( argc < 2 )
-  {
+    {
     std::cout << "Image file names missing" << std::endl;
     std::cout << "Usage: " << argv[0] << " fixedImageFile movingImageFile"
               << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   else
-  {
+    {
     fixedImageName = argv[1];
     movingImageName = argv[2];
-  }
-
+    }
 
 //  Software Guide : BeginLatex
 //
@@ -141,7 +134,6 @@ int main(int argc, char *argv[])
   registrationFilter->SetUseLandmarks(false);
 //  Software Guide : EndCodeSnippet
 
-
   // Read the image files
   typedef itk::ImageFileReader< DiskImageType > FileSourceType;
   typedef DiskImageType::PixelType              PixType;
@@ -153,36 +145,34 @@ int main(int argc, char *argv[])
   std::cout << " reading moving " << movingImageName << std::endl;
   std::cout << " reading fixed " << fixedImageName << std::endl;
 
-
   try
-  {
+    {
     movingfilter->Update();
-  }
+    }
   catch( itk::ExceptionObject & e )
-  {
+    {
     std::cerr << "Exception caught during reference file reading " << std::endl;
     std::cerr << e << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   try
-  {
+    {
     fixedfilter->Update();
-  }
+    }
   catch( itk::ExceptionObject & e )
-  {
+    {
     std::cerr << "Exception caught during target file reading " << std::endl;
     std::cerr << e << std::endl;
     return EXIT_FAILURE;
-  }
-
+    }
 
   // Rescale the image intensities so that they fall between 0 and 255
   typedef itk::RescaleIntensityImageFilter<DiskImageType,ImageType> FilterType;
   FilterType::Pointer movingrescalefilter = FilterType::New();
   FilterType::Pointer fixedrescalefilter = FilterType::New();
 
-  movingrescalefilter->SetInput(movingfilter->GetOutput());
-  fixedrescalefilter->SetInput(fixedfilter->GetOutput());
+  movingrescalefilter->SetInput(movingfilter->GetOutput() );
+  fixedrescalefilter->SetInput(fixedfilter->GetOutput() );
 
   const double desiredMinimum =  0.0;
   const double desiredMaximum =  255.0;
@@ -193,7 +183,6 @@ int main(int argc, char *argv[])
   fixedrescalefilter->SetOutputMinimum( desiredMinimum );
   fixedrescalefilter->SetOutputMaximum( desiredMaximum );
   fixedrescalefilter->UpdateLargestPossibleRegion();
-
 
   // Histogram match the images
   typedef itk::HistogramMatchingImageFilter<ImageType,ImageType> HEFilterType;
@@ -207,41 +196,40 @@ int main(int argc, char *argv[])
   IntensityEqualizeFilter->Update();
 
   // Set the images for registration filter
-  registrationFilter->SetFixedImage(fixedrescalefilter->GetOutput());
-  registrationFilter->SetMovingImage(IntensityEqualizeFilter->GetOutput());
-
+  registrationFilter->SetFixedImage(fixedrescalefilter->GetOutput() );
+  registrationFilter->SetMovingImage(IntensityEqualizeFilter->GetOutput() );
 
   itk::ImageFileWriter<ImageType>::Pointer writer;
   writer = itk::ImageFileWriter<ImageType>::New();
   std::string ofn="fixed.mha";
-  writer->SetFileName(ofn.c_str());
+  writer->SetFileName(ofn.c_str() );
   writer->SetInput(registrationFilter->GetFixedImage() );
 
   try
-  {
+    {
     writer->Write();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   ofn="moving.mha";
   itk::ImageFileWriter<ImageType>::Pointer writer2;
   writer2 =  itk::ImageFileWriter<ImageType>::New();
-  writer2->SetFileName(ofn.c_str());
+  writer2->SetFileName(ofn.c_str() );
   writer2->SetInput(registrationFilter->GetMovingImage() );
 
   try
-  {
+    {
     writer2->Write();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
 //  Software Guide : BeginLatex
 //
@@ -257,12 +245,12 @@ int main(int argc, char *argv[])
 //  Software Guide : EndLatex
 
 //  Software Guide : BeginCodeSnippet
-  // Create the material properties
+// Create the material properties
   itk::fem::MaterialLinearElasticity::Pointer m;
   m = itk::fem::MaterialLinearElasticity::New();
   m->SetGlobalNumber(0);
   // Young's modulus of the membrane
-  m->SetYoungsModulus(registrationFilter->GetElasticity());
+  m->SetYoungsModulus(registrationFilter->GetElasticity() );
   m->SetCrossSectionalArea(1.0);  // Cross-sectional area
   m->SetThickness(1.0);           // Thickness
   m->SetMomentOfInertia(1.0);     // Moment of inertia
@@ -271,11 +259,10 @@ int main(int argc, char *argv[])
 
   // Create the element type
   ElementType::Pointer e1=ElementType::New();
-  e1->SetMaterial(m.GetPointer());
-  registrationFilter->SetElement(e1.GetPointer());
+  e1->SetMaterial(m.GetPointer() );
+  registrationFilter->SetElement(e1.GetPointer() );
   registrationFilter->SetMaterial(m);
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -286,7 +273,6 @@ int main(int argc, char *argv[])
 //  Software Guide : BeginCodeSnippet
   registrationFilter->RunRegistration();
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -302,14 +288,14 @@ int main(int argc, char *argv[])
   warpedImageWriter->SetInput( registrationFilter->GetWarpedImage() );
   warpedImageWriter->SetFileName("warpedMovingImage.mha");
   try
-  {
+    {
     warpedImageWriter->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 //  Software Guide : EndCodeSnippet
 
 //  Software Guide : BeginLatex
@@ -326,14 +312,14 @@ int main(int argc, char *argv[])
   dispWriter->SetInput( registrationFilter->GetDisplacementField() );
   dispWriter->SetFileName("displacement.mha");
   try
-  {
+    {
     dispWriter->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 //  Software Guide : EndCodeSnippet
 
   return EXIT_SUCCESS;

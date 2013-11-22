@@ -40,38 +40,43 @@ public:
   typedef TIterator                              IteratorType;
   typedef ThreadedIteratorRangePartitionerDomain Self;
 
-  ThreadedIteratorRangePartitionerDomain() {}
+  ThreadedIteratorRangePartitionerDomain() {
+  }
 
   ThreadedIteratorRangePartitionerDomain( const IteratorType & begin, const IteratorType & end )
-    {
+  {
     this->m_Begin = begin;
     this->m_End = end;
-    }
+  }
 
   ThreadedIteratorRangePartitionerDomain( const Self & rhs )
-    {
+  {
     this->m_Begin = rhs.m_Begin;
     this->m_End   = rhs.m_End;
-    }
+  }
 
-  void operator=( const Self & rhs )
-    {
-    if ( this == & rhs )
+  void
+  operator=( const Self & rhs )
+  {
+    if ( this == &rhs )
       {
       return;
       }
     this->m_Begin = rhs.m_Begin;
     this->m_End   = rhs.m_End;
-    }
+  }
 
-  const IteratorType & Begin() const
-    {
+  const IteratorType &
+  Begin() const
+  {
     return this->m_Begin;
-    }
-  const IteratorType & End() const
-    {
+  }
+
+  const IteratorType &
+  End() const
+  {
     return this->m_End;
-    }
+  }
 
 private:
   friend class ThreadedIteratorRangePartitioner< IteratorType >;
@@ -109,10 +114,10 @@ class ThreadedIteratorRangePartitioner
 {
 public:
   /** Standard class typedefs. */
-  typedef ThreadedIteratorRangePartitioner                                                  Self;
+  typedef ThreadedIteratorRangePartitioner                                                 Self;
   typedef ThreadedDomainPartitioner< ThreadedIteratorRangePartitionerDomain< TIterator > > Superclass;
-  typedef SmartPointer< Self >                                                              Pointer;
-  typedef SmartPointer< const Self >                                                        ConstPointer;
+  typedef SmartPointer< Self >                                                             Pointer;
+  typedef SmartPointer< const Self >                                                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -121,7 +126,7 @@ public:
   itkTypeMacro(ThreadedIteratorRangePartitioner, ThreadedDomainPartitioner);
 
   /** Type for convenience of base class methods */
-  typedef typename Superclass::DomainType  DomainType;
+  typedef typename Superclass::DomainType DomainType;
 
   typedef TIterator IteratorType;
 
@@ -138,17 +143,18 @@ public:
    */
   virtual
   ThreadIdType PartitionDomain(const ThreadIdType threadId,
-                           const ThreadIdType requestedTotal,
-                           const DomainType& completeDomain,
-                           DomainType& subDomain) const;
+                               const ThreadIdType requestedTotal,
+                               const DomainType& completeDomain,
+                               DomainType& subDomain) const;
 
 protected:
   ThreadedIteratorRangePartitioner();
-  virtual ~ThreadedIteratorRangePartitioner();
+  virtual
+  ~ThreadedIteratorRangePartitioner();
 
 private:
   ThreadedIteratorRangePartitioner(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                   //purposely not implemented
 
 };
 

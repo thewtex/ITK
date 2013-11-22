@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage, typename TFunction >
-class FloodFilledSpatialFunctionConditionalConstIterator:public FloodFilledFunctionConditionalConstIterator<
+class FloodFilledSpatialFunctionConditionalConstIterator : public FloodFilledFunctionConditionalConstIterator<
     TImage, TFunction >
 {
 public:
@@ -80,22 +80,36 @@ public:
   FloodFilledSpatialFunctionConditionalConstIterator(const ImageType *imagePtr,
                                                      FunctionType *fnPtr);
   /** Default Destructor. */
-  virtual ~FloodFilledSpatialFunctionConditionalConstIterator() {}
+  virtual
+  ~FloodFilledSpatialFunctionConditionalConstIterator() {
+  }
 
   /** Compute whether the index of interest should be included in the flood */
   bool IsPixelIncluded(const IndexType & index) const;
 
   /** Set the inclusion strategy to origin */
-  void SetOriginInclusionStrategy() { m_InclusionStrategy = 0; }
+  void
+  SetOriginInclusionStrategy() {
+    m_InclusionStrategy = 0;
+  }
 
   /** Set the inclusion strategy to center */
-  void SetCenterInclusionStrategy() { m_InclusionStrategy = 1; }
+  void
+  SetCenterInclusionStrategy() {
+    m_InclusionStrategy = 1;
+  }
 
   /** Set the inclusion strategy to complete */
-  void SetCompleteInclusionStrategy() { m_InclusionStrategy = 2; }
+  void
+  SetCompleteInclusionStrategy() {
+    m_InclusionStrategy = 2;
+  }
 
   /** Set the inclusion strategy to intersect */
-  void SetIntersectInclusionStrategy() { m_InclusionStrategy = 3; }
+  void
+  SetIntersectInclusionStrategy() {
+    m_InclusionStrategy = 3;
+  }
 
 protected: //made protected so other iterators can access
 

@@ -22,21 +22,22 @@
 #include "itkRescaleIntensityImageFilter.h"
 
 template < int VDimension >
-int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
+int
+itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
 {
 
   // Verify the number of parameters in the command line
   if( argc < 4 )
-  {
+    {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "inputFileName outputFileName sigma (maximum_error) (maximum_kernel_width)" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // Define the dimension of the images
   const unsigned int Dimension = VDimension;
-  typedef float                             PixelType;
-  typedef itk::Image<PixelType, Dimension>  ImageType;
+  typedef float                            PixelType;
+  typedef itk::Image<PixelType, Dimension> ImageType;
 
   // Read input
   typedef itk::ImageFileReader< ImageType > ReaderType;
@@ -74,7 +75,7 @@ int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
   double variance = atof( argv[3] );
   variance *= variance;
 
-  double maxError = 0.001;
+  double       maxError = 0.001;
   unsigned int maxKernelWidth = 100;
   if( argc == 5 )
     {
@@ -100,7 +101,7 @@ int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
   function->SetNormalizeAcrossScale( true );
   function->SetUseImageSpacing( true );
   function->SetInterpolationMode( HessianGaussianImageFunctionType::NearestNeighbourInterpolation );
-  function->Initialize( );
+  function->Initialize();
 
   // Step over input and output images
   typedef itk::ImageRegionConstIterator< ImageType > ConstIteratorType;
@@ -116,12 +117,12 @@ int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
     outs.push_back( out );
     }
 
-  typedef typename HessianGaussianImageFunctionType::PointType  PointType;
+  typedef typename HessianGaussianImageFunctionType::PointType PointType;
   PointType point;
   typedef typename HessianGaussianImageFunctionType::ContinuousIndexType ContinuousIndexType;
   ContinuousIndexType cindex;
   const unsigned long nop = reader->GetOutput()->GetRequestedRegion().GetNumberOfPixels();
-  unsigned long pixelNumber = 0;
+  unsigned long       pixelNumber = 0;
   while( !it.IsAtEnd() )
     {
     if ( pixelNumber < nop / 3 )
@@ -152,9 +153,9 @@ int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
     }
 
   // Write outputs
-  typedef unsigned char                                  OutputPixelType;
-  typedef itk::Image< OutputPixelType, Dimension >       OutputImageType;
-  typedef itk::ImageFileWriter< OutputImageType >        WriterType;
+  typedef unsigned char                            OutputPixelType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
 
   typename WriterType::Pointer writer = WriterType::New();
 
@@ -178,8 +179,8 @@ int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
       writer->SetFileName( filename );
       writer->SetInput( rescaler->GetOutput() );
       writer->Update();
-      rescaler->GetOutput()->DisconnectPipeline( );
-      outputs[i]->DisconnectPipeline( );
+      rescaler->GetOutput()->DisconnectPipeline();
+      outputs[i]->DisconnectPipeline();
       }
     catch ( itk::ExceptionObject &err)
       {
@@ -193,56 +194,56 @@ int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
   typedef typename HessianGaussianImageFunctionType::VarianceArrayType VarianceArrayType;
   VarianceArrayType varReturned = function->GetVariance();
   for ( unsigned int i = 0; i < Dimension; ++i )
-  {
-    if ( varReturned[ i ] != variance )
     {
+    if ( varReturned[ i ] != variance )
+      {
       std::cout << "GetVariance()[" << i << "] failed. Expected: "
-        << variance
-        << " but got: "
-        << varReturned[ i ] << std::endl;
+                << variance
+                << " but got: "
+                << varReturned[ i ] << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
   if ( function->GetMaximumError() != maxError )
-  {
+    {
     std::cout << "GetMaximumError failed. Expected: "
-      << maxError
-      << " but got: "
-      << function->GetMaximumError() << std::endl;
+              << maxError
+              << " but got: "
+              << function->GetMaximumError() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetNormalizeAcrossScale() != true )
-  {
+    {
     std::cout << "GetNormalizeAcrossScale failed. Expected: "
-      << true
-      << " but got: "
-      << function->GetNormalizeAcrossScale() << std::endl;
+              << true
+              << " but got: "
+              << function->GetNormalizeAcrossScale() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetUseImageSpacing() != true )
-  {
+    {
     std::cout << "GetUseImageSpacing failed. Expected: "
-      << true
-      << " but got: "
-      << function->GetUseImageSpacing() << std::endl;
+              << true
+              << " but got: "
+              << function->GetUseImageSpacing() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetMaximumKernelWidth() != maxKernelWidth )
-  {
+    {
     std::cout << "GetMaximumKernelWidth failed. Expected: "
-      << maxKernelWidth
-      << " but got: "
-      << function->GetMaximumKernelWidth() << std::endl;
+              << maxKernelWidth
+              << " but got: "
+              << function->GetMaximumKernelWidth() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetInterpolationMode() != HessianGaussianImageFunctionType::NearestNeighbourInterpolation )
-  {
+    {
     std::cout << "GetInterpolationMode failed. Expected: "
-      << HessianGaussianImageFunctionType::NearestNeighbourInterpolation
-      << " but got: "
-      << function->GetInterpolationMode() << std::endl;
+              << HessianGaussianImageFunctionType::NearestNeighbourInterpolation
+              << " but got: "
+              << function->GetInterpolationMode() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // Call PrintSelf.
   function->Print( std::cout );
@@ -250,7 +251,8 @@ int itkDiscreteHessianGaussianImageFunctionTestND( int argc, char* argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkDiscreteHessianGaussianImageFunctionTest(int argc, char* argv[] )
+int
+itkDiscreteHessianGaussianImageFunctionTest(int argc, char* argv[] )
 {
   return itkDiscreteHessianGaussianImageFunctionTestND< 3 >( argc, argv );
 }

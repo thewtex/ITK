@@ -41,7 +41,6 @@ RBFLayer<TMeasurementVector,TTargetVector>
   //
 }
 
-
 template<typename TMeasurementVector, typename TTargetVector>
 RBFLayer<TMeasurementVector,TTargetVector>
 ::~RBFLayer()
@@ -56,6 +55,7 @@ RBFLayer<TMeasurementVector,TTargetVector>
   m_RBF = f;
   this->Modified();
 }
+
 template<typename TMeasurementVector, typename TTargetVector>
 void
 RBFLayer<TMeasurementVector,TTargetVector>
@@ -73,6 +73,7 @@ RBFLayer<TMeasurementVector,TTargetVector>
   //TMeasurementVector sampleinputvector;
   //m_RBF_Dim= sampleinputvector.Size();
   Superclass::SetNumberOfNodes(c);
+
   this->m_NodeInputValues.set_size(m_RBF_Dim); //c);
   this->m_NodeOutputValues.set_size(c);
   m_InputErrorValues.set_size(c);
@@ -109,6 +110,7 @@ RBFLayer<TMeasurementVector,TTargetVector>
 {
   return m_NodeInputValues[i];
 }
+
 template<typename TMeasurementVector, typename TTargetVector>
 void
 RBFLayer<TMeasurementVector,TTargetVector>
@@ -139,9 +141,9 @@ template<typename TMeasurementVector, typename TTargetVector>
 typename RBFLayer<TMeasurementVector,TTargetVector>::ValueType *
 RBFLayer<TMeasurementVector,TTargetVector>
 ::GetOutputVector()
-{
+  {
   return m_NodeOutputValues.data_block();
-}
+  }
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
@@ -165,7 +167,8 @@ void
 RBFLayer<TMeasurementVector,TTargetVector>
 ::SetCenter(TMeasurementVector c,unsigned int i)
 {
-  InternalVectorType temp(c.Size());
+  InternalVectorType temp(c.Size() );
+
   for(unsigned int j=0; j<c.Size(); j++)
     {
     temp[j]=c[j];
@@ -201,9 +204,9 @@ template<typename TMeasurementVector, typename TTargetVector>
 typename RBFLayer<TMeasurementVector,TTargetVector>::ValueType *
 RBFLayer<TMeasurementVector,TTargetVector>
 ::GetInputErrorVector()
-{
+  {
   return m_InputErrorValues.data_block();
-}
+  }
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
@@ -230,8 +233,8 @@ RBFLayer<TMeasurementVector,TTargetVector>
     inputweightset = this->GetModifiableInputWeightSet();
     ValueType * inputvalues = inputweightset->GetOutputValues();
 
-    const int rows = this->m_NumberOfNodes;
-    const int cols = this->m_InputWeightSet->GetNumberOfInputNodes();
+    const int             rows = this->m_NumberOfNodes;
+    const int             cols = this->m_InputWeightSet->GetNumberOfInputNodes();
     vnl_matrix<ValueType> inputmatrix;
     inputmatrix.set_size(rows, cols);
     inputmatrix.copy_in(inputvalues);
@@ -240,10 +243,10 @@ RBFLayer<TMeasurementVector,TTargetVector>
     for (int j = 0; j < rows; j++)
       {
       vnl_vector<ValueType> temp_vnl;
-      temp_vnl.set_size(inputmatrix.cols());
+      temp_vnl.set_size(inputmatrix.cols() );
       temp_vnl=inputmatrix.get_row(j);
-      m_NodeInputValues.put(j, inputfunction->Evaluate(temp_vnl.data_block()));
-      m_NodeOutputValues.put(j, transferfunction->Evaluate(m_NodeInputValues[j]));
+      m_NodeInputValues.put(j, inputfunction->Evaluate(temp_vnl.data_block() ) );
+      m_NodeOutputValues.put(j, transferfunction->Evaluate(m_NodeInputValues[j]) );
       }
     }
   else
@@ -252,22 +255,22 @@ RBFLayer<TMeasurementVector,TTargetVector>
     inputfunction = this->GetModifiableNodeInputFunction();
 
     vnl_vector<ValueType> temp;
-    ValueType * inputvalues = inputweightset->GetInputValues();
+    ValueType *           inputvalues = inputweightset->GetInputValues();
 
-    int cols = this->m_InputWeightSet->GetNumberOfInputNodes();
+    int                   cols = this->m_InputWeightSet->GetNumberOfInputNodes();
     vnl_matrix<ValueType> inputmatrix;
     inputmatrix.set_size(1, cols-1);
     inputmatrix.copy_in(inputvalues);
     inputfunction->SetSize(cols-1); //include bias
     m_NodeInputValues = inputmatrix.get_row(0);
-    ValueType * cdeltavalues = inputweightset->GetTotalDeltaValues();
+    ValueType *           cdeltavalues = inputweightset->GetTotalDeltaValues();
     vnl_matrix<ValueType> center_increment(cdeltavalues,inputweightset->GetNumberOfOutputNodes(),
-                                           inputweightset->GetNumberOfInputNodes());
+                                           inputweightset->GetNumberOfInputNodes() );
     vnl_vector<ValueType> width_increment;
-    width_increment.set_size(inputweightset->GetNumberOfOutputNodes());
+    width_increment.set_size(inputweightset->GetNumberOfOutputNodes() );
     width_increment.fill(0);
     width_increment= center_increment.get_column(inputweightset->GetNumberOfInputNodes()-1);
-    ValueType temp_radius;
+    ValueType          temp_radius;
     InternalVectorType temp_center;
     temp_center.SetSize(m_RBF_Dim);
     //TMeasurementVector tempvector1;
@@ -280,7 +283,7 @@ RBFLayer<TMeasurementVector,TTargetVector>
     for (unsigned int i = 0; i < m_NumClasses; i++)
       {
       tempcenter = m_Centers[i];
-      for(unsigned int j=0;j<m_RBF_Dim;j++)
+      for(unsigned int j=0; j<m_RBF_Dim; j++)
         {
         ValueType val =tempcenter[j];
         val += center_increment[i][j];
@@ -291,7 +294,7 @@ RBFLayer<TMeasurementVector,TTargetVector>
       temp_radius = m_Radii.GetElement(i);
       temp_radius += width_increment[i];
       m_Radii.SetElement(i,temp_radius);
-      InternalVectorType array1(m_NodeInputValues.size());
+      InternalVectorType array1(m_NodeInputValues.size() );
 
       array1= m_NodeInputValues;
 
@@ -303,13 +306,13 @@ RBFLayer<TMeasurementVector,TTargetVector>
       tempcenter= m_Centers[i];
       //double dt= m_DistanceMetric->Evaluate(tempvector1,tempvector2);
       //std::cout<<"Euclidean in layer ="<<dt<<std::endl;
-      m_RBF->SetRadius(m_Radii.GetElement(i));
+      m_RBF->SetRadius(m_Radii.GetElement(i) );
       InternalVectorType temp_array(m_RBF_Dim);
-      NodeVectorType temp_vector=  m_Centers[i];
+      NodeVectorType     temp_vector=  m_Centers[i];
       for(unsigned int ii=0; ii<m_RBF_Dim; ii++)
         temp_array.SetElement(ii,temp_vector[ii]);
       m_RBF->SetCenter(temp_array);
-      m_NodeOutputValues.put(i,m_RBF->Evaluate(m_DistanceMetric->Evaluate(tempvector1,tempvector2)));
+      m_NodeOutputValues.put(i,m_RBF->Evaluate(m_DistanceMetric->Evaluate(tempvector1,tempvector2) ) );
       }
     }
 }
@@ -337,7 +340,6 @@ RBFLayer<TMeasurementVector,TTargetVector>
     }
 }
 
-
 template<typename TMeasurementVector, typename TTargetVector>
 void
 RBFLayer<TMeasurementVector,TTargetVector>
@@ -358,7 +360,6 @@ RBFLayer<TMeasurementVector,TTargetVector>
   return m_OutputErrorValues[i];
 }
 
-
 template<typename TMeasurementVector, typename TTargetVector>
 void
 RBFLayer<TMeasurementVector,TTargetVector>
@@ -370,7 +371,6 @@ RBFLayer<TMeasurementVector,TTargetVector>
   typename Superclass::WeightSetType::Pointer inputweightset = Superclass::GetModifiableInputWeightSet();
 
   vnl_vector<ValueType> OutputLayerInput(outputweightset->GetInputValues(),num_nodes);
-
 
   ValueType * deltavalues = outputweightset->GetDeltaValues();
   ValueType * weightvalues = outputweightset->GetWeightValues();
@@ -401,14 +401,14 @@ RBFLayer<TMeasurementVector,TTargetVector>
   for (unsigned int i = 0; i < cols; i++)
     {
     deltaww[i] = dot_product(deltamatrix.get_column(i),
-                             weightmatrix.get_column(i));
+                             weightmatrix.get_column(i) );
     }
 
   //compute gradient for centers
-  InternalVectorType array1(m_NodeInputValues.size());
+  InternalVectorType array1(m_NodeInputValues.size() );
   array1= m_NodeInputValues;
   vnl_matrix<ValueType> DW_temp(inputweightset->GetNumberOfOutputNodes(),
-                                inputweightset->GetNumberOfInputNodes());
+                                inputweightset->GetNumberOfInputNodes() );
   DW_temp.fill(0.0);
 
   for(unsigned int k=0; k<array1.Size(); k++)
@@ -420,15 +420,15 @@ RBFLayer<TMeasurementVector,TTargetVector>
       {
       tempvector2=m_Centers[k];
       double dist=m_DistanceMetric->Evaluate(tempvector1,tempvector2);
-      m_RBF->SetRadius(m_Radii.GetElement(k));
-      NodeVectorType temp_vector=  m_Centers[k];
+      m_RBF->SetRadius(m_Radii.GetElement(k) );
+      NodeVectorType     temp_vector=  m_Centers[k];
       InternalVectorType temp_array(m_RBF_Dim);
       for(unsigned int ii=0; ii<m_RBF_Dim; ii++)
         temp_array.SetElement(ii,temp_vector[ii]);
       m_RBF->SetCenter(temp_array);
 
       DW_temp[k][i]=deltaww[k] * m_RBF->EvaluateDerivative
-        (dist,array1,'u',i);
+          (dist,array1,'u',i);
       }
     }
 
@@ -437,15 +437,15 @@ RBFLayer<TMeasurementVector,TTargetVector>
   width_gradient.set_size(num_nodes);
   width_gradient.fill(0.0);
 
-  for (unsigned int i=0;i<num_nodes;i++)
+  for (unsigned int i=0; i<num_nodes; i++)
     {
     tempvector2=m_Centers[i];
     double dist=m_DistanceMetric->Evaluate(tempvector1,tempvector2);
     width_gradient[i]=deltaww[i] * m_RBF->EvaluateDerivative
-      (dist,array1,'s');
+        (dist,array1,'s');
     }
-  inputweightset->SetDeltaValues(DW_temp.data_block());
-  inputweightset->SetDeltaBValues(width_gradient.data_block());
+  inputweightset->SetDeltaValues(DW_temp.data_block() );
+  inputweightset->SetDeltaBValues(width_gradient.data_block() );
 }
 
 template<typename TMeasurementVector, typename TTargetVector>

@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class PadLabelMapFilter:public ChangeRegionLabelMapFilter< TInputImage >
+class PadLabelMapFilter : public ChangeRegionLabelMapFilter< TInputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -99,7 +99,8 @@ public:
   itkSetMacro(LowerBoundaryPadSize, SizeType);
   itkGetMacro(LowerBoundaryPadSize, SizeType);
 
-  void SetPadSize(const SizeType & size)
+  void
+  SetPadSize(const SizeType & size)
   {
     this->SetUpperBoundaryPadSize(size);
     this->SetLowerBoundaryPadSize(size);
@@ -112,7 +113,8 @@ protected:
     m_LowerBoundaryPadSize.Fill(0);
   }
 
-  ~PadLabelMapFilter() {}
+  ~PadLabelMapFilter() {
+  }
 
   virtual void GenerateOutputInformation();
 

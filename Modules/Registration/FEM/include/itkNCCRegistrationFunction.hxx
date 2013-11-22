@@ -54,7 +54,7 @@ NCCRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 }
 
 /*
@@ -216,6 +216,7 @@ NCCRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     }
   return update * this->m_GradientStep;
 }
+
 } // end namespace itk
 
 #endif

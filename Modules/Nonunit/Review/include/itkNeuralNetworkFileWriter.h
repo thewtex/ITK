@@ -27,7 +27,6 @@
 
 #include "itkCompletelyConnectedWeightSet.h"
 
-
 #include "itkSymmetricSigmoidTransferFunction.h"
 
 namespace itk
@@ -52,7 +51,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TNetwork >
-class NeuralNetworkFileWriter:public Object
+class NeuralNetworkFileWriter : public Object
 {
 public:
 

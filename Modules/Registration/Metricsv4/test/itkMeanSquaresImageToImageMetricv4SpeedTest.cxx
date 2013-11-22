@@ -22,7 +22,8 @@
  * Simple test to run using unix 'time' function for speed test.
  */
 
-int itkMeanSquaresImageToImageMetricv4SpeedTest(int argc, char *argv[] )
+int
+itkMeanSquaresImageToImageMetricv4SpeedTest(int argc, char *argv[] )
 {
   if( argc < 3 )
     {
@@ -35,20 +36,20 @@ int itkMeanSquaresImageToImageMetricv4SpeedTest(int argc, char *argv[] )
   std::cout << "image dim: " << imageSize << ", reps: " << numberOfReps << std::endl;
 
   const unsigned int imageDimensionality = 3;
-  typedef itk::Image< double, imageDimensionality >              ImageType;
+  typedef itk::Image< double, imageDimensionality > ImageType;
 
-  ImageType::SizeType       size;
+  ImageType::SizeType size;
   size.Fill( imageSize );
-  ImageType::IndexType      index;
+  ImageType::IndexType index;
   index.Fill( 0 );
-  ImageType::RegionType     region;
+  ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
-  ImageType::SpacingType    spacing;
+  ImageType::SpacingType spacing;
   spacing.Fill(1.0);
-  ImageType::PointType      origin;
+  ImageType::PointType origin;
   origin.Fill(0);
-  ImageType::DirectionType  direction;
+  ImageType::DirectionType direction;
   direction.SetIdentity();
 
   /* Create simple test images. */
@@ -93,7 +94,7 @@ int itkMeanSquaresImageToImageMetricv4SpeedTest(int argc, char *argv[] )
   typedef itk::TranslationTransform<double,imageDimensionality> FixedTransformType;
   typedef itk::TranslationTransform<double,imageDimensionality> MovingTransformType;
 
-  FixedTransformType::Pointer fixedTransform = FixedTransformType::New();
+  FixedTransformType::Pointer  fixedTransform = FixedTransformType::New();
   MovingTransformType::Pointer movingTransform = MovingTransformType::New();
 
   fixedTransform->SetIdentity();
@@ -117,7 +118,7 @@ int itkMeanSquaresImageToImageMetricv4SpeedTest(int argc, char *argv[] )
   metric->Initialize();
 
   // Evaluate with GetValueAndDerivative
-  MetricType::MeasureType valueReturn1;
+  MetricType::MeasureType    valueReturn1;
   MetricType::DerivativeType derivativeReturn;
 
   MetricType::MeasureType sum = itk::NumericTraits<MetricType::MeasureType>::Zero;

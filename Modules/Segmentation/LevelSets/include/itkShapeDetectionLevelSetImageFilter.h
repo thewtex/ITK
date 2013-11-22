@@ -105,7 +105,7 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class ShapeDetectionLevelSetImageFilter:
+class ShapeDetectionLevelSetImageFilter :
   public SegmentationLevelSetImageFilter< TInputImage,
                                           TFeatureImage, TOutputPixelType >
 {
@@ -133,7 +133,9 @@ public:
   itkNewMacro(Self);
 
 protected:
-  ~ShapeDetectionLevelSetImageFilter() {}
+  ~ShapeDetectionLevelSetImageFilter() {
+  }
+
   ShapeDetectionLevelSetImageFilter();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

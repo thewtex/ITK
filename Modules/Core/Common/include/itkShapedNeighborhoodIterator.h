@@ -149,7 +149,7 @@ namespace itk
  */
 template< typename TImage,  typename TBoundaryCondition =
             ZeroFluxNeumannBoundaryCondition< TImage > >
-class ShapedNeighborhoodIterator:
+class ShapedNeighborhoodIterator :
   public ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
 {
 public:
@@ -163,7 +163,7 @@ public:
   /** Standard class typedefs. */
   typedef ShapedNeighborhoodIterator Self;
   typedef ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
-  Superclass;
+    Superclass;
 
   /** Inherit typedefs from superclass */
   typedef typename Superclass::OffsetType                        OffsetType;
@@ -182,21 +182,32 @@ public:
   typedef typename Superclass::IndexValueType                    IndexValueType;
 
   /** An  iterator for the ShapedNeighborhood classes. */
-  struct Iterator:public ConstIterator {
-    Iterator() {}
-    Iterator(Self *s):ConstIterator(s) {}
+  struct Iterator : public ConstIterator {
+    Iterator() {
+    }
 
-    ~Iterator() {}
-    Iterator & operator=(const Iterator & o)
+    Iterator(Self *s) : ConstIterator(s) {
+    }
+
+    ~Iterator() {
+    }
+
+    Iterator &
+    operator=(const Iterator & o)
     {
       ConstIterator::operator=(o);
+
       return *this;
     }
 
     // Promote to public
-    void Set(const PixelType & v) const
-    { ConstIterator::ProtectedSet(v); }
-  };
+    void
+    Set(const PixelType & v) const
+    {
+      ConstIterator::ProtectedSet(v);
+    }
+
+    };
 
   /** Default constructor */
   ShapedNeighborhoodIterator()
@@ -207,15 +218,17 @@ public:
   }
 
   /** Virtual destructor */
-  virtual ~ShapedNeighborhoodIterator() {}
+  virtual
+  ~ShapedNeighborhoodIterator() {
+  }
 
   /** Constructor which establishes the region size, neighborhood, and image
    * over which to walk. */
   ShapedNeighborhoodIterator(const SizeType & radius,
                              const ImageType *ptr,
                              const RegionType & region
-                             ):Superclass(radius, const_cast< ImageType * >( ptr ),
-                                          region)
+                             ) : Superclass(radius, const_cast< ImageType * >( ptr ),
+                                            region)
   {
     m_BeginIterator = Iterator(this);
     m_EndIterator = Iterator(this);
@@ -227,9 +240,9 @@ public:
   using Superclass::SetPixel;
   using Superclass::SetCenterPixel;
 
-
   /** Assignment operator */
-  Self & operator=(const Self & orig)
+  Self &
+  operator=(const Self & orig)
   {
     Superclass::operator=(orig);
 
@@ -244,17 +257,29 @@ public:
 
   /** Returns a const iterator for the neighborhood which points to the first
    * pixel in the neighborhood. */
-  Iterator & Begin() {    return m_BeginIterator;  }
-  Iterator & End()   {   return m_EndIterator;     }
+  Iterator &
+  Begin() {
+    return m_BeginIterator;
+  }
+
+  Iterator &
+  End()   {
+    return m_EndIterator;
+  }
 
   /** Returns a const iterator for the neighborhood which points to the last
    * pixel in the neighborhood. */
-  const ConstIterator & End() const
-  { return this->m_ConstEndIterator; }
+  const ConstIterator &
+  End() const
+  {
+    return this->m_ConstEndIterator;
+  }
 
-  void ClearActiveList()
+  void
+  ClearActiveList()
   {
     Superclass::ClearActiveList();
+
     m_EndIterator.GoToEnd();
     m_BeginIterator.GoToBegin();
   }
@@ -267,16 +292,20 @@ protected:
 
   typedef typename Superclass::NeighborIndexType NeighborIndexType;
 
-  void ActivateIndex(NeighborIndexType n)
+  void
+  ActivateIndex(NeighborIndexType n)
   {
     Superclass::ActivateIndex(n);
+
     m_EndIterator.GoToEnd();
     m_BeginIterator.GoToBegin();
   }
 
-  void DeactivateIndex(NeighborIndexType n)
+  void
+  DeactivateIndex(NeighborIndexType n)
   {
     Superclass::DeactivateIndex(n);
+
     m_EndIterator.GoToEnd();
     m_BeginIterator.GoToBegin();
   }

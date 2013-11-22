@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKImageFeature
  */
 template< typename TInputImage, typename TOutputImage, typename TInternalPixel = double >
-class GradientVectorFlowImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+class GradientVectorFlowImageFilter : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard "Self" typedef. */
@@ -76,9 +76,9 @@ public:
   typedef typename OutputImageType::RegionType RegionType;
 
   /** Image and Image iterator definition. */
-  typedef ImageRegionIterator< InputImageType >               InputImageIterator;
-  typedef ImageRegionConstIterator< InputImageType >          InputImageConstIterator;
-  typedef ImageRegionIterator< OutputImageType >              OutputImageIterator;
+  typedef ImageRegionIterator< InputImageType >      InputImageIterator;
+  typedef ImageRegionConstIterator< InputImageType > InputImageConstIterator;
+  typedef ImageRegionIterator< OutputImageType >     OutputImageIterator;
 
   /** Image dimension. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -121,12 +121,15 @@ public:
 
 protected:
   GradientVectorFlowImageFilter();
-  ~GradientVectorFlowImageFilter() {}
+  ~GradientVectorFlowImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();
 
-  /** Precompute m_BImage and m_CImage[i] and allocate memory for all the various internal images */
+  /** Precompute m_BImage and m_CImage[i] and allocate memory for all the
+    various internal images */
   void InitInterImage();
 
   /**
@@ -140,7 +143,7 @@ protected:
 
 private:
   GradientVectorFlowImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                //purposely not implemented
 
   // parameters;
   double m_TimeStep;                               // the timestep of each

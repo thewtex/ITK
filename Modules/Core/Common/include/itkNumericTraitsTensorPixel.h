@@ -85,52 +85,62 @@ public:
    * \note minimum value for floating pointer types is defined as
    * minimum positive normalize value.
    */
-  static const Self max(const Self &)
+  static const Self
+  max(const Self &)
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min(const Self &)
+  static const Self
+  min(const Self &)
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self max()
+  static const Self
+  max()
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min()
+  static const Self
+  min()
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self NonpositiveMin()
+  static const Self
+  NonpositiveMin()
   {
     return Self( NumericTraits< T >::NonpositiveMin() );
   }
 
-  static const Self ZeroValue()
+  static const Self
+  ZeroValue()
   {
     return Self( NumericTraits< T >::ZeroValue() );
   }
 
-  static const Self OneValue()
+  static const Self
+  OneValue()
   {
     return Self( NumericTraits< T >::OneValue() );
   }
 
-  static const Self NonpositiveMin(const Self &)
+  static const Self
+  NonpositiveMin(const Self &)
   {
     return NonpositiveMin();
   }
 
-  static const Self ZeroValue(const Self &)
+  static const Self
+  ZeroValue(const Self &)
   {
     return ZeroValue();
   }
 
-  static const Self OneValue(const Self &)
+  static const Self
+  OneValue(const Self &)
   {
     return OneValue();
   }
@@ -139,7 +149,8 @@ public:
    *  be thrown if the input size is not valid.  Here, the size refers
    *  to the dimensionality of the unerlying FixedArray, not the
    *  tensor dimensionality. */
-  static void SetLength(SymmetricSecondRankTensor< T, D > & m, const unsigned int s)
+  static void
+  SetLength(SymmetricSecondRankTensor< T, D > & m, const unsigned int s)
   {
     if ( s != D *( D + 1 ) / 2 )
       {
@@ -151,24 +162,28 @@ public:
   }
 
   /** Return the size of the underlying FixedArray. */
-  static unsigned int GetLength(const SymmetricSecondRankTensor< T, D > &)
+  static unsigned int
+  GetLength(const SymmetricSecondRankTensor< T, D > &)
   {
     return GetLength();
   }
 
   /** Return the size of the underlying FixedArray. */
-  static unsigned int GetLength()
+  static unsigned int
+  GetLength()
   {
     return D *( D + 1 ) / 2;
   }
 
-  static void AssignToArray( const Self & v, MeasurementVectorType & mv )
+  static void
+  AssignToArray( const Self & v, MeasurementVectorType & mv )
   {
     mv = v;
   }
 
   template<typename TArray>
-  static void AssignToArray( const Self & v, TArray & mv )
+  static void
+  AssignToArray( const Self & v, TArray & mv )
   {
     for( unsigned int i=0; i<GetLength(); i++ )
       {

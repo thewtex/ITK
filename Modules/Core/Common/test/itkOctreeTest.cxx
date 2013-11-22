@@ -27,19 +27,23 @@ template <typename TPixel,unsigned int TableSize>
 class IdentityMap
 {
 public:
-unsigned int Evaluate(const TPixel *pixel)
-{
-  unsigned int pixval = static_cast<unsigned int>(*pixel);
-  return pixval < TableSize ? pixval : TableSize - 1;
-}
+  unsigned int
+  Evaluate(const TPixel *pixel)
+  {
+    unsigned int pixval = static_cast<unsigned int>(*pixel);
+
+    return pixval < TableSize ? pixval : TableSize - 1;
+  }
+
 };
 
-int itkOctreeTest(int, char *[])
+int
+itkOctreeTest(int, char *[])
 {
-   typedef itk::Image<unsigned int,3> ImageType;
-  const ImageType::SizeType imageSize = {{4,4,4}};
+  typedef itk::Image<unsigned int,3> ImageType;
+  const ImageType::SizeType  imageSize = {{4,4,4}};
   const ImageType::IndexType imageIndex = {{0,0,0}};
-  ImageType::RegionType region;
+  ImageType::RegionType      region;
   region.SetSize(imageSize);
   region.SetIndex(imageIndex);
   ImageType::Pointer img = ImageType::New();
@@ -52,7 +56,7 @@ int itkOctreeTest(int, char *[])
   try
     {
     unsigned int counter = 0;
-    while(!ri.IsAtEnd())
+    while(!ri.IsAtEnd() )
       {
       unsigned int val = rand() % 16384;
       if(counter && counter % 8 == 0)
@@ -73,13 +77,13 @@ int itkOctreeTest(int, char *[])
   typedef itk::Octree<unsigned int,16384,IdentityMap<unsigned int,16384> > OctreeType;
   OctreeType::Pointer octree = OctreeType::New();
   octree->BuildFromImage(img);
-  ImageType::Pointer output = octree->GetImage();
+  ImageType::Pointer                  output = octree->GetImage();
   itk::ImageRegionIterator<ImageType> ri2(output,region);
   ri.GoToBegin();
   IdentityMap<unsigned int,16384> id;
   try
     {
-    while(!ri.IsAtEnd() && !ri2.IsAtEnd())
+    while(!ri.IsAtEnd() && !ri2.IsAtEnd() )
       {
       unsigned int x = ri.Get();
       unsigned int y = ri2.Get();
@@ -94,7 +98,7 @@ int itkOctreeTest(int, char *[])
       ++ri;
       ++ri2;
       }
-    if(!ri.IsAtEnd() || !ri2.IsAtEnd())
+    if(!ri.IsAtEnd() || !ri2.IsAtEnd() )
       {
       std::cerr << "Error, inconsistent image sizes in Octree" << std::endl;
       return EXIT_FAILURE;

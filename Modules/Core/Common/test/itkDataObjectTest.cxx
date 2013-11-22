@@ -37,12 +37,17 @@ public:
   itkTypeMacro(DataObjectTestHelper, DataObject);
 
 protected:
-  DataObjectTestHelper() {}
-  ~DataObjectTestHelper() {}
-  virtual void PrintSelf(std::ostream & os, Indent indent) const
-    {
+  DataObjectTestHelper() {
+  }
+
+  ~DataObjectTestHelper() {
+  }
+
+  virtual void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
     this->Superclass::PrintSelf( os, indent );
-    }
+  }
 
 private:
   DataObjectTestHelper(const Self &); //purposely not implemented
@@ -52,12 +57,14 @@ private:
 
 }
 
-int itkDataObjectTest( int , char * [] )
+int
+itkDataObjectTest( int , char * [] )
 {
   itk::DataObjectTestHelper::Pointer dataObject = itk::DataObjectTestHelper::New();
 
   itk::RealTimeClock::Pointer clock = itk::RealTimeClock::New();
-  dataObject->SetRealTimeStamp(clock->GetRealTimeStamp());
+
+  dataObject->SetRealTimeStamp(clock->GetRealTimeStamp() );
   itk::RealTimeStamp timeStamp = dataObject->GetRealTimeStamp();
   dataObject->DataHasBeenGenerated();
   if( timeStamp != dataObject->GetRealTimeStamp() )

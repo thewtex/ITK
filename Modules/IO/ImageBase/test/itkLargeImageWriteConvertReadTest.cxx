@@ -20,12 +20,14 @@
 #include "itkImageFileReader.h"
 #include "itkTimeProbesCollectorBase.h"
 
-int itkLargeImageWriteConvertReadTest(int ac, char* av[])
+int
+itkLargeImageWriteConvertReadTest(int ac, char* av[])
 {
 
   if (ac < 3)
     {
-    std::cout << "usage: itkIOTests itkLargeImageWriteConvertReadTest outputFileName numberOfPixelsInOneDimension" << std::endl;
+    std::cout << "usage: itkIOTests itkLargeImageWriteConvertReadTest outputFileName numberOfPixelsInOneDimension" <<
+      std::endl;
     return EXIT_FAILURE;
     }
   typedef unsigned char                 OutputPixelType;
@@ -37,60 +39,59 @@ int itkLargeImageWriteConvertReadTest(int ac, char* av[])
 
   itk::TimeProbesCollectorBase chronometer;
 
-  { // begin write block
-  OutputImageType::Pointer image = OutputImageType::New();
-  OutputImageType::RegionType region;
-  OutputImageType::IndexType index;
-  OutputImageType::SizeType size;
+    { // begin write block
+    OutputImageType::Pointer    image = OutputImageType::New();
+    OutputImageType::RegionType region;
+    OutputImageType::IndexType  index;
+    OutputImageType::SizeType   size;
 
+    const size_t numberOfPixelsInOneDimension = atol( av[2] );
 
-  const size_t numberOfPixelsInOneDimension = atol( av[2] );
+    size.Fill( numberOfPixelsInOneDimension );
+    index.Fill(0);
+    region.SetSize(size);
+    region.SetIndex(index);
 
-  size.Fill( numberOfPixelsInOneDimension );
-  index.Fill(0);
-  region.SetSize(size);
-  region.SetIndex(index);
+    image->SetRegions(region);
 
-  image->SetRegions(region);
+    chronometer.Start("Allocate");
+    image->Allocate();
+    chronometer.Stop("Allocate");
 
-  chronometer.Start("Allocate");
-  image->Allocate();
-  chronometer.Stop("Allocate");
+    std::cout << "Initializing pixel values " << std::endl;
+    typedef itk::ImageRegionIterator< OutputImageType > IteratorType;
 
-  std::cout << "Initializing pixel values " << std::endl;
-  typedef itk::ImageRegionIterator< OutputImageType >  IteratorType;
+    IteratorType itr( image, region );
+    itr.GoToBegin();
 
-  IteratorType itr( image, region );
-  itr.GoToBegin();
+    OutputPixelType pixelValue = itk::NumericTraits< OutputPixelType >::Zero;
 
-  OutputPixelType pixelValue = itk::NumericTraits< OutputPixelType >::Zero;
+    chronometer.Start("Initializing");
+    while( !itr.IsAtEnd() )
+      {
+      itr.Set( pixelValue );
+      ++pixelValue;
+      ++itr;
+      }
+    chronometer.Stop("Initializing");
 
-  chronometer.Start("Initializing");
-  while( !itr.IsAtEnd() )
-    {
-    itr.Set( pixelValue );
-    ++pixelValue;
-    ++itr;
-    }
-  chronometer.Stop("Initializing");
+    std::cout << "Trying to write the image to disk" << std::endl;
+    try
+      {
+      WriterType::Pointer writer = WriterType::New();
+      writer->SetInput(image);
+      writer->SetFileName(av[1]);
+      chronometer.Start("Write");
+      writer->Update();
+      chronometer.Stop("Write");
+      }
+    catch (itk::ExceptionObject &ex)
+      {
+      std::cout << ex << std::endl;
+      return EXIT_FAILURE;
+      }
 
-  std::cout << "Trying to write the image to disk" << std::endl;
-  try
-    {
-    WriterType::Pointer writer = WriterType::New();
-    writer->SetInput(image);
-    writer->SetFileName(av[1]);
-    chronometer.Start("Write");
-    writer->Update();
-    chronometer.Stop("Write");
-    }
-  catch (itk::ExceptionObject &ex)
-    {
-    std::cout << ex << std::endl;
-    return EXIT_FAILURE;
-    }
-
-  } // end writing block so data is freed
+    } // end writing block so data is freed
 
   std::cout << "Trying to read the image back from disk" << std::endl;
   ReaderType::Pointer reader = ReaderType::New();

@@ -31,7 +31,6 @@
 #define __itkAnalyzeImageIO_h
 #if !defined( ITK_LEGACY_REMOVE )
 
-
 #include <fstream>
 #include "itkImageIOBase.h"
 #include "itkAnalyzeDbh.h"
@@ -91,7 +90,7 @@ namespace itk
    * \ingroup ITKDeprecated
    * \ingroup IOFilters
    */
-class AnalyzeImageIO:public ImageIOBase
+class AnalyzeImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -213,7 +212,7 @@ private:
     unsigned int xsize;
     unsigned int ysize;
     unsigned int zsize;
-  };
+    };
 /**
  * Get values needed to re-orient image data to
  * Coronal scan order

@@ -30,7 +30,7 @@ namespace itk
 template< typename TInput, typename TOutput >
 FastMarchingBase< TInput, TOutput >::
 FastMarchingBase()
-  {
+{
   this->ProcessObject::SetNumberOfRequiredInputs(0);
 
   m_TrialPoints = NULL;
@@ -47,15 +47,17 @@ FastMarchingBase()
   m_LargeValue = NumericTraits< OutputPixelType >::max();
   m_TopologyValue = m_LargeValue;
   m_CollectPoints = false;
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 template< typename TInput, typename TOutput >
 FastMarchingBase< TInput, TOutput >::
 ~FastMarchingBase()
-  {
-  }
+{
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -63,12 +65,13 @@ template< typename TInput, typename TOutput >
 void
 FastMarchingBase< TInput, TOutput >::
 PrintSelf( std::ostream & os, Indent indent ) const
-  {
+{
   Superclass::PrintSelf( os, indent );
+
   os << indent << "Speed constant: " << m_SpeedConstant << std::endl;
   os << indent << "Topology check: " << m_TopologyCheck << std::endl;
   os << indent << "Normalization Factor: " << m_NormalizationFactor << std::endl;
-  }
+}
 
 // -----------------------------------------------------------------------------
 
@@ -77,7 +80,7 @@ template< typename TInput, typename TOutput >
 void
 FastMarchingBase< TInput, TOutput >::
 Initialize( OutputDomainType* oDomain )
-  {
+{
   if( m_TrialPoints.IsNull() )
     {
     itkExceptionMacro( <<"No Trial Nodes" );
@@ -119,7 +122,8 @@ Initialize( OutputDomainType* oDomain )
   // By setting the output domain to the stopping criterion, we enable funky
   // criterion based on informations extracted from it
   m_StoppingCriterion->SetDomain( oDomain );
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -127,7 +131,7 @@ template< typename TInput, typename TOutput >
 void
 FastMarchingBase< TInput, TOutput >::
 GenerateData()
-  {
+{
   OutputDomainType* output = this->GetOutput();
 
   Initialize( output );
@@ -148,7 +152,6 @@ GenerateData()
       //
       //NodeType current_node = element.m_Element;
       //OutputPixelType current_value = element.m_Priority;
-
 
       NodePairType current_node_pair = m_Heap.top();
       m_Heap.pop();
@@ -175,7 +178,7 @@ GenerateData()
               m_ProcessedPoints->push_back( current_node_pair );
               }
 
-              // set this node as alive
+            // set this node as alive
             this->SetLabelValueForGivenNode( current_node, Traits::Alive );
 
             // update its neighbors
@@ -217,7 +220,8 @@ GenerateData()
     {
     m_Heap->Pop();
     }*/
-  }
+}
+
 // -----------------------------------------------------------------------------
 
 } // end of namespace itk

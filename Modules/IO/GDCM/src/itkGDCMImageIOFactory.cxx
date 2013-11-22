@@ -31,14 +31,17 @@ GDCMImageIOFactory::GDCMImageIOFactory()
 }
 
 GDCMImageIOFactory::~GDCMImageIOFactory()
-{}
+{
+}
 
-const char * GDCMImageIOFactory::GetITKSourceVersion() const
+const char *
+GDCMImageIOFactory::GetITKSourceVersion() const
 {
   return ITK_SOURCE_VERSION;
 }
 
-const char * GDCMImageIOFactory::GetDescription() const
+const char *
+GDCMImageIOFactory::GetDescription() const
 {
   return "GDCM ImageIO Factory, allows the loading of DICOM images into Insight";
 }
@@ -48,9 +51,10 @@ const char * GDCMImageIOFactory::GetDescription() const
 
 static bool GDCMImageIOFactoryHasBeenRegistered;
 
-void GDCMImageIOFactoryRegister__Private(void)
+void
+GDCMImageIOFactoryRegister__Private(void)
 {
-  if( ! GDCMImageIOFactoryHasBeenRegistered )
+  if( !GDCMImageIOFactoryHasBeenRegistered )
     {
     GDCMImageIOFactoryHasBeenRegistered = true;
     GDCMImageIOFactory::RegisterOneFactory();

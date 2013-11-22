@@ -20,7 +20,8 @@
 #include "itkMinimumMaximumImageFilter.h"
 #include "itkImageFileReader.h"
 
-int itkImageToHistogramFilterTest3( int argc, char * argv [] )
+int
+itkImageToHistogramFilterTest3( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -30,8 +31,7 @@ int itkImageToHistogramFilterTest3( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
-  const unsigned int                                  Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef unsigned char                               PixelComponentType;
   typedef itk::Image< PixelComponentType, Dimension > ScalarImageType;
   typedef itk::ImageFileReader< ScalarImageType >     ReaderType;
@@ -51,17 +51,16 @@ int itkImageToHistogramFilterTest3( int argc, char * argv [] )
 
   itk::MinimumMaximumImageFilter<ScalarImageType>::Pointer minmaxFilter
     = itk::MinimumMaximumImageFilter<ScalarImageType>::New();
-  minmaxFilter->SetInput(reader->GetOutput());
+  minmaxFilter->SetInput(reader->GetOutput() );
   minmaxFilter->Update();
   const ScalarImageType::PixelType imageMin = minmaxFilter->GetMinimum();
   const ScalarImageType::PixelType imageMax = minmaxFilter->GetMaximum();
-
 
   typedef itk::Statistics::ScalarImageToHistogramGenerator<ScalarImageType>
     HistogramGeneratorType;
   HistogramGeneratorType::Pointer histogramGenerator
     = HistogramGeneratorType::New();
-  histogramGenerator->SetInput(reader->GetOutput());
+  histogramGenerator->SetInput(reader->GetOutput() );
 
   const int NumberOfBins = static_cast<unsigned int>( imageMax - imageMin + 1 );
   histogramGenerator->SetNumberOfBins( NumberOfBins );
@@ -72,8 +71,7 @@ int itkImageToHistogramFilterTest3( int argc, char * argv [] )
   histogramGenerator->SetHistogramMax( imageMax );
   histogramGenerator->Compute();
 
-
-  typedef HistogramGeneratorType::HistogramType  HistogramType;
+  typedef HistogramGeneratorType::HistogramType HistogramType;
   const HistogramType * histogram = histogramGenerator->GetOutput();
 
   std::ofstream outputFile;

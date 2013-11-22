@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKLabelVoting
  */
 template< typename TInputImage, typename TOutputImage >
-class VotingBinaryImageFilter:
+class VotingBinaryImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -123,7 +123,10 @@ public:
 
 protected:
   VotingBinaryImageFilter();
-  virtual ~VotingBinaryImageFilter() {}
+  virtual
+  ~VotingBinaryImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** VotingBinaryImageFilter can be implemented as a multithreaded filter.

@@ -30,31 +30,37 @@ namespace Functor
 template< typename TInput, typename TOutput >
 Clamp< TInput, TOutput >
 ::Clamp() :
-  m_LowerBound(NumericTraits< OutputType >::NonpositiveMin()),
-  m_UpperBound(NumericTraits< OutputType >::max())
-  {}
+  m_LowerBound(NumericTraits< OutputType >::NonpositiveMin() ),
+  m_UpperBound(NumericTraits< OutputType >::max() )
+{
+}
 
 template< typename TInput, typename TOutput >
 Clamp< TInput, TOutput >
-::~Clamp() {}
+::~Clamp() {
+}
 
 template< typename TInput, typename TOutput >
 typename Clamp< TInput, TOutput >::OutputType
 Clamp< TInput, TOutput >
 ::GetLowerBound() const
-  { return m_LowerBound; }
+{
+  return m_LowerBound;
+}
 
 template< typename TInput, typename TOutput >
 typename Clamp< TInput, TOutput >::OutputType
 Clamp< TInput, TOutput >
 ::GetUpperBound() const
-  { return m_UpperBound; }
+{
+  return m_UpperBound;
+}
 
 template< typename TInput, typename TOutput >
 void
 Clamp< TInput, TOutput >
 ::SetBounds( const OutputType lowerBound, const OutputType upperBound)
-  {
+{
   if(lowerBound > upperBound)
     {
     itkGenericExceptionMacro("invalid bounds: [" << lowerBound << "; " << upperBound << "]");
@@ -62,92 +68,94 @@ Clamp< TInput, TOutput >
 
   m_LowerBound = lowerBound;
   m_UpperBound = upperBound;
-  }
+}
 
 template< typename TInput, typename TOutput >
 bool
 Clamp< TInput, TOutput >
 ::operator!=( const Self & other ) const
-  {
+{
   return m_UpperBound != other.m_UpperBound
-    || m_LowerBound != other.m_LowerBound;
-  }
+         || m_LowerBound != other.m_LowerBound;
+}
 
 template< typename TInput, typename TOutput >
 bool
 Clamp< TInput, TOutput >
 ::operator==( const Self & other ) const
-  {
+{
   return !(*this != other);
-  }
+}
 
 } // end namespace Functor
 
-
 template <typename TInputImage, typename TOutputImage>
 ClampImageFilter< TInputImage, TOutputImage >
-::ClampImageFilter() {}
+::ClampImageFilter() {
+}
 
 template <typename TInputImage, typename TOutputImage>
 typename ClampImageFilter< TInputImage, TOutputImage >::OutputPixelType
 ClampImageFilter< TInputImage, TOutputImage >
 ::GetLowerBound() const
-  {
+{
   return this->GetFunctor().GetLowerBound();
-  }
+}
 
 template <typename TInputImage, typename TOutputImage>
 typename ClampImageFilter< TInputImage, TOutputImage >::OutputPixelType
 ClampImageFilter< TInputImage, TOutputImage >
 ::GetUpperBound() const
-  {
+{
   return this->GetFunctor().GetUpperBound();
-  }
+}
 
 template <typename TInputImage, typename TOutputImage>
 void
 ClampImageFilter< TInputImage, TOutputImage >
 ::SetBounds(const OutputPixelType lowerBound, const OutputPixelType upperBound)
-  {
-  if ( lowerBound == this->GetFunctor().GetLowerBound() && upperBound == this->GetFunctor().GetUpperBound())
+{
+  if ( lowerBound == this->GetFunctor().GetLowerBound() && upperBound == this->GetFunctor().GetUpperBound() )
     {
     return;
     }
 
   this->GetFunctor().SetBounds(lowerBound, upperBound);
   this->Modified();
-  }
+}
 
 template <typename TInputImage, typename TOutputImage>
 void
 ClampImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
-  {
+{
   if( this->GetInPlace() && this->CanRunInPlace()
-    && this->GetLowerBound() <= NumericTraits< OutputPixelType >::NonpositiveMin()
-    && this->GetUpperBound() >= NumericTraits< OutputPixelType >::max() )
+      && this->GetLowerBound() <= NumericTraits< OutputPixelType >::NonpositiveMin()
+      && this->GetUpperBound() >= NumericTraits< OutputPixelType >::max() )
     {
     // If the filter is asked to run in-place, is able to run in-place,
     // and the specified bounds are equal to the output-type limits,
     // then there is nothing to do. To avoid iterating over all the pixels for
-    // nothing, graft the input to the output, generate a fake progress and exit.
+    // nothing, graft the input to the output, generate a fake progress and
+    // exit.
     this->AllocateOutputs();
     ProgressReporter progress(this, 0, 1);
     return;
     }
   Superclass::GenerateData();
-  }
+}
 
 template <typename TInputImage, typename TOutputImage>
 void
 ClampImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
-  {
+{
   Superclass::PrintSelf(os, indent);
 
   os << indent << "Lower bound: " << this->GetLowerBound() << std::endl;
   os << indent << "Upper bound: " << this->GetUpperBound() << std::endl;
-  }
+}
+
 }
 
 #endif

@@ -19,7 +19,6 @@
 #define __itkDICOMSeriesFileNames_h
 #if !defined( ITK_LEGACY_REMOVE )
 
-
 #include "itkObject.h"
 #include "itkObjectFactory.h"
 #include "itkMacro.h"
@@ -43,7 +42,7 @@ namespace itk
  * \ingroup ITKDeprecated
  * \ingroup IOFilters
  */
-class DICOMSeriesFileNames:public Object
+class DICOMSeriesFileNames : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -68,7 +67,8 @@ public:
    * name forces the directory to be rescanned.  This is useful if
    * DICOM files have been added to a directory since the last time
    * the directory was scanned. */
-  void SetDirectory(const std::string & dir)
+  void
+  SetDirectory(const std::string & dir)
   {
     if ( m_Directory != dir )
       {
@@ -108,9 +108,20 @@ public:
 
   /** Returns a vector containing the Descriptions for each series in the
    * directory. GetSeriesUIDs() should be called before */
-  const FileNamesArrayType & GetSeriesDescriptions(){ return m_SeriesDescriptions; }
-  const FileNamesArrayType & GetSeriesBodyParts(){ return m_BodyParts; }
-  const FileNamesArrayType & GetSeriesScanOptions(){ return m_ScanOptions; }
+  const FileNamesArrayType &
+  GetSeriesDescriptions(){
+    return m_SeriesDescriptions;
+  }
+
+  const FileNamesArrayType &
+  GetSeriesBodyParts(){
+    return m_BodyParts;
+  }
+
+  const FileNamesArrayType &
+  GetSeriesScanOptions(){
+    return m_ScanOptions;
+  }
 
   /** Returns a vector containing the series file names. The file
    * names are sorted based on the current sorting mode. If parameter
@@ -131,12 +142,23 @@ public:
   typedef enum { SortByImageNumber, SortBySliceLocation, SortByImagePositionPatient } FileNameSortingOrderType;
   itkSetEnumMacro(FileNameSortingOrder, FileNameSortingOrderType);
   itkGetEnumMacro(FileNameSortingOrder, FileNameSortingOrderType);
-  void SetFileNameSortingOrderToSortByImageNumber()
-  { this->SetFileNameSortingOrder(SortByImageNumber); }
-  void SetFileNameSortingOrderToSortBySliceLocation()
-  { this->SetFileNameSortingOrder(SortBySliceLocation); }
-  void SetFileNameSortingOrderToSortByImagePositionPatient()
-  { this->SetFileNameSortingOrder(SortByImagePositionPatient); }
+  void
+  SetFileNameSortingOrderToSortByImageNumber()
+  {
+    this->SetFileNameSortingOrder(SortByImageNumber);
+  }
+
+  void
+  SetFileNameSortingOrderToSortBySliceLocation()
+  {
+    this->SetFileNameSortingOrder(SortBySliceLocation);
+  }
+
+  void
+  SetFileNameSortingOrderToSortByImagePositionPatient()
+  {
+    this->SetFileNameSortingOrder(SortByImagePositionPatient);
+  }
 
   /** Get the filename associated with a specific instance UID. This
    * requires the internal database has already been built via a call
@@ -145,7 +167,9 @@ public:
 
 protected:
   DICOMSeriesFileNames();
-  ~DICOMSeriesFileNames() {}
+  ~DICOMSeriesFileNames() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

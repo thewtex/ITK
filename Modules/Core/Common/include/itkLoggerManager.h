@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT LoggerManager:public Object
+class ITKCommon_EXPORT LoggerManager : public Object
 {
 public:
 
@@ -93,10 +93,13 @@ public:
 protected:
 
   /** Constructor */
-  LoggerManager() {}
+  LoggerManager() {
+  }
 
   /** Destructor */
-  virtual ~LoggerManager() {}
+  virtual
+  ~LoggerManager() {
+  }
 
   /** Print contents of a LoggerManager */
   void PrintSelf(std::ostream & s, Indent indent) const;

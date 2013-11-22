@@ -31,15 +31,16 @@
  * not within a certain tolerance of the expected results.
  *
  */
-int itkSphereSignedDistanceFunctionTest( int, char *[])
+int
+itkSphereSignedDistanceFunctionTest( int, char *[])
 {
   typedef double CoordRep;
   const unsigned int Dimension = 2;
 
   typedef itk::ShapeSignedDistanceFunction<CoordRep,Dimension>
-                                       FunctionType;
+    FunctionType;
   typedef itk::SphereSignedDistanceFunction<CoordRep,Dimension>
-                                       SphereFunctionType;
+    SphereFunctionType;
   typedef FunctionType::PointType      PointType;
   typedef FunctionType::ParametersType ParametersType;
 

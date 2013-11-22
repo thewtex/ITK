@@ -31,11 +31,20 @@ class VectorMagnitudeLinearTransform
 {
 public:
   typedef typename NumericTraits< typename TInput::ValueType >::RealType RealType;
-  VectorMagnitudeLinearTransform() {}
-  ~VectorMagnitudeLinearTransform() {}
-  void SetFactor(RealType a) { m_Factor = a; }
+  VectorMagnitudeLinearTransform() {
+  }
+
+  ~VectorMagnitudeLinearTransform() {
+  }
+
+  void
+  SetFactor(RealType a) {
+    m_Factor = a;
+  }
+
   itkStaticConstMacro(VectorDimension, unsigned int, TInput::Dimension);
-  bool operator!=(const VectorMagnitudeLinearTransform & other) const
+  bool
+  operator!=(const VectorMagnitudeLinearTransform & other) const
   {
     if ( m_Factor != other.m_Factor )
       {
@@ -44,12 +53,14 @@ public:
     return false;
   }
 
-  bool operator==(const VectorMagnitudeLinearTransform & other) const
+  bool
+  operator==(const VectorMagnitudeLinearTransform & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & x) const
+  inline TOutput
+  operator()(const TInput & x) const
   {
     TOutput result;
 
@@ -89,7 +100,7 @@ private:
  * \endwiki
  */
 template< typename  TInputImage, typename  TOutputImage = TInputImage >
-class VectorRescaleIntensityImageFilter:
+class VectorRescaleIntensityImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::VectorMagnitudeLinearTransform<
@@ -100,10 +111,10 @@ public:
   /** Standard class typedefs. */
   typedef VectorRescaleIntensityImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::VectorMagnitudeLinearTransform<
-      typename TInputImage::PixelType,
-      typename TOutputImage::PixelType > >    Superclass;
+      TInputImage, TOutputImage,
+      Functor::VectorMagnitudeLinearTransform<
+        typename TInputImage::PixelType,
+        typename TOutputImage::PixelType > >    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -154,7 +165,9 @@ public:
 
 protected:
   VectorRescaleIntensityImageFilter();
-  virtual ~VectorRescaleIntensityImageFilter() {}
+  virtual
+  ~VectorRescaleIntensityImageFilter() {
+  }
 
 private:
   VectorRescaleIntensityImageFilter(const Self &); //purposely not implemented

@@ -48,11 +48,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = (TInternalType)vcl_tan( (double)input ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = (TInternalType)vcl_tan( (double)input );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return (TExternalType)vcl_tan( (double)input ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return (TExternalType)vcl_tan( (double)input );
+  }
+
 };
 } // end namespace Accessor
 
@@ -67,7 +74,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class TanImageAdaptor:public
+class TanImageAdaptor : public
   ImageAdaptor< TImage,
                 Accessor::TanPixelAccessor<
                   typename TImage::PixelType,
@@ -90,12 +97,17 @@ public:
   itkTypeMacro(TanImageAdaptor, ImageAdaptor);
 
 protected:
-  TanImageAdaptor() {}
-  virtual ~TanImageAdaptor() {}
+  TanImageAdaptor() {
+  }
+
+  virtual
+  ~TanImageAdaptor() {
+  }
 
 private:
   TanImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

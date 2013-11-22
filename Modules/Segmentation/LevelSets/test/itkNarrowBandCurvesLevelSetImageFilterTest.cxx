@@ -30,8 +30,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkImageFileWriter.h"
 
-
-int itkNarrowBandCurvesLevelSetImageFilterTest(int argc, char* argv[] )
+int
+itkNarrowBandCurvesLevelSetImageFilterTest(int argc, char* argv[] )
 {
 
   if(argc < 2)
@@ -40,9 +40,9 @@ int itkNarrowBandCurvesLevelSetImageFilterTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  const   unsigned int    ImageDimension = 2;
-  typedef unsigned char   PixelType;
-  typedef float           InternalPixelType;
+  const   unsigned int ImageDimension = 2;
+  typedef unsigned char PixelType;
+  typedef float         InternalPixelType;
 
   typedef itk::Image<PixelType,ImageDimension>         ImageType;
   typedef itk::Image<InternalPixelType,ImageDimension> InternalImageType;
@@ -94,7 +94,7 @@ int itkNarrowBandCurvesLevelSetImageFilterTest(int argc, char* argv[] )
   caster->SetInput( inputImage );
 
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter< InternalImageType,
-    InternalImageType > GradientImageType;
+                                                              InternalImageType > GradientImageType;
 
   GradientImageType::Pointer gradMagnitude = GradientImageType::New();
   gradMagnitude->SetInput( caster->GetOutput() );
@@ -141,7 +141,7 @@ int itkNarrowBandCurvesLevelSetImageFilterTest(int argc, char* argv[] )
    * Set up and run the shape detection filter
    */
   typedef itk::NarrowBandCurvesLevelSetImageFilter<
-    InternalImageType, InternalImageType > CurvesFilterType;
+      InternalImageType, InternalImageType > CurvesFilterType;
 
   CurvesFilterType::Pointer curvesFilter = CurvesFilterType::New();
 
@@ -197,7 +197,7 @@ int itkNarrowBandCurvesLevelSetImageFilterTest(int argc, char* argv[] )
   WriterType::Pointer writer = WriterType::New();
 
   typedef itk::RescaleIntensityImageFilter< InternalImageType,
-    ImageType > RescaleFilterType;
+                                            ImageType > RescaleFilterType;
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum( 0 );

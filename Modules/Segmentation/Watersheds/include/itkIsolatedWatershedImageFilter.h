@@ -38,7 +38,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class IsolatedWatershedImageFilter:
+class IsolatedWatershedImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -68,10 +68,10 @@ public:
   typedef typename OutputImageType::RegionType OutputImageRegionType;
   typedef typename OutputImageType::PixelType  OutputImagePixelType;
 
-  typedef typename NumericTraits<InputImagePixelType>::RealType      RealPixelType;
-  typedef Image<RealPixelType, TInputImage::ImageDimension>          RealImageType;
+  typedef typename NumericTraits<InputImagePixelType>::RealType RealPixelType;
+  typedef Image<RealPixelType, TInputImage::ImageDimension>     RealImageType;
 
-  typedef WatershedImageFilter< RealImageType >                          WatershedType;
+  typedef WatershedImageFilter< RealImageType >                         WatershedType;
   typedef GradientMagnitudeImageFilter< InputImageType, RealImageType > GradientMagnitudeType;
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -114,7 +114,9 @@ public:
 
 protected:
   IsolatedWatershedImageFilter();
-  ~IsolatedWatershedImageFilter(){}
+  ~IsolatedWatershedImageFilter(){
+  }
+
   IndexType m_Seed1;
   IndexType m_Seed2;
 
@@ -141,6 +143,7 @@ protected:
 private:
   IsolatedWatershedImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -33,7 +33,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class SingleValuedNonLinearVnlOptimizer:
+class SingleValuedNonLinearVnlOptimizer :
   public SingleValuedNonLinearOptimizer
 {
 public:
@@ -69,14 +69,29 @@ public:
   itkGetConstReferenceMacro(Maximize, bool);
   itkSetMacro(Maximize, bool);
   itkBooleanMacro(Maximize);
-  bool GetMinimize() const
-  { return !m_Maximize; }
-  void SetMinimize(bool v)
-  { this->SetMaximize(!v); }
-  void MinimizeOn()
-  { this->MaximizeOff(); }
-  void MinimizeOff()
-  { this->MaximizeOn(); }
+  bool
+  GetMinimize() const
+  {
+    return !m_Maximize;
+  }
+
+  void
+  SetMinimize(bool v)
+  {
+    this->SetMaximize(!v);
+  }
+
+  void
+  MinimizeOn()
+  {
+    this->MaximizeOff();
+  }
+
+  void
+  MinimizeOff()
+  {
+    this->MaximizeOn();
+  }
 
   /** Return Cached Values. These method have the advantage of not triggering a
    * recomputation of the metric value, but it has the disadvantage of returning
@@ -89,7 +104,8 @@ public:
 
 protected:
   SingleValuedNonLinearVnlOptimizer();
-  virtual ~SingleValuedNonLinearVnlOptimizer();
+  virtual
+  ~SingleValuedNonLinearVnlOptimizer();
 
   typedef SingleValuedVnlCostFunctionAdaptor CostFunctionAdaptorType;
 

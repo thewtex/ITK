@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKVTK
  */
 template< typename TInputImage >
-class VTKImageExport:public VTKImageExportBase
+class VTKImageExport : public VTKImageExportBase
 {
 public:
   /** Standard class typedefs. */
@@ -74,16 +74,19 @@ public:
 #ifdef ITK_USE_CONCEPT_CHECKING
   itkConceptMacro( ImageDimensionCheck,
                    ( Concept::SameDimensionOrMinusOneOrTwo<
-                     3,itkGetStaticConstMacro(InputImageDimension) > ) );
+                       3,itkGetStaticConstMacro(InputImageDimension) > ) );
 #endif
   /** Set the input image of this image exporter. */
   using Superclass::SetInput;
   void SetInput(const InputImageType *);
+
   InputImageType * GetInput(void);
 
 protected:
   VTKImageExport();
-  ~VTKImageExport() {}
+  ~VTKImageExport() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef typename InputImageType::Pointer    InputImagePointer;

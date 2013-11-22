@@ -65,68 +65,80 @@ public:
   typedef typename DisplacementFieldType::Pointer DisplacementFieldTypePointer;
 
   /** Set the moving image.  */
-  void SetMovingImage(const MovingImageType *ptr)
+  void
+  SetMovingImage(const MovingImageType *ptr)
   {
     m_MovingImage = ptr;
   }
 
   /** Get the moving image. */
-  const MovingImageType * GetMovingImage(void) const
+  const MovingImageType *
+  GetMovingImage(void) const
   {
     return m_MovingImage;
   }
 
   /** Set the fixed image. */
-  void SetFixedImage(const FixedImageType *ptr)
+  void
+  SetFixedImage(const FixedImageType *ptr)
   {
     m_FixedImage = ptr;
   }
 
   /** Get the fixed image. */
-  const FixedImageType * GetFixedImage(void) const
+  const FixedImageType *
+  GetFixedImage(void) const
   {
     return m_FixedImage;
   }
 
   /** Set the deformation field image. */
-  void SetDisplacementField(DisplacementFieldTypePointer ptr)
+  void
+  SetDisplacementField(DisplacementFieldTypePointer ptr)
   {
     m_DisplacementField = ptr;
   }
 
   /** Get the deformation field. This function should have been
    *  declared const. It is not for backward compatibility reasons. */
-  DisplacementFieldType * GetDisplacementField(void)
+  DisplacementFieldType *
+  GetDisplacementField(void)
   {
     return m_DisplacementField;
   }
 
-  void SetEnergy(double e)
+  void
+  SetEnergy(double e)
   {
     m_Energy = e;
   }
 
-  double GetEnergy() const
+  double
+  GetEnergy() const
   {
     return m_Energy;
   }
 
-  void SetGradientStep(double e)
+  void
+  SetGradientStep(double e)
   {
     m_GradientStep = e;
   }
 
-  double GetGradientStep() const
+  double
+  GetGradientStep() const
   {
     return m_GradientStep;
   }
 
-  void SetNormalizeGradient(bool e)
+  void
+  SetNormalizeGradient(bool e)
   {
     m_NormalizeGradient = e;
   }
 
-  bool GetNormalizeGradient() const
+  bool
+  GetNormalizeGradient() const
   {
     return m_NormalizeGradient;
   }
@@ -146,9 +158,11 @@ protected:
   {
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "MovingImage: ";
     os << m_MovingImage.GetPointer() << std::endl;
     os << indent << "FixedImage: ";

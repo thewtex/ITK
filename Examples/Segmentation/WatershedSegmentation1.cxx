@@ -63,13 +63,16 @@
 #include "itkVectorCastImageFilter.h"
 #include "itkScalarToRGBPixelFunctor.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if (argc < 8 )
     {
     std::cerr << "Missing Parameters " << std::endl;
     std::cerr << "Usage: " << argv[0];
-    std::cerr << " inputImage outputImage conductanceTerm diffusionIterations lowerThreshold outputScaleLevel gradientMode " << std::endl;
+    std::cerr <<
+      " inputImage outputImage conductanceTerm diffusionIterations lowerThreshold outputScaleLevel gradientMode " <<
+      std::endl;
     return 1;
     }
 
@@ -101,16 +104,16 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< RGBImageType >   FileReaderType;
+  typedef itk::ImageFileReader< RGBImageType > FileReaderType;
   typedef itk::VectorCastImageFilter< RGBImageType, VectorImageType >
-                                                 CastFilterType;
+    CastFilterType;
   typedef itk::VectorGradientAnisotropicDiffusionImageFilter<
-                        VectorImageType, VectorImageType >
-                                                 DiffusionFilterType;
+      VectorImageType, VectorImageType >
+    DiffusionFilterType;
   typedef itk::VectorGradientMagnitudeImageFilter< VectorImageType >
-                                                 GradientMagnitudeFilterType;
+    GradientMagnitudeFilterType;
   typedef itk::WatershedImageFilter< ScalarImageType >
-                                                 WatershedFilterType;
+    WatershedFilterType;
   // Software Guide : EndCodeSnippet
 
   typedef itk::ImageFileWriter<RGBImageType> FileWriterType;
@@ -152,9 +155,8 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   GradientMagnitudeFilterType::Pointer
     gradient = GradientMagnitudeFilterType::New();
-  gradient->SetUsePrincipleComponents(atoi(argv[7]));
+  gradient->SetUsePrincipleComponents(atoi(argv[7]) );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -191,10 +193,9 @@ int main( int argc, char *argv[] )
   typedef itk::Functor::ScalarToRGBPixelFunctor<unsigned long>
     ColorMapFunctorType;
   typedef itk::UnaryFunctorImageFilter<LabeledImageType,
-    RGBImageType, ColorMapFunctorType> ColorMapFilterType;
+                                       RGBImageType, ColorMapFunctorType> ColorMapFilterType;
   ColorMapFilterType::Pointer colormapper = ColorMapFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   FileWriterType::Pointer writer = FileWriterType::New();
   writer->SetFileName(argv[2]);
@@ -207,12 +208,12 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   //  Software Guide : BeginCodeSnippet
-  caster->SetInput(reader->GetOutput());
-  diffusion->SetInput(caster->GetOutput());
-  gradient->SetInput(diffusion->GetOutput());
-  watershed->SetInput(gradient->GetOutput());
-  colormapper->SetInput(watershed->GetOutput());
-  writer->SetInput(colormapper->GetOutput());
+  caster->SetInput(reader->GetOutput() );
+  diffusion->SetInput(caster->GetOutput() );
+  gradient->SetInput(diffusion->GetOutput() );
+  watershed->SetInput(gradient->GetOutput() );
+  colormapper->SetInput(watershed->GetOutput() );
+  writer->SetInput(colormapper->GetOutput() );
   // Software Guide : EndCodeSnippet
 
   try

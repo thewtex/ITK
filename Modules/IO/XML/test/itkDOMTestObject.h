@@ -29,10 +29,10 @@ class DOMTestObject : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef DOMTestObject               Self;
-  typedef Object                      Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef DOMTestObject              Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -49,9 +49,10 @@ public:
   itkGetConstMacro( FooFileName, std::string );
 
 private:
-  DOMTestObject() {}
+  DOMTestObject() {
+  }
 
-  DOMTestObject(const Self &); //purposely not implemented
+  DOMTestObject(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
   std::string m_FooValue;

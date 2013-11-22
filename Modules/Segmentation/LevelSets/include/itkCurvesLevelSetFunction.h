@@ -59,7 +59,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TFeatureImageType = TImageType >
-class CurvesLevelSetFunction:
+class CurvesLevelSetFunction :
   public SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 {
 public:
@@ -99,16 +99,26 @@ public:
   virtual void CalculateAdvectionImage();
 
   /** The curvature speed is same as the propagation speed. */
-  virtual ScalarValueType CurvatureSpeed(const NeighborhoodType & neighborhood,
-                                         const FloatOffsetType & offset, GlobalDataStruct *gd) const
-  { return this->PropagationSpeed(neighborhood, offset, gd); }
+  virtual ScalarValueType
+  CurvatureSpeed(const NeighborhoodType & neighborhood,
+                 const FloatOffsetType & offset, GlobalDataStruct *gd) const
+  {
+    return this->PropagationSpeed(neighborhood, offset, gd);
+  }
 
   /** Set/Get the sigma for the Gaussian kernel used to compute the gradient
    * of the feature image needed for the advection term of the equation. */
-  void SetDerivativeSigma(const double v)
-  { m_DerivativeSigma = v; }
-  double GetDerivativeSigma()
-  { return m_DerivativeSigma; }
+  void
+  SetDerivativeSigma(const double v)
+  {
+    m_DerivativeSigma = v;
+  }
+
+  double
+  GetDerivativeSigma()
+  {
+    return m_DerivativeSigma;
+  }
 
   virtual void Initialize(const RadiusType & r);
 
@@ -124,14 +134,18 @@ protected:
     m_DerivativeSigma = 1.0;
   }
 
-  virtual ~CurvesLevelSetFunction() {}
+  virtual
+  ~CurvesLevelSetFunction() {
+  }
 
   CurvesLevelSetFunction(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "DerivativeSigma: " << m_DerivativeSigma << std::endl;
   }
 

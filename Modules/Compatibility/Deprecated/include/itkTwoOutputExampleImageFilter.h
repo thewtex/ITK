@@ -44,7 +44,7 @@ namespace itk
  * \ingroup MultiThreaded
  */
 template< typename TImage >
-class TwoOutputExampleImageFilter:
+class TwoOutputExampleImageFilter :
   public ImageToImageFilter< TImage, TImage >
 {
 public:
@@ -88,12 +88,18 @@ public:
   typedef typename OutputImageType::PixelType  OutputImagePixelType;
 
   /** Get the image output of this process object.  */
-  OutputImagePointer GetInverseOutput()
-  { return static_cast< TImage * >( this->ProcessObject::GetOutput(1) ); }
+  OutputImagePointer
+  GetInverseOutput()
+  {
+    return static_cast< TImage * >( this->ProcessObject::GetOutput(1) );
+  }
 
   /** Set the image output of this process object.  */
-  void SetInverseOutput(OutputImageType *output)
-  { this->SetNthOutput(1, output); }
+  void
+  SetInverseOutput(OutputImageType *output)
+  {
+    this->SetNthOutput(1, output);
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -106,7 +112,9 @@ public:
 
 protected:
   TwoOutputExampleImageFilter();
-  ~TwoOutputExampleImageFilter() {}
+  ~TwoOutputExampleImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** TwoOutputExampleImageFilter can be implemented as a multithreaded filter.

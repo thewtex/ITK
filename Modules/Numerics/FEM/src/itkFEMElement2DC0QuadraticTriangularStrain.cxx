@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer Element2DC0QuadraticTriangularStrain::CreateAnother(void) const
+::itk::LightObject::Pointer
+Element2DC0QuadraticTriangularStrain::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -75,7 +76,8 @@ Element2DC0QuadraticTriangularStrain
     }
 }
 
-void Element2DC0QuadraticTriangularStrain::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element2DC0QuadraticTriangularStrain::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }

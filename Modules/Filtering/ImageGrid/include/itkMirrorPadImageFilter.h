@@ -49,7 +49,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class MirrorPadImageFilter:
+class MirrorPadImageFilter :
   public PadImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -94,8 +94,11 @@ public:
 #endif
 
 protected:
-  MirrorPadImageFilter() {}
-  ~MirrorPadImageFilter() {}
+  MirrorPadImageFilter() {
+  }
+
+  ~MirrorPadImageFilter() {
+  }
 
   /** Convert from the output index to the input index taking
    * into consideration mirrored and normal regions. */
@@ -202,6 +205,7 @@ protected:
 private:
   MirrorPadImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

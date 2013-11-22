@@ -39,10 +39,10 @@ class VelocityFieldTransform :
 {
 public:
   /** Standard class typedefs. */
-  typedef VelocityFieldTransform                            Self;
-  typedef DisplacementFieldTransform<TScalar, NDimensions>  Superclass;
-  typedef SmartPointer<Self>                                Pointer;
-  typedef SmartPointer<const Self>                          ConstPointer;
+  typedef VelocityFieldTransform                           Self;
+  typedef DisplacementFieldTransform<TScalar, NDimensions> Superclass;
+  typedef SmartPointer<Self>                               Pointer;
+  typedef SmartPointer<const Self>                         ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( VelocityFieldTransform, DisplacementFieldTransform );
@@ -51,14 +51,14 @@ public:
   itkNewMacro( Self );
 
   /** InverseTransform type. */
-  typedef typename Superclass:: InverseTransformBasePointer InverseTransformBasePointer;
+  typedef typename Superclass::InverseTransformBasePointer InverseTransformBasePointer;
 
   /** Scalar type. */
   typedef typename Superclass::ScalarType ScalarType;
 
   /** Type of the input parameters. */
-  typedef typename Superclass::ParametersType          ParametersType;
-  typedef typename Superclass::ParametersValueType     ParametersValueType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   /** Transform category type. */
   typedef typename Superclass::TransformCategoryType TransformCategoryType;
@@ -87,21 +87,21 @@ public:
   itkStaticConstMacro( Dimension, unsigned int, NDimensions );
 
   /** Define the displacement field type and corresponding interpolator type. */
-  typedef typename Superclass::DisplacementFieldType   DisplacementFieldType;
-  typedef typename DisplacementFieldType::Pointer      DisplacementFieldPointer;
+  typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
+  typedef typename DisplacementFieldType::Pointer    DisplacementFieldPointer;
 
   /** Define the displacement field type and corresponding interpolator type. */
-  typedef Image<OutputVectorType, VelocityFieldDimension>       VelocityFieldType;
-  typedef typename VelocityFieldType::Pointer                   VelocityFieldPointer;
+  typedef Image<OutputVectorType, VelocityFieldDimension> VelocityFieldType;
+  typedef typename VelocityFieldType::Pointer             VelocityFieldPointer;
 
   /** Standard types for the velocity Field */
-  typedef typename VelocityFieldType::IndexType      IndexType;
-  typedef typename VelocityFieldType::RegionType     RegionType;
-  typedef typename VelocityFieldType::SizeType       SizeType;
-  typedef typename VelocityFieldType::SpacingType    SpacingType;
-  typedef typename VelocityFieldType::DirectionType  DirectionType;
-  typedef typename VelocityFieldType::PointType      PointType;
-  typedef typename VelocityFieldType::PixelType      PixelType;
+  typedef typename VelocityFieldType::IndexType     IndexType;
+  typedef typename VelocityFieldType::RegionType    RegionType;
+  typedef typename VelocityFieldType::SizeType      SizeType;
+  typedef typename VelocityFieldType::SpacingType   SpacingType;
+  typedef typename VelocityFieldType::DirectionType DirectionType;
+  typedef typename VelocityFieldType::PointType     PointType;
+  typedef typename VelocityFieldType::PixelType     PixelType;
 
   typedef VectorInterpolateImageFunction<VelocityFieldType, ScalarType> VelocityFieldInterpolatorType;
   typedef typename VelocityFieldInterpolatorType::Pointer               VelocityFieldInterpolatorPointer;
@@ -115,6 +115,7 @@ public:
    * interpolator and assign displacement field to transform parameters
    * container. */
   virtual void SetVelocityField( VelocityFieldType * );
+
   itkGetModifiableObjectMacro(VelocityField, VelocityFieldType );
 
   virtual void SetFixedParameters( const ParametersType & );
@@ -122,6 +123,7 @@ public:
   /** Get/Set the interpolator.
    * Create out own set accessor that assigns the velocity field */
   virtual void SetVelocityFieldInterpolator( VelocityFieldInterpolatorType * );
+
   itkGetModifiableObjectMacro(VelocityFieldInterpolator, VelocityFieldInterpolatorType );
 
   /** Get the modification time of velocity field */
@@ -142,8 +144,11 @@ public:
   /** Return an inverse of this transform. */
   virtual InverseTransformBasePointer GetInverseTransform() const;
 
-  /** Trigger the computation of the displacement field by integrating the velocity field. */
-  virtual void IntegrateVelocityField() {};
+  /** Trigger the computation of the displacement field by integrating the
+    velocity field. */
+  virtual void
+  IntegrateVelocityField() {
+  }
 
   /**
    * Set the lower time bound defining the integration domain of the transform.
@@ -182,7 +187,8 @@ public:
 protected:
 
   VelocityFieldTransform();
-  virtual ~VelocityFieldTransform();
+  virtual
+  ~VelocityFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Clone the current transform */
@@ -190,12 +196,12 @@ protected:
 
   typename DisplacementFieldType::Pointer CopyDisplacementField( const DisplacementFieldType * ) const;
 
-  ScalarType                                m_LowerTimeBound;
-  ScalarType                                m_UpperTimeBound;
+  ScalarType m_LowerTimeBound;
+  ScalarType m_UpperTimeBound;
 
-  unsigned int                              m_NumberOfIntegrationSteps;
+  unsigned int m_NumberOfIntegrationSteps;
 
-  VelocityFieldPointer                      m_VelocityField;
+  VelocityFieldPointer m_VelocityField;
 
   /** The interpolator. */
   typename VelocityFieldInterpolatorType::Pointer          m_VelocityFieldInterpolator;
@@ -206,7 +212,7 @@ protected:
 
 private:
   VelocityFieldTransform( const Self & ); // purposely not implemented
-  void operator=( const Self & );             // purposely not implemented
+  void operator=( const Self & );         // purposely not implemented
 
   /**
    * Convenience method which reads the information from the current

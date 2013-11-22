@@ -18,7 +18,6 @@
 #ifndef __itkPolygonGroupSpatialObject_h
 #define __itkPolygonGroupSpatialObject_h
 
-
 #include "itkGroupSpatialObject.h"
 #include "itkPolygonSpatialObject.h"
 
@@ -47,7 +46,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class PolygonGroupSpatialObject:
+class PolygonGroupSpatialObject :
   public GroupSpatialObject< TDimension >
 {
 public:
@@ -103,8 +102,12 @@ protected:
   PolygonGroupSpatialObject(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
 
-  PolygonGroupSpatialObject(void) {}
-  ~PolygonGroupSpatialObject(void) {}
+  PolygonGroupSpatialObject(void) {
+  }
+
+  ~PolygonGroupSpatialObject(void) {
+  }
+
 };
 }
 #ifndef ITK_MANUAL_INSTANTIATION

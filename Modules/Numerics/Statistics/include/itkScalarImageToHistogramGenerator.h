@@ -33,7 +33,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TImageType >
-class ScalarImageToHistogramGenerator:public Object
+class ScalarImageToHistogramGenerator : public Object
 {
 public:
   /** Standard typedefs */
@@ -90,7 +90,10 @@ public:
 
 protected:
   ScalarImageToHistogramGenerator();
-  virtual ~ScalarImageToHistogramGenerator() {}
+  virtual
+  ~ScalarImageToHistogramGenerator() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -101,6 +104,7 @@ private:
 
   ScalarImageToHistogramGenerator(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };
 } // end of namespace Statistics
 } // end of namespace itk

@@ -57,7 +57,8 @@ MetaSceneConverter< NDimensions, PixelType, TMeshTraits >
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 MetaSceneConverter< NDimensions, PixelType, TMeshTraits >
 ::~MetaSceneConverter()
-{}
+{
+}
 
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 void
@@ -138,8 +139,8 @@ MetaSceneConverter< NDimensions, PixelType, TMeshTraits >
 
   while ( it != itEnd )
     {
-    const std::string objectTypeName(( *it )->ObjectTypeName());
-    const std::string objectSubTypeName(( *it )->ObjectSubTypeName());
+    const std::string objectTypeName( ( *it )->ObjectTypeName() );
+    const std::string objectSubTypeName( ( *it )->ObjectSubTypeName() );
     /** New object goes here */
     if ( objectTypeName == "Tube" )
       {
@@ -213,10 +214,10 @@ MetaSceneConverter< NDimensions, PixelType, TMeshTraits >
       {
       typename ConverterMapType::iterator converterIt = this->m_ConverterMap.find(objectTypeName);
 
-      if(converterIt == this->m_ConverterMap.end())
+      if(converterIt == this->m_ConverterMap.end() )
         {
         itkGenericExceptionMacro(<< "Unable to find MetaObject -> SpatialObject converter for "
-                          << objectTypeName);
+                                 << objectTypeName);
         }
       currentSO = converterIt->second->MetaObjectToSpatialObject( *it );
       }
@@ -342,10 +343,10 @@ MetaSceneConverter< NDimensions, PixelType, TMeshTraits >
     else
       {
       typename ConverterMapType::iterator converterIt = this->m_ConverterMap.find(spatialObjectTypeName);
-      if(converterIt == this->m_ConverterMap.end())
+      if(converterIt == this->m_ConverterMap.end() )
         {
         itkGenericExceptionMacro(<< "Unable to find MetaObject -> SpatialObject converter for "
-                          << spatialObjectTypeName);
+                                 << spatialObjectTypeName);
         }
       currentMeta = converterIt->second->SpatialObjectToMetaObject( *it );
       }
@@ -384,11 +385,12 @@ template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 void
 MetaSceneConverter< NDimensions, PixelType, TMeshTraits >
 ::RegisterMetaConverter(const char *metaTypeName,
-                      const char *spatialObjectTypeName,
-                      MetaConverterBaseType *converter)
+                        const char *spatialObjectTypeName,
+                        MetaConverterBaseType *converter)
 {
   std::string metaType(metaTypeName);
   std::string spatialObjectType(spatialObjectTypeName);
+
   this->m_ConverterMap[metaType] = converter;
   this->m_ConverterMap[spatialObjectType] = converter;
 }

@@ -50,26 +50,31 @@ public:
   typedef     RGBPixel< T > InternalType;
 
   /** Write access to the Red component */
-  inline void Set(InternalType & output, const ExternalType & input) const
+  inline void
+  Set(InternalType & output, const ExternalType & input) const
   {
     output.SetRed(input);
   }
 
   /** Read access to the Red component */
-  inline const ExternalType & Get(const InternalType & input) const
+  inline const ExternalType &
+  Get(const InternalType & input) const
   {
     return input.GetRed();
   }
 
-  bool operator!=(const Self &) const
+  bool
+  operator!=(const Self &) const
   {
     return false;
   }
 
-  bool operator==(const Self & other) const
+  bool
+  operator==(const Self & other) const
   {
     return !( *this != other );
   }
+
 };
 }  // end namespace itk
 

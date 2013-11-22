@@ -18,50 +18,50 @@
 
 #include "itkLabelVotingImageFilter.h"
 
-
-int itkLabelVotingImageFilterTest(int, char* [] )
+int
+itkLabelVotingImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<unsigned int, myDimension>  myImageType;
+  typedef itk::Image<unsigned int, myDimension> myImageType;
 
   // Input data arrays for test images
   const unsigned int dataImageA[8] =
-    { 0, 1, 3, 3, 4, 6, 6, 0 };
+            { 0, 1, 3, 3, 4, 6, 6, 0 };
   const unsigned int dataImageB[8] =
-    { 1, 1, 2, 4, 4, 5, 7, 1 };
+            { 1, 1, 2, 4, 4, 5, 7, 1 };
   const unsigned int dataImageC[8] =
-    { 0, 2, 2, 3, 5, 5, 6, 8 };
+            { 0, 2, 2, 3, 5, 5, 6, 8 };
 
   // Correct combinations of input images
   const unsigned int combinationABC[8] =
-    { 0, 1, 2, 3, 4, 5, 6, 9 };
+            { 0, 1, 2, 3, 4, 5, 6, 9 };
   const unsigned int combinationAB[8] =
-    { 8, 1, 8, 8, 4, 8, 8, 8 };
+            { 8, 1, 8, 8, 4, 8, 8, 8 };
   const unsigned int combinationABundecided255[8] =
-    { 255, 1, 255, 255, 4, 255, 255, 255 };
+            { 255, 1, 255, 255, 4, 255, 255, 255 };
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>                  myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>                   mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>            myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Declare Iterator type appropriate for image
-  typedef itk::ImageRegionIterator<myImageType>    myIteratorType;
+  typedef itk::ImageRegionIterator<myImageType> myIteratorType;
 
   // Declare the type for the ADD filter
   typedef itk::LabelVotingImageFilter<myImageType> myFilterType;
   typedef myFilterType::Pointer                    myFilterTypePointer;
 
   // Declare the pointers to images
-  typedef myImageType::Pointer   myImageTypePointer;
+  typedef myImageType::Pointer myImageTypePointer;
 
   // Create two images
   myImageTypePointer inputImageA  = myImageType::New();

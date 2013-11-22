@@ -40,27 +40,35 @@ template< typename TInput, typename TOutput >
 class EdgePotential
 {
 public:
-  EdgePotential() {}
-  ~EdgePotential() {}
-  bool operator!=(const EdgePotential &) const
+  EdgePotential() {
+  }
+
+  ~EdgePotential() {
+  }
+
+  bool
+  operator!=(const EdgePotential &) const
   {
     return false;
   }
 
-  bool operator==(const EdgePotential & other) const
+  bool
+  operator==(const EdgePotential & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( vcl_exp( -1.0 * A.GetNorm() ) );
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class EdgePotentialImageFilter:
+class EdgePotentialImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::EdgePotential<
@@ -94,12 +102,17 @@ public:
 #endif
 
 protected:
-  EdgePotentialImageFilter() {}
-  virtual ~EdgePotentialImageFilter() {}
+  EdgePotentialImageFilter() {
+  }
+
+  virtual
+  ~EdgePotentialImageFilter() {
+  }
 
 private:
   EdgePotentialImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

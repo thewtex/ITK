@@ -19,16 +19,17 @@
 #include "itkQuadEdgeMeshEulerOperatorSplitEdgeFunction.h"
 #include "itkQuadEdgeMeshEulerOperatorsTestHelper.h"
 
-int itkQuadEdgeMeshEulerOperatorSplitEdgeTest( int, char * [] )
+int
+itkQuadEdgeMeshEulerOperatorSplitEdgeTest( int, char * [] )
 {
 
-  typedef itk::QuadEdgeMesh< double, 3 >                      MeshType;
-  typedef MeshType::Pointer                                   MeshPointer;
-  typedef MeshType::QEType                                    QEType;
-  typedef MeshType::PointIdentifier                           PointIdentifier;
-  typedef MeshType::PointType                                 PointType;
-  typedef MeshType::CellType                                  CellType;
-  typedef itk::QuadEdgeMeshLineCell< CellType >               LineCellType;
+  typedef itk::QuadEdgeMesh< double, 3 >        MeshType;
+  typedef MeshType::Pointer                     MeshPointer;
+  typedef MeshType::QEType                      QEType;
+  typedef MeshType::PointIdentifier             PointIdentifier;
+  typedef MeshType::PointType                   PointType;
+  typedef MeshType::CellType                    CellType;
+  typedef itk::QuadEdgeMeshLineCell< CellType > LineCellType;
 
   typedef itk::QuadEdgeMeshEulerOperatorSplitEdgeFunction< MeshType, QEType>
     SplitEdge;
@@ -42,7 +43,7 @@ int itkQuadEdgeMeshEulerOperatorSplitEdgeTest( int, char * [] )
   MeshPointer mesh = MeshType::New();
   CreateSquareTriangularMesh<MeshType>( mesh );
 
-  SplitEdge::Pointer splitEdge = SplitEdge::New( );
+  SplitEdge::Pointer splitEdge = SplitEdge::New();
   std::cout << "     " << "Test No Mesh Input";
   if( splitEdge->Evaluate( (QEType*)1 ) )
     {
@@ -69,8 +70,8 @@ int itkQuadEdgeMeshEulerOperatorSplitEdgeTest( int, char * [] )
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 26, 57, 32, 1, 0 ) )
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 26, 57, 32, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;

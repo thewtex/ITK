@@ -25,12 +25,14 @@ namespace itk
 /** Constructor */
 template< unsigned int TDimension >
 SpatialObjectTreeContainer< TDimension >::SpatialObjectTreeContainer()
-{}
+{
+}
 
 /** Destructor */
 template< unsigned int TDimension >
 SpatialObjectTreeContainer< TDimension >::~SpatialObjectTreeContainer()
-{}
+{
+}
 
 /** Set the root */
 template< unsigned int TDimension >
@@ -54,6 +56,7 @@ SpatialObjectTreeContainer< TDimension >::SetRoot(const SpatialObjectPointer ele
     }
   return true;
 }
+
 } // namespace itk
 
 #endif

@@ -23,9 +23,9 @@
 #include "itkMetaDataObject.h"
 #include "itkIOCommon.h"
 #define RAISE_EXCEPTION(s)                                     \
-              { ExceptionObject exception(__FILE__, __LINE__); \
-              exception.SetDescription(s);                     \
-              throw exception; }
+                          { ExceptionObject exception(__FILE__, __LINE__); \
+                          exception.SetDescription(s);                     \
+                          throw exception; }
 
 namespace itk
 {
@@ -60,6 +60,7 @@ void
 PolygonGroupSpatialObjectXMLFileReader::EndElement(const char *name)
 {
   itk::MetaDataDictionary & thisDic = m_PGroup->GetMetaDataDictionary();
+
   if ( itksys::SystemTools::Strucmp(name, "POLYGONGROUP") == 0 )
     {
     m_OutputObject = &( *m_PGroup );
@@ -165,7 +166,11 @@ template< >
 class NumericTraits< std::string >
 {
 public:
-  static const std::string ZeroValue() { return std::string(""); }
+  static const std::string
+  ZeroValue() {
+    return std::string("");
+  }
+
 };
 
 template< typename T >
@@ -279,6 +284,7 @@ PolygonGroupSpatialObjectXMLFileWriter::WriteFile()
   delete children;
   return 0;
 }
+
 }
 
 #endif

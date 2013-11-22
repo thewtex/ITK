@@ -41,19 +41,19 @@ class VideoFileWriter : public TemporalProcessObject
 public:
 
   /**-TYPEDEFS---------------------------------------------------------------*/
-  typedef VideoFileWriter< TInputVideoStream>         Self;
-  typedef TemporalProcessObject                       Superclass;
-  typedef SmartPointer<Self>                          Pointer;
+  typedef VideoFileWriter< TInputVideoStream> Self;
+  typedef TemporalProcessObject               Superclass;
+  typedef SmartPointer<Self>                  Pointer;
 
-  typedef VideoIOBase                                 IOBaseType;
-  typedef typename VideoIOBase::Pointer               IOBasePointer;
-  typedef typename IOBaseType::SizeValueType          SizeValueType;
-  typedef typename IOBaseType::TemporalRatioType      TemporalRatioType;
+  typedef VideoIOBase                            IOBaseType;
+  typedef typename VideoIOBase::Pointer          IOBasePointer;
+  typedef typename IOBaseType::SizeValueType     SizeValueType;
+  typedef typename IOBaseType::TemporalRatioType TemporalRatioType;
 
-  typedef TInputVideoStream                           VideoStreamType;
-  typedef typename VideoStreamType::Pointer           VideoStreamPointer;
-  typedef typename VideoStreamType::FrameType         FrameType;
-  typedef typename FrameType::PixelType               PixelType;
+  typedef TInputVideoStream                   VideoStreamType;
+  typedef typename VideoStreamType::Pointer   VideoStreamPointer;
+  typedef typename VideoStreamType::FrameType FrameType;
+  typedef typename FrameType::PixelType       PixelType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -85,6 +85,7 @@ public:
   /** Set/Get the input video pointer */
   using Superclass::SetInput;
   void SetInput( const VideoStreamType* input );
+
   const VideoStreamType* GetInput();
 
   /** Manually set the VideoIO to use */
@@ -111,7 +112,8 @@ protected:
   /**-PROTECTED METHODS------------------------------------------------------*/
 
   VideoFileWriter();
-  virtual ~VideoFileWriter();
+  virtual
+  ~VideoFileWriter();
   void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Initialize output parameters */
@@ -134,7 +136,7 @@ protected:
   IOBasePointer m_VideoIO;
 
   /** TemporalRegion to write out */
-  TemporalRegion     m_OutputTemporalRegion;
+  TemporalRegion m_OutputTemporalRegion;
 
   /** Parameters for writing */
   TemporalRatioType            m_FramesPerSecond;

@@ -33,15 +33,15 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class CleanQuadEdgeMeshFilter:
+class CleanQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
-  typedef CleanQuadEdgeMeshFilter                             Self;
-  typedef SmartPointer< Self >                                Pointer;
-  typedef SmartPointer< const Self >                          ConstPointer;
+  typedef CleanQuadEdgeMeshFilter    Self;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
   typedef QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
-                                                              Superclass;
+    Superclass;
 
   /** Run-time type information (and related methods).   */
   itkTypeMacro(CleanQuadEdgeMeshFilter, QuadEdgeMeshToQuadEdgeMeshFilter);
@@ -96,8 +96,8 @@ public:
   typedef typename CriterionType::Pointer            CriterionPointer;
 
   typedef SquaredEdgeLengthDecimationQuadEdgeMeshFilter< InputMeshType,
-                                                   InputMeshType,
-                                                   CriterionType >                          DecimationType;
+                                                         InputMeshType,
+                                                         CriterionType >                          DecimationType;
   typedef typename DecimationType::Pointer DecimationPointer;
 
   /** TODO */
@@ -111,7 +111,9 @@ public:
 protected:
   CleanQuadEdgeMeshFilter();
 
-  virtual ~CleanQuadEdgeMeshFilter() {}
+  virtual
+  ~CleanQuadEdgeMeshFilter() {
+  }
 
   virtual void GenerateData();
 
@@ -123,7 +125,7 @@ protected:
 
 private:
   CleanQuadEdgeMeshFilter(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  void operator=(const Self &);          // purposely not implemented
 
   InputCoordRepType m_AbsoluteTolerance;
   InputCoordRepType m_RelativeTolerance;

@@ -40,28 +40,36 @@ class Square
 {
 public:
   typedef typename NumericTraits< TInput >::RealType RealType;
-  Square() {}
-  ~Square() {}
-  bool operator!=(const Square &) const
+  Square() {
+  }
+
+  ~Square() {
+  }
+
+  bool
+  operator!=(const Square &) const
   {
     return false;
   }
 
-  bool operator==(const Square & other) const
+  bool
+  operator==(const Square & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     const RealType ra = static_cast< RealType >( A );
 
     return static_cast< TOutput >( ra * ra );
   }
+
 };
 }
 template< typename TInputImage, typename TOutputImage >
-class SquareImageFilter:
+class SquareImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Square< typename TInputImage::PixelType,
@@ -71,9 +79,9 @@ public:
   /** Standard class typedefs. */
   typedef SquareImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Square< typename TInputImage::PixelType,
-                     typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Square< typename TInputImage::PixelType,
+                       typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -95,12 +103,17 @@ public:
 #endif
 
 protected:
-  SquareImageFilter() {}
-  virtual ~SquareImageFilter() {}
+  SquareImageFilter() {
+  }
+
+  virtual
+  ~SquareImageFilter() {
+  }
 
 private:
   SquareImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

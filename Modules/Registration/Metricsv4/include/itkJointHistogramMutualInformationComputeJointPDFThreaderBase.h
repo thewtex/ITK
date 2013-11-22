@@ -63,7 +63,8 @@ public:
 
 protected:
   JointHistogramMutualInformationComputeJointPDFThreaderBase();
-  virtual ~JointHistogramMutualInformationComputeJointPDFThreaderBase();
+  virtual
+  ~JointHistogramMutualInformationComputeJointPDFThreaderBase();
 
   /** Create the \c m_JointPDFPerThread's. */
   virtual void BeforeThreadedExecution();
@@ -76,22 +77,33 @@ protected:
   /** Collect the results per and normalize. */
   virtual void AfterThreadedExecution();
 
-  typedef Image< SizeValueType, 2 >                   JointHistogramType;
+  typedef Image< SizeValueType, 2 > JointHistogramType;
   //TODO: This needs updating
   struct JointHistogramMIPerThreadStruct
     {
     typename JointHistogramType::Pointer JointHistogram;
-    SizeValueType                        JointHistogramCount;
+    SizeValueType JointHistogramCount;
     };
   itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, JointHistogramMIPerThreadStruct,
-                                            PaddedJointHistogramMIPerThreadStruct);
+                PaddedJointHistogramMIPerThreadStruct);
   itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedJointHistogramMIPerThreadStruct,
-                                               AlignedJointHistogramMIPerThreadStruct );
+                     AlignedJointHistogramMIPerThreadStruct );
   AlignedJointHistogramMIPerThreadStruct * m_JointHistogramMIPerThreadVariables;
 
 private:
-  JointHistogramMutualInformationComputeJointPDFThreaderBase( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  JointHistogramMutualInformationComputeJointPDFThreaderBase( const Self & ); //
+                                                                              //
+                                                                              // purposely
+                                                                              //
+                                                                              // not
+                                                                              //
+                                                                              // implemented
+  void operator=( const Self & );                                             //
+
+  // purposely
+  // not
+  // implemented
+
 };
 
 } // end namespace itk

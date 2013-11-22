@@ -22,20 +22,26 @@
 #include "itkTestingComparisonImageFilter.h"
 #include "itkMinimumMaximumImageCalculator.h"
 
-
 // For debugging
 #include "itkImageFileWriter.h"
 
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
@@ -45,6 +51,7 @@ double
 SimpleSignedDistance( const TPoint & p )
 {
   TPoint center;
+
   center.Fill( 50 );
   double radius = 19.5;
 
@@ -64,6 +71,7 @@ double
 SimpleVelocity( const TPoint & p )
 {
   TPoint center;
+
   center.Fill( 50 );
 
   double value;
@@ -112,10 +120,12 @@ SimpleVelocity( const TPoint & p )
 
 }
 
-int itkExtensionVelocitiesImageFilterTest(int, char* [] )
+int
+itkExtensionVelocitiesImageFilterTest(int, char* [] )
 {
 
   const unsigned int ImageDimension = 2;
+
   typedef float PixelType;
 
   typedef itk::Image<PixelType,ImageDimension> ImageType;
@@ -123,7 +133,7 @@ int itkExtensionVelocitiesImageFilterTest(int, char* [] )
   typedef itk::Point<double,ImageDimension>    PointType;
 
   // Fill an input image with simple signed distance function
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 128 );
   ImageType::RegionType region( size );
@@ -189,7 +199,7 @@ int itkExtensionVelocitiesImageFilterTest(int, char* [] )
   reinitializer->SetInputVelocityImage( aux1, 0 );
   reinitializer->SetInputVelocityImage( aux2, 1 );
 
-  ShowProgressObject progressWatch(reinitializer);
+  ShowProgressObject                                    progressWatch(reinitializer);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -237,7 +247,7 @@ int itkExtensionVelocitiesImageFilterTest(int, char* [] )
   calculator->SetImage( difference->GetOutput() );
   calculator->Compute();
 
-  double maxAbsDifference = calculator->GetMaximum();
+  double    maxAbsDifference = calculator->GetMaximum();
   IndexType maxAbsDifferenceIndex = calculator->GetIndexOfMaximum();
 
   std::cout << "Max. abs. difference = " << maxAbsDifference;
@@ -270,14 +280,14 @@ int itkExtensionVelocitiesImageFilterTest(int, char* [] )
   typedef NodeContainerType::ConstIterator        ContainerIterator;
 
   NodeContainerPointer nodes  = reinitializer->GetOutputNarrowBand();
-  ContainerIterator nodeIter = nodes->Begin();
-  ContainerIterator nodeEnd   = nodes->End();
+  ContainerIterator    nodeIter = nodes->Begin();
+  ContainerIterator    nodeEnd   = nodes->End();
 
   while( nodeIter != nodeEnd )
     {
     ImageType::IndexType nodeIndex = nodeIter.Value().GetIndex();
-    double absDiff = vnl_math_abs( aux2->GetPixel( nodeIndex ) -
-      reinitializer->GetOutputVelocityImage( 1 )->GetPixel( nodeIndex ) );
+    double               absDiff = vnl_math_abs( aux2->GetPixel( nodeIndex ) -
+                                                 reinitializer->GetOutputVelocityImage( 1 )->GetPixel( nodeIndex ) );
     if ( absDiff > 0.6 )
       {
       std::cout << "Abs diff: " << absDiff;
@@ -305,7 +315,6 @@ int itkExtensionVelocitiesImageFilterTest(int, char* [] )
     std::cout << "Test failed" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test passed" << std::endl;
   return EXIT_SUCCESS;

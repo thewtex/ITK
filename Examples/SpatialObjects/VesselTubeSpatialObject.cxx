@@ -33,7 +33,8 @@
 #include "itkVesselTubeSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 
 // Software Guide : BeginLatex
@@ -48,8 +49,8 @@ int main( int , char *[] )
   unsigned int i;
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::VesselTubeSpatialObject<3>            VesselTubeType;
-  typedef itk::VesselTubeSpatialObjectPoint<3>       VesselTubePointType;
+  typedef itk::VesselTubeSpatialObject<3>      VesselTubeType;
+  typedef itk::VesselTubeSpatialObjectPoint<3> VesselTubePointType;
 
   VesselTubeType::Pointer VesselTube = VesselTubeType::New();
 // Software Guide : EndCodeSnippet
@@ -61,13 +62,17 @@ int main( int , char *[] )
 // \item The position of each point in the local coordinate system using the
 // \code{SetPosition()} method.
 // \item The radius of the tube at this position using \code{SetRadius()}.
-// \item The medialness value describing how the point lies in the middle of the vessel using \code{SetMedialness()}.
-// \item The ridgeness value describing how the point lies on the ridge using \code{SetRidgeness()}.
-// \item The branchness value describing if the point is a branch point using \code{SetBranchness()}.
+// \item The medialness value describing how the point lies in the middle of the
+// vessel using \code{SetMedialness()}.
+// \item The ridgeness value describing how the point lies on the ridge using
+// \code{SetRidgeness()}.
+// \item The branchness value describing if the point is a branch point using
+// \code{SetBranchness()}.
 // \item The three alpha values corresponding to the eigenvalues of the Hessian
 //  using \code{SetAlpha1()},\code{SetAlpha2()} and \code{SetAlpha3()}.
 // \item The mark value using \code{SetMark()}.
-// \item The color of the point is set to red in this example with an opacity of 1.
+// \item The color of the point is set to red in this example with an opacity of
+// 1.
 // \end{enumerate}
 //
 // Software Guide : EndLatex
@@ -128,9 +133,9 @@ int main( int , char *[] )
 
 // Software Guide : BeginCodeSnippet
   VesselTubeType::PointListType::const_iterator
-            it = VesselTube->GetPoints().begin();
+    it = VesselTube->GetPoints().begin();
   i=0;
-  while(it != VesselTube->GetPoints().end())
+  while(it != VesselTube->GetPoints().end() )
     {
     std::cout << std::endl;
     std::cout << "Point #" << i << std::endl;

@@ -35,12 +35,13 @@ class CorrelationImageToImageMetricv4GetValueAndDerivativeThreader
 {
 public:
   /** Standard class typedefs. */
-  typedef CorrelationImageToImageMetricv4GetValueAndDerivativeThreader                                      Self;
+  typedef CorrelationImageToImageMetricv4GetValueAndDerivativeThreader                                 Self;
   typedef ImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric > Superclass;
   typedef SmartPointer< Self >                                                                         Pointer;
   typedef SmartPointer< const Self >                                                                   ConstPointer;
 
-  itkTypeMacro( CorrelationImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreader );
+  itkTypeMacro( CorrelationImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreader );
 
   itkNewMacro( Self );
 
@@ -60,17 +61,18 @@ public:
   typedef typename Superclass::DerivativeType           DerivativeType;
   typedef typename Superclass::DerivativeValueType      DerivativeValueType;
 
-  typedef typename ImageToImageMetricv4Type::FixedTransformType      FixedTransformType;
-  typedef typename FixedTransformType::OutputPointType               FixedOutputPointType;
-  typedef typename ImageToImageMetricv4Type::MovingTransformType     MovingTransformType;
-  typedef typename MovingTransformType::OutputPointType              MovingOutputPointType;
+  typedef typename ImageToImageMetricv4Type::FixedTransformType  FixedTransformType;
+  typedef typename FixedTransformType::OutputPointType           FixedOutputPointType;
+  typedef typename ImageToImageMetricv4Type::MovingTransformType MovingTransformType;
+  typedef typename MovingTransformType::OutputPointType          MovingOutputPointType;
 
   typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
   typedef typename Superclass::NumberOfParametersType       NumberOfParametersType;
 
 protected:
   CorrelationImageToImageMetricv4GetValueAndDerivativeThreader();
-  virtual ~CorrelationImageToImageMetricv4GetValueAndDerivativeThreader();
+  virtual
+  ~CorrelationImageToImageMetricv4GetValueAndDerivativeThreader();
 
   /** Overload: Resize and initialize per thread objects:
    *    number of valid points
@@ -101,20 +103,30 @@ protected:
    *  the metric to the global integral of the metric/derivative.
    */
   virtual bool ProcessPoint(const VirtualIndexType &          virtualIndex,
-        const VirtualPointType &          virtualPoint,
-        const FixedImagePointType &       mappedFixedPoint,
-        const FixedImagePixelType &       mappedFixedPixelValue,
-        const FixedImageGradientType &    mappedFixedImageGradient,
-        const MovingImagePointType &      mappedMovingPoint,
-        const MovingImagePixelType &      mappedMovingPixelValue,
-        const MovingImageGradientType &   mappedMovingImageGradient,
-        MeasureType &                     metricValueReturn,
-        DerivativeType &                  localDerivativeReturn,
-        const ThreadIdType                threadID ) const;
+                            const VirtualPointType &          virtualPoint,
+                            const FixedImagePointType &       mappedFixedPoint,
+                            const FixedImagePixelType &       mappedFixedPixelValue,
+                            const FixedImageGradientType &    mappedFixedImageGradient,
+                            const MovingImagePointType &      mappedMovingPoint,
+                            const MovingImagePixelType &      mappedMovingPixelValue,
+                            const MovingImageGradientType &   mappedMovingImageGradient,
+                            MeasureType &                     metricValueReturn,
+                            DerivativeType &                  localDerivativeReturn,
+                            const ThreadIdType                threadID ) const;
 
 private:
-  CorrelationImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  CorrelationImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); //
+                                                                                //
+                                                                                // purposely
+                                                                                //
+                                                                                // not
+                                                                                //
+                                                                                // implemented
+  void operator=( const Self & );                                               //
+
+  // purposely
+  // not
+  // implemented
 
   /*
    * the per-thread memory for computing the correlation and its derivatives
@@ -125,20 +137,25 @@ private:
    * say f_i is the i-th pixel of fixed image, m_i is the i-th pixel of moving
    * image: see the comments below
    */
-  struct CorrelationMetricValueDerivativePerThreadStruct{    // keep cumlative summation over points for:
-      InternalComputationValueType fm;  // (f_i - \bar f) * (m_i - \bar m)
-      InternalComputationValueType m2;  // (m_i - \bar m)^2
-      InternalComputationValueType f2;  // (f_i - \bar m)^2
-      InternalComputationValueType m;   // m_i
-      InternalComputationValueType f;   // f_i
-      DerivativeType fdm; // (f_i - \bar f) * dm_i/dp
-      DerivativeType mdm; // (m_i - \bar m) * dm_i/dp
-  };
+  struct CorrelationMetricValueDerivativePerThreadStruct { // keep cumlative
+                                                           // summation over
+                                                           // points for:
+    InternalComputationValueType fm;                       // (f_i - \bar f) *
+                                                           // (m_i - \bar m)
+    InternalComputationValueType m2;                       // (m_i - \bar m)^2
+    InternalComputationValueType f2;                       // (f_i - \bar m)^2
+    InternalComputationValueType m;                        // m_i
+    InternalComputationValueType f;                        // f_i
+    DerivativeType fdm;                                    // (f_i - \bar f) *
+                                                           // dm_i/dp
+    DerivativeType mdm;                                    // (m_i - \bar m) *
+                                                           // dm_i/dp
+    };
 
   itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, CorrelationMetricValueDerivativePerThreadStruct,
-                                            PaddedCorrelationMetricValueDerivativePerThreadStruct);
+                PaddedCorrelationMetricValueDerivativePerThreadStruct);
   itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedCorrelationMetricValueDerivativePerThreadStruct,
-                                               AlignedCorrelationMetricValueDerivativePerThreadStruct );
+                     AlignedCorrelationMetricValueDerivativePerThreadStruct );
   /* per thread variables for correlation and its derivatives */
   mutable AlignedCorrelationMetricValueDerivativePerThreadStruct * m_CorrelationMetricValueDerivativePerThreadVariables;
 

@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class NormalizedCorrelationImageToImageMetric:
+class NormalizedCorrelationImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -94,14 +94,18 @@ public:
 
 protected:
   NormalizedCorrelationImageToImageMetric();
-  virtual ~NormalizedCorrelationImageToImageMetric() {}
+  virtual
+  ~NormalizedCorrelationImageToImageMetric() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   NormalizedCorrelationImageToImageMetric(const Self &); //purposely not
                                                          // implemented
   void operator=(const Self &);                          //purposely not
-                                                         // implemented
+
+  // implemented
 
   bool m_SubtractMean;
 };

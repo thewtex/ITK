@@ -56,21 +56,22 @@ public:
 protected:
 
   SymmetricSigmoidTransferFunction();
-  virtual ~SymmetricSigmoidTransferFunction();
+  virtual
+  ~SymmetricSigmoidTransferFunction();
 
   ScalarType m_Range;
   ScalarType m_Offset;
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkSymmetricSigmoidTransferFunction.hxx"
+#include "itkSymmetricSigmoidTransferFunction.hxx"
 #endif
-
 
 #endif

@@ -32,10 +32,10 @@ template< typename TVector >
 MahalanobisDistanceMembershipFunction< TVector >
 ::MahalanobisDistanceMembershipFunction()
 {
-  NumericTraits<MeanVectorType>::SetLength(m_Mean, this->GetMeasurementVectorSize());
+  NumericTraits<MeanVectorType>::SetLength(m_Mean, this->GetMeasurementVectorSize() );
   m_Mean.Fill(0.0f);
 
-  m_Covariance.SetSize(this->GetMeasurementVectorSize(), this->GetMeasurementVectorSize());
+  m_Covariance.SetSize(this->GetMeasurementVectorSize(), this->GetMeasurementVectorSize() );
   m_Covariance.SetIdentity();
 
   m_InverseCovariance = m_Covariance;
@@ -126,7 +126,7 @@ MahalanobisDistanceMembershipFunction< TVector >
     // below NumericTraits<double>::max()
     const double aLargeDouble = vcl_pow(NumericTraits<double>::max(), 1.0/3.0)
       / (double) this->GetMeasurementVectorSize();
-    m_InverseCovariance.SetSize(this->GetMeasurementVectorSize(), this->GetMeasurementVectorSize());
+    m_InverseCovariance.SetSize(this->GetMeasurementVectorSize(), this->GetMeasurementVectorSize() );
     m_InverseCovariance.SetIdentity();
     m_InverseCovariance *= aLargeDouble;
     }
@@ -182,9 +182,10 @@ MahalanobisDistanceMembershipFunction< TVector >
 ::InternalClone() const
 {
   LightObject::Pointer loPtr = Superclass::InternalClone();
+
   typename Self::Pointer membershipFunction =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(membershipFunction.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(membershipFunction.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()

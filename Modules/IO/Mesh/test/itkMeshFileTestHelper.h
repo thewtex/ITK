@@ -58,8 +58,8 @@ TestPointsContainer( typename TMesh::PointsContainerPointer points0,
         std::cerr << "Output point = " << pt1.Value() << std::endl;
         return EXIT_FAILURE;
         }
-       ++pt0;
-       ++pt1;
+      ++pt0;
+      ++pt1;
       }
     }
   else
@@ -81,9 +81,9 @@ int
 TestCellsContainer( typename TMesh::CellsContainerPointer cells0,
                     typename TMesh::CellsContainerPointer cells1 )
 {
-  typedef TMesh                                           MeshType;
-  typedef typename MeshType::CellsContainerConstIterator  CellsContainerConstIterator;
-  typedef typename MeshType::CellType::PointIdIterator    CellPointIdIterator;
+  typedef TMesh                                          MeshType;
+  typedef typename MeshType::CellsContainerConstIterator CellsContainerConstIterator;
+  typedef typename MeshType::CellType::PointIdIterator   CellPointIdIterator;
 
   if ( cells0.IsNotNull() && cells1.IsNotNull() )
     {
@@ -142,7 +142,7 @@ TestCellsContainer( typename TMesh::CellsContainerPointer cells0,
 template< typename TMesh >
 int
 TestPointDataContainer( typename TMesh::PointDataContainerPointer pointData0,
-                       typename TMesh::PointDataContainerPointer pointData1 )
+                        typename TMesh::PointDataContainerPointer pointData1 )
 {
   typedef TMesh                                         MeshType;
   typedef typename MeshType::PointDataContainerIterator PointDataContainerIterator;
@@ -193,7 +193,7 @@ TestPointDataContainer( typename TMesh::PointDataContainerPointer pointData0,
 template< typename TMesh >
 int
 TestCellDataContainer( typename TMesh::CellDataContainerPointer cellData0,
-                      typename TMesh::CellDataContainerPointer cellData1 )
+                       typename TMesh::CellDataContainerPointer cellData1 )
 {
   typedef TMesh                                        MeshType;
   typedef typename MeshType::CellDataContainerIterator CellDataContainerIterator;
@@ -247,11 +247,11 @@ test(char *INfilename, char *OUTfilename, bool IsBinary)
 {
   typedef TMesh MeshType;
 
-  typedef itk::MeshFileReader< MeshType >       MeshFileReaderType;
-  typedef typename MeshFileReaderType::Pointer  MeshFileReaderPointer;
+  typedef itk::MeshFileReader< MeshType >      MeshFileReaderType;
+  typedef typename MeshFileReaderType::Pointer MeshFileReaderPointer;
 
-  typedef itk::MeshFileWriter< MeshType >       MeshFileWriterType;
-  typedef typename MeshFileWriterType::Pointer  MeshFileWriterPointer;
+  typedef itk::MeshFileWriter< MeshType >      MeshFileWriterType;
+  typedef typename MeshFileWriterType::Pointer MeshFileWriterPointer;
 
   MeshFileReaderPointer reader = MeshFileReaderType::New();
   reader->SetFileName(INfilename);
@@ -270,7 +270,7 @@ test(char *INfilename, char *OUTfilename, bool IsBinary)
   if( itksys::SystemTools::GetFilenameLastExtension(INfilename) ==
       itksys::SystemTools::GetFilenameLastExtension(OUTfilename) )
     {
-    writer->SetMeshIO(reader->GetModifiableMeshIO());
+    writer->SetMeshIO(reader->GetModifiableMeshIO() );
     }
   writer->SetFileName(OUTfilename);
   writer->SetInput( reader->GetOutput() );
@@ -317,7 +317,6 @@ test(char *INfilename, char *OUTfilename, bool IsBinary)
     return EXIT_FAILURE;
     }
 
-
   // Test cells
   if( TestCellsContainer< MeshType >( reader->GetOutput()->GetCells(),
                                       reader1->GetOutput()->GetCells() ) == EXIT_FAILURE )
@@ -325,14 +324,12 @@ test(char *INfilename, char *OUTfilename, bool IsBinary)
     return EXIT_FAILURE;
     }
 
-
   // Test point data
   if( TestPointDataContainer< MeshType >( reader->GetOutput()->GetPointData(),
                                           reader1->GetOutput()->GetPointData() ) == EXIT_FAILURE )
     {
     return EXIT_FAILURE;
     }
-
 
   // Test cell data
   if( TestCellDataContainer< MeshType >( reader->GetOutput()->GetCellData(),
@@ -343,4 +340,5 @@ test(char *INfilename, char *OUTfilename, bool IsBinary)
 
   return EXIT_SUCCESS;
 }
+
 #endif

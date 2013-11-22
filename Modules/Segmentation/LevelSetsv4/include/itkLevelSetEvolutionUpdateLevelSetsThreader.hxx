@@ -26,14 +26,16 @@ namespace itk
 {
 
 template< typename TImage, typename TLevelSetEvolution >
-LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >,
+                                          ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
 ::LevelSetEvolutionUpdateLevelSetsThreader()
 {
 }
 
 template< typename TImage, typename TLevelSetEvolution >
 void
-LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >,
+                                          ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
 ::BeforeThreadedExecution()
 {
   this->m_RMSChangeAccumulatorPerThread.resize( this->GetNumberOfThreadsUsed() );
@@ -46,12 +48,15 @@ LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, Threaded
 
 template< typename TImage, typename TLevelSetEvolution >
 void
-LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >,
+                                          ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
 ::ThreadedExecution( const DomainType & imageSubRegion,
                      const ThreadIdType threadId )
 {
-  typename LevelSetContainerType::Iterator levelSetContainerIt = this->m_Associate->m_LevelSetContainerIteratorToProcessWhenThreading;
-  typename LevelSetContainerType::ConstIterator levelSetUpdateContainerIt = this->m_Associate->m_LevelSetUpdateContainerIteratorToProcessWhenThreading;
+  typename LevelSetContainerType::Iterator levelSetContainerIt =
+    this->m_Associate->m_LevelSetContainerIteratorToProcessWhenThreading;
+  typename LevelSetContainerType::ConstIterator levelSetUpdateContainerIt =
+    this->m_Associate->m_LevelSetUpdateContainerIteratorToProcessWhenThreading;
 
   // This is for single level set analysis, so we only process the first level
   // set.
@@ -61,7 +66,7 @@ LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, Threaded
   typename LevelSetImageType::Pointer levelSetImage = levelSet->GetModifiableImage();
   typename LevelSetImageType::ConstPointer levelSetUpdateImage = levelSetUpdate->GetImage();
 
-  ImageRegionIterator< LevelSetImageType > levelSetImageIt( levelSetImage, imageSubRegion );
+  ImageRegionIterator< LevelSetImageType >      levelSetImageIt( levelSetImage, imageSubRegion );
   ImageRegionConstIterator< LevelSetImageType > levelSetUpdateImageIt( levelSetUpdateImage, imageSubRegion );
   levelSetImageIt.GoToBegin();
   levelSetUpdateImageIt.GoToBegin();
@@ -81,7 +86,8 @@ LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, Threaded
 
 template< typename TImage, typename TLevelSetEvolution >
 void
-LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >, ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImage< TImage >,
+                                          ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
 ::AfterThreadedExecution()
 {
   for( ThreadIdType ii = 0; ii < this->GetNumberOfThreadsUsed(); ++ii )

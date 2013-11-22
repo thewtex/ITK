@@ -83,7 +83,7 @@ namespace itk
  * \ingroup ITKClassifiers
  */
 template< typename TDataContainer >
-class ClassifierBase:public LightProcessObject
+class ClassifierBase : public LightProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -107,7 +107,7 @@ public:
   typedef typename MembershipFunctionType::Pointer                    MembershipFunctionPointer;
 
   typedef std::vector< MembershipFunctionPointer >
-  MembershipFunctionPointerVector;
+    MembershipFunctionPointerVector;
 
   /** Type alias for decision rule */
   typedef Statistics::DecisionRule DecisionRuleType;
@@ -115,13 +115,15 @@ public:
   /** Sets the pointer to the decision rule.
    * Stores the decision rule that makes the real decision using
    * informations from MembershipFunctions and other prior knowledge */
-  void SetDecisionRule(DecisionRuleType *ptrToDecisionRule)
+  void
+  SetDecisionRule(DecisionRuleType *ptrToDecisionRule)
   {
     m_DecisionRule = ptrToDecisionRule;
   }
 
   /** Gets the pointer to the decision rule being used. */
-  DecisionRuleType * GetDecisionRule(void)
+  DecisionRuleType *
+  GetDecisionRule(void)
   {
     return m_DecisionRule.GetPointer();
   }
@@ -130,13 +132,15 @@ public:
    * the AddMembershipFunction method. The index is assigned according
    * to the order each membership function has been added using the
    * AddMemberShipFunction method */
-  const MembershipFunctionType * GetMembershipFunction(unsigned int index) const
+  const MembershipFunctionType *
+  GetMembershipFunction(unsigned int index) const
   {
     return m_MembershipFunctions[index].GetPointer();
   }
 
   /** Gets the number of membership functions */
-  unsigned int GetNumberOfMembershipFunctions()
+  unsigned int
+  GetNumberOfMembershipFunctions()
   {
     return static_cast< unsigned int >( m_MembershipFunctions.size() );
   }

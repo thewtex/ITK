@@ -40,7 +40,7 @@ namespace Statistics
  */
 
 template< typename TImage >
-class ImageToHistogramFilter:public ImageTransformer<TImage>
+class ImageToHistogramFilter : public ImageTransformer<TImage>
 {
 public:
   /** Standard typedefs */
@@ -72,20 +72,21 @@ public:
 
   /** Return the output histogram. */
   const HistogramType * GetOutput() const;
+
   HistogramType * GetOutput();
 
   /** Type of DataObjects to use for Size inputs */
   typedef SimpleDataObjectDecorator<
-    HistogramSizeType > InputHistogramSizeObjectType;
+      HistogramSizeType > InputHistogramSizeObjectType;
 
   /** Type of DataObjects to use for Marginal Scale inputs */
   typedef SimpleDataObjectDecorator<
-    HistogramMeasurementType > InputHistogramMeasurementObjectType;
+      HistogramMeasurementType > InputHistogramMeasurementObjectType;
 
   /** Type of DataObjects to use for Minimum and Maximums values of the
    * histogram bins. */
   typedef SimpleDataObjectDecorator<
-    HistogramMeasurementVectorType > InputHistogramMeasurementVectorObjectType;
+      HistogramMeasurementVectorType > InputHistogramMeasurementVectorObjectType;
 
   /** Type of DataObjects to use for AutoMinimumMaximum input */
   typedef SimpleDataObjectDecorator< bool > InputBooleanObjectType;
@@ -119,20 +120,28 @@ public:
 
 protected:
   ImageToHistogramFilter();
-  virtual ~ImageToHistogramFilter() {}
+  virtual
+  ~ImageToHistogramFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void BeforeThreadedGenerateData(void);
+
   void ThreadedGenerateData(const RegionType & inputRegionForThread, ThreadIdType threadId);
+
   void AfterThreadedGenerateData(void);
 
   /** Method that construct the outputs */
   typedef ProcessObject::DataObjectPointerArraySizeType DataObjectPointerArraySizeType;
   using Superclass::MakeOutput;
-  DataObject::Pointer  MakeOutput(DataObjectPointerArraySizeType);
+  DataObject::Pointer MakeOutput(DataObjectPointerArraySizeType);
 
-  virtual void ThreadedComputeMinimumAndMaximum( const RegionType & inputRegionForThread, ThreadIdType threadId, ProgressReporter & progress );
-  virtual void ThreadedComputeHistogram( const RegionType & inputRegionForThread, ThreadIdType threadId, ProgressReporter & progress );
+  virtual void ThreadedComputeMinimumAndMaximum( const RegionType & inputRegionForThread, ThreadIdType threadId,
+                                                 ProgressReporter & progress );
+
+  virtual void ThreadedComputeHistogram( const RegionType & inputRegionForThread, ThreadIdType threadId,
+                                         ProgressReporter & progress );
 
   std::vector< HistogramPointer >               m_Histograms;
   std::vector< HistogramMeasurementVectorType > m_Minimums;
@@ -142,7 +151,9 @@ private:
   ImageToHistogramFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
 
-  void ApplyMarginalScale( HistogramMeasurementVectorType & min, HistogramMeasurementVectorType & max, HistogramSizeType & size );
+  void ApplyMarginalScale( HistogramMeasurementVectorType & min, HistogramMeasurementVectorType & max,
+                           HistogramSizeType & size );
+
   typename Barrier::Pointer                     m_Barrier;
 
 };

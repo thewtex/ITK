@@ -47,7 +47,6 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-
 //  Software Guide : BeginLatex
 //
 //  A pixel accessor for image thresholding requires that the accessor
@@ -62,26 +61,30 @@ namespace itk
 class ThresholdingPixelAccessor
 {
 public:
-  typedef unsigned char      InternalType;
-  typedef unsigned char      ExternalType;
+  typedef unsigned char InternalType;
+  typedef unsigned char ExternalType;
 
-  ThresholdingPixelAccessor() : m_Threshold(0) {};
+  ThresholdingPixelAccessor() : m_Threshold(0) {
+  }
 
-  ExternalType Get( const InternalType & input ) const
-    {
+  ExternalType
+  Get( const InternalType & input ) const
+  {
     return (input > m_Threshold) ? 1 : 0;
-    }
-  void SetThreshold( const InternalType threshold )
-    {
+  }
+
+  void
+  SetThreshold( const InternalType threshold )
+  {
     m_Threshold = threshold;
-    }
+  }
 
   ThresholdingPixelAccessor &
-    operator=( const ThresholdingPixelAccessor & vpa )
-    {
+  operator=( const ThresholdingPixelAccessor & vpa )
+  {
     m_Threshold = vpa.m_Threshold;
     return *this;
-    }
+  }
 
 private:
   InternalType m_Threshold;
@@ -89,7 +92,6 @@ private:
 }
 
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -100,14 +102,14 @@ private:
 //
 //  Software Guide : EndLatex
 
-
 //-------------------------
 //
 //   Main code
 //
 //-------------------------
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -117,7 +119,6 @@ int main( int argc, char *argv[] )
     return -1;
     }
 
-
 //  Software Guide : BeginLatex
 //
 //  To create an image adaptor, we first instantiate an image type
@@ -126,13 +127,11 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef itk::ThresholdingPixelAccessor::InternalType     PixelType;
-  const   unsigned int   Dimension = 2;
-  typedef itk::Image< PixelType,  Dimension >   ImageType;
+  typedef itk::ThresholdingPixelAccessor::InternalType PixelType;
+  const   unsigned int Dimension = 2;
+  typedef itk::Image< PixelType,  Dimension > ImageType;
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -142,14 +141,12 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   typedef itk::ImageAdaptor< ImageType,
                              itk::ThresholdingPixelAccessor > ImageAdaptorType;
 
   ImageAdaptorType::Pointer adaptor = ImageAdaptorType::New();
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -159,13 +156,11 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  itk::ThresholdingPixelAccessor  accessor;
+  itk::ThresholdingPixelAccessor accessor;
   accessor.SetThreshold( atoi( argv[3] ) );
   adaptor->SetPixelAccessor( accessor );
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -174,9 +169,8 @@ int main( int argc, char *argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   reader->Update();
@@ -184,14 +178,12 @@ int main( int argc, char *argv[] )
   adaptor->SetImage( reader->GetOutput() );
 //  Software Guide : EndCodeSnippet
 
-
   typedef itk::RescaleIntensityImageFilter< ImageAdaptorType,
                                             ImageType > RescalerType;
 
   RescalerType::Pointer rescaler = RescalerType::New();
-  typedef itk::ImageFileWriter< ImageType >   WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
-
 
   writer->SetFileName( argv[2] );
 
@@ -201,7 +193,6 @@ int main( int argc, char *argv[] )
   rescaler->SetInput( adaptor );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
@@ -227,7 +218,6 @@ int main( int argc, char *argv[] )
   //  price of holding an extra copy of the image in memory.
   //
   // Software Guide : EndLatex
-
 
   return 0;
 }

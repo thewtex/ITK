@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TElementIdentifier, typename TElement >
-class ImageContainerInterface:public Object
+class ImageContainerInterface : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -89,6 +89,7 @@ public:
    * the current number of elements.  This is NOT guaranteed to decrease
    * memory usage. */
   virtual void Squeeze(void) = 0;
+
 };
 } // end namespace itk
 

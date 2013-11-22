@@ -95,7 +95,6 @@ public:
   /** Assignment operator */
   Self & operator=(const Self & other);
 
-
   /** Set/Get the flag for calculating scale-space normalized
    * derivatives.
    *
@@ -104,45 +103,80 @@ public:
    * algorithms such as blob detection. The scaling results in the
    * value of the derivatives being independent of the size of an
    * object. */
-  void SetNormalizeAcrossScale(bool flag) { m_NormalizeAcrossScale = flag; }
-  bool GetNormalizeAcrossScale() const { return m_NormalizeAcrossScale; }
+  void
+  SetNormalizeAcrossScale(bool flag) {
+    m_NormalizeAcrossScale = flag;
+  }
+
+  bool
+  GetNormalizeAcrossScale() const {
+    return m_NormalizeAcrossScale;
+  }
+
   itkBooleanMacro(NormalizeAcrossScale);
 
   /** Set/Get the variance of the Gaussian kernel.
    *
    */
-  void SetVariance(const double variance) { m_Variance = variance; }
-  double GetVariance() const { return m_Variance; }
+  void
+  SetVariance(const double variance) {
+    m_Variance = variance;
+  }
+
+  double
+  GetVariance() const {
+    return m_Variance;
+  }
 
   /** Set/Get the spacing for the direction of this kernel. */
-  void SetSpacing(const double spacing) { m_Spacing = spacing; }
-  double GetSpacing() const { return m_Spacing; }
+  void
+  SetSpacing(const double spacing) {
+    m_Spacing = spacing;
+  }
+
+  double
+  GetSpacing() const {
+    return m_Spacing;
+  }
 
   /** Set/Get the desired maximum error of the gaussian approximation.  Maximum
    * error is the difference between the area under the discrete Gaussian curve
    * and the area under the continuous Gaussian. Maximum error affects the
    * Gaussian operator size. The value is clamped between 0.00001 and 0.99999. */
-  void SetMaximumError(const double maxerror)
+  void
+  SetMaximumError(const double maxerror)
   {
     const double Min = 0.00001;
     const double Max = 1.0 - Min;
 
     m_MaximumError = std::max( Min, std::min( Max, maxerror ) );
   }
-  double GetMaximumError() { return m_MaximumError; }
+
+  double
+  GetMaximumError() {
+    return m_MaximumError;
+  }
 
   /** Sets/Get a limit for growth of the kernel.  Small maximum error values with
    *  large variances will yield very large kernel sizes.  This value can be
    *  used to truncate a kernel in such instances.  A warning will be given on
    *  truncation of the kernel. */
-  void SetMaximumKernelWidth(unsigned int n)
+  void
+  SetMaximumKernelWidth(unsigned int n)
   {
     m_MaximumKernelWidth = n;
   }
 
   /** Sets/Get the order of the derivative. */
-  void SetOrder(const unsigned int order) { m_Order = order;}
-  unsigned int GetOrder() const { return m_Order; }
+  void
+  SetOrder(const unsigned int order) {
+    m_Order = order;
+  }
+
+  unsigned int
+  GetOrder() const {
+    return m_Order;
+  }
 
   /** Prints member variables */
   virtual void PrintSelf(std::ostream & os, Indent i) const;
@@ -167,8 +201,11 @@ protected:
   CoefficientVector GenerateCoefficients();
 
   /** Arranges coefficients spatially in the memory buffer. */
-  void Fill(const CoefficientVector & coeff)
-  { this->FillCenteredDirectional(coeff); }
+  void
+  Fill(const CoefficientVector & coeff)
+  {
+    this->FillCenteredDirectional(coeff);
+  }
 
 private:
 
@@ -177,7 +214,8 @@ private:
   CoefficientVector GenerateGaussianCoefficients() const;
 
   /** For compatibility with itkWarningMacro */
-  const char * GetNameOfClass() const
+  const char *
+  GetNameOfClass() const
   {
     return "itkGaussianDerivativeOperator";
   }

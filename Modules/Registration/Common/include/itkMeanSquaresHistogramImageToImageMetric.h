@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class MeanSquaresHistogramImageToImageMetric:
+class MeanSquaresHistogramImageToImageMetric :
   public HistogramImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -76,8 +76,12 @@ public:
 protected:
   /** Constructor is protected to ensure that \c New() function is used to
       create instances. */
-  MeanSquaresHistogramImageToImageMetric(){}
-  virtual ~MeanSquaresHistogramImageToImageMetric(){}
+  MeanSquaresHistogramImageToImageMetric(){
+  }
+
+  virtual
+  ~MeanSquaresHistogramImageToImageMetric(){
+  }
 
   /** Evaluates the sum of squared differences from the histogram. */
   virtual MeasureType EvaluateMeasure(HistogramType & histogram) const;
@@ -86,7 +90,8 @@ private:
   MeanSquaresHistogramImageToImageMetric(Self const &); // Purposely not
                                                         // implemented.
   void operator=(Self const &);                         // Purposely not
-                                                        // implemented.
+
+  // implemented.
 };
 } // End namespace itk.
 

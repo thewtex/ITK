@@ -37,7 +37,8 @@ class ITKCommon_EXPORT QuadraticTriangleCellTopology
 {
 public:
   QuadraticTriangleCellTopology();
-  virtual ~QuadraticTriangleCellTopology();
+  virtual
+  ~QuadraticTriangleCellTopology();
 
 protected:
   /** Triangle topology data. */

@@ -68,7 +68,8 @@ public:
   Array(const Array&);
 
   /** Constructor with size. Size can only be changed by assignment */
-  explicit Array(SizeValueType dimension);
+  explicit
+  Array(SizeValueType dimension);
 
   /** Constructor that initializes array with contents from a user supplied
    * buffer. The pointer to the buffer and the length is specified. By default,
@@ -96,14 +97,16 @@ public:
     for( SizeValueType i=0; i<r.GetSize(); i++ )
       {
       this->operator[](i) = static_cast< TValueType >( r[i] );
+
       }
   }
 
   /** Set the all the elements of the array to the specified value */
-  void Fill(TValueType const & v)
-    {
+  void
+  Fill(TValueType const & v)
+  {
     this->fill(v);
-    }
+  }
 
   /** Copy opertor */
   const Self & operator=(const Self & rhs);
@@ -111,24 +114,40 @@ public:
   const Self & operator=(const VnlVectorType & rhs);
 
   /** Return the number of elements in the Array  */
-  SizeValueType Size(void) const
-  { return static_cast<SizeValueType >( this->size() ); }
-  unsigned int GetNumberOfElements(void) const
-  { return static_cast<SizeValueType >( this->size() ); }
+  SizeValueType
+  Size(void) const
+  {
+    return static_cast<SizeValueType >( this->size() );
+  }
+
+  unsigned int
+  GetNumberOfElements(void) const
+  {
+    return static_cast<SizeValueType >( this->size() );
+  }
 
   /** Get one element */
-  const TValueType & GetElement(SizeValueType i) const
-  { return this->operator[](i); }
+  const TValueType &
+  GetElement(SizeValueType i) const
+  {
+    return this->operator[](i);
+  }
 
   /** Set one element */
-  void SetElement(SizeValueType i, const TValueType & value)
-  { this->operator[](i) = value; }
+  void
+  SetElement(SizeValueType i, const TValueType & value)
+  {
+    this->operator[](i) = value;
+  }
 
   /** Destructively set the size to that given.  Will lose data.  */
   void SetSize(SizeValueType sz);
 
-  SizeValueType GetSize(void) const
-  { return static_cast< SizeValueType >( this->size() ); }
+  SizeValueType
+  GetSize(void) const
+  {
+    return static_cast< SizeValueType >( this->size() );
+  }
 
   /** Set the pointer from which the data is imported.
    * If "LetArrayManageMemory" is false, then the application retains
@@ -149,9 +168,9 @@ public:
   void SetData(TValueType *data, SizeValueType sz,
                bool LetArrayManageMemory = false);
 
-
 #ifdef __INTEL_COMPILER
-#pragma warning disable 444 //destructor for base class "itk::Array<>" is not virtual
+#pragma warning disable 444 //destructor for base class "itk::Array<>" is not
+                            // virtual
 #endif
   /** This destructor is not virtual for performance reasons. However, this
    * means that subclasses cannot allocate memory. */
@@ -163,26 +182,27 @@ private:
 };
 
 template< typename TValueType >
-std::ostream & operator<<(std::ostream & os, const Array< TValueType > & arr)
+std::ostream &
+operator<<(std::ostream & os, const Array< TValueType > & arr)
 {
   os << "[";
   const unsigned int length = arr.size();
   if ( length >= 1 )
     {
-    const unsigned int   last   = length - 1;
+    const unsigned int last   = length - 1;
     for ( unsigned int i = 0; i < last; ++i )
       {
       os << arr[i] << ", ";
       }
-      os << arr[last];
+    os << arr[last];
     }
   os << "]";
   return os;
 }
 
 // declaration of specialization
-template<> ITKCommon_EXPORT std::ostream & operator<< <double> (std::ostream & os, const Array< double > & arr);
-template<> ITKCommon_EXPORT std::ostream & operator<< <float> (std::ostream & os, const Array< float > & arr);
+template<> ITKCommon_EXPORT std::ostream & operator<< <double> (std::ostream & os, const Array< double > &arr);
+template<> ITKCommon_EXPORT std::ostream & operator<< <float> (std::ostream & os, const Array< float > &arr);
 
 } // namespace itk
 

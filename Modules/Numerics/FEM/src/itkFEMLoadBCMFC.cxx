@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer LoadBCMFC::CreateAnother(void) const
+::itk::LightObject::Pointer
+LoadBCMFC::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -51,22 +52,26 @@ LoadBCMFC::LoadBCMFC(Element::ConstPointer element, int dof, vnl_vector<Element:
   m_RightHandSide = val;
 }
 
-void LoadBCMFC::SetIndex(int ind)
+void
+LoadBCMFC::SetIndex(int ind)
 {
   this->m_Index = ind;
 }
 
-int LoadBCMFC::GetIndex()
+int
+LoadBCMFC::GetIndex()
 {
   return this->m_Index;
 }
 
-void LoadBCMFC::AddLeftHandSideTerm(LoadBCMFC::MFCTerm term)
+void
+LoadBCMFC::AddLeftHandSideTerm(LoadBCMFC::MFCTerm term)
 {
   this->m_LeftHandSide.push_back(term);
 }
 
-void LoadBCMFC::AddRightHandSideTerm(Element::Float term)
+void
+LoadBCMFC::AddRightHandSideTerm(Element::Float term)
 {
   vnl_vector<Element::Float> tmpRightHandSide;
   tmpRightHandSide.set_size( this->m_RightHandSide.size() );
@@ -84,12 +89,14 @@ void LoadBCMFC::AddRightHandSideTerm(Element::Float term)
   this->m_RightHandSide.put(this->m_RightHandSide.size() - 1, term);
 }
 
-int LoadBCMFC::GetNumberOfLeftHandSideTerms() const
+int
+LoadBCMFC::GetNumberOfLeftHandSideTerms() const
 {
   return this->m_LeftHandSide.size();
 }
 
-int LoadBCMFC::GetNumberOfRightHandSideTerms() const
+int
+LoadBCMFC::GetNumberOfRightHandSideTerms() const
 {
   return this->m_RightHandSide.size();
 }
@@ -101,28 +108,35 @@ GetLeftHandSideTerm(int lhs) const
   return this->m_LeftHandSide.at(lhs);
 }
 
-Element::Float LoadBCMFC::GetRightHandSideTerm(int rhs) const
+Element::Float
+LoadBCMFC::GetRightHandSideTerm(int rhs) const
 {
   return this->m_RightHandSide.get(rhs);
 }
 
-const std::vector<LoadBCMFC::MFCTerm> & LoadBCMFC::GetLeftHandSideArray() const
-{
-  return this->m_LeftHandSide;
-}
-std::vector<LoadBCMFC::MFCTerm> & LoadBCMFC::GetLeftHandSideArray()
+const std::vector<LoadBCMFC::MFCTerm> &
+LoadBCMFC::GetLeftHandSideArray() const
 {
   return this->m_LeftHandSide;
 }
 
-vnl_vector<Element::Float> & LoadBCMFC::GetRightHandSideArray()
+std::vector<LoadBCMFC::MFCTerm> &
+LoadBCMFC::GetLeftHandSideArray()
+{
+  return this->m_LeftHandSide;
+}
+
+vnl_vector<Element::Float> &
+LoadBCMFC::GetRightHandSideArray()
 {
   return this->m_RightHandSide;
 }
 
-void LoadBCMFC::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadBCMFC::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Index: " << this->m_Index << std::endl;
   os << indent << "Left Hand Side Size: " << this->m_LeftHandSide.size() << std::endl;
   for( unsigned int i = 0; i < this->m_LeftHandSide.size(); i++ )

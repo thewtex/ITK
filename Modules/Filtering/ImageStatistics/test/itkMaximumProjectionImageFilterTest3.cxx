@@ -21,8 +21,8 @@
 
 #include "itkMaximumProjectionImageFilter.h"
 
-
-int itkMaximumProjectionImageFilterTest3(int argc, char * argv[])
+int
+itkMaximumProjectionImageFilterTest3(int argc, char * argv[])
 {
   if( argc < 4 )
     {
@@ -44,7 +44,7 @@ int itkMaximumProjectionImageFilterTest3(int argc, char * argv[])
   reader->SetFileName( argv[2] );
 
   typedef itk::MaximumProjectionImageFilter<
-    ImageType, Image2DType > FilterType;
+      ImageType, Image2DType > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );

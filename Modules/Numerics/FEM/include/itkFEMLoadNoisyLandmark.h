@@ -38,14 +38,14 @@ class LoadNoisyLandmark : public LoadLandmark
 {
 public:
   /** Standard class typedefs. */
-  typedef LoadNoisyLandmark             Self;
-  typedef LoadLandmark                  Superclass;
-  typedef SmartPointer<Self>            Pointer;
-  typedef SmartPointer<const Self>      ConstPointer;
+  typedef LoadNoisyLandmark        Self;
+  typedef LoadLandmark             Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Some convenient typedefs */
-  typedef  Element::VectorType          VectorType;
-  typedef  Element::MatrixType          MatrixType;
+  typedef  Element::VectorType VectorType;
+  typedef  Element::MatrixType MatrixType;
 
   /** Method for creation through the object factory. */
   itkSimpleNewMacro(Self);
@@ -54,109 +54,128 @@ public:
   itkTypeMacro(LoadNoisyLandmark, LoadLandmark);
 
   /** Outlier or not */
-  void SetOutlier(bool outlier)
-    {
+  void
+  SetOutlier(bool outlier)
+  {
     m_IsOutlier = outlier;
-    }
+  }
 
-  bool IsOutlier() const
-    {
+  bool
+  IsOutlier() const
+  {
     return m_IsOutlier;
-    }
+  }
 
   /** Set/Get Error norm */
-  void SetErrorNorm(float errorNorm)
-    {
+  void
+  SetErrorNorm(float errorNorm)
+  {
     m_ErrorNorm = errorNorm;
-    }
+  }
 
-  float GetErrorNorm() const
-    {
+  float
+  GetErrorNorm() const
+  {
     return m_ErrorNorm;
-    }
+  }
 
   /** Set/Get Confidence */
-  void SetConfidence(float confidence)
-    {
+  void
+  SetConfidence(float confidence)
+  {
     m_Confidence = confidence;
-    }
+  }
 
-  float GetConfidence() const
-    {
+  float
+  GetConfidence() const
+  {
     return m_Confidence;
-    }
+  }
 
   /** Set/Get real displacement */
-  void SetRealDisplacement(const VectorType & displacement)
-    {
+  void
+  SetRealDisplacement(const VectorType & displacement)
+  {
     m_RealDisplacement = displacement;
-    }
+  }
 
-  const VectorType & GetRealDisplacement() const
-    {
+  const VectorType &
+  GetRealDisplacement() const
+  {
     return m_RealDisplacement;
-    }
+  }
 
   /** Set/Get simulated displacement */
-  void SetSimulatedDisplacement(const VectorType & displacement)
-    {
+  void
+  SetSimulatedDisplacement(const VectorType & displacement)
+  {
     m_SimulatedDisplacement = displacement;
-    }
+  }
 
-  const VectorType & GetSimulatedDisplacement() const
-    {
+  const VectorType &
+  GetSimulatedDisplacement() const
+  {
     return m_SimulatedDisplacement;
-    }
+  }
 
   /** Set/Get Shape function */
-  void SetShape(const VectorType & shape)
-    {
+  void
+  SetShape(const VectorType & shape)
+  {
     m_Shape = shape;
-    }
+  }
 
-  const VectorType & GetShape() const
-    {
+  const VectorType &
+  GetShape() const
+  {
     return m_Shape;
-    }
+  }
 
   /** Set/Get flag for outside of the mesh */
-  void SetIsOutOfMesh(bool out)
-    {
+  void
+  SetIsOutOfMesh(bool out)
+  {
     m_IsOutOfMesh = out;
-    }
+  }
 
-  bool IsOutOfMesh() const
-    {
+  bool
+  IsOutOfMesh() const
+  {
     return m_IsOutOfMesh;
-    }
+  }
 
   /** Set/Get Structure tensor */
-  void SetStructureTensor(const MatrixType& structureTensor)
-    {
+  void
+  SetStructureTensor(const MatrixType& structureTensor)
+  {
     m_StructureTensor = structureTensor;
     m_HasStructureTensor = true;
-    }
+  }
 
-  const MatrixType& GetStructureTensor() const
-    {
+  const MatrixType&
+  GetStructureTensor() const
+  {
     return m_StructureTensor;
-    }
+  }
 
-  bool HasStructureTensor() const
-    {
+  bool
+  HasStructureTensor() const
+  {
     return m_HasStructureTensor;
-    }
+  }
 
   /** Set/Get Landmark tensor */
-  void SetLandmarkTensor(const MatrixType& landmarkTensor)
-    {
+  void
+  SetLandmarkTensor(const MatrixType& landmarkTensor)
+  {
     m_LandmarkTensor = landmarkTensor;
-    }
+  }
 
-  const MatrixType & GetLandmarkTensor() const
-    {
+  const MatrixType &
+  GetLandmarkTensor() const
+  {
     return m_LandmarkTensor;
-    }
+  }
 
 protected:
 
@@ -164,13 +183,13 @@ protected:
    * Default constructors
    */
   LoadNoisyLandmark()
-    {
+  {
     m_IsOutlier = false;
     m_Confidence = 1.0;
     m_HasStructureTensor = false;
     m_IsOutOfMesh = false;
     this->m_Element.resize(1);
-    }
+  }
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 

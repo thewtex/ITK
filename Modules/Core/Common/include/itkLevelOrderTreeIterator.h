@@ -31,7 +31,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TTreeType >
-class LevelOrderTreeIterator:public TreeIteratorBase< TTreeType >
+class LevelOrderTreeIterator : public TreeIteratorBase< TTreeType >
 {
 public:
 
@@ -49,7 +49,9 @@ public:
   /** Constructor with end level specification */
   LevelOrderTreeIterator(TreeType *tree, int startLevel, int endLevel, const TreeNodeType *start = NULL);
 
-  virtual ~LevelOrderTreeIterator() {}
+  virtual
+  ~LevelOrderTreeIterator() {
+  }
 
   /** Get the type of the iterator */
   NodeType GetType() const;
@@ -67,11 +69,13 @@ public:
   TreeIteratorBase< TTreeType > * Clone();
 
   /** operator = */
-  const Self & operator=(const Self & iterator)
+  const Self &
+  operator=(const Self & iterator)
   {
     if(this != &iterator)
       {
       this->Superclass::operator=(iterator);
+
       m_StartLevel = iterator.m_StartLevel;
       m_EndLevel = iterator.m_EndLevel;
       m_Queue = iterator.m_Queue;

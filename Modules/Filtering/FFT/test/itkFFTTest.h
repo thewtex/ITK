@@ -40,8 +40,8 @@ template< typename TPixel, unsigned int VImageDimensions,
 int
 test_fft(unsigned int *SizeOfDimensions)
 {
-  typedef itk::Image< TPixel, VImageDimensions >                  RealImageType;
-  typedef itk::Image< std::complex< TPixel >, VImageDimensions >  ComplexImageType;
+  typedef itk::Image< TPixel, VImageDimensions >                 RealImageType;
+  typedef itk::Image< std::complex< TPixel >, VImageDimensions > ComplexImageType;
   unsigned int counter = 0;
   typename RealImageType::SizeType  imageSize;
   typename RealImageType::IndexType imageIndex;
@@ -56,8 +56,10 @@ test_fft(unsigned int *SizeOfDimensions)
   for (unsigned int i = 0; i < VImageDimensions; i++)
     {
     imageSize.SetElement( i, SizeOfDimensions[i] );
-    imageIndex.SetElement( i, -2*static_cast<indexValueType>(i) ); // Test for handling non-zero
-                                      // image indices correctly
+    imageIndex.SetElement( i, -2*static_cast<indexValueType>(i) ); // Test for
+                                                                   // handling
+                                                                   // non-zero
+    // image indices correctly
     }
 
   typename RealImageType::RegionType region;
@@ -275,7 +277,6 @@ test_fft(unsigned int *SizeOfDimensions)
   return 0;
 }
 
-
 /* test_fft_rtc is the test function to compare two implementations
  * (Direct FFT only).  It is templated over the pixel, Image
  * dimensions and the FFT libraries to be used. */
@@ -284,8 +285,8 @@ template< typename TPixel, unsigned int VImageDimensions,
 int
 test_fft_rtc(unsigned int *SizeOfDimensions)
 {
-  typedef itk::Image< TPixel, VImageDimensions >                  RealImageType;
-  typedef itk::Image< std::complex< TPixel >, VImageDimensions >  ComplexImageType;
+  typedef itk::Image< TPixel, VImageDimensions >                 RealImageType;
+  typedef itk::Image< std::complex< TPixel >, VImageDimensions > ComplexImageType;
   unsigned int counter = 0;
   typename RealImageType::SizeType  imageSize;
   typename RealImageType::IndexType imageIndex;
@@ -370,7 +371,6 @@ test_fft_rtc(unsigned int *SizeOfDimensions)
   const typename ComplexImageType::SizeType & complexImageSizeB =
     complexImageB->GetLargestPossibleRegion().GetSize();
 
-
   unsigned int sizesA[4] = { 1,1,1,1 };
   unsigned int sizesB[4] = { 1,1,1,1 };
   for(unsigned int i = 0; i < VImageDimensions; i++)
@@ -414,7 +414,6 @@ test_fft_rtc(unsigned int *SizeOfDimensions)
     }
   std::cout << std::endl << std::endl;
 
-
   // Subtract the pixel values from the two images. If one pixel
   // difference is greater than 0.01, the test is considered to have
   // failed.
@@ -448,4 +447,5 @@ test_fft_rtc(unsigned int *SizeOfDimensions)
 
   return 0;
 }
+
 #endif

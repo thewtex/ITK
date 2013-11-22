@@ -47,9 +47,9 @@ template< typename TOutputPath >
 typename PathSource< TOutputPath >::OutputPathType *
 PathSource< TOutputPath >
 ::GetOutput(void)
-{
+  {
   return itkDynamicCastInDebugMode< TOutputPath * >( this->GetPrimaryOutput() );
-}
+  }
 
 /**
  *
@@ -58,10 +58,10 @@ template< typename TOutputPath >
 typename PathSource< TOutputPath >::OutputPathType *
 PathSource< TOutputPath >
 ::GetOutput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< TOutputPath * >
-         ( this->ProcessObject::GetOutput(idx) );
-}
+           ( this->ProcessObject::GetOutput(idx) );
+  }
 
 /**
  *
@@ -136,6 +136,7 @@ PathSource< TOutputPath >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

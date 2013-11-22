@@ -29,7 +29,7 @@ namespace itk
  *
  * \ingroup ITKOptimizers
  */
-class RegularStepGradientDescentOptimizer:
+class RegularStepGradientDescentOptimizer :
   public RegularStepGradientDescentBaseOptimizer
 {
 public:
@@ -51,8 +51,12 @@ public:
   typedef CostFunctionType::Pointer    CostFunctionPointer;
 
 protected:
-  RegularStepGradientDescentOptimizer() {}
-  virtual ~RegularStepGradientDescentOptimizer() {}
+  RegularStepGradientDescentOptimizer() {
+  }
+
+  virtual
+  ~RegularStepGradientDescentOptimizer() {
+  }
 
   /** Advance one step along the corrected gradient taking into
    * account the steplength represented by factor.
@@ -66,6 +70,7 @@ protected:
 private:
   RegularStepGradientDescentOptimizer(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

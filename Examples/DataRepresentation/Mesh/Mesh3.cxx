@@ -29,7 +29,6 @@
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  Consider the example of a mesh containing lines on which values are
@@ -38,14 +37,13 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkMesh.h"
 #include "itkLineCell.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -57,10 +55,9 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float                             PixelType;
-  typedef itk::Mesh< PixelType, 2 >         MeshType;
+  typedef float                     PixelType;
+  typedef itk::Mesh< PixelType, 2 > MeshType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -72,10 +69,9 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellType                CellType;
-  typedef itk::LineCell< CellType >         LineType;
+  typedef MeshType::CellType        CellType;
+  typedef itk::LineCell< CellType > LineType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -95,7 +91,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
 
   typedef MeshType::PointType PointType;
   PointType point;
@@ -103,12 +99,11 @@ int main(int, char *[])
   const unsigned int numberOfPoints = 10;
   for(unsigned int id=0; id<numberOfPoints; id++)
     {
-    point[0] = static_cast<PointType::ValueType>( id ); // x
-    point[1] = vcl_log( static_cast<double>( id ) + vnl_math::eps );    // y
+    point[0] = static_cast<PointType::ValueType>( id );              // x
+    point[1] = vcl_log( static_cast<double>( id ) + vnl_math::eps ); // y
     mesh->SetPoint( id, point );
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -126,7 +121,7 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   CellType::CellAutoPointer line;
-  const unsigned int numberOfCells = numberOfPoints-1;
+  const unsigned int        numberOfCells = numberOfPoints-1;
   for(unsigned int cellId=0; cellId<numberOfCells; cellId++)
     {
     line.TakeOwnership(  new LineType  );
@@ -136,10 +131,8 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   std::cout << "Points = " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "Cells  = " << mesh->GetNumberOfCells()  << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -159,7 +152,6 @@ int main(int, char *[])
     }
 
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -182,7 +174,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Neither \code{SetCellData()} or \code{GetCellData()} are efficient ways
@@ -194,7 +185,6 @@ int main(int, char *[])
   // Software Guide : BeginCodeSnippet
   typedef MeshType::CellDataContainer::ConstIterator CellDataIterator;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -219,7 +209,6 @@ int main(int, char *[])
   CellDataIterator cellDataIterator  = mesh->GetCellData()->Begin();
   CellDataIterator end               = mesh->GetCellData()->End();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

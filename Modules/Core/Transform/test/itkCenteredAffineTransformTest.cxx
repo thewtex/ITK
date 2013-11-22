@@ -27,7 +27,8 @@ typedef  itk::Vector<double, 2>    VectorType;
 namespace
 {
 
-void PrintVector( const VectorType & v )
+void
+PrintVector( const VectorType & v )
 {
   for( unsigned int i = 0; i < VectorType::Dimension; i++ )
     {
@@ -38,7 +39,8 @@ void PrintVector( const VectorType & v )
 
 }
 
-int itkCenteredAffineTransformTest(int, char *[])
+int
+itkCenteredAffineTransformTest(int, char *[])
 {
 
   int any = 0;         // Any errors detected in testing?

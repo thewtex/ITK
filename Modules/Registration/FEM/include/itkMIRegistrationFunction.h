@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKFEMRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class MIRegistrationFunction:
+class MIRegistrationFunction :
   public PDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage, TDisplacementField >
 {
@@ -83,7 +83,7 @@ public:
   /** Displacement field type. */
   typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldTypePointer
-  DisplacementFieldTypePointer;
+    DisplacementFieldTypePointer;
 
   /** Inherit some enums from the superclass. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
@@ -101,7 +101,7 @@ public:
   typedef typename InterpolatorType::Pointer                        InterpolatorPointer;
   typedef typename InterpolatorType::PointType                      PointType;
   typedef LinearInterpolateImageFunction< MovingImageType, CoordRepType >
-  DefaultInterpolatorType;
+    DefaultInterpolatorType;
 
   /** Covariant vector type. */
   typedef CovariantVector< double, itkGetStaticConstMacro(ImageDimension) > CovariantVectorType;
@@ -111,20 +111,30 @@ public:
   typedef typename GradientCalculatorType::Pointer         GradientCalculatorPointer;
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
-  { m_MovingImageInterpolator = ptr; }
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
+  {
+    m_MovingImageInterpolator = ptr;
+  }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
-  { return m_MovingImageInterpolator; }
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
+  {
+    return m_MovingImageInterpolator;
+  }
 
   /** This class uses a constant timestep of 1. */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
-  { return m_TimeStep; }
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
+  {
+    return m_TimeStep;
+  }
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -132,8 +142,11 @@ public:
   }
 
   /** Release memory for global data structure. */
-  virtual void ReleaseGlobalDataPointer(void *GlobalData) const
-  { delete (GlobalDataStruct *)GlobalData;  }
+  virtual void
+  ReleaseGlobalDataPointer(void *GlobalData) const
+  {
+    delete (GlobalDataStruct *)GlobalData;
+  }
 
   /** Set the object's state before each iteration. */
   virtual void InitializeIteration();
@@ -144,13 +157,21 @@ public:
                                     void *globalData,
                                     const FloatOffsetType & offset = FloatOffsetType(0.0) );
 
-  void SetMinNorm(float ts = 1.0) { m_Minnorm = ts; }
+  void
+  SetMinNorm(float ts = 1.0) {
+    m_Minnorm = ts;
+  }
 
-  void SetDoInverse(bool b = false) { m_DoInverse = b; }
+  void
+  SetDoInverse(bool b = false) {
+    m_DoInverse = b;
+  }
 
 protected:
   MIRegistrationFunction();
-  ~MIRegistrationFunction() {}
+  ~MIRegistrationFunction() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** FixedImage image neighborhood iterator type. */
@@ -160,7 +181,7 @@ protected:
    * iterators for the fixed image. */
   struct GlobalDataStruct {
     FixedImageNeighborhoodIteratorType m_FixedImageIterator;
-  };
+    };
 
   /** The global timestep. */
   TimeStepType m_TimeStep;

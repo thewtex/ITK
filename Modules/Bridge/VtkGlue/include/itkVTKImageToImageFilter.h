@@ -48,10 +48,10 @@ class VTKImageToImageFilter : public VTKImageImport< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef VTKImageToImageFilter             Self;
-  typedef VTKImageImport< TOutputImage >    Superclass;
-  typedef SmartPointer<Self>                Pointer;
-  typedef SmartPointer<const Self>          ConstPointer;
+  typedef VTKImageToImageFilter          Self;
+  typedef VTKImageImport< TOutputImage > Superclass;
+  typedef SmartPointer<Self>             Pointer;
+  typedef SmartPointer<const Self>       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -65,6 +65,7 @@ public:
 
   /** Set the input in the form of a vtkImageData */
   void SetInput( vtkImageData * );
+
   using Superclass::SetInput;
 
   /** Return the internal VTK image exporter filter.
@@ -80,11 +81,12 @@ public:
 
 protected:
   VTKImageToImageFilter();
-  virtual ~VTKImageToImageFilter();
+  virtual
+  ~VTKImageToImageFilter();
 
 private:
   VTKImageToImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);        //purposely not implemented
 
   typedef vtkSmartPointer<vtkImageExport> ImageExportPointer;
   ImageExportPointer m_Exporter;

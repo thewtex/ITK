@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 
-class SPSAOptimizer:
+class SPSAOptimizer :
   public SingleValuedNonLinearOptimizer
 {
 public:
@@ -121,15 +121,29 @@ public:
   itkSetMacro(Sa, double);
   itkGetConstMacro(Sa, double);
   // For backward compatibility
-  void Seta(double a) { SetSa(a); }
-  double Geta() { return GetSa(); }
+  void
+  Seta(double a) {
+    SetSa(a);
+  }
+
+  double
+  Geta() {
+    return GetSa();
+  }
 
   /** Set/Get c. */
   itkSetMacro(Sc, double);
   itkGetConstMacro(Sc, double);
   // For backward compatibility
-  void Setc(double c) { SetSc(c); }
-  double Getc() { return GetSc(); }
+  void
+  Setc(double c) {
+    SetSc(c);
+  }
+
+  double
+  Getc() {
+    return GetSc();
+  }
 
   /** Set/Get A. */
   itkSetMacro(A, double);
@@ -147,14 +161,29 @@ public:
   itkGetConstMacro(Maximize, bool);
   itkSetMacro(Maximize, bool);
   itkBooleanMacro(Maximize);
-  bool GetMinimize() const
-  { return !m_Maximize; }
-  void SetMinimize(bool v)
-  { this->SetMaximize(!v); }
-  void MinimizeOn()
-  { this->MaximizeOff(); }
-  void MinimizeOff()
-  { this->MaximizeOn(); }
+  bool
+  GetMinimize() const
+  {
+    return !m_Maximize;
+  }
+
+  void
+  SetMinimize(bool v)
+  {
+    this->SetMaximize(!v);
+  }
+
+  void
+  MinimizeOn()
+  {
+    this->MaximizeOff();
+  }
+
+  void
+  MinimizeOff()
+  {
+    this->MaximizeOn();
+  }
 
   /** Set/Get the number of perturbation used to construct
    * a gradient estimate g_k.
@@ -199,7 +228,9 @@ public:
 protected:
 
   SPSAOptimizer();
-  virtual ~SPSAOptimizer() {}
+  virtual
+  ~SPSAOptimizer() {
+  }
 
   /** PrintSelf method. */
   void PrintSelf(std::ostream & os, Indent indent) const;

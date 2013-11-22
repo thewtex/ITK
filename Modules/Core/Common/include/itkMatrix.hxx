@@ -116,6 +116,7 @@ Matrix< T, NRows, NColumns >
 ::operator*(const CompatibleSquareMatrixType & matrix) const
 {
   const Self result( m_Matrix * matrix.GetVnlMatrix() );
+
   return result;
 }
 
@@ -238,6 +239,7 @@ Matrix< T, NRows, NColumns >
 {
   return m_Matrix * vc;
 }
+
 } // end namespace itk
 
 #endif

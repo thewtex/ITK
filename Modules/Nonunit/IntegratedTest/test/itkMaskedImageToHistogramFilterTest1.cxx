@@ -26,25 +26,26 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkMaskedImageToHistogramFilterTest1( int argc, char * argv [] )
+int
+itkMaskedImageToHistogramFilterTest1( int argc, char * argv [] )
 {
 
   if( argc < 6 )
     {
     std::cerr << "Missing command line arguments" << std::endl;
-    std::cerr << "Usage :  " << argv[0] << " inputImageFileName inputImageFileName maskImage maskValue outputHistogramFile" << std::endl;
+    std::cerr << "Usage :  " << argv[0] <<
+      " inputImageFileName inputImageFileName maskImage maskValue outputHistogramFile" << std::endl;
     return EXIT_FAILURE;
     }
 
-
-  typedef unsigned char                                   PixelComponentType;
-  const unsigned int                                      Dimension = 3;
-  typedef itk::Vector< PixelComponentType, 2 >            VectorPixelType;
+  typedef unsigned char PixelComponentType;
+  const unsigned int Dimension = 3;
+  typedef itk::Vector< PixelComponentType, 2 > VectorPixelType;
 
   typedef itk::Image< unsigned char, Dimension >   ImageType;
   typedef itk::Image< VectorPixelType, Dimension > VectorImageType;
 
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
@@ -56,21 +57,22 @@ int itkMaskedImageToHistogramFilterTest1( int argc, char * argv [] )
 
   typedef itk::ComposeImageFilter< ImageType, VectorImageType > ComposeType;
   ComposeType::Pointer compose = ComposeType::New();
-  compose->SetInput1(reader->GetOutput());
-  compose->SetInput2(reader2->GetOutput());
+  compose->SetInput1(reader->GetOutput() );
+  compose->SetInput2(reader2->GetOutput() );
 
-  typedef itk::Statistics::MaskedImageToHistogramFilter< VectorImageType, ImageType >   HistogramFilterType;
+  typedef itk::Statistics::MaskedImageToHistogramFilter< VectorImageType, ImageType > HistogramFilterType;
   HistogramFilterType::Pointer histogramFilter = HistogramFilterType::New();
   histogramFilter->SetInput( compose->GetOutput() );
   histogramFilter->SetMaskImage( reader3->GetOutput() );
   histogramFilter->SetMaskValue( atoi(argv[4]) );
   itk::SimpleFilterWatcher watcher(histogramFilter, "filter");
 
-  typedef HistogramFilterType::HistogramType       HistogramType;
-  typedef HistogramFilterType::HistogramSizeType   SizeType;
+  typedef HistogramFilterType::HistogramType     HistogramType;
+  typedef HistogramFilterType::HistogramSizeType SizeType;
 
 //   // Setting bin mins and max
-//   typedef HistogramFilterType::HistogramMeasurementVectorType  HistogramMeasurementVectorType;
+//   typedef HistogramFilterType::HistogramMeasurementVectorType
+//  HistogramMeasurementVectorType;
 //   HistogramMeasurementVectorType histogramBinMinimum( 2 );
 //   histogramBinMinimum[0] = 0;
 //   histogramBinMinimum[1] = 0;
@@ -96,10 +98,11 @@ int itkMaskedImageToHistogramFilterTest1( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  // use a 3D image to check the behavior of HistogramToImageFilter when the image
+  // use a 3D image to check the behavior of HistogramToImageFilter when the
+  // image
   // is of greater dimension than the histogram
-  typedef itk::Image< float, 3 > FloatImageType;
-  typedef itk::HistogramToLogProbabilityImageFilter< HistogramType, FloatImageType >   ImageFilterType;
+  typedef itk::Image< float, 3 >                                                     FloatImageType;
+  typedef itk::HistogramToLogProbabilityImageFilter< HistogramType, FloatImageType > ImageFilterType;
   ImageFilterType::Pointer imageFilter = ImageFilterType::New();
   imageFilter->SetInput( histogramFilter->GetOutput() );
 
@@ -107,7 +110,7 @@ int itkMaskedImageToHistogramFilterTest1( int argc, char * argv [] )
   RescaleType::Pointer rescale = RescaleType::New();
   rescale->SetInput( imageFilter->GetOutput() );
 
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetInput( rescale->GetOutput() );
   writer->SetFileName( argv[5] );
@@ -122,7 +125,8 @@ int itkMaskedImageToHistogramFilterTest1( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  // print the image produced by HistogramToLogProbabilityImageFilter for visual inspection
+  // print the image produced by HistogramToLogProbabilityImageFilter for visual
+  // inspection
   imageFilter->GetOutput()->Print(std::cout);
 
   return EXIT_SUCCESS;

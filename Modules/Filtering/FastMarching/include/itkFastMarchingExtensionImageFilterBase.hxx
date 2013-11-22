@@ -23,8 +23,8 @@
 namespace itk
 {
 template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
+          typename TAuxValue,
+          unsigned int VAuxDimension >
 FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::FastMarchingExtensionImageFilterBase()
 {
@@ -43,42 +43,42 @@ FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension 
 }
 
 template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
+          typename TAuxValue,
+          unsigned int VAuxDimension >
 void
 FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Aux alive values: ";
   //os << m_AuxiliaryAliveValues.GetPointer() << std::endl;
   os << indent << "Aux trail values: ";
   //os << m_AuxiliaryTrialValues.GetPointer() << std::endl;
 }
 
-
- template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
+template< typename TInput, typename TOutput,
+          typename TAuxValue,
+          unsigned int VAuxDimension >
 typename FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::AuxImageType *
 FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::GetAuxiliaryImage(const unsigned int& idx)
-{
+  {
   if ( idx >= AuxDimension || this->GetNumberOfIndexedOutputs() < idx + 2 )
     {
     return NULL;
     }
 
   return static_cast< AuxImageType * >( this->ProcessObject::GetOutput(idx + 1) );
-}
+  }
 
 /*
  *
  */
 template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
+          typename TAuxValue,
+          unsigned int VAuxDimension >
 void
 FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::GenerateOutputInformation()
@@ -100,8 +100,8 @@ FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension 
  *
  */
 template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
+          typename TAuxValue,
+          unsigned int VAuxDimension >
 void
 FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::EnlargeOutputRequestedRegion(
@@ -121,8 +121,8 @@ FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension 
  *
  */
 template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
+          typename TAuxValue,
+          unsigned int VAuxDimension >
 void
 FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::InitializeOutput(OutputImageType* oImage)
@@ -211,8 +211,8 @@ FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension 
 }
 
 template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
+          typename TAuxValue,
+          unsigned int VAuxDimension >
 void
 FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension >
 ::UpdateValue( OutputImageType* oImage, const NodeType& iNode )
@@ -237,7 +237,7 @@ FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension 
   InternalNodeStructure temp_node;
 
   OutputPixelType outputPixel =
-      static_cast< OutputPixelType >( this->Solve( oImage, iNode, NodesUsed ) );
+    static_cast< OutputPixelType >( this->Solve( oImage, iNode, NodesUsed ) );
 
   if ( outputPixel < this->m_LargeValue )
     {
@@ -285,6 +285,7 @@ FastMarchingExtensionImageFilterBase< TInput, TOutput, TAuxValue, VAuxDimension 
       }
     }
 }
+
 } // namespace itk
 
 #endif

@@ -73,12 +73,12 @@ class InitializationBiasedParticleSwarmOptimizer :
 {
 public:
   /** Standard "Self" typedef. */
-  typedef InitializationBiasedParticleSwarmOptimizer  Self;
-  typedef ParticleSwarmOptimizerBase                  Superclass;
-  typedef SmartPointer<Self>                          Pointer;
-  typedef SmartPointer<const Self>                    ConstPointer;
+  typedef InitializationBiasedParticleSwarmOptimizer Self;
+  typedef ParticleSwarmOptimizerBase                 Superclass;
+  typedef SmartPointer<Self>                         Pointer;
+  typedef SmartPointer<const Self>                   ConstPointer;
 
-  typedef double                                      CoefficientType;
+  typedef double CoefficientType;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self )
@@ -114,20 +114,24 @@ public:
 
 protected:
   InitializationBiasedParticleSwarmOptimizer();
-  virtual ~InitializationBiasedParticleSwarmOptimizer() {};
+  virtual
+  ~InitializationBiasedParticleSwarmOptimizer() {
+  }
+
   void PrintSelf(std::ostream& os, Indent indent) const;
+
   virtual void UpdateSwarm();
 
 private:
-    //purposely not implemented
+  //purposely not implemented
   InitializationBiasedParticleSwarmOptimizer(const Self&);
-    //purposely not implemented
+  //purposely not implemented
   void operator=(const Self&);
 
-  ParametersType::ValueType                    m_InertiaCoefficient;
-  ParametersType::ValueType                    m_PersonalCoefficient;
-  ParametersType::ValueType                    m_GlobalCoefficient;
-  ParametersType::ValueType                    m_InitializationCoefficient;
+  ParametersType::ValueType m_InertiaCoefficient;
+  ParametersType::ValueType m_PersonalCoefficient;
+  ParametersType::ValueType m_GlobalCoefficient;
+  ParametersType::ValueType m_InitializationCoefficient;
 };
 
 } // end namespace itk

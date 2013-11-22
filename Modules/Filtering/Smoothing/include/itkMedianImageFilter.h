@@ -49,7 +49,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class MedianImageFilter:
+class MedianImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -97,7 +97,9 @@ public:
 
 protected:
   MedianImageFilter();
-  virtual ~MedianImageFilter() {}
+  virtual
+  ~MedianImageFilter() {
+  }
 
   /** MedianImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData()
@@ -115,6 +117,7 @@ protected:
 private:
   MedianImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

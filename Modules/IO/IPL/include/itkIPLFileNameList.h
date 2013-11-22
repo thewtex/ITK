@@ -82,7 +82,9 @@ public:
     m_Data = data;
   }
 
-  virtual ~IPLFileSortInfo() {}
+  virtual
+  ~IPLFileSortInfo() {
+  }
 
   IPLSetMacro(ImageFileName, std::string);
   IPLGetMacro(ImageFileName, std::string);
@@ -137,7 +139,8 @@ public:
     m_SortOrder = SortGlobalAscend;
   }
 
-  virtual ~IPLFileNameList()
+  virtual
+  ~IPLFileNameList()
   {
     IteratorType it = begin();
     IteratorType itend = end();
@@ -149,23 +152,26 @@ public:
       }
   }
 
-  IteratorType begin()
+  IteratorType
+  begin()
   {
     return m_List.begin();
   }
 
-  IteratorType end()
+  IteratorType
+  end()
   {
     return m_List.end();
   }
 
-  IPLFileSortInfo * operator[](unsigned int __n)
+  IPLFileSortInfo *
+  operator[](unsigned int __n)
   {
     IteratorType it = begin();
     IteratorType itend = end();
 
     for ( unsigned int i = 0; it != itend && i != __n; it++, i++ )
-        {}
+            {}
     if ( it == itend )
       {
       return 0;
@@ -173,21 +179,23 @@ public:
     return *it;
   }
 
-  ListSizeType NumFiles() const
+  ListSizeType
+  NumFiles() const
   {
     return m_List.size();
   }
 
-  bool AddElementToList(char const *const filename,
-                        const float sliceLocation,
-                        const int offset,
-                        const int XDim,
-                        const int YDim,
-                        const float XRes,
-                        const float YRes,
-                        const int imageNumber,
-                        const int Key1,
-                        const int Key2)
+  bool
+  AddElementToList(char const *const filename,
+                   const float sliceLocation,
+                   const int offset,
+                   const int XDim,
+                   const int YDim,
+                   const float XRes,
+                   const float YRes,
+                   const int imageNumber,
+                   const int Key1,
+                   const int Key2)
   {
     if ( m_List.empty() )
       {
@@ -228,7 +236,8 @@ public:
     return true;
   }
 
-  void RemoveElementFromList(const int ElementToRemove)
+  void
+  RemoveElementFromList(const int ElementToRemove)
   {
     IteratorType it = m_List.begin();
     IteratorType itend = m_List.end();
@@ -254,7 +263,8 @@ public:
 
   void sortImageListDescend();
 
-  ListSizeType GetnumImageInfoStructs() const
+  ListSizeType
+  GetnumImageInfoStructs() const
   {
     return m_List.size();
   }

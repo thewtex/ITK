@@ -21,8 +21,8 @@
 
 #include "itkBinaryFillholeImageFilter.h"
 
-
-int itkBinaryFillholeImageFilterTest1(int argc, char * argv[])
+int
+itkBinaryFillholeImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 5 )
@@ -41,7 +41,7 @@ int itkBinaryFillholeImageFilterTest1(int argc, char * argv[])
   reader->SetFileName( argv[1] );
   reader->Update();
 
- typedef itk::BinaryFillholeImageFilter< IType > I2LType;
+  typedef itk::BinaryFillholeImageFilter< IType > I2LType;
   I2LType::Pointer reconstruction = I2LType::New();
   reconstruction->SetInput( reader->GetOutput() );
   reconstruction->SetFullyConnected( atoi(argv[3]) );

@@ -50,8 +50,8 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInput = float, typename TOutput = double >
-class RegularizedHeavisideStepFunction:
-    public HeavisideStepFunctionBase< TInput, TOutput >
+class RegularizedHeavisideStepFunction :
+  public HeavisideStepFunctionBase< TInput, TOutput >
 {
 public:
   typedef RegularizedHeavisideStepFunction             Self;
@@ -71,7 +71,8 @@ public:
 
 protected:
   RegularizedHeavisideStepFunction();
-  virtual ~RegularizedHeavisideStepFunction();
+  virtual
+  ~RegularizedHeavisideStepFunction();
 
 private:
   RegularizedHeavisideStepFunction(const Self &); //purposely not implemented

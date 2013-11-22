@@ -26,7 +26,7 @@ namespace itk
 /** Default constructor */
 template< typename TValueType >
 Array< TValueType >
-::Array():vnl_vector< TValueType >()
+::Array() : vnl_vector< TValueType >()
 {
   m_LetArrayManageMemory = true;
 }
@@ -36,16 +36,16 @@ template < typename TValueType >
 Array<TValueType>
 ::Array(const Self & rhs)
   : vnl_vector<TValueType>(rhs),
-    // The vnl vector copy constructor creates new memory
-    // no matter the setting of let array manage memory of rhs
-    m_LetArrayManageMemory(true)
+  // The vnl vector copy constructor creates new memory
+  // no matter the setting of let array manage memory of rhs
+  m_LetArrayManageMemory(true)
 {
 }
 
 /** Constructor with size */
 template< typename TValueType >
 Array< TValueType >
-::Array(SizeValueType dimension):vnl_vector< TValueType >(dimension)
+::Array(SizeValueType dimension) : vnl_vector< TValueType >(dimension)
 {
   m_LetArrayManageMemory = true;
 }
@@ -124,7 +124,8 @@ Array< TValueType >
 }
 
 template< typename TValueType >
-void Array< TValueType >
+void
+Array< TValueType >
 ::SetSize(SizeValueType sz)
 {
   if ( this->size() != sz )
@@ -162,6 +163,7 @@ Array< TValueType >
 
     // Call the superclass implementation
     this->VnlVectorType::operator=(rhs);
+
     }
   return *this;
 }
@@ -183,9 +185,11 @@ Array< TValueType >
 
     // Call the superclass implementation
     this->VnlVectorType::operator=(rhs);
+
     }
   return *this;
 }
+
 } // namespace itk
 
 #endif

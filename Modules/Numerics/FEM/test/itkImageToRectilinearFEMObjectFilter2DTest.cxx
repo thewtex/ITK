@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkImageToRectilinearFEMObjectFilter.h"
 #include "itkImageFileReader.h"
 #include "itkFEMElement2DC0LinearQuadrilateralMembrane.h"
 
-int itkImageToRectilinearFEMObjectFilter2DTest(int argc, char *argv[])
+int
+itkImageToRectilinearFEMObjectFilter2DTest(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -159,14 +159,13 @@ int itkImageToRectilinearFEMObjectFilter2DTest(int argc, char *argv[])
     std::cout << " [PASSED]" << std::endl;
     }
 
-
   std::cout << "Material Property Test :";
 
   ElasticityType * m1 = dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() );
 
   if ( (m1->GetYoungsModulus() != 3000.0) ||
-      (m1->GetCrossSectionalArea() != 0.02) ||
-      (m1->GetMomentOfInertia() != 0.004) )
+       (m1->GetCrossSectionalArea() != 0.02) ||
+       (m1->GetMomentOfInertia() != 0.004) )
     {
     std::cout << " [FAILED]" << std::endl;
     std::cout << "\tExpected  3000.0, 0.02, 0.004" << " Obtained ";
@@ -178,7 +177,7 @@ int itkImageToRectilinearFEMObjectFilter2DTest(int argc, char *argv[])
   else
     {
     std::cout << " [PASSED]" << std::endl;
-   }
+    }
 
   const unsigned int numberOfNodesToTest = static_cast<unsigned int>( atoi( argv[8] ) );
   for( unsigned int i = 0; i < numberOfNodesToTest; i++ )

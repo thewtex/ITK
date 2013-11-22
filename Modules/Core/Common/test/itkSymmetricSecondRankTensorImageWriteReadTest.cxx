@@ -20,9 +20,9 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 // Write a 2D SymmetricSecondRankTensor image to file and read it back again.
-int itkSymmetricSecondRankTensorImageWriteReadTest( int ac, char* av[] )
+int
+itkSymmetricSecondRankTensorImageWriteReadTest( int ac, char* av[] )
 {
   if(ac < 1)
     {
@@ -30,8 +30,8 @@ int itkSymmetricSecondRankTensorImageWriteReadTest( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::SymmetricSecondRankTensor<float, 2>    TensorPixelType;
-  typedef itk::Image<TensorPixelType, 2>              TensorImageType;
+  typedef itk::SymmetricSecondRankTensor<float, 2> TensorPixelType;
+  typedef itk::Image<TensorPixelType, 2>           TensorImageType;
 
   TensorImageType::Pointer tensorImageInput = TensorImageType::New();
 
@@ -62,7 +62,7 @@ int itkSymmetricSecondRankTensorImageWriteReadTest( int ac, char* av[] )
     {
     itr.Set( tensorPixelInput );
     for(unsigned int i=0; i<3; i++)
-        tensorPixelInput[i]++;
+      tensorPixelInput[i]++;
     ++itr;
     }
 

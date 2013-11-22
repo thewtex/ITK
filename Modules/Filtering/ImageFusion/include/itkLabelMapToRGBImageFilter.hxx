@@ -31,23 +31,22 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
 {
 }
 
-
 template<typename TInputImage, typename TOutputImage>
 void
 LabelMapToRGBImageFilter<TInputImage, TOutputImage>
 ::BeforeThreadedGenerateData()
 {
-  OutputImageType * output = this->GetOutput();
+  OutputImageType *      output = this->GetOutput();
   const InputImageType * input = this->GetInput();
 
   FunctorType function;
+
   function.SetBackgroundValue( input->GetBackgroundValue() );
   output->FillBuffer( function( input->GetBackgroundValue() ) );
 
   Superclass::BeforeThreadedGenerateData();
 
 }
-
 
 template<typename TInputImage, typename TOutputImage>
 void
@@ -56,14 +55,14 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
 {
   const typename LabelObjectType::LabelType & label = labelObject->GetLabel();
 
-  typedef typename LabelObjectType::LengthType  LengthType;
+  typedef typename LabelObjectType::LengthType LengthType;
 
   FunctorType function;
   function.SetBackgroundValue( this->GetInput()->GetBackgroundValue() );
 
   typename LabelObjectType::ConstIndexIterator it( labelObject );
-  TOutputImage *outputImage = this->GetOutput();
-  while( ! it.IsAtEnd() )
+  TOutputImage *                               outputImage = this->GetOutput();
+  while( !it.IsAtEnd() )
     {
     const IndexType idx = it.GetIndex();
     outputImage->SetPixel( idx, function( label ) );
@@ -92,6 +91,5 @@ LabelMapToRGBImageFilter<TInputImage, TOutputImage>
     }
 }
 
-
-}// end namespace itk
+} // end namespace itk
 #endif

@@ -227,7 +227,7 @@ PermuteAxesImageFilter< TImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
-  unsigned int  j;
+  unsigned int j;
 
   // Get the input and output pointers
   typename Superclass::InputImageConstPointer inputPtr = this->GetInput();
@@ -260,6 +260,7 @@ PermuteAxesImageFilter< TImage >
     progress.CompletedPixel();
     }
 }
+
 } // namespace itk
 
 #endif

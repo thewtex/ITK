@@ -18,7 +18,8 @@
 #include "itkImage.h"
 #include "itkAddImageFilter.h"
 
-int itkImageToImageToleranceTest( int, char * [] )
+int
+itkImageToImageToleranceTest( int, char * [] )
 {
   typedef itk::Image<unsigned char,3> ImageType;
 

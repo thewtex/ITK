@@ -61,6 +61,7 @@ public:
    * list.
    */
   ConstTransformListType &GetTransformList(const TransformType *transform);
+
   /** set a compositeTransform's transform list from a
    ** TransformIOABase::TransformList.  If there is any mismatch
    ** between a transform being added to composite and the composite,

@@ -48,12 +48,13 @@ namespace itk
  * \ingroup ITKCommon
  */
 struct ITKCommon_EXPORT ImageSourceCommon
-{
+  {
   /**
    * Provide access to a common static object for image region splitting
    */
   static  const ImageRegionSplitterBase*  GetGlobalDefaultSplitter(void);
-};
+
+  };
 
 /** \class ImageSource
  *  \brief Base class for all process objects that output image data.
@@ -160,6 +161,7 @@ public:
    * outputs.
    */
   OutputImageType * GetOutput(void);
+
   const OutputImageType * GetOutput(void) const;
 
   OutputImageType * GetOutput(unsigned int idx);
@@ -234,7 +236,9 @@ public:
 
 protected:
   ImageSource();
-  virtual ~ImageSource() {}
+  virtual
+  ~ImageSource() {
+  }
 
   /** A version of GenerateData() specific for image processing
    * filters.  This implementation will split the processing across
@@ -296,7 +300,9 @@ protected:
    *      4) Call AfterThreadedGenerateData()
    * Note that this flow of control is only available if a filter provides
    * a ThreadedGenerateData() method and NOT a GenerateData() method. */
-  virtual void BeforeThreadedGenerateData() {}
+  virtual void
+  BeforeThreadedGenerateData() {
+  }
 
   /** If an imaging filter needs to perform processing after all
    * processing threads have completed, the filter can can provide an
@@ -308,14 +314,17 @@ protected:
    *      4) Call AfterThreadedGenerateData()
    * Note that this flow of control is only available if a filter provides
    * a ThreadedGenerateData() method and NOT a GenerateData() method. */
-  virtual void AfterThreadedGenerateData() {}
+  virtual void
+  AfterThreadedGenerateData() {
+  }
 
   /** \brief Returns the default image region splitter
    *
    * This is an adapter function from the private common base class to
    * the interface of this class.
    */
-  static const ImageRegionSplitterBase* GetGlobalDefaultSplitter()
+  static const ImageRegionSplitterBase*
+  GetGlobalDefaultSplitter()
   {
     return ImageSourceCommon::GetGlobalDefaultSplitter();
   }
@@ -358,11 +367,12 @@ protected:
     */
   struct ThreadStruct {
     Pointer Filter;
-  };
+    };
 
 private:
   ImageSource(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

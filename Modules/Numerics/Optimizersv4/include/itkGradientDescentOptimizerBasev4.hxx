@@ -31,12 +31,14 @@ GradientDescentOptimizerBasev4Template<TInternalComputationValueType>
 ::GradientDescentOptimizerBasev4Template()
 {
   /** Threader for apply scales to gradient */
-  typename GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate<TInternalComputationValueType>::Pointer modifyGradientByScalesThreader =
+  typename GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate<TInternalComputationValueType>::Pointer
+  modifyGradientByScalesThreader =
     GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate<TInternalComputationValueType>::New();
   this->m_ModifyGradientByScalesThreader = modifyGradientByScalesThreader;
 
   /** Threader for apply the learning rate to gradient */
-  typename GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate<TInternalComputationValueType>::Pointer modifyGradientByLearningRateThreader =
+  typename GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate<TInternalComputationValueType>::
+  Pointer modifyGradientByLearningRateThreader =
     GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate<TInternalComputationValueType>::New();
   this->m_ModifyGradientByLearningRateThreader = modifyGradientByLearningRateThreader;
 
@@ -50,7 +52,8 @@ GradientDescentOptimizerBasev4Template<TInternalComputationValueType>
 template<typename TInternalComputationValueType>
 GradientDescentOptimizerBasev4Template<TInternalComputationValueType>
 ::~GradientDescentOptimizerBasev4Template()
-{}
+{
+}
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
@@ -59,12 +62,12 @@ GradientDescentOptimizerBasev4Template<TInternalComputationValueType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number of iterations: " << this->m_NumberOfIterations  << std::endl;
   os << indent << "Current iteration: " << this->m_CurrentIteration << std::endl;
   os << indent << "Stop condition:"<< this->m_StopCondition << std::endl;
   os << indent << "Stop condition description: " << this->m_StopConditionDescription.str()  << std::endl;
 }
-
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
@@ -82,7 +85,7 @@ GradientDescentOptimizerBasev4Template<TInternalComputationValueType>
 ::StopOptimization(void)
 {
   itkDebugMacro( "StopOptimization called with a description - "
-    << this->GetStopConditionDescription() );
+                 << this->GetStopConditionDescription() );
   this->m_Stop = true;
   this->InvokeEvent( EndEvent() );
 }
@@ -105,7 +108,8 @@ GradientDescentOptimizerBasev4Template<TInternalComputationValueType>
 
   if( this->m_Metric->HasLocalSupport() )
     {
-    // Inheriting classes should instantiate and assign m_ModifyGradientByScalesThreader
+    // Inheriting classes should instantiate and assign
+    // m_ModifyGradientByScalesThreader
     // in their constructor.
     itkAssertInDebugAndIgnoreInReleaseMacro( !m_ModifyGradientByScalesThreader.IsNull() );
 
@@ -125,12 +129,14 @@ GradientDescentOptimizerBasev4Template<TInternalComputationValueType>
 ::ModifyGradientByLearningRate()
 {
   IndexRangeType fullrange;
+
   fullrange[0] = 0;
   fullrange[1] = this->m_Gradient.GetSize()-1; //range is inclusive
   /* Perform the modification either with or without threading */
   if( this->m_Metric->HasLocalSupport() )
     {
-    // Inheriting classes should instantiate and assign m_ModifyGradientByLearningRateThreader
+    // Inheriting classes should instantiate and assign
+    // m_ModifyGradientByLearningRateThreader
     // in their constructor.
     itkAssertInDebugAndIgnoreInReleaseMacro( !m_ModifyGradientByLearningRateThreader.IsNull() );
     /* Add a check for m_LearningRateIsIdentity?

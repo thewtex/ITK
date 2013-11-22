@@ -47,7 +47,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TFeatureImage, typename TOutputPixel >
-class ShapePriorMAPCostFunction:
+class ShapePriorMAPCostFunction :
   public ShapePriorMAPCostFunctionBase< TFeatureImage, TOutputPixel >
 {
 public:
@@ -142,7 +142,9 @@ public:
 
 protected:
   ShapePriorMAPCostFunction();
-  virtual ~ShapePriorMAPCostFunction() {}
+  virtual
+  ~ShapePriorMAPCostFunction() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

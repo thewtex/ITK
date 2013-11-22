@@ -26,15 +26,16 @@ namespace itk
 template< unsigned int NDimensions >
 MetaDTITubeConverter< NDimensions >
 ::MetaDTITubeConverter()
-{}
+{
+}
 
 template< unsigned int NDimensions >
 typename MetaDTITubeConverter< NDimensions >::MetaObjectType *
 MetaDTITubeConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new DTITubeMetaObjectType);
-}
+  }
 
 /** Convert a MetaDTITube into an Tube SpatialObject  */
 template< unsigned int NDimensions >
@@ -43,6 +44,7 @@ MetaDTITubeConverter< NDimensions >
 ::MetaObjectToSpatialObject(const MetaObjectType *mo)
 {
   const MetaDTITube *tube = dynamic_cast<const MetaDTITube *>(mo);
+
   if(tube == 0)
     {
     itkExceptionMacro(<< "Can't downcast MetaObject to MetaDTITube");
@@ -111,7 +113,7 @@ MetaDTITubeConverter< NDimensions >
            && ( ( *extraIt ).first != "blue" )
            && ( ( *extraIt ).first != "alpha" )
            && ( ( *extraIt ).first != "id" )
-            )
+           )
         {
         pnt.AddField( ( *extraIt ).first.c_str(), ( *extraIt ).second );
         }
@@ -210,10 +212,11 @@ template< unsigned int NDimensions >
 typename MetaDTITubeConverter<NDimensions>::MetaObjectType *
 MetaDTITubeConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
-{
+  {
   DTITubeSpatialObjectConstPointer DTITubeSO =
     dynamic_cast<const DTITubeSpatialObjectType *>(spatialObject);
-  if(DTITubeSO.IsNull())
+
+  if(DTITubeSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to DTITubeSpatialObject");
     }
@@ -264,7 +267,7 @@ MetaDTITubeConverter< NDimensions >
     if ( ( ( *it ).GetRed() != 1.0 )
          || ( ( *it ).GetGreen() != 0.0 )
          || ( ( *it ).GetBlue() != 0.0 )
-          )
+         )
       {
       writeColor = true;
       }
@@ -379,7 +382,7 @@ MetaDTITubeConverter< NDimensions >
                          ->GetScaleComponent()[ii]);
     }
   return tube;
-}
+  }
 
 } // end namespace itk
 

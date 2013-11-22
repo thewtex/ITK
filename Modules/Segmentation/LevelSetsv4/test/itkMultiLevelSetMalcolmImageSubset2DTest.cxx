@@ -29,7 +29,8 @@
 #include "itkAtanRegularizedHeavisideStepFunction.h"
 #include "itkLevelSetDomainMapImageFilter.h"
 
-int itkMultiLevelSetMalcolmImageSubset2DTest( int argc, char* argv[] )
+int
+itkMultiLevelSetMalcolmImageSubset2DTest( int argc, char* argv[] )
 {
   if( argc < 1 )
     {
@@ -44,22 +45,22 @@ int itkMultiLevelSetMalcolmImageSubset2DTest( int argc, char* argv[] )
   typedef itk::ImageRegionIteratorWithIndex< InputImageType > InputIteratorType;
   typedef itk::ImageFileReader< InputImageType >              ReaderType;
 
-  typedef float                                               PixelType;
-  typedef itk::Image< PixelType, Dimension >                  ImageType;
-  typedef itk::MalcolmSparseLevelSetImage< Dimension >        LevelSetType;
+  typedef float                                        PixelType;
+  typedef itk::Image< PixelType, Dimension >           ImageType;
+  typedef itk::MalcolmSparseLevelSetImage< Dimension > LevelSetType;
 
   typedef LevelSetType::OutputRealType                   LevelSetOutputRealType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
 
-  typedef itk::IdentifierType                                     IdentifierType;
-  typedef itk::LevelSetContainer< IdentifierType, LevelSetType >  LevelSetContainerType;
+  typedef itk::IdentifierType                                    IdentifierType;
+  typedef itk::LevelSetContainer< IdentifierType, LevelSetType > LevelSetContainerType;
 
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
-                                                                      ChanAndVeseInternalTermType;
+    ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType >
-                                                                      ChanAndVeseExternalTermType;
+    ChanAndVeseExternalTermType;
   typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >
-                                                                      TermContainerType;
+    TermContainerType;
 
   typedef itk::LevelSetEquationContainer< TermContainerType >           EquationContainerType;
   typedef itk::LevelSetEvolution< EquationContainerType, LevelSetType > LevelSetEvolutionType;
@@ -74,7 +75,7 @@ int itkMultiLevelSetMalcolmImageSubset2DTest( int argc, char* argv[] )
   typedef itk::Image< short, Dimension >                       CacheImageType;
   typedef itk::ImageRegionIteratorWithIndex< IdListImageType > IdIteratorType;
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
-                                                               DomainMapImageFilterType;
+    DomainMapImageFilterType;
 
   // load binary input
   InputImageType::SizeType size;
@@ -213,7 +214,6 @@ int itkMultiLevelSetMalcolmImageSubset2DTest( int argc, char* argv[] )
   cvExternalTerm0->SetCoefficient( 1.0 );
   std::cout << "LevelSet 0: CV external term created" << std::endl;
 
-
   // Create Term Container
   TermContainerType::Pointer termContainer0 = TermContainerType::New();
   termContainer0->SetInput( input );
@@ -224,14 +224,13 @@ int itkMultiLevelSetMalcolmImageSubset2DTest( int argc, char* argv[] )
   termContainer0->AddTerm( 1, cvExternalTerm0 );
   std::cout << "Term container 0 created" << std::endl;
 
-
   EquationContainerType::Pointer equationContainer = EquationContainerType::New();
   equationContainer->SetLevelSetContainer( lscontainer );
   equationContainer->AddEquation( 0, termContainer0 );
   std::cout << "Equation container created" << std::endl;
 
   typedef itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
-      StoppingCriterionType;
+    StoppingCriterionType;
   StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( 5000 );
   std::cout << "Stopping criterion created" << std::endl;

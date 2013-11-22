@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TValueType >
-class Array2D: public vnl_matrix< TValueType >
+class Array2D : public vnl_matrix< TValueType >
 {
 public:
 
@@ -59,18 +59,24 @@ public:
 
   const Self & operator=(const VnlMatrixType & matrix);
 
-  void Fill(TValueType const & v) { this->fill(v); }
+  void
+  Fill(TValueType const & v) {
+    this->fill(v);
+  }
 
   /** Destructively set the size to that given.  Will lose data.  */
   void SetSize(unsigned int m, unsigned int n);
 
   /** This destructor is not virtual for performance reasons. However, this
    * means that subclasses cannot allocate memory. */
-  ~Array2D() {}
+  ~Array2D() {
+  }
+
 };
 
 template< typename TValueType >
-std::ostream & operator<<(std::ostream & os, const Array2D< TValueType > & arr)
+std::ostream &
+operator<<(std::ostream & os, const Array2D< TValueType > & arr)
 {
   const unsigned int numberOfRows    = arr.rows();
   const unsigned int numberOfColumns = arr.cols();
@@ -95,6 +101,7 @@ std::ostream & operator<<(std::ostream & os, const Array2D< TValueType > & arr)
 
 // declaration of specialization
 template<> ITKCommon_EXPORT std::ostream & operator<<(std::ostream & os, const Array2D< float > & arr);
+
 template<> ITKCommon_EXPORT std::ostream & operator<<(std::ostream & os, const Array2D< double > & arr);
 
 } // namespace itk

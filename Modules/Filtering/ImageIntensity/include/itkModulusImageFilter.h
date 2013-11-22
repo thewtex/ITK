@@ -33,29 +33,35 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class Modulus
 {
 public:
-  Modulus() {  }
-  ~Modulus() {}
+  Modulus() {
+  }
 
-  bool operator!=(const Modulus &) const
+  ~Modulus() {
+  }
+
+  bool
+  operator!=(const Modulus &) const
   {
     return false;
   }
 
-  bool operator==(const Modulus & other) const
+  bool
+  operator==(const Modulus & other) const
   {
     return !( *this != other );
   }
 
- inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
- {
-   if ( B != NumericTraits<TInput2>::Zero )
-     {
-     return static_cast< TOutput >( A % B );
-     }
-   else
-     {
-     return NumericTraits< TOutput >::max( static_cast<TOutput>(A) );
-     }
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
+  {
+    if ( B != NumericTraits<TInput2>::Zero )
+      {
+      return static_cast< TOutput >( A % B );
+      }
+    else
+      {
+      return NumericTraits< TOutput >::max( static_cast<TOutput>(A) );
+      }
   }
 
 };
@@ -71,30 +77,41 @@ template< typename TInput, typename  TOutput >
 class ModulusTransform
 {
 public:
-  ModulusTransform() { m_Dividend = 5; }
-  ~ModulusTransform() {}
-  void SetDividend(TOutput dividend) { m_Dividend = dividend; }
+  ModulusTransform() {
+    m_Dividend = 5;
+  }
 
-  bool operator!=(const ModulusTransform & other) const
-    {
-      if ( m_Dividend != other.m_Dividend )
-        {
-        return true;
-        }
-      return false;
-    }
+  ~ModulusTransform() {
+  }
 
-  bool operator==(const ModulusTransform & other) const
-    {
-      return !( *this != other );
-    }
+  void
+  SetDividend(TOutput dividend) {
+    m_Dividend = dividend;
+  }
 
-  inline TOutput operator()(const TInput & x) const
-    {
-      TOutput result = static_cast< TOutput >( x % m_Dividend );
+  bool
+  operator!=(const ModulusTransform & other) const
+  {
+    if ( m_Dividend != other.m_Dividend )
+      {
+      return true;
+      }
+    return false;
+  }
 
-      return result;
-    }
+  bool
+  operator==(const ModulusTransform & other) const
+  {
+    return !( *this != other );
+  }
+
+  inline TOutput
+  operator()(const TInput & x) const
+  {
+    TOutput result = static_cast< TOutput >( x % m_Dividend );
+
+    return result;
+  }
 
 private:
   TInput m_Dividend;
@@ -116,7 +133,7 @@ private:
  * \ingroup ITKImageIntensity
  */
 template< typename  TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class ModulusImageFilter:
+class ModulusImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Modulus<
@@ -128,16 +145,16 @@ public:
   /** Standard class typedefs. */
   typedef ModulusImageFilter Self;
   typedef BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
-                            Functor::Modulus<
-                              typename TInputImage1::PixelType,
-                              typename TInputImage2::PixelType,
-                              typename TOutputImage::PixelType > > Superclass;
+                                    Functor::Modulus<
+                                      typename TInputImage1::PixelType,
+                                      typename TInputImage2::PixelType,
+                                      typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
-  typedef typename TOutputImage::PixelType                    OutputPixelType;
-  typedef typename TInputImage1::PixelType                    InputPixelType;
+  typedef typename TOutputImage::PixelType OutputPixelType;
+  typedef typename TInputImage1::PixelType InputPixelType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -147,9 +164,15 @@ public:
                UnaryFunctorImageFilter);
 
   /** Set/Get the dividend */
-  virtual void SetDividend( InputPixelType _arg ) { this->SetConstant2(_arg); }
-  virtual const InputPixelType &GetDividend () const { return this->GetConstant2(); }
+  virtual void
+  SetDividend( InputPixelType _arg ) {
+    this->SetConstant2(_arg);
+  }
 
+  virtual const InputPixelType &
+  GetDividend() const {
+    return this->GetConstant2();
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -160,7 +183,9 @@ public:
 
 protected:
   ModulusImageFilter();
-  virtual ~ModulusImageFilter() {}
+  virtual
+  ~ModulusImageFilter() {
+  }
 
 private:
   ModulusImageFilter(const Self &); //purposely not implemented

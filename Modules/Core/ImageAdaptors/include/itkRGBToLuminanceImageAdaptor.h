@@ -49,11 +49,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = static_cast< TInternalType >( input.GetLuminance() ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = static_cast< TInternalType >( input.GetLuminance() );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return static_cast< TExternalType >( input.GetLuminance() ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return static_cast< TExternalType >( input.GetLuminance() );
+  }
+
 };
 } // end namespace Accessor
 
@@ -68,7 +75,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class RGBToLuminanceImageAdaptor:public
+class RGBToLuminanceImageAdaptor : public
   ImageAdaptor< TImage,
                 Accessor::RGBToLuminancePixelAccessor<
                   typename TImage::PixelType,
@@ -90,12 +97,17 @@ public:
   itkTypeMacro(RGBToLuminanceImageAdaptor, ImageAdaptor);
 
 protected:
-  RGBToLuminanceImageAdaptor() {}
-  virtual ~RGBToLuminanceImageAdaptor() {}
+  RGBToLuminanceImageAdaptor() {
+  }
+
+  virtual
+  ~RGBToLuminanceImageAdaptor() {
+  }
 
 private:
   RGBToLuminanceImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

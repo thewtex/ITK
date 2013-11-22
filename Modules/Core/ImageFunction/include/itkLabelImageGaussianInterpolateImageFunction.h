@@ -65,11 +65,11 @@ class LabelImageGaussianInterpolateImageFunction :
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelImageGaussianInterpolateImageFunction                Self;
-  typedef GaussianInterpolateImageFunction<TInputImage, TCoordRep>  Superclass;
-  typedef SmartPointer<Self>                                        Pointer;
-  typedef SmartPointer<const Self>                                  ConstPointer;
-  typedef typename TInputImage::PixelType                           InputPixelType;
+  typedef LabelImageGaussianInterpolateImageFunction               Self;
+  typedef GaussianInterpolateImageFunction<TInputImage, TCoordRep> Superclass;
+  typedef SmartPointer<Self>                                       Pointer;
+  typedef SmartPointer<const Self>                                 ConstPointer;
+  typedef typename TInputImage::PixelType                          InputPixelType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( LabelImageGaussianInterpolateImageFunction, GaussianInterpolateImageFunction );
@@ -101,25 +101,31 @@ public:
   /**
    * Evaluate at the given index
    */
-  virtual OutputType EvaluateAtContinuousIndex(
+  virtual OutputType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & cindex ) const
-    {
+  {
     return this->EvaluateAtContinuousIndex( cindex, NULL );
-    }
+  }
 
 protected:
   LabelImageGaussianInterpolateImageFunction();
-  ~LabelImageGaussianInterpolateImageFunction(){};
+  ~LabelImageGaussianInterpolateImageFunction(){
+  }
 
 private:
-  LabelImageGaussianInterpolateImageFunction( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  LabelImageGaussianInterpolateImageFunction( const Self& ); //purposely not
+                                                             // implemented
+  void operator=( const Self& );                             //purposely not
+
+  // implemented
 
   /**
    * Evaluate function value at the given index
    */
   virtual OutputType EvaluateAtContinuousIndex(
     const ContinuousIndexType &, OutputType * ) const;
+
 };
 
 } // end namespace itk

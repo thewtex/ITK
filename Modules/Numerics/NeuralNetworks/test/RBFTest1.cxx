@@ -25,9 +25,9 @@
 #include "itkKdTreeBasedKmeansEstimator.h"
 #include "itkRBFBackPropagationLearningFunction.h"
 
-#define ROUND(x) (floor(x+0.5))
+#define ROUND(x) (floor(x+0.5) )
 
-  int
+int
 RBFTest1(int argc, char* argv[])
 {
   if (argc < 3)
@@ -53,12 +53,12 @@ RBFTest1(int argc, char* argv[])
   int num_test=200;
 
   MeasurementVectorType mv(num_input_nodes);
-  TargetVectorType tv(num_output_nodes);
-  TargetVectorType ov(num_output_nodes);
-  SampleType::Pointer trainsample = SampleType::New();
-  SampleType::Pointer testsample = SampleType::New();
-  TargetType::Pointer traintargets = TargetType::New();
-  TargetType::Pointer testtargets = TargetType::New();
+  TargetVectorType      tv(num_output_nodes);
+  TargetVectorType      ov(num_output_nodes);
+  SampleType::Pointer   trainsample = SampleType::New();
+  SampleType::Pointer   testsample = SampleType::New();
+  TargetType::Pointer   traintargets = TargetType::New();
+  TargetType::Pointer   testtargets = TargetType::New();
   trainsample->SetMeasurementVectorSize( num_input_nodes);
   traintargets->SetMeasurementVectorSize( num_output_nodes);
   testsample->SetMeasurementVectorSize( num_input_nodes);
@@ -69,7 +69,7 @@ RBFTest1(int argc, char* argv[])
 
   std::ifstream infile1;
   infile1.open(trainFileName, std::ios::in);
-  if (infile1.fail())
+  if (infile1.fail() )
     {
     std::cout << argv[0] << " Cannot open training file for reading: "
               << trainFileName << std::endl;
@@ -92,7 +92,7 @@ RBFTest1(int argc, char* argv[])
   infile1.close();
   std::ifstream infile2;
   infile2.open(testFileName, std::ios::in);
-  if (infile2.fail())
+  if (infile2.fail() )
     {
     std::cout << argv[0] << " Cannot open test file for reading: "
               << testFileName << std::endl;
@@ -126,11 +126,10 @@ RBFTest1(int argc, char* argv[])
   net1->SetClasses(2);
 
   typedef itk::Statistics::RBFBackPropagationLearningFunction<
-    RBFNetworkType::LayerInterfaceType, TargetVectorType> RBFLearningFunctionType;
+      RBFNetworkType::LayerInterfaceType, TargetVectorType> RBFLearningFunctionType;
   RBFLearningFunctionType::Pointer learningfunction=RBFLearningFunctionType::New();
 
-  net1->SetLearningFunction(learningfunction.GetPointer());
-
+  net1->SetLearningFunction(learningfunction.GetPointer() );
 
   //Kmeans Initialization of RBF Centers
   typedef itk::Statistics::WeightedCentroidKdTreeGenerator< SampleType >
@@ -145,8 +144,8 @@ RBFTest1(int argc, char* argv[])
   typedef itk::Statistics::KdTreeBasedKmeansEstimator<TreeType> EstimatorType;
   EstimatorType::Pointer estimator = EstimatorType::New();
 
-  int m1 = rand() % num_train;
-  int m2 = rand() % num_train;
+  int                   m1 = rand() % num_train;
+  int                   m2 = rand() % num_train;
   MeasurementVectorType c1 = trainsample->GetMeasurementVector(m1);
   MeasurementVectorType c2 =  trainsample->GetMeasurementVector(m2);
 
@@ -185,7 +184,7 @@ RBFTest1(int argc, char* argv[])
   net1->SetCenter(initialcenter2);
 
   DistanceMetricType::Pointer DistanceMetric = DistanceMetricType::New();
-  double width = DistanceMetric->Evaluate(initialcenter1,initialcenter2);
+  double                      width = DistanceMetric->Evaluate(initialcenter1,initialcenter2);
 
   net1->SetRadius(2*width);
   net1->SetRadius(2*width);
@@ -206,14 +205,14 @@ RBFTest1(int argc, char* argv[])
   std::cout << "Network Simulation" << std::endl;
   SampleType::ConstIterator iter1 = testsample->Begin();
   TargetType::ConstIterator iter2 = testtargets->Begin();
-  unsigned int error1 = 0;
-  unsigned int error2 = 0;
-  int flag;
-  int class_id;
-  std::ofstream outfile;
+  unsigned int              error1 = 0;
+  unsigned int              error2 = 0;
+  int                       flag;
+  int                       class_id;
+  std::ofstream             outfile;
   outfile.open("out1.txt",std::ios::out);
   int count =0;
-  while (iter1 != testsample->End())
+  while (iter1 != testsample->End() )
     {
     mv = iter1.GetMeasurementVector();
     tv = iter2.GetMeasurementVector();
@@ -255,7 +254,7 @@ RBFTest1(int argc, char* argv[])
     count++;
     }
   std::cout << "Among "<<num_test<<" measurement vectors, " << error1 + error2
-    << " vectors are misclassified." << std::endl;
+            << " vectors are misclassified." << std::endl;
   std::cout << "Network Weights = " << std::endl;
   std::cout << net1 << std::endl;
   std::cout << error1 << " " << error2 <<std::endl;
@@ -266,7 +265,6 @@ RBFTest1(int argc, char* argv[])
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   if (double(error1 / 10) > 2 || double(error2 / 10) > 2)
     {

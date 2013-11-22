@@ -28,7 +28,7 @@ namespace itk
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
 DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
-::DiffeomorphicDemonsRegistrationFilter():
+::DiffeomorphicDemonsRegistrationFilter() :
   m_UseFirstOrderExp(false)
 {
   typename DemonsRegistrationFunctionType::Pointer drfp;
@@ -59,7 +59,7 @@ typename DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage,
                                                 TDisplacementField >::DemonsRegistrationFunctionType *
 DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::DownCastDifferenceFunctionType()
-{
+  {
   DemonsRegistrationFunctionType *drfp =
     dynamic_cast< DemonsRegistrationFunctionType * >
     ( this->GetDifferenceFunction().GetPointer() );
@@ -71,7 +71,7 @@ DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementF
     }
 
   return drfp;
-}
+  }
 
 /**
  * Checks whether the DifferenceFunction is of type DemonsRegistrationFunction.
@@ -82,7 +82,7 @@ const typename DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage,
                                                       TDisplacementField >::DemonsRegistrationFunctionType *
 DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::DownCastDifferenceFunctionType() const
-{
+  {
   const DemonsRegistrationFunctionType *drfp =
     dynamic_cast< const DemonsRegistrationFunctionType * >
     ( this->GetDifferenceFunction().GetPointer() );
@@ -94,7 +94,7 @@ DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementF
     }
 
   return drfp;
-}
+  }
 
 /**
  * Set the function state values before each iteration
@@ -360,11 +360,13 @@ DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementF
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Intensity difference threshold: "
      << this->GetIntensityDifferenceThreshold() << std::endl;
   os << indent << "Use First Order exponential: "
      << this->m_UseFirstOrderExp << std::endl;
 }
+
 } // end namespace itk
 
 #endif

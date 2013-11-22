@@ -31,7 +31,7 @@ namespace itk
  */
 template<typename TTimeVaryingVelocityField, typename TDisplacementField>
 TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>
+<TTimeVaryingVelocityField, TDisplacementField>
 ::TimeVaryingVelocityFieldIntegrationImageFilter()
 {
   this->m_LowerTimeBound =  0.0,
@@ -43,29 +43,29 @@ TimeVaryingVelocityFieldIntegrationImageFilter
   if( InputImageDimension - 1 != OutputImageDimension )
     {
     itkExceptionMacro( "The time-varying velocity field (input) should have "
-      << "dimensionality of 1 greater than the deformation field (output). " );
+                       << "dimensionality of 1 greater than the deformation field (output). " );
     }
 
   typedef VectorLinearInterpolateImageFunction<TimeVaryingVelocityFieldType,
-    ScalarType> DefaultVelocityFieldInterpolatorType;
+                                               ScalarType> DefaultVelocityFieldInterpolatorType;
 
   typename DefaultVelocityFieldInterpolatorType::Pointer
-    velocityFieldInterpolator = DefaultVelocityFieldInterpolatorType::New();
+  velocityFieldInterpolator = DefaultVelocityFieldInterpolatorType::New();
 
   this->m_VelocityFieldInterpolator = velocityFieldInterpolator;
 
   typedef VectorLinearInterpolateImageFunction<DisplacementFieldType,
-    ScalarType> DefaultDisplacementFieldInterpolatorType;
+                                               ScalarType> DefaultDisplacementFieldInterpolatorType;
 
   typename DefaultDisplacementFieldInterpolatorType::Pointer
-    deformationFieldInterpolator = DefaultDisplacementFieldInterpolatorType::New();
+  deformationFieldInterpolator = DefaultDisplacementFieldInterpolatorType::New();
 
   this->m_DisplacementFieldInterpolator = deformationFieldInterpolator;
 }
 
 template<typename TTimeVaryingVelocityField, typename TDisplacementField>
 TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>
+<TTimeVaryingVelocityField, TDisplacementField>
 ::~TimeVaryingVelocityFieldIntegrationImageFilter()
 {
 }
@@ -73,11 +73,12 @@ TimeVaryingVelocityFieldIntegrationImageFilter
 template<typename TTimeVaryingVelocityField, typename TDisplacementField>
 void
 TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>
+<TTimeVaryingVelocityField, TDisplacementField>
 ::GenerateOutputInformation()
 {
   const TimeVaryingVelocityFieldType * input = this->GetInput();
-  DisplacementFieldType * output = this->GetOutput();
+  DisplacementFieldType *              output = this->GetOutput();
+
   this->m_NumberOfTimePoints = input->GetLargestPossibleRegion().GetSize()[OutputImageDimension];
   if( !input || !output )
     {
@@ -95,22 +96,22 @@ TimeVaryingVelocityFieldIntegrationImageFilter
   typedef typename DisplacementFieldType::DirectionType DirectionType;
   typedef typename DisplacementFieldType::RegionType    RegionType;
 
-  SizeType size;
-  SpacingType spacing;
-  OriginType origin;
+  SizeType      size;
+  SpacingType   spacing;
+  OriginType    origin;
   DirectionType direction;
 
-  typedef typename TimeVaryingVelocityFieldType::SizeType       InputSizeType;
-  typedef typename TimeVaryingVelocityFieldType::SpacingType    InputSpacingType;
-  typedef typename TimeVaryingVelocityFieldType::PointType      InputOriginType;
-  typedef typename TimeVaryingVelocityFieldType::DirectionType  InputDirectionType;
-  typedef typename TimeVaryingVelocityFieldType::RegionType     InputRegionType;
+  typedef typename TimeVaryingVelocityFieldType::SizeType      InputSizeType;
+  typedef typename TimeVaryingVelocityFieldType::SpacingType   InputSpacingType;
+  typedef typename TimeVaryingVelocityFieldType::PointType     InputOriginType;
+  typedef typename TimeVaryingVelocityFieldType::DirectionType InputDirectionType;
+  typedef typename TimeVaryingVelocityFieldType::RegionType    InputRegionType;
 
-  const InputSpacingType & inputSpacing = input->GetSpacing();
-  const InputOriginType & inputOrigin = input->GetOrigin();
+  const InputSpacingType &   inputSpacing = input->GetSpacing();
+  const InputOriginType &    inputOrigin = input->GetOrigin();
   const InputDirectionType & inputDirection = input->GetDirection();
-  const InputRegionType requestedRegion = input->GetRequestedRegion();
-  const InputSizeType requestedSize = requestedRegion.GetSize();
+  const InputRegionType      requestedRegion = input->GetRequestedRegion();
+  const InputSizeType        requestedSize = requestedRegion.GetSize();
 
   for( unsigned int i = 0; i < OutputImageDimension; i++ )
     {
@@ -133,7 +134,7 @@ TimeVaryingVelocityFieldIntegrationImageFilter
 template<typename TTimeVaryingVelocityField, typename TDisplacementField>
 void
 TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>
+<TTimeVaryingVelocityField, TDisplacementField>
 ::BeforeThreadedGenerateData()
 {
   this->m_VelocityFieldInterpolator->SetInputImage( this->GetInput() );
@@ -147,7 +148,7 @@ TimeVaryingVelocityFieldIntegrationImageFilter
 template<typename TTimeVaryingVelocityField, typename TDisplacementField>
 void
 TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>
+<TTimeVaryingVelocityField, TDisplacementField>
 ::ThreadedGenerateData( const OutputRegionType &region, ThreadIdType itkNotUsed( threadId ) )
 {
   if( this->m_LowerTimeBound == this->m_UpperTimeBound )
@@ -177,9 +178,9 @@ TimeVaryingVelocityFieldIntegrationImageFilter
 
 template<typename TTimeVaryingVelocityField, typename TDisplacementField>
 typename TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>::VectorType
+<TTimeVaryingVelocityField, TDisplacementField>::VectorType
 TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>
+<TTimeVaryingVelocityField, TDisplacementField>
 ::IntegrateVelocityAtPoint( const PointType & initialSpatialPoint,
                             const TimeVaryingVelocityFieldType *inputField )
 {
@@ -187,6 +188,7 @@ TimeVaryingVelocityFieldIntegrationImageFilter
   //    y' = f(t, y), y(t_0) = y_0
 
   VectorType zeroVector;
+
   zeroVector.Fill( 0.0 );
 
   // Initial conditions
@@ -204,10 +206,9 @@ TimeVaryingVelocityFieldIntegrationImageFilter
   // Need to know how to map the time dimension of the input image to the
   // assumed domain of [0,1].
 
-
   typename TimeVaryingVelocityFieldType::PointType spaceTimeOrigin = inputField->GetOrigin();
 
-  typedef typename TimeVaryingVelocityFieldType::RegionType  RegionType;
+  typedef typename TimeVaryingVelocityFieldType::RegionType RegionType;
 
   RegionType region = inputField->GetLargestPossibleRegion();
 
@@ -235,7 +236,7 @@ TimeVaryingVelocityFieldIntegrationImageFilter
   const RealType timeOrigin = spaceTimeOrigin[InputImageDimension-1];
   const RealType timeEnd = spaceTimeEnd[InputImageDimension-1];
   const RealType timeSpan = timeEnd - timeOrigin;
-  RealType timeSign = 1.0;
+  RealType       timeSign = 1.0;
   if( this->m_UpperTimeBound < this->m_LowerTimeBound )
     {
     timeSign = -1.0;
@@ -289,9 +290,12 @@ TimeVaryingVelocityFieldIntegrationImageFilter
       pointIn2[d] = spatialPoint[d] + displacement[d];
       }
 
-    x1[OutputImageDimension] = intervalTimePointMinusDeltaTime * static_cast<RealType>( this->m_NumberOfTimePoints - 1 );
-    x2[OutputImageDimension] = intervalTimePointMinusHalfDeltaTime * static_cast<RealType>( this->m_NumberOfTimePoints - 1 );
-    x3[OutputImageDimension] = intervalTimePointMinusHalfDeltaTime * static_cast<RealType>( this->m_NumberOfTimePoints - 1 );
+    x1[OutputImageDimension] = intervalTimePointMinusDeltaTime *
+      static_cast<RealType>( this->m_NumberOfTimePoints - 1 );
+    x2[OutputImageDimension] = intervalTimePointMinusHalfDeltaTime *
+      static_cast<RealType>( this->m_NumberOfTimePoints - 1 );
+    x3[OutputImageDimension] = intervalTimePointMinusHalfDeltaTime *
+      static_cast<RealType>( this->m_NumberOfTimePoints - 1 );
     x4[OutputImageDimension] = intervalTimePoint * static_cast<RealType>( this->m_NumberOfTimePoints - 1 );
 
     VectorType f1 = zeroVector;
@@ -345,7 +349,7 @@ TimeVaryingVelocityFieldIntegrationImageFilter
 template<typename TTimeVaryingVelocityField, typename TDisplacementField>
 void
 TimeVaryingVelocityFieldIntegrationImageFilter
-  <TTimeVaryingVelocityField, TDisplacementField>
+<TTimeVaryingVelocityField, TDisplacementField>
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );

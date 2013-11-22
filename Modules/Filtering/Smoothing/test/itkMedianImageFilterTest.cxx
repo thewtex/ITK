@@ -20,12 +20,11 @@
 #include "itkMedianImageFilter.h"
 #include "itkTextOutput.h"
 
-
-int itkMedianImageFilterTest(int, char* [] )
+int
+itkMedianImageFilterTest(int, char* [] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
-
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   typedef itk::Image<float,2> FloatImage2DType;
 
@@ -47,7 +46,7 @@ int itkMedianImageFilterTest(int, char* [] )
   // Create a median image
   itk::MedianImageFilter<FloatImage2DType, FloatImage2DType>::Pointer median;
   median = itk::MedianImageFilter<FloatImage2DType,FloatImage2DType>::New();
-  median->SetInput(random->GetOutput());
+  median->SetInput(random->GetOutput() );
 
   // define the neighborhood size used for the median filter (5x5)
   FloatImage2DType::SizeType neighRadius;
@@ -60,13 +59,13 @@ int itkMedianImageFilterTest(int, char* [] )
 
   itk::ImageRegionIterator<FloatImage2DType> it;
   it = itk::ImageRegionIterator<FloatImage2DType>(random->GetOutput(),
-                               random->GetOutput()->GetBufferedRegion());
+                                                  random->GetOutput()->GetBufferedRegion() );
   std::cout << "Input image" << std::endl;
   unsigned int i;
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }
@@ -74,11 +73,11 @@ int itkMedianImageFilterTest(int, char* [] )
 
   std::cout << "Output image" << std::endl;
   it = itk::ImageRegionIterator<FloatImage2DType>(median->GetOutput(),
-                               median->GetOutput()->GetBufferedRegion());
+                                                  median->GetOutput()->GetBufferedRegion() );
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }
@@ -87,7 +86,6 @@ int itkMedianImageFilterTest(int, char* [] )
   // Test the itkGetConstReferenceMacro
   const FloatImage2DType::SizeType & radius = median->GetRadius();
   std::cout << "median->GetRadius():" << radius << std::endl;
-
 
   return EXIT_SUCCESS;
 }

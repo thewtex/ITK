@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage, typename TFeatureImage >
-class StatisticsRelabelImageFilter:
+class StatisticsRelabelImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -124,39 +124,46 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
 
   /** Set the feature image */
-  void SetFeatureImage(TFeatureImage *input)
+  void
+  SetFeatureImage(TFeatureImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TFeatureImage * >( input ) );
   }
 
   /** Get the feature image */
-  FeatureImageType * GetFeatureImage()
+  FeatureImageType *
+  GetFeatureImage()
   {
     return static_cast< FeatureImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Set the input image */
-  void SetInput1(InputImageType *input)
+  void
+  SetInput1(InputImageType *input)
   {
     this->SetInput(input);
   }
 
   /** Set the feature image */
-  void SetInput2(FeatureImageType *input)
+  void
+  SetInput2(FeatureImageType *input)
   {
     this->SetFeatureImage(input);
   }
 
 protected:
   StatisticsRelabelImageFilter();
-  ~StatisticsRelabelImageFilter() {}
+  ~StatisticsRelabelImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** StatisticsRelabelImageFilter needs the entire input be

@@ -58,7 +58,7 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
   // \endcode
   //
   return static_cast< OutputPixelType >
-    (*( reinterpret_cast< PixelType * >( ( data->operator[](linear_index) ) ) ) );
+         (*( reinterpret_cast< PixelType * >( ( data->operator[](linear_index) ) ) ) );
 }
 
 template< typename TInputImage, typename TOutputImage >
@@ -77,9 +77,8 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
     }
 
   return static_cast< OutputPixelType >
-    ( neighborhoodAccessorFunctor.Get( data->operator[](linear_index) ) );
+         ( neighborhoodAccessorFunctor.Get( data->operator[](linear_index) ) );
 }
-
 
 template< typename TInputImage, typename TOutputImage >
 typename ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >::RegionType
@@ -103,7 +102,8 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
     // the image region.
     if ( outputIndex[i] + static_cast< OffsetValueType >( outputSize[i] ) <= inputIndex[i] )
       {
-      // Include an image layer one pixel thick closest to the outputRequestedRegion
+      // Include an image layer one pixel thick closest to the
+      // outputRequestedRegion
       requestIndex[i] = inputIndex[i];
       requestSize[i]  = 1;
       }
@@ -111,7 +111,8 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
     // image region.
     else if (  outputIndex[i] >= inputIndex[i] + static_cast< OffsetValueType >( inputSize[i] ) )
       {
-      // Include an image layer one pixel thick closest to the outputRequestedRegion
+      // Include an image layer one pixel thick closest to the
+      // outputRequestedRegion
       requestIndex[i] = inputIndex[i] + static_cast< OffsetValueType >( inputSize[i] ) - 1;
       requestSize[i]  = 1;
       }
@@ -149,7 +150,6 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
 
   return inputRequestedRegion;
 }
-
 
 template< typename TInputImage, typename TOutputImage >
 typename ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >::OutputPixelType

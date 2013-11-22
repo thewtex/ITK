@@ -53,42 +53,44 @@ namespace itk {
  * \wikiexample{Segmentation/LabelMapContourOverlayImageFilter,Color the boundaries of labeled regions in an image}
  * \endwiki
  */
-template<typename TLabelMap, typename TFeatureImage, typename TOutputImage=Image< RGBPixel< typename TFeatureImage::PixelType >, TFeatureImage::ImageDimension > >
+template<typename TLabelMap, typename TFeatureImage, typename TOutputImage=
+           Image< RGBPixel< typename TFeatureImage::PixelType >, TFeatureImage::ImageDimension > >
 class LabelMapContourOverlayImageFilter :
-    public LabelMapFilter<TLabelMap, TOutputImage>
+  public LabelMapFilter<TLabelMap, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef LabelMapContourOverlayImageFilter         Self;
-  typedef LabelMapFilter<TLabelMap, TOutputImage>   Superclass;
-  typedef SmartPointer<Self>                        Pointer;
-  typedef SmartPointer<const Self>                  ConstPointer;
+  typedef LabelMapContourOverlayImageFilter       Self;
+  typedef LabelMapFilter<TLabelMap, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                      Pointer;
+  typedef SmartPointer<const Self>                ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TLabelMap                                LabelMapType;
-  typedef typename LabelMapType::Pointer           LabelMapPointer;
-  typedef typename LabelMapType::ConstPointer      LabelMapConstPointer;
-  typedef typename LabelMapType::RegionType        LabelMapRegionType;
-  typedef typename LabelMapType::PixelType         LabelMapPixelType;
-  typedef typename LabelMapType::LabelObjectType   LabelObjectType;
-  typedef typename LabelObjectType::LabelType      LabelType;
+  typedef TLabelMap                              LabelMapType;
+  typedef typename LabelMapType::Pointer         LabelMapPointer;
+  typedef typename LabelMapType::ConstPointer    LabelMapConstPointer;
+  typedef typename LabelMapType::RegionType      LabelMapRegionType;
+  typedef typename LabelMapType::PixelType       LabelMapPixelType;
+  typedef typename LabelMapType::LabelObjectType LabelObjectType;
+  typedef typename LabelObjectType::LabelType    LabelType;
 
-  typedef TFeatureImage                             FeatureImageType;
-  typedef typename FeatureImageType::Pointer        FeatureImagePointer;
-  typedef typename FeatureImageType::ConstPointer   FeatureImageConstPointer;
-  typedef typename FeatureImageType::RegionType     FeatureImageRegionType;
-  typedef typename FeatureImageType::PixelType      FeatureImagePixelType;
+  typedef TFeatureImage                           FeatureImageType;
+  typedef typename FeatureImageType::Pointer      FeatureImagePointer;
+  typedef typename FeatureImageType::ConstPointer FeatureImageConstPointer;
+  typedef typename FeatureImageType::RegionType   FeatureImageRegionType;
+  typedef typename FeatureImageType::PixelType    FeatureImagePixelType;
 
-  typedef TOutputImage                             OutputImageType;
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
-  typedef typename OutputImageType::IndexType      IndexType;
-  typedef typename OutputImageType::SizeType       SizeType;
-  typedef typename OutputImageType::RegionType     RegionType;
+  typedef TOutputImage                           OutputImageType;
+  typedef typename OutputImageType::Pointer      OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType   OutputImageRegionType;
+  typedef typename OutputImageType::PixelType    OutputImagePixelType;
+  typedef typename OutputImageType::IndexType    IndexType;
+  typedef typename OutputImageType::SizeType     SizeType;
+  typedef typename OutputImageType::RegionType   RegionType;
 
-  typedef typename Functor::LabelOverlayFunctor<FeatureImagePixelType, LabelMapPixelType, OutputImagePixelType> FunctorType;
+  typedef typename Functor::LabelOverlayFunctor<FeatureImagePixelType, LabelMapPixelType,
+                                                OutputImagePixelType> FunctorType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(LabelMapDimension, unsigned int,
@@ -118,30 +120,34 @@ public:
   itkTypeMacro(LabelMapContourOverlayImageFilter,
                ImageToImageFilter);
 
-   /** Set the feature image */
-  void SetFeatureImage(TFeatureImage *input)
-    {
+  /** Set the feature image */
+  void
+  SetFeatureImage(TFeatureImage *input)
+  {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast<TFeatureImage *>(input) );
-    }
+  }
 
   /** Get the feature image */
-  FeatureImageType * GetFeatureImage()
-    {
-    return itkDynamicCastInDebugMode<FeatureImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
-    }
+  FeatureImageType *
+  GetFeatureImage()
+  {
+    return itkDynamicCastInDebugMode<FeatureImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1) ) );
+  }
 
-   /** Set the input image */
-  void SetInput1(TLabelMap *input)
-    {
+  /** Set the input image */
+  void
+  SetInput1(TLabelMap *input)
+  {
     this->SetInput( input );
-    }
+  }
 
   /** Set the feature image */
-  void SetInput2(TFeatureImage *input)
-    {
+  void
+  SetInput2(TFeatureImage *input)
+  {
     this->SetFeatureImage( input );
-    }
+  }
 
   /** Set/Get the opacity of the colored label image. The value must be
    * between 0 and 1
@@ -176,7 +182,8 @@ public:
 
 protected:
   LabelMapContourOverlayImageFilter();
-  ~LabelMapContourOverlayImageFilter() {};
+  ~LabelMapContourOverlayImageFilter() {
+  }
 
   /** LabelMapContourOverlayImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
@@ -184,7 +191,7 @@ protected:
   void GenerateInputRequestedRegion();
 
   /** LabelMapContourOverlayImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
+  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output) );
 
   virtual void BeforeThreadedGenerateData();
 
@@ -196,24 +203,25 @@ protected:
 
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  virtual LabelMapType * GetLabelMap()
-    {
+  virtual LabelMapType *
+  GetLabelMap()
+  {
     return m_TempImage;
-    }
+  }
 
 private:
   LabelMapContourOverlayImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                    //purposely not implemented
 
-  double                    m_Opacity;
+  double m_Opacity;
   typename Barrier::Pointer m_Barrier;
-  int                       m_Type;
-  int                       m_Priority;
-  SizeType                  m_ContourThickness;
-  SizeType                  m_DilationRadius;
-  int                       m_SliceDimension;
+  int      m_Type;
+  int      m_Priority;
+  SizeType m_ContourThickness;
+  SizeType m_DilationRadius;
+  int      m_SliceDimension;
 
-  LabelMapPointer           m_TempImage;
+  LabelMapPointer m_TempImage;
 
 }; // end of class
 

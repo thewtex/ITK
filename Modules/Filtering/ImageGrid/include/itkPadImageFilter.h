@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage, typename TOutputImage >
-class PadImageFilter:
+class PadImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -93,7 +93,8 @@ public:
   itkSetVectorMacro(PadLowerBound, const SizeValueType, ImageDimension);
   itkSetVectorMacro(PadUpperBound, const SizeValueType, ImageDimension);
 
-  void SetPadBound(const InputImageSizeType & bound)
+  void
+  SetPadBound(const InputImageSizeType & bound)
   {
     this->SetPadLowerBound(bound);
     this->SetPadUpperBound(bound);
@@ -105,7 +106,9 @@ public:
 
 protected:
   PadImageFilter();
-  ~PadImageFilter() {}
+  ~PadImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** PadImageFilter produces an image which is a different resolution

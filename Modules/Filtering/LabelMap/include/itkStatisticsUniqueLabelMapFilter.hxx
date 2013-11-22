@@ -22,7 +22,6 @@
 #include "itkStatisticsLabelObjectAccessors.h"
 #include "itkLabelMapUtilities.h"
 
-
 namespace itk
 {
 template< typename TImage >
@@ -45,5 +44,6 @@ StatisticsUniqueLabelMapFilter< TImage >
       break;
     }
 }
+
 } // end namespace itk
 #endif

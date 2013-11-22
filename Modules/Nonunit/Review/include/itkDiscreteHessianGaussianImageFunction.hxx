@@ -26,7 +26,7 @@ namespace itk
 /** Set the Input Image */
 template< typename TInputImage, typename TOutput >
 DiscreteHessianGaussianImageFunction< TInputImage, TOutput >
-::DiscreteHessianGaussianImageFunction():
+::DiscreteHessianGaussianImageFunction() :
   m_MaximumError(0.005),
   m_MaximumKernelWidth(30),
   m_NormalizeAcrossScale(true),
@@ -62,6 +62,7 @@ DiscreteHessianGaussianImageFunction< TInputImage, TOutput >
 ::SetInputImage(const InputImageType *ptr)
 {
   Superclass::SetInputImage(ptr);
+
   m_OperatorImageFunction->SetInputImage(ptr);
 }
 
@@ -150,7 +151,7 @@ DiscreteHessianGaussianImageFunction< TInputImage, TOutput >
 
   // Now create an image filter to perform successive convolutions
   typedef itk::NeighborhoodOperatorImageFilter< KernelImageType, KernelImageType >
-  NeighborhoodFilterType;
+    NeighborhoodFilterType;
   typename NeighborhoodFilterType::Pointer convolutionFilter = NeighborhoodFilterType::New();
 
   // Array that stores the current order for each direction
@@ -257,7 +258,7 @@ DiscreteHessianGaussianImageFunction< TInputImage, TOutput >
     {
     typedef unsigned int NumberOfNeighborsType;
 
-    unsigned int  dim; // index over dimension
+    unsigned int          dim; // index over dimension
     NumberOfNeighborsType neighbors = 1 << ImageDimension2;
 
     // Compute base index = closet index below point
@@ -279,9 +280,10 @@ DiscreteHessianGaussianImageFunction< TInputImage, TOutput >
 
     for ( NumberOfNeighborsType counter = 0; counter < neighbors; counter++ )
       {
-      double       overlap = 1.0;    // fraction overlap
-      NumberOfNeighborsType upper = counter;  // each bit indicates upper/lower neighbour
-      IndexType    neighIndex;
+      double                overlap = 1.0;   // fraction overlap
+      NumberOfNeighborsType upper = counter; // each bit indicates upper/lower
+                                             // neighbour
+      IndexType neighIndex;
 
       // get neighbor index and overlap fraction
       for ( dim = 0; dim < ImageDimension2; dim++ )
@@ -320,6 +322,7 @@ DiscreteHessianGaussianImageFunction< TInputImage, TOutput >
     return hessian;
     }
 }
+
 } // end namespace itk
 
 #endif

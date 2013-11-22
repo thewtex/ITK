@@ -19,12 +19,10 @@
 #ifndef __itkPhysicsBasedNonRigidRegistrationMethod_h
 #define __itkPhysicsBasedNonRigidRegistrationMethod_h
 
-
 #include "itkMaskFeaturePointSelectionFilter.h"
 #include "itkBlockMatchingImageFilter.h"
 #include "itkFEMScatteredDataPointSetToImageFilter.h"
 #include "itkConceptChecking.h"
-
 
 namespace itk
 {
@@ -56,15 +54,14 @@ namespace fem
  * \ingroup ITKFEMRegistration
  */
 
-
 template <typename TFixedImage, typename TMovingImage, typename TMaskImage, typename TMesh, typename TDeformationField>
 class PhysicsBasedNonRigidRegistrationMethod : public ImageToImageFilter<TMovingImage, TDeformationField>
 {
 public:
-  typedef PhysicsBasedNonRigidRegistrationMethod               Self;
-  typedef ImageToImageFilter<TMovingImage, TDeformationField>  Superclass;
-  typedef SmartPointer<Self>                                   Pointer;
-  typedef SmartPointer<const Self>                             ConstPointer;
+  typedef PhysicsBasedNonRigidRegistrationMethod              Self;
+  typedef ImageToImageFilter<TMovingImage, TDeformationField> Superclass;
+  typedef SmartPointer<Self>                                  Pointer;
+  typedef SmartPointer<const Self>                            ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -72,29 +69,33 @@ public:
   /** Run-time type information (and related methods) */
   itkTypeMacro( PhysicsBasedNonRigidRegistrationMethod, ImageToImageFilter );
 
-  typedef TMovingImage                       MovingImageType;
-  typedef TFixedImage                        FixedImageType;
-  typedef TMaskImage                         MaskImageType;
-  typedef TMesh                              MeshType;
-  typedef TDeformationField                  DeformationFieldType;
+  typedef TMovingImage      MovingImageType;
+  typedef TFixedImage       FixedImageType;
+  typedef TMaskImage        MaskImageType;
+  typedef TMesh             MeshType;
+  typedef TDeformationField DeformationFieldType;
 
   itkStaticConstMacro(ImageDimension, unsigned int, FixedImageType::ImageDimension);
 
   /** Not input specific typedefs */
-  typedef ImageRegion< ImageDimension >  ImageRegionType;
-  typedef Size< ImageDimension >         ImageSizeType;
-  typedef Index< ImageDimension >        ImageIndexType;
+  typedef ImageRegion< ImageDimension > ImageRegionType;
+  typedef Size< ImageDimension >        ImageSizeType;
+  typedef Index< ImageDimension >       ImageIndexType;
 
   /** Typedefs for the components filters. */
-  typedef MaskFeaturePointSelectionFilter< MovingImageType, MaskImageType >  FeatureSelectionFilterType;
-  typedef BlockMatchingImageFilter< FixedImageType, MovingImageType >        BlockMatchingFilterType;
+  typedef MaskFeaturePointSelectionFilter< MovingImageType, MaskImageType > FeatureSelectionFilterType;
+  typedef BlockMatchingImageFilter< FixedImageType, MovingImageType >       BlockMatchingFilterType;
   typedef FEMScatteredDataPointSetToImageFilter<
-    typename BlockMatchingFilterType::DisplacementsType,
-    MeshType,
-    DeformationFieldType,
-    typename BlockMatchingFilterType::SimilaritiesType,
-    typename FeatureSelectionFilterType::FeaturePointsType // tensors are optional pixel values of feature points pointset
-  >  FEMFilterType;
+      typename BlockMatchingFilterType::DisplacementsType,
+      MeshType,
+      DeformationFieldType,
+      typename BlockMatchingFilterType::SimilaritiesType,
+      typename FeatureSelectionFilterType::FeaturePointsType // tensors are
+                                                             // optional pixel
+                                                             // values of
+                                                             // feature points
+                                                             // pointset
+      >  FEMFilterType;
 
   /** set fraction of eligible points to select */
   itkSetMacro(SelectFraction, double);
@@ -156,8 +157,10 @@ public:
 
 protected:
   PhysicsBasedNonRigidRegistrationMethod();
-  virtual ~PhysicsBasedNonRigidRegistrationMethod();
+  virtual
+  ~PhysicsBasedNonRigidRegistrationMethod();
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
+
   virtual void GenerateData();
 
 private:
@@ -166,12 +169,12 @@ private:
   void operator=( const PhysicsBasedNonRigidRegistrationMethod & );
 
   // algorithm parameters
-  double         m_SelectFraction;
-  unsigned int   m_NonConnectivity;
-  ImageSizeType  m_BlockRadius;
-  ImageSizeType  m_SearchRadius;
-  unsigned int   m_ApproximationSteps;
-  unsigned int   m_OutlierRejectionSteps;
+  double        m_SelectFraction;
+  unsigned int  m_NonConnectivity;
+  ImageSizeType m_BlockRadius;
+  ImageSizeType m_SearchRadius;
+  unsigned int  m_ApproximationSteps;
+  unsigned int  m_OutlierRejectionSteps;
 
   typename FeatureSelectionFilterType::Pointer m_FeatureSelectionFilter;
   typename BlockMatchingFilterType::Pointer    m_BlockMatchingFilter;

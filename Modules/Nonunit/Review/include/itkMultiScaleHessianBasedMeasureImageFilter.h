@@ -64,7 +64,7 @@ namespace itk
 template< typename TInputImage,
           typename THessianImage,
           typename TOutputImage = TInputImage >
-class MultiScaleHessianBasedMeasureImageFilter:
+class MultiScaleHessianBasedMeasureImageFilter :
   public
   ImageToImageFilter< TInputImage, TOutputImage >
 {
@@ -87,7 +87,7 @@ public:
   typedef typename TOutputImage::RegionType OutputRegionType;
 
   /** Image dimension. */
-  itkStaticConstMacro(ImageDimension, unsigned int,  InputImageType ::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int,  InputImageType::ImageDimension);
 
   /** Types for Scales image */
   typedef float                                                            ScalesPixelType;
@@ -182,7 +182,9 @@ public:
 
 protected:
   MultiScaleHessianBasedMeasureImageFilter();
-  ~MultiScaleHessianBasedMeasureImageFilter() {}
+  ~MultiScaleHessianBasedMeasureImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */

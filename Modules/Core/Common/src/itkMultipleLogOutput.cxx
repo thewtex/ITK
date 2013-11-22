@@ -52,7 +52,8 @@ MultipleLogOutput::Flush(void)
 }
 
 /** Write to multiple outputs */
-void MultipleLogOutput::Write(double timestamp)
+void
+MultipleLogOutput::Write(double timestamp)
 {
   ContainerType::iterator itr = m_Output.begin();
   ContainerType::iterator end = m_Output.end();
@@ -65,7 +66,8 @@ void MultipleLogOutput::Write(double timestamp)
 }
 
 /** Write to multiple outputs */
-void MultipleLogOutput::Write(const std::string & content)
+void
+MultipleLogOutput::Write(const std::string & content)
 {
   ContainerType::iterator itr = m_Output.begin();
   ContainerType::iterator end = m_Output.end();
@@ -78,7 +80,8 @@ void MultipleLogOutput::Write(const std::string & content)
 }
 
 /** Write to a buffer */
-void MultipleLogOutput::Write(const std::string & content, double timestamp)
+void
+MultipleLogOutput::Write(const std::string & content, double timestamp)
 {
   ContainerType::iterator itr = m_Output.begin();
   ContainerType::iterator end = m_Output.end();
@@ -89,4 +92,5 @@ void MultipleLogOutput::Write(const std::string & content, double timestamp)
     ++itr;
     }
 }
+
 }

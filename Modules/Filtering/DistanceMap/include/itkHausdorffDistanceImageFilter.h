@@ -59,7 +59,7 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TInputImage1, typename TInputImage2 >
-class HausdorffDistanceImageFilter:
+class HausdorffDistanceImageFilter :
   public ImageToImageFilter< TInputImage1, TInputImage1 >
 {
 public:
@@ -126,7 +126,9 @@ public:
 
 protected:
   HausdorffDistanceImageFilter();
-  ~HausdorffDistanceImageFilter(){}
+  ~HausdorffDistanceImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GenerateData. */

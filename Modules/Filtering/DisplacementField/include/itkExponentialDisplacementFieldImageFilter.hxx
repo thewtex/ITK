@@ -101,7 +101,7 @@ ExponentialDisplacementFieldImageFilter< TInputImage, TOutputImage >
 
     typedef ImageRegionConstIterator< InputImageType > InputConstIterator;
     InputConstIterator InputIt = InputConstIterator(
-      inputPtr, inputPtr->GetRequestedRegion() );
+        inputPtr, inputPtr->GetRequestedRegion() );
 
     for ( InputIt.GoToBegin(); !InputIt.IsAtEnd(); ++InputIt )
       {
@@ -113,14 +113,14 @@ ExponentialDisplacementFieldImageFilter< TInputImage, TOutputImage >
     maxnorm2 /= vnl_math_sqr(minpixelspacing);
 
     InputPixelRealValueType numiterfloat = 2.0
-                                           + 0.5 * vcl_log(maxnorm2) / vnl_math::ln2;
+      + 0.5 * vcl_log(maxnorm2) / vnl_math::ln2;
 
     if ( numiterfloat >= 0.0 )
       {
       // take the ceil and threshold
       numiter = vnl_math_min(
-        static_cast< unsigned int >( numiterfloat + 1.0 ),
-        m_MaximumNumberOfIterations);
+          static_cast< unsigned int >( numiterfloat + 1.0 ),
+          m_MaximumNumberOfIterations);
       }
     else
       {
@@ -220,6 +220,7 @@ ExponentialDisplacementFieldImageFilter< TInputImage, TOutputImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

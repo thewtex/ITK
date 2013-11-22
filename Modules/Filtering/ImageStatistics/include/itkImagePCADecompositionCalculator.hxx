@@ -165,10 +165,12 @@ ImagePCADecompositionCalculator< TInputImage, TBasisImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Projection: " << m_Projection << std::endl;
   os << indent << "Image: " << m_Image.GetPointer() << std::endl;
   os << indent << "Mean Image: " << m_MeanImage.GetPointer() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

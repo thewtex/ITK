@@ -22,12 +22,13 @@
 #include <iomanip>
 
 template <unsigned int VImageDimension>
-int LabelOverlapMeasures( int , char * argv[] )
+int
+LabelOverlapMeasures( int , char * argv[] )
 {
   typedef unsigned int                           PixelType;
   typedef itk::Image<PixelType, VImageDimension> ImageType;
 
-  typedef itk::ImageFileReader<ImageType>  ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
   typename ReaderType::Pointer reader1 = ReaderType::New();
   reader1->SetFileName( argv[2] );
   typename ReaderType::Pointer reader2 = ReaderType::New();
@@ -91,7 +92,8 @@ int LabelOverlapMeasures( int , char * argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkLabelOverlapMeasuresImageFilterTest( int argc, char *argv[] )
+int
+itkLabelOverlapMeasuresImageFilterTest( int argc, char *argv[] )
 {
   if( argc < 4 )
     {

@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT MultiThreader:public Object
+class ITKCommon_EXPORT MultiThreader : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -142,7 +142,7 @@ public:
     void *UserData;
     ThreadFunctionType ThreadFunction;
     enum { SUCCESS, ITK_EXCEPTION, ITK_PROCESS_ABORTED_EXCEPTION, STD_EXCEPTION, UNKNOWN } ThreadExitCode;
-  };
+    };
 
 protected:
   MultiThreader();

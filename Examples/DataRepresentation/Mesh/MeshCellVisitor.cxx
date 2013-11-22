@@ -34,55 +34,50 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkMesh.h"
 #include "itkLineCell.h"
 #include "itkTetrahedronCell.h"
-
 
 // Software Guide : BeginCodeSnippet
 #include "itkCellInterfaceVisitor.h"
 // Software Guide : EndCodeSnippet
 
+//  Software Guide : BeginLatex
+//
+//  The typical mesh types are now declared
+//
+//  Software Guide : EndLatex
 
-  //  Software Guide : BeginLatex
-  //
-  //  The typical mesh types are now declared
-  //
-  //  Software Guide : EndLatex
+// Software Guide : BeginCodeSnippet
+typedef float                     PixelType;
+typedef itk::Mesh< PixelType, 3 > MeshType;
 
-  // Software Guide : BeginCodeSnippet
-  typedef float                             PixelType;
-  typedef itk::Mesh< PixelType, 3 >         MeshType;
+typedef MeshType::CellType CellType;
 
-  typedef MeshType::CellType                CellType;
+typedef itk::VertexCell< CellType >      VertexType;
+typedef itk::LineCell< CellType >        LineType;
+typedef itk::TriangleCell< CellType >    TriangleType;
+typedef itk::TetrahedronCell< CellType > TetrahedronType;
+// Software Guide : EndCodeSnippet
 
-  typedef itk::VertexCell< CellType >       VertexType;
-  typedef itk::LineCell< CellType >         LineType;
-  typedef itk::TriangleCell< CellType >     TriangleType;
-  typedef itk::TetrahedronCell< CellType >  TetrahedronType;
-  // Software Guide : EndCodeSnippet
-
-
-  //  Software Guide : BeginLatex
-  //
-  //  Then, a custom CellVisitor class should be declared. In this particular
-  //  example, the visitor class is intended to act only on \code{TriangleType}
-  //  cells. The only requirement on the declaration of the visitor class is that
-  //  it must provide a method named \code{Visit()}. This method expects as
-  //  arguments a cell identifier and a pointer to the \emph{specific} cell type
-  //  for which this visitor is intended. Nothing prevents a visitor class from
-  //  providing \code{Visit()} methods for several different cell types.  The
-  //  multiple methods will be differentiated by the natural C++ mechanism of
-  //  function overload. The following code illustrates a minimal cell visitor
-  //  class.
-  //
-  //  \index{itk::Mesh!CellInterfaceVisitor}
-  //  \index{CellInterfaceVisitor!requirements}
-  //  \index{CellInterfaceVisitor!Visit()}
-  //
-  //  Software Guide : EndLatex
-
+//  Software Guide : BeginLatex
+//
+//  Then, a custom CellVisitor class should be declared. In this particular
+//  example, the visitor class is intended to act only on \code{TriangleType}
+//  cells. The only requirement on the declaration of the visitor class is that
+//  it must provide a method named \code{Visit()}. This method expects as
+//  arguments a cell identifier and a pointer to the \emph{specific} cell type
+//  for which this visitor is intended. Nothing prevents a visitor class from
+//  providing \code{Visit()} methods for several different cell types.  The
+//  multiple methods will be differentiated by the natural C++ mechanism of
+//  function overload. The following code illustrates a minimal cell visitor
+//  class.
+//
+//  \index{itk::Mesh!CellInterfaceVisitor}
+//  \index{CellInterfaceVisitor!requirements}
+//  \index{CellInterfaceVisitor!Visit()}
+//
+//  Software Guide : EndLatex
 
 #ifndef __CustomTriangleVisitor
 #define __CustomTriangleVisitor
@@ -90,29 +85,36 @@
 class CustomTriangleVisitor
 {
 public:
-  typedef itk::TriangleCell<CellType>      TriangleType;
-  void Visit(unsigned long cellId, TriangleType * t )
-    {
+  typedef itk::TriangleCell<CellType> TriangleType;
+  void
+  Visit(unsigned long cellId, TriangleType * t )
+  {
     std::cout << "Cell # " << cellId << " is a TriangleType ";
     std::cout << t->GetNumberOfPoints() << std::endl;
-    }
-  CustomTriangleVisitor() {}
-  virtual ~CustomTriangleVisitor() {}
+  }
+
+  CustomTriangleVisitor() {
+  }
+
+  virtual
+  ~CustomTriangleVisitor() {
+  }
+
 };
 // Software Guide : EndCodeSnippet
 #endif
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
-  MeshType::Pointer  mesh = MeshType::New();
-
+  MeshType::Pointer mesh = MeshType::New();
 
   // Creating the points and inserting them in the mesh
   //
-  MeshType::PointType   point0;
-  MeshType::PointType   point1;
-  MeshType::PointType   point2;
-  MeshType::PointType   point3;
+  MeshType::PointType point0;
+  MeshType::PointType point1;
+  MeshType::PointType point2;
+  MeshType::PointType point3;
 
   point0[0] = -1; point0[1] = -1; point0[2] = -1;
   point1[0] =  1; point1[1] =  1; point1[2] = -1;
@@ -124,7 +126,6 @@ int main(int, char *[])
   mesh->SetPoint( 2, point2 );
   mesh->SetPoint( 3, point3 );
 
-
   // Creating and associating the Tetrahedron
   //
   CellType::CellAutoPointer cellpointer;
@@ -135,7 +136,6 @@ int main(int, char *[])
   cellpointer->SetPointId( 2, 2 );
   cellpointer->SetPointId( 3, 3 );
   mesh->SetCell( 0, cellpointer );
-
 
   // Creating and associating the Triangles
   //
@@ -162,7 +162,6 @@ int main(int, char *[])
   cellpointer->SetPointId( 1, 2 );
   cellpointer->SetPointId( 2, 1 );
   mesh->SetCell( 4, cellpointer );
-
 
   // Creating and associating the Edges
   //
@@ -196,7 +195,6 @@ int main(int, char *[])
   cellpointer->SetPointId( 1, 0 );
   mesh->SetCell( 10, cellpointer );
 
-
   // Creating and associating the Vertices
   //
   cellpointer.TakeOwnership( new VertexType );
@@ -215,12 +213,10 @@ int main(int, char *[])
   cellpointer->SetPointId( 0, 3 );
   mesh->SetCell( 14, cellpointer );
 
-
   // Simple verification of the number of points and cells inserted
   //
   std::cout << "# Points= " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "# Cell  = " << mesh->GetNumberOfCells() << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -238,13 +234,12 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::CellInterfaceVisitorImplementation<
-                              PixelType,
-                              MeshType::CellTraits,
-                              TriangleType,
-                              CustomTriangleVisitor
-                                       > TriangleVisitorInterfaceType;
+      PixelType,
+      MeshType::CellTraits,
+      TriangleType,
+      CustomTriangleVisitor
+      > TriangleVisitorInterfaceType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -258,18 +253,17 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
-  TriangleVisitorInterfaceType::Pointer  triangleVisitor =
-                                   TriangleVisitorInterfaceType::New();
+  TriangleVisitorInterfaceType::Pointer triangleVisitor =
+    TriangleVisitorInterfaceType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
   //  Many different visitors can be configured in this way. The set of all
   //  visitors can be registered with the MultiVisitor class provided for the
-  //  mesh. An instance of the MultiVisitor class will walk through the cells and delegate
+  //  mesh. An instance of the MultiVisitor class will walk through the cells
+  // and delegate
   //  action to every registered visitor when the appropriate cell type is
   //  encountered.
   //
@@ -279,7 +273,6 @@ int main(int, char *[])
   typedef CellType::MultiVisitor CellMultiVisitorType;
   CellMultiVisitorType::Pointer multiVisitor = CellMultiVisitorType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -294,7 +287,6 @@ int main(int, char *[])
   multiVisitor->AddVisitor( triangleVisitor );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally, the iteration over the cells is triggered by calling the method
@@ -304,11 +296,9 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   mesh->Accept( multiVisitor );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -317,12 +307,12 @@ int main(int, char *[])
   //  visitor is interested on the current cell type the cell is just ignored
   //  and skipped.
   //
-  //  MultiVisitors make it possible to add behavior to the cells without having to
+  //  MultiVisitors make it possible to add behavior to the cells without having
+  // to
   //  create new methods on the cell types or creating a complex visitor class
   //  that knows about every CellType.
   //
   //  Software Guide : EndLatex
-
 
   return 0;
 }

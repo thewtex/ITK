@@ -60,7 +60,8 @@ public:
   /** total buffer size in bytes */
   void SetBufferSize( unsigned int num );
 
-  unsigned int GetBufferSize() {
+  unsigned int
+  GetBufferSize() {
     return m_BufferSize;
   }
 
@@ -80,11 +81,13 @@ public:
    * Call this function when you want to modify GPU data */
   void SetGPUBufferDirty();
 
-  bool IsCPUBufferDirty() {
+  bool
+  IsCPUBufferDirty() {
     return m_IsCPUBufferDirty;
   }
 
-  bool IsGPUBufferDirty() {
+  bool
+  IsGPUBufferDirty() {
     return m_IsGPUBufferDirty;
   }
 
@@ -118,7 +121,8 @@ public:
 protected:
 
   GPUDataManager();
-  virtual ~GPUDataManager();
+  virtual
+  ~GPUDataManager();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

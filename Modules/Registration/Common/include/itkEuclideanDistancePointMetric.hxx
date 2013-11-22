@@ -147,7 +147,8 @@ void
 EuclideanDistancePointMetric< TFixedPointSet, TMovingPointSet, TDistanceMap >
 ::GetDerivative( const TransformParametersType & itkNotUsed(parameters),
                  DerivativeType & itkNotUsed(derivative) ) const
-{}
+{
+}
 
 /** Get both the match Measure and theDerivative Measure  */
 template< typename TFixedPointSet, typename TMovingPointSet, typename TDistanceMap >
@@ -167,6 +168,7 @@ EuclideanDistancePointMetric< TFixedPointSet, TMovingPointSet, TDistanceMap >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "DistanceMap: " << m_DistanceMap << std::endl;
   if ( m_ComputeSquaredDistance )
     {
@@ -177,6 +179,7 @@ EuclideanDistancePointMetric< TFixedPointSet, TMovingPointSet, TDistanceMap >
     os << indent << "m_ComputeSquaredDistance: False" << std::endl;
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -42,7 +42,7 @@ namespace itk
  */
 
 template< typename TCellInterface >
-class TriangleCell:
+class TriangleCell :
   public TCellInterface, private TriangleCellTopology
 {
 public:
@@ -68,8 +68,12 @@ public:
   itkStaticConstMacro(CellDimension, unsigned int, 2);
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::TRIANGLE_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::TRIANGLE_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -123,10 +127,13 @@ public:
   PointType ComputeCircumCenter(PointsContainer *);
 
 public:
-  TriangleCell():
+  TriangleCell() :
     m_PointIds( NumberOfPoints, NumericTraits< PointIdentifier >::max() )
-  {}
-  ~TriangleCell() {}
+  {
+  }
+
+  ~TriangleCell() {
+  }
 
 protected:
   /** Store the number of points needed for a triangle. */
@@ -143,6 +150,7 @@ private:
 
   double DistanceToLine(PointType x, PointType p1, PointType p2,
                         double & t, PointType & closestPoint);
+
 };
 } // end namespace itk
 

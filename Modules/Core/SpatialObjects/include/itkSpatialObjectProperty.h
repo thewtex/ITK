@@ -32,7 +32,7 @@ namespace itk
  */
 
 template< typename TComponentType = float >
-class SpatialObjectProperty:
+class SpatialObjectProperty :
   public LightObject
 {
 public:
@@ -71,19 +71,26 @@ public:
   TComponentType GetAlpha(void) const;
 
   SpatialObjectProperty();
-  virtual ~SpatialObjectProperty();
+  virtual
+  ~SpatialObjectProperty();
 
   void SetName(const char *name);
 
   StringType GetName(void) const;
 
-  unsigned long GetMTime(void){ return m_MTime; }
+  unsigned long
+  GetMTime(void){
+    return m_MTime;
+  }
 
 protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void Modified(void){ m_MTime++; }
+  void
+  Modified(void){
+    m_MTime++;
+  }
 
 private:
   SpatialObjectProperty(const Self &); //purposely not implemented

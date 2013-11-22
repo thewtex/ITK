@@ -67,7 +67,7 @@ namespace itk
  * \endwiki
  */
 template< typename TFixedImage, typename TMovingImage >
-class ImageRegistrationMethod:public ProcessObject
+class ImageRegistrationMethod : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -121,10 +121,12 @@ public:
 
   /** Set/Get the Fixed image. */
   void SetFixedImage(const FixedImageType *fixedImage);
+
   itkGetConstObjectMacro(FixedImage, FixedImageType);
 
   /** Set/Get the Moving image. */
   void SetMovingImage(const MovingImageType *movingImage);
+
   itkGetConstObjectMacro(MovingImage, MovingImageType);
 
   /** Set/Get the Optimizer. */
@@ -208,13 +210,21 @@ public:
    * compatibility reasons, we check whether StartRegistration was
    * called directly or whether Update() (which in turn called
    * StartRegistration()). */
-  void StartRegistration(void) { this->Update(); }
+  void
+  StartRegistration(void) {
+    this->Update();
+  }
+
 #endif
 
 protected:
   ImageRegistrationMethod();
-  virtual ~ImageRegistrationMethod() {}
+  virtual
+  ~ImageRegistrationMethod() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
+
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */
   void  GenerateData();

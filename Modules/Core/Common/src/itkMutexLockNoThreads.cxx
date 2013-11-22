@@ -30,7 +30,8 @@
 namespace itk
 {
 // New for the SimpleMutex
-SimpleMutexLock * SimpleMutexLock::New()
+SimpleMutexLock *
+SimpleMutexLock::New()
 {
   return new SimpleMutexLock;
 }
@@ -64,7 +65,8 @@ SimpleMutexLock::~SimpleMutexLock()
 }
 
 // Lock the MutexLock
-void SimpleMutexLock::Lock()
+void
+SimpleMutexLock::Lock()
 {
 #ifdef ITK_USE_WIN32_THREADS
   WaitForSingleObject(m_MutexLock, INFINITE);
@@ -76,7 +78,8 @@ void SimpleMutexLock::Lock()
 }
 
 // Unlock the MutexLock
-void SimpleMutexLock::Unlock()
+void
+SimpleMutexLock::Unlock()
 {
 #ifdef ITK_USE_WIN32_THREADS
   ReleaseMutex(m_MutexLock);
@@ -87,8 +90,10 @@ void SimpleMutexLock::Unlock()
 #endif
 }
 
-void MutexLock::PrintSelf(std::ostream & os, Indent indent) const
+void
+MutexLock::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } //end namespace itk

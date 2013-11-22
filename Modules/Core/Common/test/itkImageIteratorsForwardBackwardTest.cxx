@@ -20,10 +20,12 @@
 
 #include "itkImageRegionIteratorWithIndex.h"
 
-int itkImageIteratorsForwardBackwardTest(int, char* [] )
+int
+itkImageIteratorsForwardBackwardTest(int, char* [] )
 {
 
   std::cout << "Creating an image" << std::endl;
+
   typedef itk::Image<unsigned short,3> ImageType;
 
   ImageType::Pointer myImage = ImageType::New();
@@ -60,12 +62,11 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
   std::cout << "Storing data on the image ... " << std::endl;
 
   while( !it.IsAtEnd() )
-  {
+    {
     value++;
     it.Set( value );
     ++it;
-  }
-
+    }
 
   // Verification
   IteratorType ot( myImage, region );
@@ -74,22 +75,22 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
   value = itk::NumericTraits< ImageType::PixelType >::Zero;
 
   while( !ot.IsAtEnd() )
-  {
+    {
     value++;
 
     if( ot.Get() != value )
-    {
+      {
       std::cerr << "Error in forward pass" << std::endl;
       std::cerr << "Values don't correspond to what was stored "
-        << std::endl;
+                << std::endl;
       std::cerr << "Test failed at index ";
       std::cerr << ot.GetIndex() << std::endl;
       std::cerr << "Value stored is = " << ot.Get() << std::endl;
       std::cerr << "Value should be = " << value    << std::endl;
       return EXIT_FAILURE;
-    }
+      }
     ++ot;
-  }
+    }
 
   std::cout << "      PASSED !" << std::endl;
 
@@ -100,22 +101,22 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
   --ot;
   --value;
   while( !ot.IsAtReverseEnd() )
-  {
+    {
 
     if( ot.Get() != value )
-    {
+      {
       std::cerr << "Error in backwards pass" << std::endl;
       std::cerr << "Values don't correspond to what was stored "
-        << std::endl;
+                << std::endl;
       std::cerr << "Test failed at index ";
       std::cerr << ot.GetIndex() << std::endl;
       std::cerr << "Value stored is = " << ot.Get() << std::endl;
       std::cerr << "Value should be = " << value    << std::endl;
       return EXIT_FAILURE;
-    }
+      }
     value--;
     --ot;
-  }
+    }
 
   std::cout << "      PASSED !" << std::endl;
 
@@ -126,22 +127,22 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
   value = itk::NumericTraits< ImageType::PixelType >::Zero;
 
   while( !cot.IsAtEnd() )
-  {
+    {
     value++;
 
     if( cot.Get() != value )
-    {
+      {
       std::cerr << "Error in forward pass" << std::endl;
       std::cerr << "Values don't correspond to what was stored "
-        << std::endl;
+                << std::endl;
       std::cerr << "Test failed at index ";
       std::cerr << cot.GetIndex() << std::endl;
       std::cerr << "Value stored is = " << cot.Get() << std::endl;
       std::cerr << "Value should be = " << value    << std::endl;
       return EXIT_FAILURE;
-    }
+      }
     ++cot;
-  }
+    }
 
   std::cout << "      PASSED !" << std::endl;
 
@@ -152,22 +153,22 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
   --cot;
   --value;
   while( !cot.IsAtReverseEnd() )
-  {
+    {
 
     if( cot.Get() != value )
-    {
+      {
       std::cerr << "Error in backwards pass" << std::endl;
       std::cerr << "Values don't correspond to what was stored "
-        << std::endl;
+                << std::endl;
       std::cerr << "Test failed at index ";
       std::cerr << cot.GetIndex() << std::endl;
       std::cerr << "Value stored is = " << cot.Get() << std::endl;
       std::cerr << "Value should be = " << value    << std::endl;
       return EXIT_FAILURE;
-    }
+      }
     value--;
     --cot;
-  }
+    }
 
   std::cout << "      PASSED !" << std::endl;
 

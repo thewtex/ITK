@@ -32,17 +32,22 @@ ParticleSwarmOptimizerDOMWriter::GenerateData( DOMNodeType* outputdom, const voi
 
   const InputType* input = this->GetInput();
 
-  // In general users should not remove the constness of the input object when generating
-  // the corresponding XML DOM; however, some "Get" methods of PSO used here do not have the
-  // "const" modifier due to the use of itkGetMacro instead of itkGetConstMacro, so we
-  // have to use a workaround here by temporarily removing the constness of the input object,
+  // In general users should not remove the constness of the input object when
+  // generating
+  // the corresponding XML DOM; however, some "Get" methods of PSO used here do
+  // not have the
+  // "const" modifier due to the use of itkGetMacro instead of itkGetConstMacro,
+  // so we
+  // have to use a workaround here by temporarily removing the constness of the
+  // input object,
   // but users should never modify the input object during the writing process.
   ParticleSwarmOptimizer* ipobj = const_cast<ParticleSwarmOptimizer*>(input);
 
   outputdom->SetName( "optimizer" );
   outputdom->SetAttribute( "type", "ParticleSwarmOptimizer" );
 
-  // use a StringObject instead of a std::string in order to pickup the right overloaded
+  // use a StringObject instead of a std::string in order to pickup the right
+  // overloaded
   // "operator<<()" functions for writing PSO data to strings
   FancyString s;
 
@@ -66,8 +71,8 @@ ParticleSwarmOptimizerDOMWriter::GenerateData( DOMNodeType* outputdom, const voi
   s << ClearContent << ipobj->GetPersonalCoefficient();
   outputdom->SetAttribute( "PersonalCoefficient", s );
 
-  std::vector<double> lbound;
-  std::vector<double> ubound;
+  std::vector<double>                         lbound;
+  std::vector<double>                         ubound;
   ParticleSwarmOptimizer::ParameterBoundsType bounds = ipobj->GetParameterBounds();
   for ( size_t i = 0; i < bounds.size(); i++ )
     {
@@ -93,7 +98,27 @@ ParticleSwarmOptimizerDOMWriter::GenerateData( DOMNodeType* outputdom, const voi
   DOMNode::Pointer nodeptols = DOMNode::New();
   nodeptols->SetName( "ParametersConvergenceTolerance" );
   outputdom->AddChildAtEnd( nodeptols );
-  s << ClearContent << (Array<double>)ipobj->GetParametersConvergenceTolerance(); // the casting is necessary to select the right templated function
+  s << ClearContent << (Array<double>)ipobj->GetParametersConvergenceTolerance(); //
+                                                                                  //
+                                                                                  // the
+                                                                                  //
+                                                                                  // casting
+                                                                                  //
+                                                                                  // is
+                                                                                  //
+                                                                                  // necessary
+                                                                                  //
+                                                                                  // to
+                                                                                  //
+                                                                                  // select
+                                                                                  //
+                                                                                  // the
+                                                                                  //
+                                                                                  // right
+                                                                                  //
+                                                                                  // templated
+                                                                                  //
+                                                                                  // function
   nodeptols->AddTextChildAtEnd( s );
 
   logger->Info( "writing FunctionConvergenceTolerance ...\n" );

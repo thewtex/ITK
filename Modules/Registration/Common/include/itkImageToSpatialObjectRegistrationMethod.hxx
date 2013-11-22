@@ -130,6 +130,7 @@ ImageToSpatialObjectRegistrationMethod< TFixedImage, TMovingSpatialObject >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Metric: " << m_Metric.GetPointer() << std::endl;
   os << indent << "Optimizer: " << m_Optimizer.GetPointer() << std::endl;
   os << indent << "Transform: " << m_Transform.GetPointer() << std::endl;
@@ -184,9 +185,9 @@ template< typename TFixedImage, typename TMovingSpatialObject >
 const typename ImageToSpatialObjectRegistrationMethod< TFixedImage, TMovingSpatialObject >::TransformOutputType *
 ImageToSpatialObjectRegistrationMethod< TFixedImage, TMovingSpatialObject >
 ::GetOutput() const
-{
+  {
   return static_cast< const TransformOutputType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename TFixedImage, typename TMovingSpatialObject >
 DataObject::Pointer
@@ -256,6 +257,7 @@ ImageToSpatialObjectRegistrationMethod< TFixedImage, TMovingSpatialObject >
 
   return mtime;
 }
+
 } // end namespace itk
 
 #endif

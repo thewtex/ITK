@@ -64,7 +64,7 @@ VnlForwardFFTImageFilter< TInputImage, TOutputImage >
     }
 
   const InputPixelType *in = inputPtr->GetBufferPointer();
-  SignalVectorType signal( vectorSize );
+  SignalVectorType      signal( vectorSize );
   for ( unsigned int i = 0; i < vectorSize; i++ )
     {
     signal[i] = in[i];
@@ -84,6 +84,7 @@ VnlForwardFFTImageFilter< TInputImage, TOutputImage >
     oIt.Set( signal[offset] );
     }
 }
+
 }
 
 #endif

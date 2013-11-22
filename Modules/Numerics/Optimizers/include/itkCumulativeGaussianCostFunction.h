@@ -47,7 +47,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 
-class CumulativeGaussianCostFunction:public MultipleValuedCostFunction
+class CumulativeGaussianCostFunction : public MultipleValuedCostFunction
 {
 public:
 
@@ -73,8 +73,10 @@ public:
   enum { SpaceDimension = 4 };
 
   /** Not necessary for this optimizer. */
-  void GetDerivative( const ParametersType & itkNotUsed(parameters),
-                      DerivativeType & itkNotUsed(derivative) ) const {}
+  void
+  GetDerivative( const ParametersType & itkNotUsed(parameters),
+                 DerivativeType & itkNotUsed(derivative) ) const {
+  }
 
   /** Return the values evaluated for the given parameters. */
   MeasureType GetValue(const ParametersType & parameters) const;
@@ -102,7 +104,8 @@ public:
 
 protected:
   CumulativeGaussianCostFunction();
-  virtual ~CumulativeGaussianCostFunction();
+  virtual
+  ~CumulativeGaussianCostFunction();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

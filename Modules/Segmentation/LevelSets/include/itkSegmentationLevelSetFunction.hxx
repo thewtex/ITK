@@ -23,7 +23,8 @@
 namespace itk
 {
 template< typename TImageType, typename TFeatureImageType >
-void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::SetSpeedImage(ImageType *s)
 {
   m_SpeedImage = s;
@@ -31,7 +32,8 @@ void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::SetAdvectionImage(VectorImageType *s)
 {
   m_AdvectionImage = s;
@@ -39,7 +41,8 @@ void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::ReverseExpansionDirection()
 {
   this->SetPropagationWeight( -1.0 * this->GetPropagationWeight() );
@@ -47,14 +50,16 @@ void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::Initialize(const RadiusType & r)
 {
   Superclass::Initialize(r);
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::AllocateSpeedImage()
 {
   m_SpeedImage->SetRequestedRegion( m_FeatureImage->GetRequestedRegion() );
@@ -65,7 +70,8 @@ void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void SegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::AllocateAdvectionImage()
 {
   m_AdvectionImage->SetRequestedRegion( m_FeatureImage->GetRequestedRegion() );
@@ -118,6 +124,7 @@ SegmentationLevelSetFunction< TImageType, TFeatureImageType >
   //Just return the default else
   return ( m_AdvectionImage->GetPixel(idx) );
 }
+
 } // end namespace itk
 
 #endif

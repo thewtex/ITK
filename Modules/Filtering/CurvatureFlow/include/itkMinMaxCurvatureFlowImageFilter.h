@@ -74,7 +74,7 @@ namespace itk
  * \ingroup ITKCurvatureFlow
  */
 template< typename TInputImage, typename TOutputImage >
-class MinMaxCurvatureFlowImageFilter:
+class MinMaxCurvatureFlowImageFilter :
   public CurvatureFlowImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -96,7 +96,7 @@ public:
 
   /** MinMaxCurvatureFlowFunction type. */
   typedef MinMaxCurvatureFlowFunction< OutputImageType >
-  MinMaxCurvatureFlowFunctionType;
+    MinMaxCurvatureFlowFunctionType;
 
   /** Dimensionality of input and output data is assumed to be the same.
    * It is inherited from the superclass. */
@@ -135,7 +135,9 @@ public:
 
 protected:
   MinMaxCurvatureFlowImageFilter();
-  ~MinMaxCurvatureFlowImageFilter() {}
+  ~MinMaxCurvatureFlowImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration.

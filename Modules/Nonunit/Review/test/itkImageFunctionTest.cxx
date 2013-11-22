@@ -25,7 +25,7 @@
 namespace itk {
 
 template< typename TInputImage, typename TCoordRep = SpacePrecisionType >
-class TestImageFunction:
+class TestImageFunction :
   public ImageFunction< TInputImage,
                         typename NumericTraits<
                           typename TInputImage::PixelType >::RealType,
@@ -34,12 +34,12 @@ class TestImageFunction:
 public:
 
   /** Standard class typedefs. */
-  typedef TestImageFunction                   Self;
+  typedef TestImageFunction Self;
   typedef ImageFunction< TInputImage,
                          typename NumericTraits<
-                         typename TInputImage::PixelType >::RealType,
+                           typename TInputImage::PixelType >::RealType,
                          TCoordRep >
-                                              Superclass;
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -51,7 +51,7 @@ public:
   itkNewMacro(Self);
 
   /** OutputType typedef support. */
-  typedef typename Superclass::OutputType     OutputType;
+  typedef typename Superclass::OutputType OutputType;
 
   /** InputImageType typedef support. */
   typedef typename Superclass::InputImageType InputImageType;
@@ -71,69 +71,81 @@ public:
   typedef typename Superclass::ContinuousIndexType ContinuousIndexType;
 
   /** Evaluate the function at specified Point position.*/
-  virtual OutputType Evaluate(const PointType & itkNotUsed(point) ) const
-    {
+  virtual OutputType
+  Evaluate(const PointType & itkNotUsed(point) ) const
+  {
     OutputType result(0);
+
     return result;
-    }
+  }
 
   /** Evaluate the function at specified Index position. */
-  virtual OutputType EvaluateAtIndex(const IndexType & itkNotUsed(index) ) const
-    {
+  virtual OutputType
+  EvaluateAtIndex(const IndexType & itkNotUsed(index) ) const
+  {
     OutputType result(0);
+
     return result;
-    }
+  }
 
   /** Evaluate the function at specified ContinuousIndex position. */
-  virtual OutputType EvaluateAtContinuousIndex( const ContinuousIndexType & itkNotUsed(index) ) const
-    {
+  virtual OutputType
+  EvaluateAtContinuousIndex( const ContinuousIndexType & itkNotUsed(index) ) const
+  {
     OutputType result(0);
+
     return result;
-    }
+  }
 
 protected:
-  TestImageFunction(){};
-  ~TestImageFunction(){};
-  void PrintSelf(std::ostream & os, Indent indent) const
-   {
-   this->Superclass::PrintSelf(os, indent);
-   }
+  TestImageFunction(){
+  }
+
+  ~TestImageFunction(){
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    this->Superclass::PrintSelf(os, indent);
+  }
 
 private:
   TestImageFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);                 //purposely not implemented
+  void operator=(const Self &);    //purposely not implemented
 
 };
 
-}//namespace
+} //namespace
 
 /****************************************/
 
-int itkImageFunctionTest( int , char*[] )
+int
+itkImageFunctionTest( int , char*[] )
 {
 
   bool result = EXIT_SUCCESS;
 
-  const   unsigned int                                  Dimension = 3;
-  typedef float                                         PixelType;
-  typedef itk::Image< PixelType, Dimension >            ImageType;
-  typedef ImageType::RegionType                         RegionType;
-  typedef RegionType::SizeType                          SizeType;
-  typedef ImageType::IndexType                          IndexType;
+  const   unsigned int Dimension = 3;
+
+  typedef float                              PixelType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
+  typedef ImageType::RegionType              RegionType;
+  typedef RegionType::SizeType               SizeType;
+  typedef ImageType::IndexType               IndexType;
 
   typedef float                                         CoordRepType;
   typedef itk::ContinuousIndex<CoordRepType, Dimension> ContinuousIndexType;
   typedef itk::Point<CoordRepType, Dimension>           PointType;
 
   typedef itk::NumericTraits<IndexType::IndexValueType>
-                                              IndexNumericTraits;
+    IndexNumericTraits;
   typedef itk::NumericTraits<ContinuousIndexType::ValueType>
-                                              ContinuousIndexNumericTraits;
+    ContinuousIndexNumericTraits;
   typedef itk::NumericTraits<PointType::ValueType>
-                                              PointNumericTraits;
+    PointNumericTraits;
 
-
-  typedef itk::TestImageFunction< ImageType, CoordRepType >  FunctionType;
+  typedef itk::TestImageFunction< ImageType, CoordRepType > FunctionType;
 
   ImageType::Pointer image = ImageType::New();
 
@@ -150,8 +162,8 @@ int itkImageFunctionTest( int , char*[] )
   image->SetRegions( region );
   image->Allocate();
 
-  ImageType::PointType     origin;
-  ImageType::SpacingType   spacing;
+  ImageType::PointType   origin;
+  ImageType::SpacingType spacing;
   origin.Fill( 0.0 );
   spacing.Fill( 1.0 );
 
@@ -164,22 +176,22 @@ int itkImageFunctionTest( int , char*[] )
 
   /* Test SetInputImage & Accessors */
   function->SetInputImage( image );
-  const IndexType & endIndex = function->GetEndIndex();
-  const IndexType & startIndex = function->GetStartIndex();
+  const IndexType &                         endIndex = function->GetEndIndex();
+  const IndexType &                         startIndex = function->GetStartIndex();
   const FunctionType::ContinuousIndexType & endIndexC = function->GetEndContinuousIndex();
   const FunctionType::ContinuousIndexType & startIndexC = function->GetStartContinuousIndex();
 
   for ( unsigned int j = 0; j < Dimension; j++ )
     {
     if( startIndex[j]    != start[0]            ||
-          endIndex[j]    !=
-            static_cast<IndexType::IndexValueType>(start[0]+size[j] -1) ||
-          startIndexC[j] != start[0]-0.5        ||
-            endIndexC[j] != start[0]+size[j] -0.5 )
-        {
-        std::cout << "Error in SetInputImage with index bounds." << std::endl;
-        return EXIT_FAILURE;
-        }
+        endIndex[j]    !=
+        static_cast<IndexType::IndexValueType>(start[0]+size[j] -1) ||
+        startIndexC[j] != start[0]-0.5        ||
+        endIndexC[j] != start[0]+size[j] -0.5 )
+      {
+      std::cout << "Error in SetInputImage with index bounds." << std::endl;
+      return EXIT_FAILURE;
+      }
     }
 
   /* GetInputImage */
@@ -270,7 +282,7 @@ int itkImageFunctionTest( int , char*[] )
     }
   /* Some tests cause floating point exceptions, so
    * only run them when FPE are not enabled. */
-  if( ! itk::FloatingPointExceptions::GetEnabled() )
+  if( !itk::FloatingPointExceptions::GetEnabled() )
     {
     std::cout << "ContinousIndex Tests. FPE's disabled." << std::endl;
     if( ContinuousIndexNumericTraits::has_quiet_NaN )
@@ -330,7 +342,7 @@ int itkImageFunctionTest( int , char*[] )
     std::cout << "Error with IsInsideBuffer 3P. Expected false." << std::endl;
     result = EXIT_FAILURE;
     }
-  if( ! itk::FloatingPointExceptions::GetEnabled() )
+  if( !itk::FloatingPointExceptions::GetEnabled() )
     {
     std::cout << "Tests with Point. FPE's disabled." << std::endl;
     point[0] = PointNumericTraits::max();
@@ -399,7 +411,7 @@ int itkImageFunctionTest( int , char*[] )
     }
 
   /* Test with NaN to see what happens */
-  if( ! itk::FloatingPointExceptions::GetEnabled() )
+  if( !itk::FloatingPointExceptions::GetEnabled() )
     {
     if( PointNumericTraits::has_quiet_NaN )
       {
@@ -414,7 +426,7 @@ int itkImageFunctionTest( int , char*[] )
     }
 
   /* Test with infinity to see what happens */
-  if( ! itk::FloatingPointExceptions::GetEnabled() )
+  if( !itk::FloatingPointExceptions::GetEnabled() )
     {
     point[0] = PointNumericTraits::infinity();
     function->ConvertPointToNearestIndex( point, index );
@@ -449,7 +461,7 @@ int itkImageFunctionTest( int , char*[] )
     }
 
   /* Test with NaN to see what happens */
-  if( ! itk::FloatingPointExceptions::GetEnabled() )
+  if( !itk::FloatingPointExceptions::GetEnabled() )
     {
     if( ContinuousIndexNumericTraits::has_quiet_NaN )
       {

@@ -63,7 +63,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename T >
-class DataObjectDecorator:public DataObject
+class DataObjectDecorator : public DataObject
 {
 public:
   /** Standard typedefs. */

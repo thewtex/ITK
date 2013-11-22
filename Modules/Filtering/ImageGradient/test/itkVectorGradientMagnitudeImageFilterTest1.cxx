@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-int itkVectorGradientMagnitudeImageFilterTest1(int ac, char* av[] )
+int
+itkVectorGradientMagnitudeImageFilterTest1(int ac, char* av[] )
 {
   typedef itk::RGBPixel<unsigned short>                         RGBPixelType;
   typedef itk::Image<unsigned char, 2>                          CharImageType;
@@ -30,8 +31,8 @@ int itkVectorGradientMagnitudeImageFilterTest1(int ac, char* av[] )
   typedef itk::VectorGradientMagnitudeImageFilter<RGBImageType> FilterType;
   typedef itk::ImageFileReader<RGBImageType>                    ReaderType;
   typedef itk::RescaleIntensityImageFilter<FilterType::OutputImageType,
-    CharImageType>                                              RescaleFilterType;
-  typedef itk::ImageFileWriter<CharImageType>                   WriterType;
+                                           CharImageType>                                              RescaleFilterType;
+  typedef itk::ImageFileWriter<CharImageType> WriterType;
 
   if(ac < 4)
     {
@@ -44,7 +45,7 @@ int itkVectorGradientMagnitudeImageFilterTest1(int ac, char* av[] )
   reader->SetFileName(av[1]);
   FilterType::Pointer filter = FilterType::New();
 
-  filter->SetInput(reader->GetOutput());
+  filter->SetInput(reader->GetOutput() );
 
   int mode = ::atoi( av[3] );
   if ( mode == 1)
@@ -84,7 +85,6 @@ int itkVectorGradientMagnitudeImageFilterTest1(int ac, char* av[] )
   std::cout << "-- Test of the Print method --------------" << std::endl;
   filter->Print( std::cout );
   std::cout << "-- End of Print method test --------------" << std::endl;
-
 
   std::cout <<  "The gradient image range was (low, high) = ("
             <<  rescale->GetInputMinimum() << ", " << rescale->GetInputMaximum()

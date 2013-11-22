@@ -34,6 +34,7 @@ FastMarchingUpwindGradientImageFilterBase< TInput, TOutput >
 ::FastMarchingUpwindGradientImageFilterBase()
 {
   GradientImagePointer GradientImage = GradientImageType::New();
+
   this->SetNthOutput( 1, GradientImage.GetPointer() );
 }
 
@@ -41,9 +42,9 @@ template< typename TInput, typename TOutput >
 typename FastMarchingUpwindGradientImageFilterBase< TInput, TOutput >::GradientImageType*
 FastMarchingUpwindGradientImageFilterBase< TInput, TOutput >
 ::GetGradientImage()
-{
+  {
   return dynamic_cast< GradientImageType* >( this->ProcessObject::GetOutput( 1 ) );
-}
+  }
 
 /**
  *
@@ -91,7 +92,6 @@ InitializeOutput(OutputImageType *output)
     }
 }
 
-
 template< typename TInput, typename TOutput >
 void
 FastMarchingUpwindGradientImageFilterBase< TInput, TOutput >::
@@ -111,13 +111,13 @@ template< typename TInput, typename TOutput >
 void
 FastMarchingUpwindGradientImageFilterBase< TInput, TOutput >
 ::ComputeGradient( OutputImageType* oImage,
-                  const NodeType& iNode )
+                   const NodeType& iNode )
 {
   NodeType neighIndex = iNode;
 
-  OutputPixelType centerPixel;
-  OutputPixelType dx_forward;
-  OutputPixelType dx_backward;
+  OutputPixelType   centerPixel;
+  OutputPixelType   dx_forward;
+  OutputPixelType   dx_backward;
   GradientPixelType gradientPixel;
 
   const OutputPixelType ZERO = NumericTraits< OutputPixelType >::Zero;
@@ -184,6 +184,7 @@ FastMarchingUpwindGradientImageFilterBase< TInput, TOutput >
   GradientImagePointer GradientImage = this->GetGradientImage();
   GradientImage->SetPixel(iNode, gradientPixel);
 }
+
 } // namespace itk
 
 #endif

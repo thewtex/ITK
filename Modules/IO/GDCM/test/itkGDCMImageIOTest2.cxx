@@ -19,12 +19,12 @@
 #include "itkImageSeriesReader.h"
 #include "itkImageSeriesWriter.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
 // Take as input any kind of image (typically RAW) and will create a valid
 // DICOM MR image out of the raw image.
-int itkGDCMImageIOTest2(int argc, char *argv[] )
+int
+itkGDCMImageIOTest2(int argc, char *argv[] )
 {
   if( argc < 3 )
     {
@@ -54,7 +54,7 @@ int itkGDCMImageIOTest2(int argc, char *argv[] )
   //reader->GetOutput()->Print(std::cout);
 
   itk::MetaDataDictionary & dict = dicomIO->GetMetaDataDictionary();
-  std::string tagkey, value;
+  std::string               tagkey, value;
   tagkey = "0002|0002";
   value = "1.2.840.10008.5.1.4.1.1.4"; // Media Storage SOP Class UID
   itk::EncapsulateMetaData<std::string>(dict, tagkey, value );
@@ -110,7 +110,7 @@ int itkGDCMImageIOTest2(int argc, char *argv[] )
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetImageIO(dicomIO);
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   writer->UseInputMetaDataDictionaryOff();
 
   // Save as JPEG 2000 Lossless
@@ -118,7 +118,7 @@ int itkGDCMImageIOTest2(int argc, char *argv[] )
   dicomIO->SetCompressionType(itk::GDCMImageIO::JPEG2000);
   // Request compression of the ImageIO
   writer->UseCompressionOn();
-  writer->SetFileName(output_j2k.c_str());
+  writer->SetFileName(output_j2k.c_str() );
   try
     {
     writer->Update();
@@ -132,7 +132,7 @@ int itkGDCMImageIOTest2(int argc, char *argv[] )
 
   // Save as JPEG Lossless
   dicomIO->SetCompressionType(itk::GDCMImageIO::JPEG);
-  writer->SetFileName(output_jpll.c_str());
+  writer->SetFileName(output_jpll.c_str() );
   try
     {
     writer->Update();
@@ -146,7 +146,7 @@ int itkGDCMImageIOTest2(int argc, char *argv[] )
 
   // Save as raw
   writer->UseCompressionOff();
-  writer->SetFileName(output_raw.c_str());
+  writer->SetFileName(output_raw.c_str() );
   try
     {
     writer->Update();

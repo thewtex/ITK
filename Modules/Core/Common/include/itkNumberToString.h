@@ -44,18 +44,21 @@ class NumberToString
 {
 public:
   NumberToString() :
-    m_DoubleToStringConverter(double_conversion::DoubleToStringConverter::EcmaScriptConverter())
-    {
-    }
-  std::string operator() (TValueType val);
+    m_DoubleToStringConverter(double_conversion::DoubleToStringConverter::EcmaScriptConverter() )
+  {
+  }
+
+  std::string operator()(TValueType val);
 
 private:
   NumberToString & operator=(const NumberToString &); // not defined
+
   const double_conversion::DoubleToStringConverter &m_DoubleToStringConverter;
 };
 
 // declaration of specialization
 template<> ITKCommon_EXPORT std::string NumberToString<double>::operator()(double val);
+
 template<> ITKCommon_EXPORT std::string NumberToString<float>::operator()(float val);
 
 } // namespace itk

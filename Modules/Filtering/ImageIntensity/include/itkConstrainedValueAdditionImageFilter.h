@@ -34,31 +34,39 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class ConstrainedValueAddition
 {
 public:
-  ConstrainedValueAddition() {}
-  ~ConstrainedValueAddition() {}
-  bool operator!=(const ConstrainedValueAddition &) const
+  ConstrainedValueAddition() {
+  }
+
+  ~ConstrainedValueAddition() {
+  }
+
+  bool
+  operator!=(const ConstrainedValueAddition &) const
   {
     return false;
   }
 
-  bool operator==(const ConstrainedValueAddition & other) const
+  bool
+  operator==(const ConstrainedValueAddition & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A,
-                            const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A,
+             const TInput2 & B) const
   {
     const double dA = static_cast< double >( A );
     const double dB = static_cast< double >( B );
     const double add = dA + dB;
     const double cadd1 = ( add < NumericTraits< TOutput >::max() ) ?
-                         add : NumericTraits< TOutput >::max();
+      add : NumericTraits< TOutput >::max();
     const double cadd2 = ( cadd1 > NumericTraits< TOutput >::NonpositiveMin() ) ?
-                         cadd1 : NumericTraits< TOutput >::NonpositiveMin();
+      cadd1 : NumericTraits< TOutput >::NonpositiveMin();
 
     return static_cast< TOutput >( cadd2 );
   }
+
 };
 }
 /** \class ConstrainedValueAdditionImageFilter
@@ -92,7 +100,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class ConstrainedValueAdditionImageFilter:
+class ConstrainedValueAdditionImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::ConstrainedValueAddition<
@@ -108,7 +116,7 @@ public:
                                       typename TInputImage1::PixelType,
                                       typename TInputImage2::PixelType,
                                       typename TOutputImage::PixelType > >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -133,12 +141,17 @@ public:
 #endif
 
 protected:
-  ConstrainedValueAdditionImageFilter() {}
-  virtual ~ConstrainedValueAdditionImageFilter() {}
+  ConstrainedValueAdditionImageFilter() {
+  }
+
+  virtual
+  ~ConstrainedValueAdditionImageFilter() {
+  }
 
 private:
   ConstrainedValueAdditionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

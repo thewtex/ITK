@@ -20,8 +20,11 @@
 namespace itk
 {
 Command::Command()
-{}
+{
+}
 
 Command::~Command()
-{}
+{
+}
+
 }

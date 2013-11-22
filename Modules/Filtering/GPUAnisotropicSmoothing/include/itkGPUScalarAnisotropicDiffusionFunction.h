@@ -31,7 +31,8 @@ namespace itk
  * \ingroup ITKGPUAnisotropicSmoothing
  * */
 
-/** Create a helper GPU Kernel class for GPUScalarAnisotropicDiffusionFunction */
+/** Create a helper GPU Kernel class for GPUScalarAnisotropicDiffusionFunction
+  */
 itkGPUKernelClassMacro(GPUScalarAnisotropicDiffusionFunctionKernel);
 
 template< typename TImage >
@@ -74,7 +75,8 @@ private:
   GPUScalarAnisotropicDiffusionFunction(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
 };
 } // end namespace itk

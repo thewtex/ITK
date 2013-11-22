@@ -106,13 +106,16 @@ public:
   // helper functions for string manipulations
   /////////////////////////////////////////////////////////////////////////////
 
-  /** Method to trim the spaces or user-specified characters on both ends of a string. */
+  /** Method to trim the spaces or user-specified characters on both ends of a
+    string. */
   static std::string& Trim( std::string& str, const std::string& dislike = " \t\n\r" );
 
-  /** Method to trim the spaces or user-specified characters on left end of a string. */
+  /** Method to trim the spaces or user-specified characters on left end of a
+    string. */
   static std::string& TrimLeft( std::string& str, const std::string& dislike = " \t\n\r" );
 
-  /** Method to trim the spaces or user-specified characters on right end of a string. */
+  /** Method to trim the spaces or user-specified characters on right end of a
+    string. */
   static std::string& TrimRight( std::string& str, const std::string& dislike = " \t\n\r" );
 
   /** Method to covert lower-case characters to upper cases in a string. */
@@ -124,14 +127,16 @@ public:
   /** Method to split a string into two parts with user-defined delimiters. */
   static void Split( const std::string& s, std::string& lpart, std::string& rpart, const std::string& delims = "=:" );
 
-  /** Method to split a string into a sequence of strings with user-defined delimiters. */
+  /** Method to split a string into a sequence of strings with user-defined
+    delimiters. */
   static void Split( const std::string& s, std::vector<std::string>& result, const std::string& delims = ";|" );
 
   /**
    * Method to split a string into a sequence of sub-strings with user-defined delimiters,
    * then each sub-string is further splitted into a <key,value> pair with separators "=:".
    */
-  static void Split( const std::string& s, std::map<std::string,std::string>& result, const std::string& delims = ";|" );
+  static void Split( const std::string& s,
+                     std::map<std::string,std::string>& result, const std::string& delims = ";|" );
 
   /** Method to test whether one string matches with another. */
   static bool MatchWith( const std::string& s1, const std::string& s2, bool ignoreCase = true );
@@ -144,6 +149,7 @@ public:
 
   /** Method to test whether a string contains a user-given sub-string. */
   static bool ContainSub( const std::string& s1, const std::string& s2, bool ignoreCase = true );
+
 }; // class StringTools
 
 } // namespace itk

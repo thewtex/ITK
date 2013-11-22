@@ -19,7 +19,8 @@
 #include <iostream>
 #include "itkScalar.h"
 
-int itkScalarTest(int, char* [] )
+int
+itkScalarTest(int, char* [] )
 {
   bool passed = true;
 
@@ -27,7 +28,7 @@ int itkScalarTest(int, char* [] )
 
   ShortScalar s;
   ShortScalar t;
-  short i = 2;
+  short       i = 2;
 
   t = 7;
   s = 2.5;
@@ -46,7 +47,7 @@ int itkScalarTest(int, char* [] )
     {
     passed = false;
     }
-  if (! (s == s.GetScalar()) )
+  if (!(s == s.GetScalar() ) )
     {
     passed = false;
     }
@@ -55,12 +56,11 @@ int itkScalarTest(int, char* [] )
     passed = false;
     }
 
-
-  if (! (s != t) )
+  if (!(s != t) )
     {
     passed = false;
     }
-  if (s != s.GetScalar())
+  if (s != s.GetScalar() )
     {
     passed = false;
     }
@@ -73,7 +73,7 @@ int itkScalarTest(int, char* [] )
     {
     passed = false;
     }
-  if (! (s >= s.GetScalar()) )
+  if (!(s >= s.GetScalar() ) )
     {
     passed = false;
     }
@@ -86,7 +86,7 @@ int itkScalarTest(int, char* [] )
     {
     passed = false;
     }
-  if (s > s.GetScalar())
+  if (s > s.GetScalar() )
     {
     passed = false;
     }
@@ -95,28 +95,28 @@ int itkScalarTest(int, char* [] )
     passed = false;
     }
 
-  if (! (s <= t))
+  if (!(s <= t) )
     {
     passed = false;
     }
-  if (! (s <= s.GetScalar()))
+  if (!(s <= s.GetScalar() ) )
     {
     passed = false;
     }
-  if (! (s <= 7))
+  if (!(s <= 7) )
     {
     passed = false;
     }
 
-  if (! (s < t))
+  if (!(s < t) )
     {
     passed = false;
     }
-  if (s < s.GetScalar())
+  if (s < s.GetScalar() )
     {
     passed = false;
     }
-  if (! (s < 7))
+  if (!(s < 7) )
     {
     passed = false;
     }
@@ -132,7 +132,6 @@ int itkScalarTest(int, char* [] )
     {
     passed = false;
     }
-
 
   if (passed)
     {

@@ -80,7 +80,8 @@
 #include <vector>
 #include "itksys/SystemTools.hxx"
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -91,18 +92,19 @@ int main( int argc, char* argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  As a second step, we define the image type to be used in this example. This
+  //  As a second step, we define the image type to be used in this example.
+  // This
   //  is done by explicitly selecting a pixel type and a dimension. Using the
   //  image type we can define the type of the series reader.
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short    PixelType;
-  const unsigned int      Dimension = 3;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
+  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -116,10 +118,10 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO                        ImageIOType;
-  typedef itk::GDCMSeriesFileNames                NamesGeneratorType;
+  typedef itk::GDCMImageIO         ImageIOType;
+  typedef itk::GDCMSeriesFileNames NamesGeneratorType;
 
-  ImageIOType::Pointer gdcmIO = ImageIOType::New();
+  ImageIOType::Pointer        gdcmIO = ImageIOType::New();
   NamesGeneratorType::Pointer namesGenerator = NamesGeneratorType::New();
   // Software Guide : EndCodeSnippet
 
@@ -130,7 +132,8 @@ int main( int argc, char* argv[] )
   //  \code{SetInputDirectory()} method instead of the \code{SetDirectory()}.
   //  This is done because in the present case we will use the filenames
   //  generator for producing both the filenames for reading and the filenames
-  //  for writing. Then, we invoke the \code{GetInputFileNames()} method in order
+  //  for writing. Then, we invoke the \code{GetInputFileNames()} method in
+  // order
   //  to get the list of filenames to read.
   //
   //  Software Guide : EndLatex
@@ -139,7 +142,7 @@ int main( int argc, char* argv[] )
   namesGenerator->SetInputDirectory( argv[1] );
 
   const ReaderType::FileNamesContainer & filenames =
-                            namesGenerator->GetInputFileNames();
+    namesGenerator->GetInputFileNames();
   // Software Guide : EndCodeSnippet
 
   unsigned int numberOfFilenames =  filenames.size();
@@ -224,19 +227,20 @@ int main( int argc, char* argv[] )
 
   // Software Guide : BeginLatex
   //
-  // We instantiate explicitly the image type to be used for writing, and use the
+  // We instantiate explicitly the image type to be used for writing, and use
+  // the
   // image type for instantiating the type of the series writer.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short    OutputPixelType;
-  const unsigned int      OutputDimension = 2;
+  typedef signed short OutputPixelType;
+  const unsigned int OutputDimension = 2;
 
-  typedef itk::Image< OutputPixelType, OutputDimension >    Image2DType;
+  typedef itk::Image< OutputPixelType, OutputDimension > Image2DType;
 
   typedef itk::ImageSeriesWriter<
-                             ImageType, Image2DType >  SeriesWriterType;
+      ImageType, Image2DType >  SeriesWriterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -272,11 +276,11 @@ int main( int argc, char* argv[] )
   seriesWriter->SetFileNames( namesGenerator->GetOutputFileNames() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The following line of code is extremely important for this process to work
-  //  correctly.  The line is taking the MetaDataDictionary from the input reader
+  //  correctly.  The line is taking the MetaDataDictionary from the input
+  // reader
   //  and passing it to the output writer. The reason why this step is so
   //  important is that the MetaDataDictionary contains all the entries of the
   //  input DICOM header.
@@ -288,12 +292,13 @@ int main( int argc, char* argv[] )
 
   // Software Guide : BeginCodeSnippet
   seriesWriter->SetMetaDataDictionaryArray(
-                        reader->GetMetaDataDictionaryArray() );
+    reader->GetMetaDataDictionaryArray() );
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
   //
-  // Finally we trigger the writing process by invoking the \code{Update()} method
+  // Finally we trigger the writing process by invoking the \code{Update()}
+  // method
   // in the series writer. We place this call inside a try/catch block, in case
   // any exception is thrown during the writing process.
   //

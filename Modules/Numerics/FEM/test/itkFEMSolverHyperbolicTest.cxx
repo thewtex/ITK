@@ -20,16 +20,16 @@
 #include "itkFEMLinearSystemWrapperDenseVNL.h"
 #include "itkFEMLinearSystemWrapperItpack.h"
 
-
 typedef itk::fem::SolverHyperbolic<2> FEMSolverType;
 
-
 // Print K - the global stiffness matrix
-void PrintK(FEMSolverType *S)
+void
+PrintK(FEMSolverType *S)
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S->GetLinearSystemWrapper();
 
   std::cout << std::endl << "k" << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     std::cout << " [";
@@ -54,11 +54,13 @@ void PrintK(FEMSolverType *S)
 }
 
 // Print F - the global load vector
-void PrintF(FEMSolverType *S)
+void
+PrintF(FEMSolverType *S)
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S->GetLinearSystemWrapper();
 
   std::cout << std::endl << "f" << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     if( j > 0 )
@@ -70,7 +72,8 @@ void PrintF(FEMSolverType *S)
   std::cout << "];" << std::endl;
 }
 
-void PrintNodalCoordinates(FEMSolverType *S)
+void
+PrintNodalCoordinates(FEMSolverType *S)
 // Print the nodal coordinates
 {
   std::cout << std::endl << "Nodal coordinates: " << std::endl;
@@ -78,6 +81,7 @@ void PrintNodalCoordinates(FEMSolverType *S)
   std::cout << "xyz" << "=[";
 
   int numberOfNodes = S->GetInput()->GetNumberOfNodes();
+
   for( int i = 0; i < numberOfNodes; i++ )
     {
     std::cout << " [";
@@ -87,10 +91,10 @@ void PrintNodalCoordinates(FEMSolverType *S)
   std::cout << "];" << std::endl;
 }
 
-
 // Useful for display purposes - lets you draw each element
 // individually, instead of just a stream of nodes
-void PrintElementCoordinates(FEMSolverType *S )
+void
+PrintElementCoordinates(FEMSolverType *S )
 {
   std::cout << std::endl << "Element coordinates: " << std::endl;
   int ct = 1;
@@ -107,7 +111,9 @@ void PrintElementCoordinates(FEMSolverType *S )
       {
       itk::fem::Element::VectorType nc = S->GetInput()->GetElement(i)->GetNodeCoordinates(n);
 
-      for (unsigned int d=0, dof; ( dof = S->GetInput()->GetElement(i)->GetNode(n)->GetDegreeOfFreedom(d) ) != invalidID; d++)
+      for (unsigned int d=0,
+           dof; ( dof = S->GetInput()->GetElement(i)->GetNode(n)->GetDegreeOfFreedom(d) ) != invalidID;
+           d++)
         {
         nc[d] += S->GetSolution( dof );
         }
@@ -115,29 +121,31 @@ void PrintElementCoordinates(FEMSolverType *S )
       }
     std::cout << "];" << std::endl;
     ct++;
-  }
+    }
 }
 
 // Useful for display purposes - lets you draw each element
 // individually, instead of just a stream of nodes
-void PrintSolution(FEMSolverType *S )
+void
+PrintSolution(FEMSolverType *S )
 {
   std::cout << std::endl << "Solution: " << std::endl;
   const unsigned int invalidID = itk::fem::Element::InvalidDegreeOfFreedomID;
-  int numberOfNodes = S->GetInput()->GetNumberOfNodes();
+  int                numberOfNodes = S->GetInput()->GetNumberOfNodes();
 
   for (int i = 0; i < numberOfNodes; i++ )
     {
     std::cout << "Solution Node " << i << ":";
     for (unsigned int d=0, dof; ( dof = S->GetInput()->GetNode(i)->GetDegreeOfFreedom(d) ) != invalidID; d++)
       {
-        std::cout << " " << S->GetSolution( dof );
+      std::cout << " " << S->GetSolution( dof );
       }
-      std::cout << std::endl;
+    std::cout << std::endl;
     }
 }
 
-int itkFEMSolverHyperbolicTest(int ac, char* av[])
+int
+itkFEMSolverHyperbolicTest(int ac, char* av[])
 {
 
   if (ac < 4)
@@ -150,13 +158,13 @@ int itkFEMSolverHyperbolicTest(int ac, char* av[])
 
   itk::FEMFactoryBase::GetFactory()->RegisterDefaultTypes();
 
-  unsigned int niter = atoi ( av[2] );
-  unsigned int w = atoi( av[3] );
+  unsigned int        niter = atoi ( av[2] );
+  unsigned int        w = atoi( av[3] );
   std::vector<double> solution;
   if (ac > 4)
     {
     solution.resize( ac - 4 );
-    for (int i=4;i<ac;i++)
+    for (int i=4; i<ac; i++)
       {
       solution[i-4] = atof(av[i]);
       }
@@ -180,7 +188,7 @@ int itkFEMSolverHyperbolicTest(int ac, char* av[])
   typedef itk::FEMObjectSpatialObject<2>      FEMObjectSpatialObjectType;
   typedef FEMObjectSpatialObjectType::Pointer FEMObjectSpatialObjectPointer;
   FEMObjectSpatialObjectType::ChildrenListType* children = SpatialReader->GetGroup()->GetChildren();
-  FEMObjectSpatialObjectType::Pointer femSO =
+  FEMObjectSpatialObjectType::Pointer           femSO =
     dynamic_cast<FEMObjectSpatialObjectType *>( (*(children->begin() ) ).GetPointer() );
   delete children;
 
@@ -240,7 +248,7 @@ int itkFEMSolverHyperbolicTest(int ac, char* av[])
 
   if (ac > 4)
     {
-    int numberOfNodes = SH->GetInput()->GetNumberOfNodes();
+    int                numberOfNodes = SH->GetInput()->GetNumberOfNodes();
     const unsigned int invalidID = itk::fem::Element::InvalidDegreeOfFreedomID;
     for (int i = 0; i < numberOfNodes; i++ )
       {

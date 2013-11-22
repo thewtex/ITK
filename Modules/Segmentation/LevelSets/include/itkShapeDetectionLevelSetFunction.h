@@ -69,7 +69,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TFeatureImageType = TImageType >
-class ShapeDetectionLevelSetFunction:
+class ShapeDetectionLevelSetFunction :
   public SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 {
 public:
@@ -102,11 +102,15 @@ public:
   virtual void CalculateSpeedImage();
 
   /** The curvature speed is same as the propagation speed. */
-  virtual ScalarValueType CurvatureSpeed(const NeighborhoodType & neighborhood,
-                                         const FloatOffsetType & offset, GlobalDataStruct *gd) const
-  { return this->PropagationSpeed(neighborhood, offset, gd); }
+  virtual ScalarValueType
+  CurvatureSpeed(const NeighborhoodType & neighborhood,
+                 const FloatOffsetType & offset, GlobalDataStruct *gd) const
+  {
+    return this->PropagationSpeed(neighborhood, offset, gd);
+  }
 
-  virtual void Initialize(const RadiusType & r)
+  virtual void
+  Initialize(const RadiusType & r)
   {
     Superclass::Initialize(r);
 
@@ -123,10 +127,13 @@ protected:
     this->SetCurvatureWeight(NumericTraits< ScalarValueType >::One);
   }
 
-  virtual ~ShapeDetectionLevelSetFunction() {}
+  virtual
+  ~ShapeDetectionLevelSetFunction() {
+  }
 
   ShapeDetectionLevelSetFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // end namespace itk
 

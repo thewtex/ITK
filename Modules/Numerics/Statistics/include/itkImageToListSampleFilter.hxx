@@ -42,6 +42,7 @@ ImageToListSampleFilter< TImage, TMaskImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "MaskValue: "
      << static_cast< typename NumericTraits< MaskPixelType >::PrintType >(
     this->GetMaskValue() )
@@ -187,6 +188,7 @@ ImageToListSampleFilter< TImage, TMaskImage >
 
   ListSampleType *output =
     static_cast< ListSampleType * >( this->ProcessObject::GetOutput(0) );
+
   output->SetMeasurementVectorSize( this->GetMeasurementVectorSize() );
 }
 
@@ -205,12 +207,12 @@ template< typename TImage, typename TMaskImage >
 const typename ImageToListSampleFilter< TImage, TMaskImage >::ListSampleType *
 ImageToListSampleFilter< TImage, TMaskImage >
 ::GetOutput() const
-{
+  {
   const ListSampleType *output =
     static_cast< const ListSampleType * >( this->ProcessObject::GetOutput(0) );
 
   return output;
-}
+  }
 } // end of namespace Statistics
 } // end of namespace itk
 

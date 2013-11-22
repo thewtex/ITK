@@ -19,7 +19,8 @@
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 #include "itkLevelSetDomainPartitionImage.h"
 
-int itkLevelSetDomainPartitionImageTest( int argc, char* argv[] )
+int
+itkLevelSetDomainPartitionImageTest( int argc, char* argv[] )
 {
 
   if( argc < 1 )
@@ -31,15 +32,15 @@ int itkLevelSetDomainPartitionImageTest( int argc, char* argv[] )
 
   const unsigned int Dimension = 2;
 
-  typedef unsigned short                                    InputPixelType;
-  typedef itk::Image< InputPixelType, Dimension >           InputImageType;
-  typedef itk::IdentifierType                               IdentifierType;
+  typedef unsigned short                          InputPixelType;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
+  typedef itk::IdentifierType                     IdentifierType;
 
-  typedef std::list< IdentifierType >                       IdListType;
-  typedef itk::Image< IdListType, Dimension >               IdListImageType;
+  typedef std::list< IdentifierType >         IdListType;
+  typedef itk::Image< IdListType, Dimension > IdListImageType;
 
-  typedef itk::LevelSetDomainPartitionImage< InputImageType > DomainPartitionSourceType;
-  typedef DomainPartitionSourceType::ListImageType            ListImageType;
+  typedef itk::LevelSetDomainPartitionImage< InputImageType >       DomainPartitionSourceType;
+  typedef DomainPartitionSourceType::ListImageType                  ListImageType;
   typedef DomainPartitionSourceType::LevelSetDomainRegionVectorType LevelSetDomainRegionVectorType;
 
   typedef ListImageType::PixelType                                ListType;
@@ -85,12 +86,11 @@ int itkLevelSetDomainPartitionImageTest( int argc, char* argv[] )
   partitionSource->SetLevelSetDomainRegionVector( regionVector );
   partitionSource->PopulateListDomain();
 
-
   bool flag = true;
 
-  ListType ll;
+  ListType                    ll;
   ListImageType::ConstPointer listImage = partitionSource->GetListDomain();
-  ListImageIteratorType It( listImage, listImage->GetLargestPossibleRegion() );
+  ListImageIteratorType       It( listImage, listImage->GetLargestPossibleRegion() );
   It.GoToBegin();
   while( !It.IsAtEnd() )
     {

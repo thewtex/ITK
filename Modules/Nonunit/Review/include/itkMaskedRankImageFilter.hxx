@@ -57,7 +57,6 @@ MaskedRankImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel >
   histogram.SetRank( m_Rank );
 }
 
-
 template< typename TInputImage, typename TMaskImage, typename TOutputImage, typename TKernel >
 void
 MaskedRankImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel >
@@ -67,5 +66,6 @@ MaskedRankImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel >
 
   os << indent << "Rank: " << static_cast< typename NumericTraits< float >::PrintType >( m_Rank ) << std::endl;
 }
+
 } // end namespace itk
 #endif

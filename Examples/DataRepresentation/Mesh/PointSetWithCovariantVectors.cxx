@@ -51,7 +51,8 @@
 #include "itkPointSet.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -69,9 +70,9 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 3;
-  typedef itk::CovariantVector< float, Dimension >    PixelType;
-  // Software Guide : EndCodeSnippet
 
+  typedef itk::CovariantVector< float, Dimension > PixelType;
+  // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
   //
@@ -82,9 +83,8 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::PointSet< PixelType, Dimension > PointSetType;
-  PointSetType::Pointer  pointSet = PointSetType::New();
+  PointSetType::Pointer pointSet = PointSetType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -98,8 +98,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointSetType::PixelType   gradient;
-  PointSetType::PointType   point;
+  PointSetType::PixelType gradient;
+  PointSetType::PointType point;
 
   unsigned int pointId =  0;
   const double radius = 300.0;
@@ -119,7 +119,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We can now visit all the points and use the vector on the pixel values
@@ -135,13 +134,12 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef  PointSetType::PointDataContainer::ConstIterator PointDataIterator;
   PointDataIterator pixelIterator = pointSet->GetPointData()->Begin();
   PointDataIterator pixelEnd      = pointSet->GetPointData()->End();
 
-  typedef  PointSetType::PointsContainer::Iterator     PointIterator;
+  typedef  PointSetType::PointsContainer::Iterator PointIterator;
   PointIterator pointIterator = pointSet->GetPoints()->Begin();
   PointIterator pointEnd      = pointSet->GetPoints()->End();
 
@@ -158,7 +156,6 @@ int main(int, char *[])
     ++pointIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -178,7 +175,6 @@ int main(int, char *[])
   //  Software Guide : EndLatex
   //
 
-
   //  We can finally visit all the points and print out the new values.
   //
   pointIterator = pointSet->GetPoints()->Begin();
@@ -188,7 +184,6 @@ int main(int, char *[])
     std::cout << pointIterator.Value() << std::endl;
     ++pointIterator;
     }
-
 
   return 0;
 }

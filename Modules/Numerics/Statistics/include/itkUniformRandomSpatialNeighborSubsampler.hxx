@@ -41,8 +41,8 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
   typename LightObject::Pointer loPtr = Superclass::InternalClone();
 
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -69,7 +69,7 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
     {
     itkExceptionMacro(<< "Sample region not set.");
     }
-  if (!this->GetRegionConstraintInitialized())
+  if (!this->GetRegionConstraintInitialized() )
     {
     this->SetRegionConstraint(this->m_SampleRegion);
     }
@@ -78,11 +78,11 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
   results->SetSample(this->m_Sample);
 
   RegionType searchRegion;
-  IndexType searchStartIndex;
-  IndexType searchEndIndex;
+  IndexType  searchStartIndex;
+  IndexType  searchEndIndex;
 
   IndexType constraintIndex = this->m_RegionConstraint.GetIndex();
-  SizeType constraintSize = this->m_RegionConstraint.GetSize();
+  SizeType  constraintSize = this->m_RegionConstraint.GetSize();
 
   IndexType queryIndex;
   typename RegionType::OffsetTableType offsetTable;
@@ -96,7 +96,7 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
 
   for (unsigned int dim = 0; dim < RegionType::ImageDimension; ++dim)
     {
-    if (queryIndex[dim] < static_cast<IndexValueType>(this->m_Radius[dim]))
+    if (queryIndex[dim] < static_cast<IndexValueType>(this->m_Radius[dim]) )
       {
       searchStartIndex[dim] = vnl_math_max(NumericTraits<IndexValueType>::Zero, constraintIndex[dim]);
       }
@@ -117,17 +117,17 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
     numberOfPoints = numberOfPoints * (searchEndIndex[dim] - searchStartIndex[dim] + 1);
     }
 
-  if (!this->m_RegionConstraint.IsInside(queryIndex))
+  if (!this->m_RegionConstraint.IsInside(queryIndex) )
     {
     itkWarningMacro( "query point (" << query << ") corresponding to index ("
-                     << queryIndex << ") is not inside the given image region ("
-                     << this->m_RegionConstraint
-                     << ").  No matching points found.");
+                                     << queryIndex << ") is not inside the given image region ("
+                                     << this->m_RegionConstraint
+                                     << ").  No matching points found.");
     return;
     }
 
   if (!this->m_RequestMaximumNumberOfResults &&
-      (m_NumberOfResultsRequested < numberOfPoints))
+      (m_NumberOfResultsRequested < numberOfPoints) )
     {
     numberOfPoints = m_NumberOfResultsRequested;
     }
@@ -161,7 +161,7 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
                                      offsetTable,
                                      offset);
 
-      results->AddInstance(static_cast<InstanceIdentifier>(offset));
+      results->AddInstance(static_cast<InstanceIdentifier>(offset) );
       ++pointsFound;
       }
     }
@@ -185,24 +185,25 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
                                        index,
                                        offsetTable,
                                        offset);
-        results->AddInstance(static_cast<InstanceIdentifier>(offset));
+        results->AddInstance(static_cast<InstanceIdentifier>(offset) );
         ++pointsFound;
         }
       }
     }
-} // end Search method
+}   // end Search method
 
 template <typename TSample, typename TRegion>
 typename UniformRandomSpatialNeighborSubsampler<TSample, TRegion>::RandomIntType
 UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
 ::GetIntegerVariate(RandomIntType lowerBound,
                     RandomIntType upperBound,
-                    RandomIntType itkNotUsed(mean))
+                    RandomIntType itkNotUsed(mean) )
 {
   RandomIntType sizeRange = upperBound - lowerBound;
+
   // mean ignored since we are uniformly sampling
   return lowerBound +
-    m_RandomNumberGenerator->GetIntegerVariate(sizeRange);
+         m_RandomNumberGenerator->GetIntegerVariate(sizeRange);
 }
 
 template <typename TSample, typename TRegion>
@@ -217,7 +218,7 @@ UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
   os << std::endl;
 }
 
-}// end namespace Statistics
-}// end namespace itk
+} // end namespace Statistics
+} // end namespace itk
 
 #endif

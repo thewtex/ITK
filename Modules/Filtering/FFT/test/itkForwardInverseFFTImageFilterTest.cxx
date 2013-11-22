@@ -29,7 +29,8 @@
 
 #include "itkForwardInverseFFTTest.h"
 
-int itkForwardInverseFFTImageFilterTest(int argc, char* argv[])
+int
+itkForwardInverseFFTImageFilterTest(int argc, char* argv[])
 {
   if ( argc < 2 )
     {
@@ -37,7 +38,7 @@ int itkForwardInverseFFTImageFilterTest(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  const unsigned int                          Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef float                               FloatType;
   typedef double                              DoubleType;
   typedef itk::Image< FloatType, Dimension >  FloatImageType;
@@ -105,7 +106,6 @@ int itkForwardInverseFFTImageFilterTest(int argc, char* argv[])
     }
 
 #endif
-
 
   typedef itk::VnlRealToHalfHermitianForwardFFTImageFilter< FloatImageType >
     FloatVnlHalfFFTType;

@@ -58,9 +58,9 @@ class MaximumRatioDecisionRule : public DecisionRule
 {
 public:
   /** Standard class typedefs */
-  typedef MaximumRatioDecisionRule  Self;
-  typedef DecisionRule              Superclass;
-  typedef SmartPointer< Self >      Pointer;
+  typedef MaximumRatioDecisionRule Self;
+  typedef DecisionRule             Superclass;
+  typedef SmartPointer< Self >     Pointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(MaximumRatioDecisionRule, DecisionRule);
@@ -100,12 +100,15 @@ public:
 
 protected:
   MaximumRatioDecisionRule();
-  virtual ~MaximumRatioDecisionRule() {}
+  virtual
+  ~MaximumRatioDecisionRule() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MaximumRatioDecisionRule(const Self &); //purposely not implemented
-  void operator=(const Self &);            //purposely not implemented
+  void operator=(const Self &);           //purposely not implemented
 
   PriorProbabilityVectorType m_PriorProbabilities;
 

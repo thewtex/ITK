@@ -60,7 +60,7 @@ DCMTKSeriesFileNames
   if ( name == "" )
     {
     itkWarningMacro(<< "You need to specify a directory where "
-                       "the DICOM files are located");
+                    "the DICOM files are located");
     return;
     }
   if ( m_InputDirectory == name )
@@ -89,7 +89,7 @@ DCMTKSeriesFileNames
 
   // make an absolute path from whatever is passed in
   std::string fullPath =
-    itksys::SystemTools::CollapseFullPath(m_InputDirectory.c_str());
+    itksys::SystemTools::CollapseFullPath(m_InputDirectory.c_str() );
 
   // work in Unix filename conventions, but convert to actually use filename
   itksys::SystemTools::ConvertToUnixSlashes(fullPath);
@@ -98,7 +98,7 @@ DCMTKSeriesFileNames
 
   // load the directory
   itksys::Directory directory;
-  directory.Load(localFilePath.c_str());
+  directory.Load(localFilePath.c_str() );
 
   unsigned int numFiles = directory.GetNumberOfFiles();
 
@@ -114,9 +114,9 @@ DCMTKSeriesFileNames
     localFilePath = fullPath;
     localFilePath += '/';
     localFilePath += curFile;
-    if(!itksys::SystemTools::FileIsDirectory(localFilePath.c_str()))
+    if(!itksys::SystemTools::FileIsDirectory(localFilePath.c_str() ) )
       {
-      if(!DCMTKFileReader::IsImageFile(localFilePath))
+      if(!DCMTKFileReader::IsImageFile(localFilePath) )
         {
         continue;
         }
@@ -159,7 +159,7 @@ DCMTKSeriesFileNames
     {
     if(saveFileNames)
       {
-      m_InputFileNames.push_back(allHeaders[i]->GetFileName());
+      m_InputFileNames.push_back(allHeaders[i]->GetFileName() );
       }
     delete allHeaders[i];
     }
@@ -181,7 +181,6 @@ GetSeriesUIDs()
   return this->m_SeriesUIDs;
 }
 
-
 const DCMTKSeriesFileNames::FilenamesContainer &
 DCMTKSeriesFileNames
 ::GetInputFileNames()
@@ -198,12 +197,14 @@ DCMTKSeriesFileNames
   return m_InputFileNames;
 }
 
-void DCMTKSeriesFileNames
+void
+DCMTKSeriesFileNames
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   unsigned int i;
+
   os << indent << "InputDirectory: " << m_InputDirectory << std::endl;
   os << indent << "LoadSequences:" << m_LoadSequences << std::endl;
   os << indent << "LoadPrivateTags:" << m_LoadPrivateTags << std::endl;
@@ -223,11 +224,13 @@ void DCMTKSeriesFileNames
 
 }
 
-void DCMTKSeriesFileNames
+void
+DCMTKSeriesFileNames
 ::SetUseSeriesDetails(bool useSeriesDetails)
 {
   m_UseSeriesDetails = useSeriesDetails;
 //  m_SerieHelper->SetUseSeriesDetails(m_UseSeriesDetails);
 //  m_SerieHelper->CreateDefaultUniqueSeriesIdentifier();
 }
+
 } //namespace ITK

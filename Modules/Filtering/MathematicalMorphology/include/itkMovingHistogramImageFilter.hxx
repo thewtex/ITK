@@ -31,7 +31,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage, typename TKernel, typename THistogram >
 MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
 ::MovingHistogramImageFilter()
-{}
+{
+}
 
 // a modified version that uses line iterators and only moves the
 // histogram in one direction. Hopefully it will be a bit simpler and
@@ -44,6 +45,7 @@ MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
 {
   // instantiate the histogram
   HistogramType histogram;
+
   this->ConfigureHistogram( histogram );
 
   OutputImageType *     outputImage = this->GetOutput();
@@ -57,9 +59,9 @@ MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
     {
     IndexType idx = outputRegionForThread.GetIndex() + ( *listIt );
     if ( inputRegion.IsInside(idx) )
-              { histogram.AddPixel( inputImage->GetPixel(idx) ); }
+                      { histogram.AddPixel( inputImage->GetPixel(idx) ); }
     else
-              { histogram.AddBoundary(); }
+                      { histogram.AddBoundary(); }
     }
 
   // now move the histogram
@@ -122,7 +124,7 @@ MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
   while ( !InLineIt.IsAtEnd() )
     {
     HistogramType & histRef = HistVec[BestDirection];
-    IndexType      PrevLineStart = InLineIt.GetIndex();
+    IndexType       PrevLineStart = InLineIt.GetIndex();
     for ( InLineIt.GoToBeginOfLine(); !InLineIt.IsAtEndOfLine(); ++InLineIt )
       {
       // Update the historgram
@@ -151,7 +153,7 @@ MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
     int LineDirection = 0;
     // This function deals with changing planes etc
     this->GetDirAndOffset(LineStart, PrevLineStart,
-                    LineOffset, Changes, LineDirection);
+                          LineOffset, Changes, LineDirection);
     ++( Steps[LineDirection] );
     IndexType             PrevLineStartHist = LineStart - LineOffset;
     const OffsetListType *addedListLine = &this->m_AddedOffsets[LineOffset];
@@ -211,9 +213,9 @@ MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
       {
       IndexType idx = currentIdx + ( *addedIt );
       if ( inputRegion.IsInside(idx) )
-                { histogram.AddPixel( inputImage->GetPixel(idx) ); }
+                        { histogram.AddPixel( inputImage->GetPixel(idx) ); }
       else
-                { histogram.AddBoundary(); }
+                        { histogram.AddBoundary(); }
       }
     for ( typename OffsetListType::const_iterator removedIt = removedList->begin();
           removedIt != removedList->end();
@@ -221,9 +223,9 @@ MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
       {
       IndexType idx = currentIdx + ( *removedIt );
       if ( inputRegion.IsInside(idx) )
-                { histogram.RemovePixel( inputImage->GetPixel(idx) ); }
+                        { histogram.RemovePixel( inputImage->GetPixel(idx) ); }
       else
-                { histogram.RemoveBoundary(); }
+                        { histogram.RemoveBoundary(); }
       }
     }
 }

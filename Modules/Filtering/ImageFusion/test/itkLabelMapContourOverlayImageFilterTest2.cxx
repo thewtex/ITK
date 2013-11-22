@@ -21,12 +21,13 @@
 
 #include "itkLabelMapContourOverlayImageFilter.h"
 
-
-int itkLabelMapContourOverlayImageFilterTest2(int argc, char * argv[])
+int
+itkLabelMapContourOverlayImageFilterTest2(int argc, char * argv[])
 {
   if( argc != 9 )
     {
-    std::cerr << "usage: " << argv[0] << " input input output opacity type thickness dilation priority sliceDim" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input input output opacity type thickness dilation priority sliceDim" <<
+      std::endl;
     // std::cerr << "  : " << std::endl;
     exit(1);
     }
@@ -62,7 +63,6 @@ int itkLabelMapContourOverlayImageFilterTest2(int argc, char * argv[])
   r.Fill( atoi(argv[7]) );
   colorizer->SetDilationRadius( r );
   colorizer->SetPriority( atoi(argv[8]) );
-
 
   itk::SimpleFilterWatcher watcher(colorizer, "filter");
 

@@ -61,7 +61,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class GrayscaleGeodesicDilateImageFilter:
+class GrayscaleGeodesicDilateImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -151,7 +151,9 @@ public:
 
 protected:
   GrayscaleGeodesicDilateImageFilter();
-  ~GrayscaleGeodesicDilateImageFilter() {}
+  ~GrayscaleGeodesicDilateImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GrayscaleGeodesicDilateImageFilter needs to request enough of the

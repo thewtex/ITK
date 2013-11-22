@@ -38,30 +38,29 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int itkImageReadComplexWriteMagnitudeAndPhaseTest( int argc, char * argv [] )
+int
+itkImageReadComplexWriteMagnitudeAndPhaseTest( int argc, char * argv [] )
 {
   if( argc < 4 )
     {
     std::cerr << "Usage: " << argv[0]
-      <<  " inputComplexImage  outputMagnitudePartOfComplexImage "
-      <<  "outputPhasePartOfComplexImage" << std::endl;
+              <<  " inputComplexImage  outputMagnitudePartOfComplexImage "
+              <<  "outputPhasePartOfComplexImage" << std::endl;
     }
-
 
   const unsigned int Dimension = 2;
 
-  typedef float  InputPixelType;
-  typedef float  OutputPixelType;
+  typedef float InputPixelType;
+  typedef float OutputPixelType;
 
-  typedef itk::Image< std::complex<InputPixelType>, Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >                OutputImageType;
-  typedef itk::ImageFileReader< InputImageType >                  ReaderType;
+  typedef itk::Image< std::complex<InputPixelType>, Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension >              OutputImageType;
+  typedef itk::ImageFileReader< InputImageType >                ReaderType;
   typedef itk::ComplexToModulusImageFilter<
-                 InputImageType, OutputImageType >                ModulusFilterType;
+      InputImageType, OutputImageType >                ModulusFilterType;
   typedef itk::ComplexToPhaseImageFilter<
-                 InputImageType, OutputImageType >                PhaseFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >                 WriterType;
+      InputImageType, OutputImageType >                PhaseFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
@@ -70,7 +69,7 @@ int itkImageReadComplexWriteMagnitudeAndPhaseTest( int argc, char * argv [] )
   modulusFilter->SetInput( reader->GetOutput() );
 
   WriterType::Pointer writerM = WriterType::New();
-  writerM->SetInput(modulusFilter->GetOutput());
+  writerM->SetInput(modulusFilter->GetOutput() );
   writerM->SetFileName( argv[2] );
 
   try
@@ -88,7 +87,7 @@ int itkImageReadComplexWriteMagnitudeAndPhaseTest( int argc, char * argv [] )
   phaseFilter->SetInput( reader->GetOutput() );
 
   WriterType::Pointer writerP = WriterType::New();
-  writerP->SetInput(phaseFilter->GetOutput());
+  writerP->SetInput(phaseFilter->GetOutput() );
   writerP->SetFileName( argv[3] );
 
   try

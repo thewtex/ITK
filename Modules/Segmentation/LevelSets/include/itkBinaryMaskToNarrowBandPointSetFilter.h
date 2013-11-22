@@ -51,17 +51,17 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputMesh >
-class BinaryMaskToNarrowBandPointSetFilter:
+class BinaryMaskToNarrowBandPointSetFilter :
   public ImageToMeshFilter< TInputImage, TOutputMesh >
 {
 public:
   /** Standard class typedefs. */
   typedef BinaryMaskToNarrowBandPointSetFilter Self;
 
-  typedef ImageToMeshFilter< TInputImage, TOutputMesh >  Superclass;
+  typedef ImageToMeshFilter< TInputImage, TOutputMesh > Superclass;
 
-  typedef SmartPointer< Self >                 Pointer;
-  typedef SmartPointer< const Self >           ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);

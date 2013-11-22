@@ -54,12 +54,14 @@ public:
   virtual NetworkOutputType GenerateOutput(TMeasurementVector samplevector)=0;
 
   virtual void BackwardPropagate(NetworkOutputType errors) = 0;
+
   virtual void UpdateWeights(ValueType) = 0;
 
 protected:
 
   NeuralNetworkObject();
-  virtual ~NeuralNetworkObject();
+  virtual
+  ~NeuralNetworkObject();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;

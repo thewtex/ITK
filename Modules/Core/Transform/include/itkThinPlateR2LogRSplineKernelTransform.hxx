@@ -24,13 +24,13 @@ namespace itk
 template< typename TScalar, unsigned int NDimensions >
 void
 ThinPlateR2LogRSplineKernelTransform< TScalar, NDimensions >::ComputeG(const InputVectorType & x,
-                                                                           GMatrixType & gmatrix) const
+                                                                       GMatrixType & gmatrix) const
 {
   const TScalar r = x.GetNorm();
 
   gmatrix.fill(NumericTraits< TScalar >::Zero);
-  const TScalar      R2logR =
-    ( r > 1e-8 ) ? r *r *vcl_log(r):NumericTraits< TScalar >::Zero;
+  const TScalar          R2logR =
+    ( r > 1e-8 ) ? r *r *vcl_log(r) : NumericTraits< TScalar >::Zero;
 
   gmatrix.fill_diagonal(R2logR);
 }
@@ -49,9 +49,9 @@ ThinPlateR2LogRSplineKernelTransform< TScalar, NDimensions >::ComputeDeformation
   for ( unsigned int lnd = 0; lnd < numberOfLandmarks; lnd++ )
     {
     InputVectorType        position = thisPoint - sp->Value();
-    const TScalar      r = position.GetNorm();
-    const TScalar      R2logR =
-      ( r > 1e-8 ) ? r *r *vcl_log(r):NumericTraits< TScalar >::Zero;
+    const TScalar          r = position.GetNorm();
+    const TScalar          R2logR =
+      ( r > 1e-8 ) ? r *r *vcl_log(r) : NumericTraits< TScalar >::Zero;
     for ( unsigned int odim = 0; odim < NDimensions; odim++ )
       {
       result[odim] += R2logR * this->m_DMatrix(odim, lnd);
@@ -59,5 +59,6 @@ ThinPlateR2LogRSplineKernelTransform< TScalar, NDimensions >::ComputeDeformation
     ++sp;
     }
 }
+
 } // namespace itk
 #endif

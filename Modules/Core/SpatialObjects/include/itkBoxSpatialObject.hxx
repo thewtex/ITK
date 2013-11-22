@@ -37,7 +37,8 @@ BoxSpatialObject< TDimension >
 template< unsigned int TDimension >
 BoxSpatialObject< TDimension >
 ::~BoxSpatialObject()
-{}
+{
+}
 
 /** Test whether a point is inside or outside the object
  *  For computational speed purposes, it is faster if the method does not
@@ -195,8 +196,10 @@ BoxSpatialObject< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Size: " << m_Size << std::endl;
 }
+
 } // end namespace itk
 
 #endif

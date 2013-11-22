@@ -32,15 +32,16 @@ itkFloatingPointExceptionsTest(int argc, char *argv[] )
 {
   itk::FloatingPointExceptions::Enable();
   itk::FloatingPointExceptions::
-    SetExceptionAction(itk::FloatingPointExceptions::EXIT);
+  SetExceptionAction(itk::FloatingPointExceptions::EXIT);
+
   if(argc < 2)
     {
     std::cout << "No test specified" << std::endl;
     return 1;
     }
-  int error_return(0);
+  int    error_return(0);
   double force_zero_denom(0.0),test1(0.0);
-  int force_int_zero(0);
+  int    force_int_zero(0);
   // this will fool the compiler into not complaining at
   // compile time about divide by zero
   if(argc > 32767)

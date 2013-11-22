@@ -50,7 +50,6 @@ namespace Function
  *
  */
 
-
 template< typename TInputPixel >
 class RankHistogram
 {
@@ -78,9 +77,11 @@ public:
   }
 
   ~RankHistogram()
-  {}
+  {
+  }
 
-  RankHistogram & operator=( const RankHistogram & hist )
+  RankHistogram &
+  operator=( const RankHistogram & hist )
   {
     if(this != &hist)
       {
@@ -99,7 +100,8 @@ public:
     return *this;
   }
 
-  void AddPixel(const TInputPixel & p)
+  void
+  AddPixel(const TInputPixel & p)
   {
     m_Map[p]++;
     if ( !m_Initialized )
@@ -116,7 +118,8 @@ public:
     ++m_Entries;
   }
 
-  void RemovePixel(const TInputPixel & p)
+  void
+  RemovePixel(const TInputPixel & p)
   {
     m_Map[p]--;
     if ( m_Compare(p, m_RankValue) || p == m_RankValue )
@@ -134,15 +137,18 @@ public:
       }
   }
 
-  bool IsValid()
+  bool
+  IsValid()
   {
     return m_Initialized;
   }
 
-  TInputPixel GetValueBruteForce()
+  TInputPixel
+  GetValueBruteForce()
   {
     SizeValueType count = 0;
     SizeValueType target = (int)( m_Rank * ( m_Entries - 1 ) ) + 1;
+
     for( typename MapType::iterator it=m_Map.begin(); it != m_Map.end(); it++ )
       {
       count += it->second;
@@ -154,7 +160,8 @@ public:
     return NumericTraits< TInputPixel >::max();
   }
 
-  TInputPixel GetValue(const TInputPixel &)
+  TInputPixel
+  GetValue(const TInputPixel &)
   {
     SizeValueType target = (SizeValueType)( m_Rank * ( m_Entries - 1 ) ) + 1;
     SizeValueType total = m_Below;
@@ -228,16 +235,22 @@ public:
     return ( m_RankValue );
   }
 
-  void SetRank(float rank)
+  void
+  SetRank(float rank)
   {
     m_Rank = rank;
   }
 
-  void AddBoundary(){}
+  void
+  AddBoundary(){
+  }
 
-  void RemoveBoundary(){}
+  void
+  RemoveBoundary(){
+  }
 
-  static bool UseVectorBasedAlgorithm()
+  static bool
+  UseVectorBasedAlgorithm()
   {
     return false;
   }
@@ -259,7 +272,6 @@ private:
   typename MapType::iterator m_RankIt;
 };
 
-
 template< typename TInputPixel >
 class VectorRankHistogram
 {
@@ -268,7 +280,8 @@ public:
 
   VectorRankHistogram()
   {
-    m_Size = (OffsetValueType)NumericTraits< TInputPixel >::max() - (OffsetValueType)NumericTraits< TInputPixel >::NonpositiveMin() + 1;
+    m_Size = (OffsetValueType)NumericTraits< TInputPixel >::max() -
+      (OffsetValueType)NumericTraits< TInputPixel >::NonpositiveMin() + 1;
     m_Vec.resize(m_Size, 0);
     if ( m_Compare( NumericTraits< TInputPixel >::max(),
                     NumericTraits< TInputPixel >::NonpositiveMin() ) )
@@ -284,17 +297,21 @@ public:
     m_Rank = 0.5;
   }
 
-  ~VectorRankHistogram() {}
+  ~VectorRankHistogram() {
+  }
 
-  bool IsValid()
+  bool
+  IsValid()
   {
     return m_Entries > 0;
   }
 
-  TInputPixel GetValueBruteForce()
+  TInputPixel
+  GetValueBruteForce()
   {
     SizeValueType count = 0;
     SizeValueType target = (SizeValueType)( m_Rank * ( m_Entries - 1 ) ) + 1;
+
     for( SizeValueType i=0; i<m_Size; i++ )
       {
       count += m_Vec[i];
@@ -306,12 +323,14 @@ public:
     return NumericTraits< TInputPixel >::max();
   }
 
-  TInputPixel GetValue(const TInputPixel &)
+  TInputPixel
+  GetValue(const TInputPixel &)
   {
     return GetValueBruteForce();
   }
 
-  void AddPixel(const TInputPixel & p)
+  void
+  AddPixel(const TInputPixel & p)
   {
     OffsetValueType q = (OffsetValueType)p - NumericTraits< TInputPixel >::NonpositiveMin();
 
@@ -323,7 +342,8 @@ public:
     ++m_Entries;
   }
 
-  void RemovePixel(const TInputPixel & p)
+  void
+  RemovePixel(const TInputPixel & p)
   {
     const OffsetValueType q = (OffsetValueType)p - NumericTraits< TInputPixel >::NonpositiveMin();
 
@@ -341,16 +361,22 @@ public:
       }
   }
 
-  void SetRank(float rank)
+  void
+  SetRank(float rank)
   {
     m_Rank = rank;
   }
 
-  void AddBoundary(){}
+  void
+  AddBoundary(){
+  }
 
-  void RemoveBoundary(){}
+  void
+  RemoveBoundary(){
+  }
 
-  static bool UseVectorBasedAlgorithm()
+  static bool
+  UseVectorBasedAlgorithm()
   {
     return true;
   }
@@ -370,7 +396,8 @@ private:
   int           m_Entries;
 };
 
-// now create MorphologicalGradientHistogram specilizations using the VectorMorphologicalGradientHistogram
+// now create MorphologicalGradientHistogram specilizations using the
+// VectorMorphologicalGradientHistogram
 // as base class
 
 /** \cond HIDE_SPECIALIZATION_DOCUMENTATION */

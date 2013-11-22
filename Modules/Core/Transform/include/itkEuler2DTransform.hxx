@@ -25,15 +25,17 @@ namespace itk
 // Constructor with default arguments
 template< typename TScalar >
 Euler2DTransform< TScalar >
-::Euler2DTransform():
+::Euler2DTransform() :
   Superclass(ParametersDimension)
-{}
+{
+}
 
 // Constructor with arguments
 template< typename TScalar >
-Euler2DTransform< TScalar >::Euler2DTransform(unsigned int parametersDimension):
+Euler2DTransform< TScalar >::Euler2DTransform(unsigned int parametersDimension) :
   Superclass(parametersDimension)
-{}
+{
+}
 
 // Create and return an inverse transformation
 template< typename TScalar >
@@ -90,6 +92,7 @@ Euler2DTransform< TScalar >::PrintSelf(std::ostream & os, Indent indent) const
 {
   this->Superclass::PrintSelf(os, indent);
 }
+
 } // namespace
 
 #endif

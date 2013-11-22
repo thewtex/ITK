@@ -55,25 +55,29 @@ public:
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType        ParametersType;
-  typedef Superclass::ParametersType*       ParametersPointer;
-  typedef Superclass::ParametersValueType   ParametersValueType;
-  typedef Superclass::DerivativeType        DerivativeType;
-  typedef Superclass::MeasureType           MeasureType;
+  typedef Superclass::ParametersType      ParametersType;
+  typedef Superclass::ParametersType*     ParametersPointer;
+  typedef Superclass::ParametersValueType ParametersValueType;
+  typedef Superclass::DerivativeType      DerivativeType;
+  typedef Superclass::MeasureType         MeasureType;
 
   MultiGradientOptimizerv4TestMetric()
   {
   }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {
+  }
 
-  virtual void GetDerivative( DerivativeType & derivative ) const
-    {
+  virtual void
+  GetDerivative( DerivativeType & derivative ) const
+  {
     derivative.Fill( itk::NumericTraits< ParametersValueType >::Zero );
-    }
+  }
 
-  void GetValueAndDerivative( MeasureType & value,
-                              DerivativeType & derivative ) const
+  void
+  GetValueAndDerivative( MeasureType & value,
+                         DerivativeType & derivative ) const
   {
     if( derivative.Size() != 2 )
       derivative.SetSize(2);
@@ -99,43 +103,51 @@ public:
     std::cout << "derivative: " << derivative << std::endl;
   }
 
-  MeasureType  GetValue() const
+  MeasureType
+  GetValue() const
   {
     double x = (*m_Parameters)[0];
     double y = (*m_Parameters)[1];
     double metric = 0.5*(3*x*x+4*x*y+6*y*y) - 2*x + 8*y;
     std::cout << (*m_Parameters) <<" metric " << metric << std::endl;
+
     return metric;
   }
 
-  void UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
+  void
+  UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
   {
     (*m_Parameters) += update;
   }
 
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return SpaceDimension;
   }
 
-  virtual bool HasLocalSupport() const
-    {
+  virtual bool
+  HasLocalSupport() const
+  {
     return false;
-    }
+  }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int
+  GetNumberOfLocalParameters() const
   {
     return SpaceDimension;
   }
 
   /* These Set/Get methods are only needed for this test derivation that
    * isn't using a transform */
-  void SetParameters( ParametersType & parameters )
+  void
+  SetParameters( ParametersType & parameters )
   {
     m_Parameters = &parameters;
   }
 
-  const ParametersType & GetParameters() const
+  const ParametersType &
+  GetParameters() const
   {
     return (*m_Parameters);
   }
@@ -160,25 +172,29 @@ public:
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType        ParametersType;
-  typedef Superclass::ParametersType*       ParametersPointer;
-  typedef Superclass::ParametersValueType   ParametersValueType;
-  typedef Superclass::DerivativeType        DerivativeType;
-  typedef Superclass::MeasureType           MeasureType;
+  typedef Superclass::ParametersType      ParametersType;
+  typedef Superclass::ParametersType*     ParametersPointer;
+  typedef Superclass::ParametersValueType ParametersValueType;
+  typedef Superclass::DerivativeType      DerivativeType;
+  typedef Superclass::MeasureType         MeasureType;
 
   MultiGradientOptimizerv4TestMetric2()
   {
   }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {
+  }
 
-  virtual void GetDerivative( DerivativeType & derivative ) const
-    {
+  virtual void
+  GetDerivative( DerivativeType & derivative ) const
+  {
     derivative.Fill( itk::NumericTraits< ParametersValueType >::Zero );
-    }
+  }
 
-  void GetValueAndDerivative( MeasureType & value,
-                              DerivativeType & derivative ) const
+  void
+  GetValueAndDerivative( MeasureType & value,
+                         DerivativeType & derivative ) const
   {
     if( derivative.Size() != 2 )
       derivative.SetSize(2);
@@ -204,43 +220,51 @@ public:
     std::cout << "derivative: " << derivative << std::endl;
   }
 
-  MeasureType  GetValue() const
+  MeasureType
+  GetValue() const
   {
     double x = (*m_Parameters)[0];
     double y = (*m_Parameters)[1];
     double metric = 0.5*(3*x*x+4*x*y+6*y*y) - x + 4*y;
     std::cout << (*m_Parameters) <<" metric " << metric << std::endl;
+
     return metric;
   }
 
-  virtual bool HasLocalSupport() const
-    {
+  virtual bool
+  HasLocalSupport() const
+  {
     return false;
-    }
+  }
 
-  void UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
+  void
+  UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
   {
     (*m_Parameters) += update;
   }
 
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return SpaceDimension;
   }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int
+  GetNumberOfLocalParameters() const
   {
     return SpaceDimension;
   }
 
   /* These Set/Get methods are only needed for this test derivation that
    * isn't using a transform */
-  void SetParameters( ParametersType & parameters )
+  void
+  SetParameters( ParametersType & parameters )
   {
     m_Parameters = &parameters;
   }
 
-  const ParametersType & GetParameters() const
+  const ParametersType &
+  GetParameters() const
   {
     return (*m_Parameters);
   }
@@ -256,7 +280,8 @@ private:
  *  we expect an average result with solution @ (1.5,-1.5)
  */
 ///////////////////////////////////////////////////////////
-int MultiGradientOptimizerv4RunTest( itk::MultiGradientOptimizerv4::Pointer & itkOptimizer )
+int
+MultiGradientOptimizerv4RunTest( itk::MultiGradientOptimizerv4::Pointer & itkOptimizer )
 {
   try
     {
@@ -273,7 +298,7 @@ int MultiGradientOptimizerv4RunTest( itk::MultiGradientOptimizerv4::Pointer & it
     return EXIT_FAILURE;
     }
 
-  typedef MultiGradientOptimizerv4TestMetric::ParametersType    ParametersType;
+  typedef MultiGradientOptimizerv4TestMetric::ParametersType ParametersType;
   ParametersType finalPosition = itkOptimizer->GetMetric()->GetParameters();
 
   std::cout << "Solution        = (";
@@ -299,24 +324,26 @@ int MultiGradientOptimizerv4RunTest( itk::MultiGradientOptimizerv4::Pointer & it
 
   return EXIT_SUCCESS;
 }
+
 ///////////////////////////////////////////////////////////
-int itkMultiGradientOptimizerv4Test(int, char* [] )
+int
+itkMultiGradientOptimizerv4Test(int, char* [] )
 {
   std::cout << "MultiGradient descent Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::MultiGradientOptimizerv4  OptimizerType;
+  typedef  itk::MultiGradientOptimizerv4 OptimizerType;
 
   typedef MultiGradientOptimizerv4TestMetric::ParametersType    ParametersType;
   typedef MultiGradientOptimizerv4TestMetric::ParametersPointer ParametersPointer;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the Metric
-  MultiGradientOptimizerv4TestMetric::Pointer metric = MultiGradientOptimizerv4TestMetric::New();
+  MultiGradientOptimizerv4TestMetric::Pointer  metric = MultiGradientOptimizerv4TestMetric::New();
   MultiGradientOptimizerv4TestMetric2::Pointer metric2 = MultiGradientOptimizerv4TestMetric2::New();
-  const unsigned int spaceDimension = 2;
+  const unsigned int                           spaceDimension = 2;
   itkOptimizer->SetMetric( metric );
   itkOptimizer->SetNumberOfIterations( 50 );
 
@@ -345,7 +372,7 @@ int itkMultiGradientOptimizerv4Test(int, char* [] )
    * Test 1
    */
   // We start not so far from  | 1.5 -1.5 |
-  ParametersType  testPosition( spaceDimension );
+  ParametersType testPosition( spaceDimension );
   testPosition[0]=(double)7.5;
   testPosition[1]=(double)9.5;
   /** Note: both metrics have the same transforms and parameters */

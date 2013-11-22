@@ -127,7 +127,7 @@ public:
   /** The container type for use in storing point links back to cells.]
    * It must conform to the IndexedContainerInterface. */
   typedef MapContainer<
-    PointIdentifier, PointCellLinksContainer >        CellLinksContainer;
+      PointIdentifier, PointCellLinksContainer >        CellLinksContainer;
 
   /** The container type for use in storing point data.  It must conform to
    * the IndexedContainerInterface. */
@@ -136,7 +136,7 @@ public:
   /** The container type for use in storing cell data.  It must conform to
    * the IndexedContainerInterface. */
   typedef MapContainer<
-    CellIdentifier, CellPixelType >                   CellDataContainer;
+      CellIdentifier, CellPixelType >                   CellDataContainer;
 };
 } // end namespace itk
 

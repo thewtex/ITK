@@ -23,7 +23,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 KLMRegionGrowImageFilter< TInputImage, TOutputImage >
-::KLMRegionGrowImageFilter(void):
+::KLMRegionGrowImageFilter(void) :
   m_MaximumLambda(1000),
   m_NumberOfRegions(0),
   m_InternalLambda(0),
@@ -39,7 +39,8 @@ KLMRegionGrowImageFilter< TInputImage, TOutputImage >
 template< typename TInputImage, typename TOutputImage >
 KLMRegionGrowImageFilter< TInputImage, TOutputImage >
 ::~KLMRegionGrowImageFilter()
-{}
+{
+}
 
 /**
  * PrintSelf
@@ -475,9 +476,9 @@ KLMRegionGrowImageFilter< TInputImage, TOutputImage >
 
       // Find the two neighbor regions
 
-      unsigned int intRegion1Index = 0;
-      unsigned int intRegion2Index = 0;
-      IndexValueType        tmpVal = 1;
+      unsigned int   intRegion1Index = 0;
+      unsigned int   intRegion2Index = 0;
+      IndexValueType tmpVal = 1;
       for ( unsigned int jdim = 0; jdim < InputImageDimension; jdim++ )
         {
         intRegion1Index += indexRegion1[jdim] * tmpVal;
@@ -598,7 +599,7 @@ KLMRegionGrowImageFilter< TInputImage, TOutputImage >
 
   m_InitialRegionMean.fill(0);
 
-  while ( ! inputIt.IsAtEnd() )
+  while ( !inputIt.IsAtEnd() )
     {
     inputPixelVec = inputIt.Value();
 
@@ -839,6 +840,7 @@ KLMRegionGrowImageFilter< TInputImage, TOutputImage >
     m_BordersDynamicPointer[k].m_Pointer->PrintBorderInfo();
     } // end region printloop
 }     // end PrintAlgorithmBorderStats
+
 }     // namespace itk
 
 #endif

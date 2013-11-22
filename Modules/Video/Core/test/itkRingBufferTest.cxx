@@ -23,7 +23,8 @@
  * This test is basically a duplicate of RingBufferImageSetTest with a few
  * additions to test the video specific methods
  */
-int itkRingBufferTest( int , char* [] )
+int
+itkRingBufferTest( int , char* [] )
 {
 
   //////
@@ -103,7 +104,7 @@ int itkRingBufferTest( int , char* [] )
     }
 
   // Test looping buffer offset backward
-  ringBuffer->MoveHead(-2 * static_cast<int>(ringBuffer->GetNumberOfBuffers()) );
+  ringBuffer->MoveHead(-2 * static_cast<int>(ringBuffer->GetNumberOfBuffers() ) );
   if (ringBuffer->GetHeadIndex() != oldHeadIndex)
     {
     //DEBUG

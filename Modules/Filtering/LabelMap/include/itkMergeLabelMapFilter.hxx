@@ -83,7 +83,7 @@ MergeLabelMapFilter< TImage >
   for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     typename ImageType::ConstIterator it2( this->GetInput(i) );
-    while ( ! it2.IsAtEnd() )
+    while ( !it2.IsAtEnd() )
       {
       const LabelObjectType *lo = it2.GetLabelObject();
       LabelObjectPointer     newLo = LabelObjectType::New();
@@ -128,7 +128,7 @@ MergeLabelMapFilter< TImage >
   for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     typename ImageType::ConstIterator it2( this->GetInput(i) );
-    while ( ! it2.IsAtEnd() )
+    while ( !it2.IsAtEnd() )
       {
       const LabelObjectType *lo = it2.GetLabelObject();
       LabelObjectPointer     newLo = LabelObjectType::New();
@@ -152,9 +152,9 @@ MergeLabelMapFilter< TImage >
       else
         {
         itkGenericExceptionMacro(<<"Label "
-                            << static_cast< typename itk::NumericTraits< PixelType >::PrintType >( newLo->GetLabel() )
-                            << " from input " << i
-                            << " is output background value.");
+                                 << static_cast< typename itk::NumericTraits< PixelType >::PrintType >( newLo->GetLabel() )
+                                 << " from input " << i
+                                 << " is output background value.");
         }
 
       // go to the next label
@@ -176,7 +176,7 @@ MergeLabelMapFilter< TImage >
   for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     typename ImageType::ConstIterator it2( this->GetInput(i) );
-    while ( ! it2.IsAtEnd() )
+    while ( !it2.IsAtEnd() )
       {
       const LabelObjectType *lo = it2.GetLabelObject();
 
@@ -193,9 +193,9 @@ MergeLabelMapFilter< TImage >
         if ( hasLabel )
           {
           // add the lines of that object to the one already in the output
-          LabelObjectType *         mainLo = output->GetLabelObject( lo->GetLabel() );
+          LabelObjectType *                           mainLo = output->GetLabelObject( lo->GetLabel() );
           typename LabelObjectType::ConstLineIterator lit( lo );
-          while ( ! lit.IsAtEnd() )
+          while ( !lit.IsAtEnd() )
             {
             mainLo->AddLine( lit.GetLine() );
             ++lit;
@@ -243,7 +243,7 @@ MergeLabelMapFilter< TImage >
   for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     typename ImageType::ConstIterator it2( this->GetInput(i) );
-    while ( ! it2.IsAtEnd() )
+    while ( !it2.IsAtEnd() )
       {
       const LabelObjectType *lo = it2.GetLabelObject();
       LabelObjectPointer     newLo = LabelObjectType::New();
@@ -266,5 +266,6 @@ MergeLabelMapFilter< TImage >
 
   os << indent << "Method: "  << this->m_Method << std::endl;
 }
+
 } // end namespace itk
 #endif

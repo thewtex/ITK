@@ -58,7 +58,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
@@ -76,8 +75,8 @@
 #include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -85,7 +84,6 @@ int main( int argc, char * argv[] )
     std::cerr << argv[0] << "  inputImageFile   outputImageFile   sigma" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -95,10 +93,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -107,32 +104,31 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
   //  The filter type is now instantiated using both the input image and the
   //  output image types.
   //
-  //  \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!Instantiation}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!Instantiation}
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<
-                        InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
-
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -140,14 +136,16 @@ int main( int argc, char * argv[] )
   //  assigning the result to a \doxygen{SmartPointer}.
   //
   //  \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!New()}
-  //  \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!Pointer}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!Pointer}
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -160,36 +158,40 @@ int main( int argc, char * argv[] )
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The standard deviation of the Gaussian smoothing kernel is now set.
   //
-  //  \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!SetSigma()}
-  //  \index{SetSigma()!itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!SetSigma()}
+  //
+  //
+  //
+  // \index{SetSigma()!itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter}
   //
   //  Software Guide : EndLatex
   const double sigma = atof( argv[3] );
-
 
   // Software Guide : BeginCodeSnippet
   filter->SetSigma( sigma );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally the filter is executed by invoking the \code{Update()} method.
   //
-  //  \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!Update()}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!Update()}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   filter->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -200,24 +202,22 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   typedef unsigned char                   WritePixelType;
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-                   OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[2] );
-
 
   // Software Guide : BeginCodeSnippet
   rescaler->SetInput( filter->GetOutput() );
@@ -225,12 +225,15 @@ int main( int argc, char * argv[] )
   writer->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure}
   // \center
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{GradientMagnitudeRecursiveGaussianImageFilterOutput3}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{GradientMagnitudeRecursiveGaussianImageFilterOutput5}
   // \itkcaption[GradientMagnitudeRecursiveGaussianImageFilter output]{Effect of
   // the GradientMagnitudeRecursiveGaussianImageFilter on a slice from a MRI
@@ -251,7 +254,6 @@ int main( int argc, char * argv[] )
   //  smaller than the dynamic range of the input image.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

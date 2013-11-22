@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer Element2DC1Beam::CreateAnother(void) const
+::itk::LightObject::Pointer
+Element2DC1Beam::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -215,9 +216,11 @@ Element2DC1Beam
   Me = k.transpose() * m * k;
 }
 
-void Element2DC1Beam::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element2DC1Beam::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Materials: " << this->m_mat << std::endl;
 }
 

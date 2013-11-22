@@ -71,7 +71,7 @@ public:
   typedef typename ListImageType::PointType             ListPointType;
   typedef ImageRegionIteratorWithIndex< ListImageType > ListIteratorType;
 
-  typedef std::vector< RegionType >                     LevelSetDomainRegionVectorType;
+  typedef std::vector< RegionType > LevelSetDomainRegionVectorType;
 
   /** Set the input image that will be used to compute an image with the list
    * of level sets domain overlaps. */
@@ -82,6 +82,7 @@ public:
   itkGetModifiableObjectMacro(ListDomain, ListImageType );
 
   void SetLevelSetDomainRegionVector( const LevelSetDomainRegionVectorType& domain );
+
   const LevelSetDomainRegionVectorType& GetLevelSetDomainRegionVector() const;
 
   /** Populate a list image with each pixel being a list of overlapping
@@ -90,19 +91,21 @@ public:
 
 protected:
   LevelSetDomainPartitionImage();
-  virtual ~LevelSetDomainPartitionImage();
+  virtual
+  ~LevelSetDomainPartitionImage();
 
   /** Allocate a list image with each pixel being a list of overlapping
    *  level set support at that pixel */
   void AllocateListDomain();
 
-  ImageConstPointer               m_Image;
-  ListImagePointer                m_ListDomain;
-  LevelSetDomainRegionVectorType  m_LevelSetDomainRegionVector;
+  ImageConstPointer              m_Image;
+  ListImagePointer               m_ListDomain;
+  LevelSetDomainRegionVectorType m_LevelSetDomainRegionVector;
 
 private:
   LevelSetDomainPartitionImage(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);               //purposely not implemented
+
 };
 } //end namespace itk
 

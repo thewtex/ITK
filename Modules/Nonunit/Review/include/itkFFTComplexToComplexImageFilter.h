@@ -48,7 +48,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TImage >
-class FFTComplexToComplexImageFilter:
+class FFTComplexToComplexImageFilter :
   public ImageToImageFilter< TImage, TImage >
 {
 public:
@@ -93,12 +93,17 @@ public:
   itkGetConstMacro(TransformDirection, TransformDirectionType);
 
 protected:
-  FFTComplexToComplexImageFilter() {}
-  virtual ~FFTComplexToComplexImageFilter(){}
+  FFTComplexToComplexImageFilter() {
+  }
+
+  virtual
+  ~FFTComplexToComplexImageFilter(){
+  }
 
   /** methods needed for the image filter pipeline */
   virtual void GenerateOutputInformation(); // figure out allocation for output
-                                            // image
+
+  // image
 
   virtual void GenerateInputRequestedRegion();
 

@@ -33,9 +33,9 @@ template< unsigned int NDimensions >
 typename MetaArrowConverter< NDimensions >::MetaObjectType *
 MetaArrowConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new ArrowMetaObjectType);
-}
+  }
 
 /** Convert a metaArrow into an arrow SpatialObject  */
 template< unsigned int NDimensions >
@@ -44,6 +44,7 @@ MetaArrowConverter< NDimensions >
 ::MetaObjectToSpatialObject( const MetaObjectType *mo )
 {
   const ArrowMetaObjectType *metaArrow = dynamic_cast<const MetaArrow *>(mo);
+
   if(metaArrow == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaArrow");
@@ -90,10 +91,11 @@ template< unsigned int NDimensions >
 typename MetaArrowConverter<NDimensions>::MetaObjectType *
 MetaArrowConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
-{
+  {
   ArrowSpatialObjectConstPointer arrowSO =
     dynamic_cast<const ArrowSpatialObjectType *>(spatialObject);
-  if(arrowSO.IsNull())
+
+  if(arrowSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to ArrowSpatialObject");
     }
@@ -125,9 +127,9 @@ MetaArrowConverter< NDimensions >
   mo->ID( arrowSO->GetId() );
 
   mo->Color( arrowSO->GetProperty()->GetRed(),
-                arrowSO->GetProperty()->GetGreen(),
-                arrowSO->GetProperty()->GetBlue(),
-                arrowSO->GetProperty()->GetAlpha() );
+             arrowSO->GetProperty()->GetGreen(),
+             arrowSO->GetProperty()->GetBlue(),
+             arrowSO->GetProperty()->GetAlpha() );
 
   for ( unsigned int i = 0; i < NDimensions; i++ )
     {
@@ -135,7 +137,7 @@ MetaArrowConverter< NDimensions >
     }
 
   return mo;
-}
+  }
 
 } // end namespace itk
 

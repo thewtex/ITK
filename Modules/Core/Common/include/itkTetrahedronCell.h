@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TCellInterface >
-class TetrahedronCell:public TCellInterface, private TetrahedronCellTopology
+class TetrahedronCell : public TCellInterface, private TetrahedronCellTopology
 {
 public:
   /** Standard class typedefa. */
@@ -64,8 +64,12 @@ public:
   itkStaticConstMacro(CellDimension, unsigned int, 3);
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::TETRAHEDRON_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::TETRAHEDRON_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -120,7 +124,8 @@ public:
       }
   }
 
-  ~TetrahedronCell() {}
+  ~TetrahedronCell() {
+  }
 
 protected:
   /** Store the number of points needed for a tetrahedron. */
@@ -129,6 +134,7 @@ protected:
 private:
   TetrahedronCell(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -54,7 +54,6 @@ LabelOverlayImageFilter< TInputImage, TLabelImage, TOutputImage >
     }
 }
 
-
 /**
  * Destructor method
  */
@@ -87,10 +86,10 @@ typename LabelOverlayImageFilter<
   TInputImage, TLabelImage, TOutputImage >::LabelImageType *
 LabelOverlayImageFilter< TInputImage, TLabelImage, TOutputImage >
 ::GetLabelImage() const
-{
+  {
   return itkDynamicCastInDebugMode< LabelImageType * >(
-           const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
-}
+    const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
+  }
 
 /**
  * Get number of colors in the LUT container
@@ -143,6 +142,7 @@ LabelOverlayImageFilter< TInputImage, TLabelImage, TOutputImage >
     typename NumericTraits< LabelPixelType >::PrintType >( m_BackgroundValue )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -20,11 +20,11 @@
 #include "itkImageVectorOptimizerParametersHelper.h"
 #include "itkTestingMacros.h"
 
-namespace{
+namespace {
 
-typedef double                                        ValueType;
-const   itk::SizeValueType                            ImageDimension = 2;
-const   itk::SizeValueType                            VectorDimension = 4;
+typedef double ValueType;
+const   itk::SizeValueType ImageDimension = 2;
+const   itk::SizeValueType VectorDimension = 4;
 typedef itk::Vector< ValueType, VectorDimension >     VectorPixelType;
 typedef itk::Image< VectorPixelType, ImageDimension > ImageVectorType;
 typedef ImageVectorType::Pointer                      ImageVectorPointer;
@@ -34,13 +34,14 @@ typedef ImageVectorType::IndexType                    IndexType;
 typedef ImageVectorType::PixelContainer               VectorPixelContainer;
 typedef itk::OptimizerParameters< ValueType >         OptimizerParametersType;
 typedef itk::ImageVectorOptimizerParametersHelper< ValueType,
-                                        VectorDimension,
-                                        ImageDimension >
-                                      ImageVectorOptimizerParametersHelperType;
+                                                   VectorDimension,
+                                                   ImageDimension >
+  ImageVectorOptimizerParametersHelperType;
 
-int testMemoryAccess( OptimizerParametersType& params,
-                      ImageVectorPointer imageOfVectors,
-                      itk::SizeValueType dimLength )
+int
+testMemoryAccess( OptimizerParametersType& params,
+                  ImageVectorPointer imageOfVectors,
+                  itk::SizeValueType dimLength )
 {
   int result = EXIT_SUCCESS;
 
@@ -55,7 +56,7 @@ int testMemoryAccess( OptimizerParametersType& params,
       // The image index returns a N-dim vector, so have to check each
       // element against the values returned by parameter object.
       itk::OffsetValueType offset = (x + y * dimLength) * VectorDimension;
-      VectorPixelType vectorpixel = imageOfVectors->GetPixel( index );
+      VectorPixelType      vectorpixel = imageOfVectors->GetPixel( index );
       for(itk::SizeValueType ind=0; ind < VectorDimension; ind++)
         {
         ValueType paramsValue = params[offset+ind];
@@ -78,16 +79,18 @@ int testMemoryAccess( OptimizerParametersType& params,
 
 /******************************************************/
 
-int itkImageVectorOptimizerParametersHelperTest(int, char *[])
+int
+itkImageVectorOptimizerParametersHelperTest(int, char *[])
 {
   int result = EXIT_SUCCESS;
 
   ImageVectorPointer imageOfVectors = ImageVectorType::New();
 
   IndexType start;
+
   start.Fill( 0 );
 
-  SizeType size;
+  SizeType  size;
   const int dimLength = 3;
   size.Fill( dimLength );
 
@@ -98,8 +101,8 @@ int itkImageVectorOptimizerParametersHelperTest(int, char *[])
   imageOfVectors->SetRegions( region );
   imageOfVectors->Allocate();
 
-  ImageVectorType::PointType     origin;
-  ImageVectorType::SpacingType   spacing;
+  ImageVectorType::PointType   origin;
+  ImageVectorType::SpacingType spacing;
 
   origin.Fill( 0.0 );
   spacing.Fill( 1.0 );
@@ -107,7 +110,7 @@ int itkImageVectorOptimizerParametersHelperTest(int, char *[])
   imageOfVectors->SetOrigin( origin );
   imageOfVectors->SetSpacing( spacing );
 
-  ValueType vectorinitvalues[VectorDimension] = {0.0, 0.1, 0.2, 0.3};
+  ValueType       vectorinitvalues[VectorDimension] = {0.0, 0.1, 0.2, 0.3};
   VectorPixelType vectorvalues(vectorinitvalues);
 
   //
@@ -136,7 +139,7 @@ int itkImageVectorOptimizerParametersHelperTest(int, char *[])
     }
 
   // Create a parameter object and assign the ImageVector helper.
-  OptimizerParametersType params;
+  OptimizerParametersType                   params;
   ImageVectorOptimizerParametersHelperType* imageVectorParamsHelper =
     new ImageVectorOptimizerParametersHelperType;
   //Assign the helper to the parameter object.
@@ -158,7 +161,7 @@ int itkImageVectorOptimizerParametersHelperTest(int, char *[])
   TRY_EXPECT_EXCEPTION( params.MoveDataPointer( array.data_block() ) );
 
   //Test setting an image of wrong type
-  typedef itk::Image<char, 2>  BadImageType;
+  typedef itk::Image<char, 2> BadImageType;
   BadImageType::Pointer badImage = BadImageType::New();
   TRY_EXPECT_EXCEPTION( params.SetParametersObject( badImage ) );
 

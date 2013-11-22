@@ -16,12 +16,13 @@
  *
  *=========================================================================*/
 
-
 #include "itkGaussianSpatialFunction.h"
 
-int itkGaussianSpatialFunctionTest(int, char* [] )
+int
+itkGaussianSpatialFunctionTest(int, char* [] )
 {
-  // Change this parameter (and the positions, below) to work in higher or lower dimensions
+  // Change this parameter (and the positions, below) to work in higher or lower
+  // dimensions
   const unsigned int Dimension = 3;
 
   //---------Create and initialize a spatial function-----------
@@ -70,14 +71,12 @@ int itkGaussianSpatialFunctionTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   bool normalized1 = spatialFunction->GetNormalized();
   if( normalized1 )
     {
     std::cerr << "Error in initial value of normalized" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   double scale2 = 19.0;
   spatialFunction->SetScale( scale2 );
@@ -89,7 +88,6 @@ int itkGaussianSpatialFunctionTest(int, char* [] )
 
   spatialFunction->SetScale( 1.0 );
   spatialFunction->SetNormalized( true );
-
 
   std::cout << "Gaussian spatial function created\n";
 
@@ -109,7 +107,7 @@ int itkGaussianSpatialFunctionTest(int, char* [] )
 
   const double oneDimensionalFactor = vcl_sqrt( 2.0 * vnl_math::pi );
   const double factor = oneDimensionalFactor * oneDimensionalFactor * oneDimensionalFactor;
-  double expectedValueAtMean = 1.0 / ( sigma[0]*sigma[1]*sigma[2] * factor );
+  double       expectedValueAtMean = 1.0 / ( sigma[0]*sigma[1]*sigma[2] * factor );
 
   std::cout << "expectedValueAtMean = " << expectedValueAtMean << std::endl;
   std::cout << "computed value      = " << computedValueAtMean << std::endl;
@@ -119,7 +117,6 @@ int itkGaussianSpatialFunctionTest(int, char* [] )
     std::cerr << "Error in computation of value at mean" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

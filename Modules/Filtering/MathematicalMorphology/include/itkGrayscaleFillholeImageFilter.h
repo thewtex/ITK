@@ -53,7 +53,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class GrayscaleFillholeImageFilter:
+class GrayscaleFillholeImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -107,7 +107,9 @@ public:
 
 protected:
   GrayscaleFillholeImageFilter();
-  ~GrayscaleFillholeImageFilter() {}
+  ~GrayscaleFillholeImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GrayscaleFillholeImageFilter needs the entire input be

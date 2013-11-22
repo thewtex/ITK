@@ -20,7 +20,8 @@
 #include <iostream>
 
 /* Testing for linear system wrappers */
-int itkFEMLinearSystemWrapperItpackTest(int argc, char *argv[])
+int
+itkFEMLinearSystemWrapperItpackTest(int argc, char *argv[])
 {
 
   /* loop vars for printing */

@@ -20,18 +20,18 @@
 #include "itkTimeStamp.h"
 #include "itkMultiThreader.h"
 
-
 // A helper struct for the test, the idea is to have one timestamp per thread.
 // To ease the writing of the test, we use  MultiThreader::SingleMethodExecute
 // with an array of timestamps in the shared data
 typedef struct {
   std::vector<itk::TimeStamp> timestamps;
   std::vector<unsigned long> counters;
-} TimeStampTestHelper;
+  } TimeStampTestHelper;
 
-ITK_THREAD_RETURN_TYPE modified_function( void *ptr )
+ITK_THREAD_RETURN_TYPE
+modified_function( void *ptr )
 {
-  typedef itk::MultiThreader::ThreadInfoStruct  ThreadInfoType;
+  typedef itk::MultiThreader::ThreadInfoStruct ThreadInfoType;
 
   ThreadInfoType * infoStruct = static_cast< ThreadInfoType * >( ptr );
 
@@ -46,7 +46,8 @@ ITK_THREAD_RETURN_TYPE modified_function( void *ptr )
   return ITK_THREAD_RETURN_VALUE;
 }
 
-int itkTimeStampTest(int, char*[])
+int
+itkTimeStampTest(int, char*[])
 {
   bool success = true;
 
@@ -56,7 +57,8 @@ int itkTimeStampTest(int, char*[])
 
     // Set up the multithreader
     itk::MultiThreader::Pointer multithreader = itk::MultiThreader::New();
-    multithreader->SetNumberOfThreads( ITK_MAX_THREADS+10 );// this will be clamped
+    multithreader->SetNumberOfThreads( ITK_MAX_THREADS+10 ); // this will be
+                                                             // clamped
     multithreader->SetSingleMethod( modified_function, &helper);
 
     // Test that the number of threads has actually been clamped
@@ -73,9 +75,9 @@ int itkTimeStampTest(int, char*[])
     helper.counters.resize( numberOfThreads );
     helper.timestamps.resize( numberOfThreads );
     for(itk::ThreadIdType k=0; k < numberOfThreads; k++)
-    {
-       helper.counters[k] = 0;
-    }
+      {
+      helper.counters[k] = 0;
+      }
 
     // Declare an array to test whether the all modified times have
     // been used
@@ -114,8 +116,8 @@ int itkTimeStampTest(int, char*[])
         }
 
       bool iter_success =
-             ( ((max_mtime-prev_mtime ) == numberOfThreads) &&
-               (min_mtime==prev_mtime+1) );
+        ( ( (max_mtime-prev_mtime ) == numberOfThreads) &&
+          (min_mtime==prev_mtime+1) );
 
       if ( iter_success )
         {
@@ -143,7 +145,7 @@ int itkTimeStampTest(int, char*[])
             std::cerr << " at iteration " << i << std::endl;
             }
           }
-      }
+        }
 
       if( !iter_success )
         {
@@ -156,10 +158,12 @@ int itkTimeStampTest(int, char*[])
         std::cerr << std::endl;
         success = false;
 
-        // Note that in a more general setting,  (max_mtime-prev_mtime)>numberOfThreads
+        // Note that in a more general setting,
+        //  (max_mtime-prev_mtime)>numberOfThreads
         // might be a normal case since the modified time of a time stamp
         // is global. If a new itk object is created this will also increment
-        // the time. In our specific test, there's no reason for another ITK object to be
+        // the time. In our specific test, there's no reason for another ITK
+        // object to be
         // modified though
         }
 

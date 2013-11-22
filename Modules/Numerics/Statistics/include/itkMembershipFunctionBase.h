@@ -54,7 +54,7 @@ namespace Statistics
  */
 
 template< typename TVector >
-class MembershipFunctionBase:
+class MembershipFunctionBase :
   public FunctionBase< TVector, double >
 {
 public:
@@ -85,7 +85,8 @@ public:
    * thrown. Subclasses may have to override this method if a change
    * in vector size requires invalidating other instance variables,
    * e.g. covariance matrices, mean vectors, etc. */
-  virtual void SetMeasurementVectorSize(MeasurementVectorSizeType s)
+  virtual void
+  SetMeasurementVectorSize(MeasurementVectorSizeType s)
   {
     // Test whether the vector type is resizable or not
     MeasurementVectorType m;
@@ -128,21 +129,25 @@ protected:
   MembershipFunctionBase()
   {
     m_MeasurementVectorSize = NumericTraits<MeasurementVectorType>::GetLength(
-      MeasurementVectorType() );
+        MeasurementVectorType() );
   }
 
-  virtual ~MembershipFunctionBase(void) {}
+  virtual
+  ~MembershipFunctionBase(void) {
+  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "Length of measurement vectors: "
        << m_MeasurementVectorSize << std::endl;
   }
 
 private:
-  MembershipFunctionBase(const Self &);   //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  MembershipFunctionBase(const Self &); //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
 
   MeasurementVectorSizeType m_MeasurementVectorSize;
 

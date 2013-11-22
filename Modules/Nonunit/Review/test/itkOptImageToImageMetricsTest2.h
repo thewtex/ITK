@@ -35,15 +35,17 @@ class OptImageToImageMetricsTest
 {
 public:
 
-  OptImageToImageMetricsTest() {}
+  OptImageToImageMetricsTest() {
+  }
 
-  void RunTest( FixedImageType* fixed,
-               MovingImageType* moving,
-               InterpolatorType* interpolator,
-               TransformType* transform,
-               MetricType* metric,
-               MetricInitializerType metricInitializer)
-    {
+  void
+  RunTest( FixedImageType* fixed,
+           MovingImageType* moving,
+           InterpolatorType* interpolator,
+           TransformType* transform,
+           MetricType* metric,
+           MetricInitializerType metricInitializer)
+  {
     typedef typename MetricType::ParametersType ParametersType;
 
     std::cout << "-------------------------------------------------------------------" << std::endl;
@@ -88,15 +90,16 @@ public:
 
     typedef typename MetricType::TransformPointer TransformPointer;
     const TransformPointer *transformPtr= metric->GetThreaderTransform();
-    if ((transformPtr==static_cast<const TransformPointer *>(NULL))||
-        (transformPtr[0].IsNull()))
+    if ( (transformPtr==static_cast<const TransformPointer *>(NULL) )||
+         (transformPtr[0].IsNull() ) )
       {
       exit(EXIT_FAILURE);
       }
 
-    }
-    //Other registration functionality tested in
-    //OptImageToImageTest.cxx... skip the rest
+  }
+
+  //Other registration functionality tested in
+  //OptImageToImageTest.cxx... skip the rest
 
 };
 
@@ -107,36 +110,36 @@ public:
   typedef itk::MeanSquaresImageToImageMetric< FixedImageType,
                                               MovingImageType> MetricType;
 
-
   MeanSquaresMetricInitializer(MetricType* metric)
-    {
+  {
     m_Metric = metric;
-    }
+  }
 
-  void Initialize()
-    {
+  void
+  Initialize()
+  {
     // Do stuff on m_Metric
     m_Metric->UseAllPixelsOn();
-    }
+  }
 
 protected:
   MetricType* m_Metric;
 
 };
 
-
 template < typename InterpolatorType,
-            typename TransformType,
-            typename FixedImageReaderType,
-            typename MovingImageReaderType >
-void BasicTest( FixedImageReaderType* fixedImageReader,
-                MovingImageReaderType* movingImageReader,
-                InterpolatorType* interpolator,
-                TransformType* transform
-                )
+           typename TransformType,
+           typename FixedImageReaderType,
+           typename MovingImageReaderType >
+void
+BasicTest( FixedImageReaderType* fixedImageReader,
+           MovingImageReaderType* movingImageReader,
+           InterpolatorType* interpolator,
+           TransformType* transform
+           )
 {
-  typedef typename FixedImageReaderType::OutputImageType    FixedImageType;
-  typedef typename MovingImageReaderType::OutputImageType   MovingImageType;
+  typedef typename FixedImageReaderType::OutputImageType  FixedImageType;
+  typedef typename MovingImageReaderType::OutputImageType MovingImageType;
 
   fixedImageReader->Update();
   movingImageReader->Update();
@@ -146,12 +149,12 @@ void BasicTest( FixedImageReaderType* fixedImageReader,
 
   // Mean squares
   typedef itk::MeanSquaresImageToImageMetric< FixedImageType, MovingImageType > MetricType;
-  typedef MeanSquaresMetricInitializer< FixedImageType, MovingImageType > MetricInitializerType;
+  typedef MeanSquaresMetricInitializer< FixedImageType, MovingImageType >       MetricInitializerType;
   typename MetricType::Pointer msMetric = MetricType::New();
   MeanSquaresMetricInitializer< FixedImageType, MovingImageType > msMetricInitializer( msMetric );
 
   TestAMetric( fixedImageReader, movingImageReader, interpolator,
-                             transform, msMetric.GetPointer(), msMetricInitializer );
+               transform, msMetric.GetPointer(), msMetricInitializer );
 }
 
 template <typename FixedImageReaderType,
@@ -160,38 +163,40 @@ template <typename FixedImageReaderType,
           typename TransformType,
           typename MetricType,
           typename MetricInitializerType>
-void TestAMetric(FixedImageReaderType* fixedImageReader,
-                 MovingImageReaderType* movingImageReader,
-                 InterpolatorType* interpolator,
-                 TransformType* transform,
-                 MetricType* metric,
-                 MetricInitializerType metricInitializer)
+void
+TestAMetric(FixedImageReaderType* fixedImageReader,
+            MovingImageReaderType* movingImageReader,
+            InterpolatorType* interpolator,
+            TransformType* transform,
+            MetricType* metric,
+            MetricInitializerType metricInitializer)
 {
-  typedef typename FixedImageReaderType::OutputImageType    FixedImageType;
-  typedef typename MovingImageReaderType::OutputImageType   MovingImageType;
+  typedef typename FixedImageReaderType::OutputImageType  FixedImageType;
+  typedef typename MovingImageReaderType::OutputImageType MovingImageType;
 
   metric->SetFixedImageRegion( fixedImageReader->GetOutput()->GetBufferedRegion() );
 
   OptImageToImageMetricsTest<  FixedImageType,
-                          MovingImageType,
-                          InterpolatorType,
-                          TransformType,
-                          MetricType,
-                          MetricInitializerType > testMetric;
+                               MovingImageType,
+                               InterpolatorType,
+                               TransformType,
+                               MetricType,
+                               MetricInitializerType > testMetric;
 
   testMetric.RunTest( fixedImageReader->GetOutput(), movingImageReader->GetOutput(),
                       interpolator, transform, metric, metricInitializer );
 }
 
 template <typename FixedImageReaderType, typename MovingImageReaderType>
-void BSplineLinearTest( FixedImageReaderType* fixedImageReader,
-                       MovingImageReaderType* movingImageReader)
+void
+BSplineLinearTest( FixedImageReaderType* fixedImageReader,
+                   MovingImageReaderType* movingImageReader)
 {
-  typedef typename MovingImageReaderType::OutputImageType MovingImageType;
+  typedef typename MovingImageReaderType::OutputImageType                MovingImageType;
   typedef itk::LinearInterpolateImageFunction< MovingImageType, double > InterpolatorType;
 
-  typedef typename FixedImageReaderType::OutputImageType    FixedImageType;
-  typedef typename MovingImageReaderType::OutputImageType   MovingImageType;
+  typedef typename FixedImageReaderType::OutputImageType  FixedImageType;
+  typedef typename MovingImageReaderType::OutputImageType MovingImageType;
 
   fixedImageReader->Update();
   movingImageReader->Update();
@@ -209,9 +214,9 @@ void BSplineLinearTest( FixedImageReaderType* fixedImageReader,
   typedef double CoordinateRepType;
 
   typedef itk::BSplineTransform<
-                            CoordinateRepType,
-                            SpaceDimension,
-                            VSplineOrder >     TransformType;
+      CoordinateRepType,
+      SpaceDimension,
+      VSplineOrder >     TransformType;
 
   typename TransformType::Pointer bsplineTransform = TransformType::New();
 
@@ -228,7 +233,7 @@ void BSplineLinearTest( FixedImageReaderType* fixedImageReader,
   bsplineTransform->SetTransformDomainPhysicalDimensions( physicalDimensions );
   bsplineTransform->SetTransformDomainMeshSize( meshSize );
 
-  typedef typename TransformType::ParametersType     ParametersType;
+  typedef typename TransformType::ParametersType ParametersType;
 
   const unsigned int numberOfParameters =
     bsplineTransform->GetNumberOfParameters();
@@ -238,7 +243,7 @@ void BSplineLinearTest( FixedImageReaderType* fixedImageReader,
   typename InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   BasicTest( fixedImageReader, movingImageReader, interpolator.GetPointer(),
-    bsplineTransform.GetPointer() );
+             bsplineTransform.GetPointer() );
 }
 
 } // end namespace itk

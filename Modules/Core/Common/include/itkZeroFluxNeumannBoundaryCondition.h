@@ -55,8 +55,8 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class ZeroFluxNeumannBoundaryCondition:
-    public ImageBoundaryCondition< TInputImage, TOutputImage >
+class ZeroFluxNeumannBoundaryCondition :
+  public ImageBoundaryCondition< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -74,16 +74,18 @@ public:
   typedef typename Superclass::NeighborhoodType NeighborhoodType;
 
   typedef typename Superclass::NeighborhoodAccessorFunctorType
-  NeighborhoodAccessorFunctorType;
+    NeighborhoodAccessorFunctorType;
 
   /** Extract information from the image type. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
   /** Default constructor. */
-  ZeroFluxNeumannBoundaryCondition() {}
+  ZeroFluxNeumannBoundaryCondition() {
+  }
 
   /** Runtime information support. */
-  virtual const char * GetNameOfClass() const
+  virtual const char *
+  GetNameOfClass() const
   {
     return "itkZeroFluxNeumannBoundaryCondition";
   }

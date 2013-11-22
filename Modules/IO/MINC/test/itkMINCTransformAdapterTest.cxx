@@ -28,13 +28,12 @@
 #include "itkIOTestHelper.h"
 #include "itkMINCTransformAdapter.h"
 
-
 static const double tolerance = 1e-5;
 static const int    point_counter=1000;
 
-
-template<typename T>void RandomPix(vnl_random &randgen,itk::Vector<T,3> &pix,
-                      double _max=itk::NumericTraits<T>::max() )
+template<typename T> void
+RandomPix(vnl_random &randgen,itk::Vector<T,3> &pix,
+          double _max=itk::NumericTraits<T>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -42,8 +41,9 @@ template<typename T>void RandomPix(vnl_random &randgen,itk::Vector<T,3> &pix,
     }
 }
 
-template<typename T>void RandomPoint(vnl_random &randgen,itk::Point<T,3> &pix,
-                      double _max=itk::NumericTraits<T>::max() )
+template<typename T> void
+RandomPoint(vnl_random &randgen,itk::Point<T,3> &pix,
+            double _max=itk::NumericTraits<T>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -51,8 +51,8 @@ template<typename T>void RandomPoint(vnl_random &randgen,itk::Point<T,3> &pix,
     }
 }
 
-
-static int compare_linear(const char *linear_transform)
+static int
+compare_linear(const char *linear_transform)
 {
   itk::ObjectFactoryBase::RegisterFactory(itk::MINCTransformIOFactory::New() );
 
@@ -96,7 +96,7 @@ static int compare_linear(const char *linear_transform)
 
     AffineTransformType::InputPointType pnt,pnt2;
 
-    for(int i=0;i<point_counter;i++)
+    for(int i=0; i<point_counter; i++)
       {
       AffineTransformType::OutputPointType v1;
       AffineTransformType::OutputPointType v2;
@@ -128,22 +128,23 @@ static int compare_linear(const char *linear_transform)
   return EXIT_SUCCESS;
 }
 
-static int compare_nonlinear_double(const char *nonlinear_transform)
+static int
+compare_nonlinear_double(const char *nonlinear_transform)
 {
 
   typedef itk::DisplacementFieldTransform<double,3>         DisplacementFieldTransform;
   typedef DisplacementFieldTransform::DisplacementFieldType DisplacementFieldType;
 
   DisplacementFieldTransform::Pointer disp = DisplacementFieldTransform::New();
-  DisplacementFieldType::Pointer field=DisplacementFieldType::New();
+  DisplacementFieldType::Pointer      field=DisplacementFieldType::New();
 
   //create zero displacement field
-  DisplacementFieldType::SizeType    imageSize3D = {{ 10, 10, 10}};
-  DisplacementFieldType::IndexType   startIndex3D = { {0, 0, 0}};
+  DisplacementFieldType::SizeType  imageSize3D = {{ 10, 10, 10}};
+  DisplacementFieldType::IndexType startIndex3D = { {0, 0, 0}};
 
-  double spacing[]={2.0, 2.0, 2.0};
-  double origin[]={-10.0, -10.0, -10.0};
-  DisplacementFieldType::RegionType  region;
+  double                            spacing[]={2.0, 2.0, 2.0};
+  double                            origin[]={-10.0, -10.0, -10.0};
+  DisplacementFieldType::RegionType region;
 
   region.SetSize  (imageSize3D);
   region.SetIndex (startIndex3D);
@@ -160,20 +161,20 @@ static int compare_nonlinear_double(const char *nonlinear_transform)
   zeroDisplacement.Fill( 0.0 );
   field->FillBuffer( zeroDisplacement );
 
-  vnl_random                          randgen(12345678);
+  vnl_random                                               randgen(12345678);
   itk::ImageRegionIteratorWithIndex<DisplacementFieldType> it(field,field->GetLargestPossibleRegion() );
 
   for(it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
     DisplacementFieldType::PixelType pix;
-     if( tolerance > 0.0 )
-       {
-       RandomPix<double>(randgen,pix,100);
-       }
-     else
-       {
-       RandomPix<double>(randgen,pix);
-       }
+    if( tolerance > 0.0 )
+      {
+      RandomPix<double>(randgen,pix,100);
+      }
+    else
+      {
+      RandomPix<double>(randgen,pix);
+      }
     it.Set(pix);
     }
 
@@ -205,7 +206,7 @@ static int compare_nonlinear_double(const char *nonlinear_transform)
     {
     DisplacementFieldTransform::OutputPointType v1;
     DisplacementFieldTransform::OutputPointType v2;
-    DisplacementFieldType::PointType pnt;
+    DisplacementFieldType::PointType            pnt;
 
     field->TransformIndexToPhysicalPoint( it.GetIndex (), pnt);
 
@@ -223,16 +224,16 @@ static int compare_nonlinear_double(const char *nonlinear_transform)
 
     }
 
-
   return EXIT_SUCCESS;
 }
 
-int itkMINCTransformAdapterTest(int argc, char* argv[])
+int
+itkMINCTransformAdapterTest(int argc, char* argv[])
 {
   if (argc > 1)
-  {
+    {
     itksys::SystemTools::ChangeDirectory(argv[1]);
-  }
+    }
   itk::TransformFactory< itk::DisplacementFieldTransform<double,3> >::RegisterTransform ();
   itk::ObjectFactoryBase::RegisterFactory(itk::MINCTransformIOFactory::New() );
 

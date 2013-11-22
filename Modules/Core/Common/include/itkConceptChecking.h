@@ -117,7 +117,9 @@ struct UniqueType_bool {};
  * warning. (BOOST)
  */
 template< typename T >
-inline void IgnoreUnusedVariable(T) {}
+inline void
+IgnoreUnusedVariable(T) {
+}
 
 /**
  * Concept checks may require that an expression be convertible to bool.
@@ -125,34 +127,39 @@ inline void IgnoreUnusedVariable(T) {}
  * (BOOST)
  */
 template< typename T >
-void RequireBooleanExpression(const T & t)
+void
+RequireBooleanExpression(const T & t)
 {
   bool x = t;
 
   IgnoreUnusedVariable(x);
 }
+
 }   // namespace Detail
 
 /** Concept requiring T to have a default constructor. (BOOST) */
 template< typename T >
 struct DefaultConstructible {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       T a;
 
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have a copy constructor. (BOOST) */
 template< typename T >
 struct CopyConstructible {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       T  a(b);
       T *p = &a;
@@ -161,7 +168,8 @@ struct CopyConstructible {
       Detail::IgnoreUnusedVariable(p);
     }
 
-    void const_constraints(const T & a)
+    void
+    const_constraints(const T & a)
     {
       T        c(a);
       const T *p = &a;
@@ -171,16 +179,17 @@ struct CopyConstructible {
     }
 
     T b;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 to be convertible to T2. (BOOST) */
 template< typename T1, typename T2 >
 struct Convertible {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       T2 b = static_cast< T2 >( a );
 
@@ -188,37 +197,40 @@ struct Convertible {
     }
 
     T1 a;
-  };
+    };
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have operator =.  (BOOST) */
 template< typename T >
 struct Assignable {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a = a;
       const_constraints(a);
     }
 
-    void const_constraints(const T & b)
+    void
+    const_constraints(const T & b)
     {
       a = b;
     }
 
     T a;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 to have operators < and <= with a right-hand operator
     of type T2.  (BOOST) */
 template< typename T1, typename T2 = T1 >
 struct LessThanComparable {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       Detail::RequireBooleanExpression(a < b);
       Detail::RequireBooleanExpression(a <= b);
@@ -226,17 +238,18 @@ struct LessThanComparable {
 
     T1 a;
     T2 b;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 to have operators > and >= with a right-hand operator
     of type T2.  (BOOST) */
 template< typename T1, typename T2 = T1 >
 struct GreaterThanComparable {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       Detail::RequireBooleanExpression(a > b);
       Detail::RequireBooleanExpression(a >= b);
@@ -244,17 +257,18 @@ struct GreaterThanComparable {
 
     T1 a;
     T2 b;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 to have operators == and != with a right-hand operator
     of type T2.  (BOOST) */
 template< typename T1, typename T2 = T1 >
 struct EqualityComparable {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       Detail::RequireBooleanExpression(a == b);
       Detail::RequireBooleanExpression(a != b);
@@ -262,17 +276,18 @@ struct EqualityComparable {
 
     T1 a;
     T2 b;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 to have operators <, >, <=, >=, ==, != with a
     right-hand operator of type T2. (BOOST) */
 template< typename T1, typename T2 = T1 >
 struct Comparable {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       Detail::RequireBooleanExpression(a < b);
       Detail::RequireBooleanExpression(a > b);
@@ -284,24 +299,26 @@ struct Comparable {
 
     T1 a;
     T2 b;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 to have operators +, -, in the form
     T1 op T2 = T3.  */
 template< typename T1, typename T2 = T1, typename T3 = T1 >
 struct AdditiveOperators {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a = static_cast< T3 >( b + c );
       a = static_cast< T3 >( b - c );
       const_constraints(b, c);
     }
 
-    void const_constraints(const T1 & d, const T2 & e)
+    void
+    const_constraints(const T1 & d, const T2 & e)
     {
       a = static_cast< T3 >( d + e );
       a = static_cast< T3 >( d - e );
@@ -310,25 +327,26 @@ struct AdditiveOperators {
     T3 a;
     T1 b;
     T2 c;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
-
+  };
 
 /** Concept requiring T1 to have operators +=, -= in the form
     T2 op= T1.  */
 template< typename T1, typename T2 = T1>
 struct AdditiveAndAssignOperators {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a += c;
       a -= c;
       const_constraints(c);
     }
 
-    void const_constraints(const T1 & d)
+    void
+    const_constraints(const T1 & d)
     {
       a += d;
       a -= d;
@@ -336,22 +354,24 @@ struct AdditiveAndAssignOperators {
 
     T2 a;
     T1 c;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have operator * in the form T1 op T2 = T3. */
 template< typename T1, typename T2 = T1, typename T3 = T1 >
 struct MultiplyOperator {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a = static_cast< T3 >( b * c );
       const_constraints(b, c);
     }
 
-    void const_constraints(const T1 & d, const T2 & e)
+    void
+    const_constraints(const T1 & d, const T2 & e)
     {
       a = static_cast< T3 >( d * e );
     }
@@ -359,43 +379,47 @@ struct MultiplyOperator {
     T3 a;
     T1 b;
     T2 c;
-  };
+    };
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have operator  *= in the form T2 op= T1. */
 template< typename T1, typename T2 = T1 >
 struct MultiplyAndAssignOperator {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a *= b;
       const_constraints(b);
     }
 
-    void const_constraints(const T1 & d)
+    void
+    const_constraints(const T1 & d)
     {
       a *= d;
     }
 
     T2 a;
     T1 b;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have operators / the form T1 op T2 = T3. */
 template< typename T1, typename T2 = T1, typename T3 = T1 >
 struct DivisionOperators {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a = static_cast< T3 >( b / c );
       const_constraints(b, c);
     }
 
-    void const_constraints(const T1 & d, const T2 & e)
+    void
+    const_constraints(const T1 & d, const T2 & e)
     {
       a = static_cast< T3 >( d / e );
     }
@@ -403,41 +427,42 @@ struct DivisionOperators {
     T3 a;
     T1 b;
     T2 c;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
-
+  };
 
 /** Concept requiring T to have operators /= in the form T2 op= T1. */
 template< typename T1, typename T2 = T1 >
 struct DivisionAndAssignOperators {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a /= c;
       const_constraints(c);
     }
 
-    void const_constraints(const T1 & d)
+    void
+    const_constraints(const T1 & d)
     {
       a /= d;
     }
 
     T1 c;
     T2 a;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
-
+  };
 
 /** Concept requiring T1 to have operators &, |, and ^ in the form
     T1 op T2 = T3.  */
 template< typename T1, typename T2 = T1, typename T3 = T1 >
 struct BitwiseOperators {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a = static_cast< T3 >( b & c );
       a = static_cast< T3 >( b | c );
@@ -448,7 +473,8 @@ struct BitwiseOperators {
       const_constraints(b, c);
     }
 
-    void const_constraints(const T1 & d, const T2 & e)
+    void
+    const_constraints(const T1 & d, const T2 & e)
     {
       a = static_cast< T3 >( d & e );
       a = static_cast< T3 >( d | e );
@@ -461,22 +487,24 @@ struct BitwiseOperators {
     T3 a;
     T1 b;
     T2 c;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 to have operators []  in the form T1 [] T2 = T3.  */
 template< typename T1, typename T2 = T1, typename T3 = T1 >
 struct BracketOperator {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a = static_cast< T3 >( b[c] );
       const_constraints(b, c);
     }
 
-    void const_constraints(const T1 & d, const T2 & e)
+    void
+    const_constraints(const T1 & d, const T2 & e)
     {
       a = static_cast< T3 >( d[e] );
     }
@@ -484,31 +512,33 @@ struct BracketOperator {
     T3 a;
     T1 b;
     T2 c;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have operator !.  */
 template< typename T >
 struct NotOperator {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a = !a;
     }
 
     T a;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have operators ++ and --.  */
 template< typename T >
 struct IncrementDecrementOperators {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       a++;
       a--;
@@ -517,25 +547,26 @@ struct IncrementDecrementOperators {
     }
 
     T a;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to be writable to an ostream.  */
 template< typename T >
 struct OStreamWritable {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       std::cout << a;
     }
 
     T a;
-  };
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to be signed. */
 template< typename T >
@@ -545,29 +576,33 @@ struct Signed {
   struct Constraints {
     typedef Detail::UniqueType_bool< true >                             TrueT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(IsSigned) > SignedT;
-    void constraints()
+    void
+    constraints()
     {
       SignedT a = TrueT();
 
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T1 and T2 to be the same type. */
 template< typename T1, typename T2 >
 struct SameType {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       Detail::UniqueType< T1 > a = Detail::UniqueType< T2 >();
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring D1 and D2 to be the same dimension. */
 template< unsigned int D1, unsigned int D2 >
@@ -575,21 +610,24 @@ struct SameDimension {
   struct Constraints {
     typedef Detail::UniqueType_unsigned_int< D1 > DT1;
     typedef Detail::UniqueType_unsigned_int< D2 > DT2;
-    void constraints()
+    void
+    constraints()
     {
       DT1 a = DT2();
 
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have NumericTraits */
 template< typename T >
 struct HasNumericTraits {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       typedef typename NumericTraits< T >::ValueType      ValueType;
       typedef typename NumericTraits< T >::PrintType      PrintType;
@@ -614,67 +652,76 @@ struct HasNumericTraits {
       Detail::IgnoreUnusedVariable(a);
       Detail::IgnoreUnusedVariable(b);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have PixelTraits */
 template< typename T >
 struct HasPixelTraits {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       typedef typename PixelTraits< T >::ValueType ValueType;
       unsigned int a = PixelTraits< T >::Dimension;
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have a trait called ValueType */
 template< typename T >
 struct HasValueType {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       typedef typename T::ValueType ValueType;
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have Zero */
 template< typename T >
 struct HasZero {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       T a;
 
       a = NumericTraits< T >::Zero;
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to have JoinTraits */
 template< typename T1, typename T2 >
 struct HasJoinTraits {
   struct Constraints {
-    void constraints()
+    void
+    constraints()
     {
       typedef typename JoinTraits< T1, T2 >::ValueType ValueType;
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring D1 and D2 to be the same dimension or D2-1 = D1. */
 template< unsigned int D1, unsigned int D2 >
@@ -683,17 +730,25 @@ struct SameDimensionOrMinusOne {
     typedef Detail::UniqueType_unsigned_int< D1 >     Type1;
     typedef Detail::UniqueType_unsigned_int< D1 - 1 > Type2;
 
-    void f(Type1) {}
-    void f(Type2, int = 0) {}
+    void
+    f(Type1) {
+    }
 
-    void constraints()
+    void
+    f(Type2, int = 0) {
+    }
+
+    void
+    constraints()
     {
       Detail::UniqueType_unsigned_int< D2 > tt;
+
       this->f(tt);
     }
-  };
+
+    };
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring D1 and D2 to be the same dimension or D2-1 = D1. */
 template< unsigned int D1, unsigned int D2 >
@@ -703,18 +758,29 @@ struct SameDimensionOrMinusOneOrTwo {
     typedef Detail::UniqueType_unsigned_int< D1 - 1 > Type2;
     typedef Detail::UniqueType_unsigned_int< D1 - 2 > Type3;
 
-    void f(Type1) {}
-    void f(Type2, int = 0) {}
-    void f(Type3, int = 0, int = 0) {}
+    void
+    f(Type1) {
+    }
 
-    void constraints()
+    void
+    f(Type2, int = 0) {
+    }
+
+    void
+    f(Type3, int = 0, int = 0) {
+    }
+
+    void
+    constraints()
     {
       Detail::UniqueType_unsigned_int< D2 > tt;
+
       this->f(tt);
     }
-  };
+
+    };
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to be integer. */
 template< typename T >
@@ -724,17 +790,18 @@ struct IsInteger {
   struct Constraints {
     typedef Detail::UniqueType_bool< true >                             TrueT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(Integral) > IntegralT;
-    void constraints()
+    void
+    constraints()
     {
       IntegralT a = TrueT();
 
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
-
+  };
 
 /** Concept requiring T to be an unsigned integer. */
 template< typename T >
@@ -744,17 +811,18 @@ struct IsUnsignedInteger {
   struct Constraints {
     typedef Detail::UniqueType_bool< true >                             TrueT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(Unsigned) > UnsignedT;
-    void constraints()
+    void
+    constraints()
     {
       UnsignedT a = TrueT();
 
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
-
+  };
 
 /** Concept requiring T to be non-integer. */
 template< typename T >
@@ -764,16 +832,18 @@ struct IsNonInteger {
   struct Constraints {
     typedef Detail::UniqueType_bool< false >                               FalseT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(NonIntegral) > NonIntegralT;
-    void constraints()
+    void
+    constraints()
     {
       NonIntegralT a = FalseT();
 
       Detail::IgnoreUnusedVariable(a);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to be floating point. */
 template< typename T >
@@ -785,7 +855,8 @@ struct IsFloatingPoint {
     typedef Detail::UniqueType_bool< false >                            FalseT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(Integral) > IntegralT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(IsExact) >  ExactT;
-    void constraints()
+    void
+    constraints()
     {
       IntegralT a = FalseT();
       ExactT    b = FalseT();
@@ -793,10 +864,11 @@ struct IsFloatingPoint {
       Detail::IgnoreUnusedVariable(a);
       Detail::IgnoreUnusedVariable(b);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 
 /** Concept requiring T to be fixed point. */
 template< typename T >
@@ -809,7 +881,8 @@ struct IsFixedPoint {
     typedef Detail::UniqueType_bool< false >                            FalseT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(Integral) > IntegralT;
     typedef Detail::UniqueType_bool< itkGetStaticConstMacro(IsExact) >  ExactT;
-    void constraints()
+    void
+    constraints()
     {
       IntegralT a = FalseT();
       ExactT    b = TrueT();
@@ -817,10 +890,11 @@ struct IsFixedPoint {
       Detail::IgnoreUnusedVariable(a);
       Detail::IgnoreUnusedVariable(b);
     }
-  };
+
+    };
 
   itkConceptConstraintsMacro();
-};
+  };
 } // end namespace Concept
 } // end namespace itk
 

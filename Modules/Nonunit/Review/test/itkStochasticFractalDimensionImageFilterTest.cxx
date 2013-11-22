@@ -29,8 +29,9 @@ class Helper
 {
 public:
 
-  static int Run( int argc, char *argv[] )
-    {
+  static int
+  Run( int argc, char *argv[] )
+  {
     typedef float                             PixelType;
     typedef itk::Image<PixelType, NDimension> ImageType;
 
@@ -131,12 +132,13 @@ public:
 
 }
 
-int itkStochasticFractalDimensionImageFilterTest( int argc, char *argv[] )
+int
+itkStochasticFractalDimensionImageFilterTest( int argc, char *argv[] )
 {
   if ( argc < 3 )
     {
     std::cout << "Usage: " << argv[0] << " imageDimension "
-      << "inputImage outputImage [radius] [labelImage] [label]" << std::endl;
+              << "inputImage outputImage [radius] [labelImage] [label]" << std::endl;
     return EXIT_FAILURE;
     }
 

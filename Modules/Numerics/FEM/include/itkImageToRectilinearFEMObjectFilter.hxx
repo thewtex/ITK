@@ -73,14 +73,14 @@ template <typename TInputImage>
 typename ImageToRectilinearFEMObjectFilter<TInputImage>::InputImageType *
 ImageToRectilinearFEMObjectFilter<TInputImage>
 ::GetInput(void)
-{
+  {
   if( this->GetNumberOfInputs() < 1 )
     {
     return 0;
     }
 
   return itkDynamicCastInDebugMode<InputImageType *>(this->ProcessObject::GetInput(0) );
-}
+  }
 
 /**
  *
@@ -89,9 +89,9 @@ template <typename TInputImage>
 typename ImageToRectilinearFEMObjectFilter<TInputImage>::InputImageType *
 ImageToRectilinearFEMObjectFilter<TInputImage>
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode<InputImageType *>(this->ProcessObject::GetInput(idx) );
-}
+  }
 
 /**
  *
@@ -99,7 +99,7 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
 template <typename TInputImage>
 typename ImageToRectilinearFEMObjectFilter<TInputImage>::DataObjectPointer
 ImageToRectilinearFEMObjectFilter<TInputImage>
-::MakeOutput(DataObjectPointerArraySizeType itkNotUsed(idx))
+::MakeOutput(DataObjectPointerArraySizeType itkNotUsed(idx) )
 {
   return FEMObjectType::New().GetPointer();
 }
@@ -111,14 +111,14 @@ template <typename TInputImage>
 typename ImageToRectilinearFEMObjectFilter<TInputImage>::FEMObjectType *
 ImageToRectilinearFEMObjectFilter<TInputImage>
 ::GetOutput()
-{
+  {
   if( this->GetNumberOfOutputs() < 1 )
     {
     return 0;
     }
 
   return itkDynamicCastInDebugMode<FEMObjectType *>(this->ProcessObject::GetOutput(0) );
-}
+  }
 
 /**
  *
@@ -127,7 +127,7 @@ template <typename TInputImage>
 typename ImageToRectilinearFEMObjectFilter<TInputImage>::FEMObjectType *
 ImageToRectilinearFEMObjectFilter<TInputImage>
 ::GetOutput(unsigned int idx)
-{
+  {
   FEMObjectType* out = dynamic_cast<FEMObjectType *>
     (this->ProcessObject::GetOutput(idx) );
 
@@ -136,7 +136,7 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
     itkWarningMacro( << "dynamic_cast to output type failed" );
     }
   return out;
-}
+  }
 
 template <typename TInputImage>
 void
@@ -180,14 +180,14 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
   femObject->GetModifiableNodeContainer()->Initialize();
 
   // Create nodes
-  Element::Node::Pointer  n;
-  ImageIndexType nodeIndex;
-  ImagePointType nodePoint;
+  Element::Node::Pointer n;
+  ImageIndexType         nodeIndex;
+  ImagePointType         nodePoint;
 
   if ( this->m_Material )
     {
-                femObject->AddNextMaterial( this->m_Material );
-                }
+    femObject->AddNextMaterial( this->m_Material );
+    }
 
   int gn = 0; // number of node
   for( typename ImageSizeType::SizeValueType j = 0; j <= m_NumberOfElements[1]; j++ )
@@ -225,7 +225,7 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
         e->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() ) );
         }
       gn++;
-      femObject->AddNextElement(e.GetPointer());
+      femObject->AddNextElement(e.GetPointer() );
       }
     }
 }
@@ -253,14 +253,14 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
 
   if ( this->m_Material )
     {
-                femObject->AddNextMaterial( this->m_Material );
-                }
+    femObject->AddNextMaterial( this->m_Material );
+    }
 
   // Create nodes
-  Element::Node::Pointer  n;
-  ImageIndexType nodeIndex;
-  ImagePointType nodePoint;
-  int            gn = 0; // number of node
+  Element::Node::Pointer n;
+  ImageIndexType         nodeIndex;
+  ImagePointType         nodePoint;
+  int                    gn = 0; // number of node
   for( unsigned int k = 0; k <= m_NumberOfElements[2]; ++k )
     {
     nodeIndex[2] = k * m_PixelsPerElement[2];
@@ -297,35 +297,42 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
                                                                + 1 ) * ( j  + ( m_NumberOfElements[1] + 1 ) * k ) ) ) );
         e->SetNode( 1,
                     femObject->GetNode( (unsigned int)( i + 1 + ( m_NumberOfElements[0]
-                                                                  + 1 ) * ( j  + ( m_NumberOfElements[1] + 1 ) * k ) ) ) );
+                                                                  + 1 ) *
+                                                        ( j  + ( m_NumberOfElements[1] + 1 ) * k ) ) ) );
         e->SetNode( 2,
                     femObject->GetNode( (unsigned int)( i + 1 + ( m_NumberOfElements[0]
-                                                                  + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * k ) ) ) );
+                                                                  + 1 ) *
+                                                        ( j + 1 + ( m_NumberOfElements[1] + 1 ) * k ) ) ) );
         e->SetNode( 3,
                     femObject->GetNode( (unsigned int)( i + ( m_NumberOfElements[0]
-                                                              + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * k ) ) ) );
+                                                              + 1 ) *
+                                                        ( j + 1 + ( m_NumberOfElements[1] + 1 ) * k ) ) ) );
         e->SetNode( 4,
                     femObject->GetNode( (unsigned int)( i + ( m_NumberOfElements[0]
-                                                              + 1 ) * ( j  + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
+                                                              + 1 ) *
+                                                        ( j  + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
         e->SetNode( 5,
                     femObject->GetNode( (unsigned int)( i + 1
-                                                          + ( m_NumberOfElements[0]
-                                                              + 1 ) * ( j  + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
+                                                        + ( m_NumberOfElements[0]
+                                                            + 1 ) *
+                                                        ( j  + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
         e->SetNode( 6,
                     femObject->GetNode( (unsigned int)( i + 1
-                                                          + ( m_NumberOfElements[0]
-                                                              + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
+                                                        + ( m_NumberOfElements[0]
+                                                            + 1 ) *
+                                                        ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
         e->SetNode( 7,
                     femObject->GetNode( (unsigned int)( i
                                                         + ( m_NumberOfElements[0]
-                                                            + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
+                                                            + 1 ) *
+                                                        ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
         e->SetGlobalNumber(gn);
         if ( this->m_Material )
           {
           e->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() ) );
           }
         gn++;
-        femObject->AddNextElement(e.GetPointer());
+        femObject->AddNextElement(e.GetPointer() );
         }
       }
     }
@@ -340,6 +347,7 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "Number of Elements: " << m_NumberOfElements << std::endl;
   os << indent << "Pixels Per Element: " << m_PixelsPerElement << std::endl;
   os << indent << "Material: " << m_Material << std::endl;

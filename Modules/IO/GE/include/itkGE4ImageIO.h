@@ -55,7 +55,7 @@ namespace itk
  * \ingroup IOFilters
  * \ingroup ITKIOGE
  */
-class ITKIOGE_EXPORT GE4ImageIO:public IPLCommonImageIO
+class ITKIOGE_EXPORT GE4ImageIO : public IPLCommonImageIO
 {
 public:
   /** Standard class typedefs. */
@@ -129,6 +129,7 @@ private:
   float MvtSunf(int numb);
 
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

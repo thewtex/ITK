@@ -73,7 +73,7 @@ namespace itk
  * \ingroup ITKClassifiers
  */
 template< typename TInputImage, typename TProbabilityPrecisionType = float >
-class BayesianClassifierInitializationImageFilter:
+class BayesianClassifierInitializationImageFilter :
   public
   ImageToImageFilter< TInputImage, VectorImage< TProbabilityPrecisionType,
                                                 TInputImage::ImageDimension > >
@@ -86,7 +86,7 @@ public:
 
   /** Dimension of the input image */
   itkStaticConstMacro(Dimension, unsigned int,
-                       InputImageType ::ImageDimension);
+                      InputImageType::ImageDimension);
 
   typedef VectorImage< ProbabilityPrecisionType,
                        itkGetStaticConstMacro(Dimension) >                   OutputImageType;
@@ -127,7 +127,7 @@ public:
   typedef VectorContainer< unsigned int,
                            MembershipFunctionPointer >  MembershipFunctionContainerType;
   typedef typename MembershipFunctionContainerType::Pointer
-  MembershipFunctionContainerPointer;
+    MembershipFunctionContainerPointer;
 
   /** Method to set/get the density functions. Here you can set a vector
    * container of density functions. If no density functions are specified,
@@ -136,6 +136,7 @@ public:
    * input image.  */
   virtual void SetMembershipFunctions(MembershipFunctionContainerType
                                       *densityFunctionContainer);
+
   itkGetModifiableObjectMacro(MembershipFunctionContainer, MembershipFunctionContainerType);
 
   /** Set/Get methods for the number of classes. The user must supply this. */
@@ -161,7 +162,10 @@ public:
 
 protected:
   BayesianClassifierInitializationImageFilter();
-  virtual ~BayesianClassifierInitializationImageFilter() {}
+  virtual
+  ~BayesianClassifierInitializationImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the membership functions. This will be called only if the membership
@@ -179,7 +183,8 @@ private:
   BayesianClassifierInitializationImageFilter(const Self &); //purposely not
                                                              // implemented
   void operator=(const Self &);                              //purposely not
-                                                             // implemented
+
+  // implemented
 
   bool         m_UserSuppliesMembershipFunctions;
   unsigned int m_NumberOfClasses;

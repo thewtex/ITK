@@ -29,12 +29,12 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   // Software Guide : BeginLatex
   //
@@ -48,7 +48,6 @@ int main(int, char *[])
   // Software Guide : BeginCodeSnippet
   typedef itk::Image< unsigned short, 3 > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -64,7 +63,6 @@ int main(int, char *[])
   // Software Guide : BeginCodeSnippet
   ImageType::Pointer image = ImageType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -124,7 +122,7 @@ int main(int, char *[])
   // Software Guide : EndLatex
   //
   // Software Guide : BeginCodeSnippet
-  ImageType::SizeType  size;
+  ImageType::SizeType size;
 
   size[0]  = 200;  // size along X
   size[1]  = 200;  // size along Y
@@ -152,7 +150,8 @@ int main(int, char *[])
 
   // Software Guide : BeginLatex
   //
-  // Finally, the region is passed to the \code{Image} object in order to define its
+  // Finally, the region is passed to the \code{Image} object in order to define
+  // its
   // extent and origin. The \code{SetRegions} method sets the
   // LargestPossibleRegion, BufferedRegion, and RequestedRegion
   // simultaneously. Note that none of the operations performed to this point

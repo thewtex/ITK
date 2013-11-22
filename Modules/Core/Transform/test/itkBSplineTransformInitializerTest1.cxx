@@ -26,7 +26,8 @@
 
 #include <fstream>
 
-int itkBSplineTransformInitializerTest1( int argc, char * argv[] )
+int
+itkBSplineTransformInitializerTest1( int argc, char * argv[] )
 {
 
   if( argc < 5 )
@@ -78,7 +79,7 @@ int itkBSplineTransformInitializerTest1( int argc, char * argv[] )
   FilterType::Pointer resampler = FilterType::New();
 
   typedef itk::LinearInterpolateImageFunction<
-    MovingImageType, double>  InterpolatorType;
+      MovingImageType, double>  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
@@ -106,15 +107,15 @@ int itkBSplineTransformInitializerTest1( int argc, char * argv[] )
   typedef double CoordinateRepType;
 
   typedef itk::BSplineTransform<
-    CoordinateRepType,
-    SpaceDimension,
-    SplineOrder>     TransformType;
+      CoordinateRepType,
+      SpaceDimension,
+      SplineOrder>     TransformType;
 
   TransformType::Pointer bsplineTransform = TransformType::New();
 
   typedef itk::BSplineTransformInitializer<
-    TransformType,
-    FixedImageType>      InitializerType;
+      TransformType,
+      FixedImageType>      InitializerType;
   InitializerType::Pointer transformInitializer = InitializerType::New();
 
   TransformType::MeshSizeType meshSize;

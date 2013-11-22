@@ -67,7 +67,7 @@ namespace itk
  * \struct par_parameter
  */
 struct par_parameter  //par_parameter
-{
+  {
   int problemreading;                                     // Marked 1 if problem
                                                           // occurred reading in
                                                           // PAR file
@@ -124,10 +124,16 @@ struct par_parameter  //par_parameter
   float water_fat_shift;                                  // Water Fat shift
                                                           // [pixels]
   float angAP;                                            // Angulation
+                                                          //
+                                                          //
                                                           // midslice(ap,fh,rl)[degr]
   float angFH;                                            // Angulation
+                                                          //
+                                                          //
                                                           // midslice(ap,fh,rl)[degr]
   float angRL;                                            // Angulation
+                                                          //
+                                                          //
                                                           // midslice(ap,fh,rl)[degr]
   float offAP;                                            // Off Centre
                                                           // midslice(ap,fh,rl)
@@ -192,13 +198,15 @@ struct par_parameter  //par_parameter
                                                           // scanning sequences
                                                           // detected in the REC
   int num_slice_repetitions;                              // If
+                                                          //
+                                                          //
                                                           // num_scanning_sequences
                                                           // > 1 then
   // num_image_types may not equal the total number of slice
   // repetitions for a single acquisition.  This value is the
   // total number of slice repetitions for a single acquisition
   // and is valid only when slicessorted == 0.
-};
+  };
 
 /** \class PhilipsPAR
  * \brief Read parameters from a Philips PAR file.
@@ -209,7 +217,7 @@ struct par_parameter  //par_parameter
  *
  * \ingroup ITKIOPhilipsREC
  */
-class ITKIOPhilipsREC_EXPORT PhilipsPAR:public LightProcessObject
+class ITKIOPhilipsREC_EXPORT PhilipsPAR : public LightProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -259,9 +267,9 @@ public:
   // Returns false if an error is encountered during reading, otherwise true is
   // returned.
   typedef vnl_vector_fixed< double, PAR_RESCALE_VALUES_SIZE >
-  PARRescaleValues;
+    PARRescaleValues;
   typedef VectorContainer< unsigned int, PARRescaleValues >
-  PARRescaleValuesContainer;
+    PARRescaleValuesContainer;
   bool GetRECRescaleValues(std::string parFile,
                            PARRescaleValuesContainer *rescaleValues, int scan_sequence);
 
@@ -275,11 +283,11 @@ public:
   // Returns false if an error is encountered during reading, otherwise true is
   // returned.
   typedef vnl_vector_fixed< double, PAR_DIFFUSION_VALUES_SIZE >
-  PARDiffusionValues;
+    PARDiffusionValues;
   typedef VectorContainer< unsigned int, PARDiffusionValues >
-  PARDiffusionValuesContainer;
+    PARDiffusionValuesContainer;
   typedef VectorContainer< unsigned int, double >
-  PARBValuesContainer;
+    PARBValuesContainer;
   bool GetDiffusionGradientOrientationAndBValues(std::string parFile,
                                                  PARDiffusionValuesContainer *gradientValues,
                                                  PARBValuesContainer *bValues);

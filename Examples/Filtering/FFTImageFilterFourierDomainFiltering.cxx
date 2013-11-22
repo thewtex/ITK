@@ -35,7 +35,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -58,8 +57,8 @@
 #include "itkMaskImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
   if( argc < 4 )
     {
@@ -69,18 +68,18 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginLatex
   //
-  // The first decision to make is related to the pixel type and dimension of the
+  // The first decision to make is related to the pixel type and dimension of
+  // the
   // images on which we want to compute the Fourier transform.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float  InputPixelType;
+  typedef float InputPixelType;
   const unsigned int Dimension = 2;
 
   typedef itk::Image< InputPixelType, Dimension > InputImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -90,7 +89,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char  MaskPixelType;
+  typedef unsigned char MaskPixelType;
 
   typedef itk::Image< MaskPixelType, Dimension > MaskImageType;
   // Software Guide : EndCodeSnippet
@@ -98,13 +97,14 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginLatex
   //
   // Both the input image and the mask image can be read from files or could be
-  // obtained as the output of a preprocessing pipeline. We omit here the details
+  // obtained as the output of a preprocessing pipeline. We omit here the
+  // details
   // of reading the image since the process is quite standard.
   //
   // Software Guide : EndLatex
 
-  typedef itk::ImageFileReader< InputImageType >    InputReaderType;
-  typedef itk::ImageFileReader< MaskImageType  >    MaskReaderType;
+  typedef itk::ImageFileReader< InputImageType > InputReaderType;
+  typedef itk::ImageFileReader< MaskImageType  > MaskReaderType;
 
   InputReaderType::Pointer inputReader = InputReaderType::New();
   MaskReaderType::Pointer  maskReader  = MaskReaderType::New();
@@ -115,40 +115,41 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginLatex
   //
   // Now the \doxygen{VnlForwardFFTImageFilter} can be instantiated.
-  // Like most ITK filters, the FFT filter is instantiated using the full image type.
-  // By not setting the output image type, we decide to use the default one provided
+  // Like most ITK filters, the FFT filter is instantiated using the full image
+  // type.
+  // By not setting the output image type, we decide to use the default one
+  // provided
   // by the filter. Using the type we construct one instance of the filter.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::VnlForwardFFTImageFilter< InputImageType >  FFTFilterType;
+  typedef itk::VnlForwardFFTImageFilter< InputImageType > FFTFilterType;
 
   FFTFilterType::Pointer fftFilter = FFTFilterType::New();
 
   fftFilter->SetInput( inputReader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Since our purpose is to perform filtering in the frequency domain by
   // altering the weights of the image spectrum, we need here a filter that will
-  // mask the Fourier transform of the input image with a binary image. Note that the
+  // mask the Fourier transform of the input image with a binary image. Note
+  // that the
   // type of the spectral image is taken here from the traits of the FFT filter.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef FFTFilterType::OutputImageType    SpectralImageType;
+  typedef FFTFilterType::OutputImageType SpectralImageType;
 
   typedef itk::MaskImageFilter< SpectralImageType,
-                                    MaskImageType,
-                                    SpectralImageType >  MaskFilterType;
+                                MaskImageType,
+                                SpectralImageType >  MaskFilterType;
 
   MaskFilterType::Pointer maskFilter = MaskFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -157,7 +158,6 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   maskFilter->SetInput1( fftFilter->GetOutput() );
   maskFilter->SetInput2( maskReader->GetOutput() );
@@ -165,7 +165,8 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginLatex
   //
-  // For the purpose of verifying the aspect of the spectrum after being filtered
+  // For the purpose of verifying the aspect of the spectrum after being
+  // filtered
   // with the mask, we can write out the output of the Mask filter to a file.
   //
   // Software Guide : EndLatex
@@ -181,16 +182,17 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginLatex
   //
   // The output of the mask filter will contain the \emph{filtered} spectrum
-  // of the input image. We must then apply an inverse Fourier transform on it in
-  // order to obtain the filtered version of the input image. For that purpose we
+  // of the input image. We must then apply an inverse Fourier transform on it
+  // in
+  // order to obtain the filtered version of the input image. For that purpose
+  // we
   // create another instance of the FFT filter.
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef itk::VnlInverseFFTImageFilter<
-    SpectralImageType >  IFFTFilterType;
+      SpectralImageType >  IFFTFilterType;
 
   IFFTFilterType::Pointer fftInverseFilter = IFFTFilterType::New();
 
@@ -219,7 +221,6 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The result of the filtering can now be saved into an image file, or be
@@ -234,7 +235,6 @@ int main( int argc, char * argv [] )
   writer->SetFileName( argv[3] );
   writer->SetInput( fftInverseFilter->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   try
     {

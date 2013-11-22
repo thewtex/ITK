@@ -78,17 +78,17 @@ namespace itk
  */
 template< typename TInputVectorImage, typename TLabelsType = unsigned char,
           typename TPosteriorsPrecisionType = double, typename TPriorsPrecisionType = double >
-class BayesianClassifierImageFilter:
+class BayesianClassifierImageFilter :
   public ImageToImageFilter<
     TInputVectorImage, Image< TLabelsType,
-                               TInputVectorImage ::ImageDimension > >
+                              TInputVectorImage::ImageDimension > >
 {
 public:
   /** Standard class typedefs. */
   typedef BayesianClassifierImageFilter Self;
   typedef ImageToImageFilter<
-    TInputVectorImage,
-    Image< TLabelsType, TInputVectorImage::ImageDimension > > Superclass;
+      TInputVectorImage,
+      Image< TLabelsType, TInputVectorImage::ImageDimension > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -104,7 +104,7 @@ public:
 
   /** Dimension of the input image */
   itkStaticConstMacro(Dimension, unsigned int,
-                       InputImageType ::ImageDimension);
+                      InputImageType::ImageDimension);
 
   typedef Image< TLabelsType,
                  itkGetStaticConstMacro(Dimension) >        OutputImageType;
@@ -160,8 +160,8 @@ public:
 
   /** Optional Smoothing filter that will be applied to the Posteriors */
   typedef ImageToImageFilter<
-    ExtractedComponentImageType,
-    ExtractedComponentImageType  >         SmoothingFilterType;
+      ExtractedComponentImageType,
+      ExtractedComponentImageType  >         SmoothingFilterType;
 
   typedef typename SmoothingFilterType::Pointer SmoothingFilterPointer;
 
@@ -206,7 +206,10 @@ public:
 protected:
 
   BayesianClassifierImageFilter();
-  virtual ~BayesianClassifierImageFilter() {}
+  virtual
+  ~BayesianClassifierImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Here is where the classification is computed. */

@@ -34,7 +34,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TVector >
-class ManhattanDistanceMetric:
+class ManhattanDistanceMetric :
   public DistanceMetric< TVector >
 {
 public:
@@ -61,8 +61,13 @@ public:
   double Evaluate(const MeasurementVectorType & x1, const MeasurementVectorType & x2) const;
 
 protected:
-  ManhattanDistanceMetric() {}
-  virtual ~ManhattanDistanceMetric() {}
+  ManhattanDistanceMetric() {
+  }
+
+  virtual
+  ~ManhattanDistanceMetric() {
+  }
+
 };  // end of class
 } // end of namespace Statistics
 } // end of namespace itk

@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh >
-class QuadEdgeMeshScalarDataVTKPolyDataWriter:public VTKPolyDataWriter< TMesh >
+class QuadEdgeMeshScalarDataVTKPolyDataWriter : public VTKPolyDataWriter< TMesh >
 {
 public:
   typedef QuadEdgeMeshScalarDataVTKPolyDataWriter Self;
@@ -95,6 +95,7 @@ protected:
 private:
   QuadEdgeMeshScalarDataVTKPolyDataWriter(const Self &);
   void operator=(const Self &);
+
 };
 }
 

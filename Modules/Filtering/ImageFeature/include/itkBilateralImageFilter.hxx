@@ -235,7 +235,7 @@ BilateralImageFilter< TInputImage, TOutputImage >
   m_DynamicRangeUsed = m_RangeMu * m_RangeSigma;
 
   tableDelta = m_DynamicRangeUsed
-               / static_cast< double >( m_NumberOfRangeGaussianSamples );
+    / static_cast< double >( m_NumberOfRangeGaussianSamples );
 
   // Finally, build the table
   m_RangeGaussianTable.resize(m_NumberOfRangeGaussianSamples);
@@ -255,7 +255,7 @@ BilateralImageFilter< TInputImage, TOutputImage >
   typename TInputImage::ConstPointer input = this->GetInput();
   typename TOutputImage::Pointer output = this->GetOutput();
   typename TInputImage::IndexValueType i;
-  const double  rangeDistanceThreshold = m_DynamicRangeUsed;
+  const double rangeDistanceThreshold = m_DynamicRangeUsed;
 
   // Now we are ready to bilateral filter!
   //
@@ -275,7 +275,7 @@ BilateralImageFilter< TInputImage, TOutputImage >
 
   OutputPixelRealType centerPixel;
   OutputPixelRealType val, tableArg, normFactor, rangeGaussian,
-                      rangeDistance, pixel, gaussianProduct;
+    rangeDistance, pixel, gaussianProduct;
 
   const double distanceToTableIndex =
     static_cast< double >( m_NumberOfRangeGaussianSamples ) / m_DynamicRangeUsed;
@@ -363,6 +363,7 @@ BilateralImageFilter< TInputImage, TOutputImage >
   os << indent << "AutomaticKernelSize: " << m_AutomaticKernelSize << std::endl;
   os << indent << "Radius: " << m_Radius << std::endl;
 }
+
 } // end namespace itk
 
 #endif

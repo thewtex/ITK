@@ -21,7 +21,8 @@
 #include <iostream>
 
 //
-int itkFEMElement2DStrainTest(int, char *[])
+int
+itkFEMElement2DStrainTest(int, char *[])
 {
 
   typedef itk::fem::Element ElementType;

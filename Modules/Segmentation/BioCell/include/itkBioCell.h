@@ -36,7 +36,7 @@ namespace bio
  */
 
 template< unsigned int NSpaceDimension = 3 >
-class Cell:public CellBase
+class Cell : public CellBase
 {
 public:
   typedef   CellBase Superclass;
@@ -47,7 +47,8 @@ public:
   friend class CellularAggregateBase; // need to give access to the constructor.
 
 public:
-  virtual ~Cell();
+  virtual
+  ~Cell();
   virtual void ClearForce(void);
 
   virtual void AddForce(const VectorType & force);
@@ -66,14 +67,16 @@ public:
 
   virtual const CellularAggregateBase * GetCellularAggregate(void) const;
 
-  static const char * GetSpeciesName(void)
+  static const char *
+  GetSpeciesName(void)
   {
     return "Primitive Cell";
   }
 
   static Cell * CreateEgg(void);
 
-  static unsigned int GetDimension()
+  static unsigned int
+  GetDimension()
   {
     return NSpaceDimension;
   }

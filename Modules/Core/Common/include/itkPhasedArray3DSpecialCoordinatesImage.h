@@ -90,7 +90,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TPixel >
-class PhasedArray3DSpecialCoordinatesImage:
+class PhasedArray3DSpecialCoordinatesImage :
   public SpecialCoordinatesImage< TPixel, 3 >
 {
 public:
@@ -179,7 +179,8 @@ public:
    * Returns true if the resulting index is within the image, false otherwise.
    * \sa Transform */
   template< typename TCoordRep >
-  bool TransformPhysicalPointToContinuousIndex(
+  bool
+  TransformPhysicalPointToContinuousIndex(
     const Point< TCoordRep, 3 > & point,
     ContinuousIndex< TCoordRep, 3 > & index) const
   {
@@ -213,7 +214,8 @@ public:
    * Returns true if the resulting index is within the image, false otherwise
    * \sa Transform */
   template< typename TCoordRep >
-  bool TransformPhysicalPointToIndex(
+  bool
+  TransformPhysicalPointToIndex(
     const Point< TCoordRep, 3 > & point,
     IndexType & index) const
   {
@@ -230,14 +232,14 @@ public:
 
     // Convert the "proper" angular coordinates into index format
     index[0] = static_cast< IndexValueType >(
-      ( azimuth / m_AzimuthAngularSeparation )
-      + ( maxAzimuth / 2.0 ) );
+        ( azimuth / m_AzimuthAngularSeparation )
+        + ( maxAzimuth / 2.0 ) );
     index[1] = static_cast< IndexValueType >(
-      ( elevation / m_ElevationAngularSeparation )
-      + ( maxElevation / 2.0 ) );
+        ( elevation / m_ElevationAngularSeparation )
+        + ( maxElevation / 2.0 ) );
     index[2] = static_cast< IndexValueType >(
-      ( ( radius - m_FirstSampleDistance )
-        / m_RadiusSampleSize ) );
+        ( ( radius - m_FirstSampleDistance )
+          / m_RadiusSampleSize ) );
 
     // Now, check to see if the index is within allowed bounds
     const bool isInside = region.IsInside(index);
@@ -250,7 +252,8 @@ public:
    * from a continuous index (in the index space)
    * \sa Transform */
   template< typename TCoordRep >
-  void TransformContinuousIndexToPhysicalPoint(
+  void
+  TransformContinuousIndexToPhysicalPoint(
     const ContinuousIndex< TCoordRep, 3 > & index,
     Point< TCoordRep, 3 > & point) const
   {
@@ -260,9 +263,9 @@ public:
 
     // Convert the index into proper angular coordinates
     TCoordRep azimuth   = ( index[0] - ( maxAzimuth / 2.0 ) )
-                          * m_AzimuthAngularSeparation;
+      * m_AzimuthAngularSeparation;
     TCoordRep elevation = ( index[1] - ( maxElevation / 2.0 ) )
-                          * m_ElevationAngularSeparation;
+      * m_ElevationAngularSeparation;
     TCoordRep radius    = ( index[2] * m_RadiusSampleSize ) + m_FirstSampleDistance;
 
     // Convert the angular coordinates into Cartesian coordinates
@@ -283,7 +286,8 @@ public:
    *
    * \sa Transform */
   template< typename TCoordRep >
-  void TransformIndexToPhysicalPoint(
+  void
+  TransformIndexToPhysicalPoint(
     const IndexType & index,
     Point< TCoordRep, 3 > & point) const
   {
@@ -307,8 +311,8 @@ public:
     TCoordRep tanOfElevation  = vcl_tan(elevation);
 
     point[2] = static_cast< TCoordRep >(
-      radius / vcl_sqrt(
-        1.0 + tanOfAzimuth * tanOfAzimuth + tanOfElevation * tanOfElevation) );
+        radius / vcl_sqrt(
+          1.0 + tanOfAzimuth * tanOfAzimuth + tanOfElevation * tanOfElevation) );
     point[1] = static_cast< TCoordRep >( point[2] * tanOfElevation );
     point[0] = static_cast< TCoordRep >( point[2] * tanOfAzimuth );
   }
@@ -326,35 +330,47 @@ public:
   itkSetMacro(FirstSampleDistance, double);
 
   template< typename TCoordRep >
-  void TransformLocalVectorToPhysicalVector(
+  void
+  TransformLocalVectorToPhysicalVector(
     FixedArray< TCoordRep, 3 > & ) const
-    {}
+  {
+  }
 
   template< typename TCoordRep >
-  void TransformPhysicalVectorToLocalVector(
+  void
+  TransformPhysicalVectorToLocalVector(
     const FixedArray< TCoordRep, 3 > & ,
     FixedArray< TCoordRep, 3 > & ) const
-    {}
+  {
+  }
 
 protected:
   PhasedArray3DSpecialCoordinatesImage()
   {
     m_RadiusSampleSize = 1;
     m_AzimuthAngularSeparation   =  1 * ( 2.0 * vnl_math::pi / 360.0 ); // 1
+                                                                        //
+                                                                        //
                                                                         // degree
     m_ElevationAngularSeparation =  1 * ( 2.0 * vnl_math::pi / 360.0 ); // 1
+                                                                        //
+                                                                        //
                                                                         // degree
     m_FirstSampleDistance = 0;
   }
 
-  virtual ~PhasedArray3DSpecialCoordinatesImage() {}
+  virtual
+  ~PhasedArray3DSpecialCoordinatesImage() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   PhasedArray3DSpecialCoordinatesImage(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 
   double m_AzimuthAngularSeparation;    // in radians
   double m_ElevationAngularSeparation;  // in radians

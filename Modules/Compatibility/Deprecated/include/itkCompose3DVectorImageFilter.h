@@ -31,21 +31,28 @@ class Compose3DVector
 {
 public:
   typedef Vector< TInput, 3 > OutputType;
-  Compose3DVector() {}
-  ~Compose3DVector() {}
-  bool operator!=(const Compose3DVector &) const
+  Compose3DVector() {
+  }
+
+  ~Compose3DVector() {
+  }
+
+  bool
+  operator!=(const Compose3DVector &) const
   {
     return false;
   }
 
-  bool operator==(const Compose3DVector & other) const
+  bool
+  operator==(const Compose3DVector & other) const
   {
     return !( *this != other );
   }
 
-  inline OutputType operator()(const TInput & s1,
-                               const TInput & s2,
-                               const TInput & s3) const
+  inline OutputType
+  operator()(const TInput & s1,
+             const TInput & s2,
+             const TInput & s3) const
   {
     OutputType v;
 
@@ -54,6 +61,7 @@ public:
     v[2] = s3;
     return v;
   }
+
 };
 }
 
@@ -74,7 +82,7 @@ template< typename TInputImage,
           typename TOutputImage =
             Image< Vector< typename TInputImage::PixelType, 3 >,
                    TInputImage::ImageDimension > >
-class Compose3DVectorImageFilter:
+class Compose3DVectorImageFilter :
   public
   TernaryFunctorImageFilter< TInputImage, TInputImage,
                              TInputImage, TOutputImage,
@@ -84,10 +92,10 @@ public:
   /** Standard class typedefs. */
   typedef Compose3DVectorImageFilter Self;
   typedef TernaryFunctorImageFilter<
-    TInputImage, TInputImage, TInputImage,
-    TOutputImage,
-    Functor::Compose3DVector<
-      typename TInputImage::PixelType > > Superclass;
+      TInputImage, TInputImage, TInputImage,
+      TOutputImage,
+      Functor::Compose3DVector<
+        typename TInputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -109,12 +117,17 @@ public:
 #endif
 
 protected:
-  Compose3DVectorImageFilter() {}
-  virtual ~Compose3DVectorImageFilter() {}
+  Compose3DVectorImageFilter() {
+  }
+
+  virtual
+  ~Compose3DVectorImageFilter() {
+  }
 
 private:
   Compose3DVectorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

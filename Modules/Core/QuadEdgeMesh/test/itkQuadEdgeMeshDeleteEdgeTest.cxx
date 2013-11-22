@@ -18,13 +18,14 @@
 
 #include "itkQuadEdgeMesh.h"
 
-int itkQuadEdgeMeshDeleteEdgeTest( int , char* [] )
+int
+itkQuadEdgeMeshDeleteEdgeTest( int , char* [] )
 {
   typedef double                            PixelType;
   typedef itk::QuadEdgeMesh< PixelType, 3 > MeshType;
   std::string indent = "    ";
 
-  MeshType::Pointer mesh = MeshType::New( );
+  MeshType::Pointer mesh = MeshType::New();
 
   // Points
   MeshType::PointType p0, p1, p2, p3, p4, p5;

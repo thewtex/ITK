@@ -42,7 +42,8 @@ DTITubeSpatialObjectPoint< TPointDimension >
 template< unsigned int TPointDimension >
 DTITubeSpatialObjectPoint< TPointDimension >
 ::~DTITubeSpatialObjectPoint(void)
-{}
+{
+}
 
 template< unsigned int TPointDimension >
 void
@@ -68,7 +69,7 @@ DTITubeSpatialObjectPoint< TPointDimension >
     case 2:
       return std::string("GA");
     default:
-    //Just fall through.
+      //Just fall through.
       break;
     }
   return std::string("");
@@ -170,6 +171,7 @@ DTITubeSpatialObjectPoint< TPointDimension >
 ::GetField(FieldEnumType name) const
 {
   std::string charname = this->TranslateEnumToChar(name);
+
   if ( charname.size() > 0 )
     {
     return this->GetField( itksys::SystemTools::LowerCase(charname).c_str() );
@@ -213,6 +215,7 @@ DTITubeSpatialObjectPoint< TPointDimension >
     }
   return *this;
 }
+
 } // end namespace itk
 
 #endif

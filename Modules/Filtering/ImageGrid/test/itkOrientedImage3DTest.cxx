@@ -19,32 +19,33 @@
 #include "itkImageFileReader.h"
 #include "itkCentralDifferenceImageFunction.h"
 
-int itkOrientedImage3DTest( int ac, char * av[] )
+int
+itkOrientedImage3DTest( int ac, char * av[] )
 {
 
   if( ac < 20 )
     {
     std::cerr << "Usage: " << av[0]
-    << " InputImage  "
-    << "corner1x corner1y corner1z "
-    << "corner2x corner2y corner2z "
-    << "corner3x corner3y corner3z "
-    << "corner4x corner4y corner4z "
-    << "derivative1x derivative1y derivative1z "
-    << "derivative2x derivative2y derivative2z"
-    << std::endl;
+              << " InputImage  "
+              << "corner1x corner1y corner1z "
+              << "corner2x corner2y corner2z "
+              << "corner3x corner3y corner3z "
+              << "corner4x corner4y corner4z "
+              << "derivative1x derivative1y derivative1z "
+              << "derivative2x derivative2y derivative2z"
+              << std::endl;
     return EXIT_FAILURE;
     }
 
   const unsigned int Dimension = 3;
   typedef unsigned char PixelType;
 
-  typedef itk::Image<PixelType, Dimension>            ImageType;
-  typedef itk::ImageFileReader< ImageType >           ReaderType;
+  typedef itk::Image<PixelType, Dimension>  ImageType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
-  typedef ImageType::IndexType                        IndexType;
-  typedef ImageType::PointType                        PointType;
-  typedef IndexType::IndexValueType                   IndexValueType;
+  typedef ImageType::IndexType      IndexType;
+  typedef ImageType::PointType      PointType;
+  typedef IndexType::IndexValueType IndexValueType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -93,7 +94,6 @@ int itkOrientedImage3DTest( int ac, char * av[] )
   index[3][1] = 0;
   index[3][2] = size[2];
 
-
   image->Print( std::cout );
   std::cout << std::endl;
   std::cout << std::endl;
@@ -131,7 +131,7 @@ int itkOrientedImage3DTest( int ac, char * av[] )
   centralIndex[1] = static_cast< IndexValueType >( size[1] / 2.0 );
   centralIndex[2] = static_cast< IndexValueType >( size[2] / 2.0 );
 
-  typedef itk::CentralDifferenceImageFunction< ImageType, double >   CentralDifferenceImageFunctionType;
+  typedef itk::CentralDifferenceImageFunction< ImageType, double > CentralDifferenceImageFunctionType;
 
   CentralDifferenceImageFunctionType::Pointer gradientHelper1 = CentralDifferenceImageFunctionType::New();
   gradientHelper1->SetInputImage( image );
@@ -141,52 +141,51 @@ int itkOrientedImage3DTest( int ac, char * av[] )
   std::cout << "Image Direction" << std::endl;
   std::cout << image->GetDirection() << std::endl;
 
-  { // Compute gradient value without taking image direction into account
-  gradientHelper1->UseImageDirectionOff();
-  CentralDifferenceImageFunctionType::OutputType gradient1a = gradientHelper1->EvaluateAtIndex( centralIndex );
+    { // Compute gradient value without taking image direction into account
+    gradientHelper1->UseImageDirectionOff();
+    CentralDifferenceImageFunctionType::OutputType gradient1a = gradientHelper1->EvaluateAtIndex( centralIndex );
 
-  std::cout << "Gradient without Direction" << std::endl;
-  std::cout << gradient1a << std::endl;
+    std::cout << "Gradient without Direction" << std::endl;
+    std::cout << gradient1a << std::endl;
 
-  for( unsigned int dim=0; dim < Dimension; ++dim )
-    {
-    const double expectedValue = atof( av[ element++ ] );
-    const double currentValue = gradient1a[dim];
-    const double difference = currentValue - expectedValue;
-    if( vnl_math_abs( difference ) > tolerance )
+    for( unsigned int dim=0; dim < Dimension; ++dim )
       {
-      std::cerr << "Error: " << std::endl;
+      const double expectedValue = atof( av[ element++ ] );
+      const double currentValue = gradient1a[dim];
+      const double difference = currentValue - expectedValue;
+      if( vnl_math_abs( difference ) > tolerance )
+        {
+        std::cerr << "Error: " << std::endl;
 
-      std::cerr << "Expected      = " << expectedValue << std::endl;
-      std::cerr << "Read          = " << currentValue << std::endl;
-      return EXIT_FAILURE;
+        std::cerr << "Expected      = " << expectedValue << std::endl;
+        std::cerr << "Read          = " << currentValue << std::endl;
+        return EXIT_FAILURE;
+        }
       }
     }
-  }
 
+    { // Compute gradient value taking image direction into account
+    gradientHelper1->UseImageDirectionOn();
+    CentralDifferenceImageFunctionType::OutputType gradient1b = gradientHelper1->EvaluateAtIndex( centralIndex );
 
-  { // Compute gradient value taking image direction into account
-  gradientHelper1->UseImageDirectionOn();
-  CentralDifferenceImageFunctionType::OutputType gradient1b = gradientHelper1->EvaluateAtIndex( centralIndex );
+    std::cout << std::endl;
+    std::cout << "Gradient with Direction" << std::endl;
+    std::cout << gradient1b << std::endl;
 
-  std::cout << std::endl;
-  std::cout << "Gradient with Direction" << std::endl;
-  std::cout << gradient1b << std::endl;
-
-  for( unsigned int dim=0; dim < Dimension; ++dim )
-    {
-    const double expectedValue = atof( av[ element++ ] );
-    const double currentValue = gradient1b[dim];
-    const double difference = currentValue - expectedValue;
-    if( vnl_math_abs( difference ) > tolerance )
+    for( unsigned int dim=0; dim < Dimension; ++dim )
       {
-      std::cerr << "Error: " << std::endl;
-      std::cerr << "Expected      = " << expectedValue << std::endl;
-      std::cerr << "Read          = " << currentValue << std::endl;
-      return EXIT_FAILURE;
+      const double expectedValue = atof( av[ element++ ] );
+      const double currentValue = gradient1b[dim];
+      const double difference = currentValue - expectedValue;
+      if( vnl_math_abs( difference ) > tolerance )
+        {
+        std::cerr << "Error: " << std::endl;
+        std::cerr << "Expected      = " << expectedValue << std::endl;
+        std::cerr << "Read          = " << currentValue << std::endl;
+        return EXIT_FAILURE;
+        }
       }
     }
-  }
 
   return EXIT_SUCCESS;
 }

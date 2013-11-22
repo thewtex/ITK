@@ -61,19 +61,23 @@ private:
   const STLContainerAdaptor & operator=(const STLContainerAdaptor & r);
 
 public:
-  STLContainerAdaptor(AdapteeType & adaptee):m_AdapteeRef(adaptee) {}
+  STLContainerAdaptor(AdapteeType & adaptee) : m_AdapteeRef(adaptee) {
+  }
 
-  STLContainerAdaptor(AdapteeType *adaptee):m_AdapteeRef(*adaptee) {}
+  STLContainerAdaptor(AdapteeType *adaptee) : m_AdapteeRef(*adaptee) {
+  }
 
   ~STLContainerAdaptor()
   {
     m_AdapteeRef.Modified();
   }
 
-  TargetType & GetSTLContainerRef()
+  TargetType &
+  GetSTLContainerRef()
   {
     return m_AdapteeRef.CastToSTLContainer();
   }
+
 };
 } // end namespace itk
 

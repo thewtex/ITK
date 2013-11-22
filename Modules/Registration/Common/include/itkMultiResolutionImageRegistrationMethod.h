@@ -69,7 +69,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class MultiResolutionImageRegistrationMethod:public ProcessObject
+class MultiResolutionImageRegistrationMethod : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -225,12 +225,19 @@ public:
   // compatibility reasons, we check whether StartRegistration was
   // called directly or whether Update() (which in turn called
   // StartRegistration()).
-  void StartRegistration(void) { this->Update(); }
+  void
+  StartRegistration(void) {
+    this->Update();
+  }
+
 #endif
 
 protected:
   MultiResolutionImageRegistrationMethod();
-  virtual ~MultiResolutionImageRegistrationMethod() {}
+  virtual
+  ~MultiResolutionImageRegistrationMethod() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger the computation of

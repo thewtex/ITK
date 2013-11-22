@@ -20,7 +20,8 @@
 #include <fstream>
 #include "itkStdStreamLogOutput.h"
 
-int itkStdStreamLogOutputTest( int argc, char *argv [] )
+int
+itkStdStreamLogOutputTest( int argc, char *argv [] )
 {
   try
     {

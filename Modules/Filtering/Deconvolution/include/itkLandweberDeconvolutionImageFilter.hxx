@@ -77,6 +77,7 @@ LandweberDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInt
 {
   // Set up minipipeline to compute the new estimate
   InternalComplexImagePointerType transformedEstimate;
+
   this->TransformPaddedInput( this->m_CurrentEstimate,
                               transformedEstimate, progress,
                               0.1f * iterationProgressWeight );
@@ -112,6 +113,7 @@ LandweberDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInt
 
   os << indent << "Alpha: " << m_Alpha << std::endl;
 }
+
 } // end namespace itk
 
 #endif

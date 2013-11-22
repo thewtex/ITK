@@ -22,10 +22,11 @@
 
 namespace itk
 {
-struct IPLFileSortInfo_ascend_compare:
-  public std:: greater< IPLFileSortInfo * > {
+struct IPLFileSortInfo_ascend_compare :
+  public std::greater< IPLFileSortInfo * > {
 private:
-  int qsort_IPLFileSortInfo_ascend_compar(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
+  int
+  qsort_IPLFileSortInfo_ascend_compar(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
   {
     const int ImageNoDiff = item1->GetImageNumber() -  item2->GetImageNumber();
 
@@ -59,16 +60,19 @@ private:
   }
 
 public:
-  bool operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
+  bool
+  operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
   {
     return qsort_IPLFileSortInfo_ascend_compar(item1, item2);
   }
-};
 
-struct IPLFileSortInfo_descend_compare:
-  public std:: greater< IPLFileSortInfo * > {
+  };
+
+struct IPLFileSortInfo_descend_compare :
+  public std::greater< IPLFileSortInfo * > {
 private:
-  int qsort_IPLFileSortInfo_descend_compar(IPLFileSortInfo *item1,  IPLFileSortInfo *item2)
+  int
+  qsort_IPLFileSortInfo_descend_compar(IPLFileSortInfo *item1,  IPLFileSortInfo *item2)
   {
     const int ImageNoDiff = item1->GetImageNumber() -  item2->GetImageNumber();
 
@@ -102,29 +106,35 @@ private:
   }
 
 public:
-  bool operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
+  bool
+  operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
   {
     return qsort_IPLFileSortInfo_descend_compar(item1, item2);
   }
-};
 
-struct IPLFileSortInfo_ascendbyname_compare:
-  public std:: greater< IPLFileSortInfo * > {
+  };
+
+struct IPLFileSortInfo_ascendbyname_compare :
+  public std::greater< IPLFileSortInfo * > {
 public:
-  bool operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
+  bool
+  operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
   {
     return ( item1->GetImageFileName() < item2->GetImageFileName() );
   }
-};
 
-struct IPLFileSortInfo_descendbyname_compare:
-  public std:: greater< IPLFileSortInfo * > {
+  };
+
+struct IPLFileSortInfo_descendbyname_compare :
+  public std::greater< IPLFileSortInfo * > {
 public:
-  bool operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
+  bool
+  operator()(IPLFileSortInfo *item1, IPLFileSortInfo *item2)
   {
     return ( item1->GetImageFileName()  >= item2->GetImageFileName() );
   }
-};
+
+  };
 
 void
 IPLFileNameList::sortImageListAscend()
@@ -161,4 +171,5 @@ IPLFileNameList::sortImageList()
     std::sort( m_List.begin(), m_List.end(), IPLFileSortInfo_ascend_compare() );
     }
 }
+
 }

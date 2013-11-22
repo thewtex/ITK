@@ -48,14 +48,14 @@ namespace itk
 template< typename TInput, // Input image or mesh
           typename TLevelSetContainer >
 class LevelSetEquationChanAndVeseExternalTerm :
-    public LevelSetEquationChanAndVeseInternalTerm< TInput, TLevelSetContainer >
+  public LevelSetEquationChanAndVeseInternalTerm< TInput, TLevelSetContainer >
 {
 public:
-  typedef LevelSetEquationChanAndVeseExternalTerm         Self;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef LevelSetEquationChanAndVeseExternalTerm Self;
+  typedef SmartPointer< Self >                    Pointer;
+  typedef SmartPointer< const Self >              ConstPointer;
   typedef LevelSetEquationChanAndVeseInternalTerm< TInput,
-                                    TLevelSetContainer >  Superclass;
+                                                   TLevelSetContainer >  Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro( Self );
@@ -69,21 +69,21 @@ public:
   typedef typename Superclass::InputPixelType     InputPixelType;
   typedef typename Superclass::InputPixelRealType InputPixelRealType;
 
-  typedef typename Superclass::LevelSetContainerType      LevelSetContainerType;
-  typedef typename Superclass::LevelSetContainerPointer   LevelSetContainerPointer;
-  typedef typename Superclass::LevelSetType               LevelSetType;
-  typedef typename Superclass::LevelSetPointer            LevelSetPointer;
-  typedef typename Superclass::LevelSetOutputPixelType    LevelSetOutputPixelType;
-  typedef typename Superclass::LevelSetOutputRealType     LevelSetOutputRealType;
-  typedef typename Superclass::LevelSetInputIndexType     LevelSetInputIndexType;
-  typedef typename Superclass::LevelSetGradientType       LevelSetGradientType;
-  typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
-  typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
+  typedef typename Superclass::LevelSetContainerType    LevelSetContainerType;
+  typedef typename Superclass::LevelSetContainerPointer LevelSetContainerPointer;
+  typedef typename Superclass::LevelSetType             LevelSetType;
+  typedef typename Superclass::LevelSetPointer          LevelSetPointer;
+  typedef typename Superclass::LevelSetOutputPixelType  LevelSetOutputPixelType;
+  typedef typename Superclass::LevelSetOutputRealType   LevelSetOutputRealType;
+  typedef typename Superclass::LevelSetInputIndexType   LevelSetInputIndexType;
+  typedef typename Superclass::LevelSetGradientType     LevelSetGradientType;
+  typedef typename Superclass::LevelSetHessianType      LevelSetHessianType;
+  typedef typename Superclass::LevelSetIdentifierType   LevelSetIdentifierType;
 
-  typedef typename Superclass::DomainMapImageFilterType   DomainMapImageFilterType;
-  typedef typename Superclass::CacheImageType             CacheImageType;
+  typedef typename Superclass::DomainMapImageFilterType DomainMapImageFilterType;
+  typedef typename Superclass::CacheImageType           CacheImageType;
 
-  typedef typename DomainMapImageFilterType::DomainMapType::const_iterator  DomainIteratorType;
+  typedef typename DomainMapImageFilterType::DomainMapType::const_iterator DomainIteratorType;
 
   typedef typename LevelSetContainerType::IdListType          IdListType;
   typedef typename LevelSetContainerType::IdListIterator      IdListIterator;
@@ -99,23 +99,27 @@ public:
   /** Compute the product of Heaviside functions in the multi-levelset cases
    *  except the current levelset */
   virtual void ComputeProductTerm( const LevelSetInputIndexType& iP,
-                                  LevelSetOutputRealType& prod );
+                                   LevelSetOutputRealType& prod );
 
   /** Supply updates at pixels to keep the term parameters always updated */
   virtual void UpdatePixel( const LevelSetInputIndexType& iP,
-                           const LevelSetOutputRealType & oldValue,
-                           const LevelSetOutputRealType & newValue );
+                            const LevelSetOutputRealType & oldValue,
+                            const LevelSetOutputRealType & newValue );
 
 protected:
   LevelSetEquationChanAndVeseExternalTerm();
-  virtual ~LevelSetEquationChanAndVeseExternalTerm();
+  virtual
+  ~LevelSetEquationChanAndVeseExternalTerm();
 
 private:
-  LevelSetEquationChanAndVeseExternalTerm( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  LevelSetEquationChanAndVeseExternalTerm( const Self& ); // purposely not
+                                                          // implemented
+  void operator =( const Self& );                         // purposely not
+
+  // implemented
 
   DomainMapImageFilterType *m_DomainMapImageFilter;
-  CacheImageType           *m_CacheImage;
+  CacheImageType *          m_CacheImage;
 };
 
 }

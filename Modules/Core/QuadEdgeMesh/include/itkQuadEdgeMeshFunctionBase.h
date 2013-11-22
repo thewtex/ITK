@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TOutput >
-class QuadEdgeMeshFunctionBase:public Object
+class QuadEdgeMeshFunctionBase : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -72,7 +72,8 @@ public:
   typedef TOutput OutputType;
 
   /** Set the mesh to be modified */
-  virtual void SetInput(MeshType *input)
+  virtual void
+  SetInput(MeshType *input)
   {
     this->m_Mesh = input;
   }
@@ -89,7 +90,8 @@ protected:
     m_Mesh = (MeshType *)0;
   }
 
-  ~QuadEdgeMeshFunctionBase(){}
+  ~QuadEdgeMeshFunctionBase(){
+  }
 
 private:
   QuadEdgeMeshFunctionBase(const Self &); //purposely not implemented

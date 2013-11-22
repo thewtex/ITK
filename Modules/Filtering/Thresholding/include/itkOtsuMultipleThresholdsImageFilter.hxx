@@ -102,5 +102,6 @@ OtsuMultipleThresholdsImageFilter< TInputImage, TOutputImage >
        << std::endl;
     }
 }
+
 } // end namespace itk
 #endif

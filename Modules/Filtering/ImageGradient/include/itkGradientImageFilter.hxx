@@ -46,7 +46,8 @@ GradientImageFilter< TInputImage, TOperatorValueType, TOutputValueType, TOutputI
 template< typename TInputImage, typename TOperatorValueType, typename TOutputValueType , typename TOutputImageType >
 GradientImageFilter< TInputImage, TOperatorValueType, TOutputValueType, TOutputImageType >
 ::~GradientImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOperatorValueType, typename TOutputValueType , typename TOutputImageType >
 void
@@ -111,7 +112,7 @@ GradientImageFilter< TInputImage, TOperatorValueType, TOutputValueType, TOutputI
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
-  unsigned int    i;
+  unsigned int        i;
   CovariantVectorType gradient;
 
   ZeroFluxNeumannBoundaryCondition< InputImageType > nbc;
@@ -232,7 +233,6 @@ GradientImageFilter< TInputImage, TOperatorValueType, TOutputValueType, TOutputI
     }
 }
 
-
 /**
  * Standard "PrintSelf" method
  */
@@ -248,6 +248,7 @@ GradientImageFilter< TInputImage, TOperatorValueType, TOutputValueType, TOutputI
   os << indent << "UseImageDirection = "
      << ( this->m_UseImageDirection ? "On" : "Off" ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

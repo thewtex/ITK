@@ -36,7 +36,8 @@ GEAdwImageIO::~GEAdwImageIO()
   //Purposefully left blank
 }
 
-bool GEAdwImageIO::CanReadFile(const char *FileNameToRead)
+bool
+GEAdwImageIO::CanReadFile(const char *FileNameToRead)
 {
   size_t imageSize;
   short  matrixX;
@@ -86,7 +87,8 @@ bool GEAdwImageIO::CanReadFile(const char *FileNameToRead)
   return true;
 }
 
-GEImageHeader * GEAdwImageIO::ReadHeader(const char *FileNameToRead)
+GEImageHeader *
+GEAdwImageIO::ReadHeader(const char *FileNameToRead)
 {
   char tmpbuf[1024];
 
@@ -126,7 +128,7 @@ GEImageHeader * GEAdwImageIO::ReadHeader(const char *FileNameToRead)
 
   int timeStamp;
   this->GetIntAt(f, GE_ADW_EX_DATETIME, &timeStamp);
-  this->statTimeToAscii(&timeStamp, hdr->date,sizeof(hdr->date));
+  this->statTimeToAscii(&timeStamp, hdr->date,sizeof(hdr->date) );
 
   this->GetStringAt(f, GE_ADW_SU_PRODID, hdr->scanner, 13);
   hdr->scanner[13] = '\0';
@@ -220,4 +222,5 @@ GEImageHeader * GEAdwImageIO::ReadHeader(const char *FileNameToRead)
 
   return hdr;
 }
+
 } // end namespace itk

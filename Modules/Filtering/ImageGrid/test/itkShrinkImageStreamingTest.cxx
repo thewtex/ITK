@@ -23,13 +23,14 @@
 #include "itkStreamingImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkShrinkImageStreamingTest(int, char* [] )
+int
+itkShrinkImageStreamingTest(int, char* [] )
 {
 
   const unsigned int numberOfStreamDivisions = 4;
 
   // typedefs to simplify the syntax
-  typedef itk::Image<short, 2>   ShortImage;
+  typedef itk::Image<short, 2> ShortImage;
   ShortImage::Pointer sourceImage = ShortImage::New();
 
   typedef itk::PipelineMonitorImageFilter<ShortImage> MonitorFilter;
@@ -51,13 +52,11 @@ int itkShrinkImageStreamingTest(int, char* [] )
     iterator.Set( i );
     }
 
-
   // use caster to copy source to intermediate image of only the
   // requested region
   itk::CastImageFilter<ShortImage, ShortImage>::Pointer caster;
   caster = itk::CastImageFilter<ShortImage, ShortImage>::New();
   caster->SetInput( sourceImage );
-
 
   MonitorFilter::Pointer monitor1 = MonitorFilter::New();
   monitor1->SetInput( caster->GetOutput() );
@@ -70,9 +69,8 @@ int itkShrinkImageStreamingTest(int, char* [] )
   unsigned int factors[2] = { 2, 3 };
   shrink->SetShrinkFactors(factors);
 
-
   MonitorFilter::Pointer monitor2 = MonitorFilter::New();
-  monitor2->SetInput(shrink->GetOutput());
+  monitor2->SetInput(shrink->GetOutput() );
 
   itk::StreamingImageFilter<ShortImage, ShortImage>::Pointer streamer;
   streamer = itk::StreamingImageFilter<ShortImage, ShortImage>::New();
@@ -80,10 +78,9 @@ int itkShrinkImageStreamingTest(int, char* [] )
   streamer->SetNumberOfStreamDivisions( numberOfStreamDivisions );
   streamer->Update();
 
-
   // this verifies that the pipeline was executed as expected allong
   // with correct region propagation and output information
-  if (!monitor2->VerifyAllInputCanStream(numberOfStreamDivisions))
+  if (!monitor2->VerifyAllInputCanStream(numberOfStreamDivisions) )
     {
     std::cout << "Filter failed to execute as expected!" << std::endl;
     std::cout << monitor2;
@@ -97,8 +94,6 @@ int itkShrinkImageStreamingTest(int, char* [] )
     TEST_EXPECT_TRUE(rr[j].GetSize(1)%factors[1] == 1);
     }
 
-
   return EXIT_SUCCESS;
-
 
 }

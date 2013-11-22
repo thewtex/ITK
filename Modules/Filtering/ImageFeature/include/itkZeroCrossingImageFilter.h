@@ -60,7 +60,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class ZeroCrossingImageFilter:
+class ZeroCrossingImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -134,7 +134,9 @@ protected:
     m_BackgroundValue = NumericTraits< OutputImagePixelType >::Zero;
   }
 
-  ~ZeroCrossingImageFilter(){}
+  ~ZeroCrossingImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   OutputImagePixelType m_BackgroundValue;
@@ -156,7 +158,7 @@ protected:
 
 private:
   ZeroCrossingImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);          //purposely not implemented
 
 };
 } //end of namespace itk

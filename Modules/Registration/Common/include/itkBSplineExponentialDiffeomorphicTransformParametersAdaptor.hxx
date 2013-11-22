@@ -48,6 +48,7 @@ BSplineExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
 ::SetMeshSizeForTheConstantVelocityField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   numberOfControlPoints.Fill( 0 );
   for( unsigned int d = 0; d < SpaceDimension; d++ )
     {
@@ -68,6 +69,7 @@ BSplineExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
 ::SetMeshSizeForTheUpdateField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   numberOfControlPoints.Fill( 0 );
   for( unsigned int d = 0; d < SpaceDimension; d++ )
     {
@@ -139,7 +141,7 @@ BSplineExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
 
   os << indent << "B-spline parameters: " << std::endl;
   os << indent << "  number of control points for the velocity field = "
-    << this->m_NumberOfControlPointsForTheConstantVelocityField << std::endl;
+     << this->m_NumberOfControlPointsForTheConstantVelocityField << std::endl;
 }
 
 }  // namespace itk

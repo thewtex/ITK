@@ -21,10 +21,10 @@
 
 #include "itkVideoIOFactory.h"
 
-
 namespace itk
 {
-VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char* arg )
+VideoIOBase::Pointer
+VideoIOFactory::CreateVideoIO( IOModeType mode, const char* arg )
 {
 
   std::list< VideoIOBase::Pointer > possibleVideoIO;
@@ -55,7 +55,7 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
     // Check file readability if reading from file
     if (mode == ReadFileMode)
       {
-      if ((*j)->CanReadFile(arg))
+      if ( (*j)->CanReadFile(arg) )
         {
         return *j;
         }
@@ -65,7 +65,7 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
     else if (mode == ReadCameraMode)
       {
       int cameraIndex = atoi(arg);
-      if ((*j)->CanReadCamera(cameraIndex))
+      if ( (*j)->CanReadCamera(cameraIndex) )
         {
         return *j;
         }
@@ -74,7 +74,7 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
     // Check file writability if writing
     else if (mode == WriteMode)
       {
-      if ((*j)->CanWriteFile(arg))
+      if ( (*j)->CanWriteFile(arg) )
         {
         return *j;
         }

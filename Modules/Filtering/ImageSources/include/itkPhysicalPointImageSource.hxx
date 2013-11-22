@@ -49,7 +49,7 @@ PhysicalPointImageSource< TOutputImage >
 template< typename TOutputImage >
 void
 PhysicalPointImageSource< TOutputImage >
-::ThreadedGenerateData (const RegionType &outputRegionForThread, ThreadIdType threadId)
+::ThreadedGenerateData(const RegionType &outputRegionForThread, ThreadIdType threadId)
 {
   // Support progress methods/callbacks
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
@@ -57,14 +57,13 @@ PhysicalPointImageSource< TOutputImage >
   TOutputImage *image = this->GetOutput(0);
 
   ImageRegionIteratorWithIndex< TOutputImage > it(image, outputRegionForThread);
-  PointType pt;
-  PixelType px;
+  PointType                                    pt;
+  PixelType                                    px;
   NumericTraits<PixelType>::SetLength(px, TOutputImage::ImageDimension );
 
   for (; !it.IsAtEnd(); ++it )
     {
     image->TransformIndexToPhysicalPoint( it.GetIndex(), pt );
-
 
     for( unsigned int i = 0; i < TOutputImage::ImageDimension; ++i )
       {
@@ -75,8 +74,6 @@ PhysicalPointImageSource< TOutputImage >
     }
 }
 
-
 } // end namespace itk
-
 
 #endif //__itkPhysicalPointImageSource_hxx

@@ -25,15 +25,14 @@
 
 #include "itkPipelineMonitorImageFilter.h"
 
-int itkReleaseDataFilterTest(int, char* [] )
+int
+itkReleaseDataFilterTest(int, char* [] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
-
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   typedef itk::Image<float,2>                        ImageType;
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
-
 
   // use all the static GlobalReleaseData methods
   ImageType::SetGlobalReleaseDataFlag( ImageType::GetGlobalReleaseDataFlag() );
@@ -44,7 +43,6 @@ int itkReleaseDataFilterTest(int, char* [] )
   RandomImageSourceType::Pointer random = RandomImageSourceType::New();
   random->SetMin(0.0);
   random->SetMax(1000.0);
-
 
   ImageType::SizeValueType randomSize[2];
 
@@ -61,7 +59,6 @@ int itkReleaseDataFilterTest(int, char* [] )
   MonitorFilter::Pointer monitor1 = MonitorFilter::New();
   monitor1->SetInput( random->GetOutput() );
 
-
   // pipeline a
 
   // Create a mean image
@@ -76,7 +73,6 @@ int itkReleaseDataFilterTest(int, char* [] )
 
   MonitorFilter::Pointer monitor2a = MonitorFilter::New();
   monitor2a->SetInput( mean1->GetOutput() );
-
 
   // pipeline b
   typedef itk::ShiftScaleImageFilter<ImageType, ImageType> ShiftScaleImageFilterType;
@@ -98,10 +94,8 @@ int itkReleaseDataFilterTest(int, char* [] )
   streamer->SetInput( monitor2b->GetOutput() );
   streamer->SetNumberOfStreamDivisions( 4 );
 
-
   ImageType::SizeType zeroSize;
   zeroSize.Fill(0);
-
 
   std::cout << "---- Updating \"a\" Pipeline ---" << std::endl;
   monitor2a->Update();
@@ -121,7 +115,6 @@ int itkReleaseDataFilterTest(int, char* [] )
     std::cout << "Random's output was not release!" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // no updates should happen
   std::cout << "---- Reupdating \"a\" Pipeline ---" << std::endl;
@@ -143,7 +136,6 @@ int itkReleaseDataFilterTest(int, char* [] )
     }
   monitor2a->ClearPipelineSavedInformation();
 
-
   std::cout << "---- Streaming \"b\" Pipeline ---" << std::endl;
   streamer->Update();
   if ( !monitor1->VerifyAllInputCanStream(4) ||
@@ -163,7 +155,6 @@ int itkReleaseDataFilterTest(int, char* [] )
     std::cout << "random or shiftscale or shrink's output was not release!" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

@@ -26,7 +26,6 @@
 
 #include "itksys/SystemTools.hxx"
 
-
 namespace itk
 {
 const char *MRCImageIO::m_MetaDataHeaderName = "MRCHeader";
@@ -45,12 +44,14 @@ MRCImageIO::MRCImageIO()
   this->AddSupportedWriteExtension(".rec");
 }
 
-void MRCImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+MRCImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
 
-bool MRCImageIO::CanReadFile(const char *filename)
+bool
+MRCImageIO::CanReadFile(const char *filename)
 {
   std::string fname = filename;
 
@@ -95,7 +96,8 @@ bool MRCImageIO::CanReadFile(const char *filename)
   return true;
 }
 
-MRCImageIO::SizeType MRCImageIO::GetHeaderSize(void) const
+MRCImageIO::SizeType
+MRCImageIO::GetHeaderSize(void) const
 {
   if ( m_MRCHeader.IsNull() )
     {
@@ -105,7 +107,8 @@ MRCImageIO::SizeType MRCImageIO::GetHeaderSize(void) const
   return m_MRCHeader->GetExtendedHeaderSize() + m_MRCHeader->GetHeaderSize();
 }
 
-void MRCImageIO::ReadImageInformation(void)
+void
+MRCImageIO::ReadImageInformation(void)
 {
   std::ifstream file;
 
@@ -223,7 +226,8 @@ void MRCImageIO::ReadImageInformation(void)
 }
 
 // methods to load the data into the MRCHeader member variable
-void MRCImageIO::InternalReadImageInformation(std::ifstream & file)
+void
+MRCImageIO::InternalReadImageInformation(std::ifstream & file)
 {
   char *buffer = 0;
 
@@ -271,7 +275,8 @@ void MRCImageIO::InternalReadImageInformation(std::ifstream & file)
   delete[] buffer;
 }
 
-void MRCImageIO
+void
+MRCImageIO
 ::Read(void *buffer)
 {
   std::ifstream file;
@@ -324,7 +329,8 @@ void MRCImageIO
     }
 }
 
-bool MRCImageIO::CanWriteFile(const char *fname)
+bool
+MRCImageIO::CanWriteFile(const char *fname)
 {
   std::string filename = fname;
 
@@ -338,7 +344,8 @@ bool MRCImageIO::CanWriteFile(const char *fname)
 }
 
 template< typename TPixelType >
-void MRCImageIO::UpdateHeaderWithMinMaxMean(const TPixelType *bufferBegin)
+void
+MRCImageIO::UpdateHeaderWithMinMaxMean(const TPixelType *bufferBegin)
 {
   typedef const TPixelType *ConstPixelPointer;
 
@@ -357,7 +364,8 @@ void MRCImageIO::UpdateHeaderWithMinMaxMean(const TPixelType *bufferBegin)
   m_MRCHeader->m_Header.amean = float(mean);
 }
 
-void MRCImageIO::UpdateHeaderFromImageIO(void)
+void
+MRCImageIO::UpdateHeaderFromImageIO(void)
 {
   MRCHeaderObject::Header header;
 
@@ -465,7 +473,8 @@ void MRCImageIO::UpdateHeaderFromImageIO(void)
     }
 }
 
-void MRCImageIO::WriteImageInformation(const void *buffer)
+void
+MRCImageIO::WriteImageInformation(const void *buffer)
 {
   this->UpdateHeaderFromImageIO();
 
@@ -480,7 +489,8 @@ void MRCImageIO::WriteImageInformation(const void *buffer)
   file.write(static_cast< const char * >( (void *)&( header ) ), 1024);
 }
 
-void MRCImageIO
+void
+MRCImageIO
 ::UpdateHeaderWithMinMaxMean(const void *bufferBegin)
 {
   // fixed types defined by header
@@ -551,7 +561,8 @@ void MRCImageIO
     }
 }
 
-void MRCImageIO
+void
+MRCImageIO
 ::Write(const void *buffer)
 {
   if ( this->RequestedToStream() )

@@ -17,7 +17,6 @@
  *=========================================================================*/
 #include "itkSPSAOptimizer.h"
 
-
 /**
  * \class
  *  The objective function is the quadratic form:
@@ -36,27 +35,26 @@
  */
 class SPSACostFunction : public itk::SingleValuedCostFunction
 {
- public:
+public:
 
-  typedef SPSACostFunction               Self;
-  typedef itk::SingleValuedCostFunction  Superclass;
-  typedef itk::SmartPointer<Self>        Pointer;
-  typedef itk::SmartPointer<const Self>  ConstPointer;
+  typedef SPSACostFunction              Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
   itkNewMacro( Self );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType      ParametersType;
-  typedef Superclass::DerivativeType      DerivativeType;
-  typedef Superclass::MeasureType         MeasureType;
-
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
+  typedef Superclass::MeasureType    MeasureType;
 
   SPSACostFunction()
   {
   }
 
-
-  MeasureType  GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
 
     double x = parameters[0];
@@ -69,12 +67,14 @@ class SPSACostFunction : public itk::SingleValuedCostFunction
     MeasureType measure = 0.5*(3*x*x+4*x*y+6*y*y) - 2*x + 8*y;
 
     std::cout << measure << std::endl;
+
     return measure;
 
   }
 
-  void GetDerivative( const ParametersType & parameters,
-                      DerivativeType  & derivative ) const
+  void
+  GetDerivative( const ParametersType & parameters,
+                 DerivativeType  & derivative ) const
   {
 
     double x = parameters[0];
@@ -90,35 +90,36 @@ class SPSACostFunction : public itk::SingleValuedCostFunction
 
   }
 
-
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return SpaceDimension;
   }
 
- private:
+private:
 };
 
-int itkSPSAOptimizerTest(int, char* [] )
+int
+itkSPSAOptimizerTest(int, char* [] )
 {
   std::cout << "SPSAOptimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::SPSAOptimizer                   OptimizerType;
-  typedef  OptimizerType::ScalesType            ScalesType;
+  typedef  itk::SPSAOptimizer        OptimizerType;
+  typedef  OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction
   SPSACostFunction::Pointer costFunction = SPSACostFunction::New();
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-  typedef SPSACostFunction::ParametersType    ParametersType;
+  typedef SPSACostFunction::ParametersType ParametersType;
   const unsigned int spaceDimension =
     costFunction->GetNumberOfParameters();
 
-  ScalesType    parametersScale( spaceDimension );
+  ScalesType parametersScale( spaceDimension );
   parametersScale[0] = 1.0;
   parametersScale[1] = 2.0;
   itkOptimizer->SetScales( parametersScale );
@@ -136,7 +137,7 @@ int itkSPSAOptimizerTest(int, char* [] )
   itkOptimizer->SetNumberOfPerturbations(1);
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
   initialPosition[0] =  100;
   initialPosition[1] = -100;
   itkOptimizer->SetInitialPosition( initialPosition );
@@ -169,7 +170,6 @@ int itkSPSAOptimizerTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   ParametersType finalPosition = itkOptimizer->GetCurrentPosition();
   std::cout << "Solution        = (";
   std::cout << finalPosition[0] << ",";
@@ -189,11 +189,10 @@ int itkSPSAOptimizerTest(int, char* [] )
     << itkOptimizer->GetStopConditionDescription()
     << std::endl;
 
-
   //
   // check results to see if it is within range
   //
-  bool pass = true;
+  bool   pass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {
@@ -219,6 +218,5 @@ int itkSPSAOptimizerTest(int, char* [] )
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

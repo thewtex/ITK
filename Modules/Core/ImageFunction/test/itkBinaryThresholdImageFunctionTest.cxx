@@ -22,7 +22,8 @@
 
 #include "itkBinaryThresholdImageFunction.h"
 
-int itkBinaryThresholdImageFunctionTest(int, char* [] )
+int
+itkBinaryThresholdImageFunctionTest(int, char* [] )
 {
   std::cout << "itkBinaryThresholdImageFunctionTest Start" << std::endl;
 
@@ -40,7 +41,6 @@ int itkBinaryThresholdImageFunctionTest(int, char* [] )
   image->Allocate();
   image->FillBuffer(0.0);
 
-
   for (unsigned int i = 0; i < FloatImage::ImageDimension; i++)
     {
     size[i] -= 20;
@@ -50,7 +50,7 @@ int itkBinaryThresholdImageFunctionTest(int, char* [] )
   region.SetSize (size);
 
   itk::ImageRegionIterator<FloatImage> it(image,region);
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
     it.Set(100.0);
     ++it;
@@ -60,7 +60,7 @@ int itkBinaryThresholdImageFunctionTest(int, char* [] )
   typedef itk::BinaryThresholdImageFunction<FloatImage> ImageFunction;
   ImageFunction::Pointer threshold = ImageFunction::New();
 
-  ImageFunction::PointType  point;
+  ImageFunction::PointType           point;
   ImageFunction::ContinuousIndexType continuousIndex;
 
   threshold->SetInputImage(image);
@@ -69,23 +69,23 @@ int itkBinaryThresholdImageFunctionTest(int, char* [] )
   index[0] = 11; index[1] = 11; index[2] = 11;
 
   int failed = 0;
-  if (!threshold->EvaluateAtIndex(index)) failed++;
+  if (!threshold->EvaluateAtIndex(index) ) failed++;
 
   threshold->ThresholdAbove (100.0);
-  if (!threshold->EvaluateAtIndex(index)) failed++;
+  if (!threshold->EvaluateAtIndex(index) ) failed++;
 
   threshold->ThresholdAbove (101.0);
-  if (threshold->EvaluateAtIndex(index)) failed++;
+  if (threshold->EvaluateAtIndex(index) ) failed++;
 
   threshold->ThresholdBetween (100.0,100.0);
-  if (!threshold->EvaluateAtIndex(index)) failed++;
+  if (!threshold->EvaluateAtIndex(index) ) failed++;
 
   threshold->ThresholdBetween (-100.0,0.0);
-  if (threshold->EvaluateAtIndex(index)) failed++;
+  if (threshold->EvaluateAtIndex(index) ) failed++;
 
   index[0] = 8; index[1] = 8; index[2] = 8;
   threshold->ThresholdBetween (100.0,200.0);
-  if (threshold->EvaluateAtIndex(index)) failed++;
+  if (threshold->EvaluateAtIndex(index) ) failed++;
 
   std::cout << threshold;
 
@@ -98,7 +98,6 @@ int itkBinaryThresholdImageFunctionTest(int, char* [] )
   continuousIndex[1] = 9;
   continuousIndex[2] = 9;
   threshold->EvaluateAtContinuousIndex(continuousIndex);
-
 
   if (failed)
     {

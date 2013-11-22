@@ -39,14 +39,15 @@ namespace Statistics
  */
 
 template<typename LayerType, typename TTargetVector>
-class ErrorBackPropagationLearningFunctionBase : public LearningFunctionBase<typename LayerType::LayerInterfaceType, TTargetVector>
+class ErrorBackPropagationLearningFunctionBase : public LearningFunctionBase<typename LayerType::LayerInterfaceType,
+                                                                             TTargetVector>
 {
 public:
   typedef ErrorBackPropagationLearningFunctionBase Self;
   typedef LearningFunctionBase<typename LayerType::LayerInterfaceType, TTargetVector>
-                                                   Superclass;
-  typedef SmartPointer<Self>                       Pointer;
-  typedef SmartPointer<const Self>                 ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   typedef typename Superclass::ValueType         ValueType;
   typedef typename LayerType::LayerInterfaceType LayerInterfaceType;
@@ -58,12 +59,16 @@ public:
   itkNewMacro(Self);
 
   virtual void Learn( LayerInterfaceType * layer, ValueType learningrate);
+
   virtual void Learn( LayerInterfaceType * layer, TTargetVector error, ValueType learningrate);
 
 protected:
 
-  ErrorBackPropagationLearningFunctionBase() {};
-  ~ErrorBackPropagationLearningFunctionBase() {};
+  ErrorBackPropagationLearningFunctionBase() {
+  }
+
+  ~ErrorBackPropagationLearningFunctionBase() {
+  }
 
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
@@ -73,7 +78,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkErrorBackPropagationLearningFunctionBase.hxx"
+#include "itkErrorBackPropagationLearningFunctionBase.hxx"
 #endif
 
 #endif

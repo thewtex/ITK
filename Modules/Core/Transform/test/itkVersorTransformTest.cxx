@@ -34,7 +34,8 @@
 //   Main code
 //
 // -------------------------
-int itkVersorTransformTest(int, char * [] )
+int
+itkVersorTransformTest(int, char * [] )
 {
 
   typedef   double ValueType;
@@ -80,7 +81,10 @@ int itkVersorTransformTest(int, char * [] )
     VersorType versor;
     versor.Set( axis, angle );
 
-    ParametersType parameters( transform->GetNumberOfParameters() ); // Number of parameters
+    ParametersType parameters( transform->GetNumberOfParameters() ); // Number
+                                                                     // of
+                                                                     //
+                                                                     // parameters
 
     parameters[0] = versor.GetX();
     parameters[1] = versor.GetY();
@@ -481,7 +485,7 @@ int itkVersorTransformTest(int, char * [] )
 
       {
       TransformType::Pointer tInverse = TransformType::New();
-      if(!t->GetInverse(tInverse))
+      if(!t->GetInverse(tInverse) )
         {
         std::cout << "Cannot create inverse transform" << std::endl;
         return EXIT_FAILURE;

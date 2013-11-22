@@ -48,6 +48,7 @@ FastMarchingExtensionImageFilter< TLevelSet, TAuxValue, VAuxDimension, TSpeedIma
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Aux alive values: ";
   os << m_AuxAliveValues.GetPointer() << std::endl;
   os << indent << "Aux trail values: ";
@@ -63,14 +64,14 @@ typename FastMarchingExtensionImageFilter< TLevelSet, TAuxValue, VAuxDimension, 
 ::AuxImageType *
 FastMarchingExtensionImageFilter< TLevelSet, TAuxValue, VAuxDimension, TSpeedImage >
 ::GetAuxiliaryImage(unsigned int idx)
-{
+  {
   if ( idx >= AuxDimension || this->GetNumberOfIndexedOutputs() < idx + 2 )
     {
     return NULL;
     }
 
   return this->m_AuxImages[idx];
-}
+  }
 
 /*
  *
@@ -273,6 +274,7 @@ FastMarchingExtensionImageFilter< TLevelSet, TAuxValue, VAuxDimension, TSpeedIma
 
   return solution;
 }
+
 } // namespace itk
 
 #endif

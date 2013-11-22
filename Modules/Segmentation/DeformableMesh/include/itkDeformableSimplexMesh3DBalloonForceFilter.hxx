@@ -47,7 +47,8 @@ DeformableSimplexMesh3DBalloonForceFilter< TInputMesh, TOutputMesh >
 template< typename TInputMesh, typename TOutputMesh >
 DeformableSimplexMesh3DBalloonForceFilter< TInputMesh, TOutputMesh >
 ::~DeformableSimplexMesh3DBalloonForceFilter()
-{}
+{
+}
 
 /* PrintSelf. */
 template< typename TInputMesh, typename TOutputMesh >
@@ -56,6 +57,7 @@ DeformableSimplexMesh3DBalloonForceFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Kappa = " << m_Kappa << std::endl;
 } /* End PrintSelf. */
 
@@ -107,11 +109,11 @@ DeformableSimplexMesh3DBalloonForceFilter< TInputMesh, TOutputMesh >
     tmp_vec_3[2] = gradientImage->GetPixel(tmp_co_3)[2] - gradientImage->GetPixel(coord)[2];
 
     vec_for[0] = vec_for[0] + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[0]
-                 + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[0] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[0];
+      + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[0] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[0];
     vec_for[1] = vec_for[1] + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[1]
-                 + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[1] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[1];
+      + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[1] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[1];
     vec_for[2] = vec_for[2] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[2]
-                 + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[2] + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[2];
+      + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[2] + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[2];
     }
   else
     {
@@ -140,6 +142,7 @@ DeformableSimplexMesh3DBalloonForceFilter< TInputMesh, TOutputMesh >
   data->externalForce[1] = vec_for[1];
   data->externalForce[2] = vec_for[2];
 }
+
 } /* end namespace itk. */
 
 #endif //__itkDeformableSimplexMesh3DBalloonForceFilter_hxx

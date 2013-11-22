@@ -20,16 +20,16 @@
 #include "itkRGBPixel.h"
 #include "itkComposeImageFilter.h"
 
-int itkComposeRGBImageFilterTest(int , char * [])
+int
+itkComposeRGBImageFilterTest(int , char * [])
 {
   typedef unsigned char              PixelType;
   typedef itk::Image< PixelType, 3 > InputImageType;
 
-  typedef itk::RGBPixel<unsigned char>   RGBPixelType;
-  typedef itk::Image< RGBPixelType, 3 >  OutputImageType;
+  typedef itk::RGBPixel<unsigned char>  RGBPixelType;
+  typedef itk::Image< RGBPixelType, 3 > OutputImageType;
 
-
-  typedef itk::ComposeImageFilter< InputImageType, OutputImageType >  FilterType;
+  typedef itk::ComposeImageFilter< InputImageType, OutputImageType > FilterType;
 
   typedef InputImageType::RegionType RegionType;
   typedef InputImageType::SizeType   SizeType;
@@ -75,11 +75,11 @@ int itkComposeRGBImageFilterTest(int , char * [])
     }
 
   catch( itk::ExceptionObject & excp )
-   {
-   std::cerr << "Exception caught !" << std::endl;
-   std::cerr << excp << std::endl;
-   return EXIT_FAILURE;
-   }
+    {
+    std::cerr << "Exception caught !" << std::endl;
+    std::cerr << excp << std::endl;
+    return EXIT_FAILURE;
+    }
 
   OutputImageType::Pointer rgbImage = filter->GetOutput();
 
@@ -98,7 +98,7 @@ int itkComposeRGBImageFilterTest(int , char * [])
 
   ot.GoToBegin();
 
-  typedef OutputImageType::PixelType  OutputPixelType;
+  typedef OutputImageType::PixelType OutputPixelType;
 
   while( !ot.IsAtEnd() )
     {

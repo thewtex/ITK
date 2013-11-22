@@ -30,7 +30,8 @@
  *
  */
 
-int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
+int
+itkImageRegistrationMethodTest_7(int argc, char* argv[] )
 {
 
   bool pass = true;
@@ -38,53 +39,51 @@ int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
   const unsigned int dimension = 2;
 
   // Fixed Image Type
-  typedef itk::Image<float,dimension>               FixedImageType;
+  typedef itk::Image<float,dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<float,dimension>               MovingImageType;
+  typedef itk::Image<float,dimension> MovingImageType;
 
   // Size Type
-  typedef MovingImageType::SizeType                 SizeType;
-
+  typedef MovingImageType::SizeType SizeType;
 
   // ImageSource
   typedef itk::testhelper::ImageRegistrationMethodImageSource<
-                                  FixedImageType::PixelType,
-                                  MovingImageType::PixelType,
-                                  dimension >            ImageSourceType;
+      FixedImageType::PixelType,
+      MovingImageType::PixelType,
+      dimension >            ImageSourceType;
   // Transform Type
   typedef itk::TranslationTransform< double, dimension > TransformType;
   typedef TransformType::ParametersType                  ParametersType;
 
   // Optimizer Type
-  typedef itk::GradientDescentOptimizer                  OptimizerType;
+  typedef itk::GradientDescentOptimizer OptimizerType;
 
   // Metric Type
   typedef itk::NormalizedCorrelationImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
   // Interpolation technique
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double >             InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double >             InterpolatorType;
 
   // Registration Method
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
   typedef itk::CommandIterationUpdate<
-                                  OptimizerType >    CommandIterationType;
+      OptimizerType >    CommandIterationType;
 
+  MetricType::Pointer       metric        = MetricType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
-  MetricType::Pointer         metric        = MetricType::New();
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-
-  ImageSourceType::Pointer    imageSource   = ImageSourceType::New();
+  ImageSourceType::Pointer imageSource   = ImageSourceType::New();
 
   SizeType size;
   size[0] = 100;
@@ -92,8 +91,8 @@ int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
 
   imageSource->GenerateImages( size );
 
-  FixedImageType::ConstPointer     fixedImage    = imageSource->GetFixedImage();
-  MovingImageType::ConstPointer    movingImage   = imageSource->GetMovingImage();
+  FixedImageType::ConstPointer  fixedImage    = imageSource->GetFixedImage();
+  MovingImageType::ConstPointer movingImage   = imageSource->GetMovingImage();
 
   //
   // Connect all the components required for Registratio
@@ -105,9 +104,9 @@ int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
   registration->SetMovingImage(   movingImage   );
   registration->SetInterpolator(  interpolator  );
 
-
   // Select the Region of Interest over which the Metric will be computed
-  // Registration time will be proportional to the number of pixels in this region.
+  // Registration time will be proportional to the number of pixels in this
+  // region.
   metric->SetFixedImageRegion( fixedImage->GetBufferedRegion() );
 
   // Instantiate an Observer to report the progress of the Optimization
@@ -118,10 +117,9 @@ int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
   OptimizerType::ScalesType scales( transform->GetNumberOfParameters() );
   scales.Fill( 1.0 );
 
-
-  unsigned long   numberOfIterations =   20;
-  double          translationScale   = 1e-7;
-  double          learningRate       = 1e-4;
+  unsigned long numberOfIterations =   20;
+  double        translationScale   = 1e-7;
+  double        learningRate       = 1e-4;
 
   if( argc > 1 )
     {
@@ -170,7 +168,6 @@ int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
 
   const unsigned int numbeOfParameters = actualParameters.Size();
 
-
   const double tolerance = 1.0;  // equivalent to 1 pixel.
 
   for(unsigned int i=0; i<numbeOfParameters; i++)
@@ -185,7 +182,6 @@ int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
       }
     }
 
-
   if( !pass )
     {
     std::cout << "Test FAILED." << std::endl;
@@ -194,6 +190,5 @@ int itkImageRegistrationMethodTest_7(int argc, char* argv[] )
 
   std::cout << "Test PASSED." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

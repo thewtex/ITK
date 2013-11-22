@@ -140,7 +140,7 @@ public:
   typedef ZeroFluxNeumannBoundaryCondition<OutputImageType> BoundaryConditionType;
   typedef typename::itk::Statistics::ImageToNeighborhoodSampleAdaptor<
       OutputImageType, BoundaryConditionType >              ListAdaptorType;
-  typedef typename ListAdaptorType::NeighborhoodRadiusType  PatchRadiusType;
+  typedef typename ListAdaptorType::NeighborhoodRadiusType PatchRadiusType;
   typedef ConstNeighborhoodIterator<
       InputImageType, BoundaryConditionType >               InputImagePatchIterator;
 
@@ -255,14 +255,20 @@ protected:
   /** Allocate memory and initialize patch weights. */
   virtual void InitializePatchWeights();
 
-  virtual void Initialize() { }
+  virtual void
+  Initialize() {
+  }
 
   /** Allocate memory for a temporary update container in the subclass. */
   virtual void AllocateUpdateBuffer() = 0;
 
-  virtual void PreProcessInput() { }
+  virtual void
+  PreProcessInput() {
+  }
 
-  virtual void InitializeIteration() { }
+  virtual void
+  InitializeIteration() {
+  }
 
   /** Automatically estimate kernel bandwidth from the image data. */
   virtual void ComputeKernelBandwidthUpdate() = 0;
@@ -272,38 +278,45 @@ protected:
 
   virtual void ApplyUpdate() = 0;
 
-  virtual void PostProcessOutput() { }
+  virtual void
+  PostProcessOutput() {
+  }
 
   /** Check and indicate whether to continue iterations or stop. */
   virtual bool Halt();
 
-  virtual bool ThreadedHalt(void *itkNotUsed(threadInfo) )
+  virtual bool
+  ThreadedHalt(void *itkNotUsed(threadInfo) )
   {
-  return this->Halt();
+    return this->Halt();
   }
 
   itkSetMacro(ElapsedIterations, unsigned int);
 
   /** Determine the component space based on pixel type */
-  ComponentSpaceType DetermineComponentSpace(const RGBPixel<PixelValueType>& itkNotUsed(p) )
+  ComponentSpaceType
+  DetermineComponentSpace(const RGBPixel<PixelValueType>& itkNotUsed(p) )
   {
-  return EUCLIDEAN;
+    return EUCLIDEAN;
   }
 
-  ComponentSpaceType DetermineComponentSpace(const RGBAPixel<PixelValueType>& itkNotUsed(p) )
+  ComponentSpaceType
+  DetermineComponentSpace(const RGBAPixel<PixelValueType>& itkNotUsed(p) )
   {
-  return EUCLIDEAN;
+    return EUCLIDEAN;
   }
 
-  ComponentSpaceType DetermineComponentSpace(const DiffusionTensor3D<PixelValueType>& itkNotUsed(p) )
+  ComponentSpaceType
+  DetermineComponentSpace(const DiffusionTensor3D<PixelValueType>& itkNotUsed(p) )
   {
-  return RIEMANNIAN;
+    return RIEMANNIAN;
   }
 
   template <typename PixelT>
-  ComponentSpaceType DetermineComponentSpace(const PixelT& itkNotUsed(p) )
+  ComponentSpaceType
+  DetermineComponentSpace(const PixelT& itkNotUsed(p) )
   {
-  return EUCLIDEAN;
+    return EUCLIDEAN;
   }
 
   /** Parameters that define patch size and patch weights (mask). */
@@ -337,7 +350,7 @@ protected:
    * to GetInput and GetOutput.
    */
   const InputImageType *m_InputImage;
-  OutputImageType      *m_OutputImage;
+  OutputImageType *     m_OutputImage;
 
 private:
   PatchBasedDenoisingBaseImageFilter(const Self&); // purposely not implemented

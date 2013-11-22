@@ -41,28 +41,29 @@
  *  0     1   2   3   4
  *
  */
-int itkFEMScatteredDataPointSetToImageFilterTest(int, char *[])
+int
+itkFEMScatteredDataPointSetToImageFilterTest(int, char *[])
 {
   const unsigned int ParametricDimension = 2;
   const unsigned int DataDimension = 2;
 
-  typedef float                                         RealType;
-  typedef itk::Vector<RealType, DataDimension>          VectorType;
+  typedef float                                RealType;
+  typedef itk::Vector<RealType, DataDimension> VectorType;
   typedef itk::Matrix<RealType, DataDimension,
-      DataDimension>                                    MatrixType;
-  typedef itk::Image<VectorType, ParametricDimension>   DeformationFieldType;
+                      DataDimension>                                    MatrixType;
+  typedef itk::Image<VectorType, ParametricDimension> DeformationFieldType;
   typedef itk::PointSet
     <VectorType, ParametricDimension>                   FeaturePointSetType;
   typedef itk::PointSet
     <MatrixType, ParametricDimension>                   TensorPointSetType;
   typedef itk::PointSet
     <RealType, ParametricDimension>                     ConfidencePointSetType;
-  typedef itk::Mesh< VectorType, ParametricDimension >  MeshType;
-  typedef FeaturePointSetType::PointType                PointType;
+  typedef itk::Mesh< VectorType, ParametricDimension > MeshType;
+  typedef FeaturePointSetType::PointType               PointType;
 
   typedef itk::fem::FEMScatteredDataPointSetToImageFilter
     <FeaturePointSetType, MeshType, DeformationFieldType, ConfidencePointSetType,
-    TensorPointSetType>                FilterType;
+     TensorPointSetType>                FilterType;
 
   typedef itk::ImageRegionConstIterator< DeformationFieldType > ConstIteratorType;
 
@@ -70,10 +71,10 @@ int itkFEMScatteredDataPointSetToImageFilterTest(int, char *[])
 
   //Construct a feature point set
   FeaturePointSetType::Pointer featurePoints = FeaturePointSetType::New();
-  PointType p0;
-  PointType p1;
-  PointType p2;
-  PointType p3;
+  PointType                    p0;
+  PointType                    p1;
+  PointType                    p2;
+  PointType                    p3;
   //point is on the bottom boundary
   p0[0] = 1.0;
   p0[1] = 0.0;
@@ -144,7 +145,7 @@ int itkFEMScatteredDataPointSetToImageFilterTest(int, char *[])
   ConstIteratorType constIterator( DF, DF->GetRequestedRegion() );
 
   //examine the results
-  bool hasError = false;
+  bool       hasError = false;
   VectorType realDisplacement;
   realDisplacement[0] = 1.0;
   realDisplacement[1] = 1.0;

@@ -32,7 +32,7 @@ namespace itk
 {
 template< typename TInputImage1, typename TInputImage2 >
 ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
-::ContourDirectedMeanDistanceImageFilter():m_MeanDistance(1), m_Count(1)
+::ContourDirectedMeanDistanceImageFilter() : m_MeanDistance(1), m_Count(1)
 {
   // this filter requires two input images
   this->SetNumberOfRequiredInputs(2);
@@ -63,19 +63,19 @@ const typename ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage
 ::InputImage1Type *
 ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput1(void)
-{
+  {
   return this->GetInput();
-}
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 const typename ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::InputImage2Type *
 ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::GetInput2()
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage2 * >
-    ( this->ProcessObject::GetInput(1) );
-}
+           ( this->ProcessObject::GetInput(1) );
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 void
@@ -109,6 +109,7 @@ ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -141,7 +142,7 @@ ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 
   // Compute Signed distance from non-zero pixels in the second image
   typedef SignedMaurerDistanceMapImageFilter< InputImage2Type, DistanceMapType >
-  FilterType;
+    FilterType;
 
   typename FilterType::Pointer filter = FilterType::New();
 
@@ -161,8 +162,8 @@ ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
   ThreadIdType numberOfThreads = this->GetNumberOfThreads();
 
   // find mean over all threads
-  IdentifierType  count = 0;
-  RealType        sum = NumericTraits< RealType >::Zero;
+  IdentifierType count = 0;
+  RealType       sum = NumericTraits< RealType >::Zero;
 
   for ( ThreadIdType i = 0; i < numberOfThreads; i++ )
     {
@@ -199,7 +200,8 @@ ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
     FaceListType;
 
   NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< InputImage1Type > bC;
-  FaceListType faceList = bC(input, outputRegionForThread, radius);
+  FaceListType                                                           faceList = bC(input, outputRegionForThread,
+                                                                                       radius);
 
   // support progress methods/callbacks
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
@@ -261,5 +263,6 @@ ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
   os << indent << "ContourDirectedMeanDistance: "
      << m_ContourDirectedMeanDistance << std::endl;
 }
+
 } // end namespace itk
 #endif

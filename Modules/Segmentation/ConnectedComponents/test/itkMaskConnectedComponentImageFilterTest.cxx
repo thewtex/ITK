@@ -24,19 +24,21 @@
 #include "itkFilterWatcher.h"
 #include "itkMersenneTwisterRandomVariateGenerator.h"
 
-int itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
+int
+itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 5 )
     {
     std::cerr << "Missing Parameters " << std::endl;
     std::cerr << "Usage: " << argv[0];
-    std::cerr << " inputImage  outputImage threshold_low threshold_hi [fully_connected] [minimum_object_size]" << std::endl;
+    std::cerr << " inputImage  outputImage threshold_low threshold_hi [fully_connected] [minimum_object_size]" <<
+      std::endl;
     return EXIT_FAILURE;
     }
 
-  typedef   unsigned short  InternalPixelType;
-  typedef   bool            MaskPixelType;
-  const     unsigned int    Dimension = 2;
+  typedef   unsigned short InternalPixelType;
+  typedef   bool           MaskPixelType;
+  const     unsigned int Dimension = 2;
 
   typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   typedef itk::Image< MaskPixelType, Dimension >     MaskImageType;
@@ -48,17 +50,15 @@ int itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
   typedef itk::ImageFileReader< InternalImageType > ReaderType;
   typedef itk::ImageFileWriter<  RGBImageType  >    WriterType;
 
-
-  typedef itk::BinaryThresholdImageFilter< InternalImageType, InternalImageType > ThresholdFilterType;
+  typedef itk::BinaryThresholdImageFilter< InternalImageType, InternalImageType >                 ThresholdFilterType;
   typedef itk::ConnectedComponentImageFilter< InternalImageType, OutputImageType, MaskImageType > FilterType;
-  typedef itk::RelabelComponentImageFilter< OutputImageType, OutputImageType > RelabelType;
+  typedef itk::RelabelComponentImageFilter< OutputImageType, OutputImageType >                    RelabelType;
 
-
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer = WriterType::New();
+  ReaderType::Pointer          reader = ReaderType::New();
+  WriterType::Pointer          writer = WriterType::New();
   ThresholdFilterType::Pointer threshold = ThresholdFilterType::New();
-  FilterType::Pointer filter = FilterType::New();
-  RelabelType::Pointer relabel = RelabelType::New();
+  FilterType::Pointer          filter = FilterType::New();
+  RelabelType::Pointer         relabel = RelabelType::New();
 
   FilterWatcher watcher(filter);
   watcher.QuietOn();
@@ -69,7 +69,7 @@ int itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
   threshold_low = atoi( argv[3]);
   threshold_hi = atoi( argv[4]);
 
-  threshold->SetInput (reader->GetOutput());
+  threshold->SetInput (reader->GetOutput() );
   threshold->SetInsideValue(itk::NumericTraits<InternalPixelType>::One);
   threshold->SetOutsideValue(itk::NumericTraits<InternalPixelType>::Zero);
   threshold->SetLowerThreshold(threshold_low);
@@ -79,17 +79,17 @@ int itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
   // create a mask containing the upper left hand corner and
   // a chunk out of the middle
   MaskImageType::Pointer mask = MaskImageType::New();
-  mask->SetRegions(threshold->GetOutput()->GetLargestPossibleRegion());
-  mask->CopyInformation(threshold->GetOutput());
+  mask->SetRegions(threshold->GetOutput()->GetLargestPossibleRegion() );
+  mask->CopyInformation(threshold->GetOutput() );
   mask->Allocate();
   mask->FillBuffer(itk::NumericTraits<MaskPixelType>::Zero);
 
   MaskImageType::RegionType maskRegion = mask->GetLargestPossibleRegion();
-  MaskImageType::SizeType maskSize = maskRegion.GetSize();
+  MaskImageType::SizeType   maskSize = maskRegion.GetSize();
 
   MaskImageType::RegionType region;
-  MaskImageType::SizeType size;
-  MaskImageType::IndexType index;
+  MaskImageType::SizeType   size;
+  MaskImageType::IndexType  index;
 
   // use upper left corner
   index.Fill(0);
@@ -101,9 +101,9 @@ int itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
   region.SetSize (size);
 
   itk::ImageRegionIterator<MaskImageType> mit(mask,region);
-  while (!mit.IsAtEnd())
+  while (!mit.IsAtEnd() )
     {
-    mit.Set(itk::NumericTraits<MaskPixelType>::max());
+    mit.Set(itk::NumericTraits<MaskPixelType>::max() );
     ++mit;
     }
 
@@ -117,13 +117,13 @@ int itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
   region.SetSize (size);
 
   itk::ImageRegionIterator<MaskImageType> mit2(mask,region);
-  while (!mit2.IsAtEnd())
+  while (!mit2.IsAtEnd() )
     {
-    mit2.Set(itk::NumericTraits<MaskPixelType>::max());
+    mit2.Set(itk::NumericTraits<MaskPixelType>::max() );
     ++mit2;
     }
 
-  filter->SetInput (threshold->GetOutput());
+  filter->SetInput (threshold->GetOutput() );
   filter->SetMaskImage (mask);
 
   if (argc > 5)
@@ -157,32 +157,33 @@ int itkMaskConnectedComponentImageFilterTest(int argc, char* argv[] )
   unsigned short numObjects = relabel->GetNumberOfObjects();
 
   std::vector<RGBPixelType> colormap;
-  RGBPixelType px;
+  RGBPixelType              px;
   colormap.resize( numObjects+1 );
   itk::Statistics::MersenneTwisterRandomVariateGenerator::GetInstance()->SetSeed(1031571);
-  itk::Statistics::MersenneTwisterRandomVariateGenerator::Pointer rvgen = itk::Statistics::MersenneTwisterRandomVariateGenerator::GetInstance();
+  itk::Statistics::MersenneTwisterRandomVariateGenerator::Pointer rvgen =
+    itk::Statistics::MersenneTwisterRandomVariateGenerator::GetInstance();
   for (unsigned short i=0; i < colormap.size(); ++i)
     {
     px.SetRed(
-      static_cast<unsigned char>(255*rvgen->GetUniformVariate( 0.3333, 1.0 ) ));
+      static_cast<unsigned char>(255*rvgen->GetUniformVariate( 0.3333, 1.0 ) ) );
     px.SetGreen(
-      static_cast<unsigned char>(255*rvgen->GetUniformVariate( 0.3333, 1.0 ) ));
+      static_cast<unsigned char>(255*rvgen->GetUniformVariate( 0.3333, 1.0 ) ) );
     px.SetBlue(
-      static_cast<unsigned char>(255*rvgen->GetUniformVariate( 0.3333, 1.0 ) ));
+      static_cast<unsigned char>(255*rvgen->GetUniformVariate( 0.3333, 1.0 ) ) );
 
     colormap[i] = px;
     }
 
   itk::ImageRegionIterator<OutputImageType>
-    it(relabel->GetOutput(), relabel->GetOutput()->GetBufferedRegion());
+                                         it(relabel->GetOutput(), relabel->GetOutput()->GetBufferedRegion() );
   itk::ImageRegionIterator<RGBImageType> cit(colored,
-                                             colored->GetBufferedRegion());
+                                              colored->GetBufferedRegion() );
 
   while( !it.IsAtEnd() )
     {
     if (it.Get() == 0)
       {
-      cit.Set(RGBPixelType(static_cast<unsigned char>(0)));
+      cit.Set(RGBPixelType(static_cast<unsigned char>(0) ) );
       }
     else
       {

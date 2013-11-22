@@ -64,7 +64,7 @@ template< typename TObjectType >
 typename ObjectStore< TObjectType >::ObjectType *
 ObjectStore< TObjectType >
 ::Borrow()
-{
+  {
   ObjectType *p;
 
   if ( m_FreeList.empty() ) // must allocate more memory
@@ -77,7 +77,7 @@ ObjectStore< TObjectType >
 
   //To do: This method will need to decrement counters in the memory blocks so
   //that blocks know when they can be deleted.
-}
+  }
 
 template< typename TObjectType >
 void
@@ -153,6 +153,7 @@ ObjectStore< TObjectType >
   os << indent << "Free list capacity: " << static_cast< SizeValueType >( m_FreeList.capacity() ) << std::endl;
   os << indent << "Number of blocks in store: " << static_cast< SizeValueType >( m_Store.size() ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

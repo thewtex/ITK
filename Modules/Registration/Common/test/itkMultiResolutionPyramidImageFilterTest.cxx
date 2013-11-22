@@ -28,17 +28,19 @@ namespace
  * The pattern is a 3D gaussian in the middle
  * and some directional pattern on the outside.
  */
-double F( double x, double y, double z )
+double
+F( double x, double y, double z )
 {
   const double s = 50;
-  double value = 200.0 * vcl_exp( - ( x*x + y*y + z*z )/(s*s) );
+  double       value = 200.0 * vcl_exp( -( x*x + y*y + z*z )/(s*s) );
+
   x -= 8; y += 3; z += 0;
   double r = vcl_sqrt( x*x + y*y + z*z );
   if( r > 35 )
     {
     value = 2 * ( vnl_math_abs( x ) +
-      0.8 * vnl_math_abs( y ) +
-      0.5 * vnl_math_abs( z ) );
+                  0.8 * vnl_math_abs( y ) +
+                  0.5 * vnl_math_abs( z ) );
     }
   if( r < 4 )
     {
@@ -49,23 +51,30 @@ double F( double x, double y, double z )
 
 }
 
-
 // The following three classes are used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
 #include "itkImageMomentsCalculator.h"
 template <typename ImageType>
-typename ImageType::PointType GetCenterOfMass(const ImageType * volume)
+typename ImageType::PointType
+GetCenterOfMass(const ImageType * volume)
 {
   typename ImageType::PointType CenterOfMass;
     {
@@ -74,15 +83,16 @@ typename ImageType::PointType GetCenterOfMass(const ImageType * volume)
     moments->SetImage(volume);
     moments->Compute();
     typename ImageType::PointType::VectorType tempCenterOfMass=moments->GetCenterOfGravity();
-    for( unsigned int q=0;q<ImageType::ImageDimension;q++ )
+    for( unsigned int q=0; q<ImageType::ImageDimension; q++ )
       {
       CenterOfMass[q]=tempCenterOfMass[q];
       }
     }
-  return  CenterOfMass;
+  return CenterOfMass;
 }
 
-int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
+int
+itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 {
 
 //------------------------------------------------------------
@@ -125,8 +135,8 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
   //When shrink factors are not divisible, this still does
   //a best does the best possible job.
   //InputImageType::SizeType size = {{101,101,41}};
-  InputImageType::SizeType size = {{128,132,48}};
-  InputImageType::IndexType index = {{0,0,0}};
+  InputImageType::SizeType   size = {{128,132,48}};
+  InputImageType::IndexType  index = {{0,0,0}};
   InputImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
@@ -164,9 +174,8 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 
   Iterator ti(imgTarget,region);
 
-
-  while(!ti.IsAtEnd())
-  {
+  while(!ti.IsAtEnd() )
+    {
     p[0] = ti.GetIndex()[0];
     p[1] = ti.GetIndex()[1];
     p[2] = ti.GetIndex()[2];
@@ -176,10 +185,10 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
     const double z = d[2];
     ti.Set( (PixelType) F(x,y,z) );
     ++ti;
-  }
+    }
 
   // set image origin to be center of the image
-  double transCenter[3];
+  double       transCenter[3];
   unsigned int j, k;
   for( j = 0; j < 3; j++ )
     {
@@ -187,12 +196,11 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
     }
   imgTarget->SetOrigin( transCenter );
 
-
- /**
-  * Setup a multi-resolution pyramid
-  */
+  /**
+   * Setup a multi-resolution pyramid
+   */
   typedef itk::MultiResolutionPyramidImageFilter<InputImageType,OutputImageType>
-                                    PyramidType;
+    PyramidType;
   typedef PyramidType::ScheduleType ScheduleType;
   /**
    * This is kind of cheating but it exploits the fact that Recursive... is derived
@@ -212,7 +220,7 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
   pyramid->SetUseShrinkImageFilter(useShrinkFilter);
   pyramid->SetInput( imgTarget );
 
-  unsigned int numLevels;
+  unsigned int                             numLevels;
   itk::Vector<unsigned int,ImageDimension> factors;
 
   // set schedule by specifying the number of levels;
@@ -299,7 +307,7 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
   std::cout << "Run MultiResolutionPyramidImageFilter in standalone mode with progress";
   std::cout << std::endl;
 
-  ShowProgressObject progressWatch(pyramid);
+  ShowProgressObject                                    progressWatch(pyramid);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -317,7 +325,7 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
       pyramid->GetInput()->GetLargestPossibleRegion().GetSize();
     //const InputImageType::PointType& inputOrigin =
     //  pyramid->GetInput()->GetOrigin();
-    OutputImageType::PointType InputCenterOfMass=GetCenterOfMass<OutputImageType>( pyramid->GetInput() );
+    OutputImageType::PointType         InputCenterOfMass=GetCenterOfMass<OutputImageType>( pyramid->GetInput() );
     const InputImageType::SpacingType& inputSpacing =
       pyramid->GetInput()->GetSpacing();
 
@@ -328,49 +336,52 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
     const OutputImageType::SpacingType& outputSpacing =
       pyramid->GetOutput( testLevel )->GetSpacing();
 
-
-      OutputImageType::PointType OutputCenterOfMass=GetCenterOfMass<OutputImageType>( pyramid->GetOutput( testLevel ) );
-      //NOTE:  Origins can not be preserved if the objects physical spaces are to be preserved!
-      //       The image center of physical space is what really needs to be preserved across
-      //       the different scales.
-      //if( outputOrigin[j] != inputOrigin[j] )
-      //  {
-      //  break;
-      //  }
-      //std::cout << "TEST:  "<< j<< " " << OutputCenterOfMass << " != " << InputCenterOfMass << std::endl;
-      //if( OutputCenterOfMass != InputCenterOfMass )
+    OutputImageType::PointType OutputCenterOfMass=GetCenterOfMass<OutputImageType>( pyramid->GetOutput( testLevel ) );
+    //NOTE:  Origins can not be preserved if the objects physical spaces are to
+    // be preserved!
+    //       The image center of physical space is what really needs to be
+    // preserved across
+    //       the different scales.
+    //if( outputOrigin[j] != inputOrigin[j] )
+    //  {
+    //  break;
+    //  }
+    //std::cout << "TEST:  "<< j<< " " << OutputCenterOfMass << " != " <<
+    // InputCenterOfMass << std::endl;
+    //if( OutputCenterOfMass != InputCenterOfMass )
+      {
+      OutputImageType::PointType::VectorType ErrorCenterOfMass=OutputCenterOfMass-InputCenterOfMass;
+      const double                           CenterOfMassEpsilonAllowed=0.001;
+      const double                           ErrorPercentage=
+        (ErrorCenterOfMass.GetNorm() / pyramid->GetOutput( testLevel )->GetSpacing().GetNorm() );
+      if( ErrorPercentage > CenterOfMassEpsilonAllowed)
         {
-        OutputImageType::PointType::VectorType ErrorCenterOfMass=OutputCenterOfMass-InputCenterOfMass;
-        const double CenterOfMassEpsilonAllowed=0.001;
-        const double ErrorPercentage=(ErrorCenterOfMass.GetNorm() / pyramid->GetOutput( testLevel )->GetSpacing().GetNorm() );
-        if( ErrorPercentage > CenterOfMassEpsilonAllowed)
-          {
-          std::cout << "ERROR:  " << testLevel << " " << OutputCenterOfMass
-            << " != " << InputCenterOfMass <<  " at pixel spacing level " <<
-            pyramid->GetOutput( testLevel )->GetDirection()*pyramid->GetOutput( testLevel )->GetSpacing()
-            << std::endl;
-          std::cout << "ERROR PERCENT:  " << ErrorCenterOfMass.GetNorm()
-           << "/" << pyramid->GetOutput( testLevel )->GetSpacing().GetNorm()
-           << " = " << ErrorPercentage
-           << std::endl;
-          }
-        else
-          {
-          std::cout << "WITHIN TOLERANCE PASSED:  " << testLevel << " " << OutputCenterOfMass << " != "
-            << InputCenterOfMass <<  " at pixel spacing level " <<
-            pyramid->GetOutput( testLevel )->GetDirection()*pyramid->GetOutput( testLevel )->GetSpacing()
-            << std::endl;
-          std::cout << "OFFSET DIFF PERCENT:  " << ErrorCenterOfMass.GetNorm()
-            << "/" << pyramid->GetOutput( testLevel )->GetSpacing().GetNorm()
-            << " = " << ErrorPercentage
-            << std::endl;
-          }
-        //break;
+        std::cout << "ERROR:  " << testLevel << " " << OutputCenterOfMass
+                  << " != " << InputCenterOfMass <<  " at pixel spacing level " <<
+          pyramid->GetOutput( testLevel )->GetDirection()*pyramid->GetOutput( testLevel )->GetSpacing()
+                  << std::endl;
+        std::cout << "ERROR PERCENT:  " << ErrorCenterOfMass.GetNorm()
+                  << "/" << pyramid->GetOutput( testLevel )->GetSpacing().GetNorm()
+                  << " = " << ErrorPercentage
+                  << std::endl;
         }
+      else
+        {
+        std::cout << "WITHIN TOLERANCE PASSED:  " << testLevel << " " << OutputCenterOfMass << " != "
+                  << InputCenterOfMass <<  " at pixel spacing level " <<
+          pyramid->GetOutput( testLevel )->GetDirection()*pyramid->GetOutput( testLevel )->GetSpacing()
+                  << std::endl;
+        std::cout << "OFFSET DIFF PERCENT:  " << ErrorCenterOfMass.GetNorm()
+                  << "/" << pyramid->GetOutput( testLevel )->GetSpacing().GetNorm()
+                  << " = " << ErrorPercentage
+                  << std::endl;
+        }
+      //break;
+      }
     for( j = 0; j < ImageDimension; j++ )
       {
       if( outputSpacing[j] !=
-        inputSpacing[j] * (double) schedule[testLevel][j] )
+          inputSpacing[j] * (double) schedule[testLevel][j] )
         {
         break;
         }
@@ -393,7 +404,7 @@ int itkMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 
   // check that the buffered region is equivalent the largestpossible
   if( pyramid->GetOutput(numLevels-1)->GetBufferedRegion() !=
-    pyramid->GetOutput(numLevels-1)->GetLargestPossibleRegion() )
+      pyramid->GetOutput(numLevels-1)->GetLargestPossibleRegion() )
     {
     std::cout << "Output buffered region incorrect. " << std::endl;
     pyramid->GetOutput(numLevels-1)->Print(std::cout);

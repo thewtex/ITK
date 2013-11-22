@@ -145,7 +145,10 @@ itkTemplateFloatingToIntegerMacro(RoundHalfIntegerUp);
  *  \sa RoundHalfIntegerUp<TReturn, TInput>()
  */
 template< typename TReturn, typename TInput >
-inline TReturn Round(TInput x) { return RoundHalfIntegerUp< TReturn, TInput >(x); }
+inline TReturn
+Round(TInput x) {
+  return RoundHalfIntegerUp< TReturn, TInput >(x);
+}
 
 /** \brief Round towards minus infinity
  *
@@ -176,7 +179,8 @@ itkTemplateFloatingToIntegerMacro(Ceil);
 #undef  itkTemplateFloatingToIntegerMacro
 
 template< typename TReturn, typename TInput >
-inline TReturn CastWithRangeCheck(TInput x)
+inline TReturn
+CastWithRangeCheck(TInput x)
 {
 #ifdef ITK_USE_CONCEPT_CHECKING
   itkConceptMacro( OnlyDefinedForIntegerTypes1, ( itk::Concept::IsInteger< TReturn > ) );
@@ -220,6 +224,7 @@ FloatDifferenceULP( T x1, T x2 )
 {
   Detail::FloatIEEE<T> x1f(x1);
   Detail::FloatIEEE<T> x2f(x2);
+
   return x1f.AsULP() - x2f.AsULP();
 }
 
@@ -256,19 +261,20 @@ FloatDifferenceULP( T x1, T x2 )
 template <typename T>
 inline bool
 FloatAlmostEqual( T x1, T x2,
-  typename Detail::FloatIEEE<T>::IntType maxUlps = 4,
-  typename Detail::FloatIEEE<T>::FloatType maxAbsoluteDifference = 0.1*NumericTraits<T>::epsilon() )
+                  typename Detail::FloatIEEE<T>::IntType maxUlps = 4,
+                  typename Detail::FloatIEEE<T>::FloatType maxAbsoluteDifference = 0.1*NumericTraits<T>::epsilon() )
 {
   // Check if the numbers are really close -- needed
   // when comparing numbers near zero.
   const T absDifference = vcl_abs(x1 - x2);
+
   if ( absDifference <= maxAbsoluteDifference )
     {
     return true;
     }
 
   typename Detail::FloatIEEE<T>::IntType
-    ulps = FloatDifferenceULP(x1, x2);
+  ulps = FloatDifferenceULP(x1, x2);
   if(ulps < 0)
     {
     ulps = -ulps;

@@ -74,11 +74,11 @@ template< typename TOutputImage >
 typename ImageSource< TOutputImage >::OutputImageType *
 ImageSource< TOutputImage >
 ::GetOutput()
-{
+  {
 
   // we assume that the first output is of the templated type
   return itkDynamicCastInDebugMode< TOutputImage * >( this->GetPrimaryOutput() );
-}
+  }
 
 /**
  *
@@ -87,10 +87,10 @@ template< typename TOutputImage >
 const typename ImageSource< TOutputImage >::OutputImageType *
 ImageSource< TOutputImage >
 ::GetOutput() const
-{
+  {
   // we assume that the first output is of the templated type
   return itkDynamicCastInDebugMode< const TOutputImage * >( this->GetPrimaryOutput() );
-}
+  }
 
 /**
  *
@@ -99,16 +99,17 @@ template< typename TOutputImage >
 typename ImageSource< TOutputImage >::OutputImageType *
 ImageSource< TOutputImage >
 ::GetOutput(unsigned int idx)
-{
+  {
   TOutputImage *out = dynamic_cast< TOutputImage * >
-                      ( this->ProcessObject::GetOutput(idx) );
+    ( this->ProcessObject::GetOutput(idx) );
 
   if ( out == NULL && this->ProcessObject::GetOutput(idx) != NULL )
     {
-    itkWarningMacro (<< "Unable to convert output number " << idx << " to type " <<  typeid( OutputImageType ).name () );
+    itkWarningMacro (<< "Unable to convert output number " << idx << " to type " <<
+                     typeid( OutputImageType ).name () );
     }
   return out;
-}
+  }
 
 /**
  *
@@ -157,7 +158,6 @@ ImageSource< TOutputImage >
     }
   this->GraftOutput( this->MakeNameFromOutputIndex(idx), graft );
 }
-
 
 //----------------------------------------------------------------------------
 template< typename TOutputImage >
@@ -231,9 +231,10 @@ ImageSource< TOutputImage >
   str.Filter = this;
 
   // Get the output pointer
-  const OutputImageType *outputPtr = this->GetOutput();
+  const OutputImageType *         outputPtr = this->GetOutput();
   const ImageRegionSplitterBase * splitter = this->GetImageRegionSplitter();
-  const unsigned int validThreads = splitter->GetNumberOfSplits( outputPtr->GetRequestedRegion(), this->GetNumberOfThreads() );
+  const unsigned int              validThreads = splitter->GetNumberOfSplits(
+      outputPtr->GetRequestedRegion(), this->GetNumberOfThreads() );
 
   this->GetMultiThreader()->SetNumberOfThreads( validThreads );
   this->GetMultiThreader()->SetSingleMethod(this->ThreaderCallback, &str);
@@ -262,7 +263,8 @@ ImageSource< TOutputImage >
 
   message << "itk::ERROR: " << this->GetNameOfClass()
           << "(" << this << "): " << "Subclass should override this method!!!" << std::endl
-          << "The signature of ThreadedGenerateData() has been changed in ITK v4 to use the new ThreadIdType." << std::endl
+          << "The signature of ThreadedGenerateData() has been changed in ITK v4 to use the new ThreadIdType." <<
+    std::endl
           << this->GetNameOfClass() << "::ThreadedGenerateData() might need to be updated to used it.";
   ExceptionObject e_(__FILE__, __LINE__, message.str().c_str(), ITK_LOCATION);
   throw e_;
@@ -303,6 +305,7 @@ ImageSource< TOutputImage >
 
   return ITK_THREAD_RETURN_VALUE;
 }
+
 } // end namespace itk
 
 #endif

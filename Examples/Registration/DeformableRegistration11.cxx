@@ -24,35 +24,34 @@
 
 #include "itkFEMRegistrationFilter.h"
 
-
 /* Example of FEM-base deformable registration in 3D */
 
-
 const unsigned int Dimension = 3;
-typedef itk::Image<unsigned char, Dimension>            FileImageType;
-typedef itk::Image<float, Dimension>                    ImageType;
+typedef itk::Image<unsigned char, Dimension> FileImageType;
+typedef itk::Image<float, Dimension>         ImageType;
 
-typedef itk::fem::Element3DC0LinearHexahedronMembrane   ElementType;
-typedef itk::fem::Element3DC0LinearTetrahedronMembrane  ElementType2;
-typedef itk::fem::FEMObject<Dimension>                  FEMObjectType;
+typedef itk::fem::Element3DC0LinearHexahedronMembrane  ElementType;
+typedef itk::fem::Element3DC0LinearTetrahedronMembrane ElementType2;
+typedef itk::fem::FEMObject<Dimension>                 FEMObjectType;
 
 typedef itk::fem::FEMRegistrationFilter<ImageType,ImageType,FEMObjectType> RegistrationType;
 
-
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
   const char *fixedImageName, *movingImageName;
+
   if ( argc < 2 )
-  {
+    {
     std::cout << "Image file names missing" << std::endl;
     std::cout << "Usage: " << argv[0] << " fixedImageFile movingImageFile" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   else
-  {
+    {
     fixedImageName = argv[1];
     movingImageName = argv[2];
-  }
+    }
 
   // Setup registration parameters
   RegistrationType::Pointer registrationFilter = RegistrationType::New();
@@ -91,38 +90,36 @@ int main(int argc, char *argv[])
   std::cout << " reading fixed ";
   std::cout << fixedImageName << std::endl;
 
-
   try
-  {
+    {
     movingfilter->Update();
-  }
+    }
   catch( itk::ExceptionObject & e )
-  {
+    {
     std::cerr << "Exception caught during reference file reading ";
     std::cerr << std::endl << e << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   try
-  {
+    {
     fixedfilter->Update();
-  }
+    }
   catch( itk::ExceptionObject & e )
-  {
+    {
     std::cerr << "Exception caught during target file reading ";
     std::cerr << std::endl << e << std::endl;
     return EXIT_FAILURE;
-  }
-
+    }
 
   // Rescale the image intensities so that they fall between 0 and 255
   typedef itk::RescaleIntensityImageFilter<
-                        FileImageType, ImageType > FilterType;
+      FileImageType, ImageType > FilterType;
 
   FilterType::Pointer movingrescalefilter = FilterType::New();
   FilterType::Pointer fixedrescalefilter = FilterType::New();
 
-  movingrescalefilter->SetInput(movingfilter->GetOutput());
-  fixedrescalefilter->SetInput(fixedfilter->GetOutput());
+  movingrescalefilter->SetInput(movingfilter->GetOutput() );
+  fixedrescalefilter->SetInput(fixedfilter->GetOutput() );
 
   const double desiredMinimum =  0.0;
   const double desiredMaximum =  255.0;
@@ -133,7 +130,6 @@ int main(int argc, char *argv[])
   fixedrescalefilter->SetOutputMinimum( desiredMinimum );
   fixedrescalefilter->SetOutputMaximum( desiredMaximum );
   fixedrescalefilter->UpdateLargestPossibleRegion();
-
 
   // Histogram match the images
   typedef itk::HistogramMatchingImageFilter<ImageType,ImageType> HEFilterType;
@@ -146,9 +142,8 @@ int main(int argc, char *argv[])
   IntensityEqualizeFilter->ThresholdAtMeanIntensityOn();
   IntensityEqualizeFilter->Update();
 
-  registrationFilter->SetFixedImage(fixedrescalefilter->GetOutput());
-  registrationFilter->SetMovingImage(IntensityEqualizeFilter->GetOutput());
-
+  registrationFilter->SetFixedImage(fixedrescalefilter->GetOutput() );
+  registrationFilter->SetMovingImage(IntensityEqualizeFilter->GetOutput() );
 
   itk::ImageFileWriter<ImageType>::Pointer writer;
   writer = itk::ImageFileWriter<ImageType>::New();
@@ -163,22 +158,28 @@ int main(int argc, char *argv[])
   writer2->SetInput(registrationFilter->GetMovingImage() );
   writer2->Write();
 
-
   // Create the material properties
   itk::fem::MaterialLinearElasticity::Pointer m;
   m = itk::fem::MaterialLinearElasticity::New();
   m->SetGlobalNumber(0);
-  m->SetYoungsModulus(registrationFilter->GetElasticity()); // Young's modulus used in the membrane
-  m->SetCrossSectionalArea(1.0);                            // Cross-sectional area
-  m->SetThickness(1.0);                                     // Thickness
-  m->SetMomentOfInertia(1.0);                               // Moment of inertia
-  m->SetPoissonsRatio(0.);                                  // Poisson's ratio -- DONT CHOOSE 1.0!!
-  m->SetDensityHeatProduct(1.0);                            // Density-Heat capacity product
+  m->SetYoungsModulus(registrationFilter->GetElasticity() ); // Young's modulus
+                                                             // used in the
+                                                             // membrane
+  m->SetCrossSectionalArea(1.0);                             // Cross-sectional
+                                                             // area
+  m->SetThickness(1.0);                                      // Thickness
+  m->SetMomentOfInertia(1.0);                                // Moment of
+                                                             // inertia
+  m->SetPoissonsRatio(0.);                                   // Poisson's ratio
+                                                             // -- DONT CHOOSE
+                                                             // 1.0!!
+  m->SetDensityHeatProduct(1.0);                             // Density-Heat
+                                                             // capacity product
 
   // Create the element type
   ElementType::Pointer e1=ElementType::New();
-  e1->SetMaterial(m.GetPointer());
-  registrationFilter->SetElement(e1.GetPointer());
+  e1->SetMaterial(m.GetPointer() );
+  registrationFilter->SetElement(e1.GetPointer() );
   registrationFilter->SetMaterial(m);
 
   // Run registration
@@ -188,14 +189,14 @@ int main(int argc, char *argv[])
   writer->SetFileName("warpedMovingImage.mhd");
   writer->SetInput( registrationFilter->GetWarpedImage() );
   try
-  {
+    {
     writer->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // output the displacement field
   typedef itk::ImageFileWriter<RegistrationType::FieldType> DispWriterType;
@@ -203,14 +204,14 @@ int main(int argc, char *argv[])
   dispWriter->SetInput( registrationFilter->GetDisplacementField() );
   dispWriter->SetFileName("displacement.mha");
   try
-  {
+    {
     dispWriter->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   return EXIT_SUCCESS;
 }

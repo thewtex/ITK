@@ -72,11 +72,13 @@ public:
 
 protected:
   DecisionRule();
-  virtual ~DecisionRule();
+  virtual
+  ~DecisionRule();
 
 private:
   DecisionRule(const Self &);   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };                              // end of class
 } // end of namespace Statistics
 } // end of namespace itk

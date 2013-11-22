@@ -31,7 +31,7 @@ class SpatialObject;
  * \ingroup ITKSpatialObjects
  */
 template< unsigned int TDimension >
-class SpatialObjectTreeNode:public TreeNode< SpatialObject< TDimension > * >
+class SpatialObjectTreeNode : public TreeNode< SpatialObject< TDimension > * >
 {
 public:
 
@@ -77,7 +77,10 @@ protected:
 
   /** Constructor */
   SpatialObjectTreeNode();
-  virtual ~SpatialObjectTreeNode(){}
+  virtual
+  ~SpatialObjectTreeNode(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   TransformPointer m_NodeToParentNodeTransform;
@@ -87,6 +90,7 @@ private:
 
   SpatialObjectTreeNode(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 
 } // end namespace itk

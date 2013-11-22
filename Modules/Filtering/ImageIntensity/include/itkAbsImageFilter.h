@@ -33,22 +33,30 @@ template< typename TInput, typename TOutput >
 class Abs
 {
 public:
-  Abs() {}
-  ~Abs() {}
-  bool operator!=(const Abs &) const
+  Abs() {
+  }
+
+  ~Abs() {
+  }
+
+  bool
+  operator!=(const Abs &) const
   {
     return false;
   }
 
-  bool operator==(const Abs & other) const
+  bool
+  operator==(const Abs & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast<TOutput>( vnl_math_abs( A ) );
   }
+
 };
 }
 
@@ -66,7 +74,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class AbsImageFilter:
+class AbsImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Abs<
@@ -89,8 +97,8 @@ public:
   itkTypeMacro(AbsImageFilter,
                UnaryFunctorImageFilter);
 
-  typedef typename TInputImage::PixelType     InputPixelType;
-  typedef typename TOutputImage::PixelType    OutputPixelType;
+  typedef typename TInputImage::PixelType  InputPixelType;
+  typedef typename TOutputImage::PixelType OutputPixelType;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -102,12 +110,17 @@ public:
 #endif
 
 protected:
-  AbsImageFilter() {}
-  virtual ~AbsImageFilter() {}
+  AbsImageFilter() {
+  }
+
+  virtual
+  ~AbsImageFilter() {
+  }
 
 private:
   AbsImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

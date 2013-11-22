@@ -48,7 +48,8 @@
 #include "itkImageRegionIterator.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 3 )
     {
@@ -63,7 +64,8 @@ int main( int argc, char ** argv )
   // Software Guide : BeginLatex
   //
   // The finite difference calculations
-  // in this algorithm require floating point values.  Hence, we define the image
+  // in this algorithm require floating point values.  Hence, we define the
+  // image
   // pixel type to be \code{float} and the file reader will
   // automatically cast fixed-point data to \code{float}.
   //
@@ -83,7 +85,6 @@ int main( int argc, char ** argv )
   typedef itk::ConstNeighborhoodIterator< ImageType > NeighborhoodIteratorType;
   typedef itk::ImageRegionIterator< ImageType>        IteratorType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -132,12 +133,11 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
-  IteratorType out(output, reader->GetOutput()->GetRequestedRegion());
+  IteratorType out(output, reader->GetOutput()->GetRequestedRegion() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -170,7 +170,8 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginLatex
   //
-  // It is equivalent to use the six corresponding integer array indices instead.
+  // It is equivalent to use the six corresponding integer array indices
+  // instead.
   // For example, the offsets \code{(-1,-1)} and \code{(1, -1)} are
   // equivalent to the integer indices \code{0} and \code{2}, respectively.
   //
@@ -206,7 +207,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter<
-               ImageType, WriteImageType > RescaleFilterType;
+      ImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
@@ -216,7 +217,7 @@ int main( int argc, char ** argv )
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
-  writer->SetInput(rescaler->GetOutput());
+  writer->SetInput(rescaler->GetOutput() );
   try
     {
     writer->Update();
@@ -228,7 +229,6 @@ int main( int argc, char ** argv )
     return -1;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -247,7 +247,6 @@ int main( int argc, char ** argv )
   // \end{figure}
   //
   // Software Guide : EndLatex
-
 
   return 0;
 }

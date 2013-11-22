@@ -22,7 +22,8 @@
 #include "itkSpatialObjectToImageFilter.h"
 #include <iostream>
 
-int itkPolylineMaskImageFilterTest(int , char * [] )
+int
+itkPolylineMaskImageFilterTest(int , char * [] )
 {
   /*
   if(argc < 3)
@@ -39,32 +40,31 @@ int itkPolylineMaskImageFilterTest(int , char * [] )
   //Define the dimension of the polyline
   const unsigned int pDimension = 2;
 
-
   // Declare the types of the images
-  typedef itk::Image<unsigned short, iDimension>     inputImageType;
-  typedef itk::Image<unsigned short, iDimension>     outputImageType;
-  typedef itk::Vector<double, iDimension>            inputVectorType;
-  typedef itk::PolyLineParametricPath<pDimension>    inputPolylineType;
+  typedef itk::Image<unsigned short, iDimension>  inputImageType;
+  typedef itk::Image<unsigned short, iDimension>  outputImageType;
+  typedef itk::Vector<double, iDimension>         inputVectorType;
+  typedef itk::PolyLineParametricPath<pDimension> inputPolylineType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<iDimension>         inputIndexType;
+  typedef itk::Index<iDimension> inputIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<iDimension>          inputSizeType;
+  typedef itk::Size<iDimension> inputSizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<iDimension>   inputRegionType;
+  typedef itk::ImageRegion<iDimension> inputRegionType;
 
   // Create vector
-  inputVectorType   inputUpVector,inputViewVector;
+  inputVectorType inputUpVector,inputViewVector;
 
   // Create polyline
   inputPolylineType::Pointer inputPolyline   = inputPolylineType::New();
   std::cout<<"Generating the synthetic object...."<<std::endl;
   //Generate ellipse image
 
-  typedef itk::EllipseSpatialObject<2>   EllipseType;
-  EllipseType::Pointer ellipse = EllipseType::New();
+  typedef itk::EllipseSpatialObject<2> EllipseType;
+  EllipseType::Pointer                   ellipse = EllipseType::New();
   EllipseType::TransformType::OffsetType offset;
   offset.Fill(20);
   ellipse->GetObjectToParentTransform()->SetOffset(offset);
@@ -76,7 +76,7 @@ int itkPolylineMaskImageFilterTest(int , char * [] )
   typedef itk::SpatialObjectToImageFilter<EllipseType,inputImageType> SpatialObjectToImageFilterType;
   SpatialObjectToImageFilterType::Pointer imageGenerationFilter = SpatialObjectToImageFilterType::New();
 
-  inputImageType::SizeType size;
+  inputImageType::SizeType  size;
   inputImageType::PointType origin;
 
   origin[0] = 0.0;
@@ -93,7 +93,6 @@ int itkPolylineMaskImageFilterTest(int , char * [] )
   imageGenerationFilter->SetInsideValue(2);
   imageGenerationFilter->SetOutsideValue(0);
   imageGenerationFilter->Update();
-
 
   //Write out the input image
 /*
@@ -127,7 +126,6 @@ int itkPolylineMaskImageFilterTest(int , char * [] )
   v[1] = 1;
   inputPolyline->AddVertex(v);
 
-
   std::cout << "Generating the view vector..... " << std::endl;
 
   // View vector
@@ -142,9 +140,9 @@ int itkPolylineMaskImageFilterTest(int , char * [] )
 
   // Declare the type for the Mask image filter
   typedef itk::PolylineMaskImageFilter<
-                           inputImageType, inputPolylineType,
-                           inputVectorType,
-                           outputImageType  >     inputFilterType;
+      inputImageType, inputPolylineType,
+      inputVectorType,
+      outputImageType  >     inputFilterType;
 
   typedef inputFilterType::PointType          PointType;
   typedef inputFilterType::ProjPlanePointType ProjPlanePointType;
@@ -156,7 +154,7 @@ int itkPolylineMaskImageFilterTest(int , char * [] )
 
   //filter->DebugOn();
   //Connect the input image
-  filter->SetInput1    ( imageGenerationFilter->GetOutput());
+  filter->SetInput1    ( imageGenerationFilter->GetOutput() );
 
   inputImageType::PointType originA;
 
@@ -202,7 +200,6 @@ int itkPolylineMaskImageFilterTest(int , char * [] )
   outputWriter->SetInput( filter->GetOutput() );
   outputWriter->Update();
 */
-
 
   return EXIT_SUCCESS;
 

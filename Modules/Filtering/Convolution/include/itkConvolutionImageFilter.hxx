@@ -82,7 +82,7 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
 ::ComputeConvolution( const TImage * kernelImage,
                       ProgressAccumulator * progress )
 {
-  typedef typename TImage::PixelType KernelImagePixelType;
+  typedef typename TImage::PixelType                                  KernelImagePixelType;
   typedef ImageKernelOperator< KernelImagePixelType, ImageDimension > KernelOperatorType;
   KernelOperatorType kernelOperator;
 
@@ -186,7 +186,6 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
     cropFilter->GetOutput()->SetRequestedRegion( this->GetOutput()->GetRequestedRegion() );
     cropFilter->Update();
 
-
     // Graft the output of the crop filter back onto this
     // filter's output.
     this->GraftOutput( cropFilter->GetOutput() );
@@ -199,8 +198,8 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
 ::GetKernelNeedsPadding() const
 {
   const KernelImageType *kernel = this->GetKernelImage();
-  InputRegionType kernelRegion = kernel->GetLargestPossibleRegion();
-  InputSizeType kernelSize = kernelRegion.GetSize();
+  InputRegionType        kernelRegion = kernel->GetLargestPossibleRegion();
+  InputSizeType          kernelSize = kernelRegion.GetSize();
 
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
@@ -219,9 +218,9 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
 ::GetKernelPadSize() const
 {
   const KernelImageType *kernel = this->GetKernelImage();
-  KernelRegionType kernelRegion = kernel->GetLargestPossibleRegion();
-  KernelSizeType kernelSize = kernelRegion.GetSize();
-  KernelSizeType padSize;
+  KernelRegionType       kernelRegion = kernel->GetLargestPossibleRegion();
+  KernelSizeType         kernelSize = kernelRegion.GetSize();
+  KernelSizeType         padSize;
 
   for ( unsigned int i = 0; i < ImageDimension; i++)
     {
@@ -240,6 +239,7 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
 {
   // Compute the kernel radius.
   KernelSizeType radius;
+
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
     radius[i] = kernelImage->GetLargestPossibleRegion().GetSize()[i] / 2;
@@ -291,5 +291,6 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
     kernelPtr->SetRequestedRegionToLargestPossibleRegion();
     }
 }
+
 }
 #endif

@@ -27,7 +27,8 @@
 
 // Software Guide : BeginLatex
 //
-// This example illustrates the use of the \doxygen{CenteredSimilarity2DTransform}
+// This example illustrates the use of the
+// \doxygen{CenteredSimilarity2DTransform}
 // class for performing registration in $2D$. The of example code is for
 // the most part identical to the code presented in Section
 // \ref{sec:InitializingRegistrationWithMoments}.  The main difference is the
@@ -56,9 +57,7 @@
 #include "itkMeanSquaresImageToImageMetric.h"
 #include "itkRegularStepGradientDescentOptimizer.h"
 
-
 #include "itkCenteredTransformInitializer.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -73,7 +72,6 @@
 #include "itkCenteredSimilarity2DTransform.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
@@ -83,7 +81,6 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkIdentityTransform.h"
 
-
 //  The following section of code implements a Command observer
 //  that will monitor the evolution of the registration process.
 //
@@ -91,38 +88,44 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>   Pointer;
+  typedef  CommandIterationUpdate Self;
+  typedef  itk::Command           Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
   typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   typedef   const OptimizerType *                  OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << optimizer->GetCurrentPosition() << std::endl;
-    }
+  }
+
 };
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -137,12 +140,11 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  const    unsigned int    Dimension = 2;
-  typedef  float           PixelType;
+  const    unsigned int Dimension = 2;
+  typedef  float PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
-
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   //  Software Guide : BeginLatex
   //
@@ -158,24 +160,22 @@ int main( int argc, char *argv[] )
   typedef itk::CenteredSimilarity2DTransform< double > TransformType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   typedef itk::MeanSquaresImageToImageMetric< FixedImageType, MovingImageType >
     MetricType;
-  typedef itk:: LinearInterpolateImageFunction< MovingImageType, double >
+  typedef itk::LinearInterpolateImageFunction< MovingImageType, double >
     InterpolatorType;
   typedef itk::ImageRegistrationMethod< FixedImageType, MovingImageType >
     RegistrationType;
 
-  MetricType::Pointer         metric        = MetricType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  MetricType::Pointer       metric        = MetricType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetMetric(        metric        );
   registration->SetOptimizer(     optimizer     );
   registration->SetInterpolator(  interpolator  );
-
 
   //  Software Guide : BeginLatex
   //
@@ -189,10 +189,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  TransformType::Pointer  transform = TransformType::New();
+  TransformType::Pointer transform = TransformType::New();
   registration->SetTransform( transform );
   // Software Guide : EndCodeSnippet
-
 
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
   typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
@@ -203,14 +202,12 @@ int main( int argc, char *argv[] )
   fixedImageReader->SetFileName(  argv[1] );
   movingImageReader->SetFileName( argv[2] );
 
-
   registration->SetFixedImage(    fixedImageReader->GetOutput()    );
   registration->SetMovingImage(   movingImageReader->GetOutput()   );
   fixedImageReader->Update();
 
   registration->SetFixedImageRegion(
-     fixedImageReader->GetOutput()->GetBufferedRegion() );
-
+    fixedImageReader->GetOutput()->GetBufferedRegion() );
 
   //  Software Guide : BeginLatex
   //
@@ -220,14 +217,13 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   typedef itk::CenteredTransformInitializer<
-            TransformType, FixedImageType,
-            MovingImageType >  TransformInitializerType;
+      TransformType, FixedImageType,
+      MovingImageType >  TransformInitializerType;
 
   TransformInitializerType::Pointer initializer
-                                            = TransformInitializerType::New();
+    = TransformInitializerType::New();
 
   initializer->SetTransform(   transform );
 
@@ -238,7 +234,6 @@ int main( int argc, char *argv[] )
 
   initializer->InitializeTransform();
 // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -279,7 +274,6 @@ int main( int argc, char *argv[] )
   registration->SetInitialTransformParameters( transform->GetParameters() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Keeping in mind that the scale of units in scaling, rotation and
@@ -294,9 +288,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef OptimizerType::ScalesType       OptimizerScalesType;
+  typedef OptimizerType::ScalesType OptimizerScalesType;
   OptimizerScalesType optimizerScales( transform->GetNumberOfParameters() );
-  const double translationScale = 1.0 / 100.0;
+  const double        translationScale = 1.0 / 100.0;
 
   optimizerScales[0] = 10.0;
   optimizerScales[1] =  1.0;
@@ -307,7 +301,6 @@ int main( int argc, char *argv[] )
 
   optimizer->SetScales( optimizerScales );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -333,12 +326,10 @@ int main( int argc, char *argv[] )
   optimizer->SetNumberOfIterations( 500 );
   // Software Guide : EndCodeSnippet
 
-
   // Create the Command observer and register it with the optimizer.
   //
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
-
 
   try
     {
@@ -355,8 +346,7 @@ int main( int argc, char *argv[] )
     }
 
   OptimizerType::ParametersType finalParameters =
-                    registration->GetLastTransformParameters();
-
+    registration->GetLastTransformParameters();
 
   const double finalScale           = finalParameters[0];
   const double finalAngle           = finalParameters[1];
@@ -368,7 +358,6 @@ int main( int argc, char *argv[] )
   const unsigned int numberOfIterations = optimizer->GetCurrentIteration();
 
   const double bestValue = optimizer->GetValue();
-
 
   // Print out results
   //
@@ -385,7 +374,6 @@ int main( int argc, char *argv[] )
   std::cout << " Translation Y = " << finalTranslationY  << std::endl;
   std::cout << " Iterations    = " << numberOfIterations << std::endl;
   std::cout << " Metric value  = " << bestValue          << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -427,7 +415,8 @@ int main( int argc, char *argv[] )
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySliceBorder20}
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySliceR10X13Y17S12}
   // \itkcaption[Fixed and Moving image registered with
-  // CenteredSimilarity2DTransform]{Fixed and Moving image provided as input to the
+  // CenteredSimilarity2DTransform]{Fixed and Moving image provided as input to
+  // the
   // registration method using the Similarity2D transform.}
   // \label{fig:FixedMovingImageRegistration7}
   // \end{figure}
@@ -438,7 +427,8 @@ int main( int argc, char *argv[] )
   // \includegraphics[width=0.32\textwidth]{ImageRegistration7Output}
   // \includegraphics[width=0.32\textwidth]{ImageRegistration7DifferenceBefore}
   // \includegraphics[width=0.32\textwidth]{ImageRegistration7DifferenceAfter}
-  // \itkcaption[Output of the CenteredSimilarity2DTransform registration]{Resampled
+  // \itkcaption[Output of the CenteredSimilarity2DTransform
+  // registration]{Resampled
   // moving image (left). Differences between fixed and
   // moving images, before (center) and after (right) registration with the
   // Similarity2D transform.}
@@ -454,8 +444,11 @@ int main( int argc, char *argv[] )
   // \includegraphics[height=0.32\textwidth]{ImageRegistration7TraceMetric}
   // \includegraphics[height=0.32\textwidth]{ImageRegistration7TraceAngle}
   // \includegraphics[height=0.32\textwidth]{ImageRegistration7TraceScale}
+  //
+  //
   // \includegraphics[height=0.32\textwidth]{ImageRegistration7TraceTranslations}
-  // \itkcaption[CenteredSimilarity2DTransform registration plots]{Plots of the Metric,
+  // \itkcaption[CenteredSimilarity2DTransform registration plots]{Plots of the
+  // Metric,
   // rotation angle and translations during
   // the registration using
   // Similarity2D transform.}
@@ -469,7 +462,6 @@ int main( int argc, char *argv[] )
   //  in the plot at right.
   //
   //  Software Guide : EndLatex
-
 
   typedef itk::ResampleImageFilter< MovingImageType,
                                     FixedImageType > ResampleFilterType;
@@ -492,39 +484,34 @@ int main( int argc, char *argv[] )
   resampler->SetOutputDirection( fixedImage->GetDirection() );
   resampler->SetDefaultPixelValue( 100 );
 
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char OutputPixelType;
 
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
   typedef itk::CastImageFilter< FixedImageType, OutputImageType >
     CastFilterType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
-
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
-
 
   caster->SetInput( resampler->GetOutput() );
   writer->SetInput( caster->GetOutput()   );
   writer->Update();
 
-
   typedef itk::SubtractImageFilter<
-                                  FixedImageType,
-                                  FixedImageType,
-                                  FixedImageType > DifferenceFilterType;
+      FixedImageType,
+      FixedImageType,
+      FixedImageType > DifferenceFilterType;
 
   DifferenceFilterType::Pointer difference = DifferenceFilterType::New();
 
-
   typedef itk::RescaleIntensityImageFilter<
-                                  FixedImageType,
-                                  OutputImageType >   RescalerType;
+      FixedImageType,
+      OutputImageType >   RescalerType;
 
   RescalerType::Pointer intensityRescaler = RescalerType::New();
 
@@ -540,7 +527,6 @@ int main( int argc, char *argv[] )
   WriterType::Pointer writer2 = WriterType::New();
   writer2->SetInput( intensityRescaler->GetOutput() );
 
-
   // Compute the difference image between the
   // fixed and resampled moving image.
   if( argc > 5 )
@@ -548,7 +534,6 @@ int main( int argc, char *argv[] )
     writer2->SetFileName( argv[5] );
     writer2->Update();
     }
-
 
   typedef itk::IdentityTransform< double, Dimension > IdentityTransformType;
   IdentityTransformType::Pointer identity = IdentityTransformType::New();
@@ -561,7 +546,6 @@ int main( int argc, char *argv[] )
     writer2->SetFileName( argv[4] );
     writer2->Update();
     }
-
 
   return EXIT_SUCCESS;
 }

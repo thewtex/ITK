@@ -23,21 +23,21 @@
 
 #include "itkFilterWatcher.h"
 
-
-int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
+int
+itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
 {
   std::cout << "itkLabelStatisticsImageFilterTest Start" << std::endl;
 
   if( argc < 2 )
-  {
+    {
     std::cerr << "Missing Arguments" << std::endl;
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << " inputImage labeledImage " << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   typedef itk::Image<unsigned char,2> ImageType;
 
-  typedef itk::ImageFileReader< ImageType >    ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
   ReaderType::Pointer reader2 = ReaderType::New();
@@ -106,7 +106,7 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
     if (i == 0)
       {
       labelValue = 0;
-      while (!filter->HasLabel(labelValue))
+      while (!filter->HasLabel(labelValue) )
         {
         labelValue++;
         }
@@ -118,7 +118,7 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
     if (i != 0)
       {
       labelValue = 0;
-      while (filter->HasLabel(labelValue))
+      while (filter->HasLabel(labelValue) )
         {
         labelValue++;
         }
@@ -127,16 +127,15 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
                 << " which does not exist" << std::endl;
       }
 
-
-    const RealType min      =  filter->GetMinimum( labelValue );
-    const RealType max      =  filter->GetMaximum( labelValue );
-    const RealType median   =  filter->GetMedian( labelValue );
-    const RealType mean     =  filter->GetMean( labelValue );
-    const RealType sigma    =  filter->GetSigma( labelValue );
-    const RealType variance =  filter->GetVariance( labelValue );
-    const RealType sum      =  filter->GetSum( labelValue );
+    const RealType        min      =  filter->GetMinimum( labelValue );
+    const RealType        max      =  filter->GetMaximum( labelValue );
+    const RealType        median   =  filter->GetMedian( labelValue );
+    const RealType        mean     =  filter->GetMean( labelValue );
+    const RealType        sigma    =  filter->GetSigma( labelValue );
+    const RealType        variance =  filter->GetVariance( labelValue );
+    const RealType        sum      =  filter->GetSum( labelValue );
     const BoundingBoxType box = filter->GetBoundingBox( labelValue );
-    const RegionType region = filter->GetRegion( labelValue );
+    const RegionType      region = filter->GetRegion( labelValue );
 
     std::cout << "Minimum   = " << min      << std::endl;
     std::cout << "Maximum   = " << max      << std::endl;

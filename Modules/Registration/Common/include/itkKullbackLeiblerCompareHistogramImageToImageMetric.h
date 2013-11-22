@@ -69,14 +69,14 @@ namespace itk
  */
 
 template< typename TFixedImage, typename TMovingImage >
-class KullbackLeiblerCompareHistogramImageToImageMetric:
+class KullbackLeiblerCompareHistogramImageToImageMetric :
   public CompareHistogramImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
   /** Standard class typedefs. */
   typedef KullbackLeiblerCompareHistogramImageToImageMetric Self;
   typedef CompareHistogramImageToImageMetric< TFixedImage, TMovingImage >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -102,12 +102,12 @@ public:
   typedef typename Superclass::MovingImageType        MovingImageType;
   typedef typename Superclass::FixedImageConstPointer FixedImageConstPointer;
   typedef typename Superclass::MovingImageConstPointer
-  MovingImageConstPointer;
+    MovingImageConstPointer;
 
   typedef typename Superclass::HistogramType     HistogramType;
   typedef typename Superclass::HistogramSizeType HistogramSizeType;
   typedef typename Superclass::MeasurementVectorType
-  HistogramMeasurementVectorType;
+    HistogramMeasurementVectorType;
 
   typedef typename Superclass::HistogramFrequencyType HistogramFrequencyType;
   typedef typename Superclass::HistogramIteratorType  HistogramIteratorType;
@@ -122,8 +122,11 @@ public:
   itkGetConstReferenceMacro(Epsilon, double);
 
   /** Return the number of parameters required by the Transform */
-  unsigned int GetNumberOfParameters(void) const
-  { return this->GetTransform()->GetNumberOfParameters(); }
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
+    return this->GetTransform()->GetNumberOfParameters();
+  }
 
   /** Forms the histogram of the training images to prepare to evaluate the */
   /** metric. Must set all parameters first */
@@ -134,7 +137,10 @@ protected:
   /** Constructor is protected to ensure that \c New() function is used to
       create instances. */
   KullbackLeiblerCompareHistogramImageToImageMetric();
-  virtual ~KullbackLeiblerCompareHistogramImageToImageMetric(){}
+  virtual
+  ~KullbackLeiblerCompareHistogramImageToImageMetric(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Form the Histogram for the Training data */
@@ -150,6 +156,7 @@ private:
   // Purposely not implemented.
   KullbackLeiblerCompareHistogramImageToImageMetric(Self const &);
   void operator=(Self const &); // Purposely not implemented.
+
 };
 } // End namespace itk.
 

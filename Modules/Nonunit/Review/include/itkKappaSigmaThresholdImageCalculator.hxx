@@ -43,6 +43,7 @@ KappaSigmaThresholdImageCalculator< TInputImage, TMaskImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Input: " << this->m_Image.GetPointer() << std::endl;
   os << indent << "Mask: " << this->m_Mask.GetPointer() << std::endl;
   os << indent << "Valid: " << this->m_Valid << std::endl;
@@ -130,13 +131,13 @@ template< typename TInputImage, typename TMaskImage >
 const typename KappaSigmaThresholdImageCalculator< TInputImage, TMaskImage >::InputPixelType &
 KappaSigmaThresholdImageCalculator< TInputImage, TMaskImage >
 ::GetOutput() const
-{
+  {
   if ( !this->m_Valid )
     {
     itkExceptionMacro(<< "GetOutput() invoked, but the output have not been computed. Call Compute() first.");
     }
   return this->m_Output;
-}
+  }
 } // end namespace itk
 
 #endif

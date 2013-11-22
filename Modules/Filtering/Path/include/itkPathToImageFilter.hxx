@@ -48,7 +48,8 @@ PathToImageFilter< TInputPath, TOutputImage >
 template< typename TInputPath, typename TOutputImage >
 PathToImageFilter< TInputPath, TOutputImage >
 ::~PathToImageFilter()
-{}
+{
+}
 
 /** Set the Input SpatialObject */
 template< typename TInputPath, typename TOutputImage >
@@ -75,18 +76,18 @@ template< typename TInputPath, typename TOutputImage >
 const typename PathToImageFilter< TInputPath, TOutputImage >::InputPathType *
 PathToImageFilter< TInputPath, TOutputImage >
 ::GetInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputPath * >( this->GetPrimaryInput() );
-}
+  }
 
 /** Get the input Path */
 template< typename TInputPath, typename TOutputImage >
 const typename PathToImageFilter< TInputPath, TOutputImage >::InputPathType *
 PathToImageFilter< TInputPath, TOutputImage >
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputPath * >( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TInputPath, typename TOutputImage >
@@ -311,10 +312,12 @@ PathToImageFilter< TInputPath, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Size : " << m_Size << std::endl;
   os << indent << "Path Value : " << m_PathValue << std::endl;
   os << indent << "Background Value : " << m_BackgroundValue << std::endl;
 }
+
 } // end namespace itk
 
 #endif

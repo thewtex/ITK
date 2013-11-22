@@ -19,7 +19,8 @@
 #include "itkListSample.h"
 #include "itkKdTreeGenerator.h"
 
-int itkKdTreeGeneratorTest(int, char* [])
+int
+itkKdTreeGeneratorTest(int, char* [])
 {
   // Testing KdTreeGenerator with Arrays as the measurement vectors
     {
@@ -36,7 +37,7 @@ int itkKdTreeGeneratorTest(int, char* [])
     for (unsigned int i = 0; i < 1000; ++i )
       {
       mv[0] = (float) i;
-      mv[1] = (float) ((1000 - i) / 2 );
+      mv[1] = (float) ( (1000 - i) / 2 );
       sample->PushBack( mv );
       }
 
@@ -67,7 +68,7 @@ int itkKdTreeGeneratorTest(int, char* [])
       }
 
     unsigned int partitionDimension;
-    float partitionValue;
+    float        partitionValue;
     root->GetParameters( partitionDimension, partitionValue);
     std::cout << "Dimension chosen to split the space = "
               << partitionDimension << std::endl;
@@ -85,7 +86,7 @@ int itkKdTreeGeneratorTest(int, char* [])
     queryPoint[1] = 7.0;
 
     typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType > DistanceMetricType;
-    DistanceMetricType::Pointer distanceMetric = DistanceMetricType::New();
+    DistanceMetricType::Pointer    distanceMetric = DistanceMetricType::New();
     DistanceMetricType::OriginType origin( measurementVectorSize );
     for ( unsigned int i = 0; i < measurementVectorSize; ++i )
       {
@@ -93,7 +94,7 @@ int itkKdTreeGeneratorTest(int, char* [])
       }
     distanceMetric->SetOrigin( origin );
 
-    unsigned int numberOfNeighbors = 3;
+    unsigned int                           numberOfNeighbors = 3;
     TreeType::InstanceIdentifierVectorType neighbors;
     tree->Search( queryPoint, numberOfNeighbors, neighbors );
 
@@ -105,7 +106,7 @@ int itkKdTreeGeneratorTest(int, char* [])
       {
       std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
                 << "] : "
-                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i])) << std::endl;
+                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i]) ) << std::endl;
       }
 
     double radius = 437.0;
@@ -120,11 +121,12 @@ int itkKdTreeGeneratorTest(int, char* [])
       {
       std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
                 << "] : "
-                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i])) << std::endl;
+                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i]) ) << std::endl;
       }
     }
 
-  // Testing KdTreeGenerator with Fixed length vectors as the measurement vectors.
+  // Testing KdTreeGenerator with Fixed length vectors as the measurement
+  // vectors.
     {
     typedef itk::Vector< float, 2 > MeasurementVectorType;
 
@@ -136,7 +138,7 @@ int itkKdTreeGeneratorTest(int, char* [])
     for (unsigned int i = 0; i < 1000; ++i )
       {
       mv[0] = (float) i;
-      mv[1] = (float) ((1000 - i) / 2 );
+      mv[1] = (float) ( (1000 - i) / 2 );
       sample->PushBack( mv );
       }
 
@@ -165,7 +167,7 @@ int itkKdTreeGeneratorTest(int, char* [])
       }
 
     unsigned int partitionDimension;
-    float partitionValue;
+    float        partitionValue;
     root->GetParameters( partitionDimension, partitionValue);
     std::cout << "Dimension chosen to split the space = "
               << partitionDimension << std::endl;
@@ -183,7 +185,7 @@ int itkKdTreeGeneratorTest(int, char* [])
     queryPoint[1] = 7.0;
 
     typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType > DistanceMetricType;
-    DistanceMetricType::Pointer distanceMetric = DistanceMetricType::New();
+    DistanceMetricType::Pointer    distanceMetric = DistanceMetricType::New();
     DistanceMetricType::OriginType origin( 2 );
     for ( unsigned int i = 0; i < MeasurementVectorType::Length; ++i )
       {
@@ -191,7 +193,7 @@ int itkKdTreeGeneratorTest(int, char* [])
       }
     distanceMetric->SetOrigin( origin );
 
-    unsigned int numberOfNeighbors = 3;
+    unsigned int                           numberOfNeighbors = 3;
     TreeType::InstanceIdentifierVectorType neighbors;
     tree->Search( queryPoint, numberOfNeighbors, neighbors );
 
@@ -203,7 +205,7 @@ int itkKdTreeGeneratorTest(int, char* [])
       {
       std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
                 << "] : "
-                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i])) << std::endl;
+                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i]) ) << std::endl;
       }
 
     double radius = 437.0;
@@ -218,10 +220,11 @@ int itkKdTreeGeneratorTest(int, char* [])
       {
       std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
                 << "] : "
-                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i])) << std::endl;
+                << distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i]) ) << std::endl;
       }
     }
 
   std::cout << "Test passed." << std::endl;
+
   return EXIT_SUCCESS;
 }

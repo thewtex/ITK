@@ -37,15 +37,16 @@ SpatialObjectProperty< TComponentType >
 template< typename TComponentType >
 SpatialObjectProperty< TComponentType >
 ::~SpatialObjectProperty()
-{}
+{
+}
 
 template< typename TComponentType >
 const typename SpatialObjectProperty< TComponentType >::PixelType &
 SpatialObjectProperty< TComponentType >
 ::GetColor(void) const
-{
+  {
   return m_Color;
-}
+  }
 
 template< typename TComponentType >
 void
@@ -158,11 +159,13 @@ SpatialObjectProperty< TComponentType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Name: " << m_Name << std::endl;
   os << indent << "RGBA: " << m_Color.GetRed() << " ";
   os << m_Color.GetGreen() << " ";
   os << m_Color.GetBlue() << std::endl;
 }
+
 } // end of namespace itk
 
 #endif // __SpatialObjectProperty_hxx

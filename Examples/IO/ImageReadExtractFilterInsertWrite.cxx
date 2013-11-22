@@ -59,7 +59,8 @@
 // Software Guide : BeginCodeSnippet
 #include "itkMedianImageFilter.h"
 // Software Guide : EndCodeSnippet
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -77,12 +78,12 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char                       InputPixelType;
-  typedef unsigned char                       MiddlePixelType;
-  typedef unsigned char                       OutputPixelType;
-  typedef itk::Image< InputPixelType,  3 >    InputImageType;
-  typedef itk::Image< MiddlePixelType, 3 >    MiddleImageType;
-  typedef itk::Image< OutputPixelType, 3 >    OutputImageType;
+  typedef unsigned char                    InputPixelType;
+  typedef unsigned char                    MiddlePixelType;
+  typedef unsigned char                    OutputPixelType;
+  typedef itk::Image< InputPixelType,  3 > InputImageType;
+  typedef itk::Image< MiddlePixelType, 3 > MiddleImageType;
+  typedef itk::Image< OutputPixelType, 3 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -92,8 +93,8 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
 
   // Here we recover the file names from the command line arguments
@@ -163,7 +164,7 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   reader->Update();
-  const InputImageType * inputImage = reader->GetOutput();
+  const InputImageType *     inputImage = reader->GetOutput();
   InputImageType::RegionType inputRegion = inputImage->GetBufferedRegion();
   // Software Guide : EndCodeSnippet
 
@@ -196,7 +197,7 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
   InputImageType::IndexType start = inputRegion.GetIndex();
-  const unsigned int sliceNumber = atoi( argv[3] );
+  const unsigned int        sliceNumber = atoi( argv[3] );
   start[2] = sliceNumber;
   // Software Guide : EndCodeSnippet
 

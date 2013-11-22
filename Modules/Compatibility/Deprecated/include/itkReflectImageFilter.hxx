@@ -93,6 +93,7 @@ ReflectImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream & os, In
 
   os << indent << "Direction: " << m_Direction << std::endl;
 }
+
 } // end namespace itk
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )

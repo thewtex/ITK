@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkJoinSeriesImageFilter.h"
 #include "itkStreamingImageFilter.h"
 
@@ -26,26 +25,35 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
-int itkJoinSeriesImageFilterTest(int, char* [] )
+int
+itkJoinSeriesImageFilterTest(int, char* [] )
 {
   // to write informations to "itkMessageLog.txt" when DebugOn()
 //   itk::OutputWindow::SetInstance( itk::FileOutputWindow::New() );
 
   const unsigned int streamDivisions = 2;
-  typedef unsigned char                 PixelType;
-  typedef itk::Image< PixelType, 2 >    InputImageType;
+
+  typedef unsigned char              PixelType;
+  typedef itk::Image< PixelType, 2 > InputImageType;
   // typedef itk::Image< PixelType, 3 > OutputImageType;
   typedef itk::Image< PixelType, 4 > OutputImageType;
 
   // the expected result
-  OutputImageType::IndexType expectedIndex = {{1, 2, 0, 0}};
-  OutputImageType::SizeType expectedSize = {{8, 5, 4, 1}};
+  OutputImageType::IndexType  expectedIndex = {{1, 2, 0, 0}};
+  OutputImageType::SizeType   expectedSize = {{8, 5, 4, 1}};
   OutputImageType::RegionType expectedRegion;
   expectedRegion.SetIndex( expectedIndex );
   expectedRegion.SetSize( expectedSize );
@@ -61,17 +69,17 @@ int itkJoinSeriesImageFilterTest(int, char* [] )
   expectedOrigin[3] = 0.0;
 
   // make the input images
-  int numInputs = 4;
-  InputImageType::IndexType index = {{1, 2}};
-  InputImageType::SizeType size = {{8, 5}};
+  int                        numInputs = 4;
+  InputImageType::IndexType  index = {{1, 2}};
+  InputImageType::SizeType   size = {{8, 5}};
   InputImageType::RegionType region;
   region.SetIndex( index );
   region.SetSize( size );
-  const double spacingValue = 1.3;
+  const double                spacingValue = 1.3;
   InputImageType::SpacingType spacing;
   spacing[0] = 1.1;
   spacing[1] = 1.2;
-  const double originValue = 0.3;
+  const double              originValue = 0.3;
   InputImageType::PointType origin;
   origin[0] = 0.1;
   origin[1] = 0.2;
@@ -87,7 +95,7 @@ int itkJoinSeriesImageFilterTest(int, char* [] )
     inputs[i]->Allocate();
 
     itk::ImageRegionIterator<InputImageType>
-      inputIter( inputs[i], inputs[i]->GetBufferedRegion() );
+    inputIter( inputs[i], inputs[i]->GetBufferedRegion() );
     while ( !inputIter.IsAtEnd() )
       {
       inputIter.Set( counter1 );
@@ -140,7 +148,6 @@ int itkJoinSeriesImageFilterTest(int, char* [] )
   streamingImage->SetInput( joinSeriesImage->GetOutput() );
   streamingImage->SetNumberOfStreamDivisions( streamDivisions );
 
-
   // run
   try
     {
@@ -159,7 +166,6 @@ int itkJoinSeriesImageFilterTest(int, char* [] )
     }
 
   OutputImageType::Pointer output = streamingImage->GetOutput();
-
 
   // check the informations
   if ( output->GetLargestPossibleRegion() != expectedRegion )
@@ -183,7 +189,7 @@ int itkJoinSeriesImageFilterTest(int, char* [] )
 
   PixelType counter2 = 0;
   itk::ImageRegionIterator<OutputImageType>
-    outputIter( output, output->GetBufferedRegion() );
+  outputIter( output, output->GetBufferedRegion() );
   while ( !outputIter.IsAtEnd() )
     {
     if ( outputIter.Get() != counter2 )
@@ -200,7 +206,6 @@ int itkJoinSeriesImageFilterTest(int, char* [] )
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // An exception is raised when an input is missing.
   passed = false;
@@ -227,7 +232,6 @@ int itkJoinSeriesImageFilterTest(int, char* [] )
     std::cout << "Expected exception is missing" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

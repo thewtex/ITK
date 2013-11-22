@@ -39,10 +39,10 @@ class ParticleSwarmOptimizerDOMReader : public DOMReader<ParticleSwarmOptimizer>
 {
 public:
   /** Standard class typedefs. */
-  typedef ParticleSwarmOptimizerDOMReader     Self;
-  typedef DOMReader<ParticleSwarmOptimizer>   Superclass;
-  typedef SmartPointer< Self >                Pointer;
-  typedef SmartPointer< const Self >          ConstPointer;
+  typedef ParticleSwarmOptimizerDOMReader   Self;
+  typedef DOMReader<ParticleSwarmOptimizer> Superclass;
+  typedef SmartPointer< Self >              Pointer;
+  typedef SmartPointer< const Self >        ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -51,7 +51,8 @@ public:
   itkTypeMacro(ParticleSwarmOptimizerDOMReader, DOMReader);
 
 protected:
-  ParticleSwarmOptimizerDOMReader() {}
+  ParticleSwarmOptimizerDOMReader() {
+  }
 
   /**
    * This function is called automatically when update functions are performed.
@@ -61,7 +62,8 @@ protected:
 
 private:
   ParticleSwarmOptimizerDOMReader(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                  //purposely not implemented
+
 };
 
 } // namespace itk

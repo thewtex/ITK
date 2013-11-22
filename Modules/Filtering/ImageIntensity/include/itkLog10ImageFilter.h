@@ -34,22 +34,30 @@ template< typename TInput, typename TOutput >
 class Log10
 {
 public:
-  Log10() {}
-  ~Log10() {}
-  bool operator!=(const Log10 &) const
+  Log10() {
+  }
+
+  ~Log10() {
+  }
+
+  bool
+  operator!=(const Log10 &) const
   {
     return false;
   }
 
-  bool operator==(const Log10 & other) const
+  bool
+  operator==(const Log10 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( vcl_log10( static_cast< double >( A ) ) );
   }
+
 };
 }
 /** \class Log10ImageFilter
@@ -62,7 +70,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class Log10ImageFilter:
+class Log10ImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Log10<
@@ -73,9 +81,9 @@ public:
   /** Standard class typedefs. */
   typedef Log10ImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Log10< typename TInputImage::PixelType,
-                     typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Log10< typename TInputImage::PixelType,
+                      typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -97,12 +105,17 @@ public:
 #endif
 
 protected:
-  Log10ImageFilter() {}
-  virtual ~Log10ImageFilter() {}
+  Log10ImageFilter() {
+  }
+
+  virtual
+  ~Log10ImageFilter() {
+  }
 
 private:
   Log10ImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

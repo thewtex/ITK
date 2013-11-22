@@ -36,7 +36,7 @@ namespace itk
  */
 
 template< unsigned int VImageDimension = 3, typename TInput = Point< double, 3 > >
-class FrustumSpatialFunction:
+class FrustumSpatialFunction :
   public InteriorExteriorSpatialFunction< VImageDimension, TInput >
 {
 public:
@@ -98,7 +98,8 @@ public:
 
 protected:
   FrustumSpatialFunction();
-  virtual ~FrustumSpatialFunction();
+  virtual
+  ~FrustumSpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

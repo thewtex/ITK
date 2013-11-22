@@ -27,17 +27,18 @@
  * image.  We write the output to an image for
  * comparison.
  */
-int itkBSplineScatteredDataPointSetToImageFilterTest4( int, char * [] )
+int
+itkBSplineScatteredDataPointSetToImageFilterTest4( int, char * [] )
 {
   const unsigned int ParametricDimension = 3;
   const unsigned int DataDimension = 3;
   const unsigned int SplineOrder = 3;
 
-  typedef float                                                            RealType;
-  typedef itk::Vector<RealType, DataDimension>                             VectorType;
-  typedef itk::Image<VectorType, ParametricDimension>                      VectorImageType;
-  typedef itk::PointSet<VectorImageType::PixelType, ParametricDimension>   PointSetType;
-  typedef PointSetType::PointType                                          PointType;
+  typedef float                                                          RealType;
+  typedef itk::Vector<RealType, DataDimension>                           VectorType;
+  typedef itk::Image<VectorType, ParametricDimension>                    VectorImageType;
+  typedef itk::PointSet<VectorImageType::PixelType, ParametricDimension> PointSetType;
+  typedef PointSetType::PointType                                        PointType;
 
   // Instantiate the B-spline filter
 
@@ -219,8 +220,8 @@ int itkBSplineScatteredDataPointSetToImageFilterTest4( int, char * [] )
   testPoint.CastFrom( inputPoint );
 
   VectorType vector = interpolator->Evaluate( testPoint );
-  RealType testDistance = vector.GetNorm();
-  RealType approximateDistance = inputPoint.EuclideanDistanceTo( outputPoint );
+  RealType   testDistance = vector.GetNorm();
+  RealType   approximateDistance = inputPoint.EuclideanDistanceTo( outputPoint );
 
   VectorImageType::PointType approximateOutputPoint;
   for( unsigned int d = 0; d < DataDimension; d++ )

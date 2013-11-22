@@ -48,11 +48,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = (TInternalType)vcl_sqrt( (double)input ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = (TInternalType)vcl_sqrt( (double)input );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return (TExternalType)vcl_sqrt( (double)input ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return (TExternalType)vcl_sqrt( (double)input );
+  }
+
 };
 } // end namespace Accessor
 
@@ -66,7 +73,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class SqrtImageAdaptor:public
+class SqrtImageAdaptor : public
   ImageAdaptor< TImage, Accessor::SqrtPixelAccessor<
                   typename TImage::PixelType,
                   TOutputPixelType >   >
@@ -88,12 +95,17 @@ public:
   itkTypeMacro(SqrtImageAdaptor, ImageAdaptor);
 
 protected:
-  SqrtImageAdaptor() {}
-  virtual ~SqrtImageAdaptor() {}
+  SqrtImageAdaptor() {
+  }
+
+  virtual
+  ~SqrtImageAdaptor() {
+  }
 
 private:
   SqrtImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

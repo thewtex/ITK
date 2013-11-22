@@ -19,32 +19,33 @@
 #include "vnl/vnl_math.h"
 #include "itkTimeProbesCollectorBase.h"
 
-double itkVNLRoundTestHelperFunction( double x )
+double
+itkVNLRoundTestHelperFunction( double x )
 {
   if( x >= 0.0 )
     {
     return static_cast< int >( x + 0.5f );
     }
 
- return static_cast< int >( x - 0.5f );
+  return static_cast< int >( x - 0.5f );
 }
 
 #define itkRoundMacro( x, y )                 \
-    if( x >= 0.0 )                            \
-      {                                       \
-      y = static_cast< int >( x + 0.5f );     \
-      }                                       \
-    else                                      \
-      {                                       \
-      y = static_cast< int >( x - 0.5f );     \
-      }
+  if( x >= 0.0 )                            \
+    {                                       \
+    y = static_cast< int >( x + 0.5f );     \
+    }                                       \
+  else                                      \
+    {                                       \
+    y = static_cast< int >( x - 0.5f );     \
+    }
 
-
-int itkVNLRoundProfileTest1( int, char *[] )
+int
+itkVNLRoundProfileTest1( int, char *[] )
 {
-  itk::TimeProbesCollectorBase  chronometer;
+  itk::TimeProbesCollectorBase chronometer;
 
-  typedef std::vector< double >   ArrayType;
+  typedef std::vector< double > ArrayType;
 
   ArrayType input;
   ArrayType output1;
@@ -67,7 +68,6 @@ int itkVNLRoundProfileTest1( int, char *[] )
     input.push_back( inputValue );
     }
 
-
   //
   // Make sure that entries in the .5 locations are included
   //
@@ -76,7 +76,6 @@ int itkVNLRoundProfileTest1( int, char *[] )
     const double value = k + 0.5;
     input.push_back( value );
     }
-
 
   output1.resize( input.size() );
   output2.resize( input.size() );
@@ -89,10 +88,10 @@ int itkVNLRoundProfileTest1( int, char *[] )
     // Count the time of simply assigning values in an std::vector
     //
     //
-    ArrayType::const_iterator  outItr1src = output1.begin();
-    ArrayType::iterator        outItr2dst = output2.begin();
+    ArrayType::const_iterator outItr1src = output1.begin();
+    ArrayType::iterator       outItr2dst = output2.begin();
 
-    ArrayType::const_iterator  outEnd1 = output1.end();
+    ArrayType::const_iterator outEnd1 = output1.end();
 
     chronometer.Start("std::vector");
 
@@ -105,10 +104,10 @@ int itkVNLRoundProfileTest1( int, char *[] )
 
     chronometer.Stop("std::vector");
 
-    ArrayType::const_iterator  inpItr   = input.begin();
-    ArrayType::const_iterator  inputEnd = input.end();
+    ArrayType::const_iterator inpItr   = input.begin();
+    ArrayType::const_iterator inputEnd = input.end();
 
-    ArrayType::iterator        outItr1nc = output1.begin();
+    ArrayType::iterator outItr1nc = output1.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -124,11 +123,10 @@ int itkVNLRoundProfileTest1( int, char *[] )
 
     chronometer.Stop("if-round");
 
-
     inpItr   = input.begin();
     inputEnd = input.end();
 
-    ArrayType::iterator        outItr3nc = output3.begin();
+    ArrayType::iterator outItr3nc = output3.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -153,7 +151,7 @@ int itkVNLRoundProfileTest1( int, char *[] )
     inpItr   = input.begin();
     inputEnd = input.end();
 
-    ArrayType::iterator        outItr4nc = output4.begin();
+    ArrayType::iterator outItr4nc = output4.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -169,11 +167,10 @@ int itkVNLRoundProfileTest1( int, char *[] )
 
     chronometer.Stop("Macro");
 
-
     inpItr   = input.begin();
     inputEnd = input.end();
 
-    ArrayType::iterator        outItr = output2.begin();
+    ArrayType::iterator outItr = output2.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -214,8 +211,9 @@ int itkVNLRoundProfileTest1( int, char *[] )
     {
     if( vnl_math_abs( *outItr1 - *outItr2 ) > tolerance )
       {
-      std::cout << "Warning*** For input: " << *inpItr << " if-round: " << *outItr1 << " differs from vnl_math_rnd: " << *outItr2 << std::endl;
-      if ((static_cast<int>(*outItr2) % 2) == 0)
+      std::cout << "Warning*** For input: " << *inpItr << " if-round: " << *outItr1 << " differs from vnl_math_rnd: " <<
+        *outItr2 << std::endl;
+      if ( (static_cast<int>(*outItr2) % 2) == 0)
         {
         roundUp = false;
         }
@@ -246,7 +244,9 @@ int itkVNLRoundProfileTest1( int, char *[] )
     }
   else
     {
-    std::cout << "******* On this platform, vnl_math_rnd() neither rounds up nor rounds to even consistently ********" << std::endl;
+    std::cout <<
+      "******* On this platform, vnl_math_rnd() neither rounds up nor rounds to even consistently ********" <<
+    std::endl;
     }
   if (roundMismatch)
     {

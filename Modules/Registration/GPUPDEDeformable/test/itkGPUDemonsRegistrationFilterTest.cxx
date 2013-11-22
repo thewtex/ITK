@@ -55,15 +55,16 @@ public:
     m_Process = o;
   }
 
-  void ShowProgress()
+  void
+  ShowProgress()
   {
     //std::cout
     itkDebugMacro(
-                   << "Progress: " << m_Process->GetProgress() << "  "
-                   << "Iter: " << m_Process->GetElapsedIterations() << "  "
-                   << "Metric: "   << m_Process->GetMetric()   << "  "
-                   << "RMSChange: " << m_Process->GetRMSChange() << "  "
-                 );
+      << "Progress: " << m_Process->GetProgress() << "  "
+      << "Iter: " << m_Process->GetElapsedIterations() << "  "
+      << "Metric: "   << m_Process->GetMetric()   << "  "
+      << "RMSChange: " << m_Process->GetRMSChange() << "  "
+      );
     //               << std::endl;
 
     if( m_Process->GetElapsedIterations() == 10000 )
@@ -89,10 +90,12 @@ int GPUDemonsRegistrationFilterTestTemplate(int argc, char *argv[]);
 
 template <unsigned VDimension, typename TDisplacementFieldPointer>
 TDisplacementFieldPointer itkGPUDemons(int argc, char *argv[]);
+
 template <unsigned VDimension, typename TDisplacementFieldPointer>
 TDisplacementFieldPointer itkCPUDemons(int argc, char *argv[]);
 
-char * AppendFileName(char *src, char *postfix)
+char *
+AppendFileName(char *src, char *postfix)
 {
   char *dest = new char[strlen(src) + strlen(postfix) + 1];
   char *pos = strrchr(src, '.');
@@ -106,7 +109,8 @@ char * AppendFileName(char *src, char *postfix)
 
 }
 
-int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
+int
+itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
 {
   if( argc < 6 )
     {
@@ -121,28 +125,29 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   int returnValue = EXIT_SUCCESS;
 
   switch( atoi( argv[1] ) )
-   {
-   case 2:
-     returnValue = GPUDemonsRegistrationFilterTestTemplate<2>( argc, argv );
-     break;
-   case 3:
-     returnValue = GPUDemonsRegistrationFilterTestTemplate<3>( argc, argv );
-     break;
-   default:
-     std::cerr << "Unsupported dimension" << std::endl;
-     returnValue = EXIT_FAILURE;
-   }
+    {
+    case 2:
+      returnValue = GPUDemonsRegistrationFilterTestTemplate<2>( argc, argv );
+      break;
+    case 3:
+      returnValue = GPUDemonsRegistrationFilterTestTemplate<3>( argc, argv );
+      break;
+    default:
+      std::cerr << "Unsupported dimension" << std::endl;
+      returnValue = EXIT_FAILURE;
+    }
   return returnValue;
 }
 
 namespace
 {
 template <unsigned int VDimension>
-int GPUDemonsRegistrationFilterTestTemplate(int argc, char *argv[])
+int
+GPUDemonsRegistrationFilterTestTemplate(int argc, char *argv[])
 {
   const unsigned int ImageDimension = VDimension;
-  bool passed;
-  unsigned int size1 = 0, size2 = 0;
+  bool               passed;
+  unsigned int       size1 = 0, size2 = 0;
 
   typedef float                                          InternalPixelType;
   typedef itk::Vector<float, ImageDimension>             VectorPixelType;
@@ -222,10 +227,11 @@ int GPUDemonsRegistrationFilterTestTemplate(int argc, char *argv[])
 }
 
 template <unsigned VDimension, typename TDisplacementFieldPointer>
-TDisplacementFieldPointer itkGPUDemons(int, char *argv[])
+TDisplacementFieldPointer
+itkGPUDemons(int, char *argv[])
 {
   const unsigned int Dimension = VDimension;
-  unsigned int numOfIterations = atoi( argv[2] );
+  unsigned int       numOfIterations = atoi( argv[2] );
 
   typedef unsigned short PixelType;
 
@@ -257,8 +263,8 @@ TDisplacementFieldPointer itkGPUDemons(int, char *argv[])
 
   // maching intensity histogram
   typedef itk::HistogramMatchingImageFilter<
-    InternalImageType,
-    InternalImageType>   MatchingFilterType;
+      InternalImageType,
+      InternalImageType>   MatchingFilterType;
   typename MatchingFilterType::Pointer matcher = MatchingFilterType::New();
 
   matcher->SetInput( movingImageCaster->GetOutput() );
@@ -270,11 +276,11 @@ TDisplacementFieldPointer itkGPUDemons(int, char *argv[])
   matcher->ThresholdAtMeanIntensityOn();
 
   // demons registration
-  typedef typename TDisplacementFieldPointer::ObjectType     DisplacementFieldType;
+  typedef typename TDisplacementFieldPointer::ObjectType DisplacementFieldType;
   typedef itk::GPUDemonsRegistrationFilter<
-    InternalImageType,
-    InternalImageType,
-    DisplacementFieldType> RegistrationFilterType;
+      InternalImageType,
+      InternalImageType,
+      DisplacementFieldType> RegistrationFilterType;
 
   typename RegistrationFilterType::Pointer filter = RegistrationFilterType::New();
 
@@ -307,12 +313,12 @@ TDisplacementFieldPointer itkGPUDemons(int, char *argv[])
 
   // warp the image with the deformation field
   typedef itk::WarpImageFilter<
-    MovingImageType,
-    MovingImageType,
-    DisplacementFieldType>     WarperType;
+      MovingImageType,
+      MovingImageType,
+      DisplacementFieldType>     WarperType;
   typedef itk::LinearInterpolateImageFunction<
-    MovingImageType,
-    double>                    InterpolatorType;
+      MovingImageType,
+      double>                    InterpolatorType;
   typename WarperType::Pointer       warper = WarperType::New();
   typename InterpolatorType::Pointer interpolator = InterpolatorType::New();
   typename FixedImageType::Pointer   fixedImage = fixedImageReader->GetOutput();
@@ -330,8 +336,8 @@ TDisplacementFieldPointer itkGPUDemons(int, char *argv[])
 
   typedef itk::Image<OutputPixelType, Dimension> OutputImageType;
   typedef itk::CastImageFilter<
-    MovingImageType, OutputImageType>            CastFilterType;
-  typedef itk::ImageFileWriter<OutputImageType>  WriterType;
+      MovingImageType, OutputImageType>            CastFilterType;
+  typedef itk::ImageFileWriter<OutputImageType> WriterType;
 
   typename WriterType::Pointer     writer =  WriterType::New();
   typename CastFilterType::Pointer caster =  CastFilterType::New();
@@ -349,10 +355,11 @@ TDisplacementFieldPointer itkGPUDemons(int, char *argv[])
 }
 
 template <unsigned VDimension, typename TDisplacementFieldPointer>
-TDisplacementFieldPointer itkCPUDemons(int, char *argv[])
+TDisplacementFieldPointer
+itkCPUDemons(int, char *argv[])
 {
   const unsigned int Dimension = VDimension;
-  unsigned int numOfIterations = atoi( argv[2] );
+  unsigned int       numOfIterations = atoi( argv[2] );
 
   typedef unsigned short PixelType;
 
@@ -384,8 +391,8 @@ TDisplacementFieldPointer itkCPUDemons(int, char *argv[])
 
   // maching intensity histogram
   typedef itk::HistogramMatchingImageFilter<
-    InternalImageType,
-    InternalImageType>   MatchingFilterType;
+      InternalImageType,
+      InternalImageType>   MatchingFilterType;
   typename MatchingFilterType::Pointer matcher = MatchingFilterType::New();
 
   matcher->SetInput( movingImageCaster->GetOutput() );
@@ -397,14 +404,14 @@ TDisplacementFieldPointer itkCPUDemons(int, char *argv[])
   matcher->ThresholdAtMeanIntensityOn();
 
   // demons registration
-  typedef typename TDisplacementFieldPointer::ObjectType     DisplacementFieldType;
+  typedef typename TDisplacementFieldPointer::ObjectType DisplacementFieldType;
   typedef itk::DemonsRegistrationFilter<InternalImageType,
-    InternalImageType, DisplacementFieldType>       RegistrationFilterType;
+                                        InternalImageType, DisplacementFieldType>       RegistrationFilterType;
 
   typename RegistrationFilterType::Pointer filter = RegistrationFilterType::New();
 
   typedef ShowProgressObject<RegistrationFilterType> ProgressType;
-  ProgressType                                    progressWatch(filter);
+  ProgressType progressWatch(filter);
   typename itk::SimpleMemberCommand<ProgressType>::Pointer command;
   command = itk::SimpleMemberCommand<ProgressType>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -426,11 +433,11 @@ TDisplacementFieldPointer itkCPUDemons(int, char *argv[])
 
   // warp the image with the deformation field
   typedef itk::WarpImageFilter<
-    MovingImageType,
-    MovingImageType,
-    DisplacementFieldType>     WarperType;
+      MovingImageType,
+      MovingImageType,
+      DisplacementFieldType>     WarperType;
   typedef itk::LinearInterpolateImageFunction<
-    MovingImageType, double>   InterpolatorType;
+      MovingImageType, double>   InterpolatorType;
   typename WarperType::Pointer       warper = WarperType::New();
   typename InterpolatorType::Pointer interpolator = InterpolatorType::New();
   typename FixedImageType::Pointer   fixedImage = fixedImageReader->GetOutput();
@@ -447,8 +454,8 @@ TDisplacementFieldPointer itkCPUDemons(int, char *argv[])
   typedef  unsigned char                         OutputPixelType;
   typedef itk::Image<OutputPixelType, Dimension> OutputImageType;
   typedef itk::CastImageFilter<
-    MovingImageType, OutputImageType>            CastFilterType;
-  typedef itk::ImageFileWriter<OutputImageType>  WriterType;
+      MovingImageType, OutputImageType>            CastFilterType;
+  typedef itk::ImageFileWriter<OutputImageType> WriterType;
 
   typename WriterType::Pointer     writer =  WriterType::New();
   typename CastFilterType::Pointer caster =  CastFilterType::New();

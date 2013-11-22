@@ -21,7 +21,8 @@
 #include "itkDivideImageFilter.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
 #endif
 
 namespace itk
@@ -50,14 +51,14 @@ namespace itk
  */
 template <typename TInputImage, typename TConstant, typename TOutputImage>
 class DivideByConstantImageFilter :
-    public DivideImageFilter<TInputImage, Image<TConstant, TInputImage::ImageDimension>, TOutputImage>
+  public DivideImageFilter<TInputImage, Image<TConstant, TInputImage::ImageDimension>, TOutputImage>
 {
 public:
-  typedef DivideByConstantImageFilter                             Self;
+  typedef DivideByConstantImageFilter Self;
   typedef DivideImageFilter<TInputImage, Image<TConstant, TInputImage::ImageDimension>, TOutputImage>
-                                                                  Superclass;
-  typedef SmartPointer<Self>                                      Pointer;
-  typedef SmartPointer<const Self>                                ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** method for creation through object factory */
   itkNewMacro(Self);
@@ -65,8 +66,13 @@ public:
   itkTypeMacro(DivideByConstantImageFilter, DivideImageFilter);
 
 protected:
-  DivideByConstantImageFilter() {}
-  virtual ~DivideByConstantImageFilter() {}
+  DivideByConstantImageFilter() {
+  }
+
+  virtual
+  ~DivideByConstantImageFilter() {
+  }
+
 };
 
 }

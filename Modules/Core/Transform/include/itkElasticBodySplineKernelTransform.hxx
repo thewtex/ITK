@@ -31,7 +31,8 @@ ElasticBodySplineKernelTransform< TScalar, NDimensions >::ElasticBodySplineKerne
 template< typename TScalar, unsigned int NDimensions >
 ElasticBodySplineKernelTransform< TScalar, NDimensions >::
 ~ElasticBodySplineKernelTransform()
-{}
+{
+}
 
 template< typename TScalar, unsigned int NDimensions >
 void
@@ -62,7 +63,9 @@ ElasticBodySplineKernelTransform< TScalar, NDimensions >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_Alpha: " << m_Alpha << std::endl;
 }
+
 } // namespace itk
 #endif

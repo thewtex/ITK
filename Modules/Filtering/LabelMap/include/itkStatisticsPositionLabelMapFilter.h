@@ -40,7 +40,7 @@ namespace itk {
  */
 template<typename TImage>
 class StatisticsPositionLabelMapFilter :
-    public ShapePositionLabelMapFilter<TImage>
+  public ShapePositionLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -78,18 +78,19 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
 protected:
   StatisticsPositionLabelMapFilter();
-  ~StatisticsPositionLabelMapFilter() {};
+  ~StatisticsPositionLabelMapFilter() {
+  }
 
   virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
 private:
   StatisticsPositionLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                   //purposely not implemented
 
 }; // end of class
 

@@ -31,12 +31,10 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkResampleImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -48,8 +46,8 @@
 #include "itkAffineTransform.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -58,15 +56,15 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  const     unsigned int Dimension = 2;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -77,10 +75,9 @@ int main( int argc, char * argv[] )
   const double angleInDegrees = atof( argv[3] );
 
   typedef itk::ResampleImageFilter<
-                  InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-
 
   //  Software Guide : BeginLatex
   //
@@ -95,19 +92,17 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::AffineTransform< double, Dimension >  TransformType;
+  typedef itk::AffineTransform< double, Dimension > TransformType;
   TransformType::Pointer transform = TransformType::New();
   // Software Guide : EndCodeSnippet
 
-
   typedef itk::LinearInterpolateImageFunction<
-                       InputImageType, double >  InterpolatorType;
+      InputImageType, double >  InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   filter->SetInterpolator( interpolator );
 
   filter->SetDefaultPixelValue( 100 );
-
 
   //  Software Guide : BeginLatex
   //
@@ -121,9 +116,9 @@ int main( int argc, char * argv[] )
   const InputImageType * inputImage = reader->GetOutput();
 
   const InputImageType::SpacingType & spacing = inputImage->GetSpacing();
-  const InputImageType::PointType & origin  = inputImage->GetOrigin();
-  InputImageType::SizeType size =
-      inputImage->GetLargestPossibleRegion().GetSize();
+  const InputImageType::PointType &   origin  = inputImage->GetOrigin();
+  InputImageType::SizeType            size =
+    inputImage->GetLargestPossibleRegion().GetSize();
 
   filter->SetOutputOrigin( origin );
   filter->SetOutputSpacing( spacing );
@@ -131,10 +126,8 @@ int main( int argc, char * argv[] )
   filter->SetSize( size );
   // Software Guide : EndCodeSnippet
 
-
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
-
 
   //  Software Guide : BeginLatex
   //
@@ -175,7 +168,6 @@ int main( int argc, char * argv[] )
   std::cout << "imageCenterX = " << imageCenterX << std::endl;
   std::cout << "imageCenterY = " << imageCenterY << std::endl;
 
-
   //  Software Guide : BeginLatex
   //
   //  In a second step, the rotation is specified using the method
@@ -185,13 +177,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   const double degreesToRadians = vcl_atan(1.0) / 45.0;
   const double angle = angleInDegrees * degreesToRadians;
   transform->Rotate2D( -angle, false );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -210,7 +200,6 @@ int main( int argc, char * argv[] )
   transform->Translate( translation2, false );
   filter->SetTransform( transform );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

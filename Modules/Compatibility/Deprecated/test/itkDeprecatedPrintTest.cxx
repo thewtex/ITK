@@ -27,7 +27,8 @@
 //IO
 #include "itkAnalyzeImageIO.h"
 
-int main (int , char* [])
+int
+main(int , char* [])
 {
   typedef itk::Image<float,2>          InputType;
   typedef itk::Image<float,3>          InputType3D;
@@ -36,7 +37,7 @@ int main (int , char* [])
   typedef itk::Image<unsigned short,2> UShortImageType;
   typedef itk::Image<unsigned char,2>  CharType;
 
-  typedef itk::Mesh<double>  MeshType;
+  typedef itk::Mesh<double> MeshType;
 
   typedef itk::Vector<float,2>      VectorType;
   typedef itk::Image<VectorType, 2> VectorImageType;
@@ -46,11 +47,11 @@ int main (int , char* [])
 
   itk::BalloonForceFilter<MeshType,MeshType>::Pointer BalloonForceFilterObj =
     itk::BalloonForceFilter<MeshType,MeshType>::New();
-  std:: cout << "-------------BalloonForceFilter " << BalloonForceFilterObj;
+  std::cout << "-------------BalloonForceFilter " << BalloonForceFilterObj;
 
   itk::DeformableMesh3DFilter<MeshType,MeshType>::Pointer DeformableMesh3DFilterObj =
     itk::DeformableMesh3DFilter<MeshType,MeshType>::New();
-  std:: cout << "-------------DeformableMesh3DFilter " << DeformableMesh3DFilterObj;
+  std::cout << "-------------DeformableMesh3DFilter " << DeformableMesh3DFilterObj;
 
   itk::GradientToMagnitudeImageFilter<VectorImageType,OutputType>::Pointer GradientToMagnitudeImageFilterObj =
     itk::GradientToMagnitudeImageFilter<VectorImageType,OutputType>::New();
@@ -64,7 +65,6 @@ int main (int , char* [])
   Analyzeio = itk::AnalyzeImageIO::New();
   reader->SetImageIO(Analyzeio);
   std::cout << "---------------Analyze" << reader;
-
 
   return EXIT_SUCCESS;
 }

@@ -79,7 +79,8 @@ OneHiddenLayerBackPropagationNeuralNetwork<TMeasurementVector,TTargetVector>
   InputLayerOutputWeights->SetRange(1.0);  //0.5
   InputLayerOutputWeights->Initialize();
 
-  typename LearningLayerType::WeightSetType::Pointer HiddenLayer1OutputWeights = LearningLayerType::WeightSetType::New();
+  typename LearningLayerType::WeightSetType::Pointer HiddenLayer1OutputWeights =
+    LearningLayerType::WeightSetType::New();
   HiddenLayer1OutputWeights->SetNumberOfInputNodes(m_NumOfFirstHiddenNodes);
   HiddenLayer1OutputWeights->SetNumberOfOutputNodes(m_NumOfOutputNodes);
   HiddenLayer1OutputWeights->SetCompleteConnectivity();
@@ -113,16 +114,18 @@ OneHiddenLayerBackPropagationNeuralNetwork<TMeasurementVector,TTargetVector>
   Superclass::AddWeightSet(InputLayerOutputWeights);
   Superclass::AddWeightSet(HiddenLayer1OutputWeights);
 
-  //HACK:  NOTE:  You can not set the WeightSets until after the layers are added to the network because
-  //       the LayerId's must have been set prior to the Weights being added to the layers.
-  //       The ordering of putting together the networks is crucial.  Layers must be added to network
+  //HACK:  NOTE:  You can not set the WeightSets until after the layers are
+  // added to the network because
+  //       the LayerId's must have been set prior to the Weights being added to
+  // the layers.
+  //       The ordering of putting together the networks is crucial.  Layers
+  // must be added to network
   //       prior to weights being added to layers.
   inputlayer->SetOutputWeightSet(InputLayerOutputWeights);
   hiddenlayer1->SetInputWeightSet(InputLayerOutputWeights);
   hiddenlayer1->SetOutputWeightSet(HiddenLayer1OutputWeights);
   outputlayer->SetInputWeightSet(HiddenLayer1OutputWeights);
 }
-
 
 template<typename TMeasurementVector, typename TTargetVector>
 void

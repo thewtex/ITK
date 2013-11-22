@@ -22,8 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-
-int itkVectorGradientMagnitudeImageFilterTest2(int ac, char* av[] )
+int
+itkVectorGradientMagnitudeImageFilterTest2(int ac, char* av[] )
 {
   typedef itk::RGBPixel<unsigned char>                          RGBPixelType;
   typedef itk::Image<RGBPixelType, 3>                           RGBImageType;
@@ -32,9 +32,8 @@ int itkVectorGradientMagnitudeImageFilterTest2(int ac, char* av[] )
   typedef itk::VectorGradientMagnitudeImageFilter<RGBImageType> FilterType;
   typedef itk::ImageFileReader<RGBImageType>                    ReaderType;
   typedef itk::RescaleIntensityImageFilter<FilterType::OutputImageType, CharImage3Type>
-                                                                RescaleFilterType;
-  typedef itk::ImageFileWriter<CharImage2Type>                  WriterType;
-
+    RescaleFilterType;
+  typedef itk::ImageFileWriter<CharImage2Type> WriterType;
 
   if(ac < 5)
     {
@@ -46,7 +45,7 @@ int itkVectorGradientMagnitudeImageFilterTest2(int ac, char* av[] )
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName(av[1]);
   FilterType::Pointer filter = FilterType::New();
-  filter->SetInput(reader->GetOutput());
+  filter->SetInput(reader->GetOutput() );
 
   const int mode = ::atoi( av[3] );
 
@@ -74,9 +73,9 @@ int itkVectorGradientMagnitudeImageFilterTest2(int ac, char* av[] )
     // Extract one slice to write for regression testing
     CharImage3Type::RegionType extractedRegion = rescale->GetOutput()->GetRequestedRegion();
     extractedRegion.SetSize(2,1);
-    extractedRegion.SetIndex(2,::atoi(av[4]));
+    extractedRegion.SetIndex(2,::atoi(av[4]) );
 
-    CharImage2Type::Pointer extractedImage = CharImage2Type::New();
+    CharImage2Type::Pointer    extractedImage = CharImage2Type::New();
     CharImage2Type::RegionType reg;
     reg.SetSize(0,extractedRegion.GetSize()[0]);
     reg.SetSize(1,extractedRegion.GetSize()[1]);
@@ -91,11 +90,11 @@ int itkVectorGradientMagnitudeImageFilterTest2(int ac, char* av[] )
 
     itk::ImageRegionIterator<CharImage3Type> in(rescale->GetOutput(), extractedRegion);
     itk::ImageRegionIterator<CharImage2Type> out(extractedImage,
-                                                 extractedImage->GetRequestedRegion());
+                                                 extractedImage->GetRequestedRegion() );
 
     for (; !in.IsAtEnd(); ++in, ++out)
       {
-      out.Set(in.Get());
+      out.Set(in.Get() );
       }
 
     writer->SetInput( extractedImage );

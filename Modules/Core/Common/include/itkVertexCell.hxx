@@ -237,6 +237,7 @@ VertexCell< TCellInterface >
     return 0;
     }
 }
+
 } // end namespace itk
 
 #endif

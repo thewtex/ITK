@@ -23,14 +23,14 @@
 
 #include "itkPlaneSpatialObject.h"
 
-int itkPlaneSpatialObjectTest(int, char* [])
+int
+itkPlaneSpatialObjectTest(int, char* [])
 {
-  typedef itk::PlaneSpatialObject<2>    PlaneType;
-  typedef PlaneType::Pointer            PlanePointer;
+  typedef itk::PlaneSpatialObject<2> PlaneType;
+  typedef PlaneType::Pointer         PlanePointer;
 
   std::cout<<"=================================="<<std::endl;
   std::cout<<"Testing PlaneSpatialObject:"<<std::endl<<std::endl;
-
 
   // Create a Surface Spatial Object
   PlanePointer Plane = PlaneType::New();
@@ -63,45 +63,44 @@ int itkPlaneSpatialObjectTest(int, char* [])
   itk::Point<double,2> out;
   out[0]=11;out[1]=11;
 
-  if(!Plane->IsInside(in))
-  {
+  if(!Plane->IsInside(in) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  if(Plane->IsInside(out))
-  {
+  if(Plane->IsInside(out) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::cout<<"[PASSED]"<<std::endl;
 
   // Testing IsEvaluableAt()
   std::cout << "IsEvaluableAt: ";
-  if(!Plane->IsEvaluableAt(in) || Plane->IsEvaluableAt(out))
-  {
-     std::cout<<"[FAILED]"<<std::endl;
-     return EXIT_FAILURE;
-  }
+  if(!Plane->IsEvaluableAt(in) || Plane->IsEvaluableAt(out) )
+    {
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
+    }
   std::cout<<"[PASSED]"<<std::endl;
-
 
   // Testing IsEvaluableAt()
   std::cout << "ValueAt: ";
 
   double value;
-  if(!Plane->ValueAt(in,value))
-  {
-     std::cout<<"[FAILED]"<<std::endl;
-     return EXIT_FAILURE;
-  }
+  if(!Plane->ValueAt(in,value) )
+    {
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
+    }
 
   if(value != 1)
-  {
-     std::cout<<"[FAILED]"<<std::endl;
-     return EXIT_FAILURE;
-  }
+    {
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
+    }
 
   Plane->Print(std::cout);
 

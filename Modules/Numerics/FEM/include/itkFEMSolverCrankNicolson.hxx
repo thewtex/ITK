@@ -258,8 +258,12 @@ SolverCrankNicolson<VDimension>
   // Now set the solution t_minus1 vector to fit the BCs
   for( BCTermType::iterator q = bcterm.begin(); q != bcterm.end(); q++ )
     {
-    this->m_ls->SetVectorValue(q->first, 0.0, m_SolutionVectorTMinus1Index); // FIXME?
-    this->m_ls->SetSolutionValue(q->first, 0.0, m_SolutionTMinus1Index);     // FIXME?
+    this->m_ls->SetVectorValue(q->first, 0.0, m_SolutionVectorTMinus1Index); //
+                                                                             //
+                                                                             // FIXME?
+    this->m_ls->SetSolutionValue(q->first, 0.0, m_SolutionTMinus1Index);     //
+                                                                             //
+                                                                             // FIXME?
     this->m_ls->SetSolutionValue(q->first, 0.0, m_TotalSolutionIndex);
     }
 
@@ -628,7 +632,8 @@ SolverCrankNicolson<VDimension>
       + ( 1. - xmin ) * this->m_ls->GetVectorValue(j, m_ForceTMinus1Index);
 #endif
 #ifdef TOTE
-    SolVal = xmin * this->m_ls->GetSolutionValue(j, m_SolutionTIndex); // FOR TOT E
+    SolVal = xmin * this->m_ls->GetSolutionValue(j, m_SolutionTIndex); // FOR
+                                                                       // TOT E
     FVal = xmin * this->m_ls->GetVectorValue(j, m_ForceTIndex);
 #endif
     this->m_ls->SetSolutionValue(j, SolVal, m_SolutionTIndex);
@@ -643,6 +648,7 @@ SolverCrankNicolson<VDimension>
 {
   Float DeformationEnergy = 0.0;
   Float iSolVal, jSolVal;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
 // forming  U^T F
@@ -663,7 +669,9 @@ SolverCrankNicolson<VDimension>
 #endif
 #ifdef TOTE
       jSolVal = t * ( this->m_ls->GetSolutionValue(j, m_SolutionTIndex) )
-        + this->m_ls->GetSolutionValue(j, m_TotalSolutionIndex);         // FOR TOT E
+        + this->m_ls->GetSolutionValue(j, m_TotalSolutionIndex);         // FOR
+                                                                         // TOT
+                                                                         // E
 #endif
       TempRowVal += this->m_ls->GetMatrixValue(i, j, m_SumMatrixIndex) * jSolVal;
       }
@@ -680,6 +688,7 @@ SolverCrankNicolson<VDimension>
   Float ForceEnergy = 0.0, FVal = 0.0;
   Float DeformationEnergy = 0.0;
   Float iSolVal, jSolVal;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
 // forming  U^T F
@@ -694,7 +703,8 @@ SolverCrankNicolson<VDimension>
 #ifdef TOTE
     FVal = FVal + 0.0;
     iSolVal = t * ( this->m_ls->GetSolutionValue(i, m_SolutionTIndex) )
-      + this->m_ls->GetSolutionValue(i, m_TotalSolutionIndex);         // FOR TOT E
+      + this->m_ls->GetSolutionValue(i, m_TotalSolutionIndex);         // FOR
+                                                                       // TOT E
     ForceEnergy += iSolVal * ( this->m_ls->GetVectorValue(i, m_ForceTotalIndex)
                                + t * this->m_ls->GetVectorValue(i, m_ForceTIndex) ); //
     // FOR
@@ -711,7 +721,9 @@ SolverCrankNicolson<VDimension>
 #endif
 #ifdef TOTE
       jSolVal = t * ( this->m_ls->GetSolutionValue(j, m_SolutionTIndex) )
-        + this->m_ls->GetSolutionValue(j, m_TotalSolutionIndex);         // FOR TOT E
+        + this->m_ls->GetSolutionValue(j, m_TotalSolutionIndex);         // FOR
+                                                                         // TOT
+                                                                         // E
 #endif
       TempRowVal += this->m_ls->GetMatrixValue(i, j, m_SumMatrixIndex) * jSolVal;
       }
@@ -737,6 +749,7 @@ SolverCrankNicolson<VDimension>
   Float maxs = 0.0, CurrentTotSolution, CurrentSolution, CurrentForce;
   Float mins2 = 0.0, maxs2 = 0.0;
   Float absmax = 0.0;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
 #ifdef TOTE
@@ -763,7 +776,8 @@ SolverCrankNicolson<VDimension>
       + ( 1. - optimum ) * this->m_ls->GetVectorValue(i, m_ForceTMinus1Index);
     this->m_ls->SetVectorValue(i, CurrentSolution, m_SolutionVectorTMinus1Index);
     this->m_ls->SetSolutionValue(i, CurrentSolution, m_SolutionTMinus1Index);
-    this->m_ls->SetVectorValue(i, CurrentForce, m_ForceTMinus1Index);  // now set t
+    this->m_ls->SetVectorValue(i, CurrentForce, m_ForceTMinus1Index);  // now
+                                                                       // set t
     // minus one
     // force vector
     // correctly
@@ -771,10 +785,14 @@ SolverCrankNicolson<VDimension>
 #ifdef TOTE
     CurrentSolution = optimum * CurrentSolution;
     CurrentForce = optimum * this->m_ls->GetVectorValue(i, m_ForceTIndex);
-    this->m_ls->SetVectorValue(i, CurrentSolution, m_SolutionVectorTMinus1Index); // FOR
+    this->m_ls->SetVectorValue(i, CurrentSolution, m_SolutionVectorTMinus1Index); //
+                                                                                  //
+                                                                                  // FOR
     // TOT
     // E
-    this->m_ls->SetSolutionValue(i, CurrentSolution, m_SolutionTMinus1Index);     // FOR
+    this->m_ls->SetSolutionValue(i, CurrentSolution, m_SolutionTMinus1Index);     //
+                                                                                  //
+                                                                                  // FOR
     // TOT
     // E
     this->m_ls->SetVectorValue(i, CurrentForce, m_ForceTMinus1Index);
@@ -807,6 +825,7 @@ SolverCrankNicolson<VDimension>
    */
   Float mins = 0.0, maxs = 0.0;
   Float mins2 = 0.0, maxs2 = 0.0;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     Float CurrentSolution = this->m_ls->GetSolutionValue(i, m_SolutionTIndex);
@@ -840,6 +859,7 @@ SolverCrankNicolson<VDimension>
 ::AverageLastTwoDisplacements(Float t)
 {
   Float maxs = 0.0;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     Float temp = this->m_ls->GetSolutionValue(i, m_SolutionTIndex);
@@ -872,6 +892,7 @@ SolverCrankNicolson<VDimension>
 ::PrintDisplacements()
 {
   std::cout <<  " printing current displacements " << std::endl;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     std::cout << this->m_ls->GetSolutionValue(i, m_TotalSolutionIndex) << std::endl;
@@ -884,6 +905,7 @@ SolverCrankNicolson<VDimension>
 ::PrintForce()
 {
   std::cout <<  " printing current forces " << std::endl;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     std::cout << this->m_ls->GetVectorValue(i, m_ForceTIndex) << std::endl;

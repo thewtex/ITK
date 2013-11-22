@@ -35,11 +35,11 @@ class BatchSupervisedTrainingFunction : public TrainingFunctionBase<TSample, TTa
 {
 public:
 
-  typedef BatchSupervisedTrainingFunction  Self;
+  typedef BatchSupervisedTrainingFunction Self;
   typedef TrainingFunctionBase<TSample, TTargetVector, ScalarType>
-                                           Superclass;
-  typedef SmartPointer<Self>               Pointer;
-  typedef SmartPointer<const Self>         ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkTypeMacro(BatchSupervisedTrainingFunction, TrainingFunctionBase);
@@ -60,20 +60,22 @@ public:
 protected:
 
   BatchSupervisedTrainingFunction();
-  virtual ~BatchSupervisedTrainingFunction(){};
+  virtual
+  ~BatchSupervisedTrainingFunction(){
+  }
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
-  ScalarType  m_Threshold;
-  bool        m_Stop; //stop condition
+  ScalarType m_Threshold;
+  bool       m_Stop;  //stop condition
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkBatchSupervisedTrainingFunction.hxx"
+#include "itkBatchSupervisedTrainingFunction.hxx"
 #endif
 
 #endif

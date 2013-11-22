@@ -28,7 +28,7 @@ namespace itk
    * \brief Create instances of FreeSurferBinaryMeshIO objects using an object factory.
    * \ingroup ITKIOMesh
    */
-class ITKIOMesh_EXPORT FreeSurferBinaryMeshIOFactory:public ObjectFactoryBase
+class ITKIOMesh_EXPORT FreeSurferBinaryMeshIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,12 +49,13 @@ public:
   itkTypeMacro(FreeSurferBinaryMeshIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
-    {
+  static void
+  RegisterOneFactory(void)
+  {
     FreeSurferBinaryMeshIOFactory::Pointer freesurferFactory = FreeSurferBinaryMeshIOFactory::New();
 
     ObjectFactoryBase::RegisterFactory(freesurferFactory);
-    }
+  }
 
 protected:
   FreeSurferBinaryMeshIOFactory();
@@ -65,6 +66,7 @@ protected:
 private:
   FreeSurferBinaryMeshIOFactory(const Self &); // purposely not implemented
   void operator=(const Self &);                // purposely not implemented
+
 };
 } // end namespace itk
 

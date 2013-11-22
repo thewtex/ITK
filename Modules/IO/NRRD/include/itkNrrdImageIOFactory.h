@@ -27,7 +27,7 @@ namespace itk
  * \brief Create instances of NrrdImageIO objects using an object factory.
  * \ingroup ITKIONRRD
  */
-class NrrdImageIOFactory:public ObjectFactoryBase
+class NrrdImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -48,7 +48,8 @@ public:
   itkTypeMacro(NrrdImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     NrrdImageIOFactory::Pointer nrrdFactory = NrrdImageIOFactory::New();
 
@@ -62,6 +63,7 @@ protected:
 private:
   NrrdImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

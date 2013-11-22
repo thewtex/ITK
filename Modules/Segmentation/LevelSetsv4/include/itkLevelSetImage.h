@@ -40,7 +40,7 @@ class LevelSetImage :
   public LevelSetBase< TInput, VDimension, TOutput, ImageBase< VDimension > >
 {
 public:
-  typedef ImageBase< VDimension >                                    ImageBaseType;
+  typedef ImageBase< VDimension > ImageBaseType;
 
   typedef LevelSetImage                                              Self;
   typedef SmartPointer< Self >                                       Pointer;
@@ -68,7 +68,8 @@ public:
 protected:
   LevelSetImage();
 
-  virtual ~LevelSetImage();
+  virtual
+  ~LevelSetImage();
 
   typedef GradientType ScalingType;
   ScalingType m_NeighborhoodScales;
@@ -78,8 +79,9 @@ protected:
 
 private:
 
-  LevelSetImage( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  LevelSetImage( const Self& );   // purposely not implemented
+  void operator =( const Self& ); // purposely not implemented
+
 };
 
 } // end namespace itk

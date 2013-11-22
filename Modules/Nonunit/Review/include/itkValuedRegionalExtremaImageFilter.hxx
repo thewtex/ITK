@@ -40,7 +40,7 @@ template< typename TInputImage, typename TOutputImage, typename TFunction1,
           typename TFunction2 >
 ValuedRegionalExtremaImageFilter< TInputImage, TOutputImage, TFunction1,
                                   TFunction2 >
-::ValuedRegionalExtremaImageFilter():m_MarkerValue(0)
+::ValuedRegionalExtremaImageFilter() : m_MarkerValue(0)
 {
   m_FullyConnected = false;
 
@@ -61,6 +61,7 @@ ValuedRegionalExtremaImageFilter< TInputImage, TOutputImage, TFunction1,
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
     {
     return;
@@ -247,6 +248,7 @@ ValuedRegionalExtremaImageFilter< TInputImage, TOutputImage, TFunction1,
   os << indent << "Flat: "            << m_Flat << std::endl;
   os << indent << "MarkerValue: "     << m_MarkerValue << std::endl;
 }
+
 } // end namespace itk
 
 #endif

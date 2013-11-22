@@ -80,19 +80,33 @@ public:
   }
 
   /** Set/Get the mean of the function. */
-  void SetMean(double mean) { m_Mean = mean; }
-  double GetMean() { return m_Mean; }
+  void
+  SetMean(double mean) {
+    m_Mean = mean;
+  }
+
+  double
+  GetMean() {
+    return m_Mean;
+  }
 
   /** Set/Get the standard deviation of the function. */
-  void SetSigma(double sigma) { m_Sigma = sigma; }
-  double GetSigma() { return m_Sigma; }
+  void
+  SetSigma(double sigma) {
+    m_Sigma = sigma;
+  }
+
+  double
+  GetSigma() {
+    return m_Sigma;
+  }
 
 private:
   double m_Mean;
   double m_Sigma;
 }; // end of class
 
-class CompositeValleyFunction:public CacheableScalarFunction
+class CompositeValleyFunction : public CacheableScalarFunction
 {
 public:
 
@@ -108,17 +122,26 @@ public:
                           const MeasureArrayType & classSigmas);
 
   /** Destructor. */
-  virtual ~CompositeValleyFunction() {}
+  virtual
+  ~CompositeValleyFunction() {
+  }
 
   /** Get energy table's higher bound. */
-  double GetUpperBound() { return m_UpperBound; }
+  double
+  GetUpperBound() {
+    return m_UpperBound;
+  }
 
   /** Get energy table's lower bound. */
-  double GetLowerBound() { return m_LowerBound; }
+  double
+  GetLowerBound() {
+    return m_LowerBound;
+  }
 
   /** Gets an energy value for the intensity difference between a pixel
    * and its corresponding bias. */
-  MeasureType operator()(MeasureType x)
+  MeasureType
+  operator()(MeasureType x)
   {
     if ( x > m_UpperBound || x < m_LowerBound )
       {
@@ -136,7 +159,8 @@ public:
   }
 
   /** Evalaute the function at point x.  */
-  inline MeasureType Evaluate(MeasureType x)
+  inline MeasureType
+  Evaluate(MeasureType x)
   {
     MeasureType res = 1;
 
@@ -150,13 +174,15 @@ public:
   }
 
   /** Get an energy value for the valley. */
-  inline MeasureType valley(MeasureType d)
+  inline MeasureType
+  valley(MeasureType d)
   {
     return 1 - 1 / ( 1 + d * d / 3 );
   }
 
 protected:
-  void AddNewClass(double mean, double sigma)
+  void
+  AddNewClass(double mean, double sigma)
   {
     TargetClass aClass(mean, sigma);
 

@@ -48,17 +48,17 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TOutputImage=TInputImage >
-class DirectFourierReconstructionImageToImageFilter:
+class DirectFourierReconstructionImageToImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard Self typedef */
   typedef DirectFourierReconstructionImageToImageFilter Self;
 
-  typedef TInputImage                          InputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
 
   /** Standard Superclass typedef */
   typedef ImageToImageFilter< InputImageType, OutputImageType > Superclass;
@@ -117,7 +117,8 @@ protected:
   /** Constructor */
   DirectFourierReconstructionImageToImageFilter();
   /** Destructor */
-  ~DirectFourierReconstructionImageToImageFilter() {}
+  ~DirectFourierReconstructionImageToImageFilter() {
+  }
 
   /** Output class information */
   void PrintSelf(std::ostream & os, Indent indent) const;
@@ -136,7 +137,7 @@ private:
   typedef ImageSliceConstIteratorWithIndex< InputImageType > InputSliceIteratorType;
 
   /** 1D FFT filter type */
-  typedef Image< double, 1 >                                       LineImageType;
+  typedef Image< double, 1 >                        LineImageType;
   typedef VnlForwardFFTImageFilter< LineImageType > FFTLineFilterType;
   /** Derived 1D FFT image type */
   typedef FFTLineFilterType::OutputImageType FFTLineType;
@@ -148,7 +149,7 @@ private:
   typedef ComplexBSplineInterpolateImageFunction< FFTLineType, double, double > FFTLineInterpolatorType;
 
   /** 2D inverse FFT filter type */
-  typedef Image< std::complex<double>, 2>                          IFFTImageType;
+  typedef Image< std::complex<double>, 2>           IFFTImageType;
   typedef VnlInverseFFTImageFilter< IFFTImageType > IFFTSliceFilterType;
   /** Derived 2D FFT image type */
   typedef IFFTSliceFilterType::InputImageType FFTSliceType;
@@ -182,6 +183,7 @@ private:
   /**< purposely not implemented */
   DirectFourierReconstructionImageToImageFilter(const Self &);
   void operator=(const Self &);
+
 };
 } // namespace itk
 

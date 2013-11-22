@@ -32,7 +32,7 @@ namespace itk
  */
 template< unsigned int NDimensions = 3 >
 class MetaBlobConverter :
-    public MetaConverterBase< NDimensions >
+  public MetaConverterBase< NDimensions >
 {
 public:
   /** Standard class typedefs */
@@ -57,29 +57,29 @@ public:
   typedef typename BlobSpatialObjectType::ConstPointer BlobSpatialObjectConstPointer;
   typedef MetaBlob                                     BlobMetaObjectType;
 
-
   /** Convert the MetaObject to Spatial Object */
   virtual SpatialObjectPointer MetaObjectToSpatialObject(const MetaObjectType *mo);
 
   /** Convert the SpatialObject to MetaObject */
-  virtual MetaObjectType *SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
+  virtual MetaObjectType * SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
 
 protected:
   /** Create the specific MetaObject for this class */
-  virtual MetaObjectType *CreateMetaObject();
+  virtual MetaObjectType * CreateMetaObject();
 
   MetaBlobConverter();
-  ~MetaBlobConverter() {}
+  ~MetaBlobConverter() {
+  }
 
 private:
   MetaBlobConverter(const Self &);   //purposely not implemented
-  void operator=(const Self &);       //purposely not implemented
+  void operator=(const Self &);      //purposely not implemented
 
 };
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaBlobConverter.hxx"
+#include "itkMetaBlobConverter.hxx"
 #endif
 
 #endif

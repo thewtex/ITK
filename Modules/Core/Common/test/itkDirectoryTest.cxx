@@ -18,7 +18,8 @@
 
 #include "itkDirectory.h"
 
-int itkDirectoryTest(int argc, char *argv[])
+int
+itkDirectoryTest(int argc, char *argv[])
 {
   itk::Directory::Pointer directory = itk::Directory::New();
 
@@ -28,7 +29,7 @@ int itkDirectoryTest(int argc, char *argv[])
     return EXIT_FAILURE;
     }
 
-  if (directory->Load("qwerty"))
+  if (directory->Load("qwerty") )
     {
     std::cerr << "directory->Load(\"qwerty\")"
               << " should have failed." << std::endl;
@@ -44,7 +45,7 @@ int itkDirectoryTest(int argc, char *argv[])
     }
 
   // This should fail
-  unsigned int fileOutOfRange = static_cast<unsigned int>( directory->GetNumberOfFiles());
+  unsigned int fileOutOfRange = static_cast<unsigned int>( directory->GetNumberOfFiles() );
   if (directory->GetFile( fileOutOfRange) )
     {
     std::cerr << "directory->GetFile(directory->GetNumberOfFiles())"

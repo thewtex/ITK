@@ -41,7 +41,6 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkBinaryErodeImageFilter.h"
 #include "itkBinaryDilateImageFilter.h"
@@ -50,8 +49,8 @@
 
 #include "itkBinaryThresholdImageFilter.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 6 )
     {
@@ -61,7 +60,6 @@ int main( int argc, char * argv[] )
     std::cerr << " lowerThreshold upperThreshold " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -73,19 +71,17 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
 
-  typedef unsigned char   InputPixelType;
-  typedef unsigned char   OutputPixelType;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-
-  typedef itk::BinaryThresholdImageFilter< InputImageType, InputImageType >  ThresholdFilterType;
-
+  typedef itk::BinaryThresholdImageFilter< InputImageType, InputImageType > ThresholdFilterType;
 
   //  Software Guide : BeginLatex
   //
@@ -107,8 +103,8 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::BinaryBallStructuringElement<
-                      InputPixelType,
-                      Dimension  >             StructuringElementType;
+      InputPixelType,
+      Dimension  >             StructuringElementType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -118,19 +114,17 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef itk::BinaryErodeImageFilter<
-                            InputImageType,
-                            OutputImageType,
-                            StructuringElementType >  ErodeFilterType;
+      InputImageType,
+      OutputImageType,
+      StructuringElementType >  ErodeFilterType;
 
   typedef itk::BinaryDilateImageFilter<
-                            InputImageType,
-                            OutputImageType,
-                            StructuringElementType >  DilateFilterType;
+      InputImageType,
+      OutputImageType,
+      StructuringElementType >  DilateFilterType;
   // Software Guide : EndCodeSnippet
-
 
   // Creation of Reader and Writer filters
   ReaderType::Pointer reader = ReaderType::New();
@@ -180,7 +174,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  StructuringElementType  structuringElement;
+  StructuringElementType structuringElement;
 
   structuringElement.SetRadius( 1 );  // 3x3 structuring element
 
@@ -190,12 +184,10 @@ int main( int argc, char * argv[] )
   binaryDilate->SetKernel( structuringElement );
   // Software Guide : EndCodeSnippet
 
-
   reader->SetFileName( argv[1] );
 
   writerErosion->SetFileName(  argv[2] );
   writerDilation->SetFileName( argv[3] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -220,12 +212,10 @@ int main( int argc, char * argv[] )
   thresholder->SetUpperThreshold( upperThreshold );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   binaryErode->SetInput( thresholder->GetOutput() );
   binaryDilate->SetInput( thresholder->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -247,7 +237,6 @@ int main( int argc, char * argv[] )
   binaryDilate->SetDilateValue( foreground );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The filter is executed by invoking its \code{Update()} method, or by
@@ -257,7 +246,6 @@ int main( int argc, char * argv[] )
   //  \index{itk::BinaryErodeImageFilter!Update()}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   writerDilation->SetInput( binaryDilate->GetOutput() );
@@ -272,7 +260,11 @@ int main( int argc, char * argv[] )
   // \begin{figure}
   // \center
   // \includegraphics[width=0.32\textwidth]{BinaryThresholdImageFilterOutput}
+  //
+  //
   // \includegraphics[width=0.32\textwidth]{MathematicalMorphologyBinaryErosionOutput}
+  //
+  //
   // \includegraphics[width=0.32\textwidth]{MathematicalMorphologyBinaryDilationOutput}
   // \itkcaption[Effect of erosion and dilation in a binary image.]{Effect of
   // erosion and dilation in a binary image.}
@@ -285,7 +277,6 @@ int main( int argc, char * argv[] )
   //  spurious details from segmented images.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

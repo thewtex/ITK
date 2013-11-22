@@ -36,12 +36,12 @@ class OptimizerParameters : public Array< TValueType >
 public:
 
   /** The element type stored at each location in the Array. */
-  typedef TValueType                               ValueType;
-  typedef OptimizerParameters                      Self;
-  typedef Array< TValueType >                      Superclass;
-  typedef Superclass                               ArrayType;
-  typedef typename Superclass::VnlVectorType       VnlVectorType;
-  typedef typename Superclass::SizeValueType       SizeValueType;
+  typedef TValueType                         ValueType;
+  typedef OptimizerParameters                Self;
+  typedef Array< TValueType >                Superclass;
+  typedef Superclass                         ArrayType;
+  typedef typename Superclass::VnlVectorType VnlVectorType;
+  typedef typename Superclass::SizeValueType SizeValueType;
 
   /** Helper class for managing different types of parameter
    * data. */
@@ -59,7 +59,8 @@ public:
   OptimizerParameters(const OptimizerParameters& rhs);
 
   /** Constructor with size. Size can only be changed by assignment */
-  explicit OptimizerParameters(SizeValueType  dimension);
+  explicit
+  OptimizerParameters(SizeValueType  dimension);
 
   /** Constructor with Array assignment */
   OptimizerParameters( const ArrayType& array );
@@ -88,8 +89,11 @@ public:
   virtual void SetHelper( OptimizerParametersHelperType* helper );
 
   /** Get the helper in use. */
-  OptimizerParametersHelperType* GetHelper()
-    { return m_Helper; }
+  OptimizerParametersHelperType*
+  GetHelper()
+  {
+    return m_Helper;
+  }
 
   /** Copy opertors
    *
@@ -102,13 +106,14 @@ public:
 
   const Self & operator=(const VnlVectorType & rhs);
 
-  virtual ~OptimizerParameters();
+  virtual
+  ~OptimizerParameters();
 
 private:
-   OptimizerParametersHelperType*           m_Helper;
+  OptimizerParametersHelperType* m_Helper;
 };
 
-}//namespace itk
+} //namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkOptimizerParameters.hxx"

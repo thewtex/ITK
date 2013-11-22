@@ -211,7 +211,7 @@ const typename Similarity3DTransform<TScalar>::ParametersType
 template <typename TScalar>
 void
 Similarity3DTransform<TScalar>::ComputeJacobianWithRespectToParameters(const InputPointType & p,
-                                                                           JacobianType & jacobian) const
+                                                                       JacobianType & jacobian) const
 {
   typedef typename VersorType::ValueType ValueType;
 
@@ -317,6 +317,7 @@ Similarity3DTransform<TScalar>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Scale = " << m_Scale << std::endl;
 }
 

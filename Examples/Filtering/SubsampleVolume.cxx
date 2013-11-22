@@ -27,11 +27,9 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 // Software Guide : BeginLatex
 //
@@ -41,28 +39,25 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkResampleImageFilter.h"
 #include "itkIdentityTransform.h"
 #include "itkRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkCastImageFilter.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 6 )
     {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0]
-      << "  inputImageFile  outputImageFile factorX factorY factorZ"
-      << std::endl;
+              << "  inputImageFile  outputImageFile factorX factorY factorZ"
+              << std::endl;
     return EXIT_FAILURE;
     }
-
 
 // Software Guide : BeginLatex
 //
@@ -72,25 +67,23 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  const     unsigned int    Dimension = 3;
+  const     unsigned int Dimension = 3;
 
-  typedef   unsigned char   InputPixelType;
+  typedef   unsigned char InputPixelType;
 
-  typedef   float           InternalPixelType;
-  typedef   unsigned char   OutputPixelType;
+  typedef   float         InternalPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,    Dimension >   InputImageType;
-  typedef itk::Image< InternalPixelType, Dimension >   InternalImageType;
-  typedef itk::Image< OutputPixelType,   Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,    Dimension > InputImageType;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
+  typedef itk::Image< OutputPixelType,   Dimension > OutputImageType;
 // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
   reader->SetFileName( argv[1] );
-
 
 // Software Guide : BeginLatex
 //
@@ -105,7 +98,6 @@ int main( int argc, char * argv[] )
   const double factorZ = atof( argv[5] );
 // Software Guide : EndCodeSnippet
 
-
   try
     {
     reader->Update();
@@ -116,9 +108,7 @@ int main( int argc, char * argv[] )
     std::cerr << excep << std::endl;
     }
 
-
   InputImageType::ConstPointer inputImage = reader->GetOutput();
-
 
 // Software Guide : BeginLatex
 //
@@ -136,7 +126,6 @@ int main( int argc, char * argv[] )
   caster->SetInput( inputImage );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The smoothing filter of choice is the \code{RecursiveGaussianImageFilter}.
@@ -147,14 +136,13 @@ int main( int argc, char * argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::RecursiveGaussianImageFilter<
-                                  InternalImageType,
-                                  InternalImageType > GaussianFilterType;
+      InternalImageType,
+      InternalImageType > GaussianFilterType;
 
   GaussianFilterType::Pointer smootherX = GaussianFilterType::New();
   GaussianFilterType::Pointer smootherY = GaussianFilterType::New();
   GaussianFilterType::Pointer smootherZ = GaussianFilterType::New();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -167,7 +155,6 @@ int main( int argc, char * argv[] )
   smootherY->SetInput( smootherX->GetOutput() );
   smootherZ->SetInput( smootherY->GetOutput() );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -188,7 +175,6 @@ int main( int argc, char * argv[] )
   smootherZ->SetSigma( sigmaZ );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // We instruct each one of the smoothing filters to act along a particular
@@ -208,7 +194,6 @@ int main( int argc, char * argv[] )
   smootherZ->SetNormalizeAcrossScale( false );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The type of the resampling filter is instantiated using the internal image
@@ -218,28 +203,27 @@ int main( int argc, char * argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::ResampleImageFilter<
-                  InternalImageType, OutputImageType >  ResampleFilterType;
+      InternalImageType, OutputImageType >  ResampleFilterType;
 
   ResampleFilterType::Pointer resampler = ResampleFilterType::New();
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // Since the resampling is performed in the same physical extent of the input
-// image, we select the IdentityTransform as the one to be used by the resampling
+// image, we select the IdentityTransform as the one to be used by the
+// resampling
 // filter.
 //
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::IdentityTransform< double, Dimension >  TransformType;
+  typedef itk::IdentityTransform< double, Dimension > TransformType;
 
   TransformType::Pointer transform = TransformType::New();
   transform->SetIdentity();
   resampler->SetTransform( transform );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -253,7 +237,7 @@ int main( int argc, char * argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::LinearInterpolateImageFunction<
-                           InternalImageType, double > InterpolatorType;
+      InternalImageType, double > InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
   resampler->SetInterpolator( interpolator );
 // Software Guide : EndCodeSnippet
@@ -278,7 +262,6 @@ int main( int argc, char * argv[] )
   resampler->SetOutputSpacing( spacing );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The origin and direction of the input image is preserved and passed to the
@@ -291,7 +274,6 @@ int main( int argc, char * argv[] )
   resampler->SetOutputDirection( inputImage->GetDirection() );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The number of pixels to use along each direction on the grid of the
@@ -301,12 +283,12 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  InputImageType::SizeType   inputSize =
-              inputImage->GetLargestPossibleRegion().GetSize();
+  InputImageType::SizeType inputSize =
+    inputImage->GetLargestPossibleRegion().GetSize();
 
   typedef InputImageType::SizeType::SizeValueType SizeValueType;
 
-  InputImageType::SizeType   size;
+  InputImageType::SizeType size;
 
   size[0] = static_cast< SizeValueType >( inputSize[0] / factorX );
   size[1] = static_cast< SizeValueType >( inputSize[1] / factorY );
@@ -314,7 +296,6 @@ int main( int argc, char * argv[] )
 
   resampler->SetSize( size );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -327,7 +308,6 @@ int main( int argc, char * argv[] )
   resampler->SetInput( smootherZ->GetOutput() );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // At this point we can trigger the execution of the resampling by calling the
@@ -336,8 +316,7 @@ int main( int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 
@@ -356,7 +335,6 @@ int main( int argc, char * argv[] )
     }
 
   std::cout << "Resampling Done !" << std::endl;
-
 
   return EXIT_SUCCESS;
 }

@@ -24,7 +24,7 @@
 namespace itk
 {
 // this class is used to send output to stdout and not the itk window
-class ITKCommon_EXPORT TextOutput:public OutputWindow
+class ITKCommon_EXPORT TextOutput : public OutputWindow
 {
 public:
   typedef TextOutput                 Self;
@@ -37,16 +37,21 @@ public:
   /** New macro for creation of through a Smart Pointer   */
   itkNewMacro(TextOutput);
 
-  virtual void DisplayText(const char *s)
-  { std::cout << s << std::endl; }
+  virtual void
+  DisplayText(const char *s)
+  {
+    std::cout << s << std::endl;
+  }
 
 protected:
   TextOutput();
-  virtual ~TextOutput();
+  virtual
+  ~TextOutput();
 
 private:
   TextOutput(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 }
 

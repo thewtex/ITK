@@ -56,7 +56,7 @@ public:
 
   /** Node typdef support. */
   typedef
-  LevelSetNode< PixelType, itkGetStaticConstMacro(SetDimension) > NodeType;
+    LevelSetNode< PixelType, itkGetStaticConstMacro(SetDimension) > NodeType;
 
   /** NodeContainer typedef support. */
   typedef VectorContainer< unsigned int, NodeType > NodeContainer;

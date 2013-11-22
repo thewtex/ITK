@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TInputChainCodePath, typename TOutputFourierSeriesPath >
-class ChainCodeToFourierSeriesPathFilter:public
+class ChainCodeToFourierSeriesPathFilter : public
   PathToPathFilter< TInputChainCodePath, TOutputFourierSeriesPath >
 {
 public:
@@ -78,7 +78,10 @@ public:
 
 protected:
   ChainCodeToFourierSeriesPathFilter();
-  virtual ~ChainCodeToFourierSeriesPathFilter() {}
+  virtual
+  ~ChainCodeToFourierSeriesPathFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData(void);

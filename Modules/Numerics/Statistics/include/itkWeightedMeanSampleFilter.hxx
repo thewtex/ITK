@@ -35,7 +35,8 @@ WeightedMeanSampleFilter< TSample >
 template< typename TSample >
 WeightedMeanSampleFilter< TSample >
 ::~WeightedMeanSampleFilter()
-{}
+{
+}
 
 template< typename TSample >
 void
@@ -43,6 +44,7 @@ WeightedMeanSampleFilter< TSample >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   // m_Weights
   os << indent << "Weights: " << this->GetWeightsInput() << std::endl;
   // m_WeightingFunction
@@ -103,11 +105,10 @@ WeightedMeanSampleFilter< TSample >
     }
 
   typedef typename NumericTraits<
-    MeasurementRealType >::AccumulateType MeasurementRealAccumulateType;
+      MeasurementRealType >::AccumulateType MeasurementRealAccumulateType;
 
   Array< MeasurementRealAccumulateType > sum( measurementVectorSize );
   sum.Fill( NumericTraits< MeasurementRealAccumulateType >::Zero );
-
 
   typename TSample::ConstIterator iter = input->Begin();
   typename TSample::ConstIterator end =  input->End();
@@ -211,6 +212,7 @@ WeightedMeanSampleFilter< TSample >
 
   decoratedOutput->Set(output);
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

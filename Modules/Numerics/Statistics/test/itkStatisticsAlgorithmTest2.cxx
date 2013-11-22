@@ -31,16 +31,18 @@ typedef itk::Statistics::Subsample< SampleType >               SubsampleType;
 
 const unsigned int testDimension = 1;
 
-void resetData(::itk::Image<PixelType, 3>::Pointer image,  std::vector<int> &refVector)
+void
+resetData(::itk::Image<PixelType, 3>::Pointer image,  std::vector<int> &refVector)
 {
   ImageType::IndexType index;
   ImageType::SizeType  size;
+
   size = image->GetLargestPossibleRegion().GetSize();
 
   unsigned long x;
   unsigned long y;
   unsigned long z;
-  PixelType temp;
+  PixelType     temp;
 
   // fill the image with random values
   for( z = 0; z < size[2]; z++ )
@@ -62,7 +64,7 @@ void resetData(::itk::Image<PixelType, 3>::Pointer image,  std::vector<int> &ref
 
   // fill the vector
   itk::ImageRegionIteratorWithIndex< ImageType >
-    i_iter(image, image->GetLargestPossibleRegion());
+  i_iter(image, image->GetLargestPossibleRegion() );
   i_iter.GoToBegin();
   std::vector< int >::iterator viter;
 
@@ -79,12 +81,14 @@ void resetData(::itk::Image<PixelType, 3>::Pointer image,  std::vector<int> &ref
   std::sort( refVector.begin(), refVector.end() );
 }
 
-bool isSortedOrderCorrect(std::vector<int> &ref,
-                          ::itk::Statistics::Subsample<SampleType>::Pointer subsample)
+bool
+isSortedOrderCorrect(std::vector<int> &ref,
+                     ::itk::Statistics::Subsample<SampleType>::Pointer subsample)
 {
-  bool ret = true;
+  bool                       ret = true;
   std::vector<int>::iterator viter = ref.begin();
-  SubsampleType::Iterator siter = subsample->Begin();
+  SubsampleType::Iterator    siter = subsample->Begin();
+
   while( siter != subsample->End() )
     {
     if( *viter != siter.GetMeasurementVector()[testDimension] )
@@ -98,17 +102,18 @@ bool isSortedOrderCorrect(std::vector<int> &ref,
   return ret;
 }
 
-
-int itkStatisticsAlgorithmTest2(int, char* [] )
+int
+itkStatisticsAlgorithmTest2(int, char* [] )
 {
   std::cout << "Statistics Algorithm Test \n \n";
-  bool pass = true;
+  bool        pass = true;
   std::string whereFail = "";
 
   // creats an image and allocate memory
   ImageType::Pointer image = ImageType::New();
 
   ImageType::SizeType size;
+
   size.Fill(5);
 
   ImageType::IndexType index;
@@ -146,7 +151,7 @@ int itkStatisticsAlgorithmTest2(int, char* [] )
   resetData(image, refVector);
 
   itk::Statistics::Algorithm::InsertSort< SubsampleType >(subsample, testDimension,
-                                    0, subsample->Size());
+                                                          0, subsample->Size() );
   if( !isSortedOrderCorrect(refVector, subsample) )
     {
     pass = false;
@@ -156,7 +161,7 @@ int itkStatisticsAlgorithmTest2(int, char* [] )
   // HeapSort algorithm test
   resetData(image, refVector);
   itk::Statistics::Algorithm::HeapSort< SubsampleType >(subsample, testDimension,
-                                  0, subsample->Size());
+                                                        0, subsample->Size() );
   if( !isSortedOrderCorrect(refVector, subsample) )
     {
     pass = false;
@@ -177,8 +182,8 @@ int itkStatisticsAlgorithmTest2(int, char* [] )
   resetData(image, refVector);
   SubsampleType::MeasurementType median =
     itk::Statistics::Algorithm::QuickSelect< SubsampleType >(subsample, testDimension,
-                                                  0, subsample->Size(),
-                                                  subsample->Size()/2);
+                                                             0, subsample->Size(),
+                                                             subsample->Size()/2);
   if( refVector[subsample->Size()/2] != median )
     {
     pass = false;
@@ -190,7 +195,6 @@ int itkStatisticsAlgorithmTest2(int, char* [] )
     std::cerr << "Test failed in " << whereFail << "." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

@@ -32,7 +32,8 @@ VideoIOBase::~VideoIOBase()
 {
 }
 
-void VideoIOBase::PrintSelf(std::ostream & os, Indent indent) const
+void
+VideoIOBase::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
 }

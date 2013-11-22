@@ -99,7 +99,8 @@ public:
 
 protected:
   ConvolutionImageFilter();
-  ~ConvolutionImageFilter() {}
+  ~ConvolutionImageFilter() {
+  }
 
   /** ConvolutionImageFilter needs the entire image kernel, which in
    * general is going to be a different size then the output requested
@@ -131,6 +132,7 @@ private:
   template< typename TImage >
   void ComputeConvolution( const TImage *kernelImage,
                            ProgressAccumulator *progress );
+
 };
 }
 

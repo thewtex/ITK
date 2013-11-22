@@ -19,7 +19,6 @@
 #define __itkWatershedBoundary_hxx
 #include "itkWatershedBoundary.h"
 
-
 #include "itkImageRegionIterator.h"
 
 namespace itk
@@ -61,7 +60,10 @@ template< typename TScalar,  unsigned int TDimension >
 void
 Boundary< TScalar, TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
-{  Superclass::PrintSelf(os, indent); }
+{
+  Superclass::PrintSelf(os, indent);
+}
+
 } // end namespace watershed
 } // end namespace itk
 #endif

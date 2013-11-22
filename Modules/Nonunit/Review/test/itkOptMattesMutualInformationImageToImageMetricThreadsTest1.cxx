@@ -20,7 +20,8 @@
 #include "itkNearestNeighborInterpolateImageFunction.h"
 #include "itkMattesMutualInformationImageToImageMetric.h"
 
-int itkOptMattesMutualInformationImageToImageMetricThreadsTest1( int argc, char* argv[] )
+int
+itkOptMattesMutualInformationImageToImageMetricThreadsTest1( int argc, char* argv[] )
 {
 
   if( argc < 3 )
@@ -42,9 +43,8 @@ int itkOptMattesMutualInformationImageToImageMetricThreadsTest1( int argc, char*
   std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
   std::cout << std::endl;
 
-
-  typedef unsigned char  PixelType;
-  const unsigned int     Dimension = 2;
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image< PixelType > ImageType;
 
@@ -81,7 +81,7 @@ int itkOptMattesMutualInformationImageToImageMetricThreadsTest1( int argc, char*
   typedef itk::MattesMutualInformationImageToImageMetric< ImageType, ImageType > MetricType;
   MetricType::Pointer metric = MetricType::New();
 
-  typedef itk::TranslationTransform< double, Dimension >  TranformType;
+  typedef itk::TranslationTransform< double, Dimension > TranformType;
   TranformType::Pointer transform = TranformType::New();
 
   unsigned int numberOfSamples = 100;
@@ -103,16 +103,16 @@ int itkOptMattesMutualInformationImageToImageMetricThreadsTest1( int argc, char*
   displacement[0] = 17;
   displacement[1] = 19;
 
-  typedef MetricType::MeasureType      MeasureType;
-  typedef MetricType::DerivativeType   DerivativeType;
+  typedef MetricType::MeasureType    MeasureType;
+  typedef MetricType::DerivativeType DerivativeType;
 
-  MeasureType value_combined;
+  MeasureType    value_combined;
   DerivativeType derivative_combined;
 
-  MeasureType value_separate;
+  MeasureType    value_separate;
   DerivativeType derivative_separate;
 
-  std::vector< MeasureType > values;
+  std::vector< MeasureType >    values;
   std::vector< DerivativeType > derivatives;
 
   // By now restrict the number of threads to test to the range 1 to 4.
@@ -125,7 +125,6 @@ int itkOptMattesMutualInformationImageToImageMetricThreadsTest1( int argc, char*
       metric->SetNumberOfThreads( numberOfThreads );
       metric->ReinitializeSeed( 76926294 );
       metric->Initialize();
-
 
       value_separate = metric->GetValue( displacement );
       metric->GetDerivative( displacement, derivative_separate );

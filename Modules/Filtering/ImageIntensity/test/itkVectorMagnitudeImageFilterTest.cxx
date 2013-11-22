@@ -19,14 +19,15 @@
 #include "itkVectorMagnitudeImageFilter.h"
 #include "itkImageRegionIterator.h"
 
-int itkVectorMagnitudeImageFilterTest(int, char* [] )
+int
+itkVectorMagnitudeImageFilterTest(int, char* [] )
 {
   // Declare the type of the pixels
   typedef itk::CovariantVector<float, 3> VectorPixelType;
 
   // Declare the types of the images
-  typedef itk::Image<VectorPixelType, 2>           VectorImageType;
-  typedef itk::Image<float, 2>                     FloatImageType;
+  typedef itk::Image<VectorPixelType, 2> VectorImageType;
+  typedef itk::Image<float, 2>           FloatImageType;
 
   // Define the size start index of the image
   VectorImageType::SizeType size;
@@ -50,15 +51,15 @@ int itkVectorMagnitudeImageFilterTest(int, char* [] )
   image->FillBuffer(pixel);
 
   // Declare Iterator type for the input image
-  typedef itk::ImageRegionIterator<VectorImageType>  VectorIteratorType;
+  typedef itk::ImageRegionIterator<VectorImageType> VectorIteratorType;
 
   // Create an iterator for the image
   VectorIteratorType imageIterator( image, image->GetRequestedRegion() );
 
   // Declare the vector magnitude image filter
   typedef itk::VectorMagnitudeImageFilter<
-                                  VectorImageType,
-                                  FloatImageType >         myMagnitudeFilterType;
+      VectorImageType,
+      FloatImageType >         myMagnitudeFilterType;
 
   // Create the filter
   myMagnitudeFilterType::Pointer magnitude = myMagnitudeFilterType::New();
@@ -68,7 +69,7 @@ int itkVectorMagnitudeImageFilterTest(int, char* [] )
   // Now compute the magnitude of the gradient
   try
     {
-    magnitude->SetFunctor(magnitude->GetFunctor());
+    magnitude->SetFunctor(magnitude->GetFunctor() );
     magnitude->Update();
     }
   catch(...)
@@ -82,11 +83,11 @@ int itkVectorMagnitudeImageFilterTest(int, char* [] )
 
   // Declare Iterator type for the output image
   typedef itk::ImageRegionIterator<
-                                 FloatImageType>  myOutputIteratorType;
+      FloatImageType>  myOutputIteratorType;
 
   // Create an iterator for going through the output image
   myOutputIteratorType outputIterator( outputImage,
-                            outputImage->GetBufferedRegion() );
+                                       outputImage->GetBufferedRegion() );
 
   // Compare the result image to the known result
 

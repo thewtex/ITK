@@ -31,36 +31,42 @@ namespace itk
 // Partial specialization allows avoiding runtime type choice
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage, typename TPixel >
 struct Dispatch_Inverse_New
-{
-  static TSelfPointer Apply()
-    {
-      return VnlInverseFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return VnlInverseFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 
 #ifdef ITK_USE_FFTWD
 template < typename TSelfPointer, typename TInputImage, typename TOutputImage >
 struct Dispatch_Inverse_New< TSelfPointer, TInputImage, TOutputImage, double >
-{
-  static TSelfPointer Apply()
-    {
-      return FFTWInverseFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return FFTWInverseFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 #endif
 
 #ifdef ITK_USE_FFTWF
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage >
 struct Dispatch_Inverse_New< TSelfPointer, TInputImage, TOutputImage, float >
-{
-  static TSelfPointer Apply()
-    {
-      return FFTWInverseFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return FFTWInverseFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 #endif
 
 template< typename TInputImage, typename TOutputImage >
@@ -84,6 +90,7 @@ InverseFFTImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   // get pointers to the input and output
   typename InputImageType::Pointer inputPtr  =
     const_cast< InputImageType * >( this->GetInput() );
@@ -99,7 +106,8 @@ InverseFFTImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
+
 }
 #endif

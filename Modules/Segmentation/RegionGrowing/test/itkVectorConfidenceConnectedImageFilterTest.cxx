@@ -23,10 +23,11 @@
 #include "itkTextOutput.h"
 #include "itkFilterWatcher.h"
 
-int itkVectorConfidenceConnectedImageFilterTest(int ac, char* av[] )
+int
+itkVectorConfidenceConnectedImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 9)
     {
@@ -44,21 +45,21 @@ int itkVectorConfidenceConnectedImageFilterTest(int ac, char* av[] )
   typedef itk::Image<PixelType,       Dimension> ImageType;
   typedef itk::Image<OutputPixelType, Dimension> OutputImageType;
 
-  typedef itk::ImageFileReader<ImageType>  ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
 
   ReaderType::Pointer input = ReaderType::New();
   input->SetFileName(av[1]);
 
   // Create a filter
   typedef itk::VectorConfidenceConnectedImageFilter<
-                                              ImageType,
-                                              OutputImageType
-                                                > FilterType;
+      ImageType,
+      OutputImageType
+      > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher filterWatch(filter);
+  FilterWatcher       filterWatch(filter);
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
   filter->SetInitialNeighborhoodRadius( 3 ); // measured in pixels
 
   FilterType::IndexType seed1;
@@ -110,7 +111,7 @@ int itkVectorConfidenceConnectedImageFilterTest(int ac, char* av[] )
             << std::endl;
 
   // Generate test image
-  typedef itk::ImageFileWriter<OutputImageType>  WriterType;
+  typedef itk::ImageFileWriter<OutputImageType> WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetInput( filter->GetOutput() );
@@ -120,17 +121,16 @@ int itkVectorConfidenceConnectedImageFilterTest(int ac, char* av[] )
   // Exercise SetSeed() method
   filter->SetSeed( seed1 );
 
-
   typedef itk::VectorImage<PixelComponentType, Dimension> VectorImageType;
 
-  typedef itk::ImageFileReader<VectorImageType>       VectorReaderType;
+  typedef itk::ImageFileReader<VectorImageType> VectorReaderType;
   VectorReaderType::Pointer vinput = VectorReaderType::New();
   vinput->SetFileName(av[1]);
 
   typedef itk::VectorConfidenceConnectedImageFilter< VectorImageType, OutputImageType > VectorFilterType;
   VectorFilterType::Pointer vFilter = VectorFilterType::New();
 
-  vFilter->SetInput(vinput->GetOutput());
+  vFilter->SetInput(vinput->GetOutput() );
   vFilter->SetInitialNeighborhoodRadius( 3 ); // measured in pixels
   vFilter->AddSeed( seed1 );
   vFilter->AddSeed( seed2 );
@@ -139,18 +139,18 @@ int itkVectorConfidenceConnectedImageFilterTest(int ac, char* av[] )
   vFilter->SetNumberOfIterations( atoi( av[8] ) );
   vFilter->Update();
 
-
   itk::ImageRegionConstIterator<OutputImageType> iter( filter->GetOutput(), filter->GetOutput()->GetBufferedRegion() );
-  itk::ImageRegionConstIterator<OutputImageType>  viter( vFilter->GetOutput(), vFilter->GetOutput()->GetBufferedRegion() );
+  itk::ImageRegionConstIterator<OutputImageType> viter( vFilter->GetOutput(),
+                                                        vFilter->GetOutput()->GetBufferedRegion() );
 
   // check the at
   bool diff = false;
   while( !iter.IsAtEnd() )
     {
-      if ( iter.Get() != viter.Get() )
-        {
-        diff = true;
-        }
+    if ( iter.Get() != viter.Get() )
+      {
+      diff = true;
+      }
 
     ++viter;
     ++iter;
@@ -162,5 +162,5 @@ int itkVectorConfidenceConnectedImageFilterTest(int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-    return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

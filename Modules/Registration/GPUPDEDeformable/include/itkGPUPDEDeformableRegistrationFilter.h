@@ -83,11 +83,13 @@ class GPUPDEDeformableRegistrationFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUPDEDeformableRegistrationFilter                                                              Self;
-  typedef GPUDenseFiniteDifferenceImageFilter< TDisplacementField, TDisplacementField, TParentImageFilter > GPUSuperclass;
-  typedef TParentImageFilter                                                                              CPUSuperclass;
-  typedef SmartPointer< Self >                                                                            Pointer;
-  typedef SmartPointer< const Self >                                                                      ConstPointer;
+  typedef GPUPDEDeformableRegistrationFilter Self;
+  typedef GPUDenseFiniteDifferenceImageFilter< TDisplacementField, TDisplacementField,
+                                               TParentImageFilter > GPUSuperclass;
+  typedef TParentImageFilter
+    CPUSuperclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -111,14 +113,14 @@ public:
   typedef typename DisplacementFieldType::Pointer DisplacementFieldPointer;
   typedef typename TDisplacementField::PixelType  DeformationVectorType;
   typedef typename TDisplacementField::PixelType::ValueType
-                                                 DeformationScalarType;
+    DeformationScalarType;
 
   /** Types inherithed from the GPUSuperclass */
   typedef typename GPUSuperclass::OutputImageType OutputImageType;
 
   /** FiniteDifferenceFunction type. */
   typedef typename GPUSuperclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** PDEDeformableRegistrationFilterFunction type. */
   /** GPUPDEDeformableRegistrationFilterFunction type. */
@@ -145,13 +147,15 @@ public:
   const MovingImageType * GetMovingImage(void) const;
 
   /** Set initial deformation field. */
-  void SetInitialDisplacementField(const DisplacementFieldType *ptr)
+  void
+  SetInitialDisplacementField(const DisplacementFieldType *ptr)
   {
     this->SetInput(ptr);
   }
 
   /** Get output deformation field. */
-  DisplacementFieldType * GetDisplacementField()
+  DisplacementFieldType *
+  GetDisplacementField()
   {
     return this->GetOutput();
   }
@@ -169,6 +173,7 @@ protected:
   GPUPDEDeformableRegistrationFilter();
   ~GPUPDEDeformableRegistrationFilter() {
   }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** A simple method to copy the data from the input to the output.
@@ -187,8 +192,8 @@ protected:
   /** Smooth a vector field, which may be m_DisplacementField or
    * m_UpdateBuffer. */
   virtual void GPUSmoothVectorField(DisplacementFieldPointer field,
-    typename GPUDataManager::Pointer GPUSmoothingKernels[],
-    int GPUSmoothingKernelSizes[]);
+                                    typename GPUDataManager::Pointer GPUSmoothingKernels[],
+                                    int GPUSmoothingKernelSizes[]);
 
   virtual void AllocateSmoothingBuffer();
 
@@ -228,16 +233,16 @@ private:
 
 private:
   /** Memory buffer for smoothing kernels of the displacement field. */
-  int                              m_SmoothingKernelSizes[ImageDimension];
-  DeformationScalarType*           m_SmoothingKernels[ImageDimension];
+  int                    m_SmoothingKernelSizes[ImageDimension];
+  DeformationScalarType* m_SmoothingKernels[ImageDimension];
   typename GPUDataManager::Pointer m_GPUSmoothingKernels[ImageDimension];
 
   /** Memory buffer for smoothing kernels of the update field. */
-  int                              m_UpdateFieldSmoothingKernelSizes[ImageDimension];
-  DeformationScalarType*           m_UpdateFieldSmoothingKernels[ImageDimension];
+  int                    m_UpdateFieldSmoothingKernelSizes[ImageDimension];
+  DeformationScalarType* m_UpdateFieldSmoothingKernels[ImageDimension];
   typename GPUDataManager::Pointer m_UpdateFieldGPUSmoothingKernels[ImageDimension];
 
-  int*                             m_ImageSizes;
+  int* m_ImageSizes;
   typename GPUDataManager::Pointer m_GPUImageSizes;
 
   /* GPU kernel handle for GPUSmoothDisplacementField */

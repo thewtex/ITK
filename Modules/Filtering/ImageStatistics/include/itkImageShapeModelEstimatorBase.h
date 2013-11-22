@@ -46,7 +46,7 @@ namespace itk
 
 template< typename TInputImage,
           typename TOutputImage = Image< double, TInputImage::ImageDimension > >
-class ImageShapeModelEstimatorBase:
+class ImageShapeModelEstimatorBase :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -80,6 +80,7 @@ private:
 
   /** The core virtual function to perform ShapeModelling of the input data */
   virtual void EstimateShapeModels() = 0;
+
 }; // class ImageShapeModelEstimator
 } // namespace itk
 

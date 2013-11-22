@@ -86,13 +86,13 @@ public:
                       TImage::ImageDimension);
 
   /** Index typedef support. */
-  typedef typename TImage::IndexType      IndexType;
+  typedef typename TImage::IndexType IndexType;
 
   /** Offset typedef support. */
-  typedef typename TImage::OffsetType      OffsetType;
+  typedef typename TImage::OffsetType OffsetType;
 
   /** Size typedef support. */
-  typedef typename TImage::SizeType      SizeType;
+  typedef typename TImage::SizeType SizeType;
 
   /** Region typedef support */
   typedef typename TImage::RegionType RegionType;
@@ -135,25 +135,29 @@ public:
   itkTypeMacro(PathConstIterator, None);
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetImageIteratorDimension()
+  static unsigned int
+  GetImageIteratorDimension()
   {
     return TImage::ImageDimension;
   }
 
   /** Get the input. This provides a read only reference to the input. */
-  const PathInputType GetPathPosition()
+  const PathInputType
+  GetPathPosition()
   {
     return m_CurrentPathPosition;
   }
 
   /** Get the index. This provides a read only reference to the index. */
-  const IndexType GetIndex()
+  const IndexType
+  GetIndex()
   {
     return m_CurrentImageIndex;
   }
 
   /** Get the pixel value */
-  const PixelType & Get(void) const
+  const PixelType &
+  Get(void) const
   {
     return m_Image->GetPixel(m_CurrentImageIndex);
   }
@@ -161,7 +165,8 @@ public:
   /** Is the iterator at the end of the path?
    * Note that for a closed path, it may be possible to increment back to the
    * start of the path. */
-  bool IsAtEnd()
+  bool
+  IsAtEnd()
   {
     return m_IsAtEnd;
   }
@@ -170,7 +175,8 @@ public:
    * the first index will only be visited once--at the end of the path?  If set
    * to false, then GoToBegin() will always move to the 1'st index.  The
    * constructor presets m_VisitStartIndexAsLastIndexIfClosed to true. */
-  inline virtual void VisitStartIndexAsLastIndexIfClosed(bool flag)
+  inline virtual void
+  VisitStartIndexAsLastIndexIfClosed(bool flag)
   {
     m_VisitStartIndexAsLastIndexIfClosed = flag;
   }
@@ -193,7 +199,9 @@ public:
   PathConstIterator(const ImageType *imagePtr, const PathType  *pathPtr);
 
   /** Default Destructor. */
-  virtual ~PathConstIterator() {}
+  virtual
+  ~PathConstIterator() {
+  }
 
 protected: //made protected so other iterators can access
   // This "constant" is initialized in the constructor

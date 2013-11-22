@@ -29,25 +29,25 @@
  *
  */
 
-int itkKalmanLinearEstimatorTest(int, char* [] )
+int
+itkKalmanLinearEstimatorTest(int, char* [] )
 {
-
 
   typedef itk::KalmanLinearEstimator<double,6> KalmanFilterType;
 
-  typedef KalmanFilterType::VectorType    VectorType;
-  typedef KalmanFilterType::MatrixType    MatrixType;
-  typedef KalmanFilterType::ValueType     ValueType;
+  typedef KalmanFilterType::VectorType VectorType;
+  typedef KalmanFilterType::MatrixType MatrixType;
+  typedef KalmanFilterType::ValueType  ValueType;
 
   KalmanFilterType filter;
 
   filter.ClearEstimation();
   filter.SetVariance(1.0);
 
-  ValueType     measure;
-  VectorType    predictor;
+  ValueType  measure;
+  VectorType predictor;
 
-  VectorType    planeEquation;
+  VectorType planeEquation;
 
   planeEquation(0) = 9.0;
   planeEquation(1) = 6.0;
@@ -94,7 +94,7 @@ int itkKalmanLinearEstimatorTest(int, char* [] )
   std::cout << estimation;
 
   VectorType error = estimation - planeEquation;
-  ValueType errorMagnitude =  dot_product( error, error );
+  ValueType  errorMagnitude =  dot_product( error, error );
 
   std::cout << std::endl << "Errors : " << std::endl;
   std::cout << error;
@@ -124,6 +124,5 @@ int itkKalmanLinearEstimatorTest(int, char* [] )
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

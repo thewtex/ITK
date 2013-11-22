@@ -28,7 +28,8 @@
 namespace itk
 {
 template< typename TImageType, typename TFeatureImageType >
-void GeodesicActiveContourLevelSetFunction< TImageType, TFeatureImageType >
+void
+GeodesicActiveContourLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateSpeedImage()
 {
   /* copy the feature image into the speed image */
@@ -39,7 +40,8 @@ void GeodesicActiveContourLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void GeodesicActiveContourLevelSetFunction< TImageType, TFeatureImageType >
+void
+GeodesicActiveContourLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateAdvectionImage()
 {
   /* compute the gradient of the feature image. */
@@ -49,7 +51,7 @@ void GeodesicActiveContourLevelSetFunction< TImageType, TFeatureImageType >
   if ( m_DerivativeSigma != NumericTraits< float >::Zero )
     {
     typedef GradientRecursiveGaussianImageFilter< FeatureImageType, VectorImageType >
-    DerivativeFilterType;
+      DerivativeFilterType;
 
     typename DerivativeFilterType::Pointer derivative = DerivativeFilterType::New();
     derivative->SetInput( this->GetFeatureImage() );
@@ -93,6 +95,7 @@ void GeodesicActiveContourLevelSetFunction< TImageType, TFeatureImageType >
     ait.Set(v);
     }
 }
+
 } // end namespace itk
 
 #endif

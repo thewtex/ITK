@@ -136,7 +136,7 @@ template< typename TInputImage,
           typename TOutputImage = Image< TRealType,
                                          TInputImage::ImageDimension >
           >
-class VectorGradientMagnitudeImageFilter:
+class VectorGradientMagnitudeImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -172,11 +172,11 @@ public:
                       InputPixelType::Dimension);
 
   /** Define the data type and the vector of data type used in calculations. */
-  typedef TRealType                                                                         RealType;
+  typedef TRealType RealType;
   typedef Vector< TRealType, InputPixelType::Dimension >
-                      RealVectorType;
+    RealVectorType;
   typedef Image< RealVectorType, TInputImage::ImageDimension >
-                      RealVectorImageType;
+    RealVectorImageType;
 
   /** Type of the iterator that will be used to move through the image.  Also
       the type which will be passed to the evaluate function */
@@ -201,14 +201,20 @@ public:
       (1/spacing). Use this option if you want to calculate the gradient in the
       space in which the data was acquired. Default is
       ImageSpacingOn. */
-  void SetUseImageSpacingOn()
-  { this->SetUseImageSpacing(true); }
+  void
+  SetUseImageSpacingOn()
+  {
+    this->SetUseImageSpacing(true);
+  }
 
   /** Reset the derivative weights to ignore image spacing.  Use this option if
       you want to calculate the gradient in the image space.  Default is
       ImageSpacingOn. */
-  void SetUseImageSpacingOff()
-  { this->SetUseImageSpacing(false); }
+  void
+  SetUseImageSpacingOff()
+  {
+    this->SetUseImageSpacing(false);
+  }
 
   /** Set/Get whether or not the filter will use the spacing of the input
       image in its calculations */
@@ -239,12 +245,14 @@ public:
       derivatives squared.  Default is UsePrincipleComponents = true. */
   itkSetMacro(UsePrincipleComponents, bool);
   itkGetConstMacro(UsePrincipleComponents, bool);
-  void SetUsePrincipleComponentsOn()
+  void
+  SetUsePrincipleComponentsOn()
   {
     this->SetUsePrincipleComponents(true);
   }
 
-  void SetUsePrincipleComponentsOff()
+  void
+  SetUsePrincipleComponentsOff()
   {
     this->SetUsePrincipleComponents(false);
   }
@@ -264,7 +272,9 @@ public:
 
 protected:
   VectorGradientMagnitudeImageFilter();
-  virtual ~VectorGradientMagnitudeImageFilter() {}
+  virtual
+  ~VectorGradientMagnitudeImageFilter() {
+  }
 
   /** Do any necessary casting/copying of the input data.  Input pixel types
      whose value types are not real number types must be cast to real number
@@ -292,7 +302,8 @@ protected:
   /** Get access to the input image casted as real pixel values */
   itkGetConstObjectMacro(RealValuedInputImage, ImageBaseType);
 
-  TRealType NonPCEvaluateAtNeighborhood(const ConstNeighborhoodIteratorType & it) const
+  TRealType
+  NonPCEvaluateAtNeighborhood(const ConstNeighborhoodIteratorType & it) const
   {
     unsigned  i, j;
     TRealType dx, sum, accum;
@@ -304,7 +315,7 @@ protected:
       for ( j = 0; j < VectorDimension; ++j )
         {
         dx =  m_DerivativeWeights[i] * m_SqrtComponentWeights[j]
-             * 0.5 * ( it.GetNext(i)[j] - it.GetPrevious(i)[j] );
+          * 0.5 * ( it.GetNext(i)[j] - it.GetPrevious(i)[j] );
         sum += dx * dx;
         }
       accum += sum;
@@ -312,7 +323,8 @@ protected:
     return vcl_sqrt(accum);
   }
 
-  TRealType EvaluateAtNeighborhood3D(const ConstNeighborhoodIteratorType & it) const
+  TRealType
+  EvaluateAtNeighborhood3D(const ConstNeighborhoodIteratorType & it) const
   {
     // WARNING:  ONLY CALL THIS METHOD WHEN PROCESSING A 3D IMAGE
     unsigned int i, j;
@@ -331,7 +343,7 @@ protected:
       for ( j = 0; j < VectorDimension; j++ )
         {
         d_phi_du[i][j] = m_DerivativeWeights[i] * m_SqrtComponentWeights[j]
-                         * 0.5 * ( it.GetNext(i)[j] - it.GetPrevious(i)[j] );
+          * 0.5 * ( it.GetNext(i)[j] - it.GetPrevious(i)[j] );
         }
       }
 
@@ -350,11 +362,11 @@ protected:
     CharEqn[2] = -( g[0][0] + g[1][1] + g[2][2] );
 
     CharEqn[1] = ( g[0][0] * g[1][1] + g[0][0] * g[2][2] + g[1][1] * g[2][2] )
-                 - ( g[0][1] * g[1][0] + g[0][2] * g[2][0] + g[1][2] * g[2][1] );
+      - ( g[0][1] * g[1][0] + g[0][2] * g[2][0] + g[1][2] * g[2][1] );
 
     CharEqn[0] = g[0][0] * ( g[1][2] * g[2][1] -  g[1][1] * g[2][2]  )
-                 + g[1][0] * (  g[2][2] * g[0][1] - g[0][2] * g[2][1] )
-                 + g[2][0] * ( g[1][1] * g[0][2] - g[0][1] * g[1][2] );
+      + g[1][0] * (  g[2][2] * g[0][1] - g[0][2] * g[2][1] )
+      + g[2][0] * ( g[1][1] * g[0][2] - g[0][1] * g[1][2] );
 
     // Find the eigenvalues of g
     int numberOfDistinctRoots =  this->CubicSolver(CharEqn, Lambda);
@@ -427,7 +439,8 @@ protected:
   // Function is defined here because the templating confuses gcc 2.96 when
   // defined
   // in .hxx file.  jc 1/29/03
-  TRealType EvaluateAtNeighborhood(const ConstNeighborhoodIteratorType & it) const
+  TRealType
+  EvaluateAtNeighborhood(const ConstNeighborhoodIteratorType & it) const
   {
     unsigned int i, j;
 
@@ -442,7 +455,7 @@ protected:
       for ( j = 0; j < VectorDimension; j++ )
         {
         d_phi_du[i][j] = m_DerivativeWeights[i] * m_SqrtComponentWeights[j]
-                         * 0.5 * ( it.GetNext(i)[j] - it.GetPrevious(i)[j] );
+          * 0.5 * ( it.GetNext(i)[j] - it.GetPrevious(i)[j] );
         }
       }
 

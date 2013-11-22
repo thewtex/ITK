@@ -19,7 +19,7 @@
 #include "itkWeightedMeanSampleFilter.h"
 #include "itkListSample.h"
 
-const unsigned int                  MeasurementVectorSize = 2;
+const unsigned int MeasurementVectorSize = 2;
 
 typedef itk::FixedArray<
     float, MeasurementVectorSize >             MeasurementVectorType;
@@ -48,9 +48,11 @@ public:
   typedef double OutputType;
 
   /**Evaluate at the specified input position */
-  OutputType Evaluate( const InputType& input ) const
-    {
+  OutputType
+  Evaluate( const InputType& input ) const
+  {
     MeasurementVectorType measurements;
+
     // set the weight factor of the measurment
     // vector with valuev[2, 2] to 0.5.
     measurements.Fill(2.0f);
@@ -62,29 +64,33 @@ public:
       {
       return 1.0;
       }
-    }
+  }
 
 protected:
-  WeightedMeanTestFunction() {}
-  ~WeightedMeanTestFunction() {}
+  WeightedMeanTestFunction() {
+  }
+
+  ~WeightedMeanTestFunction() {
+  }
+
 }; // end of class
 
-
-int itkWeightedMeanSampleFilterTest(int, char* [] )
+int
+itkWeightedMeanSampleFilterTest(int, char* [] )
 {
   std::cout << "WeightedMeanSampleFilter test \n \n";
 
-  const unsigned int                  numberOfMeasurementVectors = 5;
-  unsigned int                        counter;
+  const unsigned int numberOfMeasurementVectors = 5;
+  unsigned int       counter;
 
   typedef itk::Statistics::ListSample<
-    MeasurementVectorType >                    SampleType;
+      MeasurementVectorType >                    SampleType;
 
   SampleType::Pointer sample = SampleType::New();
 
   sample->SetMeasurementVectorSize( MeasurementVectorSize );
 
-  MeasurementVectorType               measure;
+  MeasurementVectorType measure;
 
   //reset counter
   counter = 0;
@@ -112,14 +118,16 @@ int itkWeightedMeanSampleFilterTest(int, char* [] )
   try
     {
     filter->Update();
-    std::cerr << "Exception should have been thrown since \
-                    Update() is invoked without setting an input " << std::endl;
+    std::cerr <<
+      "Exception should have been thrown since \
+                    Update() is invoked without setting an input "                                                 <<
+      std::endl;
     return EXIT_FAILURE;
     }
   catch ( itk::ExceptionObject & excp )
     {
-  std::cerr << "Exception caught: " << excp << std::endl;
-  }
+    std::cerr << "Exception caught: " << excp << std::endl;
+    }
 
   if ( filter->GetInput() != NULL )
     {
@@ -142,27 +150,27 @@ int itkWeightedMeanSampleFilterTest(int, char* [] )
     }
 
   const FilterType::MeasurementVectorDecoratedType * decorator = filter->GetOutput();
-  FilterType::MeasurementVectorRealType    meanOutput  = decorator->Get();
+  FilterType::MeasurementVectorRealType              meanOutput  = decorator->Get();
 
   FilterType::MeasurementVectorRealType mean;
 
   mean[0] = 2.0;
   mean[1] = 2.0;
 
- FilterType::MeasurementVectorType::ValueType    epsilon = 1e-6;
+  FilterType::MeasurementVectorType::ValueType epsilon = 1e-6;
 
   if ( ( vcl_fabs( meanOutput[0] - mean[0]) > epsilon )  ||
-       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ))
+       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ) )
     {
     std::cerr << "Wrong result " << std::endl;
     std::cerr << meanOutput[0] << " " << mean[0] << " "
-            << meanOutput[1] << " " << mean[1] << " " << std::endl;
+              << meanOutput[1] << " " << mean[1] << " " << std::endl;
     std::cerr << "The result is not what is expected" << std::endl;
     return EXIT_FAILURE;
     }
 
-  typedef FilterType::WeightArrayType  WeightArrayType;
-  WeightArrayType weightArray(sample->Size());
+  typedef FilterType::WeightArrayType WeightArrayType;
+  WeightArrayType weightArray(sample->Size() );
   weightArray.Fill(1.0);
 
   filter->SetWeights( weightArray );
@@ -183,11 +191,11 @@ int itkWeightedMeanSampleFilterTest(int, char* [] )
   mean[1] = 2.0;
 
   if ( ( vcl_fabs( meanOutput[0] - mean[0]) > epsilon )  ||
-       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ))
+       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ) )
     {
     std::cerr << "Wrong result " << std::endl;
     std::cerr << meanOutput[0] << " " << mean[0] << " "
-            << meanOutput[1] << " " << mean[1] << " " << std::endl;
+              << meanOutput[1] << " " << mean[1] << " " << std::endl;
     std::cerr << "The result is not what is expected" << std::endl;
     return EXIT_FAILURE;
     }
@@ -212,11 +220,11 @@ int itkWeightedMeanSampleFilterTest(int, char* [] )
   mean[1] = 1.7777778;
 
   if ( ( vcl_fabs( meanOutput[0] - mean[0]) > epsilon )  ||
-       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ))
+       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ) )
     {
     std::cerr << "Wrong result" << std::endl;
     std::cerr << meanOutput[0] << " " << mean[0] << " "
-            << meanOutput[1] << " " << mean[1] << " " << std::endl;
+              << meanOutput[1] << " " << mean[1] << " " << std::endl;
 
     std::cerr << "The result is not what is expected" << std::endl;
     return EXIT_FAILURE;
@@ -242,11 +250,11 @@ int itkWeightedMeanSampleFilterTest(int, char* [] )
   mean[1] = 2.0;
 
   if ( ( vcl_fabs( meanOutput[0] - mean[0]) > epsilon )  ||
-       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ))
+       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ) )
     {
     std::cerr << "Wrong result" << std::endl;
     std::cerr << meanOutput[0] << " " << mean[0] << " "
-            << meanOutput[1] << " " << mean[1] << " " << std::endl;
+              << meanOutput[1] << " " << mean[1] << " " << std::endl;
     std::cerr << "The result is not what is expected" << std::endl;
     return EXIT_FAILURE;
     }

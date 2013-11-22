@@ -26,7 +26,8 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkNormalizedCorrelationImageFilterTest(int ac, char* av[] )
+int
+itkNormalizedCorrelationImageFilterTest(int ac, char* av[] )
 {
   if(ac < 4)
     {
@@ -70,20 +71,18 @@ int itkNormalizedCorrelationImageFilterTest(int ac, char* av[] )
 
   typedef itk::ResampleImageFilter<InputImageType, InputImageType> ResampleType;
   ResampleType::Pointer resample = ResampleType::New();
-  resample->SetInput(mask->GetOutput());
+  resample->SetInput(mask->GetOutput() );
   resample->SetOutputParametersFromImage( input->GetOutput() );
-
 
   // Create a filter
   typedef itk::NormalizedCorrelationImageFilter<InputImageType, InputImageType, CorrelationImageType> FilterType;
 
-  FilterType::Pointer filter = FilterType::New();
+  FilterType::Pointer      filter = FilterType::New();
   itk::SimpleFilterWatcher watcher(filter, "Normalized correlation");
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
   filter->SetTemplate( annulus );
   filter->SetMaskImage( resample->GetOutput() );
-
 
   typedef itk::BinaryThresholdImageFilter<CorrelationImageType, InputImageType> ThresholdType;
   ThresholdType::Pointer threshold = ThresholdType::New();

@@ -78,6 +78,7 @@ VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType
 ::SetOutputSpacing(const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TInputImage::ImageDimension; ++i)
     {
     s[i] = static_cast< typename SpacingType::ValueType >(spacing[i]);
@@ -119,7 +120,7 @@ VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType
   if (m_DefaultPixelValue.Size() == 0)
     {
     NumericTraits<PixelType>::SetLength( m_DefaultPixelValue,
-      this->GetInput()->GetNumberOfComponentsPerPixel() );
+                                         this->GetInput()->GetNumberOfComponentsPerPixel() );
     m_DefaultPixelValue.Fill(0);
     }
 }
@@ -167,7 +168,8 @@ VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType
   typedef ContinuousIndex< SpacePrecisionType, ImageDimension > ContinuousIndexType;
   ContinuousIndexType inputIndex;
 
-  // Doc says this only works for VectorImage, but Image implementation says otherwise...
+  // Doc says this only works for VectorImage, but Image implementation says
+  // otherwise...
   const unsigned int numberOfComponents = this->GetInput()->GetNumberOfComponentsPerPixel();
 
   // Support for progress methods/callbacks
@@ -190,7 +192,7 @@ VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType
     // Evaluate input at right position and copy to the output
     if ( m_Interpolator->IsInsideBuffer(inputIndex) )
       {
-      PixelType        pixval;
+      PixelType pixval;
       NumericTraits< PixelType >::SetLength( pixval, numberOfComponents );
 
       const OutputType value =
@@ -255,6 +257,7 @@ VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType
 
   // get pointers to the input and output
   OutputImagePointer outputPtr = this->GetOutput();
+
   if ( !outputPtr )
     {
     return;
@@ -300,6 +303,7 @@ VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType
 
   return latestTime;
 }
+
 } // end namespace itk
 
 #endif

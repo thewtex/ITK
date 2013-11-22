@@ -43,7 +43,7 @@ class DcmDictEntry;
 // an exception
 //     std::cerr body;
 #define DCMTKExceptionOrErrorReturn(body)       \
-  {                                             \
+    {                                             \
     if(throwException)                          \
       {                                         \
       itkGenericExceptionMacro(body);           \
@@ -52,7 +52,7 @@ class DcmDictEntry;
       {                                         \
       return EXIT_FAILURE;                      \
       }                                         \
-  }
+    }
 
 namespace itk
 {
@@ -62,9 +62,11 @@ class DCMTKItem
 {
 public:
   DCMTKItem() : m_DcmItem(0)
-    {
-    }
+  {
+  }
+
   void SetDcmItem(DcmItem *item);
+
   int GetElementSQ(unsigned short group,
                    unsigned short entry,
                    DCMTKSequence &sequence,
@@ -77,14 +79,20 @@ private:
 class DCMTKSequence
 {
 public:
-  DCMTKSequence() : m_DcmSequenceOfItems(0) {}
+  DCMTKSequence() : m_DcmSequenceOfItems(0) {
+  }
+
   void SetDcmSequenceOfItems(DcmSequenceOfItems *seq);
+
   int card();
+
   int GetSequence(unsigned long index,
                   DCMTKSequence &target,bool throwException = true);
+
   int GetStack(unsigned short group,
                unsigned short element,
                DcmStack &resultStack, bool throwException = true);
+
   int GetElementCS(unsigned short group,
                    unsigned short element,
                    std::string &target,
@@ -101,132 +109,143 @@ public:
                        bool throwException = true);
 
   template <typename TType>
-  int  GetElementDSorOB(unsigned short group,
-                        unsigned short element,
-                        TType  &target,
-                        bool throwException = true)
-    {
-      if(this->GetElementDS<TType>(group,element,1,&target,false) == EXIT_SUCCESS)
-        {
-        return EXIT_SUCCESS;
-        }
-      std::string val;
-      if(this->GetElementOB(group,element,val,throwException) != EXIT_SUCCESS)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
-                       << group << " " << std::hex
-                       << element << std::dec);
-        }
-      const char *data = val.c_str();
-      const TType *fptr = reinterpret_cast<const TType *>(data);
-      target = *fptr;
+  int
+  GetElementDSorOB(unsigned short group,
+                   unsigned short element,
+                   TType  &target,
+                   bool throwException = true)
+  {
+    if(this->GetElementDS<TType>(group,element,1,&target,false) == EXIT_SUCCESS)
+      {
       return EXIT_SUCCESS;
+      }
+    std::string val;
+    if(this->GetElementOB(group,element,val,throwException) != EXIT_SUCCESS)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
+                                  << group << " " << std::hex
+                                  << element << std::dec);
+      }
+    const char * data = val.c_str();
+    const TType *fptr = reinterpret_cast<const TType *>(data);
+    target = *fptr;
+    return EXIT_SUCCESS;
 
-    }
+  }
 
   template <typename TType>
-  int  GetElementDSorOB(unsigned short group,
-                        unsigned short element,
-                        int count,
-                        TType  *target,
-                        bool throwException = true)
-    {
-      if(this->GetElementDS<TType>(group,element,count,target,false) == EXIT_SUCCESS)
-        {
-        return EXIT_SUCCESS;
-        }
-      std::string val;
-      if(this->GetElementOB(group,element,val,throwException) != EXIT_SUCCESS)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
-                       << group << " " << std::hex
-                       << element << std::dec);
-        }
-      const char *data = val.c_str();
-      const TType *fptr = reinterpret_cast<const TType *>(data);
-      for(int i = 0; i < count; ++i)
-        {
-        target[i] = fptr[i];
-        }
+  int
+  GetElementDSorOB(unsigned short group,
+                   unsigned short element,
+                   int count,
+                   TType  *target,
+                   bool throwException = true)
+  {
+    if(this->GetElementDS<TType>(group,element,count,target,false) == EXIT_SUCCESS)
+      {
       return EXIT_SUCCESS;
-    }
-
+      }
+    std::string val;
+    if(this->GetElementOB(group,element,val,throwException) != EXIT_SUCCESS)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
+                                  << group << " " << std::hex
+                                  << element << std::dec);
+      }
+    const char * data = val.c_str();
+    const TType *fptr = reinterpret_cast<const TType *>(data);
+    for(int i = 0; i < count; ++i)
+      {
+      target[i] = fptr[i];
+      }
+    return EXIT_SUCCESS;
+  }
 
   int GetElementFD(unsigned short group,
                    unsigned short element,
                    int count,
                    double *target,
                    bool throwException = true);
+
   int GetElementFD(unsigned short group,
                    unsigned short element,
                    double &target,
                    bool throwException = true);
+
   int GetElementDS(unsigned short group,
                    unsigned short element,
                    std::string &target,
                    bool throwException = true);
+
   int GetElementTM(unsigned short group,
                    unsigned short element,
                    std::string &target,
                    bool throwException = true);
+
   /** Get an array of data values, as contained in a DICOM
     * DecimalString Item
     */
   template <typename TType>
-  int GetElementDS(unsigned short group,
-                   unsigned short element,
-                   unsigned short count,
-                   TType  *target,
-                   bool throwException = true)
-    {
-      DcmStack resultStack;
-      if(this->GetStack(group,element,resultStack,throwException) != EXIT_SUCCESS)
-        {
-        return EXIT_FAILURE;
-        }
-      DcmDecimalString *dsItem =
-        dynamic_cast<DcmDecimalString *>(resultStack.top());
-      if(dsItem == 0)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Can't get DecimalString Element at tag "
-                       << std::hex << group << " "
-                       << element << std::dec);
-        }
+  int
+  GetElementDS(unsigned short group,
+               unsigned short element,
+               unsigned short count,
+               TType  *target,
+               bool throwException = true)
+  {
+    DcmStack resultStack;
 
-      OFVector<Float64> doubleVals;
-      if(dsItem->getFloat64Vector(doubleVals) != EC_Normal)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Cant extract Array from DecimalString " << std::hex
-                       << group << " " << std::hex
-                       << element << std::dec);
-        }
-      if(doubleVals.size() != count)
-        {
-        DCMTKExceptionOrErrorReturn(<< "DecimalString " << std::hex
-                       << group << " " << std::hex
-                       << element << " expected "
-                       << count << "items, but found "
-                       << doubleVals.size() << std::dec);
+    if(this->GetStack(group,element,resultStack,throwException) != EXIT_SUCCESS)
+      {
+      return EXIT_FAILURE;
+      }
+    DcmDecimalString *dsItem =
+      dynamic_cast<DcmDecimalString *>(resultStack.top() );
+    if(dsItem == 0)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Can't get DecimalString Element at tag "
+                                  << std::hex << group << " "
+                                  << element << std::dec);
+      }
 
-        }
-      for(unsigned i = 0; i < count; i++)
-        {
-        target[i] = static_cast<TType>(doubleVals[i]);
-        }
-      return EXIT_SUCCESS;
-    }
+    OFVector<Float64> doubleVals;
+    if(dsItem->getFloat64Vector(doubleVals) != EC_Normal)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Cant extract Array from DecimalString " << std::hex
+                                  << group << " " << std::hex
+                                  << element << std::dec);
+      }
+    if(doubleVals.size() != count)
+      {
+      DCMTKExceptionOrErrorReturn(<< "DecimalString " << std::hex
+                                  << group << " " << std::hex
+                                  << element << " expected "
+                                  << count << "items, but found "
+                                  << doubleVals.size() << std::dec);
+
+      }
+    for(unsigned i = 0; i < count; i++)
+      {
+      target[i] = static_cast<TType>(doubleVals[i]);
+      }
+    return EXIT_SUCCESS;
+  }
+
   int GetElementSQ(unsigned short group,
                    unsigned short element,
                    DCMTKSequence &target,
                    bool throwException = true);
+
   int GetElementItem(unsigned short itemIndex,
                      DCMTKItem &target,
                      bool throwException = true);
 
-  void print(std::ostream &out)
-    {
-      this->m_DcmSequenceOfItems->print(out);
-    }
+  void
+  print(std::ostream &out)
+  {
+    this->m_DcmSequenceOfItems->print(out);
+  }
+
 private:
   DcmSequenceOfItems *m_DcmSequenceOfItems;
 };
@@ -237,12 +256,13 @@ public:
   typedef DCMTKFileReader Self;
 
   DCMTKFileReader() : m_DFile(0),
-                      m_Dataset(0),
-                      m_Xfer(EXS_Unknown),
-                      m_FrameCount(0),
-                      m_FileNumber(-1L)
-    {
-    }
+    m_Dataset(0),
+    m_Xfer(EXS_Unknown),
+    m_FrameCount(0),
+    m_FileNumber(-1L)
+  {
+  }
+
   ~DCMTKFileReader();
 
   void SetFileName(const std::string &fileName);
@@ -255,6 +275,7 @@ public:
                    unsigned short element,
                    std::string &target,
                    bool throwException = true);
+
   int GetElementLO(unsigned short group,
                    unsigned short element,
                    std::vector<std::string> &target,
@@ -264,105 +285,113 @@ public:
     * DecimalString Item
     */
   template <typename TType>
-  int  GetElementDS(unsigned short group,
-                    unsigned short element,
-                    unsigned short count,
-                    TType  *target,
-                    bool throwException = true)
-    {
-      DcmTagKey tagkey(group,element);
-      DcmElement *el;
-      if(this->m_Dataset->findAndGetElement(tagkey,el) != EC_Normal)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Cant find tag " << std::hex
-                       << group << " " << std::hex
-                       << element << std::dec);
-        }
-      DcmDecimalString *dsItem = dynamic_cast<DcmDecimalString *>(el);
-      if(dsItem == 0)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
-                       << group << " " << std::hex
-                       << element << std::dec);
-        }
-      OFVector<Float64> doubleVals;
-      if(dsItem->getFloat64Vector(doubleVals) != EC_Normal)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Cant extract Array from DecimalString " << std::hex
-                       << group << " " << std::hex
-                       << element << std::dec);
-        }
-      if(doubleVals.size() != count)
-        {
-        DCMTKExceptionOrErrorReturn(<< "DecimalString " << std::hex
-                       << group << " " << std::hex
-                       << element << " expected "
-                       << count << "items, but found "
-                       << doubleVals.size() << std::dec);
+  int
+  GetElementDS(unsigned short group,
+               unsigned short element,
+               unsigned short count,
+               TType  *target,
+               bool throwException = true)
+  {
+    DcmTagKey   tagkey(group,element);
+    DcmElement *el;
 
-        }
-      for(unsigned i = 0; i < count; i++)
-        {
-        target[i] = static_cast<TType>(doubleVals[i]);
-        }
-      return EXIT_SUCCESS;
-    }
+    if(this->m_Dataset->findAndGetElement(tagkey,el) != EC_Normal)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Cant find tag " << std::hex
+                                  << group << " " << std::hex
+                                  << element << std::dec);
+      }
+    DcmDecimalString *dsItem = dynamic_cast<DcmDecimalString *>(el);
+    if(dsItem == 0)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
+                                  << group << " " << std::hex
+                                  << element << std::dec);
+      }
+    OFVector<Float64> doubleVals;
+    if(dsItem->getFloat64Vector(doubleVals) != EC_Normal)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Cant extract Array from DecimalString " << std::hex
+                                  << group << " " << std::hex
+                                  << element << std::dec);
+      }
+    if(doubleVals.size() != count)
+      {
+      DCMTKExceptionOrErrorReturn(<< "DecimalString " << std::hex
+                                  << group << " " << std::hex
+                                  << element << " expected "
+                                  << count << "items, but found "
+                                  << doubleVals.size() << std::dec);
+
+      }
+    for(unsigned i = 0; i < count; i++)
+      {
+      target[i] = static_cast<TType>(doubleVals[i]);
+      }
+    return EXIT_SUCCESS;
+  }
 
   template <typename TType>
-  int  GetElementDSorOB(unsigned short group,
-                        unsigned short element,
-                        TType  &target,
-                        bool throwException = true)
-    {
-      if(this->GetElementDS<TType>(group,element,1,&target,false) == EXIT_SUCCESS)
-        {
-        return EXIT_SUCCESS;
-        }
-      std::string val;
-      if(this->GetElementOB(group,element,val) != EXIT_SUCCESS)
-        {
-        DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
-                       << group << " " << std::hex
-                       << element << std::dec);
-        }
-      const char *data = val.c_str();
-      const TType *fptr = reinterpret_cast<const TType *>(data);
-      target = *fptr;
-      switch(this->GetTransferSyntax())
-        {
-        case EXS_LittleEndianImplicit:
-        case EXS_LittleEndianExplicit:
-          itk::ByteSwapper<TType>::SwapFromSystemToLittleEndian(&target);
-          break;
-        case EXS_BigEndianImplicit:
-        case EXS_BigEndianExplicit:
-          itk::ByteSwapper<TType>::SwapFromSystemToBigEndian(&target);
-          break;
-        default:
-          break;
-        }
+  int
+  GetElementDSorOB(unsigned short group,
+                   unsigned short element,
+                   TType  &target,
+                   bool throwException = true)
+  {
+    if(this->GetElementDS<TType>(group,element,1,&target,false) == EXIT_SUCCESS)
+      {
       return EXIT_SUCCESS;
+      }
+    std::string val;
+    if(this->GetElementOB(group,element,val) != EXIT_SUCCESS)
+      {
+      DCMTKExceptionOrErrorReturn(<< "Cant find DecimalString element " << std::hex
+                                  << group << " " << std::hex
+                                  << element << std::dec);
+      }
+    const char * data = val.c_str();
+    const TType *fptr = reinterpret_cast<const TType *>(data);
+    target = *fptr;
+    switch(this->GetTransferSyntax() )
+      {
+      case EXS_LittleEndianImplicit:
+      case EXS_LittleEndianExplicit:
+        itk::ByteSwapper<TType>::SwapFromSystemToLittleEndian(&target);
+        break;
+      case EXS_BigEndianImplicit:
+      case EXS_BigEndianExplicit:
+        itk::ByteSwapper<TType>::SwapFromSystemToBigEndian(&target);
+        break;
+      default:
+        break;
+      }
+    return EXIT_SUCCESS;
 
-    }
+  }
+
   /** Get a DecimalString Item as a single string
    */
   int  GetElementDS(unsigned short group,
                     unsigned short element,
                     std::string &target,
                     bool throwException = true);
+
   int  GetElementFD(unsigned short group,
                     unsigned short element,
                     double &target,
                     bool throwException = true);
+
   int  GetElementFD(unsigned short group,
                     unsigned short element,
                     int count,
                     double * target,
                     bool throwException = true);
+
   int  GetElementFL(unsigned short group,
                     unsigned short element,
                     float &target,
                     bool throwException = true);
+
   int  GetElementFLorOB(unsigned short group,
                         unsigned short element,
                         float &target,
@@ -372,10 +401,12 @@ public:
                     unsigned short element,
                     unsigned short &target,
                     bool throwException = true);
+
   int  GetElementUS(unsigned short group,
                     unsigned short element,
                     unsigned short *&target,
                     bool throwException = true);
+
   /** Get a DecimalString Item as a single string
    */
   int  GetElementCS(unsigned short group,
@@ -425,8 +456,8 @@ public:
                    bool throwException = true);
 
   int GetElementUI(unsigned short group,
-                  unsigned short entry,
-                  std::string &target,
+                   unsigned short entry,
+                   std::string &target,
                    bool throwException = true);
 
   int GetElementDA(unsigned short group,
@@ -452,9 +483,11 @@ public:
   int GetDimensions(unsigned short &rows, unsigned short &columns);
 
   ImageIOBase::IOComponentType GetImageDataType();
+
   ImageIOBase::IOPixelType GetImagePixelType();
 
   int GetSpacing(double *spacing);
+
   int GetOrigin(double *origin);
 
   bool HasPixelData() const;
@@ -462,23 +495,26 @@ public:
   E_TransferSyntax GetTransferSyntax() const;
 
   long GetFileNumber() const;
+
   static void
   AddDictEntry(DcmDictEntry *entry);
 
   static bool CanReadFile(const std::string &filename);
+
   static bool IsImageFile(const std::string &filename);
 
 private:
 
-  std::string          m_FileName;
-  DcmFileFormat*       m_DFile;
-  DcmDataset *         m_Dataset;
-  E_TransferSyntax     m_Xfer;
-  Sint32               m_FrameCount;
-  long                 m_FileNumber;
+  std::string      m_FileName;
+  DcmFileFormat*   m_DFile;
+  DcmDataset *     m_Dataset;
+  E_TransferSyntax m_Xfer;
+  Sint32           m_FrameCount;
+  long             m_FileNumber;
 };
 
 extern bool CompareDCMTKFileReaders(DCMTKFileReader *a, DCMTKFileReader *b);
+
 }
 
 #endif // __itkDCMTKFileReader_h

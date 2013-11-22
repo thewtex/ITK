@@ -32,14 +32,16 @@ public:
   typedef TLabelObject                                    LabelObjectType;
   typedef typename LabelObjectType::RegionType::IndexType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetBoundingBox().GetIndex();
   }
+
 };
 
-
-int itkAttributePositionLabelMapFilterTest1(int argc, char * argv[])
+int
+itkAttributePositionLabelMapFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 3 )
@@ -66,8 +68,9 @@ int itkAttributePositionLabelMapFilterTest1(int argc, char * argv[])
   i2l->SetInput( reader->GetOutput() );
 
   typedef itk::AttributePositionLabelMapFilter< I2LType::OutputImageType,
-    TestLabelObjectAccessor< I2LType::OutputImageType::LabelObjectType >, true >
-      OpeningType;
+                                                TestLabelObjectAccessor< I2LType::OutputImageType::LabelObjectType >,
+                                                true >
+    OpeningType;
   OpeningType::Pointer opening = OpeningType::New();
   opening->SetInput( i2l->GetOutput() );
   itk::SimpleFilterWatcher watcher(opening, "filter");

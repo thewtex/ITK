@@ -53,7 +53,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class MembershipSample:public DataObject
+class MembershipSample : public DataObject
 {
 public:
   /** Standard class typedefs. */
@@ -158,7 +158,8 @@ public:
       m_InstanceIdentifier = iter.m_InstanceIdentifier;
     }
 
-    ConstIterator & operator=(const ConstIterator & iter)
+    ConstIterator &
+    operator=(const ConstIterator & iter)
     {
       m_Sample = iter.m_Sample;
       m_MembershipSample = iter.m_MembershipSample;
@@ -166,38 +167,45 @@ public:
       return *this;
     }
 
-    bool operator!=(const ConstIterator & it)
+    bool
+    operator!=(const ConstIterator & it)
     {
       return ( m_InstanceIdentifier != it.m_InstanceIdentifier );
     }
 
-    bool operator==(const ConstIterator & it)
+    bool
+    operator==(const ConstIterator & it)
     {
       return ( m_InstanceIdentifier == it.m_InstanceIdentifier );
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_InstanceIdentifier;
       return *this;
     }
 
-    AbsoluteFrequencyType GetFrequency() const
+    AbsoluteFrequencyType
+    GetFrequency() const
     {
       return m_Sample->GetFrequency(m_InstanceIdentifier);
     }
 
-    const MeasurementVectorType & GetMeasurementVector() const
+    const MeasurementVectorType &
+    GetMeasurementVector() const
     {
       return m_Sample->GetMeasurementVector(m_InstanceIdentifier);
     }
 
-    InstanceIdentifier GetInstanceIdentifier() const
+    InstanceIdentifier
+    GetInstanceIdentifier() const
     {
       return m_InstanceIdentifier;
     }
 
-    unsigned int   GetClassLabel() const
+    unsigned int
+    GetClassLabel() const
     {
       return m_MembershipSample->GetClassLabel(m_InstanceIdentifier);
     }
@@ -208,9 +216,10 @@ protected:
 
     // Only to be called from the MembershipSample
     ConstIterator(
-      const Self *memberSample, InstanceIdentifier iid):
+      const Self *memberSample, InstanceIdentifier iid) :
       m_Sample( memberSample->GetSample() ), m_MembershipSample(memberSample), m_InstanceIdentifier(iid)
-    {}
+    {
+    }
 
     //typename SampleType::ConstIterator m_Iter;
     const TSample *         m_Sample;
@@ -218,19 +227,22 @@ protected:
     InstanceIdentifier      m_InstanceIdentifier;
   };
 
-  class Iterator:public ConstIterator
+  class Iterator : public ConstIterator
   {
     friend class MembershipSample;
 
 public:
 
-    Iterator(Self *sample):ConstIterator(sample)
-    {}
+    Iterator(Self *sample) : ConstIterator(sample)
+    {
+    }
 
-    Iterator(const Iterator & iter):ConstIterator(iter)
-    {}
+    Iterator(const Iterator & iter) : ConstIterator(iter)
+    {
+    }
 
-    Iterator & operator=(const Iterator & iter)
+    Iterator &
+    operator=(const Iterator & iter)
     {
       this->ConstIterator::operator=(iter);
       return *this;
@@ -246,16 +258,18 @@ protected:
 
     // Only to be called from the MembershipSample
     Iterator(Self *memberSample,
-             InstanceIdentifier iid):
+             InstanceIdentifier iid) :
       ConstIterator(memberSample, iid)
-    {}
+    {
+    }
 
 private:
   };
 
   /** This method returns an iterator to the beginning of the
       measurement vectors */
-  Iterator Begin()
+  Iterator
+  Begin()
   {
     Iterator iter(this, 0);
 
@@ -264,21 +278,24 @@ private:
 
   /** This method returns an iterator to the beginning of the
       measurement vectors */
-  Iterator  End()
+  Iterator
+  End()
   {
     Iterator iter( this, m_Sample->Size() );
 
     return iter;
   }
 
-  ConstIterator Begin() const
+  ConstIterator
+  Begin() const
   {
     ConstIterator iter(this,  0);
 
     return iter;
   }
 
-  ConstIterator  End()  const
+  ConstIterator
+  End()  const
   {
     ConstIterator iter( this, m_Sample->Size() );
 
@@ -287,7 +304,10 @@ private:
 
 protected:
   MembershipSample();
-  virtual ~MembershipSample() {}
+  virtual
+  ~MembershipSample() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

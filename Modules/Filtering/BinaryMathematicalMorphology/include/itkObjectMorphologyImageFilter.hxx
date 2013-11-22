@@ -30,7 +30,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage, typename TKernel >
 ObjectMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
-::ObjectMorphologyImageFilter():
+::ObjectMorphologyImageFilter() :
   m_Kernel()
 {
   m_DefaultBoundaryCondition.SetConstant(NumericTraits< PixelType >::Zero);
@@ -237,5 +237,6 @@ ObjectMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
   os << indent << "ObjectValue: " << m_ObjectValue << std::endl;
   os << indent << "Kernel: " << m_Kernel << std::endl;
 }
+
 } // end namespace itk
 #endif

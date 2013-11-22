@@ -44,13 +44,13 @@ BinaryGrindPeakImageFilter<TInputImage>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
+  InputImagePointer input = const_cast<InputImageType *>(this->GetInput() );
+
   if( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
     }
 }
-
 
 template <typename TInputImage>
 void
@@ -58,9 +58,8 @@ BinaryGrindPeakImageFilter<TInputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
-
 
 template<typename TInputImage>
 void
@@ -69,6 +68,7 @@ BinaryGrindPeakImageFilter<TInputImage>
 {
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+
   progress->SetMiniPipelineFilter(this);
 
   // Allocate the output
@@ -106,7 +106,6 @@ BinaryGrindPeakImageFilter<TInputImage>
   this->GraftOutput( binarizer->GetOutput() );
 }
 
-
 template<typename TInputImage>
 void
 BinaryGrindPeakImageFilter<TInputImage>
@@ -114,10 +113,12 @@ BinaryGrindPeakImageFilter<TInputImage>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "ForegroundValue: " << static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
-  os << indent << "BackgroundValue: " << static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "ForegroundValue: " <<
+    static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "BackgroundValue: " <<
+    static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

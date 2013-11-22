@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class StatisticsUniqueLabelMapFilter:
+class StatisticsUniqueLabelMapFilter :
   public ShapeUniqueLabelMapFilter< TImage >
 {
 public:
@@ -81,13 +81,15 @@ public:
 
 protected:
   StatisticsUniqueLabelMapFilter();
-  ~StatisticsUniqueLabelMapFilter() {}
+  ~StatisticsUniqueLabelMapFilter() {
+  }
 
   void GenerateData();
 
 private:
   StatisticsUniqueLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };                                              // end of class
 } // end namespace itk
 

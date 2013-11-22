@@ -49,7 +49,7 @@ namespace itk
  * \ingroup ITKBinaryMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class FastIncrementalBinaryDilateImageFilter:
+class FastIncrementalBinaryDilateImageFilter :
   public BinaryDilateImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -71,7 +71,7 @@ public:
   /** Standard class typedefs. */
   typedef FastIncrementalBinaryDilateImageFilter Self;
   typedef BinaryDilateImageFilter< InputImageType, OutputImageType, KernelType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -82,8 +82,12 @@ public:
   itkTypeMacro(FastIncrementalBinaryDilateImageFilter, ImageToImageFilter);
 
 protected:
-  FastIncrementalBinaryDilateImageFilter() {}
-  virtual ~FastIncrementalBinaryDilateImageFilter(){}
+  FastIncrementalBinaryDilateImageFilter() {
+  }
+
+  virtual
+  ~FastIncrementalBinaryDilateImageFilter(){
+  }
 
 private:
   FastIncrementalBinaryDilateImageFilter(const Self &); //purposely not

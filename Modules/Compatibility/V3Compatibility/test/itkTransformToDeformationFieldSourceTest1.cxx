@@ -32,7 +32,8 @@
 #include "itkWarpImageFilter.h"
 #include "itkImageRegionConstIterator.h"
 
-int itkTransformToDeformationFieldSourceTest1( int argc, char *argv[] )
+int
+itkTransformToDeformationFieldSourceTest1( int argc, char *argv[] )
 {
   if ( argc < 2 )
     {
@@ -47,25 +48,25 @@ int itkTransformToDeformationFieldSourceTest1( int argc, char *argv[] )
   //  const unsigned int  SplineOrder = 3;
 
   typedef itk::Image<
-    ScalarPixelType, Dimension>          ImageType;
+      ScalarPixelType, Dimension>          ImageType;
   typedef itk::Vector<
-    ScalarPixelType, Dimension>          VectorPixelType;
+      ScalarPixelType, Dimension>          VectorPixelType;
 
   typedef itk::Image<
-    VectorPixelType, Dimension>          DeformationFieldImageType;
+      VectorPixelType, Dimension>          DeformationFieldImageType;
 
   typedef itk::Euler3DTransform<
-    CoordRepresentationType>             TransformType;
+      CoordRepresentationType>             TransformType;
 
   typedef TransformType::ParametersType ParametersType;
 
   typedef itk::TransformToDeformationFieldSource<
-    DeformationFieldImageType,
-    CoordRepresentationType>             DeformationFieldGeneratorType;
+      DeformationFieldImageType,
+      CoordRepresentationType>             DeformationFieldGeneratorType;
 
   typedef itk::WarpImageFilter<ImageType,
-    ImageType,
-    DeformationFieldImageType>  WarpImageType;
+                               ImageType,
+                               DeformationFieldImageType>  WarpImageType;
 
   typedef ImageType::SizeType      SizeType;
   typedef ImageType::SpacingType   SpacingType;
@@ -74,7 +75,7 @@ int itkTransformToDeformationFieldSourceTest1( int argc, char *argv[] )
   typedef ImageType::RegionType    RegionType;
   typedef ImageType::DirectionType DirectionType;
   typedef itk::ImageFileWriter<
-    ImageType>                         WriterType;
+      ImageType>                         WriterType;
 
   /** Create input image. */
   SizeType size;
@@ -182,7 +183,7 @@ int itkTransformToDeformationFieldSourceTest1( int argc, char *argv[] )
 
   /** Use ResampleImageFilter to get transformed image. */
   typedef  itk::ResampleImageFilter<ImageType,
-    ImageType> ResampleImageFilter;
+                                    ImageType> ResampleImageFilter;
   ResampleImageFilter::Pointer resample = ResampleImageFilter::New();
   resample->SetInput(image);
   resample->SetTransform(eulerTransform);
@@ -237,7 +238,7 @@ int itkTransformToDeformationFieldSourceTest1( int argc, char *argv[] )
   warper->SetInput( image );
   try
     {
-    warper->Update( );
+    warper->Update();
     }
   catch ( itk::ExceptionObject & e )
     {

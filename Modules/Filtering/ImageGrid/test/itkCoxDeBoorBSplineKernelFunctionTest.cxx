@@ -21,7 +21,8 @@
  * In this test, we check to see that the coefficients that are
  * derived using the Cox-DeBoor recursion algorithm
  */
-int itkCoxDeBoorBSplineKernelFunctionTest( int argc, char * argv [] )
+int
+itkCoxDeBoorBSplineKernelFunctionTest( int argc, char * argv [] )
 {
   if ( argc < 1 )
     {
@@ -30,7 +31,7 @@ int itkCoxDeBoorBSplineKernelFunctionTest( int argc, char * argv [] )
     }
 
   typedef itk::CoxDeBoorBSplineKernelFunction<3> KernelType;
-  KernelType::Pointer kernel = KernelType::New();
+  KernelType::Pointer    kernel = KernelType::New();
   KernelType::MatrixType coefficients;
 
   /**
@@ -48,7 +49,7 @@ int itkCoxDeBoorBSplineKernelFunctionTest( int argc, char * argv [] )
   std::cout << "Spline order = " << kernel->GetSplineOrder() << std::endl;
   std::cout << "Shape functions = " << kernel->GetShapeFunctions() << std::endl;
   std::cout << "Shape functions [0,1) = "
-    << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
+            << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
   kernel->Print( std::cout, 3 );
 
   /**
@@ -67,7 +68,7 @@ int itkCoxDeBoorBSplineKernelFunctionTest( int argc, char * argv [] )
   std::cout << "Spline order = " << kernel->GetSplineOrder() << std::endl;
   std::cout << "Shape functions = " << kernel->GetShapeFunctions() << std::endl;
   std::cout << "Shape functions [0,1) = "
-    << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
+            << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
   kernel->Print( std::cout, 3 );
 
   /**
@@ -90,7 +91,7 @@ int itkCoxDeBoorBSplineKernelFunctionTest( int argc, char * argv [] )
   std::cout << "Spline order = " << kernel->GetSplineOrder() << std::endl;
   std::cout << "Shape functions = " << kernel->GetShapeFunctions() << std::endl;
   std::cout << "Shape functions [0,1) = "
-    << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
+            << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
   kernel->Print( std::cout, 3 );
 
   /**
@@ -115,7 +116,7 @@ int itkCoxDeBoorBSplineKernelFunctionTest( int argc, char * argv [] )
   std::cout << "Spline order = " << kernel->GetSplineOrder() << std::endl;
   std::cout << "Shape functions = " << kernel->GetShapeFunctions() << std::endl;
   std::cout << "Shape functions [0,1) = "
-    << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
+            << kernel->GetShapeFunctionsInZeroToOneInterval() << std::endl;
   kernel->Print( std::cout, 3 );
 
   return EXIT_SUCCESS;

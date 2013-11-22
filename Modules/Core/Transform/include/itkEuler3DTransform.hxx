@@ -139,6 +139,7 @@ Euler3DTransform<TScalar>
 ::SetIdentity(void)
 {
   Superclass::SetIdentity();
+
   m_AngleX = 0;
   m_AngleY = 0;
   m_AngleZ = 0;

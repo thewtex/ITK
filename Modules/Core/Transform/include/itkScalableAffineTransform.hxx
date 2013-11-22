@@ -27,7 +27,7 @@ namespace itk
 /** Constructor with default arguments */
 template< typename TScalar, unsigned int NDimensions >
 ScalableAffineTransform< TScalar, NDimensions >
-::ScalableAffineTransform():
+::ScalableAffineTransform() :
   Superclass(Self::ParametersDimension)
 {
   for ( unsigned int i = 0; i < NDimensions; i++ )
@@ -40,7 +40,7 @@ ScalableAffineTransform< TScalar, NDimensions >
 /** Constructor with default arguments */
 template< typename TScalar, unsigned int NDimensions >
 ScalableAffineTransform< TScalar, NDimensions >
-::ScalableAffineTransform(unsigned int , unsigned int parametersDimension):
+::ScalableAffineTransform(unsigned int , unsigned int parametersDimension) :
   Superclass(parametersDimension)
 {
   for ( unsigned int i = 0; i < NDimensions; i++ )
@@ -52,7 +52,7 @@ ScalableAffineTransform< TScalar, NDimensions >
 
 template< typename TScalar, unsigned int NDimensions >
 ScalableAffineTransform< TScalar, NDimensions >
-::ScalableAffineTransform(unsigned int parametersDimension):
+::ScalableAffineTransform(unsigned int parametersDimension) :
   Superclass(parametersDimension)
 {
   for ( unsigned int i = 0; i < NDimensions; i++ )
@@ -66,7 +66,7 @@ ScalableAffineTransform< TScalar, NDimensions >
 template< typename TScalar, unsigned int NDimensions >
 ScalableAffineTransform< TScalar, NDimensions >
 ::ScalableAffineTransform(const MatrixType & matrix,
-                          const OutputVectorType & offset):
+                          const OutputVectorType & offset) :
   Superclass(matrix, offset)
 {
   for ( unsigned int i = 0; i < NDimensions; i++ )
@@ -180,6 +180,7 @@ ScalableAffineTransform< TScalar, NDimensions >
 ::ComputeMatrix()
 {
   bool scaleChanged = false;
+
   for ( unsigned int i = 0; i < NDimensions; i++ )
     {
     if ( m_Scale[i] != m_MatrixScale[i] )
@@ -222,9 +223,9 @@ template< typename TScalar, unsigned int NDimensions >
 const typename ScalableAffineTransform< TScalar, NDimensions >::MatrixType &
 ScalableAffineTransform< TScalar, NDimensions >
 ::GetMatrixComponent() const
-{
+  {
   return this->GetMatrix();
-}
+  }
 
 template< typename TScalar, unsigned int NDimensions >
 void
@@ -238,9 +239,9 @@ template< typename TScalar, unsigned int NDimensions >
 const typename ScalableAffineTransform< TScalar, NDimensions >::OffsetType &
 ScalableAffineTransform< TScalar, NDimensions >
 ::GetOffsetComponent(void) const
-{
+  {
   return this->GetTranslation();
-}
+  }
 #endif
 
 } // namespace

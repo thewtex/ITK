@@ -24,8 +24,9 @@
 #include "itkMetaDataObject.h"
 #include "itkObjectFactoryBase.h"
 
-static void RandomPix(vnl_random &randgen,itk::RGBPixel<unsigned char> &pix,
-                      double _max=itk::NumericTraits<unsigned char>::max() )
+static void
+RandomPix(vnl_random &randgen,itk::RGBPixel<unsigned char> &pix,
+          double _max=itk::NumericTraits<unsigned char>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -33,8 +34,9 @@ static void RandomPix(vnl_random &randgen,itk::RGBPixel<unsigned char> &pix,
     }
 }
 
-static void RandomPix(vnl_random &randgen,itk::RGBPixel<char> &pix,
-                      double _max=itk::NumericTraits<char>::max() )
+static void
+RandomPix(vnl_random &randgen,itk::RGBPixel<char> &pix,
+          double _max=itk::NumericTraits<char>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -42,9 +44,9 @@ static void RandomPix(vnl_random &randgen,itk::RGBPixel<char> &pix,
     }
 }
 
-
-static void RandomPix(vnl_random &randgen,itk::Vector<unsigned short,3> &pix,
-                      double _max=itk::NumericTraits<unsigned short>::max() )
+static void
+RandomPix(vnl_random &randgen,itk::Vector<unsigned short,3> &pix,
+          double _max=itk::NumericTraits<unsigned short>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -52,8 +54,9 @@ static void RandomPix(vnl_random &randgen,itk::Vector<unsigned short,3> &pix,
     }
 }
 
-static void RandomPix(vnl_random &randgen,itk::Vector<short,3> &pix,
-                      double _max=itk::NumericTraits<short>::max() )
+static void
+RandomPix(vnl_random &randgen,itk::Vector<short,3> &pix,
+          double _max=itk::NumericTraits<short>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -61,8 +64,9 @@ static void RandomPix(vnl_random &randgen,itk::Vector<short,3> &pix,
     }
 }
 
-static void RandomPix(vnl_random &randgen,itk::Vector<unsigned int,3> &pix,
-                      double _max=itk::NumericTraits<unsigned int>::max() )
+static void
+RandomPix(vnl_random &randgen,itk::Vector<unsigned int,3> &pix,
+          double _max=itk::NumericTraits<unsigned int>::max() )
 {
   (void)_max;
   for(unsigned int i = 0; i < 3; i++)
@@ -71,8 +75,9 @@ static void RandomPix(vnl_random &randgen,itk::Vector<unsigned int,3> &pix,
     }
 }
 
-static void RandomPix(vnl_random &randgen,itk::Vector<int,3> &pix,
-                      double _max=itk::NumericTraits<int>::max() )
+static void
+RandomPix(vnl_random &randgen,itk::Vector<int,3> &pix,
+          double _max=itk::NumericTraits<int>::max() )
 {
   (void)_max;
   for(unsigned int i = 0; i < 3; i++)
@@ -81,8 +86,9 @@ static void RandomPix(vnl_random &randgen,itk::Vector<int,3> &pix,
     }
 }
 
-static void RandomPix(vnl_random &randgen, itk::Vector<float,3> &pix,
-                      float _max=itk::NumericTraits<float>::max() )
+static void
+RandomPix(vnl_random &randgen, itk::Vector<float,3> &pix,
+          float _max=itk::NumericTraits<float>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -90,8 +96,9 @@ static void RandomPix(vnl_random &randgen, itk::Vector<float,3> &pix,
     }
 }
 
-static void RandomPix(vnl_random &randgen,itk::Vector<double,3> &pix,
-                      double _max=itk::NumericTraits<double>::max() )
+static void
+RandomPix(vnl_random &randgen,itk::Vector<double,3> &pix,
+          double _max=itk::NumericTraits<double>::max() )
 {
   for(unsigned int i = 0; i < 3; i++)
     {
@@ -99,7 +106,8 @@ static void RandomPix(vnl_random &randgen,itk::Vector<double,3> &pix,
     }
 }
 
-static double abs_diff(const itk::RGBPixel<unsigned char> &pix1,const itk::RGBPixel<unsigned char> &pix2)
+static double
+abs_diff(const itk::RGBPixel<unsigned char> &pix1,const itk::RGBPixel<unsigned char> &pix2)
 {
   double diff=0.0;
 
@@ -110,7 +118,8 @@ static double abs_diff(const itk::RGBPixel<unsigned char> &pix1,const itk::RGBPi
   return diff;
 }
 
-static double abs_diff(const itk::RGBPixel<char> &pix1,const itk::RGBPixel<char> &pix2)
+static double
+abs_diff(const itk::RGBPixel<char> &pix1,const itk::RGBPixel<char> &pix2)
 {
   double diff=0.0;
 
@@ -121,8 +130,8 @@ static double abs_diff(const itk::RGBPixel<char> &pix1,const itk::RGBPixel<char>
   return diff;
 }
 
-
-static double abs_diff(const itk::Vector<float> &pix1,const itk::Vector<float> &pix2)
+static double
+abs_diff(const itk::Vector<float> &pix1,const itk::Vector<float> &pix2)
 {
   double diff=0.0;
 
@@ -133,7 +142,8 @@ static double abs_diff(const itk::Vector<float> &pix1,const itk::Vector<float> &
   return diff;
 }
 
-static double abs_diff(const itk::Vector<double> &pix1,const itk::Vector<double> &pix2)
+static double
+abs_diff(const itk::Vector<double> &pix1,const itk::Vector<double> &pix2)
 {
   double diff=0.0;
 
@@ -144,81 +154,89 @@ static double abs_diff(const itk::Vector<double> &pix1,const itk::Vector<double>
   return diff;
 }
 
-
-static double abs_diff(const itk::Vector<int> &pix1,const itk::Vector<int> &pix2)
+static double
+abs_diff(const itk::Vector<int> &pix1,const itk::Vector<int> &pix2)
 {
   double diff=0.0;
 
   for(int i=0; i<3; i++)
     {
-    diff += fabs((double)(pix1[i]-pix2[i]));
+    diff += fabs( (double)(pix1[i]-pix2[i]) );
     }
   return diff;
 }
 
-static double abs_diff(const itk::Vector<unsigned int> &pix1,const itk::Vector<unsigned int> &pix2)
+static double
+abs_diff(const itk::Vector<unsigned int> &pix1,const itk::Vector<unsigned int> &pix2)
 {
   double diff=0.0;
 
   for(int i=0; i<3; i++)
     {
-    diff += fabs((double)(pix1[i]-pix2[i]));
+    diff += fabs( (double)(pix1[i]-pix2[i]) );
     }
   return diff;
 }
 
-static double abs_diff(const itk::Vector<short> &pix1,const itk::Vector<short> &pix2)
+static double
+abs_diff(const itk::Vector<short> &pix1,const itk::Vector<short> &pix2)
 {
   double diff=0.0;
 
   for(short i=0; i<3; i++)
     {
-    diff += fabs((double)(pix1[i]-pix2[i]));
+    diff += fabs( (double)(pix1[i]-pix2[i]) );
     }
   return diff;
 }
 
-static double abs_diff(const itk::Vector<unsigned short> &pix1,const itk::Vector<unsigned short> &pix2)
+static double
+abs_diff(const itk::Vector<unsigned short> &pix1,const itk::Vector<unsigned short> &pix2)
 {
   double diff=0.0;
 
   for(short i=0; i<3; i++)
     {
-    diff += fabs((double)(pix1[i]-pix2[i]));
+    diff += fabs( (double)(pix1[i]-pix2[i]) );
     }
   return diff;
 }
 
-
-static void RandomPix(vnl_random &randgen, double &pix,double _max=itk::NumericTraits<double>::max() )
+static void
+RandomPix(vnl_random &randgen, double &pix,double _max=itk::NumericTraits<double>::max() )
 {
   pix = randgen.drand64(_max);
 }
 
-static void RandomPix(vnl_random &randgen, float &pix,float _max=itk::NumericTraits<float>::max() )
+static void
+RandomPix(vnl_random &randgen, float &pix,float _max=itk::NumericTraits<float>::max() )
 {
   pix = randgen.drand64(_max);
 }
 
-static void RandomPix(vnl_random &randgen, int &pix)
+static void
+RandomPix(vnl_random &randgen, int &pix)
 {
   pix = randgen.lrand32();
 }
 
-static void RandomPix(vnl_random &randgen, unsigned int &pix)
+static void
+RandomPix(vnl_random &randgen, unsigned int &pix)
 {
   pix = randgen.lrand32();
 }
 
 template <typename TPixel>
-static double abs_diff(const TPixel &pix1,const TPixel &pix2)
+static double
+abs_diff(const TPixel &pix1,const TPixel &pix2)
 {
   return fabs( (double)(pix1-pix2) );
 }
 
 template <typename TPixel>
-static void RandomVectorPix(vnl_random &randgen, itk::VariableLengthVector<TPixel> &pix,
-                            double _max=itk::NumericTraits<TPixel>::max() )
+static void
+RandomVectorPix(vnl_random &randgen, itk::VariableLengthVector<TPixel> &pix,
+                double _max=itk::NumericTraits<TPixel>::max() )
 {
   for(size_t i=0; i<pix.GetSize(); i++)
     {
@@ -227,13 +245,15 @@ static void RandomVectorPix(vnl_random &randgen, itk::VariableLengthVector<TPixe
 }
 
 template <typename TPixel>
-static void RandomPix(vnl_random &randgen, TPixel &pix,double _max=itk::NumericTraits<TPixel>::max() )
+static void
+RandomPix(vnl_random &randgen, TPixel &pix,double _max=itk::NumericTraits<TPixel>::max() )
 {
   pix = randgen.lrand32( (TPixel)_max);
 }
 
 template <typename TPixel>
-static bool equal(const itk::VariableLengthVector<TPixel> &pix1,const itk::VariableLengthVector<TPixel> &pix2)
+static bool
+equal(const itk::VariableLengthVector<TPixel> &pix1,const itk::VariableLengthVector<TPixel> &pix2)
 {
   for(size_t i=0; i<pix1.GetSize(); i++)
     {
@@ -243,8 +263,9 @@ static bool equal(const itk::VariableLengthVector<TPixel> &pix1,const itk::Varia
 }
 
 template <typename TPixel>
-static double abs_vector_diff(const itk::VariableLengthVector<TPixel> &pix1,
-                              const itk::VariableLengthVector<TPixel> &pix2)
+static double
+abs_vector_diff(const itk::VariableLengthVector<TPixel> &pix1,
+                const itk::VariableLengthVector<TPixel> &pix2)
 {
   double diff=0.0;
 
@@ -257,7 +278,8 @@ static double abs_vector_diff(const itk::VariableLengthVector<TPixel> &pix1,
 }
 
 template <typename TPixel>
-static double eql_vector_diff(const itk::Point<TPixel,3> &v1,const itk::Point<TPixel,3> &v2)
+static double
+eql_vector_diff(const itk::Point<TPixel,3> &v1,const itk::Point<TPixel,3> &v2)
 {
   double diff=0.0;
 
@@ -269,8 +291,9 @@ static double eql_vector_diff(const itk::Point<TPixel,3> &v1,const itk::Point<TP
 }
 
 //TODO: properly implement storage type in MINC2 IO
-template <typename TPixel,int VDimension> int MINCReadWriteTest(const char *fileName,const char* minc_storage_type,
-                                                                double tolerance=0.0)
+template <typename TPixel,int VDimension> int
+MINCReadWriteTest(const char *fileName,const char* minc_storage_type,
+                  double tolerance=0.0)
 {
   int success(EXIT_SUCCESS);
 
@@ -367,7 +390,8 @@ template <typename TPixel,int VDimension> int MINCReadWriteTest(const char *file
 
   // set minc file storage type
   //TODO: implement this feature
-  //minc::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=typeid(unsigned char).name());
+  //minc::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=typeid(unsigned
+  // char).name());
   itk::EncapsulateMetaData<std::string>(metaDict,"storage_data_type",minc_storage_type);
 
   typename ImageType::Pointer im2;
@@ -421,7 +445,7 @@ template <typename TPixel,int VDimension> int MINCReadWriteTest(const char *file
 
   float metaDataFloat = itk::NumericTraits< float >::Zero;
   if(!itk::ExposeMetaData< float >(metaDict2,"acquisition:TestFloat",
-                                    metaDataFloat) ||
+                                   metaDataFloat) ||
      metaDataFloat != 1.2f)
     {
     std::cerr << "Failure reading metaData " << "acquisition:TestFloat " <<  std::endl;
@@ -459,7 +483,7 @@ template <typename TPixel,int VDimension> int MINCReadWriteTest(const char *file
 
   itk::Array<float> metaDataFloatArray2;
   if(!itk::ExposeMetaData<itk::Array<float> >(metaDict2,"acquisition:TestFloatArray",
-                                               metaDataFloatArray2) ||
+                                              metaDataFloatArray2) ||
      metaDataFloatArray2 != metaDataFloatArray)
     {
     std::cerr << "Failure reading metaData " << "acquisition:TestFloatArray " <<  std::endl;
@@ -528,9 +552,10 @@ template <typename TPixel,int VDimension> int MINCReadWriteTest(const char *file
   return success;
 }
 
-template <typename TPixel,int VDimension> int MINCReadWriteTestVector(const char *fileName,size_t vector_length,
-                                                                      const char* minc_storage_type,
-                                                                      double tolerance=0.0)
+template <typename TPixel,int VDimension> int
+MINCReadWriteTestVector(const char *fileName,size_t vector_length,
+                        const char* minc_storage_type,
+                        double tolerance=0.0)
 {
   int success(EXIT_SUCCESS);
 
@@ -620,7 +645,8 @@ template <typename TPixel,int VDimension> int MINCReadWriteTestVector(const char
     }
 
   // set minc file storage type
-  //minc::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=typeid(unsigned char).name());
+  //minc::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=typeid(unsigned
+  // char).name());
   itk::EncapsulateMetaData<std::string>(metaDict,"storage_data_type",minc_storage_type);
 
   typename ImageType::Pointer im2;
@@ -748,7 +774,8 @@ template <typename TPixel,int VDimension> int MINCReadWriteTestVector(const char
   return success;
 }
 
-int itkMINCImageIOTest(int ac, char * av [] )
+int
+itkMINCImageIOTest(int ac, char * av [] )
 {
   std::string prefix("");
 
@@ -763,25 +790,26 @@ int itkMINCImageIOTest(int ac, char * av [] )
 
   int result(0);
   // stright forward test
-  result += MINCReadWriteTest<unsigned char,3>("3DUCharImage.mnc",typeid(unsigned char).name());
-  result += MINCReadWriteTest<char,3>("3DCharImage.mnc",typeid(unsigned char).name());
-  result += MINCReadWriteTest<unsigned short,3>("3DUShortImage.mnc",typeid(short).name());
-  result += MINCReadWriteTest<short,3>("3DShortImage.mnc",typeid(unsigned short).name());
-  result += MINCReadWriteTest<unsigned int,3>("3DUIntImage.mnc",typeid(int).name());
-  result += MINCReadWriteTest<int,3>("3DIntImage.mnc",typeid(unsigned int).name());
-  result += MINCReadWriteTest<float,3>("3DFloatImage.mnc",typeid(float).name());
-  result += MINCReadWriteTest<double,3>("3DDoubleImage.mnc",typeid(double).name());
+  result += MINCReadWriteTest<unsigned char,3>("3DUCharImage.mnc",typeid(unsigned char).name() );
+  result += MINCReadWriteTest<char,3>("3DCharImage.mnc",typeid(unsigned char).name() );
+  result += MINCReadWriteTest<unsigned short,3>("3DUShortImage.mnc",typeid(short).name() );
+  result += MINCReadWriteTest<short,3>("3DShortImage.mnc",typeid(unsigned short).name() );
+  result += MINCReadWriteTest<unsigned int,3>("3DUIntImage.mnc",typeid(int).name() );
+  result += MINCReadWriteTest<int,3>("3DIntImage.mnc",typeid(unsigned int).name() );
+  result += MINCReadWriteTest<float,3>("3DFloatImage.mnc",typeid(float).name() );
+  result += MINCReadWriteTest<double,3>("3DDoubleImage.mnc",typeid(double).name() );
 
-  result += MINCReadWriteTest<itk::RGBPixel<unsigned char>,3 >("3DRGBImage.mnc",typeid(unsigned char).name());
-  result += MINCReadWriteTest<itk::RGBPixel<char>,3 >("3DRGBImage2.mnc",typeid(unsigned char).name());
-  result += MINCReadWriteTest<itk::Vector<float,3>,3 >("3DVectorImage_float.mnc",typeid(float).name());
-  result += MINCReadWriteTest<itk::Vector<double,3>,3 >("3DVectorImage_double.mnc",typeid(double).name());
+  result += MINCReadWriteTest<itk::RGBPixel<unsigned char>,3 >("3DRGBImage.mnc",typeid(unsigned char).name() );
+  result += MINCReadWriteTest<itk::RGBPixel<char>,3 >("3DRGBImage2.mnc",typeid(unsigned char).name() );
+  result += MINCReadWriteTest<itk::Vector<float,3>,3 >("3DVectorImage_float.mnc",typeid(float).name() );
+  result += MINCReadWriteTest<itk::Vector<double,3>,3 >("3DVectorImage_double.mnc",typeid(double).name() );
 
-  result += MINCReadWriteTest<itk::Vector<short,3>,3 >("3DVectorImage_short.mnc",typeid(short).name());
-  result += MINCReadWriteTest<itk::Vector<unsigned short,3>,3 >("3DVectorImage_ushort.mnc",typeid(unsigned short).name());
+  result += MINCReadWriteTest<itk::Vector<short,3>,3 >("3DVectorImage_short.mnc",typeid(short).name() );
+  result +=
+    MINCReadWriteTest<itk::Vector<unsigned short,3>,3 >("3DVectorImage_ushort.mnc",typeid(unsigned short).name() );
 
-  result += MINCReadWriteTest<itk::Vector<int,3>,3 >("3DVectorImage_int.mnc",typeid(int).name());
-  result += MINCReadWriteTest<itk::Vector<unsigned int,3>,3 >("3DVectorImage_uint.mnc",typeid(unsigned int).name());
+  result += MINCReadWriteTest<itk::Vector<int,3>,3 >("3DVectorImage_int.mnc",typeid(int).name() );
+  result += MINCReadWriteTest<itk::Vector<unsigned int,3>,3 >("3DVectorImage_uint.mnc",typeid(unsigned int).name() );
 
   // expecting rounding errors
   result += MINCReadWriteTest<float,3>("3DFloatImage_byte.mnc",typeid(unsigned char).name(),0.2);
@@ -790,8 +818,10 @@ int itkMINCImageIOTest(int ac, char * av [] )
   result += MINCReadWriteTest<double,3>("3DDoubleImage_double_byte.mnc",typeid(unsigned char).name(),0.2);
   result += MINCReadWriteTest<double,3>("3DDoubleImage_double_short.mnc",typeid(short).name(),0.01);
 
-  result += MINCReadWriteTest<itk::Vector<float,3>,3 >("3DVectorImage_float_byte.mnc",typeid(unsigned char).name(),0.5*sqrt(3.0));
-  result += MINCReadWriteTest<itk::Vector<float,3>,3 >("3DVectorImage_float_short.mnc",typeid(short).name(),0.05*sqrt(3.0));
+  result += MINCReadWriteTest<itk::Vector<float,3>,3 >("3DVectorImage_float_byte.mnc",
+                                                       typeid(unsigned char).name(),0.5*sqrt(3.0) );
+  result +=
+    MINCReadWriteTest<itk::Vector<float,3>,3 >("3DVectorImage_float_short.mnc",typeid(short).name(),0.05*sqrt(3.0) );
 
   //testing variable vector case
   // stright forward test
@@ -806,11 +836,15 @@ int itkMINCImageIOTest(int ac, char * av [] )
   result += MINCReadWriteTestVector<double,3>("4DDoubleImage_byte.mnc",10,typeid(unsigned char).name(),0.2);
   result += MINCReadWriteTestVector<double,3>("4DDoubleImage_short.mnc",10,typeid(short).name(),0.01);
 
-//   result += MINCReadWriteTest<unsigned char,4>("4DUCharImage.mnc",typeid(unsigned char).name(),0.5);
-//   result += MINCReadWriteTest<float,4>("4DFloatImage.mnc",typeid(float).name(),0.0001);
+//   result += MINCReadWriteTest<unsigned
+// char,4>("4DUCharImage.mnc",typeid(unsigned char).name(),0.5);
+//   result +=
+// MINCReadWriteTest<float,4>("4DFloatImage.mnc",typeid(float).name(),0.0001);
 //
-//   result += MINCReadWriteTest<itk::RGBPixel<unsigned char>,4 >("4DRGBImage.mnc",typeid(unsigned char).name(),0.5);
-//   result += MINCReadWriteTest<itk::Vector<float,3>,3 >("4DVectorImage.mnc",typeid(float).name(),0.0001);
+//   result += MINCReadWriteTest<itk::RGBPixel<unsigned char>,4
+// >("4DRGBImage.mnc",typeid(unsigned char).name(),0.5);
+//   result += MINCReadWriteTest<itk::Vector<float,3>,3
+// >("4DVectorImage.mnc",typeid(float).name(),0.0001);
 
   return result != 0;
 }

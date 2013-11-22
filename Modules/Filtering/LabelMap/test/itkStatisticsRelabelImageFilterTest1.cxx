@@ -23,7 +23,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkStatisticsRelabelImageFilterTest1(int argc, char * argv[])
+int
+itkStatisticsRelabelImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 7 )

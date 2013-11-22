@@ -19,8 +19,8 @@
 #include "itkRandomImageSource.h"
 #include "itkBinaryThresholdImageFilter.h"
 
-
-int itkBinaryThresholdImageFilterTest(int, char* [] )
+int
+itkBinaryThresholdImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
@@ -34,10 +34,10 @@ int itkBinaryThresholdImageFilterTest(int, char* [] )
 
   // Declare iterator type
   typedef itk::ImageRegionIteratorWithIndex<
-                                  InputImageType>  InputIteratorType;
+      InputImageType>  InputIteratorType;
 
   typedef itk::ImageRegionIteratorWithIndex<
-                                  OutputImageType>  OutputIteratorType;
+      OutputImageType>  OutputIteratorType;
 
   // Use a random image source as input
   typedef itk::RandomImageSource<InputImageType> SourceType;
@@ -51,8 +51,7 @@ int itkBinaryThresholdImageFilterTest(int, char* [] )
 
   // Declare the type for the binary threshold filter
   typedef itk::BinaryThresholdImageFilter< InputImageType,
-                               OutputImageType  >  FilterType;
-
+                                           OutputImageType  >  FilterType;
 
   // Create a filter
   FilterType::Pointer filter = FilterType::New();
@@ -70,16 +69,16 @@ int itkBinaryThresholdImageFilterTest(int, char* [] )
 
   filter->Print( std::cout );
 
-  filter->SetFunctor(filter->GetFunctor());
+  filter->SetFunctor(filter->GetFunctor() );
 
   // exercise Get methods
   std::cout << "OutsideValue: " << filter->GetOutsideValue() << std::endl;
   std::cout << "InsideValue: " << filter->GetInsideValue() << std::endl;
   std::cout << "UpperThreshold: "
-            << itk::NumericTraits<InputPixelType>::PrintType(filter->GetUpperThreshold())
+            << itk::NumericTraits<InputPixelType>::PrintType(filter->GetUpperThreshold() )
             << std::endl;
   std::cout << "LowerThreshold: "
-            << itk::NumericTraits<InputPixelType>::PrintType(filter->GetLowerThreshold())
+            << itk::NumericTraits<InputPixelType>::PrintType(filter->GetLowerThreshold() )
             << std::endl;
 
   // Connect the input images
@@ -92,7 +91,7 @@ int itkBinaryThresholdImageFilterTest(int, char* [] )
   try
     {
     filter->Update();
-    filter->SetFunctor(filter->GetFunctor());
+    filter->SetFunctor(filter->GetFunctor() );
     }
 
   catch(...)
@@ -104,14 +103,14 @@ int itkBinaryThresholdImageFilterTest(int, char* [] )
 
   // Create an iterator for going through the image output
   InputIteratorType  it( source->GetOutput(), source->GetOutput()->GetRequestedRegion() );
-  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion());
+  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion() );
 
   //  Check the content of the result image
   std::cout << "Verification of the output " << std::endl;
   ot.GoToBegin();
   it.GoToBegin();
   while( !ot.IsAtEnd() )
-  {
+    {
 
     const InputPixelType  input  = it.Get();
     const OutputPixelType output = ot.Get();
@@ -146,8 +145,7 @@ int itkBinaryThresholdImageFilterTest(int, char* [] )
 
     ++ot;
     ++it;
-  }
-
+    }
 
   // Deliberately cause an exception by setting lower threshold to be
   // greater than the upper threshold

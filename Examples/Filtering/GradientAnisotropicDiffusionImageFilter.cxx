@@ -35,13 +35,14 @@
 //  \end{equation}
 //
 //  The numerical implementation of this equation is similar to that described
-//  in the Perona-Malik paper \cite{Perona1990}, but uses a more robust technique
-//  for gradient magnitude estimation and has been generalized to $N$-dimensions.
+//  in the Perona-Malik paper \cite{Perona1990}, but uses a more robust
+// technique
+//  for gradient magnitude estimation and has been generalized to
+// $N$-dimensions.
 //
 //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
 //
 //  Software Guide : EndLatex
-
 
 #include "itkImage.h"
 #include "itkImageFileReader.h"
@@ -60,8 +61,8 @@
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 6 )
     {
@@ -70,7 +71,6 @@ int main( int argc, char * argv[] )
     std::cerr << "numberOfIterations  timeStep  conductance" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -81,16 +81,14 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -106,14 +104,12 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientAnisotropicDiffusionImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -126,13 +122,11 @@ int main( int argc, char * argv[] )
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   const unsigned int numberOfIterations = atoi( argv[3] );
 
-  const double       timeStep = atof( argv[4] );
+  const double timeStep = atof( argv[4] );
 
-  const double       conductance = atof( argv[5] );
-
+  const double conductance = atof( argv[5] );
 
   //  Software Guide : BeginLatex
   //
@@ -145,10 +139,19 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Update()}
   //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetTimeStep()}
-  //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetConductanceParameter()}
-  //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetNumberOfIterations()}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetConductanceParameter()}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetNumberOfIterations()}
   //  \index{SetTimeStep()!itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
-  //  \index{SetNumberOfIterations()!itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
+  //
+  //
+  //
+  // \index{SetNumberOfIterations()!itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
   //
   //  Software Guide : EndLatex
 
@@ -160,7 +163,6 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Typical values for the time step are $0.25$ in $2D$ images and $0.125$
@@ -170,34 +172,33 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   //
   //  The output of the filter is rescaled here and then sent to a writer.
   //
-  typedef unsigned char                          WritePixelType;
-  typedef itk::Image< WritePixelType, 2 >        WriteImageType;
+  typedef unsigned char                   WritePixelType;
+  typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::RescaleIntensityImageFilter<
-               OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
-
 
   rescaler->SetInput( filter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
 
-
   //  Software Guide : BeginLatex
   //
   // \begin{figure} \center
   // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{GradientAnisotropicDiffusionImageFilterOutput}
   // \itkcaption[GradientAnisotropicDiffusionImageFilter output]{Effect of the
   // GradientAnisotropicDiffusionImageFilter on a slice from a MRI Proton
@@ -219,7 +220,6 @@ int main( int argc, char * argv[] )
   //  \end{itemize}
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

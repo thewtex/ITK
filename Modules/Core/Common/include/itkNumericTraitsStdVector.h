@@ -78,7 +78,8 @@ public:
     */
   typedef std::vector< ElementFloatType > FloatType;
 
-  // TODO: this won't really print well, at least not without defining an operator
+  // TODO: this won't really print well, at least not without defining an
+  // operator
   // to push to a stream.
   /** Return the type that can be printed. */
   typedef std::vector< ElementPrintType > PrintType;
@@ -97,55 +98,69 @@ public:
    * \note minimum value for floating pointer types is defined as
    * minimum positive normalize value.
    */
-  static const Self max(const Self & a)
+  static const Self
+  max(const Self & a)
   {
     Self b( a.Size(), NumericTraits< T >::max() );
+
     return b;
   }
 
-  static const Self min(const Self & a)
+  static const Self
+  min(const Self & a)
   {
     Self b( a.Size(), NumericTraits< T >::min() );
+
     return b;
   }
 
-  static const Self ZeroValue(const Self  & a)
+  static const Self
+  ZeroValue(const Self  & a)
   {
     Self b( a.Size(), NumericTraits< T >::Zero );
+
     return b;
   }
 
-  static const Self OneValue(const Self & a)
+  static const Self
+  OneValue(const Self & a)
   {
     Self b( a.Size(), NumericTraits< T >::One );
+
     return b;
   }
 
-  static const Self NonpositiveMin(const Self & a)
+  static const Self
+  NonpositiveMin(const Self & a)
   {
     Self b( a.Size(), NumericTraits< T >::NonpositiveMin() );
+
     return b;
   }
 
   /** Resize the input vector to the specified size */
-  static void SetLength(std::vector< T > & m, const unsigned int s)
+  static void
+  SetLength(std::vector< T > & m, const unsigned int s)
   {
     m.resize(s);
   }
 
   /** Return the size of the vector. */
-  static unsigned int GetLength(const std::vector< T > & m)
+  static unsigned int
+  GetLength(const std::vector< T > & m)
   {
     return m.size();
   }
 
-  static void AssignToArray( const Self & v, MeasurementVectorType & mv )
+  static void
+  AssignToArray( const Self & v, MeasurementVectorType & mv )
   {
     mv = v;
   }
 
   template<typename TArray>
-  static void AssignToArray( const Self & v, TArray & mv )
+  static void
+  AssignToArray( const Self & v, TArray & mv )
   {
     for( unsigned int i=0; i<GetLength(v); i++ )
       {

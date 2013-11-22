@@ -18,7 +18,6 @@
 #ifndef __itkTxtTransformIOFactory_h
 #define __itkTxtTransformIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkTransformIOBase.h"
 
@@ -28,7 +27,7 @@ namespace itk
    * \brief Create instances of TxtTransformIO objects using an object factory.
    * \ingroup ITKIOTransformInsightLegacy
    */
-class TxtTransformIOFactory:public ObjectFactoryBase
+class TxtTransformIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +48,8 @@ public:
   itkTypeMacro(TxtTransformIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     TxtTransformIOFactory::Pointer metaFactory = TxtTransformIOFactory::New();
 
@@ -64,6 +64,7 @@ protected:
 private:
   TxtTransformIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

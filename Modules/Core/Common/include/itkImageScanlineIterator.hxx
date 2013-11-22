@@ -24,27 +24,31 @@ namespace itk
 {
 template< typename TImage >
 ImageScanlineIterator< TImage >
-::ImageScanlineIterator():
+::ImageScanlineIterator() :
   ImageScanlineConstIterator< TImage >()
-{}
+{
+}
 
 template< typename TImage >
 ImageScanlineIterator< TImage >
-::ImageScanlineIterator(ImageType *ptr, const RegionType & region):
+::ImageScanlineIterator(ImageType *ptr, const RegionType & region) :
   ImageScanlineConstIterator< TImage >(ptr, region)
-{}
+{
+}
 
 template< typename TImage >
 ImageScanlineIterator< TImage >
-::ImageScanlineIterator(const ImageIterator< TImage > & it):
+::ImageScanlineIterator(const ImageIterator< TImage > & it) :
   ImageScanlineConstIterator< TImage >(it)
-{}
+{
+}
 
 template< typename TImage >
 ImageScanlineIterator< TImage >
-::ImageScanlineIterator(const ImageScanlineConstIterator< TImage > & it):
+::ImageScanlineIterator(const ImageScanlineConstIterator< TImage > & it) :
   ImageScanlineConstIterator< TImage >(it)
-{}
+{
+}
 
 template< typename TImage >
 ImageScanlineIterator< TImage > &

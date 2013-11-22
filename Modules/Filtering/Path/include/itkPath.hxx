@@ -59,6 +59,7 @@ Path< TInput, TOutput, VDimension >
   os << indent << "ZeroOffset: " << m_ZeroOffset << std::endl;
   os << indent << "ZeroIndex: " << m_ZeroIndex << std::endl;
 }
+
 } // end namespace itk
 
 #endif

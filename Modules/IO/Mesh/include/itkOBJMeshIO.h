@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKIOMesh
  */
 
-class ITKIOMesh_EXPORT OBJMeshIO:public MeshIOBase
+class ITKIOMesh_EXPORT OBJMeshIO : public MeshIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -41,7 +41,7 @@ public:
   typedef SmartPointer< const Self > ConstPointer;
   typedef SmartPointer< Self >       Pointer;
 
-  typedef Superclass::SizeValueType    SizeValueType;
+  typedef Superclass::SizeValueType SizeValueType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -97,10 +97,11 @@ public:
 protected:
   /** Write points to output stream */
   template< typename T >
-  void WritePoints(T *buffer, std::ofstream & outputFile)
+  void
+  WritePoints(T *buffer, std::ofstream & outputFile)
   {
     NumberToString<T> convert;
-    SizeValueType index = itk::NumericTraits< SizeValueType >::Zero;
+    SizeValueType     index = itk::NumericTraits< SizeValueType >::Zero;
 
     for ( SizeValueType ii = 0; ii < this->m_NumberOfPoints; ii++ )
       {
@@ -114,7 +115,8 @@ protected:
   }
 
   template< typename T >
-  void WriteCells(T *buffer, std::ofstream & outputFile)
+  void
+  WriteCells(T *buffer, std::ofstream & outputFile)
   {
     SizeValueType index = itk::NumericTraits< SizeValueType >::Zero;
 
@@ -134,10 +136,11 @@ protected:
 
   /** Write point data to output stream */
   template< typename T >
-  void WritePointData(T *buffer, std::ofstream & outputFile)
+  void
+  WritePointData(T *buffer, std::ofstream & outputFile)
   {
     NumberToString<T> convert;
-    SizeValueType index = itk::NumericTraits< SizeValueType >::Zero;
+    SizeValueType     index = itk::NumericTraits< SizeValueType >::Zero;
 
     for ( SizeValueType ii = 0; ii < this->m_NumberOfPointPixels; ii++ )
       {
@@ -153,7 +156,9 @@ protected:
 
 protected:
   OBJMeshIO();
-  virtual ~OBJMeshIO(){}
+  virtual
+  ~OBJMeshIO(){
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

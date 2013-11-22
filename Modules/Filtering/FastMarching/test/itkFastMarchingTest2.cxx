@@ -21,25 +21,32 @@
 #include "itkTextOutput.h"
 #include "itkCommand.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
-int itkFastMarchingTest2(int, char* [] )
+int
+itkFastMarchingTest2(int, char* [] )
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   // create a fastmarching object
   typedef float                                               PixelType;
@@ -48,15 +55,15 @@ int itkFastMarchingTest2(int, char* [] )
 
   FloatFMType::Pointer marcher = FloatFMType::New();
 
-  ShowProgressObject progressWatch(marcher);
+  ShowProgressObject                                    progressWatch(marcher);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
                                &ShowProgressObject::ShowProgress);
   marcher->AddObserver( itk::ProgressEvent(), command);
 
-  typedef FloatFMType::NodeType       NodeType;
-  typedef FloatFMType::NodeContainer  NodeContainer;
+  typedef FloatFMType::NodeType      NodeType;
+  typedef FloatFMType::NodeContainer NodeContainer;
 
   // setup alive points
   NodeContainer::Pointer alivePoints = NodeContainer::New();
@@ -78,7 +85,6 @@ int itkFastMarchingTest2(int, char* [] )
   alivePoints->InsertElement(1, node);
 
   marcher->SetAlivePoints( alivePoints );
-
 
   // setup trial points
   NodeContainer::Pointer trialPoints = NodeContainer::New();
@@ -119,7 +125,7 @@ int itkFastMarchingTest2(int, char* [] )
   marcher->SetOutputSize( size );
 
   // setup a speed image of ones
-  FloatImage::Pointer speedImage = FloatImage::New();
+  FloatImage::Pointer    speedImage = FloatImage::New();
   FloatImage::RegionType region;
   region.SetSize( size );
   speedImage->SetLargestPossibleRegion( region );
@@ -133,9 +139,9 @@ int itkFastMarchingTest2(int, char* [] )
   MaskImage->Allocate();
 
   itk::ImageRegionIterator<FloatImage>
-    speedIter( speedImage, speedImage->GetBufferedRegion() );
+  speedIter( speedImage, speedImage->GetBufferedRegion() );
   itk::ImageRegionIteratorWithIndex<FloatImage>
-    maskIter( MaskImage, MaskImage->GetBufferedRegion() );
+  maskIter( MaskImage, MaskImage->GetBufferedRegion() );
   while ( !speedIter.IsAtEnd() )
     {
     speedIter.Set( 1.0 );
@@ -162,21 +168,19 @@ int itkFastMarchingTest2(int, char* [] )
   // turn on debugging
   marcher->DebugOn();
 
-
   // update the marcher
   marcher->Update();
-
 
   // check the results
   FloatImage::Pointer output = marcher->GetOutput();
   itk::ImageRegionIterator<FloatImage>
-    iterator( output, output->GetBufferedRegion() );
+  iterator( output, output->GetBufferedRegion() );
 
   bool passed = true;
   for(; !iterator.IsAtEnd(); ++iterator )
     {
     FloatImage::IndexType tempIndex = iterator.GetIndex();
-    float outputValue = (float) iterator.Get();
+    float                 outputValue = (float) iterator.Get();
 
     if( ( ( tempIndex[0] > 22 ) && ( tempIndex [0] < 42 ) && ( tempIndex[1] > 27 ) && ( tempIndex[1] < 37 ) ) ||
         ( ( tempIndex[1] > 22 ) && ( tempIndex [1] < 42 ) && ( tempIndex[0] > 27 ) && ( tempIndex[0] < 37 ) ) )
@@ -185,7 +189,7 @@ int itkFastMarchingTest2(int, char* [] )
       double distance = 0.0;
       for ( int j = 0; j < 2; j++ )
         {
-          distance += tempIndex[j] * tempIndex[j];
+        distance += tempIndex[j] * tempIndex[j];
         }
       distance = vcl_sqrt( distance );
 

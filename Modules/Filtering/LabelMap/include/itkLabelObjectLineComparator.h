@@ -23,25 +23,26 @@ namespace itk
 namespace Functor
 {
 
-  /** \class LabelObjectLineComparator
- *  \brief Performs a comparison of l1 < l2.  Returns true if l1 is strictly less
- *  than l2.
- *
- * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
- *
- * This implementation was taken from the Insight Journal paper:
- * http://hdl.handle.net/1926/584  or
- * http://www.insight-journal.org/browse/publication/176
- *
- * \sa LabelObjectLine
- * \ingroup LabeledImageObject
- * \ingroup ITKLabelMap
- */
+/** \class LabelObjectLineComparator
+*  \brief Performs a comparison of l1 < l2.  Returns true if l1 is strictly less
+*  than l2.
+*
+* \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
+*
+* This implementation was taken from the Insight Journal paper:
+* http://hdl.handle.net/1926/584  or
+* http://www.insight-journal.org/browse/publication/176
+*
+* \sa LabelObjectLine
+* \ingroup LabeledImageObject
+* \ingroup ITKLabelMap
+*/
 template< typename TLabelObjectLine >
 class LabelObjectLineComparator
 {
 public:
-  bool operator()(TLabelObjectLine const & l1, TLabelObjectLine const & l2) const
+  bool
+  operator()(TLabelObjectLine const & l1, TLabelObjectLine const & l2) const
   {
     const typename TLabelObjectLine::IndexType & idx1 = l1.GetIndex();
     const typename TLabelObjectLine::IndexType & idx2 = l2.GetIndex();
@@ -59,6 +60,7 @@ public:
       }
     return l1.GetLength() < l2.GetLength();
   }
+
 };
 
 } // end namespace Functor

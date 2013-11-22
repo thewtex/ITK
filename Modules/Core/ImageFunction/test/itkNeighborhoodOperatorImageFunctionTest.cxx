@@ -16,26 +16,27 @@
  *
  *=========================================================================*/
 
-
 #include "itkNeighborhoodOperatorImageFunction.h"
 
 #include "itkGaussianOperator.h"
 
-int itkNeighborhoodOperatorImageFunctionTest(int, char* [] )
+int
+itkNeighborhoodOperatorImageFunctionTest(int, char* [] )
 {
 
   const unsigned int Dimension = 3;
-  typedef float                                   PixelType;
-  typedef itk::Image< PixelType, Dimension >      ImageType;
-  typedef itk::GaussianOperator<PixelType,3>      NeighborhoodOperatorType;
+
+  typedef float                              PixelType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
+  typedef itk::GaussianOperator<PixelType,3> NeighborhoodOperatorType;
   typedef itk::NeighborhoodOperatorImageFunction< ImageType,PixelType>
-                                                  FunctionType;
+    FunctionType;
 
   // Create and allocate the image
-  ImageType::Pointer      image = ImageType::New();
-  ImageType::SizeType     size;
-  ImageType::IndexType    start;
-  ImageType::RegionType   region;
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+  ImageType::RegionType region;
 
   size[0] = 50;
   size[1] = 50;
@@ -52,7 +53,6 @@ int itkNeighborhoodOperatorImageFunctionTest(int, char* [] )
   ImageType::PixelType initialValue = 27;
   image->FillBuffer( initialValue );
 
-
   FunctionType::Pointer function = FunctionType::New();
   function->SetInputImage( image );
 
@@ -62,10 +62,10 @@ int itkNeighborhoodOperatorImageFunctionTest(int, char* [] )
   function->SetOperator(*oper);
   delete oper;
 
-  itk::Index<3>    index;
+  itk::Index<3> index;
   index.Fill(25);
 
-  FunctionType::OutputType  Blur;
+  FunctionType::OutputType Blur;
 
   std::cout << "EvaluateAtIndex: ";
   Blur = function->EvaluateAtIndex( index );
@@ -98,7 +98,6 @@ int itkNeighborhoodOperatorImageFunctionTest(int, char* [] )
   function->Evaluate( point );
 
   std::cout << "[PASSED] " << std::endl;
-
 
   std::cout << function << std::endl;
 

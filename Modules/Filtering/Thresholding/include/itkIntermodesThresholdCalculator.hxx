@@ -32,9 +32,10 @@ IntermodesThresholdCalculator<THistogram, TOutput>
   int modes = 0;
 
   const size_t len = h.size();
+
   for (size_t k = 1; k < len - 1; k++)
     {
-    if ( (h[k-1] < h[k]) && (h[k+1] < h[k]))
+    if ( (h[k-1] < h[k]) && (h[k+1] < h[k]) )
       {
       ++modes;
       if(modes > 2)
@@ -56,6 +57,7 @@ IntermodesThresholdCalculator<THistogram, TOutput>
 ::GenerateData(void)
 {
   const HistogramType * histogram = this->GetInput();
+
   // histogram->Print(std::cout);
   if ( histogram->GetTotalFrequency() == 0 )
     {
@@ -80,7 +82,7 @@ IntermodesThresholdCalculator<THistogram, TOutput>
 
   SizeValueType smIter = 0;
 
-  while (!BimodalTest(smoothedHist))
+  while (!BimodalTest(smoothedHist) )
     {
     // smooth with a 3 point running mean
     double previous = 0.;
@@ -103,7 +105,6 @@ IntermodesThresholdCalculator<THistogram, TOutput>
       return;
       }
     }
-
 
   size_t tt = 0;
   if (m_UseInterMode)

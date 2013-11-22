@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class OpeningByReconstructionImageFilter:
+class OpeningByReconstructionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -123,7 +123,9 @@ public:
 
 protected:
   OpeningByReconstructionImageFilter();
-  ~OpeningByReconstructionImageFilter() {}
+  ~OpeningByReconstructionImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** OpeningByReconstructionImageFilter needs the entire input be

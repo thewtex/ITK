@@ -38,7 +38,8 @@ namespace itk
 //
 namespace Function
 {
-inline unsigned Max3(double x, double y, double z)
+inline unsigned
+Max3(double x, double y, double z)
 {
   const double obliquityThresholdCosineValue = 0.001;
 
@@ -62,7 +63,8 @@ inline unsigned Max3(double x, double y, double z)
   return 0;
 }
 
-inline int Sign(double x)
+inline int
+Sign(double x)
 {
   if ( x < 0 )
     {
@@ -70,21 +72,22 @@ inline int Sign(double x)
     }
   return 1;
 }
+
 } // namespace Function
 
 /** \class SpatialOrientationAdapter
  *  \brief Converts SpatialOrientation flags to/from direction cosines.
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT SpatialOrientationAdapter:
-  public OrientationAdapterBase< SpatialOrientation::ValidCoordinateOrientationFlags, 3 >
+class ITKCommon_EXPORT SpatialOrientationAdapter :
+  public               OrientationAdapterBase< SpatialOrientation::ValidCoordinateOrientationFlags, 3 >
 {
 public:
   /** typedef for superclass */
   typedef SpatialOrientationAdapter Self;
 
   typedef OrientationAdapterBase< SpatialOrientation::ValidCoordinateOrientationFlags, 3 >
-  SuperClass;
+    SuperClass;
 
   typedef SpatialOrientation::ValidCoordinateOrientationFlags OrientationType;
 
@@ -92,13 +95,15 @@ public:
   typedef SuperClass::DirectionType DirectionType;
 
   /** Constructor */
-  SpatialOrientationAdapter() {}
+  SpatialOrientationAdapter() {
+  }
 
   /** convert from direction cosines. */
   virtual OrientationType FromDirectionCosines(const DirectionType & Dir);
 
   /** convert to direction cosines. */
   virtual DirectionType ToDirectionCosines(const OrientationType & Or);
+
 };
 } // namespace itk
 

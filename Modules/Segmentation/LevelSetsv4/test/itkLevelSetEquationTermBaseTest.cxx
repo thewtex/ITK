@@ -18,7 +18,8 @@
 
 #include "itkLevelSetEquationTermBase.h"
 
-int itkLevelSetEquationTermBaseTest( int argc, char* argv[] )
+int
+itkLevelSetEquationTermBaseTest( int argc, char* argv[] )
 {
 
   if( argc < 2 )

@@ -20,27 +20,26 @@
 #include "itkPointSet.h"
 #include "itkImageRegionIterator.h"
 
-int itkBinaryMaskToNarrowBandPointSetFilterTest(int , char *[] )
+int
+itkBinaryMaskToNarrowBandPointSetFilterTest(int , char *[] )
 {
-
 
   const unsigned int Dimension = 2;
 
-  typedef unsigned char  BinaryMaskPixelType;
+  typedef unsigned char BinaryMaskPixelType;
 
   typedef itk::Image<
-                        BinaryMaskPixelType,
-                        Dimension  >           BinaryMaskImageType;
-
+      BinaryMaskPixelType,
+      Dimension  >           BinaryMaskImageType;
 
   //
   //  Initialize an image with a white square in a black background
   //
   BinaryMaskImageType::Pointer binaryMask = BinaryMaskImageType::New();
 
-  BinaryMaskImageType::SizeType     size;
-  BinaryMaskImageType::IndexType    index;
-  BinaryMaskImageType::RegionType   region;
+  BinaryMaskImageType::SizeType   size;
+  BinaryMaskImageType::IndexType  index;
+  BinaryMaskImageType::RegionType region;
 
   size[0] = 100;
   size[1] = 100;
@@ -77,12 +76,12 @@ int itkBinaryMaskToNarrowBandPointSetFilterTest(int , char *[] )
   //
   //  Set up the filter
   //
-  typedef itk::PointSet< float, Dimension >    PointSetType;
+  typedef itk::PointSet< float, Dimension > PointSetType;
 
   typedef itk::BinaryMaskToNarrowBandPointSetFilter<
-                                BinaryMaskImageType,
-                                PointSetType
-                                            >  GeneratorType;
+      BinaryMaskImageType,
+      PointSetType
+      >  GeneratorType;
 
   GeneratorType::Pointer narrowBandGenerator = GeneratorType::New();
 
@@ -102,26 +101,26 @@ int itkBinaryMaskToNarrowBandPointSetFilterTest(int , char *[] )
   //
   //  Checking the output
   //
-  typedef PointSetType::PointType           PointType;
+  typedef PointSetType::PointType PointType;
 
-  typedef PointSetType::PointsContainer     PointsContainer;
-  typedef PointsContainer::Pointer          PointsContainerPointer;
-  typedef PointsContainer::ConstIterator    PointsIterator;
+  typedef PointSetType::PointsContainer  PointsContainer;
+  typedef PointsContainer::Pointer       PointsContainerPointer;
+  typedef PointsContainer::ConstIterator PointsIterator;
 
   typedef PointSetType::PointDataContainer  PointDataContainer;
   typedef PointDataContainer::Pointer       PointDataContainerPointer;
   typedef PointDataContainer::ConstIterator PointDataIterator;
 
-  PointSetType::Pointer                     pointSet  = narrowBandGenerator->GetOutput();
+  PointSetType::Pointer pointSet  = narrowBandGenerator->GetOutput();
 
-  PointsContainerPointer      points    = pointSet->GetPoints();
-  PointDataContainerPointer   pointData = pointSet->GetPointData();
+  PointsContainerPointer    points    = pointSet->GetPoints();
+  PointDataContainerPointer pointData = pointSet->GetPointData();
 
   PointsIterator point     = points->Begin();
   PointsIterator lastPoint = points->End();
 
-  PointDataIterator  data     = pointData->Begin();
-  PointDataIterator  lastData = pointData->End();
+  PointDataIterator data     = pointData->Begin();
+  PointDataIterator lastData = pointData->End();
 
   while( point != lastPoint  && data != lastData )
     {

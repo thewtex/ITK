@@ -43,20 +43,20 @@ namespace itk
  * \ingroup ITKDisplacementField
  */
 template
-  <class TScalar, unsigned int NDimensions>
+<class TScalar, unsigned int NDimensions>
 class GaussianSmoothingOnUpdateDisplacementFieldTransform :
   public DisplacementFieldTransform<TScalar, NDimensions>
 {
 public:
   /** Standard class typedefs. */
-  typedef GaussianSmoothingOnUpdateDisplacementFieldTransform   Self;
-  typedef DisplacementFieldTransform<TScalar, NDimensions>      Superclass;
-  typedef SmartPointer<Self>                                    Pointer;
-  typedef SmartPointer<const Self>                              ConstPointer;
+  typedef GaussianSmoothingOnUpdateDisplacementFieldTransform Self;
+  typedef DisplacementFieldTransform<TScalar, NDimensions>    Superclass;
+  typedef SmartPointer<Self>                                  Pointer;
+  typedef SmartPointer<const Self>                            ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( GaussianSmoothingOnUpdateDisplacementFieldTransform,
-                                                DisplacementFieldTransform );
+                DisplacementFieldTransform );
 
   /** New macro for creation of through a Smart Pointer */
   itkNewMacro( Self );
@@ -70,7 +70,7 @@ public:
   typedef typename DisplacementFieldType::PixelType     DisplacementVectorType;
 
   typedef typename Transform<TScalar,NDimensions,NDimensions>::Pointer
-          TransformPointer;
+    TransformPointer;
 
   /**
    * Get/Set the Gaussian smoothing standard deviation for the update field.
@@ -104,7 +104,8 @@ public:
 
 protected:
   GaussianSmoothingOnUpdateDisplacementFieldTransform();
-  virtual ~GaussianSmoothingOnUpdateDisplacementFieldTransform();
+  virtual
+  ~GaussianSmoothingOnUpdateDisplacementFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Clone the current transform */
@@ -112,21 +113,27 @@ protected:
 
   /** Used in GaussianSmoothDisplacementField as variance for the
    * GaussianOperator */
-  ScalarType                        m_GaussianSmoothingVarianceForTheUpdateField;
-  ScalarType                        m_GaussianSmoothingVarianceForTheTotalField;
+  ScalarType m_GaussianSmoothingVarianceForTheUpdateField;
+  ScalarType m_GaussianSmoothingVarianceForTheTotalField;
 
   /** Type of Gaussian Operator used during smoothing. Define here
    * so we can use a member var during the operation. */
   typedef GaussianOperator<ScalarType, Superclass::Dimension>
-                                                  GaussianSmoothingOperatorType;
+    GaussianSmoothingOperatorType;
   typedef VectorNeighborhoodOperatorImageFilter< DisplacementFieldType,
                                                  DisplacementFieldType >
-                                                  GaussianSmoothingSmootherType;
-  GaussianSmoothingOperatorType                    m_GaussianSmoothingOperator;
+    GaussianSmoothingSmootherType;
+  GaussianSmoothingOperatorType m_GaussianSmoothingOperator;
 
 private:
-  GaussianSmoothingOnUpdateDisplacementFieldTransform( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  GaussianSmoothingOnUpdateDisplacementFieldTransform( const Self& ); //purposely
+                                                                      // not
+                                                                      //
+                                                                      // implemented
+  void operator=( const Self& );                                      //purposely
+
+  // not
+  // implemented
 
 };
 

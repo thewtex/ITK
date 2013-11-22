@@ -85,7 +85,7 @@ ChiSquareDistribution
   if ( x >= 0.0 )
     {
     pdf = vcl_exp(-0.5 * x) * vcl_pow(x, dofon2 - 1.0)
-          / ( vcl_pow(2.0, dofon2) * dgamma_(&dofon2) );
+      / ( vcl_pow(2.0, dofon2) * dgamma_(&dofon2) );
     }
 
   return pdf;
@@ -194,7 +194,7 @@ ChiSquareDistribution
   for ( unsigned int newt = 0; newt < 10; ++newt )
     {
     delta = ( p - ChiSquareDistribution::CDF(x, degreesOfFreedom) )
-            / ChiSquareDistribution::PDF(x, degreesOfFreedom);
+      / ChiSquareDistribution::PDF(x, degreesOfFreedom);
     x += delta;
     }
 
@@ -365,5 +365,6 @@ ChiSquareDistribution
        << std::endl;
     }
 }
+
 } // end of namespace Statistics
 } // end namespace itk

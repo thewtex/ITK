@@ -36,7 +36,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class GroupSpatialObject:
+class GroupSpatialObject :
   public SpatialObject< TDimension >
 {
 public:
@@ -56,17 +56,22 @@ public:
   itkTypeMacro(GroupSpatialObject, SpatialObject);
 
   /**  */
-  bool ComputeLocalBoundingBox() const { return false; }
+  bool
+  ComputeLocalBoundingBox() const {
+    return false;
+  }
 
 protected:
   GroupSpatialObject(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
 
   GroupSpatialObject();
-  virtual ~GroupSpatialObject();
+  virtual
+  ~GroupSpatialObject();
 
   /** Method to print the object.*/
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

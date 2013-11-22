@@ -73,28 +73,32 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef  itk::SmartPointer<Self>  Pointer;
+  typedef  CommandIterationUpdate  Self;
+  typedef  itk::Command            Superclass;
+  typedef  itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate(): m_CumulativeIterationIndex(0) {};
+  CommandIterationUpdate() : m_CumulativeIterationIndex(0) {
+  }
 
 public:
-  typedef   itk::RegularStepGradientDescentOptimizer  OptimizerType;
-  typedef   const OptimizerType *                     OptimizerPointer;
+  typedef   itk::RegularStepGradientDescentOptimizer OptimizerType;
+  typedef   const OptimizerType *                    OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( !(itk::IterationEvent().CheckEvent( &event )) )
+
+    if( !(itk::IterationEvent().CheckEvent( &event ) ) )
       {
       return;
       }
@@ -102,7 +106,7 @@ public:
     std::cout << optimizer->GetValue() << "   ";
     std::cout << optimizer->GetCurrentPosition() << "  " <<
       m_CumulativeIterationIndex++ << std::endl;
-    }
+  }
 
 private:
   unsigned int m_CumulativeIterationIndex;
@@ -116,29 +120,31 @@ template <typename TRegistration>
 class RegistrationInterfaceCommand : public itk::Command
 {
 public:
-  typedef  RegistrationInterfaceCommand   Self;
-  typedef  itk::Command                   Superclass;
-  typedef  itk::SmartPointer<Self>        Pointer;
+  typedef  RegistrationInterfaceCommand Self;
+  typedef  itk::Command                 Superclass;
+  typedef  itk::SmartPointer<Self>      Pointer;
   itkNewMacro( Self );
 
 protected:
-  RegistrationInterfaceCommand() {};
+  RegistrationInterfaceCommand() {
+  }
 
 public:
-  typedef   TRegistration                              RegistrationType;
-  typedef   RegistrationType *                         RegistrationPointer;
-  typedef   itk::RegularStepGradientDescentOptimizer   OptimizerType;
-  typedef   OptimizerType *                            OptimizerPointer;
-  void Execute(itk::Object * object, const itk::EventObject & event)
+  typedef   TRegistration                            RegistrationType;
+  typedef   RegistrationType *                       RegistrationPointer;
+  typedef   itk::RegularStepGradientDescentOptimizer OptimizerType;
+  typedef   OptimizerType *                          OptimizerPointer;
+  void
+  Execute(itk::Object * object, const itk::EventObject & event)
   {
-    if( !(itk::IterationEvent().CheckEvent( &event )) )
+    if( !(itk::IterationEvent().CheckEvent( &event ) ) )
       {
       return;
       }
     RegistrationPointer registration =
-                        dynamic_cast<RegistrationPointer>( object );
+      dynamic_cast<RegistrationPointer>( object );
     OptimizerPointer optimizer = dynamic_cast< OptimizerPointer >(
-                       registration->GetModifiableOptimizer() );
+        registration->GetModifiableOptimizer() );
 
     std::cout << "-------------------------------------" << std::endl;
     std::cout << "MultiResolution Level : "
@@ -156,11 +162,17 @@ public:
       optimizer->SetMinimumStepLength( optimizer->GetMinimumStepLength() / 10.0 );
       }
   }
-  void Execute(const itk::Object * , const itk::EventObject & )
-    { return; }
+
+  void
+  Execute(const itk::Object * , const itk::EventObject & )
+  {
+    return;
+  }
+
 };
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -174,11 +186,11 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  const    unsigned int    Dimension = 2;
-  typedef  unsigned short  PixelType;
+  const    unsigned int Dimension = 2;
+  typedef  unsigned short PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   typedef   float                                    InternalPixelType;
   typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
@@ -186,7 +198,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : BeginLatex
   //
   //  The configuration of the registration method in this example closely
-  //  follows the procedure in the previous section. The main changes involve the
+  //  follows the procedure in the previous section. The main changes involve
+  // the
   //  construction and initialization of the transform. The instantiation of
   //  the transform type requires only the dimension of the space and the
   //  type used for representing space coordinates.
@@ -199,30 +212,30 @@ int main( int argc, char *argv[] )
   typedef itk::AffineTransform< double, Dimension > TransformType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   typedef itk::LinearInterpolateImageFunction<
-                                    InternalImageType,
-                                    double             > InterpolatorType;
+      InternalImageType,
+      double             > InterpolatorType;
   typedef itk::MattesMutualInformationImageToImageMetric<
-                                          InternalImageType,
-                                          InternalImageType >    MetricType;
+      InternalImageType,
+      InternalImageType >    MetricType;
 
-  typedef OptimizerType::ScalesType       OptimizerScalesType;
+  typedef OptimizerType::ScalesType OptimizerScalesType;
 
   typedef itk::MultiResolutionImageRegistrationMethod<
-                                    InternalImageType,
-                                    InternalImageType    > RegistrationType;
+      InternalImageType,
+      InternalImageType    > RegistrationType;
   typedef itk::RecursiveMultiResolutionPyramidImageFilter<
-                                    InternalImageType,
-                                    InternalImageType  >    FixedImagePyramidType;
+      InternalImageType,
+      InternalImageType  >    FixedImagePyramidType;
   typedef itk::RecursiveMultiResolutionPyramidImageFilter<
-                                    InternalImageType,
-                                    InternalImageType  >   MovingImagePyramidType;
+      InternalImageType,
+      InternalImageType  >   MovingImagePyramidType;
 
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-  MetricType::Pointer         metric        = MetricType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
+  MetricType::Pointer       metric        = MetricType::New();
 
   registration->SetOptimizer(     optimizer     );
   registration->SetInterpolator(  interpolator  );
@@ -240,7 +253,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  TransformType::Pointer   transform  = TransformType::New();
+  TransformType::Pointer transform  = TransformType::New();
   registration->SetTransform( transform );
   // Software Guide : EndCodeSnippet
 
@@ -254,10 +267,10 @@ int main( int argc, char *argv[] )
   movingImageReader->SetFileName( argv[2] );
 
   typedef itk::CastImageFilter<
-                        FixedImageType, InternalImageType > FixedCastFilterType;
+      FixedImageType, InternalImageType > FixedCastFilterType;
   typedef itk::CastImageFilter<
-                        MovingImageType, InternalImageType > MovingCastFilterType;
-  FixedCastFilterType::Pointer fixedCaster   = FixedCastFilterType::New();
+      MovingImageType, InternalImageType > MovingCastFilterType;
+  FixedCastFilterType::Pointer  fixedCaster   = FixedCastFilterType::New();
   MovingCastFilterType::Pointer movingCaster = MovingCastFilterType::New();
 
   fixedCaster->SetInput(  fixedImageReader->GetOutput() );
@@ -269,7 +282,7 @@ int main( int argc, char *argv[] )
   fixedCaster->Update();
 
   registration->SetFixedImageRegion(
-       fixedCaster->GetOutput()->GetBufferedRegion() );
+    fixedCaster->GetOutput()->GetBufferedRegion() );
 
   //  Software Guide : BeginLatex
   //
@@ -284,10 +297,10 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::CenteredTransformInitializer<
-            TransformType, FixedImageType,
-            MovingImageType >  TransformInitializerType;
+      TransformType, FixedImageType,
+      MovingImageType >  TransformInitializerType;
   TransformInitializerType::Pointer initializer
-                                            = TransformInitializerType::New();
+    = TransformInitializerType::New();
   initializer->SetTransform(   transform );
   initializer->SetFixedImage(  fixedImageReader->GetOutput() );
   initializer->SetMovingImage( movingImageReader->GetOutput() );
@@ -378,23 +391,28 @@ int main( int argc, char *argv[] )
 
   if( argc > 8 )
     {
-    // optionally, override the values with numbers taken from the command line arguments.
+    // optionally, override the values with numbers taken from the command line
+    // arguments.
     metric->SetNumberOfHistogramBins( atoi( argv[8] ) );
     }
 
   if( argc > 9 )
     {
-    // optionally, override the values with numbers taken from the command line arguments.
+    // optionally, override the values with numbers taken from the command line
+    // arguments.
     metric->SetNumberOfSpatialSamples( atoi( argv[9] ) );
     }
 
- //  Software Guide : BeginLatex
+  //  Software Guide : BeginLatex
   //
   //  Given that the Mattes Mutual Information metric uses a random iterator in
   //  order to collect the samples from the images, it is usually convenient to
   //  initialize the seed of the random number generator.
   //
-  //  \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!ReinitializeSeed()}
+  //
+  //
+  //
+  // \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!ReinitializeSeed()}
   //
   //  Software Guide : EndLatex
 
@@ -521,8 +539,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   TransformType::Pointer finalTransform = TransformType::New();
 
@@ -551,12 +569,12 @@ int main( int argc, char *argv[] )
   typedef  unsigned char                           OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType >          CastFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+      FixedImageType,
+      OutputImageType >          CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
 
@@ -569,11 +587,16 @@ int main( int argc, char *argv[] )
   // \begin{figure}
   // \center
   // \includegraphics[width=0.32\textwidth]{MultiResImageRegistration2Output}
+  //
+  //
   // \includegraphics[width=0.32\textwidth]{MultiResImageRegistration2CheckerboardBefore}
+  //
+  //
   // \includegraphics[width=0.32\textwidth]{MultiResImageRegistration2CheckerboardAfter}
   // \itkcaption[Multi-Resolution Registration Input Images]{Mapped moving image
   // (left) and composition of fixed and moving images before (center) and
-  // after (right) multi-resolution registration with the AffineTransform class.}
+  // after (right) multi-resolution registration with the AffineTransform
+  // class.}
   // \label{fig:MultiResImageRegistration2Output}
   // \end{figure}
   //
@@ -588,7 +611,11 @@ int main( int argc, char *argv[] )
   //
   // \begin{figure}
   // \center
+  //
+  //
   // \includegraphics[height=0.44\textwidth]{MultiResImageRegistration2TraceTranslations}
+  //
+  //
   // \includegraphics[height=0.44\textwidth]{MultiResImageRegistration2TraceMetric}
   // \itkcaption[Multi-Resolution Registration output plots]{Sequence of
   // translations and metric values at each iteration of the optimizer for

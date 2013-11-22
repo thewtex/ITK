@@ -28,7 +28,6 @@
 #ifndef __itkMesh_h
 #define __itkMesh_h
 
-
 #include "itkPointSet.h"
 
 #include "itkBoundingBox.h"
@@ -105,7 +104,7 @@ template<
   unsigned int VDimension = 3,
   typename TMeshTraits = DefaultStaticMeshTraits< TPixelType, VDimension, VDimension >
   >
-class Mesh:public PointSet< TPixelType, VDimension, TMeshTraits >
+class Mesh : public PointSet< TPixelType, VDimension, TMeshTraits >
 {
 public:
   /** Standard typedefs. */
@@ -209,10 +208,13 @@ public:
 
     /** Constructor just takes the cell and feature identifiers, or defaults
      *  to their individual default values.  */
-    BoundaryAssignmentIdentifier() {}
+    BoundaryAssignmentIdentifier() {
+    }
+
     BoundaryAssignmentIdentifier(CellIdentifier cellId,
-                                 CellFeatureIdentifier featureId):
-      m_CellId(cellId), m_FeatureId(featureId) {}
+                                 CellFeatureIdentifier featureId) :
+      m_CellId(cellId), m_FeatureId(featureId) {
+    }
 
     /** The Cell's identification. */
     CellIdentifier m_CellId;
@@ -222,7 +224,8 @@ public:
 
     /** Most containers require a "<" operator to be defined for their key
      *  types.  */
-    bool operator<(const Self & r) const
+    bool
+    operator<(const Self & r) const
     {
       return ( ( m_CellId < r.m_CellId )
                || ( ( m_CellId == r.m_CellId ) && ( m_FeatureId < r.m_FeatureId ) ) );
@@ -230,10 +233,12 @@ public:
 
     /** Most containers require a "==" operator to be defined for their key
      *  types.  */
-    bool operator==(const Self & r) const
+    bool
+    operator==(const Self & r) const
     {
       return ( ( m_CellId == r.m_CellId ) && ( m_FeatureId == r.m_FeatureId ) );
     }
+
   }; // End Class: Mesh::BoundaryAssignmentIdentifier
 
   /** Used for manipulating boundaries and boundary attributes.  A
@@ -244,11 +249,11 @@ public:
    * feature identifier distinguishes different boundary features for
    * a given cell at a given dimension.  */
   typedef MapContainer< BoundaryAssignmentIdentifier, CellIdentifier >
-  BoundaryAssignmentsContainer;
+    BoundaryAssignmentsContainer;
   typedef typename BoundaryAssignmentsContainer::Pointer
-  BoundaryAssignmentsContainerPointer;
+    BoundaryAssignmentsContainerPointer;
   typedef std::vector< BoundaryAssignmentsContainerPointer >
-  BoundaryAssignmentsContainerVector;
+    BoundaryAssignmentsContainerVector;
 
 protected:
 
@@ -335,11 +340,11 @@ public:
   void SetBoundaryAssignments(int dimension,
                               BoundaryAssignmentsContainer *);
 
-
   BoundaryAssignmentsContainerPointer GetBoundaryAssignments(int dimension);
 
   const BoundaryAssignmentsContainerPointer GetBoundaryAssignments(
     int dimension) const;
+
 #endif
 
   /** Access routines to fill the Cells container (m_CellsContainer),
@@ -406,7 +411,7 @@ public:
    *  not NULL, the set of cell pointers is filled in with identifiers
    *  of the neighboring cells. */
   CellIdentifier GetCellNeighbors(CellIdentifier cellId,
-                                 std::set< CellIdentifier > *cellSet);
+                                  std::set< CellIdentifier > *cellSet);
 
   /**
    * Check if there is an explicitly assigned boundary feature for the

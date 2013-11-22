@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TInputImage, typename TInputPath, typename TOutputImage >
-class ImageAndPathToImageFilter:
+class ImageAndPathToImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -78,24 +78,29 @@ public:
   /** Set/Get the image input of this process object. */
   virtual void SetImageInput(const TInputImage *image);
 
-
   /** Set/Get the path input of this process object. */
   virtual void SetPathInput(const TInputPath *path);
 
   const InputImageType * GetImageInput(void);
+
   const InputPathType * GetPathInput(void);
 
 protected:
   InputImageType * GetNonConstImageInput(void);
+
   InputPathType * GetNonConstPathInput(void);
+
   ImageAndPathToImageFilter();
-  virtual ~ImageAndPathToImageFilter() {}
+  virtual
+  ~ImageAndPathToImageFilter() {
+  }
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ImageAndPathToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };
 } // end namespace itk
 

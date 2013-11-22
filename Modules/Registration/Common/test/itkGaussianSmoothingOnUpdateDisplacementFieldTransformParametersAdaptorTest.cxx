@@ -19,10 +19,12 @@
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.h"
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor.h"
 
-int itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(int, char * [] )
+int
+itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(int, char * [] )
 {
   const unsigned int SpaceDimension = 3;
-  typedef double CoordinateRepType;
+
+  typedef double                                                                                      CoordinateRepType;
   typedef itk::GaussianSmoothingOnUpdateDisplacementFieldTransform<CoordinateRepType, SpaceDimension> TransformType;
 
   /**
@@ -56,7 +58,6 @@ int itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(
   zeroVector.Fill( 0 );
   displacementField->FillBuffer( zeroVector );
 
-
   TransformType::OutputVectorType nonzeroVector;
   nonzeroVector.Fill( 10.3 );
 
@@ -77,7 +78,7 @@ int itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(
   TransformType::OutputPointType outputPointBeforeAdapt = transform->TransformPoint( point );
 
   SpacingType spacingBefore = transform->GetDisplacementField()->GetSpacing();
-  SizeType sizeBefore = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeBefore = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
 
   /**
    * Instantiate the adaptor
@@ -115,9 +116,8 @@ int itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(
     return EXIT_FAILURE;
     }
 
-
   SpacingType spacingAfter = transform->GetDisplacementField()->GetSpacing();
-  SizeType sizeAfter = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeAfter = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
 
   std::cout << "Spacing: " << spacingBefore << "(before), " << spacingAfter << "(after)." << std::endl;
   std::cout << "Size: " << sizeBefore << "(before), " << sizeAfter << "(after)." << std::endl;
@@ -146,12 +146,14 @@ int itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(
     std::cerr << "required direction conversion is incorrect." << std::endl;
     return EXIT_FAILURE;
     }
-  if( adaptor->GetGaussianSmoothingVarianceForTheUpdateField() != transform->GetGaussianSmoothingVarianceForTheUpdateField() )
+  if( adaptor->GetGaussianSmoothingVarianceForTheUpdateField() !=
+      transform->GetGaussianSmoothingVarianceForTheUpdateField() )
     {
     std::cerr << "update field variance conversion is incorrect." << std::endl;
     return EXIT_FAILURE;
     }
-  if( adaptor->GetGaussianSmoothingVarianceForTheTotalField() != transform->GetGaussianSmoothingVarianceForTheTotalField() )
+  if( adaptor->GetGaussianSmoothingVarianceForTheTotalField() !=
+      transform->GetGaussianSmoothingVarianceForTheTotalField() )
     {
     std::cerr << "total field variance conversion is incorrect." << std::endl;
     return EXIT_FAILURE;

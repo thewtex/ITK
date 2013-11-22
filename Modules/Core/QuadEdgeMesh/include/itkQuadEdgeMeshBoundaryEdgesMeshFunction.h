@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh >
-class QuadEdgeMeshBoundaryEdgesMeshFunction:
+class QuadEdgeMeshBoundaryEdgesMeshFunction :
   public FunctionBase< TMesh, typename TMesh::EdgeListPointerType >
 {
 public:
@@ -61,13 +61,15 @@ public:
   virtual OutputType Evaluate(const InputType & mesh) const;
 
 protected:
-  QuadEdgeMeshBoundaryEdgesMeshFunction() {}
+  QuadEdgeMeshBoundaryEdgesMeshFunction() {
+  }
 
 private:
   QuadEdgeMeshBoundaryEdgesMeshFunction(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 };
 }
 

@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-int itkOtsuThresholdImageFilterTest(int argc, char* argv[] )
+int
+itkOtsuThresholdImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -32,18 +33,18 @@ int itkOtsuThresholdImageFilterTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef  short          InputPixelType;
-  typedef  unsigned char  OutputPixelType;
+  typedef  short         InputPixelType;
+  typedef  unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
 
   typedef itk::OtsuThresholdImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   FilterType::Pointer filter = FilterType::New();
@@ -54,21 +55,21 @@ int itkOtsuThresholdImageFilterTest(int argc, char* argv[] )
   reader->SetFileName( argv[1] );
   filter->SetInput( reader->GetOutput() );
   if( argc > 3 )
-  {
-    filter->SetNumberOfHistogramBins (atoi(argv[3]));
-  }
+    {
+    filter->SetNumberOfHistogramBins (atoi(argv[3]) );
+    }
   if( argc > 4 )
-  {
+    {
     bool flipOutputIntensities = atoi(argv[4]);
     if( flipOutputIntensities )
-    {
+      {
       // Flip the inside and outside values.
       FilterType::OutputPixelType outsideValue = filter->GetInsideValue();
       FilterType::OutputPixelType insideValue = filter->GetOutsideValue();
       filter->SetInsideValue( insideValue );
       filter->SetOutsideValue( outsideValue );
+      }
     }
-  }
   filter->Update();
 
   // Test GetMacros
@@ -77,7 +78,7 @@ int itkOtsuThresholdImageFilterTest(int argc, char* argv[] )
             << numberOfHistogramBins
             << std::endl;
   std::cout << "Computed Threshold is: "
-            << itk::NumericTraits<FilterType::InputPixelType>::PrintType(filter->GetThreshold())
+            << itk::NumericTraits<FilterType::InputPixelType>::PrintType(filter->GetThreshold() )
             << std::endl;
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[2] );

@@ -66,6 +66,8 @@
 // with a few iterations of an anisotropic diffusion filter.
 //
 // \begin{figure} \center
+//
+//
 // \includegraphics[width=0.9\textwidth]{CannySegmentationLevelSetImageFilterCollaborationDiagram1}
 // \itkcaption[CannySegmentationLevelSetImageFilter collaboration
 // diagram]{Collaboration diagram for the CannySegmentationLevelSetImageFilter
@@ -76,7 +78,6 @@
 // Let's start by including the appropriate header file.
 //
 // Software Guide : EndLatex
-
 
 #include "itkImage.h"
 
@@ -91,7 +92,8 @@
 #include "itkImageFileWriter.h"
 #include "itkZeroCrossingImageFilter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 9 )
     {
@@ -115,16 +117,16 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::BinaryThresholdImageFilter<
-                        InternalImageType,
-                        OutputImageType    >       ThresholdingFilterType;
+      InternalImageType,
+      OutputImageType    >       ThresholdingFilterType;
 
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
 
@@ -155,7 +157,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientAnisotropicDiffusionImageFilter< InternalImageType,
-    InternalImageType> DiffusionFilterType;
+                                                        InternalImageType> DiffusionFilterType;
   DiffusionFilterType::Pointer diffusion = DiffusionFilterType::New();
   diffusion->SetNumberOfIterations(5);
   diffusion->SetTimeStep(0.125);
@@ -171,11 +173,10 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef  itk::CannySegmentationLevelSetImageFilter< InternalImageType,
-                InternalImageType > CannySegmentationLevelSetImageFilterType;
+                                                      InternalImageType > CannySegmentationLevelSetImageFilterType;
   CannySegmentationLevelSetImageFilterType::Pointer cannySegmentation =
-                CannySegmentationLevelSetImageFilterType::New();
+    CannySegmentationLevelSetImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -185,7 +186,10 @@ int main( int argc, char *argv[] )
   // weight of the advection term.  The propagation and curvature term weights
   // are set to their defaults of $0$ and $1$, respectively.
   //
-  //  \index{itk::Canny\-Segmentation\-LevelSet\-Image\-Filter!SetAdvectionScaling()}
+  //
+  //
+  //
+  // \index{itk::Canny\-Segmentation\-LevelSet\-Image\-Filter!SetAdvectionScaling()}
   //  \index{itk::Segmentation\-LevelSet\-ImageFilter!SetAdvectionScaling()}
   //
   //  Software Guide : EndLatex
@@ -195,7 +199,6 @@ int main( int argc, char *argv[] )
   cannySegmentation->SetCurvatureScaling( 1.0 );
   cannySegmentation->SetPropagationScaling( 0.0 );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -227,7 +230,6 @@ int main( int argc, char *argv[] )
   cannySegmentation->SetVariance(  ::atof(argv[5]) );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Finally, it is very important to specify the isovalue of the surface in
@@ -254,7 +256,6 @@ int main( int argc, char *argv[] )
   thresholder->SetInput( cannySegmentation->GetOutput() );
   writer->SetInput( thresholder->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -303,14 +304,24 @@ int main( int argc, char *argv[] )
   //
   //  \begin{figure}
   //  \includegraphics[width=0.24\textwidth]{BrainProtonDensitySlice}
-  //  \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle}
-  //  \includegraphics[width=0.24\textwidth]{CannySegmentationLevelSetImageFilterVentricle1}
-  //  \includegraphics[width=0.24\textwidth]{CannySegmentationLevelSetImageFilterVentricle2}
+  //
+  //
+  //
+  // \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle}
+  //
+  //
+  //
+  // \includegraphics[width=0.24\textwidth]{CannySegmentationLevelSetImageFilterVentricle1}
+  //
+  //
+  //
+  // \includegraphics[width=0.24\textwidth]{CannySegmentationLevelSetImageFilterVentricle2}
   //  \itkcaption[Segmentation results of CannyLevelSetImageFilter]{Results of
   //  applying the CannySegmentationLevelSetImageFilter to a prior ventricle
   //  segmentation.  Shown from left to right are the original image, the
   //  prior segmentation of the ventricle from
-  //  Figure~\ref{fig:ThresholdSegmentationLevelSetImageFilter}, $15$ iterations of
+  //  Figure~\ref{fig:ThresholdSegmentationLevelSetImageFilter}, $15$ iterations
+  // of
   //  the CannySegmentationLevelSetImageFilter, and the
   //  CannySegmentationLevelSetImageFilter run to convergence.}
   //  \label{fig:CannySegmentationLevelSetImageFilter}
@@ -336,12 +347,18 @@ int main( int argc, char *argv[] )
     // used internally by this filter. This may help for setting the correct
     // parameters for driving the segmentation. In order to obtain such speed
     // image, the method \code{GenerateSpeedImage()} should be invoked first.
-    // Then we can recover the speed image with the \code{GetSpeedImage()} method
+    // Then we can recover the speed image with the \code{GetSpeedImage()}
+    // method
     // as illustrated in the following lines.
     //
-    //  \index{itk::Canny\-Segmentation\-LevelSet\-Image\-Filter!GenerateSpeedImage()}
+    //
+    //
+    //
+    // \index{itk::Canny\-Segmentation\-LevelSet\-Image\-Filter!GenerateSpeedImage()}
     //  \index{itk::Segmentation\-LevelSet\-ImageFilter!GenerateSpeedImage()}
-    //  \index{itk::Canny\-Segmentation\-LevelSet\-Image\-Filter!GetSpeedImage()}
+    //
+    //
+    // \index{itk::Canny\-Segmentation\-LevelSet\-Image\-Filter!GetSpeedImage()}
     //  \index{itk::Segmentation\-LevelSet\-ImageFilter!GetSpeedImage()}
     //
     //  Software Guide : EndLatex
@@ -350,13 +367,12 @@ int main( int argc, char *argv[] )
     cannySegmentation->GenerateSpeedImage();
 
     typedef CannySegmentationLevelSetImageFilterType::SpeedImageType
-                                                             SpeedImageType;
-    typedef itk::ImageFileWriter<SpeedImageType>             SpeedWriterType;
+      SpeedImageType;
+    typedef itk::ImageFileWriter<SpeedImageType> SpeedWriterType;
     SpeedWriterType::Pointer speedWriter = SpeedWriterType::New();
 
     speedWriter->SetInput( cannySegmentation->GetSpeedImage() );
     //  Software Guide : EndCodeSnippet
-
 
     speedWriter->SetFileName( speedImageFileName );
 

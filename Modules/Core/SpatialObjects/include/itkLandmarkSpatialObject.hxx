@@ -18,7 +18,6 @@
 #ifndef __itkLandmarkSpatialObject_hxx
 #define __itkLandmarkSpatialObject_hxx
 
-
 #include "itkLandmarkSpatialObject.h"
 #include "itkNumericTraits.h"
 
@@ -41,27 +40,28 @@ LandmarkSpatialObject< TDimension >
 template< unsigned int TDimension >
 LandmarkSpatialObject< TDimension >
 ::~LandmarkSpatialObject()
-{}
+{
+}
 
 /** Get the list of points which are defining the blob */
 template< unsigned int TDimension >
 typename LandmarkSpatialObject< TDimension >::PointListType &
 LandmarkSpatialObject< TDimension >
 ::GetPoints()
-{
+  {
   itkDebugMacro("Getting LandmarkPoint list");
   return m_Points;
-}
+  }
 
 /** Get the list of points which are defining the blob */
 template< unsigned int TDimension >
 const typename LandmarkSpatialObject< TDimension >::PointListType &
 LandmarkSpatialObject< TDimension >
 ::GetPoints() const
-{
+  {
   itkDebugMacro("Getting LandmarkPoint list");
   return m_Points;
-}
+  }
 
 /** Set the points which are defining the Landmark structure */
 template< unsigned int TDimension >
@@ -231,6 +231,7 @@ LandmarkSpatialObject< TDimension >
   value = this->GetDefaultOutsideValue();
   return false;
 }
+
 } // end namespace itk
 
 #endif

@@ -48,14 +48,13 @@ namespace itk
 */
 template< typename TInput, typename TOutput, typename TImage >
 class FastMarchingImageToNodePairContainerAdaptor :
-    public Object
-  {
+  public Object
+{
 public:
-  typedef FastMarchingImageToNodePairContainerAdaptor   Self;
-  typedef LightObject                                   Superclass;
-  typedef SmartPointer< Self >                          Pointer;
-  typedef SmartPointer< const Self >                    ConstPointer;
-
+  typedef FastMarchingImageToNodePairContainerAdaptor Self;
+  typedef LightObject                                 Superclass;
+  typedef SmartPointer< Self >                        Pointer;
+  typedef SmartPointer< const Self >                  ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -70,10 +69,10 @@ public:
   typedef typename Traits::LabelType                LabelType;
   typedef typename Traits::OutputPixelType          OutputPixelType;
 
-  typedef TImage                            ImageType;
-  typedef typename ImageType::Pointer       ImagePointer;
-  typedef typename ImageType::ConstPointer  ImageConstPointer;
-  typedef typename ImageType::PixelType     ImagePixelType;
+  typedef TImage                           ImageType;
+  typedef typename ImageType::Pointer      ImagePointer;
+  typedef typename ImageType::ConstPointer ImageConstPointer;
+  typedef typename ImageType::PixelType    ImagePixelType;
 
   itkStaticConstMacro( ImageDimension, unsigned int,
                        Traits::ImageDimension );
@@ -124,7 +123,9 @@ protected:
   FastMarchingImageToNodePairContainerAdaptor();
 
   /** \brief Destructor */
-  virtual ~FastMarchingImageToNodePairContainerAdaptor() {}
+  virtual
+  ~FastMarchingImageToNodePairContainerAdaptor() {
+  }
 
   ImageConstPointer m_AliveImage;
   ImageConstPointer m_TrialImage;
@@ -144,14 +145,14 @@ protected:
   /** */
   void
   SetPointsFromImage( const ImageType* image, const LabelType& iLabel,
-    const OutputPixelType& iValue );
+                      const OutputPixelType& iValue );
 
 private:
 
   FastMarchingImageToNodePairContainerAdaptor( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
 
-  };
+};
 }
 
 #include "itkFastMarchingImageToNodePairContainerAdaptor.hxx"

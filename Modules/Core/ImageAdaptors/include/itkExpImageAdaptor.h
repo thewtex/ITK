@@ -48,11 +48,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = (TInternalType)vcl_exp( (double)input ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = (TInternalType)vcl_exp( (double)input );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return (TExternalType)vcl_exp( (double)input ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return (TExternalType)vcl_exp( (double)input );
+  }
+
 };
 } // end namespace Accessor
 
@@ -66,7 +73,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class ExpImageAdaptor:public
+class ExpImageAdaptor : public
   ImageAdaptor< TImage, Accessor::ExpPixelAccessor<
                   typename TImage::PixelType,
                   TOutputPixelType >   >
@@ -75,8 +82,8 @@ public:
   /** Standard class typedefs. */
   typedef ExpImageAdaptor Self;
   typedef ImageAdaptor<
-    TImage, Accessor::ExpPixelAccessor<
-      typename TImage::PixelType, TOutputPixelType > >   Superclass;
+      TImage, Accessor::ExpPixelAccessor<
+        typename TImage::PixelType, TOutputPixelType > >   Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -88,12 +95,17 @@ public:
   itkTypeMacro(ExpImageAdaptor, ImageAdaptor);
 
 protected:
-  ExpImageAdaptor() {}
-  virtual ~ExpImageAdaptor() {}
+  ExpImageAdaptor() {
+  }
+
+  virtual
+  ~ExpImageAdaptor() {
+  }
 
 private:
   ExpImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

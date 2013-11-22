@@ -24,15 +24,18 @@ namespace itk
 {
 template< typename TInputMesh, typename TOutputMesh >
 SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >::SimplexMeshToTriangleMeshFilter()
-{}
+{
+}
 
 template< typename TInputMesh, typename TOutputMesh >
 SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 ::~SimplexMeshToTriangleMeshFilter()
-{}
+{
+}
 
 template< typename TInputMesh, typename TOutputMesh >
-void SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
+void
+SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 ::GenerateData()
 {
   this->Initialize();
@@ -40,7 +43,8 @@ void SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
+void
+SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 ::Initialize()
 {
   SimplexVisitorInterfacePointer simplexVisitor = SimplexVisitorInterfaceType::New();
@@ -54,7 +58,8 @@ void SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
+void
+SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 ::CreateTriangles()
 {
   typename AutoMeshSourceType::Pointer meshSource = AutoMeshSourceType::New();
@@ -96,9 +101,10 @@ typename SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >::CellIdentif
 SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 ::FindCellId(CellIdentifier id1, CellIdentifier id2, CellIdentifier id3)
 {
-  std::set< CellIdentifier >  cells1 =  this->GetInput(0)->GetCellLinks()->GetElement(id1);
-  std::set< CellIdentifier >  cells2 =  this->GetInput(0)->GetCellLinks()->GetElement(id2);
-  std::set< CellIdentifier >  cells3 =  this->GetInput(0)->GetCellLinks()->GetElement(id3);
+  std::set< CellIdentifier > cells1 =  this->GetInput(0)->GetCellLinks()->GetElement(id1);
+  std::set< CellIdentifier > cells2 =  this->GetInput(0)->GetCellLinks()->GetElement(id2);
+  std::set< CellIdentifier > cells3 =  this->GetInput(0)->GetCellLinks()->GetElement(id3);
+
   typename std::set< CellIdentifier >::iterator cellIt = cells1.begin();
 
   while ( cellIt != cells1.end() )
@@ -128,8 +134,10 @@ SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ToDo: implement PrinSelf!!!";
 }
+
 } // end of namspace itk
 
 #endif //__SimplexMeshToTriangleMeshFilter_hxx

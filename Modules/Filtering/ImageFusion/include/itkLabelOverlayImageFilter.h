@@ -51,7 +51,7 @@ namespace itk
  * \endwiki
  */
 template< typename  TInputImage, typename TLabelImage, typename  TOutputImage >
-class LabelOverlayImageFilter:
+class LabelOverlayImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage, TLabelImage, TOutputImage,
                             Functor::LabelOverlayFunctor<
@@ -128,7 +128,9 @@ public:
 
 protected:
   LabelOverlayImageFilter();
-  virtual ~LabelOverlayImageFilter() {}
+  virtual
+  ~LabelOverlayImageFilter() {
+  }
 
   /** Process to execute before entering the multithreaded section */
   void BeforeThreadedGenerateData(void);

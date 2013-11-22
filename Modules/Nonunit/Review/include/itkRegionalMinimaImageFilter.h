@@ -51,7 +51,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class RegionalMinimaImageFilter:
+class RegionalMinimaImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -129,7 +129,9 @@ public:
 
 protected:
   RegionalMinimaImageFilter();
-  ~RegionalMinimaImageFilter() {}
+  ~RegionalMinimaImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** RegionalMinimaImageFilter needs the entire input be

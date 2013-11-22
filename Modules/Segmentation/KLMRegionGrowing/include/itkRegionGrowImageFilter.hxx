@@ -33,7 +33,8 @@ RegionGrowImageFilter< TInputImage, TOutputImage >
 template< typename TInputImage, typename TOutputImage >
 RegionGrowImageFilter< TInputImage, TOutputImage >
 ::~RegionGrowImageFilter()
-{}
+{
+}
 
 /**
  * PrintSelf
@@ -44,10 +45,12 @@ RegionGrowImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Region grow image filter object" << std::endl;
   os << indent << "Maximum number of regions: " << m_MaximumNumberOfRegions << std::endl;
   os << indent << "Maximum grid size : " << m_GridSize << std::endl;
 } // end PrintSelf
+
 } // namespace itk
 
 #endif

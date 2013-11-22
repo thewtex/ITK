@@ -128,7 +128,7 @@ KdTreeGenerator< TSample >
                           MeasurementVectorType & lowerBound,
                           MeasurementVectorType & upperBound,
                           unsigned int level)
-{
+  {
   typedef typename KdTreeType::KdTreeNodeType NodeType;
   MeasurementType dimensionLowerBound;
   MeasurementType dimensionUpperBound;
@@ -200,7 +200,7 @@ KdTreeGenerator< TSample >
     subsample->GetInstanceIdentifier(medianIndex) );
 
   return nonTerminalNode;
-}
+  }
 
 template< typename TSample >
 inline typename KdTreeGenerator< TSample >::KdTreeNodeType *
@@ -210,7 +210,7 @@ KdTreeGenerator< TSample >
                    MeasurementVectorType & lowerBound,
                    MeasurementVectorType & upperBound,
                    unsigned int level)
-{
+  {
   if ( endIndex - beginIndex <= m_BucketSize )
     {
     // numberOfInstances small, make a terminal node
@@ -239,7 +239,7 @@ KdTreeGenerator< TSample >
     return this->GenerateNonterminalNode(beginIndex, endIndex,
                                          lowerBound, upperBound, level + 1);
     }
-}
+  }
 } // end of namespace Statistics
 } // end of namespace itk
 

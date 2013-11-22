@@ -37,7 +37,8 @@ public:
 
 }
 
-int itkSparseImageTest(int, char* [] )
+int
+itkSparseImageTest(int, char* [] )
 {
   typedef itk::Image<int, 2>             DummyImageType;
   typedef itk::NodeClass<DummyImageType> NodeType;
@@ -45,9 +46,9 @@ int itkSparseImageTest(int, char* [] )
   typedef SparseImageType::Superclass    ImageType;
 
   SparseImageType::Pointer im = SparseImageType::New();
-  ImageType::RegionType r;
-  ImageType::SizeType   sz = {{24, 24}};
-  ImageType::IndexType  idx = {{0,0}};
+  ImageType::RegionType    r;
+  ImageType::SizeType      sz = {{24, 24}};
+  ImageType::IndexType     idx = {{0,0}};
   r.SetSize(sz);
   r.SetIndex(idx);
 
@@ -57,8 +58,8 @@ int itkSparseImageTest(int, char* [] )
   im->Allocate();
 
   ImageType::IndexType index;
-  NodeType *node;
-  int cnt = 0;
+  NodeType *           node;
+  int                  cnt = 0;
 
   for ( index[0]=0; index[0] < 24; index[0]++ )
     for ( index[1]=0; index[1] < 24; index[1]++ )

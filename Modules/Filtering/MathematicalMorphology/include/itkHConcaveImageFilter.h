@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class HConcaveImageFilter:
+class HConcaveImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -107,7 +107,9 @@ public:
 
 protected:
   HConcaveImageFilter();
-  ~HConcaveImageFilter() {}
+  ~HConcaveImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** HConcaveImageFilter needs the entire input be

@@ -18,7 +18,6 @@
 #ifndef __itkDCMTKImageIO_h
 #define __itkDCMTKImageIO_h
 
-
 #include <fstream>
 #include <stdio.h>
 #include "itkImageIOBase.h"
@@ -35,13 +34,13 @@ namespace itk
  *
  * \ingroup ITKIODCMTK
  */
-class DCMTKImageIO:public ImageIOBase
+class DCMTKImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
-  typedef DCMTKImageIO              Self;
-  typedef ImageIOBase               Superclass;
-  typedef SmartPointer< Self >      Pointer;
+  typedef DCMTKImageIO         Self;
+  typedef ImageIOBase          Superclass;
+  typedef SmartPointer< Self > Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -50,11 +49,12 @@ public:
   itkTypeMacro(DCMTKImageIO, ImageIOBase);
 
   /** */
-  void SetDicomImagePointer( DicomImage* UserProvided)
-    {
+  void
+  SetDicomImagePointer( DicomImage* UserProvided)
+  {
     m_DImage = UserProvided;
     m_DicomImageSetByUser = true;
-    };
+  }
 
   /*-------- This part of the interfaces deals with reading data. ----- */
 
@@ -86,7 +86,7 @@ public:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  DCMTKImageIO(const Self &);     //purposely not implemented
+  DCMTKImageIO(const Self &);   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
   void OpenDicomImage();

@@ -18,31 +18,29 @@
 
 // Test the filter with 1-D images.
 
-
 #include "itkGradientRecursiveGaussianImageFilter.h"
 
-
-int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
+int
+itkGradientRecursiveGaussianFilterTest2(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 1;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>           myImageType;
+  typedef itk::Image<float, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
-
 
   // Define their size, and start index
   mySizeType size;
@@ -62,7 +60,7 @@ int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
   inputImage->Allocate();
 
   // Declare Iterator type for the input image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -92,21 +90,18 @@ int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
 
   // Declare the type for the
   typedef itk::GradientRecursiveGaussianImageFilter<
-                                            myImageType >  myFilterType;
+      myImageType >  myFilterType;
 
   typedef myFilterType::OutputImageType myGradientImageType;
 
-
   // Create a  Filter
   myFilterType::Pointer filter = myFilterType::New();
-
 
   // Connect the input images
   filter->SetInput( inputImage );
 
   // Select the value of Sigma
   filter->SetSigma( 2.5 );
-
 
   // Execute the filter
   filter->Update();
@@ -119,7 +114,7 @@ int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
 
   // Declare Iterator type for the output image
   typedef itk::ImageRegionIteratorWithIndex<
-                                 myGradientImageType>  myOutputIteratorType;
+      myGradientImageType>  myOutputIteratorType;
 
   // Create an iterator for going through the output image
   myOutputIteratorType itg( outputImage,

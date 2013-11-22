@@ -55,11 +55,12 @@ FFTWHalfHermitianToRealInverseFFTImageFilter< TInputImage, TOutputImage >
   outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
   outputPtr->Allocate();
 
-  const InputSizeType inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
+  const InputSizeType  inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
   const OutputSizeType outputSize = outputPtr->GetLargestPossibleRegion().GetSize();
 
   // Figure out sizes.
-  // Size of input and output aren't the same which is handled in the superclass,
+  // Size of input and output aren't the same which is handled in the
+  // superclass,
   // sort of.
   // The input size and output size only differ in the fastest moving dimension.
   unsigned int totalOutputSize = 1;
@@ -124,7 +125,7 @@ FFTWHalfHermitianToRealInverseFFTImageFilter< TInputImage, TOutputImage >
 {
   typedef ImageRegionIterator< OutputImageType > IteratorType;
   unsigned long totalOutputSize = this->GetOutput()->GetRequestedRegion().GetNumberOfPixels();
-  IteratorType it( this->GetOutput(), outputRegionForThread );
+  IteratorType  it( this->GetOutput(), outputRegionForThread );
   while( !it.IsAtEnd() )
     {
     it.Set( it.Value() / totalOutputSize );

@@ -48,7 +48,7 @@ template<
   unsigned int VSpaceDimension = 2,
   unsigned int VSplineOrder = 3
   >
-class BSplineInterpolationWeightFunction:
+class BSplineInterpolationWeightFunction :
   public FunctionBase< ContinuousIndex< TCoordRep, VSpaceDimension >,
                        Array< double > >
 {
@@ -106,7 +106,9 @@ public:
 
 protected:
   BSplineInterpolationWeightFunction();
-  ~BSplineInterpolationWeightFunction() {}
+  ~BSplineInterpolationWeightFunction() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

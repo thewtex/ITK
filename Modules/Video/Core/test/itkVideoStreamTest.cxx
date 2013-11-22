@@ -26,7 +26,8 @@ typedef itk::VideoStream< FrameType >      VideoType;
 typedef itk::SizeValueType                 SizeValueType;
 
 /** Set up a spatial region with the given dimensions */
-FrameType::RegionType SetUpSpatialRegion(unsigned int x, unsigned int y)
+FrameType::RegionType
+SetUpSpatialRegion(unsigned int x, unsigned int y)
 {
   FrameType::RegionType            out;
   FrameType::RegionType::SizeType  size;
@@ -43,7 +44,8 @@ FrameType::RegionType SetUpSpatialRegion(unsigned int x, unsigned int y)
 /**
  * Test the basic functionality of temporal data objects
  */
-int itkVideoStreamTest( int, char* [] )
+int
+itkVideoStreamTest( int, char* [] )
 {
   //////
   // Test Instantiation and grafting

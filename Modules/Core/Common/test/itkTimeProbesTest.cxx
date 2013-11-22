@@ -23,12 +23,13 @@
 #include <fstream>
 
 template <typename T>
-void TestTransformIndexToPhysicalPoint(T * image)
+void
+TestTransformIndexToPhysicalPoint(T * image)
 {
   typename T::IndexType index3D;
   typename T::PointType point3D;
 
-    for (int k = 0; k < 10; k++)
+  for (int k = 0; k < 10; k++)
     {
     index3D[2] = k;
     for (int j = 0; j < 1000; j++)
@@ -43,13 +44,15 @@ void TestTransformIndexToPhysicalPoint(T * image)
     if (k == 5) std::cout << point3D << std::endl;
     }
 }
+
 template <typename T>
-void TestTransformPhysicalPointToIndex(T * image)
+void
+TestTransformPhysicalPointToIndex(T * image)
 {
   typename T::IndexType index3D;
   typename T::PointType point3D;
 
-    for (double k = 0; k < 10; k++)
+  for (double k = 0; k < 10; k++)
     {
     point3D[2] = k;
     for (double j = 0; j < 1000; j++)
@@ -64,15 +67,17 @@ void TestTransformPhysicalPointToIndex(T * image)
     if (k == 5) std::cout << point3D << std::endl;
     }
 }
+
 //-------------------------
 //
 //   This file test the interface to the TimeProbe classes
 //
 //-------------------------
-int itkTimeProbesTest(int, char* [] )
+int
+itkTimeProbesTest(int, char* [] )
 {
 
-  itk::TimeProbesCollectorBase   collector;
+  itk::TimeProbesCollectorBase collector;
 
   const unsigned int N =  1000L;
   const unsigned int M = 10000L;
@@ -80,33 +85,33 @@ int itkTimeProbesTest(int, char* [] )
   collector.Start("Loop1"); // label that identify the range of the probe
 
   // Do slow stuff here...
-  {
-  for(unsigned int i=0; i<N; i++)
     {
-    char * dummy = new char [ M ];
-    for(unsigned int j=0; j<M; j++)
+    for(unsigned int i=0; i<N; i++)
       {
-      dummy[j] = j;
+      char * dummy = new char [ M ];
+      for(unsigned int j=0; j<M; j++)
+        {
+        dummy[j] = j;
+        }
+      delete[] dummy;
       }
-    delete[] dummy;
     }
-  }
   collector.Stop("Loop1");
 
   collector.Start("Loop2"); // label that identify the range of the probe
 
   // Do other slow stuff here...
-  {
-  for(unsigned int i=0; i<M; i++)
     {
-    char * dummy = new char [ N ];
-    for(unsigned int j=0; j<N; j++)
+    for(unsigned int i=0; i<M; i++)
       {
-      dummy[j] = j;
+      char * dummy = new char [ N ];
+      for(unsigned int j=0; j<N; j++)
+        {
+        dummy[j] = j;
+        }
+      delete[] dummy;
       }
-    delete[] dummy;
     }
-  }
   collector.Stop("Loop2");
 
   typedef itk::Image<float,3> Image3DType;
@@ -120,7 +125,7 @@ int itkTimeProbesTest(int, char* [] )
   typedef Region3DType::IndexType Index3DType;
   typedef Region3DType::SizeType  Size3DType;
   Region3DType region3D;
-  Size3DType size3D = {{ 1000, 1000, 1000 }};
+  Size3DType   size3D = {{ 1000, 1000, 1000 }};
 
   region3D.SetSize(  size3D );
   collector.Start("i->TransformIndexToPhysicalPoint");
@@ -143,14 +148,13 @@ int itkTimeProbesTest(int, char* [] )
   collector.Report();
 
   // Test writing to a ostream
-  std::ofstream  logfile;
+  std::ofstream logfile;
   logfile.open("itkTimeProbesTest.txt");
   collector.Report( logfile );
   logfile.close();
 
   // Print to the standar error
   collector.Report( std::cerr );
-
 
   return EXIT_SUCCESS;
 

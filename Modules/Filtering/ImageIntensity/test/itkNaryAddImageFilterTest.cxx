@@ -20,10 +20,10 @@
 #include "itkImageRegionIterator.h"
 #include <iostream>
 
-
 // Function for image initialization
 template <typename ImageType>
-void InitializeImage( ImageType * image, const typename ImageType::PixelType & value   )
+void
+InitializeImage( ImageType * image, const typename ImageType::PixelType & value   )
 {
   typename ImageType::Pointer inputImage( image );
 
@@ -44,7 +44,7 @@ void InitializeImage( ImageType * image, const typename ImageType::PixelType & v
   inputImage->Allocate();
 
   typename itk::ImageRegionIterator<ImageType> it(
-     inputImage, inputImage->GetRequestedRegion() );
+    inputImage, inputImage->GetRequestedRegion() );
 
   it.GoToBegin();
   while( !it.IsAtEnd() )
@@ -54,35 +54,35 @@ void InitializeImage( ImageType * image, const typename ImageType::PixelType & v
     }
 }
 
-
 // Function for image printing
 template <typename ImageType>
-void PrintImage( ImageType * image, const char * text)
+void
+PrintImage( ImageType * image, const char * text)
 {
   typename ImageType::Pointer inputImage( image );
 
   // Create an iterator for going through the image
   typename itk::ImageRegionIterator<ImageType> it(
-     inputImage, inputImage->GetRequestedRegion() );
+    inputImage, inputImage->GetRequestedRegion() );
 
   it.GoToBegin();
   //  Print the content of the image
   std::cout << text << std::endl;
   while( !it.IsAtEnd() )
-  {
+    {
     std::cout << it.Get() << std::endl;
     ++it;
-  }
+    }
 
 }
 
-
-int itkNaryAddImageFilterTest(int, char* [] )
+int
+itkNaryAddImageFilterTest(int, char* [] )
 {
   bool testpassed = true;
 
   // Create some images
-  typedef itk::Image<float, 3>  InputImageType;
+  typedef itk::Image<float, 3> InputImageType;
   InputImageType::Pointer inputImageA  = InputImageType::New();
   InputImageType::Pointer inputImageB  = InputImageType::New();
   InputImageType::Pointer inputImageC  = InputImageType::New();
@@ -96,12 +96,11 @@ int itkNaryAddImageFilterTest(int, char* [] )
   PrintImage<InputImageType>( inputImageC, "Input image C" );
 
   // Create an ADD Filter
-  typedef itk::Image<float, 3>  OutputImageType;
+  typedef itk::Image<float, 3> OutputImageType;
   typedef itk::NaryAddImageFilter<
-                              InputImageType,
-                              OutputImageType  >  AdderType;
+      InputImageType,
+      OutputImageType  >  AdderType;
   AdderType::Pointer filter = AdderType::New();
-
 
   // Connect the input images
   filter->SetInput( 0, inputImageA );
@@ -111,13 +110,11 @@ int itkNaryAddImageFilterTest(int, char* [] )
   // Get the Smart Pointer to the Filter Output
   OutputImageType::Pointer outputImage = filter->GetOutput();
 
-
   // Execute the filter
   filter->Update();
-  filter->SetFunctor(filter->GetFunctor());
+  filter->SetFunctor(filter->GetFunctor() );
 
   PrintImage<OutputImageType>( outputImage, "Resulting image" );
-
 
   // Test the validity of the output
   typedef itk::ImageRegionConstIterator<InputImageType>  IteratorIn;
@@ -132,7 +129,7 @@ int itkNaryAddImageFilterTest(int, char* [] )
   unsigned int failures = 0;
   while ( !iterO.IsAtEnd() )
     {
-    if ( vcl_abs( iterO.Get() - (iterA.Get() + iterB.Get() + iterC.Get()) ) > epsilon ) ++failures;
+    if ( vcl_abs( iterO.Get() - (iterA.Get() + iterB.Get() + iterC.Get() ) ) > epsilon ) ++failures;
     ++iterA;
     ++iterB;
     ++iterC;
@@ -145,13 +142,11 @@ int itkNaryAddImageFilterTest(int, char* [] )
     testpassed = false;
     }
 
-
   // Execute the filter in place
   filter->InPlaceOn();
   filter->Update();
 
   PrintImage<OutputImageType>( outputImage, "Resulting image" );
-
 
   // Test the validity of the output
   IteratorOut iterO2( outputImage, inputImageA->GetRequestedRegion() );
@@ -170,12 +165,11 @@ int itkNaryAddImageFilterTest(int, char* [] )
     testpassed = false;
     }
 
-
   // Testing with vector Images
 
   // Create some images
-  typedef itk::Vector<int,2>                 VectorPixelType;
-  typedef itk::Image< VectorPixelType, 2>    VectorImageType;
+  typedef itk::Vector<int,2>              VectorPixelType;
+  typedef itk::Image< VectorPixelType, 2> VectorImageType;
   VectorImageType::Pointer vectorImageA  = VectorImageType::New();
   VectorImageType::Pointer vectorImageB  = VectorImageType::New();
   VectorImageType::Pointer vectorImageC  = VectorImageType::New();
@@ -197,10 +191,9 @@ int itkNaryAddImageFilterTest(int, char* [] )
 
   // Create an ADD Filter
   typedef itk::NaryAddImageFilter<
-                              VectorImageType,
-                              VectorImageType  >  VectorAdderType;
+      VectorImageType,
+      VectorImageType  >  VectorAdderType;
   VectorAdderType::Pointer vfilter = VectorAdderType::New();
-
 
   // Connect the input images
   vfilter->SetInput( 0, vectorImageA );
@@ -210,15 +203,13 @@ int itkNaryAddImageFilterTest(int, char* [] )
   // Get the Smart Pointer to the Filter Output
   VectorImageType::Pointer voutputImage = vfilter->GetOutput();
 
-
   // Execute the filter
   vfilter->Update();
 
   PrintImage<VectorImageType>( voutputImage, "Resulting image" );
 
-
   // Test the validity of the output
-  typedef itk::ImageRegionConstIterator<VectorImageType>  VectorIterator;
+  typedef itk::ImageRegionConstIterator<VectorImageType> VectorIterator;
 
   VectorIterator viterA( vectorImageA, vectorImageA->GetRequestedRegion() );
   VectorIterator viterB( vectorImageB, vectorImageA->GetRequestedRegion() );
@@ -228,7 +219,7 @@ int itkNaryAddImageFilterTest(int, char* [] )
   failures = 0;
   while ( !viterO.IsAtEnd() )
     {
-    if ( viterO.Get() != (viterA.Get() + viterB.Get() + viterC.Get()) ) ++failures;
+    if ( viterO.Get() != (viterA.Get() + viterB.Get() + viterC.Get() ) ) ++failures;
     ++viterA;
     ++viterB;
     ++viterC;

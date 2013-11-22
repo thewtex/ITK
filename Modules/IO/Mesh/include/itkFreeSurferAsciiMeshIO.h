@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKIOMesh
  */
 
-class ITKIOMesh_EXPORT FreeSurferAsciiMeshIO:public MeshIOBase
+class ITKIOMesh_EXPORT FreeSurferAsciiMeshIO : public MeshIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -42,7 +42,7 @@ public:
   typedef SmartPointer< const Self > ConstPointer;
   typedef SmartPointer< Self >       Pointer;
 
-  typedef Superclass::SizeValueType    SizeValueType;
+  typedef Superclass::SizeValueType SizeValueType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -98,7 +98,8 @@ public:
 protected:
   /** Write points to output stream */
   template< typename T >
-  void WritePoints(T *buffer, std::ofstream & outputFile, T label = itk::NumericTraits< T >::Zero)
+  void
+  WritePoints(T *buffer, std::ofstream & outputFile, T label = itk::NumericTraits< T >::Zero)
   {
     outputFile.precision(6);
     SizeValueType index = 0;
@@ -113,7 +114,8 @@ protected:
   }
 
   template< typename T >
-  void WriteCells(T *buffer, std::ofstream & outputFile, T label = itk::NumericTraits< T >::Zero)
+  void
+  WriteCells(T *buffer, std::ofstream & outputFile, T label = itk::NumericTraits< T >::Zero)
   {
     const unsigned int numberOfCellPoints = 3;
     SizeValueType      index = 0;
@@ -135,24 +137,28 @@ protected:
 
   /** Read cells from a data buffer, used when writting cells */
   template< typename TInput, typename TOutput >
-  void ReadCellsBuffer(TInput *input, TOutput *output)
-    {
+  void
+  ReadCellsBuffer(TInput *input, TOutput *output)
+  {
     if ( input && output )
       {
       for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
         {
         for ( unsigned int jj = 0; jj < 3; jj++ )
           {
-          /** point identifiers start from the third elements, first element is cellType, the second is numberOfPoints */
+          /** point identifiers start from the third elements, first element is
+            cellType, the second is numberOfPoints */
           output[ii * 3 + jj] = static_cast< TOutput >( input[5 * ii + jj + 2] );
           }
         }
       }
-    }
+  }
 
 protected:
   FreeSurferAsciiMeshIO();
-  virtual ~FreeSurferAsciiMeshIO(){}
+  virtual
+  ~FreeSurferAsciiMeshIO(){
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -162,7 +168,7 @@ protected:
 
 private:
   FreeSurferAsciiMeshIO(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  void operator=(const Self &);        // purposely not implemented
 
   std::ifstream m_InputFile;
 };

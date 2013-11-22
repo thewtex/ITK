@@ -85,6 +85,7 @@ public:
 
   /** Add an element to the sum. */
   void AddElement( const FloatType & element );
+
   Self & operator+=( const FloatType & rhs );
 
   /** Subtract an element from the sum. */
@@ -93,6 +94,7 @@ public:
   /** Division and multiplication. These do not provide any numerical advantages
    * relative to vanilla division and multiplication. */
   Self & operator*=( const FloatType & rhs );
+
   Self & operator/=( const FloatType & rhs );
 
   /** Reset the sum and compensation to zero. */
@@ -115,6 +117,7 @@ private:
 };
 
 void ITKCommon_EXPORT CompensatedSummationAddElement( float& compensation, float& sum, const float& element );
+
 void ITKCommon_EXPORT CompensatedSummationAddElement( double& compensation, double& sum, const double& element );
 
 } // end namespace itk

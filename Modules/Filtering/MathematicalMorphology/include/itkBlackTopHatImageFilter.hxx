@@ -98,5 +98,6 @@ BlackTopHatImageFilter< TInputImage, TOutputImage, TKernel >
   os << indent << "SafeBorder: " << m_SafeBorder << std::endl;
   os << indent << "ForceAlgorithm: " << m_ForceAlgorithm << std::endl;
 }
+
 } // end namespace itk
 #endif

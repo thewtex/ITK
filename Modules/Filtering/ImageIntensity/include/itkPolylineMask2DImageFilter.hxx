@@ -44,7 +44,8 @@ PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
  */
 template< typename TInputImage, typename TPolyline,
           typename TOutputImage >
-void PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
+void
+PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
 ::SetInput1(const TInputImage *input)
 
 {
@@ -58,7 +59,8 @@ void PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
  */
 template< typename TInputImage, typename TPolyline,
           typename TOutputImage >
-void PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
+void
+PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
 ::SetInput2(const TPolyline *input)
 {
   // Process object is not const-correct so the const_cast is required here
@@ -71,7 +73,8 @@ void PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
  */
 template< typename TInputImage, typename TPolyline,
           typename TOutputImage >
-void PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
+void
+PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
 ::GenerateData(void)
 {
   typedef  LineIterator< TOutputImage >                 LineIteratorType;
@@ -269,5 +272,6 @@ void PolylineMask2DImageFilter< TInputImage, TPolyline, TOutputImage >
     ++outputI;
     }
 }
+
 } // end namespace itk
 #endif

@@ -57,7 +57,7 @@ public:
   itkTypeMacro(ThreadedDomainPartitioner, Object);
 
   /** Type of the input object that's split for threading */
-  typedef TDomain                   DomainType;
+  typedef TDomain DomainType;
 
   /** Split the domain \c completeDomain into up to \c requestedTotal
    * non-overlapping subdomains, setting subdomain number \c threadId as
@@ -72,17 +72,21 @@ public:
    */
   virtual
   ThreadIdType PartitionDomain(const ThreadIdType threadId,
-                           const ThreadIdType requestedTotal,
-                           const DomainType& completeDomain,
-                           DomainType& subDomain) const = 0;
+                               const ThreadIdType requestedTotal,
+                               const DomainType& completeDomain,
+                               DomainType& subDomain) const = 0;
 
 protected:
-  ThreadedDomainPartitioner(){}
-  ~ThreadedDomainPartitioner(){}
+  ThreadedDomainPartitioner(){
+  }
+
+  ~ThreadedDomainPartitioner(){
+  }
 
 private:
   ThreadedDomainPartitioner(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);            //purposely not implemented
+
 };
 
 } // end namespace itk

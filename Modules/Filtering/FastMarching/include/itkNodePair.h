@@ -31,70 +31,92 @@ namespace itk
 */
 template<typename TNode, typename TOutputPixel>
 class NodePair : private std::pair< TNode, TOutputPixel >
-  {
+{
 public:
   typedef NodePair                         Self;
   typedef std::pair< TNode, TOutputPixel > Superclass;
 
-  typedef TNode         NodeType;
-  typedef TOutputPixel  OutputPixelType;
+  typedef TNode        NodeType;
+  typedef TOutputPixel OutputPixelType;
 
-  NodePair() : Superclass() {}
+  NodePair() : Superclass() {
+  }
+
   NodePair( const TNode& iNode, const TOutputPixel& iValue ) :
-    Superclass( iNode, iValue ) {}
-  NodePair( const Self& iPair ) : Superclass( iPair ) {}
+    Superclass( iNode, iValue ) {
+  }
 
-  void operator = ( const Self& iPair )
-    {
+  NodePair( const Self& iPair ) : Superclass( iPair ) {
+  }
+
+  void
+  operator =( const Self& iPair )
+  {
     this->first = iPair.first;
     this->second = iPair.second;
-    }
+  }
 
-  void SetValue( const TOutputPixel& iValue )
-    {
+  void
+  SetValue( const TOutputPixel& iValue )
+  {
     this->second = iValue;
-    }
-  const TOutputPixel & GetValue() const
-    {
+  }
+
+  const TOutputPixel &
+  GetValue() const
+  {
     return this->second;
-    }
-  TOutputPixel & GetValue()
-    {
+  }
+
+  TOutputPixel &
+  GetValue()
+  {
     return this->second;
-    }
-  void SetNode( const TNode& iNode )
-    {
+  }
+
+  void
+  SetNode( const TNode& iNode )
+  {
     this->first = iNode;
-    }
-  const TNode & GetNode() const
-    {
-    return this->first;
-    }
-  TNode & GetNode()
-    {
-    return this->first;
-    }
+  }
 
-  bool operator < ( const Self& iRight ) const
-    {
+  const TNode &
+  GetNode() const
+  {
+    return this->first;
+  }
+
+  TNode &
+  GetNode()
+  {
+    return this->first;
+  }
+
+  bool
+  operator <( const Self& iRight ) const
+  {
     return this->second < iRight.second;
-    }
+  }
 
-  bool operator > ( const Self& iRight ) const
-    {
+  bool
+  operator >( const Self& iRight ) const
+  {
     return this->second > iRight.second;
-    }
+  }
 
-  bool operator <= ( const Self& iRight ) const
-    {
+  bool
+  operator <=( const Self& iRight ) const
+  {
     return this->second <= iRight.second;
-    }
+  }
 
-  bool operator >= ( const Self& iRight ) const
-    {
+  bool
+  operator >=( const Self& iRight ) const
+  {
     return this->second >= iRight.second;
-    }
-  };
+  }
+
+};
 
 }
 #endif // __itkFastMarchingTraits_h

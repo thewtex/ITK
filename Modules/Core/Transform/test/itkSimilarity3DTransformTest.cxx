@@ -30,7 +30,8 @@
 //   Main code
 //
 // -------------------------
-int itkSimilarity3DTransformTest(int, char * [] )
+int
+itkSimilarity3DTransformTest(int, char * [] )
 {
 
   typedef   double ValueType;
@@ -95,7 +96,10 @@ int itkSimilarity3DTransformTest(int, char * [] )
     VersorType versor;
     versor.Set( axis, angle );
 
-    ParametersType parameters( transform->GetNumberOfParameters() ); // Number of parameters
+    ParametersType parameters( transform->GetNumberOfParameters() ); // Number
+                                                                     // of
+                                                                     //
+                                                                     // parameters
 
     parameters[0] = versor.GetX();
     parameters[1] = versor.GetY();

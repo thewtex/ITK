@@ -58,7 +58,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputImage >
-class CollidingFrontsImageFilter:
+class CollidingFrontsImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -100,40 +100,48 @@ public:
 
   /** Typedef support of level set method types. */
   typedef typename FastMarchingUpwindGradientImageFilterType::PixelType
-  PixelType;
+    PixelType;
   typedef typename FastMarchingUpwindGradientImageFilterType::NodeType
-  NodeType;
+    NodeType;
   typedef typename FastMarchingUpwindGradientImageFilterType::NodeContainer
-  NodeContainer;
+    NodeContainer;
   typedef typename FastMarchingUpwindGradientImageFilterType::NodeContainerPointer
-  NodeContainerPointer;
+    NodeContainerPointer;
   typedef typename FastMarchingUpwindGradientImageFilterType::GradientImageType
-  GradientImageType;
+    GradientImageType;
   typedef typename FastMarchingUpwindGradientImageFilterType::IndexType IndexType;
 
   /** Set the container of Seed Points representing the first initial front.
    * Seed points are represented as a VectorContainer of LevelSetNodes. */
-  void SetSeedPoints1(NodeContainer *points)
+  void
+  SetSeedPoints1(NodeContainer *points)
   {
     m_SeedPoints1 = points;
     this->Modified();
   }
 
   /** Get the container of Seed Points representing the first initial front. */
-  NodeContainerPointer GetSeedPoints1()
-  { return m_SeedPoints1; }
+  NodeContainerPointer
+  GetSeedPoints1()
+  {
+    return m_SeedPoints1;
+  }
 
   /** Set the container of Seed Points representing the second initial front.
    * Seed points are represented as a VectorContainer of LevelSetNodes. */
-  void SetSeedPoints2(NodeContainer *points)
+  void
+  SetSeedPoints2(NodeContainer *points)
   {
     m_SeedPoints2 = points;
     this->Modified();
   }
 
   /** Get the container of Seed Points representing the second initial front. */
-  NodeContainerPointer GetSeedPoints2()
-  { return m_SeedPoints2; }
+  NodeContainerPointer
+  GetSeedPoints2()
+  {
+    return m_SeedPoints2;
+  }
 
   itkSetMacro(NegativeEpsilon, double);
   itkGetConstMacro(NegativeEpsilon, double);
@@ -155,7 +163,9 @@ public:
 
 protected:
   CollidingFrontsImageFilter();
-  virtual ~CollidingFrontsImageFilter() {}
+  virtual
+  ~CollidingFrontsImageFilter() {
+  }
 
   void GenerateData();
 

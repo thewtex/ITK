@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKLabelVoting
  */
 template< typename TInputImage, typename TOutputImage >
-class VotingBinaryHoleFillingImageFilter:
+class VotingBinaryHoleFillingImageFilter :
   public VotingBinaryImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -97,16 +97,26 @@ public:
 
 protected:
   VotingBinaryHoleFillingImageFilter();
-  virtual ~VotingBinaryHoleFillingImageFilter() {}
+  virtual
+  ~VotingBinaryHoleFillingImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Make protected the methods SetBirthThreshold() and
    * SetSurvivalThreshold() so users of this filter do not have access to
    * them. */
-  void SetBirthThreshold(const unsigned int value)
-  { this->Superclass::SetBirthThreshold(value);  }
-  void SetSurvivalThreshold(const unsigned int value)
-  { this->Superclass::SetSurvivalThreshold(value);  }
+  void
+  SetBirthThreshold(const unsigned int value)
+  {
+    this->Superclass::SetBirthThreshold(value);
+  }
+
+  void
+  SetSurvivalThreshold(const unsigned int value)
+  {
+    this->Superclass::SetSurvivalThreshold(value);
+  }
 
   /** VotingBinaryHoleFillingImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData()

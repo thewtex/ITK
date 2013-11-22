@@ -30,7 +30,6 @@
  *
  */
 
-
 #include "itkAdaptImageFilter.h"
 #include "itkRedPixelAccessor.h"
 #include "itkGreenPixelAccessor.h"
@@ -38,7 +37,6 @@
 #include "itkFilterWatcher.h"
 
 #include "vnl/vnl_sample.h"
-
 
 //-------------------------------------
 //     Typedefs for convenience
@@ -58,10 +56,11 @@ typedef itk::ImageRegionIteratorWithIndex< myImageType > myIteratorType;
 //   Main code
 //
 //-------------------------
-int itkAdaptImageFilterTest(int, char* [] ) {
-
+int
+itkAdaptImageFilterTest(int, char* [] ) {
 
   myRGBImageType::SizeType size;
+
   size[0] = 2;
   size[1] = 2;
 
@@ -75,11 +74,10 @@ int itkAdaptImageFilterTest(int, char* [] ) {
 
   myRGBImageType::Pointer myImage = myRGBImageType::New();
 
-
   myImage->SetRegions( region );
   myImage->Allocate();
 
-  myRGBIteratorType  it1( myImage, myImage->GetRequestedRegion() );
+  myRGBIteratorType it1( myImage, myImage->GetRequestedRegion() );
 
   // Value to initialize the pixels
   myRGBImageType::PixelType color;
@@ -107,37 +105,41 @@ int itkAdaptImageFilterTest(int, char* [] ) {
     ++it1;
     }
 
-
   bool passed = true;
 
   // Convert to a red image
-  itk::AdaptImageFilter<myRGBImageType, myImageType, myRedAccessorType>::Pointer  adaptImageToRed = itk::AdaptImageFilter<myRGBImageType, myImageType, myRedAccessorType>::New();
+  itk::AdaptImageFilter<myRGBImageType, myImageType,
+                        myRedAccessorType>::Pointer adaptImageToRed =
+    itk::AdaptImageFilter<myRGBImageType, myImageType, myRedAccessorType>::New();
   FilterWatcher redWatcher(adaptImageToRed, "Red");
   adaptImageToRed->SetInput(myImage);
   adaptImageToRed->UpdateLargestPossibleRegion();
-  adaptImageToRed->SetFunctor(adaptImageToRed->GetFunctor());
+  adaptImageToRed->SetFunctor(adaptImageToRed->GetFunctor() );
 
-  myIteratorType  it( adaptImageToRed->GetOutput(), adaptImageToRed->GetOutput()->GetRequestedRegion() );
+  myIteratorType it( adaptImageToRed->GetOutput(), adaptImageToRed->GetOutput()->GetRequestedRegion() );
 
   std::cout << "--- Red values --- " << std::endl;
 
   it.GoToBegin();
   it1.GoToBegin();
   while( !it.IsAtEnd() )
-  {
-  std::cout << it.Get()   << std::endl;
-  if (it.Get() != it1.Get().GetRed())
     {
-    passed = false;
+    std::cout << it.Get()   << std::endl;
+    if (it.Get() != it1.Get().GetRed() )
+      {
+      passed = false;
+      }
+
+    ++it;
+    ++it1;
     }
 
-  ++it;
-  ++it1;
-  }
-
   // Convert to a green image
-  itk::AdaptImageFilter<myRGBImageType, myImageType, myGreenAccessorType>::Pointer  adaptImageToGreen = itk::AdaptImageFilter<myRGBImageType, myImageType, myGreenAccessorType>::New();
-  FilterWatcher greenWatcher(adaptImageToGreen, "Green");
+  itk::AdaptImageFilter<myRGBImageType, myImageType,
+                        myGreenAccessorType>::Pointer adaptImageToGreen =
+    itk::AdaptImageFilter<myRGBImageType, myImageType, myGreenAccessorType>::New();
+  FilterWatcher greenWatcher(adaptImageToGreen,
+                             "Green");
 
   adaptImageToGreen->SetInput(myImage);
   adaptImageToGreen->UpdateLargestPossibleRegion();
@@ -149,19 +151,21 @@ int itkAdaptImageFilterTest(int, char* [] ) {
   it.GoToBegin();
   it1.GoToBegin();
   while( !it.IsAtEnd() )
-  {
-  std::cout << it.Get()   << std::endl;
-  if (it.Get() != it1.Get().GetGreen())
     {
-    passed = false;
+    std::cout << it.Get()   << std::endl;
+    if (it.Get() != it1.Get().GetGreen() )
+      {
+      passed = false;
+      }
+
+    ++it;
+    ++it1;
     }
 
-  ++it;
-  ++it1;
-  }
-
   // Convert to a blue image
-  itk::AdaptImageFilter<myRGBImageType, myImageType, myBlueAccessorType>::Pointer  adaptImageToBlue = itk::AdaptImageFilter<myRGBImageType, myImageType, myBlueAccessorType>::New();
+  itk::AdaptImageFilter<myRGBImageType, myImageType,
+                        myBlueAccessorType>::Pointer adaptImageToBlue =
+    itk::AdaptImageFilter<myRGBImageType, myImageType, myBlueAccessorType>::New();
   FilterWatcher blueWatcher(adaptImageToBlue, "Blue");
 
   adaptImageToBlue->SetInput(myImage);
@@ -174,16 +178,16 @@ int itkAdaptImageFilterTest(int, char* [] ) {
   it.GoToBegin();
   it1.GoToBegin();
   while( !it.IsAtEnd() )
-  {
-  std::cout << it.Get()   << std::endl;
-  if (it.Get() != it1.Get().GetBlue())
     {
-    passed = false;
-    }
+    std::cout << it.Get()   << std::endl;
+    if (it.Get() != it1.Get().GetBlue() )
+      {
+      passed = false;
+      }
 
-  ++it;
-  ++it1;
-  }
+    ++it;
+    ++it1;
+    }
 
   std::cout << std::endl;
   if (passed)

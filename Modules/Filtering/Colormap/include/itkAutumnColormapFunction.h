@@ -41,7 +41,7 @@ namespace Function
  * \ingroup ITKColormap
  */
 template< typename TScalar, typename TRGBPixel >
-class AutumnColormapFunction:
+class AutumnColormapFunction :
   public ColormapFunction< TScalar, TRGBPixel >
 {
 public:
@@ -61,12 +61,16 @@ public:
   virtual RGBPixelType operator()(const TScalar &) const;
 
 protected:
-  AutumnColormapFunction() {}
-  ~AutumnColormapFunction() {}
+  AutumnColormapFunction() {
+  }
+
+  ~AutumnColormapFunction() {
+  }
 
 private:
   AutumnColormapFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);        //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace functor
 } // end namespace itk

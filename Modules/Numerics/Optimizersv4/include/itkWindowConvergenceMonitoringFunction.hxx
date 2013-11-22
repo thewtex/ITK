@@ -36,12 +36,14 @@ WindowConvergenceMonitoringFunction<TScalar>
 ::WindowConvergenceMonitoringFunction() :
   m_WindowSize( 10 ),
   m_TotalEnergy( 0 )
-{}
+{
+}
 
 template<typename TScalar>
 WindowConvergenceMonitoringFunction<TScalar>
 ::~WindowConvergenceMonitoringFunction()
-{}
+{
+}
 
 template<typename TScalar>
 void
@@ -66,6 +68,7 @@ WindowConvergenceMonitoringFunction<TScalar>
 ::ClearEnergyValues()
 {
   Superclass::ClearEnergyValues();
+
   this->m_TotalEnergy = NumericTraits<RealType>::Zero;
 }
 
@@ -79,10 +82,10 @@ WindowConvergenceMonitoringFunction<TScalar>
     return NumericTraits<RealType>::max();
     }
 
-  typedef Vector<RealType, 1>                     ProfilePointDataType;
-  typedef Image<ProfilePointDataType, 1>          CurveType;
-  typedef PointSet<ProfilePointDataType, 1>       EnergyProfileType;
-  typedef typename EnergyProfileType::PointType   ProfilePointType;
+  typedef Vector<RealType, 1>                   ProfilePointDataType;
+  typedef Image<ProfilePointDataType, 1>        CurveType;
+  typedef PointSet<ProfilePointDataType, 1>     EnergyProfileType;
+  typedef typename EnergyProfileType::PointType ProfilePointType;
 
   typename CurveType::PointType    origin;
   typename CurveType::SizeType     size;

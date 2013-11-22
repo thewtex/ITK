@@ -23,7 +23,8 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-int itkCannyEdgeDetectionImageFilterTest(int argc, char * argv[] )
+int
+itkCannyEdgeDetectionImageFilterTest(int argc, char * argv[] )
 {
   if(argc < 3)
     {
@@ -45,7 +46,7 @@ int itkCannyEdgeDetectionImageFilterTest(int argc, char * argv[] )
     filter =
     itk::CannyEdgeDetectionImageFilter<InputImage, InputImage>::New();
   itk::SimpleFilterWatcher watcher(filter);
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
   filter->SetUpperThreshold(30);
   filter->SetLowerThreshold(15);
   filter->SetVariance(1.0f);
@@ -54,7 +55,7 @@ int itkCannyEdgeDetectionImageFilterTest(int argc, char * argv[] )
   itk::RescaleIntensityImageFilter<InputImage, OutputImage>::Pointer
     rescale =
     itk::RescaleIntensityImageFilter<InputImage, OutputImage>::New();
-  rescale->SetInput(filter->GetOutput());
+  rescale->SetInput(filter->GetOutput() );
   rescale->SetOutputMinimum(0);
   rescale->SetOutputMaximum(255);
 
@@ -62,27 +63,27 @@ int itkCannyEdgeDetectionImageFilterTest(int argc, char * argv[] )
     {
     // Generate test image
     itk::ImageFileWriter<OutputImage>::Pointer writer;
-      writer = itk::ImageFileWriter<OutputImage>::New();
-      writer->SetInput( rescale->GetOutput() );
-      writer->SetFileName( argv[2] );
-      writer->Update();
+    writer = itk::ImageFileWriter<OutputImage>::New();
+    writer->SetInput( rescale->GetOutput() );
+    writer->SetFileName( argv[2] );
+    writer->Update();
     }
   catch(itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
 
   // test for correct setting of non-macro methods
   if (filter->GetVariance()[0] != 1.0f || filter->GetMaximumError()[0] != .01f)
     {
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
   filter->SetVariance(0.5f);
   filter->SetMaximumError(0.5f);
   if (filter->GetVariance()[0] != 0.5f || filter->GetMaximumError()[0] != 0.5f)
     {
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
   return EXIT_SUCCESS;

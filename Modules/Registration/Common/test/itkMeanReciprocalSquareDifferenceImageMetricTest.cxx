@@ -32,7 +32,8 @@
  *
  */
 
-int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
+int
+itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
 {
 
 //------------------------------------------------------------
@@ -41,28 +42,28 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
 
   const unsigned int ImageDimension = 2;
 
-  typedef unsigned char            PixelType;
+  typedef unsigned char PixelType;
 
-  typedef double                   CoordinateRepresentationType;
+  typedef double CoordinateRepresentationType;
 
   //Allocate Images
-  typedef itk::Image<PixelType,ImageDimension>         MovingImageType;
-  typedef itk::Image<PixelType,ImageDimension>         FixedImageType;
+  typedef itk::Image<PixelType,ImageDimension> MovingImageType;
+  typedef itk::Image<PixelType,ImageDimension> FixedImageType;
 
   // Declare Gaussian Sources
-  typedef itk::GaussianImageSource< MovingImageType >  MovingImageSourceType;
-  typedef itk::GaussianImageSource< FixedImageType  >  FixedImageSourceType;
-  typedef MovingImageSourceType::Pointer               MovingImageSourcePointer;
-  typedef FixedImageSourceType::Pointer                FixedImageSourcePointer;
+  typedef itk::GaussianImageSource< MovingImageType > MovingImageSourceType;
+  typedef itk::GaussianImageSource< FixedImageType  > FixedImageSourceType;
+  typedef MovingImageSourceType::Pointer              MovingImageSourcePointer;
+  typedef FixedImageSourceType::Pointer               FixedImageSourcePointer;
 
   // Note: the following declarations are classical arrays
-  FixedImageType::SizeValueType fixedImageSize[]     = {  100,  100 };
+  FixedImageType::SizeValueType  fixedImageSize[]     = {  100,  100 };
   MovingImageType::SizeValueType movingImageSize[]    = {  100,  100 };
 
-  FixedImageType::SpacingValueType fixedImageSpacing[]  = { 1.0f, 1.0f };
+  FixedImageType::SpacingValueType  fixedImageSpacing[]  = { 1.0f, 1.0f };
   MovingImageType::SpacingValueType movingImageSpacing[] = { 1.0f, 1.0f };
 
-  FixedImageType::PointValueType fixedImageOrigin[]   = { 0.0f, 0.0f };
+  FixedImageType::PointValueType  fixedImageOrigin[]   = { 0.0f, 0.0f };
   MovingImageType::PointValueType movingImageOrigin[]  = { 0.0f, 0.0f };
 
   MovingImageSourceType::Pointer movingImageSource = MovingImageSourceType::New();
@@ -86,20 +87,19 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
   MovingImageType::Pointer movingImage = movingImageSource->GetOutput();
   FixedImageType::Pointer  fixedImage  = fixedImageSource->GetOutput();
 
-
 //-----------------------------------------------------------
 // Set up  the Metric
 //-----------------------------------------------------------
   typedef itk::MeanReciprocalSquareDifferenceImageToImageMetric<
-                                       FixedImageType,
-                                       MovingImageType >
-                                                    MetricType;
+      FixedImageType,
+      MovingImageType >
+    MetricType;
 
-  typedef MetricType::TransformType                 TransformBaseType;
-  typedef TransformBaseType::ParametersType         ParametersType;
-  typedef TransformBaseType::JacobianType           JacobianType;
+  typedef MetricType::TransformType         TransformBaseType;
+  typedef TransformBaseType::ParametersType ParametersType;
+  typedef TransformBaseType::JacobianType   JacobianType;
 
-  MetricType::Pointer  metric = MetricType::New();
+  MetricType::Pointer metric = MetricType::New();
   metric->Print(std::cout);
 
 //-----------------------------------------------------------
@@ -113,20 +113,19 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
 //-----------------------------------------------------------
 
   typedef itk::TranslationTransform<
-                        CoordinateRepresentationType,
-                        ImageDimension >         TransformType;
+      CoordinateRepresentationType,
+      ImageDimension >         TransformType;
 
   TransformType::Pointer transform = TransformType::New();
 
   metric->SetTransform( transform.GetPointer() );
 
-
 //------------------------------------------------------------
 // Set up an Interpolator
 //------------------------------------------------------------
   typedef itk::LinearInterpolateImageFunction<
-                    MovingImageType,
-                    double > InterpolatorType;
+      MovingImageType,
+      double > InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
@@ -134,12 +133,10 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
 
   metric->SetInterpolator( interpolator.GetPointer() );
 
-
 //------------------------------------------------------------
 // Define the region over which the metric will be computed
 //------------------------------------------------------------
-   metric->SetFixedImageRegion( fixedImage->GetBufferedRegion() );
-
+  metric->SetFixedImageRegion( fixedImage->GetBufferedRegion() );
 
   std::cout << metric << std::endl;
 
@@ -147,8 +144,7 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
 // The lambda value is the intensity difference that should
 // make the metric drop by 50%
 //------------------------------------------------------------
-   metric->SetLambda( 10 );
-
+  metric->SetLambda( 10 );
 
 //------------------------------------------------------------
 // This call is mandatory before start querying the Metric
@@ -165,7 +161,6 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
 //------------------------------------------------------------
 // Set up transform parameters
 //------------------------------------------------------------
@@ -177,14 +172,13 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
     parameters[k]= 0.0f;
     }
 
-
 //---------------------------------------------------------
 // Print out metric values
 // for parameters[1] = {-10,10}  (arbitrary choice...)
 //---------------------------------------------------------
 
-  MetricType::MeasureType     measure;
-  MetricType::DerivativeType  derivative;
+  MetricType::MeasureType    measure;
+  MetricType::DerivativeType derivative;
 
   std::cout << "param[1]   Metric    d(Metric)/d(param[1] " << std::endl;
 

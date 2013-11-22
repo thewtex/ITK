@@ -24,10 +24,22 @@
 class LogTester
 {
 public:
-  LogTester(){ this->m_Logger = NULL; }
-  itk::Logger* GetLogger() { return m_Logger; }
-  void SetLogger(itk::Logger* logger) { m_Logger = logger; }
-  void log() {
+  LogTester(){
+    this->m_Logger = NULL;
+  }
+
+  itk::Logger*
+  GetLogger() {
+    return m_Logger;
+  }
+
+  void
+  SetLogger(itk::Logger* logger) {
+    m_Logger = logger;
+  }
+
+  void
+  log() {
     itkLogMacro( DEBUG, "DEBUG message by itkLogMacro\n" );
     itkLogMacro( INFO, "INFO message by itkLogMacro\n" );
     itkLogMacro( WARNING, "WARNING message by itkLogMacro\n" );
@@ -35,7 +47,9 @@ public:
     itkLogMacro( FATAL, "FATAL message by itkLogMacro\n" );
     itkLogMacro( MUSTFLUSH, "MUSTFLUSH message by itkLogMacro\n" );
   }
-  static void logStatic(LogTester* tester)
+
+  static void
+  logStatic(LogTester* tester)
   {
     itkLogMacroStatic(tester, DEBUG, "DEBUG message by itkLogMacroStatic\n" );
     itkLogMacroStatic(tester, INFO, "INFO message by itkLogMacroStatic\n" );
@@ -49,7 +63,8 @@ private:
   itk::Logger* m_Logger;
 };
 
-int itkLoggerTest( int argc, char *argv [] )
+int
+itkLoggerTest( int argc, char *argv [] )
 {
   try
     {
@@ -113,7 +128,6 @@ int itkLoggerTest( int argc, char *argv [] )
       return EXIT_FAILURE;
       }
 
-
     std::cout << "  Writing by itk::Logger in Human Readable format" << std::endl;
     logger->Write(itk::LoggerBase::DEBUG, "This is the DEBUG message.\n");
     logger->Write(itk::LoggerBase::INFO, "This is the INFO message.\n");
@@ -122,7 +136,6 @@ int itkLoggerTest( int argc, char *argv [] )
     logger->Write(itk::LoggerBase::FATAL, "This is the FATAL message.\n");
     logger->Write(itk::LoggerBase::MUSTFLUSH, "This is the MUSTFLUSH message.\n");
     logger->Flush();
-
 
     std::string humanReadableFormat = "%b %d, %Y, %H:%M:%S";
     logger->SetHumanReadableFormat( humanReadableFormat );

@@ -44,7 +44,7 @@ namespace itk
  */
 
 template< typename TMatrixElement, int VNumberOfRows >
-class SymmetricEigenSystem:public Object
+class SymmetricEigenSystem : public Object
 {
 public:
   /** Standard "Self" typedef. */
@@ -79,8 +79,11 @@ public:
 
   /** Set/Get the target matrix for the eigen analysis */
   itkSetObjectMacro(Matrix, MatrixType);
-  MatrixType * GetMatrix()
-  { return m_Matrix; }
+  MatrixType *
+  GetMatrix()
+  {
+    return m_Matrix;
+  }
 
   /** Set/Get the absolute order flag.
    * By setting this flag true, after the calculation of eigen vectors
@@ -92,21 +95,31 @@ public:
   itkGetMacro(UseAbsoluteOrder, bool);
 
   /** returns the eigen vectors in a 2D array */
-  EigenVectorArrayType * GetEigenVectors()
-  { return &m_EigenVectors; }
+  EigenVectorArrayType *
+  GetEigenVectors()
+  {
+    return &m_EigenVectors;
+  }
 
   /** returns the eigen values in an 1D array */
-  EigenValueArrayType * GetEigenValues()
-  { return &m_EigenValues; }
+  EigenValueArrayType *
+  GetEigenValues()
+  {
+    return &m_EigenValues;
+  }
 
   /** dummy method that calls the GenerateData method to
    * produce the eigen vectors and values. */
-  void Update()
-  { this->GenerateData(); }
+  void
+  Update()
+  {
+    this->GenerateData();
+  }
 
 protected:
   SymmetricEigenSystem();
-  virtual ~SymmetricEigenSystem();
+  virtual
+  ~SymmetricEigenSystem();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Produces the eigen vectors and values. */

@@ -24,18 +24,21 @@ namespace itk
 {
 template< typename TInput, typename TOutput, typename TCriterion >
 SquaredEdgeLengthDecimationQuadEdgeMeshFilter< TInput, TOutput,
-                                         TCriterion >::SquaredEdgeLengthDecimationQuadEdgeMeshFilter():Superclass()
-{}
+                                               TCriterion >::SquaredEdgeLengthDecimationQuadEdgeMeshFilter() :
+  Superclass()
+{
+}
 
 template< typename TInput, typename TOutput, typename TCriterion >
 SquaredEdgeLengthDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::
 ~SquaredEdgeLengthDecimationQuadEdgeMeshFilter()
-{}
+{
+}
 
 template< typename TInput, typename TOutput, typename TCriterion >
 typename
 SquaredEdgeLengthDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion
-                                         >::OutputPointType
+                                               >::OutputPointType
 SquaredEdgeLengthDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::Relocate(OutputQEType *iEdge)
 {
   OutputMeshPointer     output = this->GetOutput();
@@ -49,5 +52,6 @@ SquaredEdgeLengthDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::Re
 
   return oPt;
 }
+
 }
 #endif

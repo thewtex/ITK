@@ -64,7 +64,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputImage >
-class UnsharpMaskLevelSetImageFilter:
+class UnsharpMaskLevelSetImageFilter :
   public SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -96,7 +96,9 @@ public:
 
 protected:
   UnsharpMaskLevelSetImageFilter();
-  ~UnsharpMaskLevelSetImageFilter() {}
+  ~UnsharpMaskLevelSetImageFilter() {
+  }
+
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** The LevelSetFunctionWithRefitTerm object. */
@@ -106,7 +108,8 @@ protected:
   unsigned int m_MaxFilterIteration;
 
   /** This filter halts when the iteration count reaches the specified count. */
-  virtual bool Halt()
+  virtual bool
+  Halt()
   {
     if ( this->GetElapsedIterations() == m_MaxFilterIteration )
       {
@@ -122,6 +125,7 @@ private:
   UnsharpMaskLevelSetImageFilter(const Self &);
   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

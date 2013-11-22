@@ -64,7 +64,8 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 template <typename TScalar,
           unsigned int NInputDimensions,
           unsigned int NOutputDimensions>
-std::string Transform<TScalar, NInputDimensions, NOutputDimensions>
+std::string
+Transform<TScalar, NInputDimensions, NOutputDimensions>
 ::GetTransformTypeAsString() const
 {
   std::ostringstream n;
@@ -91,15 +92,15 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
   typename LightObject::Pointer loPtr = Superclass::InternalClone();
 
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
                       << " failed.");
     }
-  rval->SetFixedParameters(this->GetFixedParameters());
-  rval->SetParameters(this->GetParameters());
+  rval->SetFixedParameters(this->GetFixedParameters() );
+  rval->SetParameters(this->GetParameters() );
   return loPtr;
 }
 
@@ -172,6 +173,7 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 ::TransformVector( const InputVectorType& vector, const InputPointType & point ) const
 {
   JacobianType jacobian;
+
   this->ComputeJacobianWithRespectToPosition( point, jacobian );
   OutputVectorType result;
   for( unsigned int i = 0; i < NOutputDimensions; i++ )
@@ -197,6 +199,7 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 ::TransformVector( const InputVnlVectorType& vector, const InputPointType & point ) const
 {
   JacobianType jacobian;
+
   this->ComputeJacobianWithRespectToPosition( point, jacobian );
   OutputVnlVectorType result;
   for( unsigned int i = 0; i < NOutputDimensions; i++ )
@@ -256,6 +259,7 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 ::TransformCovariantVector( const InputCovariantVectorType& vector, const InputPointType & point ) const
 {
   JacobianType jacobian;
+
   this->ComputeInverseJacobianWithRespectToPosition( point, jacobian );
   OutputCovariantVectorType result;
   for( unsigned int i = 0; i < NOutputDimensions; i++ )
@@ -313,6 +317,7 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 ::TransformDiffusionTensor3D( const InputDiffusionTensor3DType& inputTensor, const InputPointType & point ) const
 {
   JacobianType invJacobian;
+
   this->ComputeInverseJacobianWithRespectToPosition( point, invJacobian );
 
   OutputDiffusionTensor3DType result
@@ -362,7 +367,7 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 ::PreservationOfPrincipalDirectionDiffusionTensor3DReorientation( const InputDiffusionTensor3DType inputTensor,
                                                                   const JacobianType jacobian ) const
 {
-   Matrix<TScalar,3,3> matrix;
+  Matrix<TScalar,3,3> matrix;
   //typename MatrixType3D dMatrix;
 
   matrix.Fill(0.0);
@@ -451,10 +456,12 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 template <typename TScalar, unsigned int NInputDimensions, unsigned int NOutputDimensions>
 typename Transform<TScalar, NInputDimensions, NOutputDimensions>::OutputSymmetricSecondRankTensorType
 Transform<TScalar, NInputDimensions, NOutputDimensions>
-::TransformSymmetricSecondRankTensor( const InputSymmetricSecondRankTensorType& inputTensor, const InputPointType & point ) const
+::TransformSymmetricSecondRankTensor( const InputSymmetricSecondRankTensorType& inputTensor,
+                                      const InputPointType & point ) const
 {
 
   JacobianType jacobian;
+
   this->ComputeJacobianWithRespectToPosition( point, jacobian );
   JacobianType invJacobian;
   this->ComputeInverseJacobianWithRespectToPosition( point, invJacobian );
@@ -469,7 +476,7 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
       }
     }
 
-  JacobianType outTensor = jacobian * tensor * invJacobian;
+  JacobianType                        outTensor = jacobian * tensor * invJacobian;
   OutputSymmetricSecondRankTensorType outputTensor;
 
   for( unsigned int i = 0; i < NOutputDimensions; i++ )
@@ -494,7 +501,8 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 
   if (inputTensor.GetSize() != (NInputDimensions*NInputDimensions) )
     {
-    itkExceptionMacro( "Input DiffusionTensor3D does not have " << NInputDimensions*NInputDimensions << " elements" << std::endl );
+    itkExceptionMacro(
+      "Input DiffusionTensor3D does not have " << NInputDimensions*NInputDimensions << " elements" << std::endl );
     }
 
   JacobianType jacobian;
@@ -539,6 +547,7 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 ::ComputeInverseJacobianWithRespectToPosition( const InputPointType & pnt, JacobianType & jacobian ) const
 {
   JacobianType forward_jacobian;
+
   this->ComputeJacobianWithRespectToPosition( pnt, forward_jacobian );
 
   jacobian.SetSize(NInputDimensions, NOutputDimensions);

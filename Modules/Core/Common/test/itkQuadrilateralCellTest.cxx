@@ -21,8 +21,8 @@
 
 #include <iostream>
 
-
-int itkQuadrilateralCellTest(int, char* [] )
+int
+itkQuadrilateralCellTest(int, char* [] )
 {
   /**
    * Define a mesh type that stores a PixelType of "int".  Use the defaults for
@@ -36,44 +36,44 @@ int itkQuadrilateralCellTest(int, char* [] )
    * use the defaults for the other parameters.  Note that a cell's template
    * parameters must match those of the mesh into which it is inserted.
    */
-  typedef itk::CellInterface< int, CellTraits >           CellInterfaceType;
-  typedef itk::QuadrilateralCell<CellInterfaceType>       QuadrilateralCellType;
+  typedef itk::CellInterface< int, CellTraits >     CellInterfaceType;
+  typedef itk::QuadrilateralCell<CellInterfaceType> QuadrilateralCellType;
 
   class QuadrilateralHelper : public QuadrilateralCellType
-    {
+  {
     typedef QuadrilateralCellType               Superclass;
     typedef Superclass::CoordRepType            CoordRepType;
     typedef Superclass::PointsContainer         PointsContainer;
     typedef Superclass::InterpolationWeightType InterpolationWeightType;
 
-    public:
-     bool EvaluatePosition(CoordRepType* inputPoint,
-                           PointsContainer* points,
-                           CoordRepType* closestPoint,
-                           CoordRepType pcoord [],
-                           double * distance,
-                           InterpolationWeightType* weights)
-      {
+public:
+    bool
+    EvaluatePosition(CoordRepType* inputPoint,
+                     PointsContainer* points,
+                     CoordRepType* closestPoint,
+                     CoordRepType pcoord [],
+                     double * distance,
+                     InterpolationWeightType* weights)
+    {
       return this->Superclass::EvaluatePosition( inputPoint,
-        points, closestPoint, pcoord, distance, weights );
-      }
-    };
+                                                 points, closestPoint, pcoord, distance, weights );
+    }
 
+  };
 
   /**
    * Typedef the generic cell type for the mesh.  It is an abstract class,
    * so we can only use information from it, like get its pointer type.
    */
-  typedef MeshType::CellType              CellType;
-  typedef CellType::CellAutoPointer       CellAutoPointer;
+  typedef MeshType::CellType        CellType;
+  typedef CellType::CellAutoPointer CellAutoPointer;
 
   /**
    * The type of point stored in the mesh. Because mesh was instantiated
    * with defaults (itkDefaultStaticMeshTraits), the point dimension is 3 and
    * the coordinate representation is float.
    */
-  typedef MeshType::PointType  PointType;
-
+  typedef MeshType::PointType PointType;
 
   /**
    * Create the mesh through its object factory.
@@ -104,7 +104,7 @@ int itkQuadrilateralCellTest(int, char* [] )
   /**
    * Specify the method used for allocating cells
    */
-   mesh->SetCellsAllocationMethod( MeshType::CellsAllocatedDynamicallyCellByCell );
+  mesh->SetCellsAllocationMethod( MeshType::CellsAllocatedDynamicallyCellByCell );
 
   /**
    * Create the test cell. Note that testCell is a generic auto
@@ -130,26 +130,28 @@ int itkQuadrilateralCellTest(int, char* [] )
   std::cout << "QuadrilateralCell pointer = " << (void const *)testCell1.GetPointer() << std::endl;
   std::cout << "QuadrilateralCell Owner   = " << testCell1.IsOwner() << std::endl;
 
-  {
-  std::cout << "Test MakeCopy" << std::endl;
-
-  CellAutoPointer anotherCell;
-  testCell1->MakeCopy( anotherCell );
-  if( anotherCell->GetNumberOfPoints() != testCell1->GetNumberOfPoints() )
     {
-    std::cerr << "Make Copy failed !" << std::endl;
-    return EXIT_FAILURE;
+    std::cout << "Test MakeCopy" << std::endl;
+
+    CellAutoPointer anotherCell;
+    testCell1->MakeCopy( anotherCell );
+    if( anotherCell->GetNumberOfPoints() != testCell1->GetNumberOfPoints() )
+      {
+      std::cerr << "Make Copy failed !" << std::endl;
+      return EXIT_FAILURE;
+      }
     }
-  }
 
   //
   // Test the EvaluatePosition() method of the QuadrilateralCell
   //
-  QuadrilateralCellType::CoordRepType inputPoint[3];
+  QuadrilateralCellType::CoordRepType      inputPoint[3];
   QuadrilateralCellType::PointsContainer * points = mesh->GetPoints();
-  QuadrilateralCellType::CoordRepType closestPoint[3];
-  QuadrilateralCellType::CoordRepType pcoords[2];  // Quadrilateral has 2 parametric coordinates
-  double distance;
+  QuadrilateralCellType::CoordRepType      closestPoint[3];
+  QuadrilateralCellType::CoordRepType      pcoords[2];       // Quadrilateral
+                                                             // has 2 parametric
+                                                             // coordinates
+  double                                         distance;
   QuadrilateralCellType::InterpolationWeightType weights[4];
 
   const double toleance = 1e-5;
@@ -167,7 +169,7 @@ int itkQuadrilateralCellTest(int, char* [] )
   std::cout << inputPoint[2] << std::endl;
 
   isInside = testCell1->EvaluatePosition(inputPoint,
-    points, closestPoint, pcoords , &distance, weights);
+                                         points, closestPoint, pcoords , &distance, weights);
 
   if( !isInside )
     {
@@ -197,7 +199,6 @@ int itkQuadrilateralCellTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   // Test 2: point outside quad2
   std::cout << "Calling EvaluatePosition for Quad2 with ";
   std::cout << inputPoint[0] << ", ";
@@ -205,7 +206,7 @@ int itkQuadrilateralCellTest(int, char* [] )
   std::cout << inputPoint[2] << std::endl;
 
   isInside = testCell2->EvaluatePosition(inputPoint,
-    points, closestPoint, pcoords, &distance, weights);
+                                         points, closestPoint, pcoords, &distance, weights);
 
   if( isInside )
     {
@@ -222,7 +223,6 @@ int itkQuadrilateralCellTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   // Test 3: point outside quad1
   inputPoint[0] =  4.0;
   inputPoint[1] = 12.0;
@@ -234,7 +234,7 @@ int itkQuadrilateralCellTest(int, char* [] )
   std::cout << inputPoint[2] << std::endl;
 
   isInside = testCell1->EvaluatePosition(inputPoint,
-    points, closestPoint, pcoords, &distance, weights);
+                                         points, closestPoint, pcoords, &distance, weights);
 
   if( isInside )
     {
@@ -261,7 +261,7 @@ int itkQuadrilateralCellTest(int, char* [] )
   std::cout << inputPoint[2] << std::endl;
 
   isInside = testCell2->EvaluatePosition(inputPoint,
-    points, closestPoint, pcoords, &distance, weights);
+                                         points, closestPoint, pcoords, &distance, weights);
 
   if( !isInside )
     {
@@ -301,7 +301,7 @@ int itkQuadrilateralCellTest(int, char* [] )
   std::cout << inputPoint[2] << std::endl;
 
   isInside = testCell1->EvaluatePosition(inputPoint,
-    points, closestPoint, pcoords, &distance, weights);
+                                         points, closestPoint, pcoords, &distance, weights);
 
   if( !isInside )  // The projection of the point is inside
     {
@@ -309,9 +309,12 @@ int itkQuadrilateralCellTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  // With planar assumption, this off-plane point should give:   pcoords[0] = 0.625
-  // With proper projection on quad, it should give:             pcoords[0] = 0.4
-  // FIXME when projection is implemented in itkQuadrilateralCell::EvaluatePosition
+  // With planar assumption, this off-plane point should give:   pcoords[0] =
+  // 0.625
+  // With proper projection on quad, it should give:             pcoords[0] =
+  // 0.4
+  // FIXME when projection is implemented in
+  // itkQuadrilateralCell::EvaluatePosition
   if( ( vnl_math_abs( pcoords[0] - 0.625 ) > toleance ) ||
       ( vnl_math_abs( pcoords[1] - 0.3 ) > toleance )   )
     {

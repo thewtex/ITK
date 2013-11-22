@@ -48,17 +48,21 @@ public:
 
   /** Set/Get the Tcl interpreter.  */
   void SetInterpreter(Tcl_Interp* interp);
+
   Tcl_Interp* GetInterpreter() const;
 
   /** Set/Get the name of the Tk image.  */
   void SetImageName(const char* name);
+
   const char* GetImageName() const;
 
   /** Set/Get the name of the Tk canvas.  */
   void SetCanvasName(const char* name);
+
   const char* GetCanvasName() const;
 
   void SetInput(InputImageType* input);
+
   InputImageType* GetInput();
 
   void Draw();
@@ -83,14 +87,14 @@ protected:
   // The filter to scale the image to 256 shades of gray.
   typedef RescaleIntensityImageFilter<FlipFilter::OutputImageType,
                                       itk::Image<unsigned char, 2> >
-          RescaleFilter;
+    RescaleFilter;
   RescaleFilter::Pointer m_RescaleFilter;
 
 private:
-  TkImageViewer2D(const Self&);     // Not implemented.
-  void operator=(const Self&); // Not implemented.
-};
+  TkImageViewer2D(const Self&); // Not implemented.
+  void operator=(const Self&);  // Not implemented.
 
+};
 
 } // namespace itk
 

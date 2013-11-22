@@ -18,7 +18,6 @@
 
 #include <iostream>
 
-
 #include "itkShiftScaleImageFilter.h"
 #include "itkShiftScaleInPlaceImageFilter.h"
 #include "itkRandomImageSource.h"
@@ -27,34 +26,39 @@
 
 class ShiftScaleInPlaceFilterWatcher : public FilterWatcher
 {
- public:
+public:
   ShiftScaleInPlaceFilterWatcher(itk::ProcessObject* o, std::string name)
-    : FilterWatcher(o), m_Name( name ) {};
+    : FilterWatcher(o), m_Name( name ) {
+  }
 
-  virtual void StartFilter()
-    {
+  virtual void
+  StartFilter()
+  {
     m_Start = ::clock();
     std::cout << "-------- Start " << m_Process->GetNameOfClass()
               << " (" << m_Name << ")"
               << std::endl
               << std::flush;
-    }
+  }
 
-  virtual void EndFilter()
-    {
+  virtual void
+  EndFilter()
+  {
     m_End = ::clock();
     std::cout << "-------- End " << m_Process->GetNameOfClass()
               << " (" << m_Name << ")";
     std::cout << std::endl;
-    }
+  }
 
-  virtual void ShowProgress() {}
+  virtual void
+  ShowProgress() {
+  }
 
   std::string m_Name;
 };
 
-
-int itkShiftScaleInPlaceImageFilterTest(int, char* [] )
+int
+itkShiftScaleInPlaceImageFilterTest(int, char* [] )
 {
   int status = 0;
 
@@ -79,34 +83,31 @@ int itkShiftScaleInPlaceImageFilterTest(int, char* [] )
   source->SetMin( static_cast< TestInputImage::PixelType >( minValue ) );
   source->SetMax( static_cast< TestInputImage::PixelType >( maxValue ) );
 
-
   // Define two standard shift scale filters so we can check whether the
   // in place filtering works
   typedef itk::ShiftScaleImageFilter<TestInputImage,TestOutputImage> FilterType;
-  FilterType::Pointer zeroFilter = FilterType::New();
+  FilterType::Pointer            zeroFilter = FilterType::New();
   ShiftScaleInPlaceFilterWatcher zeroFilterWatch(zeroFilter, "zeroFilter");
-  zeroFilter->SetInput(source->GetOutput());
+  zeroFilter->SetInput(source->GetOutput() );
   zeroFilter->SetScale(0.0);
 
-  FilterType::Pointer filter = FilterType::New();
+  FilterType::Pointer            filter = FilterType::New();
   ShiftScaleInPlaceFilterWatcher filterWatch(filter, "filter");
-  filter->SetInput(zeroFilter->GetOutput());
+  filter->SetInput(zeroFilter->GetOutput() );
   filter->SetShift(20);
-
 
   // Define two consumers of the shift scale filter, one another shift scale
   // and the other an in place shift scale
   typedef itk::ShiftScaleInPlaceImageFilter<TestInputImage> InPlaceFilterType;
-  InPlaceFilterType::Pointer inPlaceFilter = InPlaceFilterType::New();
+  InPlaceFilterType::Pointer     inPlaceFilter = InPlaceFilterType::New();
   ShiftScaleInPlaceFilterWatcher inPlaceWatch(inPlaceFilter, "inPlaceFilter");
   inPlaceFilter->SetInput( filter->GetOutput() );
   inPlaceFilter->SetShift( 100 );
 
-  FilterType::Pointer secondFilter = FilterType::New();
+  FilterType::Pointer            secondFilter = FilterType::New();
   ShiftScaleInPlaceFilterWatcher secondFilterWatch( secondFilter, "secondFilter" );
   secondFilter->SetInput( filter->GetOutput() );
   secondFilter->SetShift( 50 );
-
 
   // Test itkSetMacros and itkGetMacros
   inPlaceFilter->GetShift();
@@ -115,7 +116,7 @@ int itkShiftScaleInPlaceImageFilterTest(int, char* [] )
   long value = inPlaceFilter->GetUnderflowCount();
   std::cout << "inPlaceFilter->GetUnderflowCount(): " << value << std::endl;
 
-  long value2 = inPlaceFilter-> GetOverflowCount();
+  long value2 = inPlaceFilter->GetOverflowCount();
   std::cout << "inPlaceFilter->GetOverflowCount(): " << value2 << std::endl;
 
   try
@@ -125,7 +126,8 @@ int itkShiftScaleInPlaceImageFilterTest(int, char* [] )
               << std::endl;
     inPlaceFilter->UpdateLargestPossibleRegion();
     std::cout << std::endl << std::endl;
-    std::cout << "=========== Updating the second filter. This should cause the first filter to re-execute ==============="
+    std::cout <<
+      "=========== Updating the second filter. This should cause the first filter to re-execute ==============="
               << std::endl;
     secondFilter->UpdateLargestPossibleRegion();
     std::cout << std::endl << std::endl;
@@ -153,7 +155,8 @@ int itkShiftScaleInPlaceImageFilterTest(int, char* [] )
       status |= 0x04;
       }
 
-    std::cout << "=========== Updating the in place filter again. This should only update the in place filter.  ==============="
+    std::cout <<
+      "=========== Updating the in place filter again. This should only update the in place filter.  ==============="
               << std::endl;
     inPlaceFilter->UpdateLargestPossibleRegion();
     std::cout << std::endl << std::endl;

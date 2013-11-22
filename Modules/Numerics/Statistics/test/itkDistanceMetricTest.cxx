@@ -39,25 +39,31 @@ public:
   itkNewMacro(Self);
 
   /** Evaluate membership score */
-  double Evaluate(const TMeasurementVector & ) const
-    {
+  double
+  Evaluate(const TMeasurementVector & ) const
+  {
     double score;
-    score = 1;
-    return score;
-    }
 
-  double Evaluate(const TMeasurementVector &, const TMeasurementVector & ) const
-    {
-    double score;
     score = 1;
     return score;
-    }
+  }
+
+  double
+  Evaluate(const TMeasurementVector &, const TMeasurementVector & ) const
+  {
+    double score;
+
+    score = 1;
+    return score;
+  }
+
 };
 
 }
 }
 }
-int itkDistanceMetricTest(int, char* [] )
+int
+itkDistanceMetricTest(int, char* [] )
 {
 
   typedef unsigned int MeasurementVectorSizeType;
@@ -65,11 +71,10 @@ int itkDistanceMetricTest(int, char* [] )
   const MeasurementVectorSizeType MeasurementVectorSize = 17;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >  MeasurementVectorType;
-
+      float, MeasurementVectorSize >  MeasurementVectorType;
 
   typedef itk::Statistics::DistanceMetricTest::MyDistanceMetric<
-    MeasurementVectorType >   DistanceMetricType;
+      MeasurementVectorType >   DistanceMetricType;
 
   typedef DistanceMetricType::MeasurementVectorSizeType MeasurementVectorSizeType;
 
@@ -95,7 +100,8 @@ int itkDistanceMetricTest(int, char* [] )
     std::cerr << "Exception thrown: " << excpt << std::endl;
     }
 
-  //try re-setting the measurment vector size to the same value, no exceptins should be
+  //try re-setting the measurment vector size to the same value, no exceptins
+  // should be
   //thrown
   try
     {
@@ -108,12 +114,12 @@ int itkDistanceMetricTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
-  //try setting an origin vector with a different size it should throw an exception
+  //try setting an origin vector with a different size it should throw an
+  // exception
   try
     {
     DistanceMetricType::OriginType origin;
-    MeasurementVectorSizeType newSize = 25;
+    MeasurementVectorSizeType      newSize = 25;
     origin.SetSize( newSize );
     distance->SetOrigin( origin );
 

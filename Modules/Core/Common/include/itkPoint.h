@@ -18,7 +18,6 @@
 #ifndef __itkPoint_h
 #define __itkPoint_h
 
-
 #include "itkNumericTraits.h"
 #include "itkVector.h"
 
@@ -48,7 +47,7 @@ namespace itk
  * \endwiki
  */
 template< typename TCoordRep, unsigned int NPointDimension = 3 >
-class Point:public FixedArray< TCoordRep, NPointDimension >
+class Point : public FixedArray< TCoordRep, NPointDimension >
 {
 public:
   /** Standard class typedefs. */
@@ -71,24 +70,37 @@ public:
   typedef typename BaseArray::ConstIterator        ConstIterator;
 
   /** Get the dimension (size) of the point. */
-  static unsigned int GetPointDimension()
-  { return NPointDimension; }
+  static unsigned int
+  GetPointDimension()
+  {
+    return NPointDimension;
+  }
 
   /** VectorType define the difference between two Points */
   typedef Vector< ValueType, NPointDimension > VectorType;
 
   /** Default constructor has nothing to do. */
-  Point() {}
+  Point() {
+  }
 
   /** Pass-through constructors for the Array base class. */
   template< typename TPointValueType >
-  Point(const Point< TPointValueType, NPointDimension > & r):BaseArray(r) {}
+  Point(const Point< TPointValueType, NPointDimension > & r) : BaseArray(r) {
+  }
+
   template< typename TPointValueType >
-  Point(const TPointValueType r[NPointDimension]):BaseArray(r) {}
-  Point(const ValueType r[NPointDimension]):BaseArray(r) {}
+  Point(const TPointValueType r[NPointDimension]) : BaseArray(r) {
+  }
+
+  Point(const ValueType r[NPointDimension]) : BaseArray(r) {
+  }
+
   template< typename TPointValueType >
-  Point(const TPointValueType & v):BaseArray(v) {}
-  Point(const ValueType & v):BaseArray(v) {}
+  Point(const TPointValueType & v) : BaseArray(v) {
+  }
+
+  Point(const ValueType & v) : BaseArray(v) {
+  }
 
   /** Pass-through assignment operator for the Array base class. */
   Point & operator=(const Self & r);
@@ -102,7 +114,7 @@ public:
     bool same = true;
 
     for ( unsigned int i = 0; i < NPointDimension && same; i++ )
-          { same = ( ( *this )[i] == pt[i] ); }
+                  { same = ( ( *this )[i] == pt[i] ); }
     return same;
   }
 
@@ -113,7 +125,7 @@ public:
     bool same = true;
 
     for ( unsigned int i = 0; i < NPointDimension && same; i++ )
-          { same = ( ( *this )[i] == pt[i] ); }
+                  { same = ( ( *this )[i] == pt[i] ); }
     return !same;
   }
 
@@ -143,7 +155,7 @@ public:
 
   /** Get a vnl_vector_ref referencing the same memory block
    * \deprecated Use GetVnlVector() instead. */
-  itkLegacyMacro(vnl_vector_ref< TCoordRep > Get_vnl_vector(void));
+  itkLegacyMacro(vnl_vector_ref< TCoordRep > Get_vnl_vector(void) );
 
   /** Get a vnl_vector with a copy of the internal memory block.
    * \deprecated Use GetVnlVector() instead. */
@@ -225,7 +237,8 @@ public:
   /** Copy from another Point with a different representation type.
    *  Casting is done with C-Like rules  */
   template< typename TCoordRepB >
-  void CastFrom(const Point< TCoordRepB, NPointDimension > & pa)
+  void
+  CastFrom(const Point< TCoordRepB, NPointDimension > & pa)
   {
     for ( unsigned int i = 0; i < NPointDimension; i++ )
       {
@@ -238,7 +251,8 @@ public:
     * C-Like rules */
 
   template< typename TCoordRepB >
-  RealType SquaredEuclideanDistanceTo(const Point< TCoordRepB, NPointDimension > & pa) const
+  RealType
+  SquaredEuclideanDistanceTo(const Point< TCoordRepB, NPointDimension > & pa) const
   {
     RealType sum = NumericTraits< RealType >::Zero;
 
@@ -255,22 +269,24 @@ public:
     * with a different representation type.  Casting is done with
     * C-Like rules */
   template< typename TCoordRepB >
-  RealType EuclideanDistanceTo(const Point< TCoordRepB, NPointDimension > & pa) const
+  RealType
+  EuclideanDistanceTo(const Point< TCoordRepB, NPointDimension > & pa) const
   {
     const double distance = vcl_sqrt(
-      static_cast< double >( this->SquaredEuclideanDistanceTo(pa) ) );
+        static_cast< double >( this->SquaredEuclideanDistanceTo(pa) ) );
 
     return static_cast< RealType >( distance );
   }
+
 };
 
 template< typename T, unsigned int NPointDimension >
 std::ostream & operator<<(std::ostream & os,
-                                     const Point< T, NPointDimension > & v);
+                          const Point< T, NPointDimension > & v);
 
 template< typename T, unsigned int NPointDimension >
 std::istream & operator>>(std::istream & is,
-                                     Point< T, NPointDimension > & v);
+                          Point< T, NPointDimension > & v);
 
 /** \class BarycentricCombination
  *  \brief Computes the barycentric combination of an array of N points.
@@ -307,12 +323,16 @@ public:
   typedef typename PointContainerType::Element PointType;
   typedef TWeightContainer                     WeightContainerType;
 
-  BarycentricCombination() {}
-  ~BarycentricCombination() {}
+  BarycentricCombination() {
+  }
+
+  ~BarycentricCombination() {
+  }
 
   static PointType Evaluate(
     const PointContainerPointer & points,
     const WeightContainerType & weights);
+
 };
 }  // end namespace itk
 

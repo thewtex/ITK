@@ -39,15 +39,15 @@ class FrameDifferenceVideoFilter :
 public:
 
   /** Standard class typedefs */
-  typedef TInputVideoStream                                InputVideoStreamType;
-  typedef TOutputVideoStream                               OutputVideoStreamType;
+  typedef TInputVideoStream  InputVideoStreamType;
+  typedef TOutputVideoStream OutputVideoStreamType;
   typedef FrameDifferenceVideoFilter< InputVideoStreamType,
-                                   OutputVideoStreamType > Self;
+                                      OutputVideoStreamType > Self;
   typedef VideoToVideoFilter< InputVideoStreamType,
                               OutputVideoStreamType >      Superclass;
-  typedef SmartPointer< Self >                             Pointer;
-  typedef SmartPointer< const Self >                       ConstPointer;
-  typedef WeakPointer< const Self >                        ConstWeakPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef WeakPointer< const Self >  ConstWeakPointer;
 
   typedef typename TInputVideoStream::FrameType  InputFrameType;
   typedef typename InputFrameType::PixelType     InputPixelType;
@@ -62,13 +62,16 @@ public:
 
   /** Get/Set the offset for computing frame differences. Defaults to 1. */
   void SetFrameOffset(SizeValueType numFrames);
+
   SizeValueType GetFrameOffset();
 
 protected:
 
   /** Constructor and Destructor */
   FrameDifferenceVideoFilter();
-  virtual ~FrameDifferenceVideoFilter() {}
+  virtual
+  ~FrameDifferenceVideoFilter() {
+  }
 
   /** PrintSelf */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -76,13 +79,12 @@ protected:
   /** FrameDifferenceVideoFilter is implemented as a temporal streaming and
    * spatially multithreaded filter, so we override ThreadedGenerateData */
   virtual void ThreadedGenerateData(
-                const OutputFrameSpatialRegionType& outputRegionForThread,
-                int threadId);
+    const OutputFrameSpatialRegionType& outputRegionForThread,
+    int threadId);
 
 private:
   FrameDifferenceVideoFilter(const Self &); // purposely not implemented
-  void operator=(const Self &);            // purposely not implemented
-
+  void operator=(const Self &);             // purposely not implemented
 
 };  // end class FrameDifferenceVideoFilter
 

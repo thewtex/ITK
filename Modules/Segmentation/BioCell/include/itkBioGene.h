@@ -18,7 +18,6 @@
 #ifndef __itkBioGene_h
 #define __itkBioGene_h
 
-
 #include <string>
 #include <vector>
 #include <map>
@@ -50,13 +49,14 @@ public:
   typedef   struct {
     DomainType m_Domain;
     bool m_Type;
-  }                                             ControlDomainType;
+    }                                             ControlDomainType;
 
   typedef   std::vector< ControlDomainType > GeneControlDomainsType;
 
 public:
   Gene();
-  virtual ~Gene();
+  virtual
+  ~Gene();
 
   void Copy(const Gene & genome);
 

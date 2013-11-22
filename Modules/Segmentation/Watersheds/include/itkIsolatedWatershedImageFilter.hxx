@@ -80,6 +80,7 @@ IsolatedWatershedImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -94,6 +95,7 @@ IsolatedWatershedImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -196,6 +198,7 @@ IsolatedWatershedImageFilter< TInputImage, TOutputImage >
   m_IsolatedValue = lower;
   iterate.CompletedStep();
 }
+
 } // end namespace itk
 
 #endif

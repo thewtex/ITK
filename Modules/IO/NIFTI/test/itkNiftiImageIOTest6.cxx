@@ -18,7 +18,8 @@
 
 #include "itkNiftiImageIOTest.h"
 
-int itkNiftiImageIOTest6(int ac, char *av[])
+int
+itkNiftiImageIOTest6(int ac, char *av[])
 {
   if(ac > 1)
     {
@@ -32,10 +33,10 @@ int itkNiftiImageIOTest6(int ac, char *av[])
   int success(EXIT_SUCCESS);
 
   typedef itk::VectorImage<double,3> VectorImageType;
-  VectorImageType::RegionType imageRegion;
-  VectorImageType::SizeType size;
-  VectorImageType::IndexType index;
-  VectorImageType::SpacingType spacing;
+  VectorImageType::RegionType       imageRegion;
+  VectorImageType::SizeType         size;
+  VectorImageType::IndexType        index;
+  VectorImageType::SpacingType      spacing;
   VectorImageType::VectorLengthType vecLength(4);
 
   for(unsigned i = 0; i < 3; i++)
@@ -49,7 +50,7 @@ int itkNiftiImageIOTest6(int ac, char *av[])
     itk::IOTestHelper::AllocateImageFromRegionAndSpacing<VectorImageType>(imageRegion, spacing,vecLength);
 
   itk::ImageRegionIterator<VectorImageType>
-    it(vecImage,vecImage->GetLargestPossibleRegion());
+         it(vecImage,vecImage->GetLargestPossibleRegion() );
   double val(0.0);
   for(it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
@@ -61,7 +62,7 @@ int itkNiftiImageIOTest6(int ac, char *av[])
       }
     it.Set(p);
     }
-  const std::string testfname("vectorImage.nii.gz");
+  const std::string        testfname("vectorImage.nii.gz");
   VectorImageType::Pointer readback;
   try
     {
@@ -76,13 +77,13 @@ int itkNiftiImageIOTest6(int ac, char *av[])
     throw;
     }
   itk::ImageRegionIterator<VectorImageType>
-    readbackIt(readback,readback->GetLargestPossibleRegion());
+  readbackIt(readback,readback->GetLargestPossibleRegion() );
   for(it.GoToBegin(),readbackIt.GoToBegin();
       !it.IsAtEnd() && !readbackIt.IsAtEnd();
       ++it, ++readbackIt)
     {
     VectorImageType::PixelType p(vecLength),
-      readbackP(vecLength);
+    readbackP(vecLength);
     p = it.Get();
     readbackP = readbackIt.Get();
     if(p != readbackP)
@@ -98,6 +99,6 @@ int itkNiftiImageIOTest6(int ac, char *av[])
       break;
       }
     }
-  itk::IOTestHelper::Remove(testfname.c_str());
+  itk::IOTestHelper::Remove(testfname.c_str() );
   return success;
 }

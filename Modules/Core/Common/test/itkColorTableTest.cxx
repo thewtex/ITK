@@ -20,7 +20,8 @@
 
 #include "itkColorTable.h"
 
-template<typename T> void ColorTableTest(const char *name)
+template<typename T> void
+ColorTableTest(const char *name)
 {
   typedef itk::ColorTable<T> ColorTableType;
   typename ColorTableType::Pointer colors = ColorTableType::New();
@@ -48,7 +49,8 @@ template<typename T> void ColorTableTest(const char *name)
   std::cout << std::endl;
 }
 
-int itkColorTableTest(int, char* [] )
+int
+itkColorTableTest(int, char* [] )
 {
   ColorTableTest<unsigned char> ("unsigned char");
   ColorTableTest<char>          ("char");
@@ -65,7 +67,7 @@ int itkColorTableTest(int, char* [] )
   typedef itk::ColorTable<unsigned char> ColorTableType;
   ColorTableType::Pointer colors = ColorTableType::New();
 
-  unsigned int id;
+  unsigned int                 id;
   itk::RGBPixel<unsigned char> pixel;
   colors->UseRandomColors(10000);
   pixel.Set(255, 0, 0);

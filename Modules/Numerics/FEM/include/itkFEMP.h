@@ -85,7 +85,8 @@ public:
    * If you want to create a copy of object and take ownership of that,
    * use: FEMP(x->Clone()) instead of FEMP(x).
    */
-  explicit FEMP(typename T::Pointer x) : m_Data(x)
+  explicit
+  FEMP(typename T::Pointer x) : m_Data(x)
   {
   }
 
@@ -105,7 +106,8 @@ public:
   /**
    * Easy access to members of stored object
    */
-  typename T::Pointer operator->() const
+  typename T::Pointer
+  operator->() const
   {
     return m_Data;
   }
@@ -123,7 +125,8 @@ public:
    * Return true if special pointer actually points
    * to a valid object and false otherwise.
    */
-  bool IsNULL() const
+  bool
+  IsNULL() const
   {
     return m_Data == 0;
   }
@@ -137,7 +140,8 @@ private:
 };
 
 template <typename T>
-const FEMP<T> & FEMP<T>::operator=(const FEMP<T> & rhs)
+const FEMP<T> &
+FEMP<T>::operator=(const FEMP<T> & rhs)
 {
   /** Self assignments don't make sense. */
   if( &rhs != this )

@@ -18,7 +18,6 @@
 #ifndef __itkScalarImageKmeansImageFilter_h
 #define __itkScalarImageKmeansImageFilter_h
 
-
 #include "itkKdTree.h"
 #include "itkKdTreeBasedKmeansEstimator.h"
 #include "itkWeightedCentroidKdTreeGenerator.h"
@@ -61,7 +60,7 @@ namespace itk
  */
 template< typename TInputImage,
           typename TOutputImage = Image< unsigned char, TInputImage::ImageDimension > >
-class ScalarImageKmeansImageFilter:
+class ScalarImageKmeansImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -100,7 +99,7 @@ public:
 
   typedef itk::Statistics::DistanceToCentroidMembershipFunction< MeasurementVectorType > MembershipFunctionType;
   typedef itk::Statistics::SampleClassifierFilter< AdaptorType >                         ClassifierType;
-  typedef itk::Statistics::MinimumDecisionRule  DecisionRuleType;
+  typedef itk::Statistics::MinimumDecisionRule                                           DecisionRuleType;
 
   typedef typename ClassifierType::ClassLabelVectorType ClassLabelVectorType;
 
@@ -119,8 +118,8 @@ public:
   typedef typename InputImageType::RegionType ImageRegionType;
 
   typedef RegionOfInterestImageFilter<
-    InputImageType,
-    InputImageType  > RegionOfInterestFilterType;
+      InputImageType,
+      InputImageType  > RegionOfInterestFilterType;
 
   /** Add a new class to the classification by specifying its initial mean. */
   void AddClassWithInitialMean(RealPixelType mean);
@@ -152,7 +151,10 @@ public:
 
 protected:
   ScalarImageKmeansImageFilter();
-  virtual ~ScalarImageKmeansImageFilter() {}
+  virtual
+  ~ScalarImageKmeansImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method runs the statistical methods that identify the means of the

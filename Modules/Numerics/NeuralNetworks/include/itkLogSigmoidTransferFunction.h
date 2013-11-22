@@ -56,10 +56,12 @@ public:
 protected:
 
   LogSigmoidTransferFunction();
-  virtual ~LogSigmoidTransferFunction();
+  virtual
+  ~LogSigmoidTransferFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
@@ -68,6 +70,5 @@ protected:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLogSigmoidTransferFunction.hxx"
 #endif
-
 
 #endif

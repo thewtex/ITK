@@ -60,18 +60,19 @@ public:
 protected:
 
   SquaredDifferenceErrorFunction();
-  virtual ~SquaredDifferenceErrorFunction();
+  virtual
+  ~SquaredDifferenceErrorFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkSquaredDifferenceErrorFunction.hxx"
+#include "itkSquaredDifferenceErrorFunction.hxx"
 #endif
-
 
 #endif

@@ -61,7 +61,7 @@ public:
     ROOT     = 6,
     LEAF     = 7
     }
-    NodeType;
+  NodeType;
 
   /** Add an element to the tree */
   virtual bool Add(ValueType element);
@@ -146,17 +146,29 @@ public:
   const TreeNodeType * GetParent() const;
 
   /** Move an iterator to the beginning of the tree */
-  void GoToBegin() { m_Position = m_Begin; }
+  void
+  GoToBegin() {
+    m_Position = m_Begin;
+  }
 
   /** Move an iterator to the end of the tree. */
-  void GoToEnd() { m_Position = m_End; }
+  void
+  GoToEnd() {
+    m_Position = m_End;
+  }
 
   /** Is the iterator at the beginning of the tree? */
-  bool IsAtBegin(void) const { return ( m_Position == m_Begin ); }
+  bool
+  IsAtBegin(void) const {
+    return ( m_Position == m_Begin );
+  }
 
   /** Is the iterator at the end of the tree?. The iterator is at the
    * end if it points to NULL */
-  bool IsAtEnd(void) const { return ( m_Position == m_End ); }
+  bool
+  IsAtEnd(void) const {
+    return ( m_Position == m_End );
+  }
 
   /** Clone the iterator */
   virtual TreeIteratorBase< TTreeType > * Clone() = 0;
@@ -178,7 +190,8 @@ public:
   }
 
   /** operator = */
-  Self & operator=(const Self & iterator)
+  Self &
+  operator=(const Self & iterator)
   {
     if(this != &iterator)
       {
@@ -191,7 +204,9 @@ public:
     return *this;
   }
 
-  virtual ~TreeIteratorBase() {}
+  virtual
+  ~TreeIteratorBase() {
+  }
 
 protected:
 
@@ -208,6 +223,7 @@ protected:
   virtual bool HasNext() const = 0;
 
   virtual const ValueType & Next() = 0;
+
 };
 } //end namespace itk
 

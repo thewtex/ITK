@@ -39,18 +39,24 @@ public:
   itkNewMacro( Self );
 
 protected:
-  void AllocateListDomain() {}
-  void PopulateListDomain() {}
+  void
+  AllocateListDomain() {
+  }
+
+  void
+  PopulateListDomain() {
+  }
+
 };
 
 }
 
-
-int itkLevelSetDomainPartitionBaseTest( int, char* [] )
+int
+itkLevelSetDomainPartitionBaseTest( int, char* [] )
 {
   const unsigned int Dimension = 3;
 
-  typedef itk::Image< double, Dimension >         ImageType;
+  typedef itk::Image< double, Dimension > ImageType;
 
   typedef itk::LevelSetDomainPartitionBaseHelper< ImageType >
     DomainPartitionBaseHelperType;

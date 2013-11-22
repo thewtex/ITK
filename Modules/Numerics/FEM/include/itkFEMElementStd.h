@@ -98,7 +98,8 @@ public:
   /**
    * Methods that define the geometry of an element
    */
-  virtual unsigned int GetNumberOfNodes(void) const
+  virtual unsigned int
+  GetNumberOfNodes(void) const
   {
     return NumberOfNodes;
   }
@@ -107,7 +108,8 @@ public:
    * Get/Set the Nodes that define the element
    */
 
-  virtual NodeIDType GetNode(unsigned int n) const
+  virtual NodeIDType
+  GetNode(unsigned int n) const
   {
     if( n >= NumberOfNodes )
       {
@@ -116,23 +118,28 @@ public:
     return this->m_node[n];
   }
 
-  virtual void SetNode(unsigned int n, NodeIDType node)
+  virtual void
+  SetNode(unsigned int n, NodeIDType node)
   {
     this->SetNodeInternal(n,node);
   }
-  virtual void SetNode(unsigned int n, typename Superclass::Node::Pointer node)
+
+  virtual void
+  SetNode(unsigned int n, typename Superclass::Node::Pointer node)
   {
     this->SetNodeInternal(n,node);
   }
 
   /** Get the nodal coordinates */
-  virtual const VectorType & GetNodeCoordinates(unsigned int n) const
+  virtual const VectorType &
+  GetNodeCoordinates(unsigned int n) const
   {
     return m_node[n]->GetCoordinates();
   }
 
   /** Get the number of spatial dimensions */
-  virtual unsigned int GetNumberOfSpatialDimensions() const
+  virtual unsigned int
+  GetNumberOfSpatialDimensions() const
   {
     return NumberOfSpatialDimensions;
   }
@@ -143,7 +150,8 @@ protected:
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
-  virtual void SetNodeInternal(unsigned int n, const Node *node)
+  virtual void
+  SetNodeInternal(unsigned int n, const Node *node)
   {
     if( n >= NumberOfNodes )
       {
@@ -151,6 +159,7 @@ protected:
       }
     this->m_node[n] = node;
   }
+
   /**
    * Array of pointers to point objects that define the element
    */

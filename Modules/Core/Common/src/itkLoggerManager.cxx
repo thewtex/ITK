@@ -48,7 +48,8 @@ LoggerManager::CreateThreadLogger(const NameType & name, PriorityLevelType level
 }
 
 /** Registers another logger */
-void LoggerManager::AddLogger(const NameType & name, Logger *logger)
+void
+LoggerManager::AddLogger(const NameType & name, Logger *logger)
 {
 //  this->m_LoggerSet.insert(logger);
   this->m_LoggerSet[name] = logger;
@@ -66,7 +67,8 @@ LoggerManager::GetLogger(const NameType & name)
   return loggerItr->second.GetPointer();
 }
 
-void LoggerManager::SetPriorityLevel(PriorityLevelType level)
+void
+LoggerManager::SetPriorityLevel(PriorityLevelType level)
 {
   ContainerType::iterator itr = this->m_LoggerSet.begin();
 
@@ -77,7 +79,8 @@ void LoggerManager::SetPriorityLevel(PriorityLevelType level)
     }
 }
 
-void LoggerManager::SetLevelForFlushing(PriorityLevelType level)
+void
+LoggerManager::SetLevelForFlushing(PriorityLevelType level)
 {
   ContainerType::iterator itr = this->m_LoggerSet.begin();
 
@@ -88,7 +91,8 @@ void LoggerManager::SetLevelForFlushing(PriorityLevelType level)
     }
 }
 
-void LoggerManager::AddLogOutput(OutputType *output)
+void
+LoggerManager::AddLogOutput(OutputType *output)
 {
   ContainerType::iterator itr = this->m_LoggerSet.begin();
 
@@ -99,7 +103,8 @@ void LoggerManager::AddLogOutput(OutputType *output)
     }
 }
 
-void LoggerManager::Write(PriorityLevelType level, std::string const & content)
+void
+LoggerManager::Write(PriorityLevelType level, std::string const & content)
 {
   ContainerType::iterator itr = this->m_LoggerSet.begin();
 
@@ -110,7 +115,8 @@ void LoggerManager::Write(PriorityLevelType level, std::string const & content)
     }
 }
 
-void LoggerManager::Flush()
+void
+LoggerManager::Flush()
 {
   ContainerType::iterator itr = this->m_LoggerSet.begin();
 
@@ -122,10 +128,12 @@ void LoggerManager::Flush()
 }
 
 /** Print contents of a LoggerManager */
-void LoggerManager::PrintSelf(std::ostream & os, Indent indent) const
+void
+LoggerManager::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   os << indent << "The number of loggers: " << m_LoggerSet.size() << std::endl;
 }
+
 } // namespace itk

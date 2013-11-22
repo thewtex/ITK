@@ -42,7 +42,8 @@ ShiftScaleInPlaceImageFilter< TInputImage >
 template< typename TInputImage >
 ShiftScaleInPlaceImageFilter< TInputImage >
 ::~ShiftScaleInPlaceImageFilter()
-{}
+{
+}
 
 template< typename TInputImage >
 void
@@ -128,6 +129,7 @@ ShiftScaleInPlaceImageFilter< TInputImage >
   os << indent << "UnderflowCount: "  << m_UnderflowCount << std::endl;
   os << indent << "OverflowCount: "  << m_OverflowCount << std::endl;
 }
+
 } // end namespace itk
 #endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif

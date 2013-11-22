@@ -19,17 +19,16 @@
 // Insight classes
 #include "itkImageRegionIterator.h"
 
-
 #include "itkScalarImageToRunLengthMatrixFilter.h"
 
-int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
+int
+itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
 {
 
   //Data definitions
-  const unsigned int  IMGWIDTH         =  5;
-  const unsigned int  IMGHEIGHT        =  5;
-  const unsigned int  NDIMENSION       =  2;
-
+  const unsigned int IMGWIDTH         =  5;
+  const unsigned int IMGHEIGHT        =  5;
+  const unsigned int NDIMENSION       =  2;
 
   //------------------------------------------------------
   //Create a simple test images
@@ -38,10 +37,8 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
 
   typedef itk::ImageRegionIterator< InputImageType > InputImageIterator;
 
-
   InputImageType::Pointer image = InputImageType::New();
   InputImageType::Pointer mask = InputImageType::New();
-
 
   InputImageType::SizeType inputImageSize = {{ IMGWIDTH, IMGHEIGHT }};
 
@@ -111,16 +108,16 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
     {
 
     typedef itk::Statistics::ScalarImageToRunLengthMatrixFilter<
-      InputImageType> FilterType;
+        InputImageType> FilterType;
 
     FilterType::Pointer filter = FilterType::New();
 
     filter->SetInput(image);
 
-    InputImageType::OffsetType offset1 = {{0, -1}};
-    InputImageType::OffsetType offset2 = {{-1, 0}};
+    InputImageType::OffsetType      offset1 = {{0, -1}};
+    InputImageType::OffsetType      offset2 = {{-1, 0}};
     FilterType::OffsetVectorPointer offsetV =
-    FilterType::OffsetVector::New();
+      FilterType::OffsetVector::New();
     offsetV->push_back(offset1);
     offsetV->push_back(offset2);
 
@@ -133,18 +130,18 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
     filter->Update();
     const FilterType::HistogramType * hist = filter->GetOutput();
 
-
     //--------------------------------------------------------------------------
     // Test the histogram.
     //--------------------------------------------------------------------------
     bool passed = true;
 
     unsigned int frequencies[5][5] = {
-      {0, 3, 0, 0, 0},
-      {0, 1, 0, 0, 0},
-      {0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0} };
+          {0, 3, 0, 0, 0},
+          {0, 1, 0, 0, 0},
+          {0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0}
+      };
 
     unsigned int count = 0;
     for( unsigned int i = 0; i < 5; i++ )
@@ -156,10 +153,10 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
         index[0] = i;
         index[1] = j;
         if( hist->GetFrequency( index ) != frequencies[j][i] )
-        {
+          {
           std::cerr << "Expected frequency  (i,j)= " << "(" <<i << "," << j << ")" << frequencies[j][i]
-            << ", calculated = "
-            << hist->GetFrequency( index ) << std::endl;
+                    << ", calculated = "
+                    << hist->GetFrequency( index ) << std::endl;
           passed = false;
           }
         count++;
@@ -169,7 +166,7 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
     if( totalF != 4 )
       {
       std::cerr << "Expected total frequency = 4, calculated = "
-        << totalF << std::endl;
+                << totalF << std::endl;
       passed = false;
       }
 
@@ -188,7 +185,7 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
       {
       std::cerr << "Error: " << std::endl;
       std::cerr << "GetInsidePixelValue() is not returning the expected value"
-        << std::endl;
+                << std::endl;
       passed = false;
       }
     if ( filter->GetMaskImage() == NULL )
@@ -201,46 +198,46 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
       {
       std::cerr << "Error: " << std::endl;
       std::cerr << "GetMin() is not returning the expected value"
-        << std::endl;
+                << std::endl;
       passed = false;
       }
     if( filter->GetMax() != 3 )
       {
       std::cerr << "Error: " << std::endl;
       std::cerr << "GetMax() is not returning the expected value"
-        << std::endl;
+                << std::endl;
       passed = false;
       }
     if( filter->GetMinDistance() != 0 )
       {
       std::cerr << "Error: " << std::endl;
       std::cerr << "GetMinDistance() is not returning the expected value"
-        << std::endl;
+                << std::endl;
       passed = false;
       }
     if( filter->GetMaxDistance() != 8 )
       {
       std::cerr << "Error: " << std::endl;
       std::cerr << "GetMaxDistance() is not returning the expected value"
-        << std::endl;
+                << std::endl;
       passed = false;
       }
 
     const FilterType::OffsetVector *offsetVector = filter->GetOffsets();
     if( offsetVector->size() != 2 ||
-      (*offsetVector)[0][0] != 0 || (*offsetVector)[0][1] != -1 ||
-      (*offsetVector)[1][0] != -1 || (*offsetVector)[1][1] != 0 )
+        (*offsetVector)[0][0] != 0 || (*offsetVector)[0][1] != -1 ||
+        (*offsetVector)[1][0] != -1 || (*offsetVector)[1][1] != 0 )
       {
       std::cerr << "Error: " << std::endl;
       std::cerr << "GetOffsets() is not returning the correct offsets"
-        << std::endl;
+                << std::endl;
       passed = false;
       }
     if( filter->GetNumberOfBinsPerAxis() != 5 )
       {
       std::cerr << "Error: " << std::endl;
       std::cerr << "GetNumberOfBinsPerAxis() is not returning the expected value"
-        << std::endl;
+                << std::endl;
       passed = false;
       }
 
@@ -248,11 +245,12 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
     hist = filter->GetOutput();
 
     unsigned int frequencies2[5][5] = {
-        {0, 12, 0, 10, 0},
-        {0, 0, 0, 0, 0},
-        {0, 3, 0, 2, 0},
-        {0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0} };
+            {0, 12, 0, 10, 0},
+            {0, 0, 0, 0, 0},
+            {0, 3, 0, 2, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0}
+      };
 
     count = 0;
     for( unsigned int i = 0; i < 5; i++ )
@@ -264,10 +262,10 @@ int itkScalarImageToRunLengthMatrixFilterTest(int, char* [] )
         index[0] = i;
         index[1] = j;
         if( hist->GetFrequency( index ) != frequencies2[j][i] )
-        {
+          {
           std::cerr << "Expected frequency2  (i,j)= " << "(" <<i << "," << j << ")" << frequencies2[j][i]
-            << ", calculated = "
-            << hist->GetFrequency( index ) << std::endl;
+                    << ", calculated = "
+                    << hist->GetFrequency( index ) << std::endl;
           passed = false;
           }
         count++;

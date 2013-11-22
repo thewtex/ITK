@@ -43,7 +43,8 @@ SymmetricEigenSystem< TMatrixElement, VNumberOfRows >
 template< typename TMatrixElement, int VNumberOfRows >
 SymmetricEigenSystem< TMatrixElement, VNumberOfRows >
 ::~SymmetricEigenSystem()
-{}
+{
+}
 
 template< typename TMatrixElement, int VNumberOfRows >
 void
@@ -115,6 +116,7 @@ SymmetricEigenSystem< TMatrixElement, VNumberOfRows >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage >
-class ChangeInformationImageFilter:
+class ChangeInformationImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -59,12 +59,12 @@ public:
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
-  typedef TInputImage   InputImageType;
-  typedef TInputImage   OutputImageType;
+  typedef TInputImage InputImageType;
+  typedef TInputImage OutputImageType;
 
   /** Typedef to describe the output and input image region types. */
-  typedef typename OutputImageType::RegionType  OutputImageRegionType;
-  typedef typename InputImageType::RegionType   InputImageRegionType;
+  typedef typename OutputImageType::RegionType OutputImageRegionType;
+  typedef typename InputImageType::RegionType  InputImageRegionType;
 
   /** Typedef to describe the pointer to the input. */
   typedef typename InputImageType::Pointer      InputImagePointer;
@@ -75,15 +75,15 @@ public:
   typedef typename InputImageType::PixelType  InputImagePixelType;
 
   /** Typedef to describe the output and input image index and size types. */
-  typedef typename OutputImageType::IndexType        OutputImageIndexType;
-  typedef typename OutputImageType::SizeType         OutputImageSizeType;
-  typedef typename OutputImageType::OffsetType       OutputImageOffsetType;
-  typedef typename OutputImageType::DirectionType    OutputImageDirectionType;
-  typedef typename OutputImageType::OffsetValueType  OutputImageOffsetValueType;
-  typedef typename InputImageType::IndexType         InputImageIndexType;
-  typedef typename InputImageType::SizeType          InputImageSizeType;
-  typedef typename InputImageType::OffsetType        InputImageOffsetType;
-  typedef typename InputImageType::DirectionType     InputImageDirectionType;
+  typedef typename OutputImageType::IndexType       OutputImageIndexType;
+  typedef typename OutputImageType::SizeType        OutputImageSizeType;
+  typedef typename OutputImageType::OffsetType      OutputImageOffsetType;
+  typedef typename OutputImageType::DirectionType   OutputImageDirectionType;
+  typedef typename OutputImageType::OffsetValueType OutputImageOffsetValueType;
+  typedef typename InputImageType::IndexType        InputImageIndexType;
+  typedef typename InputImageType::SizeType         InputImageSizeType;
+  typedef typename InputImageType::OffsetType       InputImageOffsetType;
+  typedef typename InputImageType::DirectionType    InputImageDirectionType;
 
   /** Image related typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -99,7 +99,8 @@ public:
 
   /** Copy the information from another Image.  By default,
    *  the information is copied from the input image. */
-  void SetReferenceImage(InputImageType *image)
+  void
+  SetReferenceImage(InputImageType *image)
   {
     if ( image != m_ReferenceImage )
       {
@@ -146,7 +147,8 @@ public:
   itkSetVectorMacro(OutputOffset, OutputImageOffsetValueType, ImageDimension);
 
   /** Change the origin, spacing and region of the output image. */
-  void ChangeAll()
+  void
+  ChangeAll()
   {
     this->ChangeSpacingOn();
     this->ChangeOriginOn();
@@ -156,7 +158,8 @@ public:
 
   /** Do not change the origin, spacing, direction or region of the
    * output image. */
-  void ChangeNone()
+  void
+  ChangeNone()
   {
     this->ChangeSpacingOff();
     this->ChangeOriginOff();
@@ -227,7 +230,9 @@ protected:
    *
    * \sa ProcessObject::VerifyInputInformation
    */
-  virtual void VerifyInputInformation() {}
+  virtual void
+  VerifyInputInformation() {
+  }
 
 private:
   ChangeInformationImageFilter(const Self &); //purposely not implemented

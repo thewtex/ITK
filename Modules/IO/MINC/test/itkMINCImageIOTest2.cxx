@@ -24,7 +24,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkMINCImageIOTest2( int argc, char * argv [] )
+int
+itkMINCImageIOTest2( int argc, char * argv [] )
 {
 
   if ( argc < 3 )

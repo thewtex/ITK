@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh >
-class TriangleMeshToSimplexMeshFilter:public MeshToMeshFilter< TInputMesh, TOutputMesh >
+class TriangleMeshToSimplexMeshFilter : public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -93,18 +93,18 @@ public:
   typedef typename TOutputMesh::PointIdentifier       PointIdentifier;
   typedef typename TOutputMesh::CellFeatureIdentifier CellFeatureIdentifier;
 
-  typedef          std::pair< CellIdentifier, CellIdentifier >     EdgeIdentifierType;
-  typedef          std::set< CellIdentifier >                      IndexSetType;
+  typedef          std::pair< CellIdentifier, CellIdentifier > EdgeIdentifierType;
+  typedef          std::set< CellIdentifier >                  IndexSetType;
 
   typedef          itk::MapContainer< CellIdentifier, EdgeIdentifierType > EdgeNeighborListType;
   typedef          itk::MapContainer< EdgeIdentifierType, CellIdentifier > LineCellIndexType;
 
-  typedef          itk::MapContainer< PointIdentifier, IndexSetType >       VertexNeighborListType;
-  typedef          itk::MapContainer< EdgeIdentifierType, CellIdentifier >  EdgeMapType;
-  typedef typename EdgeMapType::Pointer                                     EdgeMapPointer;
+  typedef          itk::MapContainer< PointIdentifier, IndexSetType >      VertexNeighborListType;
+  typedef          itk::MapContainer< EdgeIdentifierType, CellIdentifier > EdgeMapType;
+  typedef typename EdgeMapType::Pointer                                    EdgeMapPointer;
 
-  typedef          itk::VectorContainer< CellIdentifier, CellIdentifier >   IdVectorType;
-  typedef typename IdVectorType::Pointer                                    IdVectorPointer;
+  typedef          itk::VectorContainer< CellIdentifier, CellIdentifier > IdVectorType;
+  typedef typename IdVectorType::Pointer                                  IdVectorPointer;
 
   typedef typename TOutputMesh::CellType              OutputCellType;
   typedef typename TOutputMesh::CellAutoPointer       OutputCellAutoPointer;
@@ -115,9 +115,12 @@ protected:
 
   TriangleMeshToSimplexMeshFilter();
   ~TriangleMeshToSimplexMeshFilter();
-  TriangleMeshToSimplexMeshFilter(const Self &) {}
+  TriangleMeshToSimplexMeshFilter(const Self &) {
+  }
 
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -162,7 +165,6 @@ protected:
   void CreateNewEdge(CellIdentifier currentCellId, CellFeatureIdentifier featureId,
                      PointIdentifier startPointId, PointIdentifier endPointId,
                      const InputMeshType *input);
-
 
   /**
    *  Computes the center of a face

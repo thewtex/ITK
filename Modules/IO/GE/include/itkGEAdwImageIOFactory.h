@@ -19,7 +19,6 @@
 #define __itkGEAdwImageIOFactory_h
 #include "ITKIOGEExport.h"
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -29,7 +28,7 @@ namespace itk
    * \brief Create instances of GEAdwImageIO objects using an object factory.
    * \ingroup ITKIOGE
    */
-class ITKIOGE_EXPORT GEAdwImageIOFactory:public ObjectFactoryBase
+class ITKIOGE_EXPORT GEAdwImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -50,7 +49,8 @@ public:
   itkTypeMacro(GEAdwImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GEAdwImageIOFactory::Pointer metaFactory = GEAdwImageIOFactory::New();
 
@@ -65,6 +65,7 @@ protected:
 private:
   GEAdwImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };
 } // end namespace itk
 

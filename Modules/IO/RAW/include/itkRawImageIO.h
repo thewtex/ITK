@@ -45,7 +45,7 @@ namespace itk
  */
 
 template< typename TPixel, unsigned int VImageDimension = 2 >
-class RawImageIO:public ImageIOBase
+class RawImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -64,7 +64,7 @@ public:
   typedef TPixel PixelType;
 
   /** Type used for counting elements. */
-  typedef Superclass::SizeValueType    SizeValueType;
+  typedef Superclass::SizeValueType SizeValueType;
 
   /** this type is used in case the pixel has several components */
   typedef typename PixelTraits< PixelType >::ValueType ComponentType;
@@ -89,26 +89,36 @@ public:
    * while others can support 2D, 3D, or even n-D. This method returns
    * true/false as to whether the ImageIO can support the dimension
    * indicated. */
-  virtual bool SupportsDimension(unsigned long dim)
-  { return ( dim == m_FileDimensionality ); }
+  virtual bool
+  SupportsDimension(unsigned long dim)
+  {
+    return ( dim == m_FileDimensionality );
+  }
 
   /*-------- This part of the interface deals with reading data. ------ */
 
   /** Determine the file type. Returns true if this ImageIOBase can read the
    * file specified. Always returns false because we don't want to use
    * this reader unless absolutely sure (i.e., manual ImageIO creation). */
-  virtual bool CanReadFile(const char *) { return false; }
+  virtual bool
+  CanReadFile(const char *) {
+    return false;
+  }
 
   /** Binary files have no image information to read. This must be set by the
    * user of the class. */
-  virtual void ReadImageInformation() { return; }
+  virtual void
+  ReadImageInformation() {
+    return;
+  }
 
   /** Reads the data from disk into the memory buffer provided. */
   virtual void Read(void *buffer);
 
   /** Set/Get the Data mask. */
   itkGetConstReferenceMacro(ImageMask, unsigned short);
-  void SetImageMask(unsigned long val)
+  void
+  SetImageMask(unsigned long val)
   {
     if ( val == m_ImageMask ) { return; }
     m_ImageMask = ( (unsigned short)( val ) );
@@ -116,7 +126,9 @@ public:
   }
 
   /** Read a file's header to determine image dimensions, etc. */
-  virtual void ReadHeader( const std::string = std::string() ) {}
+  virtual void
+  ReadHeader( const std::string = std::string() ) {
+  }
 
   /*-------- This part of the interfaces deals with writing data. ----- */
 
@@ -126,7 +138,10 @@ public:
   virtual bool CanWriteFile(const char *);
 
   /** Binary files have no image information to read.  */
-  virtual void WriteImageInformation(void) { return; }
+  virtual void
+  WriteImageInformation(void) {
+    return;
+  }
 
   /** Writes the data to disk from the memory buffer provided. */
   virtual void Write(const void *buffer);
@@ -154,7 +169,7 @@ private:
 };
 
 template< typename TPixel, unsigned int VImageDimension >
-class RawImageIOFactory:public ObjectFactoryBase
+class RawImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -164,12 +179,14 @@ public:
   typedef SmartPointer< const Self >                   ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  const char * GetITKSourceVersion(void) const
+  const char *
+  GetITKSourceVersion(void) const
   {
     return ITK_SOURCE_VERSION;
   }
 
-  const char * GetDescription(void) const
+  const char *
+  GetDescription(void) const
   {
     return "Raw ImageIO Factory, allows the loading of Raw images into insight";
   }
@@ -181,20 +198,26 @@ public:
   itkTypeMacro(RawImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     ObjectFactoryBase::RegisterFactory( Self::New() );
   }
 
 protected:
-  RawImageIOFactory() {}
-  ~RawImageIOFactory() {}
+  RawImageIOFactory() {
+  }
+
+  ~RawImageIOFactory() {
+  }
+
   typedef RawImageIO< TPixel, VImageDimension > myProductType;
   const myProductType *m_MyProduct;
 
 private:
   RawImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // namespace itk
 

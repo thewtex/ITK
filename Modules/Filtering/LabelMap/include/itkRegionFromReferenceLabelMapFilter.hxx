@@ -59,11 +59,11 @@ template< typename TInputImage >
 const typename RegionFromReferenceLabelMapFilter< TInputImage >::ReferenceImageType *
 RegionFromReferenceLabelMapFilter< TInputImage >
 ::GetReferenceImage() const
-{
+  {
   Self *surrogate = const_cast< Self * >( this );
 
-  return itkDynamicCastInDebugMode<const ReferenceImageType *>(surrogate->ProcessObject::GetInput(1));
-}
+  return itkDynamicCastInDebugMode<const ReferenceImageType *>(surrogate->ProcessObject::GetInput(1) );
+  }
 
 template< typename TInputImage >
 void
@@ -72,6 +72,7 @@ RegionFromReferenceLabelMapFilter< TInputImage >
 {
   this->Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

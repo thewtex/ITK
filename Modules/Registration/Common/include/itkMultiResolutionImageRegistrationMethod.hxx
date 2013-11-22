@@ -274,14 +274,14 @@ MultiResolutionImageRegistrationMethod< TFixedImage, TMovingImage >
       const float scaleFactor = static_cast< float >( schedule[level][dim] );
 
       size[dim] = static_cast< typename SizeType::SizeValueType >(
-        vcl_floor(static_cast< float >( inputSize[dim] ) / scaleFactor) );
+          vcl_floor(static_cast< float >( inputSize[dim] ) / scaleFactor) );
       if ( size[dim] < 1 )
         {
         size[dim] = 1;
         }
 
       start[dim] = static_cast< typename IndexType::IndexValueType >(
-        vcl_ceil(static_cast< float >( inputStart[dim] ) / scaleFactor) );
+          vcl_ceil(static_cast< float >( inputStart[dim] ) / scaleFactor) );
       }
     m_FixedImageRegionPyramid[level].SetSize(size);
     m_FixedImageRegionPyramid[level].SetIndex(start);
@@ -297,6 +297,7 @@ MultiResolutionImageRegistrationMethod< TFixedImage, TMovingImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Metric: " << m_Metric.GetPointer() << std::endl;
   os << indent << "Optimizer: " << m_Optimizer.GetPointer() << std::endl;
   os << indent << "Transform: " << m_Transform.GetPointer() << std::endl;
@@ -346,7 +347,7 @@ MultiResolutionImageRegistrationMethod< TFixedImage, TMovingImage >
   this->PreparePyramids();
 
   for ( m_CurrentLevel = 0; m_CurrentLevel < m_NumberOfLevels;
-    m_CurrentLevel++ )
+        m_CurrentLevel++ )
     {
     // Invoke an iteration event.
     // This allows a UI to reset any of the components between
@@ -458,9 +459,9 @@ template< typename TFixedImage, typename TMovingImage >
 const typename MultiResolutionImageRegistrationMethod< TFixedImage, TMovingImage >::TransformOutputType *
 MultiResolutionImageRegistrationMethod< TFixedImage, TMovingImage >
 ::GetOutput() const
-{
+  {
   return static_cast< const TransformOutputType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename TFixedImage, typename TMovingImage >
 DataObject::Pointer
@@ -477,6 +478,7 @@ MultiResolutionImageRegistrationMethod< TFixedImage, TMovingImage >
       return 0;
     }
 }
+
 } // end namespace itk
 
 #endif

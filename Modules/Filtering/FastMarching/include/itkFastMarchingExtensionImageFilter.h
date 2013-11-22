@@ -52,9 +52,9 @@ template<
   typename TLevelSet,
   typename TAuxValue,
   unsigned int VAuxDimension = 1,
-  typename TSpeedImage = Image< float,  TLevelSet ::ImageDimension >
+  typename TSpeedImage = Image< float,  TLevelSet::ImageDimension >
   >
-class FastMarchingExtensionImageFilter:
+class FastMarchingExtensionImageFilter :
   public FastMarchingImageFilter< TLevelSet, TSpeedImage >
 {
 public:
@@ -85,7 +85,7 @@ public:
   typedef AuxVarTypeDefault< TAuxValue,
                              itkGetStaticConstMacro(AuxDimension),
                              itkGetStaticConstMacro(SetDimension) >
-  AuxVarType;
+    AuxVarType;
   typedef typename AuxVarType::AuxValueType       AuxValueType;
   typedef typename AuxVarType::AuxValueVectorType AuxValueVectorType;
   typedef typename AuxVarType::AuxValueContainer  AuxValueContainer;
@@ -99,25 +99,29 @@ public:
   AuxImageType * GetAuxiliaryImage(unsigned int idx);
 
   /** Set the container auxiliary values at the initial alive points. */
-  void SetAuxiliaryAliveValues(AuxValueContainer *values)
+  void
+  SetAuxiliaryAliveValues(AuxValueContainer *values)
   {
     m_AuxAliveValues = values;
   }
 
   /** Get the container of auxiliary values at the initial alive points. */
-  AuxValueContainer * GetAuxiliaryAliveValues(void)
+  AuxValueContainer *
+  GetAuxiliaryAliveValues(void)
   {
     return m_AuxAliveValues.GetPointer();
   }
 
   /** Set the container of auxiliary values at the initial trial points. */
-  void SetAuxiliaryTrialValues(AuxValueContainer *values)
+  void
+  SetAuxiliaryTrialValues(AuxValueContainer *values)
   {
     m_AuxTrialValues = values;
   }
 
   /** Get the container of auxiliary values at the initial trial points. */
-  typename AuxValueContainer::Pointer GetAuxiliaryTrialValues()
+  typename AuxValueContainer::Pointer
+  GetAuxiliaryTrialValues()
   {
     return m_AuxTrialValues;
   }
@@ -131,7 +135,9 @@ public:
 
 protected:
   FastMarchingExtensionImageFilter();
-  ~FastMarchingExtensionImageFilter(){}
+  ~FastMarchingExtensionImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void Initialize(LevelSetImageType *);

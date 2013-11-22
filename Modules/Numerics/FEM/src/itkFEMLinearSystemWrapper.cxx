@@ -22,7 +22,8 @@ namespace itk
 {
 namespace fem
 {
-void LinearSystemWrapper::Clean(void)
+void
+LinearSystemWrapper::Clean(void)
 {
   unsigned int i;
 
@@ -44,7 +45,8 @@ void LinearSystemWrapper::Clean(void)
   this->SetSystemOrder(0);
 }
 
-void LinearSystemWrapper::ScaleMatrix(Float scale, unsigned int matrixIndex)
+void
+LinearSystemWrapper::ScaleMatrix(Float scale, unsigned int matrixIndex)
 {
   /* check for no scaling */
   if( scale == 1.0 )
@@ -63,7 +65,8 @@ void LinearSystemWrapper::ScaleMatrix(Float scale, unsigned int matrixIndex)
     }
 }
 
-void LinearSystemWrapper::ScaleVector(Float scale, unsigned int vectorIndex)
+void
+LinearSystemWrapper::ScaleVector(Float scale, unsigned int vectorIndex)
 {
 
   /* check for no scaling */
@@ -79,7 +82,8 @@ void LinearSystemWrapper::ScaleVector(Float scale, unsigned int vectorIndex)
     }
 }
 
-void LinearSystemWrapper::ScaleSolution(Float scale, unsigned int solutionIndex)
+void
+LinearSystemWrapper::ScaleSolution(Float scale, unsigned int solutionIndex)
 {
   /* check for no scaling */
   if( scale == 1.0 )
@@ -94,24 +98,28 @@ void LinearSystemWrapper::ScaleSolution(Float scale, unsigned int solutionIndex)
     }
 }
 
-void LinearSystemWrapper::AddVectorValue(unsigned int i, Float value, unsigned int vectorIndex)
+void
+LinearSystemWrapper::AddVectorValue(unsigned int i, Float value, unsigned int vectorIndex)
 {
   this->SetVectorValue(i, value + this->GetVectorValue(i, vectorIndex), vectorIndex);
 }
 
-void LinearSystemWrapper::AddMatrixValue(unsigned int i, unsigned int j, Float value, unsigned int matrixIndex)
+void
+LinearSystemWrapper::AddMatrixValue(unsigned int i, unsigned int j, Float value, unsigned int matrixIndex)
 {
   this->SetMatrixValue(i, j, value + this->GetMatrixValue(i, j, matrixIndex), matrixIndex);
 }
 
-void LinearSystemWrapper::AddSolutionValue(unsigned int i, Float value, unsigned int solutionIndex)
+void
+LinearSystemWrapper::AddSolutionValue(unsigned int i, Float value, unsigned int solutionIndex)
 {
   this->SetSolutionValue(i, value + this->GetSolutionValue(i, solutionIndex), solutionIndex);
 }
 
-void LinearSystemWrapper::MultiplyMatrixVector(unsigned int resultVector,
-                                               unsigned int matrixIndex,
-                                               unsigned int vectorIndex)
+void
+LinearSystemWrapper::MultiplyMatrixVector(unsigned int resultVector,
+                                          unsigned int matrixIndex,
+                                          unsigned int vectorIndex)
 {
 
   unsigned int i;
@@ -124,15 +132,16 @@ void LinearSystemWrapper::MultiplyMatrixVector(unsigned int resultVector,
     for( j = 0; j < m_Order; j++ )
       {
       this->AddVectorValue(i, this->GetMatrixValue(i, j, matrixIndex) * this->GetVectorValue(j,
-                                                                                             vectorIndex), resultVector);
+                                                                                             vectorIndex),
+                           resultVector);
       }
     }
 }
 
-
-void LinearSystemWrapper::MultiplyMatrixSolution(unsigned int resultVector,
-                                                 unsigned int matrixIndex,
-                                                 unsigned int solutionIndex)
+void
+LinearSystemWrapper::MultiplyMatrixSolution(unsigned int resultVector,
+                                            unsigned int matrixIndex,
+                                            unsigned int solutionIndex)
 {
 
   unsigned int i;
@@ -145,12 +154,14 @@ void LinearSystemWrapper::MultiplyMatrixSolution(unsigned int resultVector,
     for( j = 0; j < m_Order; j++ )
       {
       this->AddVectorValue(i, this->GetMatrixValue(i, j, matrixIndex) * this->GetSolutionValue(j,
-                                                                                             solutionIndex), resultVector);
+                                                                                               solutionIndex),
+                           resultVector);
       }
     }
 }
 
-void LinearSystemWrapper::GetColumnsOfNonZeroMatrixElementsInRow(unsigned int, ColumnArray & cols, unsigned int)
+void
+LinearSystemWrapper::GetColumnsOfNonZeroMatrixElementsInRow(unsigned int, ColumnArray & cols, unsigned int)
 {
   // By default we assume full matrices and return indices of all columns
   cols = ColumnArray(m_Order);
@@ -160,7 +171,8 @@ void LinearSystemWrapper::GetColumnsOfNonZeroMatrixElementsInRow(unsigned int, C
     }
 }
 
-void LinearSystemWrapper::OptimizeMatrixStorage(unsigned int matrixIndex, unsigned int tempMatrixIndex)
+void
+LinearSystemWrapper::OptimizeMatrixStorage(unsigned int matrixIndex, unsigned int tempMatrixIndex)
 {
   /* put original matrix in temp space */
   this->SwapMatrices(matrixIndex, tempMatrixIndex);
@@ -209,6 +221,7 @@ LinearSystemWrapper
 {
   ColumnArray  cols;
   unsigned int r;
+
   for( r = 0; r < this->m_Order; r++ )
     {
     this->GetColumnsOfNonZeroMatrixElementsInRow(r, cols, matrixIndex2);
@@ -224,6 +237,7 @@ LinearSystemWrapper
 ::CopyVector(unsigned int vectorSource, unsigned int vectorDestination)
 {
   unsigned int r;
+
   for( r = 0; r < this->m_Order; r++ )
     {
     this->SetVectorValue(r, this->GetVectorValue(r, vectorSource), vectorDestination);
@@ -235,6 +249,7 @@ LinearSystemWrapper
 ::AddVectorVector(unsigned int vectorIndex1, unsigned int vectorIndex2)
 {
   unsigned int r;
+
   for( r = 0; r < this->m_Order; r++ )
     {
     this->AddVectorValue(r, this->GetVectorValue(r, vectorIndex2), vectorIndex1);
@@ -242,13 +257,15 @@ LinearSystemWrapper
 }
 
 /* FIXME - untested...do not use yet */
-void LinearSystemWrapper::ReverseCuthillMckeeOrdering(ColumnArray & newNumbering, unsigned int matrixIndex)
+void
+LinearSystemWrapper::ReverseCuthillMckeeOrdering(ColumnArray & newNumbering, unsigned int matrixIndex)
 {
   /* find cuthill-mckee ordering */
   this->CuthillMckeeOrdering(newNumbering, -1, matrixIndex);
 }
 
-void LinearSystemWrapper::CuthillMckeeOrdering(ColumnArray & newNumbering, int startingRow, unsigned int matrixIndex)
+void
+LinearSystemWrapper::CuthillMckeeOrdering(ColumnArray & newNumbering, int startingRow, unsigned int matrixIndex)
 {
   ColumnArray reverseMapping;                   /* temp storage for re-mapping
                                                   of rows */
@@ -304,11 +321,12 @@ void LinearSystemWrapper::CuthillMckeeOrdering(ColumnArray & newNumbering, int s
     }
 }
 
-void LinearSystemWrapper::FollowConnectionsCuthillMckeeOrdering(unsigned int rowNumber,
-                                                                ColumnArray & rowDegree,
-                                                                ColumnArray & reverseMapping,
-                                                                unsigned int nextRowNumber,
-                                                                unsigned int matrixIndex)
+void
+LinearSystemWrapper::FollowConnectionsCuthillMckeeOrdering(unsigned int rowNumber,
+                                                           ColumnArray & rowDegree,
+                                                           ColumnArray & reverseMapping,
+                                                           unsigned int nextRowNumber,
+                                                           unsigned int matrixIndex)
 {
   int i;                   // these must be signed ints since they are compared
                            // to size()-1

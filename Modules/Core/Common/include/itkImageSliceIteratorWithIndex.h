@@ -66,7 +66,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage >
-class ImageSliceIteratorWithIndex:public ImageSliceConstIteratorWithIndex< TImage >
+class ImageSliceIteratorWithIndex : public ImageSliceConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -101,20 +101,27 @@ public:
   ImageSliceIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it);
 
   /** Set the pixel value */
-  void Set(const PixelType & value) const
-  { this->m_PixelAccessorFunctor.Set(*( const_cast< InternalPixelType * >( this->m_Position ) ), value); }
+  void
+  Set(const PixelType & value) const
+  {
+    this->m_PixelAccessorFunctor.Set(*( const_cast< InternalPixelType * >( this->m_Position ) ), value);
+  }
 
   /** Return a reference to the pixel.
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  PixelType & Value(void)
-  { return *( const_cast< InternalPixelType * >( this->m_Position ) ); }
+  PixelType &
+  Value(void)
+  {
+    return *( const_cast< InternalPixelType * >( this->m_Position ) );
+  }
 
 protected:
   /** The construction from a const iterator is declared protected
       in order to enforce const correctness. */
   ImageSliceIteratorWithIndex(const ImageSliceConstIteratorWithIndex< TImage > & it);
   Self & operator=(const ImageSliceConstIteratorWithIndex< TImage > & it);
+
 };
 } // end namespace itk
 

@@ -52,7 +52,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 3 )
@@ -67,7 +68,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginLatex
   //
-  // For this example, we will use an RGB pixel type so that we can process color
+  // For this example, we will use an RGB pixel type so that we can process
+  // color
   // images. Like most other ITK image iterator,
   // ImageRegionIteratorWithIndex class expects the image type as its
   // single template parameter.
@@ -87,7 +89,7 @@ int main( int argc, char *argv[] )
   typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ImageType::ConstPointer inputImage;
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer     reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
@@ -138,9 +140,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   ImageType::IndexType requestedIndex =
-                outputImage->GetRequestedRegion().GetIndex();
+    outputImage->GetRequestedRegion().GetIndex();
   ImageType::SizeType requestedSize =
-                outputImage->GetRequestedRegion().GetSize();
+    outputImage->GetRequestedRegion().GetSize();
 
   for ( outputIt.GoToBegin(); !outputIt.IsAtEnd(); ++outputIt)
     {
@@ -162,11 +164,12 @@ int main( int argc, char *argv[] )
     std::cout << "ExceptionObject caught !" << std::endl;
     std::cout << err << std::endl;
     return -1;
-}
+    }
 
   // Software Guide : BeginLatex
   //
-  // Let's run this example on the image \code{VisibleWomanEyeSlice.png} found in
+  // Let's run this example on the image \code{VisibleWomanEyeSlice.png} found
+  // in
   // the \code{Examples/Data} directory.
   // Figure~\ref{fig:ImageRegionIteratorWithIndexExample} shows how the original
   // image has been mirrored across its $x$-axis in the output.
@@ -175,7 +178,8 @@ int main( int argc, char *argv[] )
   // \includegraphics[width=0.44\textwidth]{VisibleWomanEyeSlice}
   // \includegraphics[width=0.44\textwidth]{ImageRegionIteratorWithIndexOutput}
   // \itkcaption[Using the ImageRegionIteratorWithIndex]{Results of using
-  // ImageRegionIteratorWithIndex to mirror an image across an axis. The original
+  // ImageRegionIteratorWithIndex to mirror an image across an axis. The
+  // original
   // image is shown at left.  The mirrored output is shown at right.}
   // \label{fig:ImageRegionIteratorWithIndexExample}
   // \end{figure}

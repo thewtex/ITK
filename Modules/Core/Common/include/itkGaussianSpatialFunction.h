@@ -40,7 +40,7 @@ namespace itk
 template< typename TOutput = double,
           unsigned int VImageDimension = 3,
           typename TInput = Point< double, VImageDimension > >
-class GaussianSpatialFunction:
+class GaussianSpatialFunction :
   public SpatialFunction< TOutput, VImageDimension, TInput >
 {
 public:
@@ -80,7 +80,8 @@ public:
 
 protected:
   GaussianSpatialFunction();
-  virtual ~GaussianSpatialFunction();
+  virtual
+  ~GaussianSpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

@@ -47,15 +47,15 @@ template<
   typename TPixelType,
   typename TCellTraits
   >
-class CellInterfaceVisitor:public LightObject
+class CellInterfaceVisitor : public LightObject
 {
 public:
   /** Standard class typedefs. */
-  typedef CellInterfaceVisitor                  Self;
-  typedef LightObject                           Superclass;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef SmartPointer< const Self >            ConstPointer;
-  typedef typename TCellTraits::CellIdentifier  CellIdentifier;
+  typedef CellInterfaceVisitor                 Self;
+  typedef LightObject                          Superclass;
+  typedef SmartPointer< Self >                 Pointer;
+  typedef SmartPointer< const Self >           ConstPointer;
+  typedef typename TCellTraits::CellIdentifier CellIdentifier;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(CellInterfaceVisitor, LightObject);
@@ -68,12 +68,16 @@ public:
   virtual int GetCellTopologyId() = 0;
 
 protected:
-  CellInterfaceVisitor() {}
-  ~CellInterfaceVisitor() {}
+  CellInterfaceVisitor() {
+  }
+
+  ~CellInterfaceVisitor() {
+  }
 
 private:
   CellInterfaceVisitor(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 
 /** \class CellInterfaceVisitorImplementation
@@ -108,14 +112,14 @@ template<
   typename CellTopology,
   typename UserVisitor
   >
-class CellInterfaceVisitorImplementation:
+class CellInterfaceVisitorImplementation :
   public CellInterfaceVisitor< TPixelType, TCellTraits >, public UserVisitor
 {
 public:
   /** Standard class typedefs. */
-  typedef CellInterfaceVisitorImplementation    Self;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef typename TCellTraits::CellIdentifier  CellIdentifier;
+  typedef CellInterfaceVisitorImplementation   Self;
+  typedef SmartPointer< Self >                 Pointer;
+  typedef typename TCellTraits::CellIdentifier CellIdentifier;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -125,23 +129,31 @@ public:
 
   /** Call the static method GetTopologyId for the CellTopology type that
    * we are templated over. */
-  virtual int GetCellTopologyId() { return CellTopology::GetTopologyId(); }
+  virtual int
+  GetCellTopologyId() {
+    return CellTopology::GetTopologyId();
+  }
 
   /** Call the method Visit from the UserVisitor template parameter that
    * this class inherits from.  I am my own gradpa... */
-  void VisitFromCell(CellIdentifier cellId, CellInterface< TPixelType,
-                                                           TCellTraits > *c)
+  void
+  VisitFromCell(CellIdentifier cellId, CellInterface< TPixelType,
+                                                      TCellTraits > *c)
   {
     this->UserVisitor::Visit(cellId, (CellTopology *)c);
   }
 
 protected:
-  CellInterfaceVisitorImplementation() {}
-  ~CellInterfaceVisitorImplementation() {}
+  CellInterfaceVisitorImplementation() {
+  }
+
+  ~CellInterfaceVisitorImplementation() {
+  }
 
 private:
   CellInterfaceVisitorImplementation(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
+
 };
 } // end namespace itk
 

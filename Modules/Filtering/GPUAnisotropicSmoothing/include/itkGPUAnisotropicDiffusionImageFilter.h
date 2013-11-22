@@ -65,8 +65,10 @@ public:
 protected:
   GPUAnisotropicDiffusionImageFilter() {
   }
+
   ~GPUAnisotropicDiffusionImageFilter() {
   }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Prepare for the iteration process. */

@@ -46,11 +46,10 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -59,7 +58,6 @@ int main( int argc, char ** argv )
     std::cerr << argv[0] << " inputImageFile  outputImageFile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -85,11 +83,10 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef short      PixelType;
-  const   unsigned int        Dimension = 2;
-  typedef itk::Image< PixelType, Dimension >    ImageType;
+  typedef short PixelType;
+  const   unsigned int Dimension = 2;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -107,10 +104,9 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -129,12 +125,10 @@ int main( int argc, char ** argv )
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-
 
   //  Software Guide : BeginLatex
   //
@@ -153,7 +147,6 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We can now connect these readers and writers to filters to create a
@@ -166,19 +159,19 @@ int main( int argc, char ** argv )
   writer->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  At first view, this may seem as a quite useless program, but it is
   //  actually implementing a powerful file format conversion tool! The
   //  execution of the pipeline is triggered by the invocation of the
-  //  \code{Update()} methods in one of the final objects. In this case, the final
+  //  \code{Update()} methods in one of the final objects. In this case, the
+  // final
   //  data pipeline object is the writer. It is a wise practice of defensive
-  //  programming to insert any \code{Update()} call inside a \code{try/catch} block
+  //  programming to insert any \code{Update()} call inside a \code{try/catch}
+  // block
   //  in case exceptions are thrown during the execution of the pipeline.
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   try
@@ -192,7 +185,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -216,7 +208,8 @@ int main( int argc, char ** argv )
   //  For historical reasons and as a convenience to the user, the
   //  \doxygen{ImageFileWriter} also has a Write() method that is aliased to
   //  the \code{Update()} method. You can in principle use either of them but
-  //  \code{Update()} is recommended since Write() may be deprecated in the future.
+  //  \code{Update()} is recommended since Write() may be deprecated in the
+  // future.
   //
   //  Software Guide : EndLatex
 

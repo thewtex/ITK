@@ -32,7 +32,7 @@ ConvertLabelMapFilter< TInputImage, TOutputImage >
 {
   this->AllocateOutputs();
 
-  TOutputImage * outputImage = this->GetOutput();
+  TOutputImage *      outputImage = this->GetOutput();
   const TInputImage * inputImage = this->GetInput();
 
   outputImage->SetBackgroundValue( inputImage->GetBackgroundValue() );
@@ -40,7 +40,7 @@ ConvertLabelMapFilter< TInputImage, TOutputImage >
   ProgressReporter progress( this, 0, inputImage->GetNumberOfLabelObjects() );
 
   for( typename TInputImage::ConstIterator it( inputImage );
-       ! it.IsAtEnd();
+       !it.IsAtEnd();
        ++it)
     {
     const LabelObjectType * labelObject = it.GetLabelObject();

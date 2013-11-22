@@ -40,7 +40,7 @@ namespace itk
 template< typename TImage >
 class LevelSetDenseImage :
   public DiscreteLevelSetImage< typename TImage::PixelType, TImage::ImageDimension >
-  {
+{
 public:
   typedef TImage                         ImageType;
   typedef typename ImageType::Pointer    ImagePointer;
@@ -69,16 +69,20 @@ public:
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
   virtual void SetImage( ImageType* iImage );
+
   itkGetModifiableObjectMacro(Image, ImageType );
 
-  /** Returns the value of the level set function at a given location inputIndex */
+  /** Returns the value of the level set function at a given location inputIndex
+    */
   virtual OutputType Evaluate( const InputType& inputIndex ) const;
+
   virtual void Evaluate( const InputType& inputIndex, LevelSetDataType& data ) const;
 
 protected:
   LevelSetDenseImage();
 
-  virtual ~LevelSetDenseImage();
+  virtual
+  ~LevelSetDenseImage();
 
   ImagePointer m_Image;
 
@@ -96,8 +100,9 @@ protected:
 private:
 
   LevelSetDenseImage( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
-  };
+  void operator =( const Self& );    // purposely not implemented
+
+};
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION

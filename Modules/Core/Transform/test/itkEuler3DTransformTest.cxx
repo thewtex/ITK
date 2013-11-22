@@ -20,7 +20,8 @@
 
 #include "itkEuler3DTransform.h"
 
-int itkEuler3DTransformTest(int, char *[] )
+int
+itkEuler3DTransformTest(int, char *[] )
 {
 
   std::cout << "==================================" << std::endl;
@@ -406,8 +407,8 @@ int itkEuler3DTransformTest(int, char *[] )
       {
       std::cout << "Test GetInverse(): ";
       TransformType::Pointer t_inv = TransformType::New();
-      const bool invSuccessful = t->GetInverse(t_inv);
-      if ( ! invSuccessful )
+      const bool             invSuccessful = t->GetInverse(t_inv);
+      if ( !invSuccessful )
         {
         std::cout << " [ FAILED ] " << std::endl;
         std::cout << "Inverse did not succeed." << std::endl;
@@ -433,7 +434,7 @@ int itkEuler3DTransformTest(int, char *[] )
       }
       {
       TransformType::Pointer tInverse = TransformType::New();
-      if(!t->GetInverse(tInverse))
+      if(!t->GetInverse(tInverse) )
         {
         std::cout << "Cannot create inverse transform" << std::endl;
         return EXIT_FAILURE;

@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectWriter.h"
 #include "itkFEMElement2DC0LinearQuadrilateralStress.h"
 
-int itkFEMElement2DC0LinearQuadrilateralStressTest(int argc, char *argv[])
+int
+itkFEMElement2DC0LinearQuadrilateralStressTest(int argc, char *argv[])
 {
   if(argc < 1)
     {

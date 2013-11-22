@@ -34,7 +34,7 @@ template<
   typename TScalar = double,   // Data type for scalars (e.g. float or double)
   unsigned int NDimensions = 3 >
 // Number of dimensions in the input space
-class ScalableAffineTransform:
+class ScalableAffineTransform :
   public AffineTransform< TScalar, NDimensions >
 {
 public:
@@ -90,20 +90,33 @@ public:
   /** Set the scale of the transform */
   virtual void SetScale(const InputVectorType & scale);
 
-  virtual void SetScaleComponent(const InputVectorType & scale)
-  { this->SetScale(scale); }
+  virtual void
+  SetScaleComponent(const InputVectorType & scale)
+  {
+    this->SetScale(scale);
+  }
 
   /** Set the scale of the transform */
   virtual void SetScale(const double scale[NDimensions]);
 
-  virtual void SetScaleComponent(const double scale[NDimensions])
-  { this->SetScale(scale); }
+  virtual void
+  SetScaleComponent(const double scale[NDimensions])
+  {
+    this->SetScale(scale);
+  }
 
   /** Get the scale of the transform */
-  virtual const double * GetScale() const
-  { return m_Scale; }
-  virtual const double * GetScaleComponent() const
-  { return m_Scale; }
+  virtual const double *
+  GetScale() const
+  {
+    return m_Scale;
+  }
+
+  virtual const double *
+  GetScaleComponent() const
+  {
+    return m_Scale;
+  }
 
   /** Get an inverse of this transform. */
   bool GetInverse(Self *inverse) const;
@@ -114,19 +127,19 @@ public:
   /** Set the matrix of the transform. The matrix should not include
    *  scale.
    *  \deprecated use SetMatrix instead */
-  itkLegacyMacro(void SetMatrixComponent(const MatrixType & matrix));
+  itkLegacyMacro(void SetMatrixComponent(const MatrixType &matrix) );
 
   /** Get matrix of the transform.
    * \deprecated use GetMatrix instead  */
-  itkLegacyMacro(const MatrixType & GetMatrixComponent() const);
+  itkLegacyMacro(const MatrixType &GetMatrixComponent() const);
 
   /** Set offset (origin) of the Transform.
    * \deprecated use SetTranslation instead. */
-  itkLegacyMacro(void SetOffsetComponent(const OffsetType & offset) );
+  itkLegacyMacro(void SetOffsetComponent(const OffsetType &offset) );
 
   /** Get offset of the transform
    * \deprecated use GetTranslation instead. */
-  itkLegacyMacro(const OffsetType & GetOffsetComponent(void) const );
+  itkLegacyMacro(const OffsetType &GetOffsetComponent(void) const );
 
 protected:
   /** Construct an ScalableAffineTransform object
@@ -146,13 +159,17 @@ protected:
   void ComputeMatrix();
 
   /** Destroy an ScalableAffineTransform object   */
-  virtual ~ScalableAffineTransform();
+  virtual
+  ~ScalableAffineTransform();
 
   /** Print contents of an ScalableAffineTransform */
   void PrintSelf(std::ostream & s, Indent indent) const;
 
-  void SetVarScale(const double *scale)
-  { for ( int i = 0; i < InputSpaceDimension; i++ ) { m_Scale[i] = scale[i]; } }
+  void
+  SetVarScale(const double *scale)
+  {
+    for ( int i = 0; i < InputSpaceDimension; i++ ) { m_Scale[i] = scale[i]; }
+  }
 
 private:
 

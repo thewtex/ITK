@@ -91,7 +91,7 @@ namespace itk
  * \endwiki
  */
 template< typename TFixedImage, typename TMovingImage >
-class MutualInformationImageToImageMetric:
+class MutualInformationImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -128,7 +128,7 @@ public:
   typedef typename TransformType::InputPointType       FixedImagePointType;
   typedef typename TransformType::OutputPointType      MovingImagePointType;
 
-  typedef KernelFunctionBase<double>                       KernelFunctionType;
+  typedef KernelFunctionBase<double> KernelFunctionType;
 
   /** Enum of the moving image dimension. */
   itkStaticConstMacro(MovingImageDimension, unsigned int,
@@ -193,7 +193,10 @@ public:
 
 protected:
   MutualInformationImageToImageMetric();
-  virtual ~MutualInformationImageToImageMetric() {}
+  virtual
+  ~MutualInformationImageToImageMetric() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -208,9 +211,13 @@ private:
   class SpatialSample
   {
 public:
-    SpatialSample():FixedImageValue(0.0), MovingImageValue(0.0)
-    { FixedImagePointValue.Fill(0.0); }
-    ~SpatialSample(){}
+    SpatialSample() : FixedImageValue(0.0), MovingImageValue(0.0)
+    {
+      FixedImagePointValue.Fill(0.0);
+    }
+
+    ~SpatialSample(){
+    }
 
     FixedImagePointType FixedImagePointValue;
     double              FixedImageValue;
@@ -248,7 +255,7 @@ public:
   void CalculateDerivatives(const FixedImagePointType &, DerivativeType &, TransformJacobianType &) const;
 
   typedef typename Superclass::CoordinateRepresentationType
-  CoordinateRepresentationType;
+    CoordinateRepresentationType;
   typedef CentralDifferenceImageFunction< MovingImageType,
                                           CoordinateRepresentationType > DerivativeFunctionType;
 

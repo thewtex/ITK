@@ -56,11 +56,9 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -70,11 +68,9 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkResampleImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -86,14 +82,13 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkAffineTransform.h"
 #include "itkNearestNeighborInterpolateImageFunction.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -118,23 +113,21 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  const unsigned int                               Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef unsigned char                            InputPixelType;
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< InputPixelType,  Dimension > InputImageType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -152,7 +145,6 @@ int main( int argc, char * argv[] )
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The transform type is typically defined using the image dimension
@@ -162,11 +154,9 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
-  typedef itk::AffineTransform< double, Dimension >  TransformType;
+  typedef itk::AffineTransform< double, Dimension > TransformType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -178,12 +168,10 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   TransformType::Pointer transform = TransformType::New();
   filter->SetTransform( transform );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -196,9 +184,8 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::NearestNeighborInterpolateImageFunction<
-                       InputImageType, double >  InterpolatorType;
+      InputImageType, double >  InterpolatorType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -209,12 +196,10 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
   filter->SetInterpolator( interpolator );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -230,7 +215,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetDefaultPixelValue( 0 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -252,13 +236,11 @@ int main( int argc, char * argv[] )
   filter->SetOutputOrigin( origin );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   InputImageType::DirectionType direction;
   direction.SetIdentity();
   filter->SetOutputDirection( direction );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -270,14 +252,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  InputImageType::SizeType   size;
+  InputImageType::SizeType size;
 
   size[0] = 300;  // number of pixels along X
   size[1] = 300;  // number of pixels along Y
 
   filter->SetSize( size );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -291,13 +272,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -338,7 +317,6 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   //  Software Guide : BeginLatex
   //
   //  Let's now set values on the transform. Note that the supplied transform
@@ -356,12 +334,10 @@ int main( int argc, char * argv[] )
   transform->Translate( translation );
   // Software Guide : EndCodeSnippet
 
-
   if( exampleAction == 1 )
     {
     writer->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -404,7 +380,6 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   //  Software Guide : BeginLatex
   //
   //  It is sometimes useful to intentionally set the default output value to
@@ -420,7 +395,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetDefaultPixelValue( 100 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -445,7 +419,6 @@ int main( int argc, char * argv[] )
     {
     writer->Update();
     }
-
 
   return EXIT_SUCCESS;
 }

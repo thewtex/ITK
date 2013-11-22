@@ -64,7 +64,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int VDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class GaussianOperator:
+class GaussianOperator :
   public NeighborhoodOperator< TPixel, VDimension, TAllocator >
 {
 public:
@@ -73,10 +73,11 @@ public:
   typedef NeighborhoodOperator< TPixel, VDimension, TAllocator > Superclass;
 
   /** Constructor. */
-  GaussianOperator():m_Variance(1), m_MaximumError(.01), m_MaximumKernelWidth(30) {}
+  GaussianOperator() : m_Variance(1), m_MaximumError(.01), m_MaximumKernelWidth(30) {
+  }
 
   /** Copy constructor */
-  GaussianOperator(const Self & other):
+  GaussianOperator(const Self & other) :
     NeighborhoodOperator< TPixel, VDimension, TAllocator >(other)
   {
     m_Variance = other.m_Variance;
@@ -85,11 +86,13 @@ public:
   }
 
   /** Assignment operator */
-  Self & operator=(const Self & other)
+  Self &
+  operator=(const Self & other)
   {
     if(this != &other)
       {
       Superclass::operator=(other);
+
       m_Variance = other.m_Variance;
       m_MaximumError = other.m_MaximumError;
       m_MaximumKernelWidth = other.m_MaximumKernelWidth;
@@ -98,7 +101,8 @@ public:
   }
 
   /** Sets the desired variance of the Gaussian kernel. */
-  void SetVariance(const double & variance)
+  void
+  SetVariance(const double & variance)
   {
     m_Variance = variance;
   }
@@ -107,7 +111,8 @@ public:
    * error is the difference between the area under the discrete Gaussian curve
    * and the area under the continuous Gaussian. Maximum error affects the
    * Gaussian operator size. The value must be between 0.0 and 1.0. */
-  void SetMaximumError(const double & max_error)
+  void
+  SetMaximumError(const double & max_error)
   {
     if ( max_error >= 1 || max_error <= 0 )
       {
@@ -118,29 +123,42 @@ public:
   }
 
   /** Returns the variance of the Gaussian (scale) for the operator. */
-  double GetVariance()
-  {  return m_Variance;  }
+  double
+  GetVariance()
+  {
+    return m_Variance;
+  }
 
   /** Returns the maximum error of the gaussian approximation.  Maximum error is
    * the difference between the area under the discrete Gaussian curve and the
    * area under the continuous Gaussian. Maximum error affects the Gaussian
    * operator size. */
-  double GetMaximumError()
-  {    return m_MaximumError;  }
+  double
+  GetMaximumError()
+  {
+    return m_MaximumError;
+  }
 
   /** Sets a limit for growth of the kernel.  Small maximum error values with
    *  large variances will yield very large kernel sizes.  This value can be
    *  used to truncate a kernel in such instances.  A warning will be given on
    *  truncation of the kernel. */
-  void SetMaximumKernelWidth(unsigned int n)
-  {    m_MaximumKernelWidth = n; }
+  void
+  SetMaximumKernelWidth(unsigned int n)
+  {
+    m_MaximumKernelWidth = n;
+  }
 
   /** Returns the maximum allowed kernel width. */
-  unsigned int GetMaximumKernelWidth() const
-  {   return m_MaximumKernelWidth; }
+  unsigned int
+  GetMaximumKernelWidth() const
+  {
+    return m_MaximumKernelWidth;
+  }
 
   /** Prints some debugging information. */
-  virtual void PrintSelf(std::ostream & os, Indent i) const
+  virtual void
+  PrintSelf(std::ostream & os, Indent i) const
   {
     os << i << "GaussianOperator { this=" << this
        << ", m_Variance = " << m_Variance
@@ -170,8 +188,11 @@ protected:
   CoefficientVector GenerateCoefficients();
 
   /** Arranges coefficients spatially in the memory buffer. */
-  void Fill(const CoefficientVector & coeff)
-  {    this->FillCenteredDirectional(coeff);  }
+  void
+  Fill(const CoefficientVector & coeff)
+  {
+    this->FillCenteredDirectional(coeff);
+  }
 
 private:
   /** Desired variance of the discrete Gaussian function. */
@@ -187,8 +208,12 @@ private:
   unsigned int m_MaximumKernelWidth;
 
   /** For compatibility with itkWarningMacro */
-  const char * GetNameOfClass()
-  { return "itkGaussianOperator"; }
+  const char *
+  GetNameOfClass()
+  {
+    return "itkGaussianOperator";
+  }
+
 };
 } // namespace itk
 

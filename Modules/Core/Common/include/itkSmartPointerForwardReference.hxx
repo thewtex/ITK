@@ -190,6 +190,7 @@ SmartPointerForwardReference< T >
     m_Pointer->UnRegister();
     }
 }
+
 } //end namespace
 
 #endif

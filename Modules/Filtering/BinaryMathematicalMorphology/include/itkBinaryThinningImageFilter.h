@@ -58,7 +58,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class BinaryThinningImageFilter:
+class BinaryThinningImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -130,7 +130,9 @@ public:
 
 protected:
   BinaryThinningImageFilter();
-  virtual ~BinaryThinningImageFilter() {}
+  virtual
+  ~BinaryThinningImageFilter() {
+  }
 
   /** Compute thinning Image. */
   void GenerateData();
@@ -144,6 +146,7 @@ protected:
 private:
   BinaryThinningImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };                                         // end of BinaryThinningImageFilter
                                            // class
 } //end namespace itk

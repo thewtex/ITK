@@ -18,7 +18,8 @@
 
 #include "itkAnalyzeImageIOTest.h"
 
-int itkAnalyzeImageIOTest2(int ac, char* av[])
+int
+itkAnalyzeImageIOTest2(int ac, char* av[])
 {
   //
   // first argument is passing in the writable directory to do all testing
@@ -36,14 +37,14 @@ int itkAnalyzeImageIOTest2(int ac, char* av[])
 
   char *arg1 = av[1];
   char *arg2 = av[2];
-  int test_success = 0;
-  typedef itk::Image<signed short, 3>         ImageType;
-  typedef ImageType::Pointer                  ImagePointer;
-  typedef itk::ImageFileReader< ImageType >   ImageReaderType;
+  int   test_success = 0;
+  typedef itk::Image<signed short, 3>       ImageType;
+  typedef ImageType::Pointer                ImagePointer;
+  typedef itk::ImageFileReader< ImageType > ImageReaderType;
 
   itk::AnalyzeImageIO::Pointer io = itk::AnalyzeImageIO::New();
-  ImageReaderType::Pointer imageReader = ImageReaderType::New();
-  ImagePointer input;
+  ImageReaderType::Pointer     imageReader = ImageReaderType::New();
+  ImagePointer                 input;
 
   try
     {

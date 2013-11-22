@@ -49,73 +49,104 @@ public:
 
   /** Constructor.  */
   WeakPointer ()
-  { m_Pointer = 0; }
+  {
+    m_Pointer = 0;
+  }
 
   /** Copy constructor.  */
-  WeakPointer (const WeakPointer< ObjectType > & p):m_Pointer(p.m_Pointer) {}
+  WeakPointer (const WeakPointer< ObjectType > & p) : m_Pointer(p.m_Pointer) {
+  }
 
   /** Constructor to pointer p.  */
-  WeakPointer (ObjectType *p):m_Pointer(p) {}
+  WeakPointer (ObjectType *p) : m_Pointer(p) {
+  }
 
   /** Destructor.  */
   ~WeakPointer ()
-  { m_Pointer = 0; }
+  {
+    m_Pointer = 0;
+  }
 
   /** Overload operator ->.  */
-  ObjectType * operator->() const
-  { return m_Pointer; }
+  ObjectType *
+  operator->() const
+  {
+    return m_Pointer;
+  }
 
   /** Return pointer to object.  */
   operator ObjectType *() const
-        { return m_Pointer; }
+                { return m_Pointer; }
 
   /** Template comparison operators. */
   template< typename R >
-  bool operator==(R r) const
+  bool
+  operator==(R r) const
   {
     return ( m_Pointer == (ObjectType *)r );
   }
 
   template< typename R >
-  bool operator!=(R r) const
+  bool
+  operator!=(R r) const
   {
     return ( m_Pointer != (ObjectType *)r );
   }
 
   /** Access function to pointer. */
-  ObjectType * GetPointer() const
-  { return m_Pointer; }
+  ObjectType *
+  GetPointer() const
+  {
+    return m_Pointer;
+  }
 
   /** Comparison of pointers. Less than comparison.  */
-  bool operator<(const WeakPointer & r) const
-  { return (void *)m_Pointer < (void *)r.m_Pointer; }
+  bool
+  operator<(const WeakPointer & r) const
+  {
+    return (void *)m_Pointer < (void *)r.m_Pointer;
+  }
 
   /** Comparison of pointers. Greater than comparison.  */
-  bool operator>(const WeakPointer & r) const
-  { return (void *)m_Pointer > (void *)r.m_Pointer; }
+  bool
+  operator>(const WeakPointer & r) const
+  {
+    return (void *)m_Pointer > (void *)r.m_Pointer;
+  }
 
   /** Comparison of pointers. Less than or equal to comparison.  */
-  bool operator<=(const WeakPointer & r) const
-  { return (void *)m_Pointer <= (void *)r.m_Pointer; }
+  bool
+  operator<=(const WeakPointer & r) const
+  {
+    return (void *)m_Pointer <= (void *)r.m_Pointer;
+  }
 
   /** Comparison of pointers. Greater than or equal to comparison.  */
-  bool operator>=(const WeakPointer & r) const
-  { return (void *)m_Pointer >= (void *)r.m_Pointer; }
+  bool
+  operator>=(const WeakPointer & r) const
+  {
+    return (void *)m_Pointer >= (void *)r.m_Pointer;
+  }
 
   /** Overload operator assignment.  */
   // cppcheck-suppress operatorEqVarError
-  WeakPointer & operator=(const WeakPointer & r)
-  { return this->operator=( r.GetPointer() ); }
+  WeakPointer &
+  operator=(const WeakPointer & r)
+  {
+    return this->operator=( r.GetPointer() );
+  }
 
   /** Overload operator assignment.  */
-  WeakPointer & operator=(ObjectType *r)
+  WeakPointer &
+  operator=(ObjectType *r)
   {
     m_Pointer = r;
     return *this;
   }
 
   /** Function to print object pointed to.  */
-  ObjectType * Print(std::ostream & os) const
+  ObjectType *
+  Print(std::ostream & os) const
   {
     if( this->IsNull() )
       {
@@ -135,11 +166,13 @@ private:
 };
 
 template< typename T >
-std::ostream & operator<<(std::ostream & os, WeakPointer< T > p)
+std::ostream &
+operator<<(std::ostream & os, WeakPointer< T > p)
 {
   p.Print(os);
   return os;
 }
+
 } // end namespace itk
 
 #endif

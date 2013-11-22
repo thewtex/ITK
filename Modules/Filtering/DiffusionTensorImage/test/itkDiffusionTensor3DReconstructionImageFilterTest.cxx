@@ -19,18 +19,19 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include <iostream>
 
-int itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
+int
+itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
 {
-  typedef short int          ReferencePixelType;
-  typedef short int          GradientPixelType;
-  typedef double             TensorPrecisionType;
+  typedef short int ReferencePixelType;
+  typedef short int GradientPixelType;
+  typedef double    TensorPrecisionType;
 
   int result(EXIT_SUCCESS);
 
   for(unsigned pass = 0; pass < 2; pass++)
     {
     typedef itk::DiffusionTensor3DReconstructionImageFilter<
-      ReferencePixelType, GradientPixelType, TensorPrecisionType >
+        ReferencePixelType, GradientPixelType, TensorPrecisionType >
       TensorReconstructionImageFilterType;
     typedef TensorReconstructionImageFilterType::GradientImageType GradientImageType;
     TensorReconstructionImageFilterType::Pointer tensorReconstructionFilter =
@@ -43,46 +44,44 @@ int itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
     typedef ReferenceImageType::RegionType ReferenceRegionType;
     typedef ReferenceRegionType::IndexType ReferenceIndexType;
     typedef ReferenceRegionType::SizeType  ReferenceSizeType;
-    ReferenceSizeType  sizeReferenceImage  = {{ 4, 4, 4 }};
-    ReferenceIndexType indexReferenceImage = {{ 0, 0, 0 }};
-    ReferenceRegionType     regionReferenceImage;
+    ReferenceSizeType   sizeReferenceImage  = {{ 4, 4, 4 }};
+    ReferenceIndexType  indexReferenceImage = {{ 0, 0, 0 }};
+    ReferenceRegionType regionReferenceImage;
     regionReferenceImage.SetSize(  sizeReferenceImage );
     regionReferenceImage.SetIndex( indexReferenceImage);
     referenceImage->SetRegions( regionReferenceImage );
     referenceImage->Allocate();
     referenceImage->FillBuffer( 100 );
 
-
     const unsigned int numberOfGradientImages = 6;
 
     // Assign gradient directions
     //
-    double  gradientDirections[6][3] =
+    double gradientDirections[6][3] =
       {
-        {-1.000000,   0.000000  ,      0.000000},
-        {-0.166000,   0.986000  ,      0.000000},
-        {0.110000 ,   0.664000  ,      0.740000},
-        {-0.901000,   -0.419000 ,      -0.110000},
-        {0.169000 ,   -0.601000 ,      0.781000},
-        {0.815000 ,   -0.386000 ,      0.433000}
+            {-1.000000,   0.000000  ,      0.000000},
+            {-0.166000,   0.986000  ,      0.000000},
+            {0.110000 ,   0.664000  ,      0.740000},
+            {-0.901000,   -0.419000 ,      -0.110000},
+            {0.169000 ,   -0.601000 ,      0.781000},
+            {0.815000 ,   -0.386000 ,      0.433000}
       };
-
 
     // Create gradient images
     //
-    typedef GradientImageType::Pointer GradientImagePointer;
+    typedef GradientImageType::Pointer                             GradientImagePointer;
     typedef TensorReconstructionImageFilterType::GradientImageType GradientImageType;
-    typedef GradientImageType::RegionType  GradientRegionType;
-    typedef GradientRegionType::IndexType  GradientIndexType;
-    typedef GradientRegionType::SizeType   GradientSizeType;
-    typedef ReferenceRegionType::IndexType ReferenceIndexType;
+    typedef GradientImageType::RegionType                          GradientRegionType;
+    typedef GradientRegionType::IndexType                          GradientIndexType;
+    typedef GradientRegionType::SizeType                           GradientSizeType;
+    typedef ReferenceRegionType::IndexType                         ReferenceIndexType;
 
     for( unsigned int i=0; i < numberOfGradientImages; i++ )
       {
       GradientImageType::Pointer gradientImage = GradientImageType::New();
-      GradientSizeType  sizeGradientImage  = {{ 4, 4, 4 }};
-      GradientIndexType indexGradientImage = {{ 0, 0, 0 }};
-      GradientRegionType     regionGradientImage;
+      GradientSizeType           sizeGradientImage  = {{ 4, 4, 4 }};
+      GradientIndexType          indexGradientImage = {{ 0, 0, 0 }};
+      GradientRegionType         regionGradientImage;
       regionGradientImage.SetSize(  sizeGradientImage );
       regionGradientImage.SetIndex( indexGradientImage);
       gradientImage->SetRegions( regionGradientImage );
@@ -94,7 +93,7 @@ int itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
       while( !git.IsAtEnd() )
         {
         GradientPixelType fancyGradientValue =
-          static_cast< short int >((i+1) * (i+1) * (i+1));
+          static_cast< short int >( (i+1) * (i+1) * (i+1) );
         git.Set( fancyGradientValue );
         ++git;
         }
@@ -152,29 +151,29 @@ int itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
     for( unsigned int i=0; i < numberOfGradientImages; i++ )
       {
       const GradientImageType *
-        gradImage(tensorReconstructionFilter->GetGradientImage(i));
+      gradImage(tensorReconstructionFilter->GetGradientImage(i) );
       std::cout << "Gradient image " << i << " pixel : "
                 << gradImage->GetPixel(gradientImageIndex)
                 << std::endl;
       }
 
-    double  expectedResult[3][3] =
+    double expectedResult[3][3] =
       {
-        {4.60517, -2.6698, -8.4079},
-        {-2.6698, 1.56783, 0.900034},
-        {-8.4079, 0.900034, 2.62504}
+            {4.60517, -2.6698, -8.4079},
+            {-2.6698, 1.56783, 0.900034},
+            {-8.4079, 0.900034, 2.62504}
       };
 
     std::cout << std::endl << "Reconstructed tensor : " << std::endl;
-    bool passed = true;
+    bool   passed = true;
     double precision = 0.0001;
     for( unsigned int i = 0; i<3; i++ )
       {
       std::cout << "\t";
       for( unsigned int j = 0; j<3; j++ )
         {
-        std::cout << tensorImage->GetPixel(tensorImageIndex)(i,j) << " ";
-        if( (vnl_math_abs(tensorImage->GetPixel(tensorImageIndex)(i,j) - expectedResult[i][j])) > precision )
+        std::cout << tensorImage->GetPixel (tensorImageIndex)(i,j) << " ";
+        if( (vnl_math_abs(tensorImage->GetPixel (tensorImageIndex)(i,j) - expectedResult[i][j]) ) > precision )
           {
           passed = false;
           }

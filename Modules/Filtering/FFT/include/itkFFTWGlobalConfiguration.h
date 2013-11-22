@@ -67,170 +67,277 @@ namespace itk
 
 class WisdomFilenameGeneratorBase
 {
-  public:
-    //The baseCacheDirectory from which to build the cache hierarchy
-    virtual std::string GenerateWisdomFilename(const std::string baseCacheDirectory) const = 0;
-    WisdomFilenameGeneratorBase() {};
-    virtual ~WisdomFilenameGeneratorBase() {};
-  private:
-};
-
-class ManualWisdomFilenameGenerator: public WisdomFilenameGeneratorBase
-{
-  public:
-    ManualWisdomFilenameGenerator(const std::string wfn): m_WisdomFilename(wfn) { };
-    void SetWisdomFilename(const std::string wfn)
-      {
-      this->m_WisdomFilename=wfn;
-      }
-    virtual std::string GenerateWisdomFilename(const std::string itkNotUsed(baseCacheDirectory) ) const
-      {
-       return this->m_WisdomFilename;
-      }
-  private:
-    std::string m_WisdomFilename;
-};
-
-class SimpleWisdomFilenameGenerator: public WisdomFilenameGeneratorBase
-{
-  public:
-    virtual std::string GenerateWisdomFilename(const std::string baseCacheDirectory) const
-      {
-       return baseCacheDirectory+FFTWPathSep+".itksimple.wisdom";
-      }
-};
-
-class HostnameWisdomFilenameGenerator: public WisdomFilenameGeneratorBase
-{
-  public:
-    virtual std::string GenerateWisdomFilename(const std::string baseCacheDirectory) const
-      {
-
-      itksys::SystemInformation hostInfo;
-      hostInfo.RunOSCheck();
-      return baseCacheDirectory+FFTWPathSep + ".itkwisdomfftw"+FFTWPathSep+".itk_"+hostInfo.GetHostname()+".wisdom";
-      }
-};
-
-class HardwareWisdomFilenameGenerator: public WisdomFilenameGeneratorBase
-{
 public:
-    HardwareWisdomFilenameGenerator():
-      m_UseOSName(true),
-      m_UseOSRelease(false),
-      m_UseOSVersion(false),
-      m_UseOSPlatform(true),
-      m_UseOSBitSize(true),
-      m_UseNumberOfProcessors(true),
-      m_UseVendorString(true),
-      m_UseVendorID(false),
-      m_UseTypeID(true),
-      m_UseFamilyID(true),
-      m_UseModelID(true),
-      m_UseSteppingCode(true)
-    {}
+  //The baseCacheDirectory from which to build the cache hierarchy
+  virtual std::string GenerateWisdomFilename(const std::string baseCacheDirectory) const = 0;
 
-    virtual std::string GenerateWisdomFilename(const std::string baseCacheDirectory) const
-      {
-      //Now build the hardware string by system interogation
-      itksys::SystemInformation hardwareInfo;
-      hardwareInfo.RunCPUCheck();
-      hardwareInfo.RunOSCheck();
-      hardwareInfo.RunMemoryCheck();
-      std::stringstream OSD("");
+  WisdomFilenameGeneratorBase() {
+  }
 
-      if( this->m_UseOSName )
-        {
-        OSD << hardwareInfo.GetOSName() << "_";
-        }
-      if( this->m_UseOSRelease )
-        {
-        OSD << hardwareInfo.GetOSRelease() << "_";
-        }
-      if( this->m_UseOSVersion )
-        {
-        OSD << hardwareInfo.GetOSVersion() << "_";
-        }
-      if( this->m_UseOSPlatform )
-        {
-        OSD << hardwareInfo.GetOSPlatform() << "_";
-        }
-      if( this->m_UseOSBitSize )
-        {
-        const char * const bitsizeString=( hardwareInfo.Is64Bits() ) ? "64_":"32_";
-        OSD << bitsizeString;
-        }
-      if( this->m_UseNumberOfProcessors )
-        {
-        OSD << hardwareInfo.GetNumberOfLogicalCPU() <<"x"<< hardwareInfo.GetNumberOfPhysicalCPU() << "_";
-        }
-      if( this->m_UseVendorString )
-        {
-        OSD << hardwareInfo.GetVendorString() << "_";
-        }
-      if( this->m_UseVendorID )
-        {
-        OSD << hardwareInfo.GetVendorID() << "_";
-        }
-      if( this->m_UseTypeID )
-        {
-        OSD << hardwareInfo.GetTypeID() << "_";
-        }
-      if( this->m_UseFamilyID )
-        {
-        OSD << hardwareInfo.GetFamilyID() << "_";
-        }
-      if( this->m_UseModelID )
-        {
-        OSD << hardwareInfo.GetModelID() << "_";
-        }
-      if( this->m_UseSteppingCode )
-        {
-        OSD << hardwareInfo.GetSteppingCode();
-        }
-      OSD << ".wisdom";
-      std::string noSpaceStr=OSD.str();
-      //Now remove spaces
-      noSpaceStr.erase(std::remove_if(noSpaceStr.begin(), noSpaceStr.end(),::isspace), noSpaceStr.end());
-      return baseCacheDirectory + FFTWPathSep + ".itkwisdomfftw" + FFTWPathSep + noSpaceStr;
-      }
-    void SetUseOSName(const bool flag) { this->m_UseOSName=flag; }
-    void SetUseOSRelease(const bool flag) { this->m_UseOSRelease=flag; }
-    void SetUseOSVersion(const bool flag) { this->m_UseOSVersion=flag; }
-    void SetUseOSPlatform(const bool flag) { this->m_UseOSPlatform=flag; }
-    void SetUseOSBitSize(const bool flag) { this->m_UseOSBitSize=flag; }
-    void SetUseNumberOfProcessors(const bool flag) { this->m_UseNumberOfProcessors=flag; }
-    void SetUseVendorString(const bool flag) { this->m_UseVendorString=flag; }
-    void SetUseTypeID(const bool flag) { this->m_UseTypeID=flag; }
-    void SetUseFamilyID(const bool flag) { this->m_UseFamilyID=flag; }
-    void SetUseModelID(const bool flag) { this->m_UseModelID=flag; }
-    void SetUseSteppingCode(const bool flag) { this->m_UseSteppingCode=flag; }
-
-    bool GetUseOSName() const { return this->m_UseOSName; }
-    bool GetUseOSRelease() const { return this->m_UseOSRelease; }
-    bool GetUseOSVersion() const { return this->m_UseOSVersion; }
-    bool GetUseOSPlatform() const { return this->m_UseOSPlatform; }
-    bool GetUseOSBitSize() const { return this->m_UseOSBitSize; }
-    bool GetUseNumberOfProcessors() const { return this->m_UseNumberOfProcessors; }
-    bool GetUseVendorString() const { return this->m_UseVendorString; }
-    bool GetUseTypeID() const { return this->m_UseTypeID; }
-    bool GetUseFamilyID() const { return this->m_UseFamilyID; }
-    bool GetUseModelID() const { return this->m_UseModelID; }
-    bool GetUseSteppingCode() const { return this->m_UseSteppingCode; }
+  virtual
+  ~WisdomFilenameGeneratorBase() {
+  }
 
 private:
-    bool m_UseOSName;
-    bool m_UseOSRelease;
-    bool m_UseOSVersion;
-    bool m_UseOSPlatform;
-    bool m_UseOSBitSize;
-    bool m_UseNumberOfProcessors;
-    bool m_UseVendorString;
-    bool m_UseVendorID;
-    bool m_UseTypeID;
-    bool m_UseFamilyID;
-    bool m_UseModelID;
-    bool m_UseSteppingCode;
+};
+
+class ManualWisdomFilenameGenerator : public WisdomFilenameGeneratorBase
+{
+public:
+  ManualWisdomFilenameGenerator(const std::string wfn) : m_WisdomFilename(wfn) {
+  }
+
+  void
+  SetWisdomFilename(const std::string wfn)
+  {
+    this->m_WisdomFilename=wfn;
+  }
+
+  virtual std::string
+  GenerateWisdomFilename(const std::string itkNotUsed(baseCacheDirectory) ) const
+  {
+    return this->m_WisdomFilename;
+  }
+
+private:
+  std::string m_WisdomFilename;
+};
+
+class SimpleWisdomFilenameGenerator : public WisdomFilenameGeneratorBase
+{
+public:
+  virtual std::string
+  GenerateWisdomFilename(const std::string baseCacheDirectory) const
+  {
+    return baseCacheDirectory+FFTWPathSep+".itksimple.wisdom";
+  }
+
+};
+
+class HostnameWisdomFilenameGenerator : public WisdomFilenameGeneratorBase
+{
+public:
+  virtual std::string
+  GenerateWisdomFilename(const std::string baseCacheDirectory) const
+  {
+
+    itksys::SystemInformation hostInfo;
+
+    hostInfo.RunOSCheck();
+    return baseCacheDirectory+FFTWPathSep + ".itkwisdomfftw"+FFTWPathSep+".itk_"+hostInfo.GetHostname()+".wisdom";
+  }
+
+};
+
+class HardwareWisdomFilenameGenerator : public WisdomFilenameGeneratorBase
+{
+public:
+  HardwareWisdomFilenameGenerator() :
+    m_UseOSName(true),
+    m_UseOSRelease(false),
+    m_UseOSVersion(false),
+    m_UseOSPlatform(true),
+    m_UseOSBitSize(true),
+    m_UseNumberOfProcessors(true),
+    m_UseVendorString(true),
+    m_UseVendorID(false),
+    m_UseTypeID(true),
+    m_UseFamilyID(true),
+    m_UseModelID(true),
+    m_UseSteppingCode(true)
+  {
+  }
+
+  virtual std::string
+  GenerateWisdomFilename(const std::string baseCacheDirectory) const
+  {
+    //Now build the hardware string by system interogation
+    itksys::SystemInformation hardwareInfo;
+
+    hardwareInfo.RunCPUCheck();
+    hardwareInfo.RunOSCheck();
+    hardwareInfo.RunMemoryCheck();
+    std::stringstream OSD("");
+
+    if( this->m_UseOSName )
+      {
+      OSD << hardwareInfo.GetOSName() << "_";
+      }
+    if( this->m_UseOSRelease )
+      {
+      OSD << hardwareInfo.GetOSRelease() << "_";
+      }
+    if( this->m_UseOSVersion )
+      {
+      OSD << hardwareInfo.GetOSVersion() << "_";
+      }
+    if( this->m_UseOSPlatform )
+      {
+      OSD << hardwareInfo.GetOSPlatform() << "_";
+      }
+    if( this->m_UseOSBitSize )
+      {
+      const char * const bitsizeString=( hardwareInfo.Is64Bits() ) ? "64_" : "32_";
+      OSD << bitsizeString;
+      }
+    if( this->m_UseNumberOfProcessors )
+      {
+      OSD << hardwareInfo.GetNumberOfLogicalCPU() <<"x"<< hardwareInfo.GetNumberOfPhysicalCPU() << "_";
+      }
+    if( this->m_UseVendorString )
+      {
+      OSD << hardwareInfo.GetVendorString() << "_";
+      }
+    if( this->m_UseVendorID )
+      {
+      OSD << hardwareInfo.GetVendorID() << "_";
+      }
+    if( this->m_UseTypeID )
+      {
+      OSD << hardwareInfo.GetTypeID() << "_";
+      }
+    if( this->m_UseFamilyID )
+      {
+      OSD << hardwareInfo.GetFamilyID() << "_";
+      }
+    if( this->m_UseModelID )
+      {
+      OSD << hardwareInfo.GetModelID() << "_";
+      }
+    if( this->m_UseSteppingCode )
+      {
+      OSD << hardwareInfo.GetSteppingCode();
+      }
+    OSD << ".wisdom";
+    std::string noSpaceStr=OSD.str();
+    //Now remove spaces
+    noSpaceStr.erase(std::remove_if(noSpaceStr.begin(), noSpaceStr.end(),::isspace), noSpaceStr.end() );
+    return baseCacheDirectory + FFTWPathSep + ".itkwisdomfftw" + FFTWPathSep + noSpaceStr;
+  }
+
+  void
+  SetUseOSName(const bool flag) {
+    this->m_UseOSName=flag;
+  }
+
+  void
+  SetUseOSRelease(const bool flag) {
+    this->m_UseOSRelease=flag;
+  }
+
+  void
+  SetUseOSVersion(const bool flag) {
+    this->m_UseOSVersion=flag;
+  }
+
+  void
+  SetUseOSPlatform(const bool flag) {
+    this->m_UseOSPlatform=flag;
+  }
+
+  void
+  SetUseOSBitSize(const bool flag) {
+    this->m_UseOSBitSize=flag;
+  }
+
+  void
+  SetUseNumberOfProcessors(const bool flag) {
+    this->m_UseNumberOfProcessors=flag;
+  }
+
+  void
+  SetUseVendorString(const bool flag) {
+    this->m_UseVendorString=flag;
+  }
+
+  void
+  SetUseTypeID(const bool flag) {
+    this->m_UseTypeID=flag;
+  }
+
+  void
+  SetUseFamilyID(const bool flag) {
+    this->m_UseFamilyID=flag;
+  }
+
+  void
+  SetUseModelID(const bool flag) {
+    this->m_UseModelID=flag;
+  }
+
+  void
+  SetUseSteppingCode(const bool flag) {
+    this->m_UseSteppingCode=flag;
+  }
+
+  bool
+  GetUseOSName() const {
+    return this->m_UseOSName;
+  }
+
+  bool
+  GetUseOSRelease() const {
+    return this->m_UseOSRelease;
+  }
+
+  bool
+  GetUseOSVersion() const {
+    return this->m_UseOSVersion;
+  }
+
+  bool
+  GetUseOSPlatform() const {
+    return this->m_UseOSPlatform;
+  }
+
+  bool
+  GetUseOSBitSize() const {
+    return this->m_UseOSBitSize;
+  }
+
+  bool
+  GetUseNumberOfProcessors() const {
+    return this->m_UseNumberOfProcessors;
+  }
+
+  bool
+  GetUseVendorString() const {
+    return this->m_UseVendorString;
+  }
+
+  bool
+  GetUseTypeID() const {
+    return this->m_UseTypeID;
+  }
+
+  bool
+  GetUseFamilyID() const {
+    return this->m_UseFamilyID;
+  }
+
+  bool
+  GetUseModelID() const {
+    return this->m_UseModelID;
+  }
+
+  bool
+  GetUseSteppingCode() const {
+    return this->m_UseSteppingCode;
+  }
+
+private:
+  bool m_UseOSName;
+  bool m_UseOSRelease;
+  bool m_UseOSVersion;
+  bool m_UseOSPlatform;
+  bool m_UseOSBitSize;
+  bool m_UseNumberOfProcessors;
+  bool m_UseVendorString;
+  bool m_UseVendorID;
+  bool m_UseTypeID;
+  bool m_UseFamilyID;
+  bool m_UseModelID;
+  bool m_UseSteppingCode;
 };
 
 /**
@@ -251,7 +358,7 @@ private:
  *
  * \ingroup ITKFFT
  */
-class FFTWGlobalConfiguration: public Object
+class FFTWGlobalConfiguration : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -265,7 +372,8 @@ public:
   itkTypeMacro(FFTWGlobalConfiguration, Object);
 
   /** Get the mutex that protects calls to FFTW functions. */
-  static SimpleFastMutexLock & GetLockMutex()
+  static SimpleFastMutexLock &
+  GetLockMutex()
   {
     return GetInstance()->m_Lock;
   }
@@ -274,11 +382,14 @@ public:
    * initial state. If a new wisdom is available, the wisdoms
    * may be written to the cache file
    */
-  static void SetNewWisdomAvailable( const bool & v )
+  static void
+  SetNewWisdomAvailable( const bool & v )
   {
     GetInstance()->m_NewWisdomAvailable = v;
   }
-  static bool GetNewWisdomAvailable()
+
+  static bool
+  GetNewWisdomAvailable()
   {
     return GetInstance()->m_NewWisdomAvailable;
   }
@@ -291,26 +402,32 @@ public:
    * \param v One of the FFTW planner rigor flags FFTW_ESTIMATE,
    * FFTW_MEASURE, FFTW_PATIENT, FFTW_EXHAUSTIVE
    */
-  static void SetPlanRigor( const int & v )
+  static void
+  SetPlanRigor( const int & v )
   {
     // use that method to check the value
     GetPlanRigorName( v );
     GetInstance()->m_PlanRigor = v;
   }
 
-  static int GetPlanRigor()
+  static int
+  GetPlanRigor()
   {
     return GetInstance()->m_PlanRigor;
   }
-  static void SetPlanRigor( const std::string & name )
+
+  static void
+  SetPlanRigor( const std::string & name )
   {
     SetPlanRigor( GetPlanRigorValue( name ) );
   }
 
-  /** Translate plan rigor name to value. An exception is sent if the name is not valid. */
+  /** Translate plan rigor name to value. An exception is sent if the name is
+    not valid. */
   static int GetPlanRigorValue( const std::string & name );
 
-  /** Translate plan rigor value to name. An exception is sent if the value is not valid. */
+  /** Translate plan rigor value to name. An exception is sent if the value is
+    not valid. */
   static std::string GetPlanRigorName( const int & value );
 
   /**
@@ -320,12 +437,14 @@ public:
    * then the environmental setting overides default settings.
    * \param v true will create a wisdom file in the location
    */
-  static void SetReadWisdomCache( const bool & v )
+  static void
+  SetReadWisdomCache( const bool & v )
   {
     GetInstance()->m_ReadWisdomCache = v;
   }
 
-  static bool GetReadWisdomCache()
+  static bool
+  GetReadWisdomCache()
   {
     return GetInstance()->m_ReadWisdomCache;
   }
@@ -337,12 +456,14 @@ public:
    * then the environmental setting overides default settings.
    * \param v true will create a wisdom file in the location
    */
-  static void SetWriteWisdomCache( const bool & v )
+  static void
+  SetWriteWisdomCache( const bool & v )
   {
     GetInstance()->m_WriteWisdomCache = v;
   }
 
-  static bool GetWriteWisdomCache()
+  static bool
+  GetWriteWisdomCache()
   {
     return GetInstance()->m_WriteWisdomCache;
   }
@@ -354,12 +475,14 @@ public:
    * will override the default behavior.
    * \param v the path to the base directory name
    */
-  static void SetWisdomCacheBase( const std::string & v )
+  static void
+  SetWisdomCacheBase( const std::string & v )
   {
     GetInstance()->m_WisdomCacheBase = v;
   }
 
-  static std::string GetWisdomCacheBase()
+  static std::string
+  GetWisdomCacheBase()
   {
     return GetInstance()->m_WisdomCacheBase;
   }
@@ -395,22 +518,28 @@ public:
 
   /** Import or export some wisdom for the type double to/from a file */
   static bool ImportWisdomFileDouble( const std::string &fname );
+
   static bool ExportWisdomFileDouble( const std::string &fname );
 
   /** Import or export some wisdom for the type float to/from a file */
   static bool ImportWisdomFileFloat( const std::string &fname );
+
   static bool ExportWisdomFileFloat( const std::string &fname );
 
-  /** Import or export some wisdom for the type double to/from the default file */
+  /** Import or export some wisdom for the type double to/from the default file
+    */
   static bool ImportDefaultWisdomFileDouble();
+
   static bool ExportDefaultWisdomFileDouble();
 
-  /** Import or export some wisdom for the type float to/from the default file */
+  /** Import or export some wisdom for the type float to/from the default file
+    */
   static bool ImportDefaultWisdomFileFloat();
+
   static bool ExportDefaultWisdomFileFloat();
 
 private:
-  FFTWGlobalConfiguration(); //This will process env variables
+  FFTWGlobalConfiguration();  //This will process env variables
   ~FFTWGlobalConfiguration(); //This will write cache file if requested.
 
   /** Return the singleton instance with no reference counting. */
@@ -423,17 +552,17 @@ private:
   itkFactorylessNewMacro(Self);
 
   FFTWGlobalConfiguration(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);          //purposely not implemented
 
-  static Pointer                m_Instance;
-  static SimpleFastMutexLock    m_CreationLock;
+  static Pointer             m_Instance;
+  static SimpleFastMutexLock m_CreationLock;
 
-  SimpleFastMutexLock           m_Lock;
-  bool                          m_NewWisdomAvailable;
-  int                           m_PlanRigor;
-  bool                          m_WriteWisdomCache;
-  bool                          m_ReadWisdomCache;
-  std::string                   m_WisdomCacheBase;
+  SimpleFastMutexLock m_Lock;
+  bool                m_NewWisdomAvailable;
+  int                 m_PlanRigor;
+  bool                m_WriteWisdomCache;
+  bool                m_ReadWisdomCache;
+  std::string         m_WisdomCacheBase;
   //m_WriteWisdomCache Controls the behavior of default
   //wisdom file creation policies.
   WisdomFilenameGeneratorBase * m_WisdomFilenameGenerator;

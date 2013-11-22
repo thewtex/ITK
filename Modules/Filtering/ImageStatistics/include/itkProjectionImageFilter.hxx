@@ -375,6 +375,7 @@ ProjectionImageFilter< TInputImage, TOutputImage, TAccumulator >::PrintSelf(std:
 
   os << indent << "ProjectionDimension: " << m_ProjectionDimension << std::endl;
 }
+
 } // end namespace itk
 
 #endif

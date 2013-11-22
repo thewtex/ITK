@@ -29,7 +29,8 @@
 #include "itkGDCMImageIO.h"
 #include "itkGDCMSeriesFileNames.h"
 
-int itkGDCMSeriesReadImageWrite( int argc, char* argv[] )
+int
+itkGDCMSeriesReadImageWrite( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -38,18 +39,18 @@ int itkGDCMSeriesReadImageWrite( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::Image<unsigned short,3>            ImageType;
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
-  typedef itk::GDCMImageIO                        ImageIOType;
-  typedef itk::GDCMSeriesFileNames                SeriesFileNames;
+  typedef itk::Image<unsigned short,3>        ImageType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
+  typedef itk::GDCMImageIO                    ImageIOType;
+  typedef itk::GDCMSeriesFileNames            SeriesFileNames;
 
-  ImageIOType::Pointer gdcmIO = ImageIOType::New();
+  ImageIOType::Pointer     gdcmIO = ImageIOType::New();
   SeriesFileNames::Pointer it = SeriesFileNames::New();
 
   // Get the DICOM filenames from the directory
   // First add a restriction *before* selecting the input directory
   // since SetInputDirectory has a side effect of executing
-  gdcm::SerieHelper *sh = it->GetSeriesHelper( );
+  gdcm::SerieHelper *sh = it->GetSeriesHelper();
   sh->AddRestriction(0x0010, 0x0010, "Wes Turner", gdcm::GDCM_EQUAL);
   sh->AddRestriction(0x0020, 0x0013, "75", gdcm::GDCM_GREATEROREQUAL);
   sh->AddRestriction(0x0020, 0x0013, "77", gdcm::GDCM_LESSOREQUAL);
@@ -58,7 +59,7 @@ int itkGDCMSeriesReadImageWrite( int argc, char* argv[] )
   ReaderType::Pointer reader = ReaderType::New();
 
   const ReaderType::FileNamesContainer & filenames = it->GetInputFileNames();
-  unsigned int numberOfFilenames =  filenames.size();
+  unsigned int                           numberOfFilenames =  filenames.size();
   std::cout << numberOfFilenames << std::endl;
   for(unsigned int fni = 0; fni<numberOfFilenames; fni++)
     {
@@ -101,16 +102,16 @@ int itkGDCMSeriesReadImageWrite( int argc, char* argv[] )
 
   // Writing image afer downscaling to 8bits (unsigned char)
 
-  typedef itk::Image< unsigned short, 3>            Image3DType;
-  typedef itk::Image< unsigned char,  3>            RescaleImageType;
-  typedef itk::Image< unsigned char,  2>            OutputImageType;
+  typedef itk::Image< unsigned short, 3> Image3DType;
+  typedef itk::Image< unsigned char,  3> RescaleImageType;
+  typedef itk::Image< unsigned char,  2> OutputImageType;
   typedef itk::RescaleIntensityImageFilter<
-               Image3DType, RescaleImageType > RescaleFilterType;
+      Image3DType, RescaleImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
-    rescaler->SetInput( reader->GetOutput() );
-    rescaler->SetOutputMinimum(   0 );
-    rescaler->SetOutputMaximum( 255 );
+  rescaler->SetInput( reader->GetOutput() );
+  rescaler->SetOutputMinimum(   0 );
+  rescaler->SetOutputMaximum( 255 );
 
   typedef itk::ImageSeriesWriter< RescaleImageType, OutputImageType > SeriesWriterRescaleType;
 

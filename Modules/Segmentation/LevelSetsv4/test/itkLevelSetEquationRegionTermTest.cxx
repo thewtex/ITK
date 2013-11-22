@@ -18,7 +18,8 @@
 
 #include "itkLevelSetEquationRegionTerm.h"
 
-int itkLevelSetEquationRegionTermTest( int argc, char* argv[] )
+int
+itkLevelSetEquationRegionTermTest( int argc, char* argv[] )
 {
 
   if( argc < 2 )

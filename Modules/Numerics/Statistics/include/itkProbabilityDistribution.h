@@ -68,7 +68,7 @@ namespace Statistics
  * can be obtained from http://commonfund.nih.gov/bioinformatics.
  * \ingroup ITKStatistics
  */
-class ProbabilityDistribution:
+class ProbabilityDistribution :
   public Object
 {
 public:
@@ -97,7 +97,8 @@ public:
   /** Set the parameters of the distribution. See concrete subclasses
    * for the order of the parameters. Subclasses may provide convenience
    * methods for setting parameters, i.e. SetDegreesOfFreedom(), etc. */
-  virtual void SetParameters(const ParametersType & params)
+  virtual void
+  SetParameters(const ParametersType & params)
   {
     if ( ( params.GetSize() != m_Parameters.GetSize() )
          || ( params != m_Parameters ) )
@@ -153,11 +154,18 @@ public:
   virtual double GetVariance() const = 0;
 
 protected:
-  ProbabilityDistribution(void) {}
-  virtual ~ProbabilityDistribution(void) {}
-  void PrintSelf(std::ostream & os, Indent indent) const
+  ProbabilityDistribution(void) {
+  }
+
+  virtual
+  ~ProbabilityDistribution(void) {
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "Parameters: " << m_Parameters << std::endl;
   }
 
@@ -166,6 +174,7 @@ protected:
 private:
   ProbabilityDistribution(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };                                       // end of class
 } // end of namespace Statistics
 } // end namespace itk

@@ -40,9 +40,10 @@ namespace itk {
  * \ingroup ITKLabelMap
  */
 template<typename TImage, typename TAttributeAccessor=
-    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType >, bool VPhysicalPosition=true >
+           typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType >, bool VPhysicalPosition=
+           true >
 class AttributePositionLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -81,12 +82,13 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
 protected:
   AttributePositionLabelMapFilter();
-  ~AttributePositionLabelMapFilter() {};
+  ~AttributePositionLabelMapFilter() {
+  }
 
   virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
@@ -94,7 +96,7 @@ protected:
 
 private:
   AttributePositionLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                  //purposely not implemented
 
 }; // end of class
 

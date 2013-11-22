@@ -42,7 +42,9 @@ class LevelSetEvolutionComputeIterationThreader
 // For dense image level set split by putting part of the level set region in
 // each thread.
 template< typename TImage, typename TLevelSetEvolution >
-class LevelSetEvolutionComputeIterationThreader< LevelSetDenseImage< TImage >, ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
+class LevelSetEvolutionComputeIterationThreader< LevelSetDenseImage< TImage >,
+                                                 ThreadedImageRegionPartitioner< TImage::ImageDimension >,
+                                                 TLevelSetEvolution >
   : public DomainThreader< ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
 {
 public:
@@ -84,19 +86,29 @@ protected:
   virtual void ThreadedExecution( const DomainType & imageSubRegion, const ThreadIdType threadId );
 
 private:
-  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not
+                                                             // implemented
+  void operator=( const Self & );                            // purposely not
+
+  // implemented
+
 };
 
 // For dense image level set split by putting a level set domain in each thread.
 template< typename TImage, typename TLevelSetEvolution >
 class LevelSetEvolutionComputeIterationThreader< LevelSetDenseImage< TImage >,
-      ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::DomainMapImageFilterType::DomainMapType::const_iterator >, TLevelSetEvolution >
-  : public DomainThreader< ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::DomainMapImageFilterType::DomainMapType::const_iterator >, TLevelSetEvolution >
+                                                 ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::
+                                                                                   DomainMapImageFilterType::
+                                                                                   DomainMapType::const_iterator >,
+                                                 TLevelSetEvolution >
+  : public DomainThreader< ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::DomainMapImageFilterType::
+                                                             DomainMapType::const_iterator >, TLevelSetEvolution >
 {
 public:
-  typedef typename TLevelSetEvolution::DomainMapImageFilterType::DomainMapType::const_iterator DomainMapConstIteratorType;
-  typedef ThreadedIteratorRangePartitioner< DomainMapConstIteratorType >                       ThreadedDomainMapPartitionerType;
+  typedef typename TLevelSetEvolution::DomainMapImageFilterType::DomainMapType::const_iterator
+    DomainMapConstIteratorType;
+  typedef ThreadedIteratorRangePartitioner< DomainMapConstIteratorType >
+    ThreadedDomainMapPartitionerType;
 
   /** Standard class typedefs. */
   typedef LevelSetEvolutionComputeIterationThreader                              Self;
@@ -136,26 +148,37 @@ protected:
   virtual void ThreadedExecution( const DomainType & imageSubRegion, const ThreadIdType threadId );
 
 private:
-  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not
+                                                             // implemented
+  void operator=( const Self & );                            // purposely not
+
+  // implemented
+
 };
 
 // For Whitaker sparse level set split by putting part of the level set in each
 // thread.
 template< typename TOutput, unsigned int VDimension, typename TLevelSetEvolution >
 class LevelSetEvolutionComputeIterationThreader<
-      WhitakerSparseLevelSetImage< TOutput, VDimension >,
-      ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >,
-      TLevelSetEvolution
-      >
-  : public DomainThreader< ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >, TLevelSetEvolution >
+  WhitakerSparseLevelSetImage< TOutput, VDimension >,
+  ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >,
+  TLevelSetEvolution
+  >
+  : public DomainThreader< ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput,
+                                                                                                   VDimension >::
+                                                             LayerConstIterator >, TLevelSetEvolution >
 {
 public:
   /** Standard class typedefs. */
-  typedef LevelSetEvolutionComputeIterationThreader                                                                                                                 Self;
-  typedef DomainThreader< ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >, TLevelSetEvolution > Superclass;
-  typedef SmartPointer< Self >                                                                                                                                      Pointer;
-  typedef SmartPointer< const Self >                                                                                                                                ConstPointer;
+  typedef LevelSetEvolutionComputeIterationThreader
+    Self;
+  typedef DomainThreader< ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput,
+                                                                                                  VDimension >::
+                                                            LayerConstIterator >, TLevelSetEvolution > Superclass;
+  typedef SmartPointer< Self >
+    Pointer;
+  typedef SmartPointer< const Self >
+    ConstPointer;
 
   /** Run time type information. */
   itkTypeMacro( LevelSetEvolutionComputeIterationThreader, DomainThreader );
@@ -194,8 +217,12 @@ protected:
   NodePairsPerThreadType m_NodePairsPerThread;
 
 private:
-  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not
+                                                             // implemented
+  void operator=( const Self & );                            // purposely not
+
+  // implemented
+
 };
 
 } // namespace itk

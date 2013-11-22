@@ -21,23 +21,24 @@
 #include "itkFastMarchingThresholdStoppingCriterion.h"
 #include "itkMeshFileWriter.h"
 
-int itkFastMarchingQuadEdgeMeshFilterBaseTest2( int , char * [] )
+int
+itkFastMarchingQuadEdgeMeshFilterBaseTest2( int , char * [] )
 {
-  typedef float   PixelType;
-  typedef double  CoordType;
+  typedef float  PixelType;
+  typedef double CoordType;
 
   const unsigned int Dimension = 3;
 
   typedef itk::QuadEdgeMeshExtendedTraits <
-    PixelType,  // type of data for vertices
-    Dimension,  // geometrical dimension of space
-    2,          // Mac topological dimension of a cell
-    CoordType,  // type for point coordinate
-    CoordType,  // type for interpolation weight
-    PixelType,  // type of data for cell
-    bool,       // type of data for primal edges
-    bool        // type of data for dual edges
-  > Traits;
+      PixelType, // type of data for vertices
+      Dimension, // geometrical dimension of space
+      2,         // Mac topological dimension of a cell
+      CoordType, // type for point coordinate
+      CoordType, // type for interpolation weight
+      PixelType, // type of data for cell
+      bool,      // type of data for primal edges
+      bool       // type of data for dual edges
+      > Traits;
 
   typedef itk::QuadEdgeMesh< PixelType, Dimension, Traits > MeshType;
 
@@ -51,14 +52,13 @@ int itkFastMarchingQuadEdgeMeshFilterBaseTest2( int , char * [] )
   typedef MeshType::PointDataContainer PointDataContainer;
   typedef PointDataContainer::Pointer  PointDataContainerPointer;
 
-  typedef MeshType::CellType                        CellType;
-  typedef itk::QuadEdgeMeshPolygonCell< CellType >  QEPolygonCellType;
-
+  typedef MeshType::CellType                       CellType;
+  typedef itk::QuadEdgeMeshPolygonCell< CellType > QEPolygonCellType;
 
   // Let's create here a plane!
   MeshType::Pointer plane = MeshType::New();
 
-  PointsContainerPointer points = PointsContainer::New();
+  PointsContainerPointer    points = PointsContainer::New();
   PointDataContainerPointer pointdata = PointDataContainer::New();
 
   points->Reserve( 100 );
@@ -98,8 +98,8 @@ int itkFastMarchingQuadEdgeMeshFilterBaseTest2( int , char * [] )
     k++;
     }
 
-  typedef FastMarchingType::NodeType      NodeType;
-  typedef FastMarchingType::NodePairType  NodePairType;
+  typedef FastMarchingType::NodeType     NodeType;
+  typedef FastMarchingType::NodePairType NodePairType;
 //  typedef FastMarchingType::NodeContainerType NodeContainerType;
   typedef FastMarchingType::NodePairContainerType NodePairContainerType;
 
@@ -109,7 +109,7 @@ int itkFastMarchingQuadEdgeMeshFilterBaseTest2( int , char * [] )
   trial->push_back( node_pair );
 
   typedef itk::FastMarchingThresholdStoppingCriterion< MeshType, MeshType >
-      CriterionType;
+    CriterionType;
   CriterionType::Pointer criterion = CriterionType::New();
   criterion->SetThreshold( 100. );
 

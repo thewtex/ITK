@@ -79,14 +79,15 @@ private:
     (slow but necessary)
     4) Copy the buffer and convert the pixels if necessary */
   template< typename TOutputImageType, typename TPixel >
-  static void ITKConvertIplImageBuffer( const IplImage* in,
-                                        TOutputImageType* out,
-                                        int iDepth )
+  static void
+  ITKConvertIplImageBuffer( const IplImage* in,
+                            TOutputImageType* out,
+                            int iDepth )
   {
     // Typedefs
-    typedef TOutputImageType                            ImageType;
-    typedef typename ImageType::PixelType               OutputPixelType;
-    typedef DefaultConvertPixelTraits<OutputPixelType>  ConvertPixelTraits;
+    typedef TOutputImageType                           ImageType;
+    typedef typename ImageType::PixelType              OutputPixelType;
+    typedef DefaultConvertPixelTraits<OutputPixelType> ConvertPixelTraits;
 
     unsigned int inChannels = in->nChannels;
     unsigned int outChannels = itk::NumericTraits<OutputPixelType>::MeasurementVectorType::Dimension;
@@ -118,7 +119,7 @@ private:
     else if (inChannels != 1 || outChannels != 1)
       {
       itkGenericExceptionMacro("Conversion from " << inChannels << " channels to "
-                               << outChannels << " channels is not supported");
+                                                  << outChannels << " channels is not supported");
       }
     typename ImageType::RegionType region;
     typename ImageType::RegionType::SizeType size;
@@ -135,8 +136,8 @@ private:
     out->SetSpacing(spacing);
     out->Allocate();
     size_t lineLength = current->width*current->nChannels;
-    void* unpaddedBuffer = reinterpret_cast< void* >(
-      new TPixel[current->height*lineLength]);
+    void*  unpaddedBuffer = reinterpret_cast< void* >(
+        new TPixel[current->height*lineLength]);
     unsigned int paddedBufPos = 0;
     unsigned int unpaddedBufPos = 0;
     for (int i = 0; i < current->height; ++i)
@@ -150,18 +151,18 @@ private:
     if (isVectorImage)
       {
       ConvertPixelBuffer<TPixel, OutputPixelType, ConvertPixelTraits>
-        ::ConvertVectorImage(static_cast< TPixel* >(unpaddedBuffer),
-                             current->nChannels,
-                             out->GetPixelContainer()->GetBufferPointer(),
-                             out->GetPixelContainer()->Size());
+      ::ConvertVectorImage(static_cast< TPixel* >(unpaddedBuffer),
+                           current->nChannels,
+                           out->GetPixelContainer()->GetBufferPointer(),
+                           out->GetPixelContainer()->Size() );
       }
     else
       {
       ConvertPixelBuffer<TPixel, OutputPixelType, ConvertPixelTraits>
-        ::Convert(static_cast< TPixel* >(unpaddedBuffer),
-                  current->nChannels,
-                  out->GetPixelContainer()->GetBufferPointer(),
-                  out->GetPixelContainer()->Size());
+      ::Convert(static_cast< TPixel* >(unpaddedBuffer),
+                current->nChannels,
+                out->GetPixelContainer()->GetBufferPointer(),
+                out->GetPixelContainer()->Size() );
       }
     delete[] reinterpret_cast<TPixel*>(unpaddedBuffer);
     if (freeCurrent)
@@ -172,27 +173,31 @@ private:
 
   template< typename TPixel, unsigned int VDimension >
   struct HandleRGBPixel
-  {
-    static void Padding( const Image< TPixel, VDimension >* itkNotUsed( in ),
-                         IplImage* itkNotUsed( out ) )
-    {}
-  };
+    {
+    static void
+    Padding( const Image< TPixel, VDimension >* itkNotUsed( in ),
+             IplImage* itkNotUsed( out ) )
+    {
+    }
+
+    };
 
   template< typename TValue, unsigned int VDimension >
   struct HandleRGBPixel< RGBPixel< TValue >, VDimension >
-  {
-    typedef TValue                          ValueType;
-    typedef RGBPixel< ValueType >           PixelType;
-    typedef Image< PixelType, VDimension >  ImageType;
+    {
+    typedef TValue                         ValueType;
+    typedef RGBPixel< ValueType >          PixelType;
+    typedef Image< PixelType, VDimension > ImageType;
 
-    static void Padding( const ImageType* in, IplImage* out )
+    static void
+    Padding( const ImageType* in, IplImage* out )
     {
       typename ImageType::IndexType pixelIndex = {{0,0}};
 
-      for( int r=0;r < out->height; r++ )
+      for( int r=0; r < out->height; r++ )
         {
         ValueType* ptr = reinterpret_cast< ValueType* >( out->imageData + r * out->widthStep );
-        for( int c=0;c < out->width; c++ )
+        for( int c=0; c < out->width; c++ )
           {
           pixelIndex[0] = c;
           pixelIndex[1] = r;
@@ -205,7 +210,8 @@ private:
           }
         }
     }
-  };
+
+    };
 };  // end class OpenCVImageBridge
 
 } // end namespace itk

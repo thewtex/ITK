@@ -25,22 +25,22 @@
 #include "itkTestingMacros.h"
 
 namespace {
-bool ExtractImageInPlaceTest( void )
+bool
+ExtractImageInPlaceTest( void )
 {
   // This is to test the InPlace option
   typedef itk::Image< float, 3 > ImageType;
 
   typedef itk::RandomImageSource< ImageType > SourceType;
   SourceType::Pointer source = SourceType::New();
-  ImageType::SizeType   size = {{32, 32, 32}};
+  ImageType::SizeType size = {{32, 32, 32}};
   source->SetSize( size );
 
   source->UpdateLargestPossibleRegion();
 
-
-  ImageType::IndexType  extractIndex = {{16, 16, 16}};
-  ImageType::SizeType   extractSize = {{8, 8, 8}};
-  ImageType::SizeType   zeroSize = {{0,0,0}};
+  ImageType::IndexType extractIndex = {{16, 16, 16}};
+  ImageType::SizeType  extractSize = {{8, 8, 8}};
+  ImageType::SizeType  zeroSize = {{0,0,0}};
 
   typedef itk::ExtractImageFilter<ImageType, ImageType> ExtractFilterType;
   ExtractFilterType::Pointer extract = ExtractFilterType::New();
@@ -63,7 +63,6 @@ bool ExtractImageInPlaceTest( void )
   extract->SetInput( filter->GetOutput() );
   extract->UpdateLargestPossibleRegion();
 
-
   // this buffer should still be ok
   TEST_EXPECT_TRUE( source->GetOutput()->GetBufferedRegion().GetSize() != zeroSize );
 
@@ -74,31 +73,33 @@ bool ExtractImageInPlaceTest( void )
   extract->InPlaceOff();
   extract->UpdateLargestPossibleRegion();
 
-
   // these buffers should still be ok
   TEST_EXPECT_TRUE( source->GetOutput()->GetBufferedRegion().GetSize() != zeroSize );
   TEST_EXPECT_TRUE( filter->GetOutput()->GetBufferedRegion().GetSize() != zeroSize );
 
   return EXIT_SUCCESS;
 }
+
 }
 
-int itkExtractImageTest(int, char* [] )
+int
+itkExtractImageTest(int, char* [] )
 {
   itk::FileOutputWindow::Pointer fow = itk::FileOutputWindow::New();
+
   fow->SetInstance(fow);
 
   int nextVal;
 
   // typedefs to simplify the syntax
-  typedef itk::Image<short, 2>   SimpleImage;
+  typedef itk::Image<short, 2> SimpleImage;
   SimpleImage::Pointer simpleImage = SimpleImage::New();
   std::cout << "Simple image spacing: " << simpleImage->GetSpacing()[0] << ", "
             << simpleImage->GetSpacing()[1] << std::endl;
 
   // typedefs to simplify the syntax
-  typedef itk::Image<short, 2>   ShortImage;
-  typedef itk::Image<short, 1>   LineImage;
+  typedef itk::Image<short, 2> ShortImage;
+  typedef itk::Image<short, 1> LineImage;
 
   // Test the creation of an image with native type
   ShortImage::Pointer if2 = ShortImage::New();
@@ -114,20 +115,20 @@ int itkExtractImageTest(int, char* [] )
   if2->Allocate();
 
   ShortImage::DirectionType directions;
-    directions.SetIdentity();
-    directions[0][0] = 0.0;
-    directions[1][0] = 1.0;
-    directions[0][1] = 1.0;
-    directions[1][1] = 0.0;
+  directions.SetIdentity();
+  directions[0][0] = 0.0;
+  directions[1][0] = 1.0;
+  directions[0][1] = 1.0;
+  directions[1][1] = 0.0;
 
-    if2->SetDirection (directions);
+  if2->SetDirection (directions);
 
   itk::ImageRegionIterator<ShortImage> iterator(if2, region);
 
   short i=0;
   for (; !iterator.IsAtEnd(); ++iterator, ++i)
     {
-      iterator.Set( i );
+    iterator.Set( i );
     }
 
   std::cout << "Input Image: " << if2 << std::endl;
@@ -153,7 +154,6 @@ int itkExtractImageTest(int, char* [] )
             << ", "
             << extract->GetOutput()->GetSpacing()[1] << std::endl;
 
-
   ShortImage::RegionType requestedRegion;
 
   // CASE 1
@@ -166,50 +166,50 @@ int itkExtractImageTest(int, char* [] )
   requestedRegion = extract->GetOutput()->GetRequestedRegion();
 
   itk::ImageRegionIterator<ShortImage>
-    iteratorIn1(extract->GetOutput(), requestedRegion);
+  iteratorIn1(extract->GetOutput(), requestedRegion);
 
   bool passed = true;
   size = requestedRegion.GetSize();
   index = requestedRegion.GetIndex();
 
-  if ((index[0] != extractIndex[0])
-      || (index[1] != extractIndex[1])
-      || (size[0] != extractSize[0])
-      || (size[1] != extractSize[1]))
+  if ( (index[0] != extractIndex[0])
+       || (index[1] != extractIndex[1])
+       || (size[0] != extractSize[0])
+       || (size[1] != extractSize[1]) )
     {
-      passed = false;
+    passed = false;
     } else {
 
-      for (; !iteratorIn1.IsAtEnd(); ++iteratorIn1)
-        {
-          const ShortImage::IndexType::IndexValueType &row = iteratorIn1.GetIndex()[0];
-          const ShortImage::IndexType::IndexValueType &column = iteratorIn1.GetIndex()[1];
-          if ((row < 0) || (row>7) || (column < 0) || (column > 11)) {
-            if ( iteratorIn1.Get() != 13 )
-              {
-                passed = false;
-              }
-          } else {
-            nextVal = 8*column+row;
-            if (iteratorIn1.Get() != nextVal)
-              {
-                std::cout << "Error: (" << row << ", " << column
-                          << "), expected " << nextVal << " got "
-                          << iteratorIn1.Get() << std::endl;
-                passed = false;
-              }
+    for (; !iteratorIn1.IsAtEnd(); ++iteratorIn1)
+      {
+      const ShortImage::IndexType::IndexValueType &row = iteratorIn1.GetIndex()[0];
+      const ShortImage::IndexType::IndexValueType &column = iteratorIn1.GetIndex()[1];
+      if ( (row < 0) || (row>7) || (column < 0) || (column > 11) ) {
+        if ( iteratorIn1.Get() != 13 )
+          {
+          passed = false;
+          }
+        } else {
+        nextVal = 8*column+row;
+        if (iteratorIn1.Get() != nextVal)
+          {
+          std::cout << "Error: (" << row << ", " << column
+                    << "), expected " << nextVal << " got "
+                    << iteratorIn1.Get() << std::endl;
+          passed = false;
           }
         }
+      }
     }
 
   if (passed)
     {
-      std::cout << "ExtractImageFilter case 1 passed." << std::endl;
+    std::cout << "ExtractImageFilter case 1 passed." << std::endl;
     }
   else
     {
-      std::cout << "ExtractImageFilter case 1 failed." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "ExtractImageFilter case 1 failed." << std::endl;
+    return EXIT_FAILURE;
     }
 
   extract->GetOutput()->Print(std::cout);
@@ -230,66 +230,65 @@ int itkExtractImageTest(int, char* [] )
   size = setRegion.GetSize();
   index = setRegion.GetIndex();
 
-  if ((index[0] != extractIndex[0])
-      || (index[1] != extractIndex[1])
-      || (size[0] != extractSize[0])
-      || (size[1] != extractSize[1]))
+  if ( (index[0] != extractIndex[0])
+       || (index[1] != extractIndex[1])
+       || (size[0] != extractSize[0])
+       || (size[1] != extractSize[1]) )
     {
-      passed = false;
+    passed = false;
     }
   else
     {
-      stream->UpdateLargestPossibleRegion();
-      requestedRegion = stream->GetOutput()->GetRequestedRegion();
+    stream->UpdateLargestPossibleRegion();
+    requestedRegion = stream->GetOutput()->GetRequestedRegion();
 
-      itk::ImageRegionIterator<ShortImage>
-  iteratorIn2(stream->GetOutput(), requestedRegion);
+    itk::ImageRegionIterator<ShortImage>
+    iteratorIn2(stream->GetOutput(), requestedRegion);
 
-      passed = true;
-      size = requestedRegion.GetSize();
-      index = requestedRegion.GetIndex();
-      if ((index[0] != extractIndex[0])
-          || (index[1] != extractIndex[1])
-          || (size[0] != extractSize[0])
-          || (size[1] != extractSize[1]))
+    passed = true;
+    size = requestedRegion.GetSize();
+    index = requestedRegion.GetIndex();
+    if ( (index[0] != extractIndex[0])
+         || (index[1] != extractIndex[1])
+         || (size[0] != extractSize[0])
+         || (size[1] != extractSize[1]) )
+      {
+      passed = false;
+      } else {
+      for (; !iteratorIn2.IsAtEnd(); ++iteratorIn2)
         {
-          passed = false;
-        } else {
-          for (; !iteratorIn2.IsAtEnd(); ++iteratorIn2)
+        const ShortImage::IndexType::IndexValueType &row = iteratorIn2.GetIndex()[0];
+        const ShortImage::IndexType::IndexValueType &column = iteratorIn2.GetIndex()[1];
+        if ( (row < 0) || (row>7) || (column < 0) || (column > 11) ) {
+          if ( iteratorIn2.Get() != 13 )
             {
-              const ShortImage::IndexType::IndexValueType &row = iteratorIn2.GetIndex()[0];
-              const ShortImage::IndexType::IndexValueType &column = iteratorIn2.GetIndex()[1];
-              if ((row < 0) || (row>7) || (column < 0) || (column > 11)) {
-                if ( iteratorIn2.Get() != 13 )
-                  {
-                    passed = false;
-                  }
-              } else {
-                nextVal = 8*column+row;
-                if (iteratorIn2.Get() != nextVal)
-                  {
-                    std::cout << "Error: (" << row << ", " << column
-                              << "), expected " << nextVal << " got "
-                              << iteratorIn2.Get() << std::endl;
-                    passed = false;
-                  }
-              }
+            passed = false;
             }
+          } else {
+          nextVal = 8*column+row;
+          if (iteratorIn2.Get() != nextVal)
+            {
+            std::cout << "Error: (" << row << ", " << column
+                      << "), expected " << nextVal << " got "
+                      << iteratorIn2.Get() << std::endl;
+            passed = false;
+            }
+          }
         }
+      }
     }
-
 
   // need to put in code to check whether the proper region was extracted.
   //
 
   if (passed)
     {
-      std::cout << "ExtractImageFilter case 2 passed." << std::endl;
+    std::cout << "ExtractImageFilter case 2 passed." << std::endl;
     }
   else
     {
-      std::cout << "ExtractImageFilter case 2 failed." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "ExtractImageFilter case 2 failed." << std::endl;
+    return EXIT_FAILURE;
     }
 
   //Case 3: Try extracting a single row
@@ -317,7 +316,7 @@ int itkExtractImageTest(int, char* [] )
   requestedLineRegion = lineExtract->GetOutput()->GetRequestedRegion();
 
   itk::ImageRegionIterator<LineImage>
-    iteratorLineIn(lineExtract->GetOutput(), requestedLineRegion);
+  iteratorLineIn(lineExtract->GetOutput(), requestedLineRegion);
 
   ShortImage::IndexType testIndex;
   for (; !iteratorLineIn.IsAtEnd(); ++iteratorLineIn)
@@ -325,19 +324,19 @@ int itkExtractImageTest(int, char* [] )
     LineImage::PixelType linePixelValue = iteratorLineIn.Get();
     testIndex[0] = extractIndex[0];
     testIndex[1] = iteratorLineIn.GetIndex()[0];
-    if (linePixelValue != if2->GetPixel(testIndex))
+    if (linePixelValue != if2->GetPixel(testIndex) )
       {
       passed = false;
       }
     }
   if (passed)
     {
-      std::cout << "ExtractImageFilter case 3 passed." << std::endl;
+    std::cout << "ExtractImageFilter case 3 passed." << std::endl;
     }
   else
     {
-      std::cout << "ExtractImageFilter case 3 failed." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "ExtractImageFilter case 3 failed." << std::endl;
+    return EXIT_FAILURE;
     }
 
   return ExtractImageInPlaceTest();

@@ -21,8 +21,8 @@
 #include "itkStatisticsImageFilter.h"
 #include "itkBinaryThresholdImageFilter.h"
 
-
-int itkBinaryThresholdImageFilterTest2(int ac, char* av[] )
+int
+itkBinaryThresholdImageFilterTest2(int ac, char* av[] )
 {
   if(ac < 4)
     {
@@ -54,12 +54,12 @@ int itkBinaryThresholdImageFilterTest2(int ac, char* av[] )
   writer->SetFileName( av[3] );
 
   // Declare the filter types
-  typedef itk::StatisticsImageFilter<FloatImageType>  StatisticsType;
-  typedef itk::BinaryThresholdImageFilter<FloatImageType, ImageType>  ThresholdType;
+  typedef itk::StatisticsImageFilter<FloatImageType>                 StatisticsType;
+  typedef itk::BinaryThresholdImageFilter<FloatImageType, ImageType> ThresholdType;
 
   // Create the filters
   StatisticsType::Pointer statistics = StatisticsType::New();
-  ThresholdType::Pointer threshold = ThresholdType::New();
+  ThresholdType::Pointer  threshold = ThresholdType::New();
 
   // connect the standard pipeline connections
   statistics->SetInput( reader2->GetOutput() );

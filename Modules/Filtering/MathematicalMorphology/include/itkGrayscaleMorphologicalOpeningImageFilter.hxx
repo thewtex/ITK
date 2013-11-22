@@ -54,7 +54,7 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
     flatKernel = dynamic_cast< const FlatKernelType * >( &kernel );
     }
   catch ( ... )
-                         {}
+                             {}
 
   if ( flatKernel != NULL && flatKernel->GetDecomposable() )
     {
@@ -107,7 +107,7 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
     flatKernel = dynamic_cast< const FlatKernelType * >( &this->GetKernel() );
     }
   catch ( ... )
-                         {}
+                             {}
 
   if ( m_Algorithm != algo )
     {
@@ -131,7 +131,7 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
       m_VanHerkGilWermanErodeFilter->SetKernel(*flatKernel);
       }
     else
-                          { itkExceptionMacro(<< "Invalid algorithm"); }
+                                  { itkExceptionMacro(<< "Invalid algorithm"); }
 
     m_Algorithm = algo;
     this->Modified();
@@ -159,8 +159,8 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
       {
       typedef ConstantPadImageFilter< InputImageType, InputImageType > PadType;
       typename PadType::Pointer pad = PadType::New();
-      pad->SetPadLowerBound(this->GetKernel().GetRadius());
-      pad->SetPadUpperBound(this->GetKernel().GetRadius());
+      pad->SetPadLowerBound(this->GetKernel().GetRadius() );
+      pad->SetPadUpperBound(this->GetKernel().GetRadius() );
       pad->SetConstant( NumericTraits< typename InputImageType::PixelType >::max() );
       pad->SetInput( this->GetInput() );
       progress->RegisterInternalFilter(pad, 0.1f);
@@ -202,8 +202,8 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
       {
       typedef ConstantPadImageFilter< InputImageType, InputImageType > PadType;
       typename PadType::Pointer pad = PadType::New();
-      pad->SetPadLowerBound(this->GetKernel().GetRadius());
-      pad->SetPadUpperBound(this->GetKernel().GetRadius());
+      pad->SetPadLowerBound(this->GetKernel().GetRadius() );
+      pad->SetPadUpperBound(this->GetKernel().GetRadius() );
       pad->SetConstant( NumericTraits< typename InputImageType::PixelType >::max() );
       pad->SetInput( this->GetInput() );
       progress->RegisterInternalFilter(pad, 0.1f);
@@ -245,8 +245,8 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
       {
       typedef ConstantPadImageFilter< InputImageType, InputImageType > PadType;
       typename PadType::Pointer pad = PadType::New();
-      pad->SetPadLowerBound(this->GetKernel().GetRadius());
-      pad->SetPadUpperBound(this->GetKernel().GetRadius());
+      pad->SetPadLowerBound(this->GetKernel().GetRadius() );
+      pad->SetPadUpperBound(this->GetKernel().GetRadius() );
       pad->SetConstant( NumericTraits< typename InputImageType::PixelType >::max() );
       pad->SetInput( this->GetInput() );
       progress->RegisterInternalFilter(pad, 0.1f);
@@ -294,8 +294,8 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
       {
       typedef ConstantPadImageFilter< InputImageType, InputImageType > PadType;
       typename PadType::Pointer pad = PadType::New();
-      pad->SetPadLowerBound(this->GetKernel().GetRadius());
-      pad->SetPadUpperBound(this->GetKernel().GetRadius());
+      pad->SetPadLowerBound(this->GetKernel().GetRadius() );
+      pad->SetPadUpperBound(this->GetKernel().GetRadius() );
       pad->SetConstant( NumericTraits< typename InputImageType::PixelType >::max() );
       pad->SetInput( this->GetInput() );
       progress->RegisterInternalFilter(pad, 0.1f);
@@ -337,6 +337,7 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
 ::Modified() const
 {
   Superclass::Modified();
+
   m_BasicDilateFilter->Modified();
   m_BasicErodeFilter->Modified();
   m_HistogramDilateFilter->Modified();
@@ -356,5 +357,6 @@ GrayscaleMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
   os << indent << "Algorithm: " << m_Algorithm << std::endl;
   os << indent << "SafeBorder: " << m_SafeBorder << std::endl;
 }
+
 } // end namespace itk
 #endif

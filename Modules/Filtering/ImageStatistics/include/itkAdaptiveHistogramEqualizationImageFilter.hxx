@@ -246,7 +246,7 @@ AdaptiveHistogramEqualizationImageFilter< TImageType >
           {
           key.second = itMap->first;
           sum = sum
-                + itMap->second * CumulativeArray[key];
+            + itMap->second * CumulativeArray[key];
           ++itMap;
           }
         itOut.Set( (PixelType)( iscale * ( sum + 0.5 ) + min ) );
@@ -283,6 +283,7 @@ AdaptiveHistogramEqualizationImageFilter< TImageType >
   os << "Beta: " << m_Beta << std::endl;
   os << "UseLookupTable: " << ( m_UseLookupTable ? "On" : "Off" ) << std::endl;
 }
+
 } // end namespace
 
 #endif

@@ -41,7 +41,7 @@ MahalanobisDistanceThresholdImageFunction< TInputImage, TCoordRep >
 
   // Set the mean on the membership function
   typename MahalanobisDistanceFunctionType::MeanVectorType m;
-  NumericTraits<typename MahalanobisDistanceFunctionType::MeanVectorType>::SetLength(m, mean.size());
+  NumericTraits<typename MahalanobisDistanceFunctionType::MeanVectorType>::SetLength(m, mean.size() );
   for (unsigned int i=0; i < mean.size(); ++i)
     {
     m[i] = mean[i];
@@ -68,22 +68,22 @@ const typename
 MahalanobisDistanceThresholdImageFunction< TInputImage, TCoordRep >::MeanVectorType &
 MahalanobisDistanceThresholdImageFunction< TInputImage, TCoordRep >
 ::GetMean() const
-{
+  {
   // return the cache mean (mean set on the membership function
   // matches by design)
   return m_Mean;
-}
+  }
 
 template< typename TInputImage, typename TCoordRep >
 const typename
 MahalanobisDistanceThresholdImageFunction< TInputImage, TCoordRep >::CovarianceMatrixType &
 MahalanobisDistanceThresholdImageFunction< TInputImage, TCoordRep >
 ::GetCovariance() const
-{
+  {
   // return the cache covariance (covariance set on the membership function
   // matches by design)
   return m_Covariance;
-}
+  }
 
 template< typename TInputImage, typename TCoordRep >
 bool
@@ -168,6 +168,7 @@ MahalanobisDistanceThresholdImageFunction< TInputImage, TCoordRep >
   os << indent << "Covariance: " << m_Covariance << std::endl;
   os << indent << "MahalanobisDistanceMembershipFunction: " << m_MahalanobisDistanceMembershipFunction << std::endl;
 }
+
 } // end namespace itk
 
 #endif

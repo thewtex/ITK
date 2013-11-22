@@ -21,7 +21,8 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   if( argc < 3)
     {
@@ -33,24 +34,23 @@ int main(int argc, char* argv[])
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
 
-  typedef unsigned char    CharPixelType;
-  const    unsigned int    Dimension = 2;
+  typedef unsigned char CharPixelType;
+  const    unsigned int Dimension = 2;
 
-  typedef itk::Image<CharPixelType, Dimension>    CharImageType;
+  typedef itk::Image<CharPixelType, Dimension> CharImageType;
 
-  typedef itk::ImageFileReader< CharImageType >  ReaderType;
-  typedef itk::ImageFileWriter< CharImageType >  WriterType;
+  typedef itk::ImageFileReader< CharImageType > ReaderType;
+  typedef itk::ImageFileWriter< CharImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter<CharImageType, CharImageType> RescaleFilter;
 
   typedef itk::LaplacianSharpeningImageFilter<
-                              CharImageType,
-                              CharImageType >    LaplacianSharpeningFilter;
-
+      CharImageType,
+      CharImageType >    LaplacianSharpeningFilter;
 
   //Setting the IO
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer = WriterType::New();
+  ReaderType::Pointer    reader = ReaderType::New();
+  WriterType::Pointer    writer = WriterType::New();
   RescaleFilter::Pointer rescale = RescaleFilter::New();
 
   //Setting the ITK pipeline filter

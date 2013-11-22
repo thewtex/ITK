@@ -31,7 +31,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction:
+class QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction :
   public QuadEdgeMeshFunctionBase< TMesh, TQEType * >
 {
 public:
@@ -57,14 +57,18 @@ public:
   /** Evaluate at the specified input position */
   virtual OutputType Evaluate(QEType *e);
 
-  PointIdentifier GetOldPointID()
+  PointIdentifier
+  GetOldPointID()
   {
     return ( this->m_OldPointID );
   }
 
 protected:
-  QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction(){}
-  ~QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction(){}
+  QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction(){
+  }
+
+  ~QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction(){
+  }
 
 private:
   QuadEdgeMeshEulerOperatorDeleteCenterVertexFunction(const Self &);

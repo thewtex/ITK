@@ -18,7 +18,8 @@
 
 // Software Guide : BeginLatex
 //
-// This example illustrates a realistic pipeline for solving a full deformable registration problem.
+// This example illustrates a realistic pipeline for solving a full deformable
+// registration problem.
 //
 // First the two images are roughly aligned by using a transform
 // initialization, then they are registered using a rigid transform, that in
@@ -65,7 +66,6 @@
 #include "itkCastImageFilter.h"
 #include "itkSquaredDifferenceImageFilter.h"
 
-
 #include "itkTransformFileReader.h"
 
 //  The following section of code implements a Command observer
@@ -75,38 +75,44 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>   Pointer;
+  typedef  CommandIterationUpdate Self;
+  typedef  itk::Command           Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
-  typedef itk::RegularStepGradientDescentOptimizer  OptimizerType;
-  typedef   const OptimizerType *                   OptimizerPointer;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
+  typedef   const OptimizerType *                  OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( !(itk::IterationEvent().CheckEvent( &event )) )
+
+    if( !(itk::IterationEvent().CheckEvent( &event ) ) )
       {
       return;
       }
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << std::endl;
-    }
+  }
+
 };
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -124,12 +130,11 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  const    unsigned int    ImageDimension = 3;
-  typedef  signed short    PixelType;
+  const    unsigned int ImageDimension = 3;
+  typedef  signed short PixelType;
 
-  typedef itk::Image< PixelType, ImageDimension >  FixedImageType;
-  typedef itk::Image< PixelType, ImageDimension >  MovingImageType;
-
+  typedef itk::Image< PixelType, ImageDimension > FixedImageType;
+  typedef itk::Image< PixelType, ImageDimension > MovingImageType;
 
   const unsigned int SpaceDimension = ImageDimension;
 
@@ -141,36 +146,33 @@ int main( int argc, char *argv[] )
   typedef itk::AffineTransform< double, SpaceDimension > AffineTransformType;
 
   typedef itk::BSplineTransform<
-                            CoordinateRepType,
-                            SpaceDimension,
-                            SplineOrder >     DeformableTransformType;
+      CoordinateRepType,
+      SpaceDimension,
+      SplineOrder >     DeformableTransformType;
 
   typedef itk::CenteredTransformInitializer< RigidTransformType,
                                              FixedImageType,
                                              MovingImageType
-                                                 >  TransformInitializerType;
+                                             >  TransformInitializerType;
 
-
-  typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
-
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
 
   typedef itk::MattesMutualInformationImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
 
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
-  MetricType::Pointer         metric        = MetricType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-
+  MetricType::Pointer       metric        = MetricType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetMetric(        metric        );
   registration->SetOptimizer(     optimizer     );
@@ -179,7 +181,6 @@ int main( int argc, char *argv[] )
   // Auxiliary identity transform.
   typedef itk::IdentityTransform<double,SpaceDimension> IdentityTransformType;
   IdentityTransformType::Pointer identityTransform = IdentityTransformType::New();
-
 
   //
   //   Read the Fixed and Moving images.
@@ -214,9 +215,8 @@ int main( int argc, char *argv[] )
   // Add a time and memory probes collector for profiling the computation time
   // of every stage.
   //
-  itk::TimeProbesCollectorBase chronometer;
+  itk::TimeProbesCollectorBase   chronometer;
   itk::MemoryProbesCollectorBase memorymeter;
-
 
   //
   // Setup the metric parameters
@@ -228,7 +228,6 @@ int main( int argc, char *argv[] )
   const unsigned int numberOfPixels = fixedRegion.GetNumberOfPixels();
 
   metric->ReinitializeSeed( 76926294 );
-
 
   if( argc > 7 )
     {
@@ -243,25 +242,24 @@ int main( int argc, char *argv[] )
     {
     // Define whether to cache the BSpline weights and indexes corresponding to
     // each one of the samples used to compute the metric. Enabling caching will
-    // make the algorithm run faster but it will have a cost on the amount of memory
+    // make the algorithm run faster but it will have a cost on the amount of
+    // memory
     // that needs to be allocated. This option is only relevant when using the
     // BSplineTransform.
     metric->SetUseCachingOfBSplineWeights( atoi( argv[8] ) );
     }
-
 
   //
   //  Initialize a rigid transform by using Image Intensity Moments
   //
   TransformInitializerType::Pointer initializer = TransformInitializerType::New();
 
-  RigidTransformType::Pointer  rigidTransform = RigidTransformType::New();
+  RigidTransformType::Pointer rigidTransform = RigidTransformType::New();
 
   initializer->SetTransform(   rigidTransform );
   initializer->SetFixedImage(  fixedImageReader->GetOutput() );
   initializer->SetMovingImage( movingImageReader->GetOutput() );
   initializer->MomentsOn();
-
 
   std::cout << "Starting Rigid Transform Initialization " << std::endl;
 
@@ -285,9 +283,9 @@ int main( int argc, char *argv[] )
   //  Define optimizer normaliztion to compensate for different dynamic range
   //  of rotations and translations.
   //
-  typedef OptimizerType::ScalesType       OptimizerScalesType;
+  typedef OptimizerType::ScalesType OptimizerScalesType;
   OptimizerScalesType optimizerScales( rigidTransform->GetNumberOfParameters() );
-  const double translationScale = 1.0 / 1000.0;
+  const double        translationScale = 1.0 / 1000.0;
 
   optimizerScales[0] = 1.0;
   optimizerScales[1] = 1.0;
@@ -318,7 +316,6 @@ int main( int argc, char *argv[] )
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
 
-
   std::cout << "Starting Rigid Registration " << std::endl;
 
   try
@@ -347,11 +344,10 @@ int main( int argc, char *argv[] )
 
   rigidTransform->SetParameters( registration->GetLastTransformParameters() );
 
-
   //
   //  Perform Affine Registration
   //
-  AffineTransformType::Pointer  affineTransform = AffineTransformType::New();
+  AffineTransformType::Pointer affineTransform = AffineTransformType::New();
 
   affineTransform->SetCenter( rigidTransform->GetCenter() );
   affineTransform->SetTranslation( rigidTransform->GetTranslation() );
@@ -384,14 +380,14 @@ int main( int argc, char *argv[] )
   optimizer->SetNumberOfIterations( 200 );
 
   //
-  // The Affine transform has 12 parameters we use therefore a more samples to run
+  // The Affine transform has 12 parameters we use therefore a more samples to
+  // run
   // this stage.
   //
   // Regulating the number of samples in the Metric is equivalent to performing
   // multi-resolution registration because it is indeed a sub-sampling of the
   // image.
   metric->SetNumberOfSpatialSamples( 50000L );
-
 
   std::cout << "Starting Affine Registration " << std::endl;
 
@@ -417,24 +413,23 @@ int main( int argc, char *argv[] )
 
   affineTransform->SetParameters( registration->GetLastTransformParameters() );
 
-
   //
   //  Perform Deformable Registration
   //
-  DeformableTransformType::Pointer  bsplineTransformCoarse = DeformableTransformType::New();
+  DeformableTransformType::Pointer bsplineTransformCoarse = DeformableTransformType::New();
 
   unsigned int numberOfGridNodesInOneDimensionCoarse = 5;
 
-  DeformableTransformType::PhysicalDimensionsType   fixedPhysicalDimensions;
-  DeformableTransformType::MeshSizeType             meshSize;
-  DeformableTransformType::OriginType               fixedOrigin;
+  DeformableTransformType::PhysicalDimensionsType fixedPhysicalDimensions;
+  DeformableTransformType::MeshSizeType           meshSize;
+  DeformableTransformType::OriginType             fixedOrigin;
 
   for( unsigned int i=0; i< SpaceDimension; i++ )
     {
     fixedOrigin[i] = fixedImage->GetOrigin()[i];
     fixedPhysicalDimensions[i] = fixedImage->GetSpacing()[i] *
       static_cast<double>(
-      fixedImage->GetLargestPossibleRegion().GetSize()[i] - 1 );
+        fixedImage->GetLargestPossibleRegion().GetSize()[i] - 1 );
     }
   meshSize.Fill( numberOfGridNodesInOneDimensionCoarse - SplineOrder );
 
@@ -445,16 +440,14 @@ int main( int argc, char *argv[] )
   bsplineTransformCoarse->SetTransformDomainDirection(
     fixedImage->GetDirection() );
 
-  typedef DeformableTransformType::ParametersType     ParametersType;
+  typedef DeformableTransformType::ParametersType ParametersType;
 
   unsigned int numberOfBSplineParameters = bsplineTransformCoarse->GetNumberOfParameters();
-
 
   optimizerScales = OptimizerScalesType( numberOfBSplineParameters );
   optimizerScales.Fill( 1.0 );
 
   optimizer->SetScales( optimizerScales );
-
 
   ParametersType initialDeformableTransformParameters( numberOfBSplineParameters );
   initialDeformableTransformParameters.Fill( 0.0 );
@@ -466,13 +459,12 @@ int main( int argc, char *argv[] )
 
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
-  //  Next we set the parameters of the RegularStepGradientDescentOptimizer object.
+  //  Next we set the parameters of the RegularStepGradientDescentOptimizer
+  // object.
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   optimizer->SetMaximumStepLength( 10.0 );
@@ -481,7 +473,6 @@ int main( int argc, char *argv[] )
   optimizer->SetRelaxationFactor( 0.7 );
   optimizer->SetNumberOfIterations( 50 );
   // Software Guide : EndCodeSnippet
-
 
   // Optionally, get the step length from the command line arguments
   if( argc > 11 )
@@ -494,7 +485,6 @@ int main( int argc, char *argv[] )
     {
     optimizer->SetNumberOfIterations( atoi( argv[13] ) );
     }
-
 
   //
   // The BSpline transform has a large number of parameters, we use therefore a
@@ -528,7 +518,7 @@ int main( int argc, char *argv[] )
   std::cout << std::endl;
 
   OptimizerType::ParametersType finalParameters =
-                    registration->GetLastTransformParameters();
+    registration->GetLastTransformParameters();
 
   bsplineTransformCoarse->SetParameters( finalParameters );
 
@@ -540,7 +530,7 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-  DeformableTransformType::Pointer  bsplineTransformFine = DeformableTransformType::New();
+  DeformableTransformType::Pointer bsplineTransformFine = DeformableTransformType::New();
 
   unsigned int numberOfGridNodesInOneDimensionFine = 5;
 
@@ -560,7 +550,8 @@ int main( int argc, char *argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  Now we need to initialize the BSpline coefficients of the higher resolution
+  //  Now we need to initialize the BSpline coefficients of the higher
+  // resolution
   //  transform. This is done by first computing the actual deformation field
   //  at the higher resolution from the lower resolution BSpline coefficients.
   //  Then a BSpline decomposition is done to obtain the BSpline coefficient of
@@ -572,7 +563,7 @@ int main( int argc, char *argv[] )
 
   for ( unsigned int k = 0; k < SpaceDimension; k++ )
     {
-    typedef DeformableTransformType::ImageType ParametersImageType;
+    typedef DeformableTransformType::ImageType                                ParametersImageType;
     typedef itk::ResampleImageFilter<ParametersImageType,ParametersImageType> ResamplerType;
     ResamplerType::Pointer upsampler = ResamplerType::New();
 
@@ -583,11 +574,11 @@ int main( int argc, char *argv[] )
     upsampler->SetInterpolator( function );
     upsampler->SetTransform( identityTransform );
     upsampler->SetSize( bsplineTransformFine->GetCoefficientImages()[k]->
-      GetLargestPossibleRegion().GetSize() );
+                        GetLargestPossibleRegion().GetSize() );
     upsampler->SetOutputSpacing( bsplineTransformFine->GetCoefficientImages()[k]->
-      GetSpacing() );
+                                 GetSpacing() );
     upsampler->SetOutputOrigin( bsplineTransformFine->GetCoefficientImages()[k]->
-      GetOrigin() );
+                                GetOrigin() );
 
     typedef itk::BSplineDecompositionImageFilter<ParametersImageType,ParametersImageType>
       DecompositionType;
@@ -602,7 +593,7 @@ int main( int argc, char *argv[] )
     // copy the coefficients into the parameter array
     typedef itk::ImageRegionIterator<ParametersImageType> Iterator;
     Iterator it( newCoefficients, bsplineTransformFine->GetCoefficientImages()[k]->
-      GetLargestPossibleRegion() );
+                 GetLargestPossibleRegion() );
     while ( !it.IsAtEnd() )
       {
       parametersHigh[ counter++ ] = it.Get();
@@ -610,7 +601,6 @@ int main( int argc, char *argv[] )
       }
 
     }
-
 
   optimizerScales = OptimizerScalesType( numberOfBSplineParameters );
   optimizerScales.Fill( 1.0 );
@@ -630,7 +620,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   registration->SetInitialTransformParameters(
-                                      bsplineTransformFine->GetParameters() );
+    bsplineTransformFine->GetParameters() );
   registration->SetTransform( bsplineTransformFine );
   //
   // The BSpline transform at fine scale has a very large number of parameters,
@@ -644,9 +634,9 @@ int main( int argc, char *argv[] )
   // multi-resolution registration because it is indeed a sub-sampling of the
   // image.
   const unsigned long numberOfSamples =
-     static_cast<unsigned long>(
-       vcl_sqrt( static_cast<double>( numberOfBSplineParameters ) *
-                 static_cast<double>( numberOfPixels ) ) );
+    static_cast<unsigned long>(
+      vcl_sqrt( static_cast<double>( numberOfBSplineParameters ) *
+                static_cast<double>( numberOfPixels ) ) );
   metric->SetNumberOfSpatialSamples( numberOfSamples );
 
   try
@@ -668,7 +658,6 @@ int main( int argc, char *argv[] )
   std::cout << "Deformable Registration Fine Grid completed" << std::endl;
   std::cout << std::endl;
 
-
   // Report the time and memory taken by the registration
   chronometer.Report( std::cout );
   memorymeter.Report( std::cout );
@@ -677,10 +666,9 @@ int main( int argc, char *argv[] )
 
   bsplineTransformFine->SetParameters( finalParameters );
 
-
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   ResampleFilterType::Pointer resample = ResampleFilterType::New();
 
@@ -698,23 +686,20 @@ int main( int argc, char *argv[] )
   // such as 100 or 128.
   resample->SetDefaultPixelValue( 0 );
 
-  typedef  signed short  OutputPixelType;
+  typedef  signed short OutputPixelType;
 
   typedef itk::Image< OutputPixelType, ImageDimension > OutputImageType;
 
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType > CastFilterType;
+      FixedImageType,
+      OutputImageType > CastFilterType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
-
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
-
 
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput()   );
@@ -734,17 +719,15 @@ int main( int argc, char *argv[] )
 
   std::cout << " Done!" << std::endl;
 
-
   typedef itk::SquaredDifferenceImageFilter<
-                                  FixedImageType,
-                                  FixedImageType,
-                                  OutputImageType > DifferenceFilterType;
+      FixedImageType,
+      FixedImageType,
+      OutputImageType > DifferenceFilterType;
 
   DifferenceFilterType::Pointer difference = DifferenceFilterType::New();
 
   WriterType::Pointer writer2 = WriterType::New();
   writer2->SetInput( difference->GetOutput() );
-
 
   // Compute the difference image between the
   // fixed and resampled moving image.
@@ -769,7 +752,6 @@ int main( int argc, char *argv[] )
 
     std::cout << " Done!" << std::endl;
     }
-
 
   // Compute the difference image between the
   // fixed and moving image before registration.
@@ -800,8 +782,8 @@ int main( int argc, char *argv[] )
   if( argc > 6 )
     {
 
-    typedef itk::Vector< float, ImageDimension >      VectorType;
-    typedef itk::Image< VectorType, ImageDimension >  DisplacementFieldType;
+    typedef itk::Vector< float, ImageDimension >     VectorType;
+    typedef itk::Image< VectorType, ImageDimension > DisplacementFieldType;
 
     DisplacementFieldType::Pointer field = DisplacementFieldType::New();
     field->SetRegions( fixedRegion );
@@ -817,11 +799,11 @@ int main( int argc, char *argv[] )
 
     DeformableTransformType::InputPointType  fixedPoint;
     DeformableTransformType::OutputPointType movingPoint;
-    DisplacementFieldType::IndexType index;
+    DisplacementFieldType::IndexType         index;
 
     VectorType displacement;
 
-    while( ! fi.IsAtEnd() )
+    while( !fi.IsAtEnd() )
       {
       index = fi.GetIndex();
       field->TransformIndexToPhysicalPoint( index, fixedPoint );
@@ -831,7 +813,7 @@ int main( int argc, char *argv[] )
       ++fi;
       }
 
-    typedef itk::ImageFileWriter< DisplacementFieldType >  FieldWriterType;
+    typedef itk::ImageFileWriter< DisplacementFieldType > FieldWriterType;
     FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
 
     fieldWriter->SetInput( field );

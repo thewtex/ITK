@@ -95,7 +95,7 @@ VTKPolyDataMeshIO
 
   // Define used variables
   unsigned int numLine = 0;
-  std::string line;
+  std::string  line;
 
   // Read vtk header file(the first 3 lines)
   while ( !inputFile.eof() && numLine < 3 )
@@ -1197,7 +1197,8 @@ VTKPolyDataMeshIO
   inputFile.close();
 }
 
-void VTKPolyDataMeshIO::ReadCellsBufferAsASCII(std::ifstream & inputFile, void *buffer)
+void
+VTKPolyDataMeshIO::ReadCellsBufferAsASCII(std::ifstream & inputFile, void *buffer)
 {
   std::string   line;
   SizeValueType index = 0;
@@ -2736,4 +2737,5 @@ VTKPolyDataMeshIO
     os << indent << "cellTensorDataName : " << dataName << std::endl;
     }
 }
+
 } // end of namespace itk

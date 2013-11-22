@@ -53,7 +53,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TImageType, typename TCoordRep = float >
-class BSplineResampleImageFunction:
+class BSplineResampleImageFunction :
   public BSplineInterpolateImageFunction<
     TImageType, TCoordRep, typename TImageType::PixelType >
 {
@@ -61,7 +61,7 @@ public:
   /** Standard class typedefs. */
   typedef BSplineResampleImageFunction Self;
   typedef BSplineInterpolateImageFunction<
-    TImageType, TCoordRep, typename TImageType::PixelType >  Superclass;
+      TImageType, TCoordRep, typename TImageType::PixelType >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -74,7 +74,8 @@ public:
   itkNewMacro(Self);
 
   /** Set the input image representing the BSplineCoefficients */
-  virtual void SetInputImage(const TImageType *inputData)
+  virtual void
+  SetInputImage(const TImageType *inputData)
   {
     // bypass my superclass
     this->InterpolateImageFunction< TImageType, TCoordRep >::SetInputImage(inputData);
@@ -86,8 +87,12 @@ public:
   }
 
 protected:
-  BSplineResampleImageFunction() {}
-  virtual ~BSplineResampleImageFunction() {}
+  BSplineResampleImageFunction() {
+  }
+
+  virtual
+  ~BSplineResampleImageFunction() {
+  }
 
 private:
   BSplineResampleImageFunction(const Self &); //purposely not implemented

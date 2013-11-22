@@ -72,8 +72,8 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
     }
 
   InputPointIdentifier i = 0;
-  InputIteratorGeom it = bdryEdge->BeginGeomLnext();
-  InputIteratorGeom end = bdryEdge->EndGeomLnext();
+  InputIteratorGeom    it = bdryEdge->BeginGeomLnext();
+  InputIteratorGeom    end = bdryEdge->EndGeomLnext();
 
   while( it != end )
     {
@@ -87,7 +87,8 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 
 // ----------------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
+void
+BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
 {
   this->ComputeTransform();
 }
@@ -98,7 +99,7 @@ void BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
 template< typename TInputMesh, typename TOutputMesh >
 typename BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::InputQEType*
 BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::ComputeLongestBorder()
-{
+  {
   BoundaryRepresentativeEdgesPointer
     boundaryRepresentativeEdges = BoundaryRepresentativeEdgesType::New();
 
@@ -141,7 +142,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::ComputeLongestBorder()
   delete list;
 
   return output;
-}
+  }
 #endif
 
 // ----------------------------------------------------------------------------
@@ -149,7 +150,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::ComputeLongestBorder()
 template< typename TInputMesh, typename TOutputMesh >
 typename BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::InputQEType*
 BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::ComputeLargestBorder()
-{
+  {
   BoundaryRepresentativeEdgesPointer
     boundaryRepresentativeEdges = BoundaryRepresentativeEdgesType::New();
 
@@ -187,7 +188,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::ComputeLargestBorder()
   delete list;
 
   return output;
-}
+  }
 #endif
 
 // ----------------------------------------------------------------------------
@@ -215,7 +216,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 
   std::vector< InputCoordRepType > tetas(NbBoundaryPt, 0.0);
   tetas[0] = static_cast< InputCoordRepType >(
-    vcl_acos( ( two_r - dist ) * inv_two_r ) );
+      vcl_acos( ( two_r - dist ) * inv_two_r ) );
 
   MapPointIdentifierIterator BoundaryPtIterator = this->m_BoundaryPtMap.begin();
 
@@ -279,8 +280,8 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
         ++BoundaryPtIterator )
     {
     r = static_cast< InputCoordRepType >(
-      center.SquaredEuclideanDistanceTo(
-        input->GetPoint(BoundaryPtIterator->first) ) );
+        center.SquaredEuclideanDistanceTo(
+          input->GetPoint(BoundaryPtIterator->first) ) );
 
     if ( r > oRmax )
       {
@@ -323,7 +324,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
     }
 
   InputCoordRepType invNbOfPoints = 1.0
-                                    / static_cast< InputCoordRepType >( input->GetNumberOfPoints() );
+    / static_cast< InputCoordRepType >( input->GetNumberOfPoints() );
 
   for ( i = 0; i < PointDimension; ++i )
     {
@@ -335,7 +336,8 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 
 // ----------------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
+void
+BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::ComputeTransform()
 {
   this->ComputeBoundary();
@@ -465,6 +467,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
   os << indent << "BorderPick: " << m_BorderPick <<std::endl;
   os << indent << "Radius: " << m_Radius << std::endl;
 }
+
 }
 
 #endif

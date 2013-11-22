@@ -36,7 +36,8 @@ SpatialObjectWriter< NDimensions, PixelType, TMeshTraits >
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 SpatialObjectWriter< NDimensions, PixelType, TMeshTraits >
 ::~SpatialObjectWriter()
-{}
+{
+}
 
 /** Set the precision at which the transform should be written */
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
@@ -91,12 +92,12 @@ template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 void
 SpatialObjectWriter< NDimensions, PixelType, TMeshTraits >
 ::RegisterMetaConverter(const char *metaTypeName,
-                      const char *spatialObjectTypeName,
-                      MetaConverterBaseType *converter)
+                        const char *spatialObjectTypeName,
+                        MetaConverterBaseType *converter)
 {
   this->m_MetaToSpatialConverter.RegisterMetaConverter(metaTypeName,
-                                                     spatialObjectTypeName,
-                                                     converter);
+                                                       spatialObjectTypeName,
+                                                       converter);
 }
 
 } // namespace itk

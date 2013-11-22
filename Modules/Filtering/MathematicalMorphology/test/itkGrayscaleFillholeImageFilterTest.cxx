@@ -25,8 +25,8 @@
 
 #include "itkGrayscaleFillholeImageFilter.h"
 
-
-int itkGrayscaleFillholeImageFilterTest( int argc, char * argv[] )
+int
+itkGrayscaleFillholeImageFilterTest( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -36,42 +36,39 @@ int itkGrayscaleFillholeImageFilterTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //
   //  The following code defines the input and output pixel types and their
   //  associated image types.
   //
   const unsigned int Dimension = 2;
 
-  typedef short           InputPixelType;
-  typedef short           OutputPixelType;
-  typedef unsigned char   WritePixelType;
+  typedef short         InputPixelType;
+  typedef short         OutputPixelType;
+  typedef unsigned char WritePixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
-  typedef itk::Image< WritePixelType, Dimension >    WriteImageType;
-
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::Image< WritePixelType, Dimension >  WriteImageType;
 
   // readers/writers
   typedef itk::ImageFileReader< InputImageType  > ReaderType;
   typedef itk::ImageFileWriter< WriteImageType >  WriterType;
   typedef itk::RescaleIntensityImageFilter<OutputImageType, WriteImageType>
-                                                  RescaleType;
+    RescaleType;
 
   // define the fillhole filter
   typedef itk::GrayscaleFillholeImageFilter<
-                            InputImageType,
-                            OutputImageType >  FillholeFilterType;
-
+      InputImageType,
+      OutputImageType >  FillholeFilterType;
 
   // Creation of Reader and Writer filters
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer  = WriterType::New();
+  ReaderType::Pointer  reader = ReaderType::New();
+  WriterType::Pointer  writer  = WriterType::New();
   RescaleType::Pointer rescaler = RescaleType::New();
 
   // Create the filter
-  FillholeFilterType::Pointer  fillhole = FillholeFilterType::New();
-  FilterWatcher watcher(fillhole, "fillhole"); watcher.QuietOn();
+  FillholeFilterType::Pointer fillhole = FillholeFilterType::New();
+  FilterWatcher               watcher(fillhole, "fillhole"); watcher.QuietOn();
 
   // Setup the input and output files
   reader->SetFileName( argv[1] );

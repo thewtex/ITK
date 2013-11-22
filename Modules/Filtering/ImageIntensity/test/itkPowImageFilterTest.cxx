@@ -19,15 +19,14 @@
 #include "itkPowImageFilter.h"
 #include "itkTestingMacros.h"
 
-
-int itkPowImageFilterTest(int, char* [] )
+int
+itkPowImageFilterTest(int, char* [] )
 {
 
-  typedef itk::Image<float, 1>  ImageType;
-  typedef itk::Image<short, 2>  myImageType1;
-  typedef itk::Image<int, 3>    myImageType2;
-  typedef itk::Image<float, 3>  myImageType3;
-
+  typedef itk::Image<float, 1> ImageType;
+  typedef itk::Image<short, 2> myImageType1;
+  typedef itk::Image<int, 3>   myImageType2;
+  typedef itk::Image<float, 3> myImageType3;
 
   typedef itk::PowImageFilter<ImageType> FilterType;
 
@@ -37,7 +36,6 @@ int itkPowImageFilterTest(int, char* [] )
   itk::PowImageFilter<myImageType2>::New();
   itk::PowImageFilter<myImageType3>::New();
   itk::PowImageFilter<myImageType2, myImageType3>::New();
-
 
   typedef itk::Size<1>  SizeType;
   typedef itk::Index<1> IndexType;
@@ -70,7 +68,6 @@ int itkPowImageFilterTest(int, char* [] )
   // Create a PowFilter
   FilterType::Pointer filter = FilterType::New();
 
-
   // check == and != operators
   FilterType::FunctorType func2;
   TEST_EXPECT_TRUE( func2 == filter->GetFunctor() );
@@ -79,7 +76,6 @@ int itkPowImageFilterTest(int, char* [] )
   // Connect the input images
   filter->SetInput1( inputImageA );
   filter->SetInput2( inputImageB );
-
 
   // Get the Smart Pointer to the Filter Output
   ImageType::Pointer outputImage = filter->GetOutput();
@@ -111,7 +107,6 @@ int itkPowImageFilterTest(int, char* [] )
   // values should be 2.0^1.0 and 2.0^2.0
   TEST_EXPECT_EQUAL(  outputImage->GetPixel( idx0 ), 2.0 );
   TEST_EXPECT_EQUAL(  outputImage->GetPixel( idx1 ), 4.0 );
-
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;

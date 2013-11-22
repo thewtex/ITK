@@ -39,7 +39,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TFunction >
-class NaryFunctorImageFilter:
+class NaryFunctorImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 
 {
@@ -71,7 +71,10 @@ public:
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer). */
-  FunctorType & GetFunctor() { return m_Functor; }
+  FunctorType &
+  GetFunctor() {
+    return m_Functor;
+  }
 
   /** Set the functor object.  This replaces the current Functor with a
    * copy of the specified Functor. This allows the user to specify a
@@ -79,7 +82,8 @@ public:
    * This method requires an operator!=() be defined on the functor
    * (or the compiler's default implementation of operator!=() being
    * appropriate). */
-  void SetFunctor(FunctorType & functor)
+  void
+  SetFunctor(FunctorType & functor)
   {
     if ( m_Functor != functor )
       {
@@ -105,7 +109,9 @@ public:
 
 protected:
   NaryFunctorImageFilter();
-  virtual ~NaryFunctorImageFilter() {}
+  virtual
+  ~NaryFunctorImageFilter() {
+  }
 
   /** NaryFunctorImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine

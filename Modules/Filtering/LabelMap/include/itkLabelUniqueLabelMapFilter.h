@@ -23,7 +23,6 @@
 #include "itkLabelObjectAccessors.h"
 #include <set>
 
-
 namespace itk {
 /** \class LabelUniqueLabelMapFilter
  * \brief Make sure that the objects are not overlapping
@@ -44,22 +43,24 @@ namespace itk {
  */
 template<typename TImage>
 class LabelUniqueLabelMapFilter :
-    public AttributeUniqueLabelMapFilter<TImage, typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
+  public AttributeUniqueLabelMapFilter<TImage,
+                                       typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
 {
 public:
   /** Standard class typedefs. */
   typedef LabelUniqueLabelMapFilter Self;
-  typedef AttributeUniqueLabelMapFilter<TImage, typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
-                                       Superclass;
-  typedef SmartPointer<Self>           Pointer;
-  typedef SmartPointer<const Self>     ConstPointer;
+  typedef AttributeUniqueLabelMapFilter<TImage,
+                                        typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage                              ImageType;
-  typedef typename ImageType::Pointer         ImagePointer;
-  typedef typename ImageType::ConstPointer    ImageConstPointer;
-  typedef typename ImageType::PixelType       PixelType;
-  typedef typename ImageType::IndexType       IndexType;
+  typedef TImage                           ImageType;
+  typedef typename ImageType::Pointer      ImagePointer;
+  typedef typename ImageType::ConstPointer ImageConstPointer;
+  typedef typename ImageType::PixelType    PixelType;
+  typedef typename ImageType::IndexType    IndexType;
 
   typedef typename Superclass::AttributeAccessorType AttributeAccessorType;
   typedef typename Superclass::AttributeValueType    AttributeValueType;
@@ -83,16 +84,19 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
 protected:
-  LabelUniqueLabelMapFilter() {};
-  ~LabelUniqueLabelMapFilter() {};
+  LabelUniqueLabelMapFilter() {
+  }
+
+  ~LabelUniqueLabelMapFilter() {
+  }
 
 private:
   LabelUniqueLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);            //purposely not implemented
 
 }; // end of class
 

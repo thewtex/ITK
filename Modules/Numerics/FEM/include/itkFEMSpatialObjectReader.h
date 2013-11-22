@@ -48,12 +48,14 @@ public:
 
 protected:
   FEMSpatialObjectReader(const Self &); //purposely not implemented
-  void operator=(const Self &);      //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
 
   std::string m_FileName;
 
   FEMSpatialObjectReader();
-  virtual ~FEMSpatialObjectReader() {}
+  virtual
+  ~FEMSpatialObjectReader() {
+  }
 
 };
 
@@ -64,7 +66,7 @@ FEMSpatialObjectReader< NDimensions, PixelType, TMeshTraits >
 ::FEMSpatialObjectReader()
 {
   this->RegisterMetaConverter("FEMObject","FEMObjectSpatialObject",
-                              MetaFEMObjectConverter<NDimensions>::New());
+                              MetaFEMObjectConverter<NDimensions>::New() );
 }
 
 }

@@ -94,19 +94,20 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   std::string pixeltypename = GetTypename( typeid(typename TImage::PixelType) );
   defines << "#define PIXELTYPE " << pixeltypename << "\n";
 #ifdef __APPLE__
-  // This is to work around a bug in the OpenCL compiler on Mac OS 10.6 and 10.7 with NVidia drivers
+  // This is to work around a bug in the OpenCL compiler on Mac OS 10.6 and 10.7
+  // with NVidia drivers
   // where the compiler was not handling unsigned char arguments correctly.
   // be sure to define the kernel arguments as ArgType in the kernel source
   // Using unsigned short instead of unsigned char in the kernel definition
   // is a known workaround to this problem.
   if (pixeltypename == "unsigned char")
-  {
+    {
     defines << "#define ARGTYPE unsigned short\n";
-  }
+    }
   else
-  {
+    {
     defines << "#define ARGTYPE " << pixeltypename << "\n";
-  }
+    }
 #else
   defines << "#define ARGTYPE " << pixeltypename << "\n";
 #endif
@@ -124,7 +125,8 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
 template< typename TImage >
 void
 GPUGradientNDAnisotropicDiffusionFunction< TImage >
-::GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer, void *itkNotUsed(globalData) )
+::GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer,
+                    void *itkNotUsed(globalData) )
 {
   /** Launch GPU kernel to update buffer with output
    * GPU version of ComputeUpdate() - compute entire update buffer */
@@ -153,9 +155,17 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   for(int i=0; i<ImageDim; i++)
     {
     globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             //
+                                                                                             //
                                                                                              // total
+                                                                                             //
+                                                                                             //
                                                                                              // #
+                                                                                             //
+                                                                                             //
                                                                                              // of
+                                                                                             //
+                                                                                             //
                                                                                              // threads
     }
 
@@ -171,7 +181,8 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   // filter scale parameter
   for(int i=0; i<ImageDim; i++)
     {
-    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(imgScale[i]) );
+    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float),
+                                           &(imgScale[i]) );
     }
 
   // image size

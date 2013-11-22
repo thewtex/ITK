@@ -165,10 +165,10 @@ public:
   virtual const ParametersType & GetFixedParameters() const;
 
   /** Parameters as SpaceDimension number of images. */
-  typedef typename ParametersType::ValueType           ParametersValueType;
+  typedef typename ParametersType::ValueType                                   ParametersValueType;
   typedef Image<ParametersValueType, itkGetStaticConstMacro( SpaceDimension )> ImageType;
-  typedef typename ImageType::Pointer                  ImagePointer;
-  typedef FixedArray<ImagePointer, NDimensions>        CoefficientImageArray;
+  typedef typename ImageType::Pointer                                          ImagePointer;
+  typedef FixedArray<ImagePointer, NDimensions>                                CoefficientImageArray;
 
   /** Set the array of coefficient images.
    *
@@ -184,7 +184,8 @@ public:
   virtual void SetCoefficientImages( const CoefficientImageArray & images ) = 0;
 
   /** Get the array of coefficient images. */
-  const CoefficientImageArray GetCoefficientImages() const
+  const CoefficientImageArray
+  GetCoefficientImages() const
   {
     return this->m_CoefficientImages;
   }
@@ -217,8 +218,8 @@ public:
 
   /** Interpolation weights function type. */
   typedef BSplineInterpolationWeightFunction<ScalarType,
-    itkGetStaticConstMacro( SpaceDimension ),
-     itkGetStaticConstMacro( SplineOrder )> WeightsFunctionType;
+                                             itkGetStaticConstMacro( SpaceDimension ),
+                                             itkGetStaticConstMacro( SplineOrder )> WeightsFunctionType;
 
   typedef typename WeightsFunctionType::WeightsType         WeightsType;
   typedef typename WeightsFunctionType::ContinuousIndexType ContinuousIndexType;
@@ -235,10 +236,11 @@ public:
    * ( i * this->GetNumberOfParametersPerDimension() ) to the indices array.
    */
   virtual void TransformPoint( const InputPointType & inputPoint, OutputPointType & outputPoint,
-    WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const = 0;
+                               WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const = 0;
 
   /** Get number of weights. */
-  unsigned long GetNumberOfWeights() const
+  unsigned long
+  GetNumberOfWeights() const
   {
     return m_WeightsFunction->GetNumberOfWeights();
   }
@@ -246,7 +248,8 @@ public:
   /** Method to transform a vector -
    *  not applicable for this type of transform. */
   using Superclass::TransformVector;
-  virtual OutputVectorType TransformVector( const InputVectorType & ) const
+  virtual OutputVectorType
+  TransformVector( const InputVectorType & ) const
   {
     itkExceptionMacro( << "Method not applicable for deformable transform." );
     return OutputVectorType();
@@ -254,7 +257,8 @@ public:
 
   /** Method to transform a vnl_vector -
    *  not applicable for this type of transform */
-  virtual OutputVnlVectorType TransformVector( const InputVnlVectorType & ) const
+  virtual OutputVnlVectorType
+  TransformVector( const InputVnlVectorType & ) const
   {
     itkExceptionMacro( << "Method not applicable for deformable transform. " );
     return OutputVnlVectorType();
@@ -263,7 +267,8 @@ public:
   /** Method to transform a CovariantVector -
    *  not applicable for this type of transform */
   using Superclass::TransformCovariantVector;
-  virtual OutputCovariantVectorType TransformCovariantVector(
+  virtual OutputCovariantVectorType
+  TransformCovariantVector(
     const InputCovariantVectorType & ) const
   {
     itkExceptionMacro( << "Method not applicable for deformable transfrom. " );
@@ -276,7 +281,8 @@ public:
 
   virtual void ComputeJacobianWithRespectToParameters( const InputPointType &, JacobianType & ) const = 0;
 
-  virtual void ComputeJacobianWithRespectToPosition( const InputPointType &, JacobianType & ) const
+  virtual void
+  ComputeJacobianWithRespectToPosition( const InputPointType &, JacobianType & ) const
   {
     itkExceptionMacro( << "ComputeJacobianWithRespectToPosition not yet implemented "
                        "for " << this->GetNameOfClass() );
@@ -288,20 +294,22 @@ public:
   /** Return the number of parameters per dimension */
   virtual NumberOfParametersType GetNumberOfParametersPerDimension() const = 0;
 
-  virtual TransformCategoryType GetTransformCategory() const
+  virtual TransformCategoryType
+  GetTransformCategory() const
   {
     return Self::BSpline;
   }
 
   unsigned int GetNumberOfAffectedWeights() const;
 
-  typedef typename ImageType::SpacingType   PhysicalDimensionsType;
-  typedef typename ImageType::PixelType     PixelType;
+  typedef typename ImageType::SpacingType PhysicalDimensionsType;
+  typedef typename ImageType::PixelType   PixelType;
 
   typedef SizeType MeshSizeType;
 
   /** Return the number of local parameters */
-  virtual NumberOfParametersType GetNumberOfLocalParameters() const
+  virtual NumberOfParametersType
+  GetNumberOfLocalParameters() const
   {
     return this->GetNumberOfParameters();
   }
@@ -311,9 +319,11 @@ protected:
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
   BSplineBaseTransform();
-  virtual ~BSplineBaseTransform();
+  virtual
+  ~BSplineBaseTransform();
 
-  /** Get/Set to allow subclasses to access and manipulate the weights function. */
+  /** Get/Set to allow subclasses to access and manipulate the weights function.
+    */
   itkSetObjectMacro( WeightsFunction, WeightsFunctionType );
   itkGetModifiableObjectMacro(WeightsFunction, WeightsFunctionType );
 
@@ -333,7 +343,8 @@ protected:
   /** Construct control point grid spacing from transform domain information */
   virtual void SetFixedParametersGridSpacingFromTransformDomainInformation() const = 0;
 
-  /** Construct control point grid direction from transform domain information */
+  /** Construct control point grid direction from transform domain information
+    */
   virtual void SetFixedParametersGridDirectionFromTransformDomainInformation() const = 0;
 
   /** Construct control point grid size from transform domain information */
@@ -366,9 +377,10 @@ protected:
 
 private:
   BSplineBaseTransform( const Self & ); // purposely not implemented
-  void operator=( const Self & );   // purposely not implemented
+  void operator=( const Self & );       // purposely not implemented
 
   CoefficientImageArray ArrayOfImagePointerGeneratorHelper() const;
+
 }; // class BSplineBaseTransform
 }  // namespace itk
 

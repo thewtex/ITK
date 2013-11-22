@@ -29,7 +29,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 OrientImageFilter< TInputImage, TOutputImage >
-::OrientImageFilter():
+::OrientImageFilter() :
   m_GivenCoordinateOrientation  (SpatialOrientation::ITK_COORDINATE_ORIENTATION_RIP),
   m_DesiredCoordinateOrientation(SpatialOrientation::ITK_COORDINATE_ORIENTATION_RIP),
   m_UseImageDirection (false)
@@ -354,8 +354,9 @@ OrientImageFilter< TInputImage, TOutputImage >
 #define DEBUG_EXECUTE(X) X
 
 typedef itk::SpatialOrientation::ValidCoordinateOrientationFlags
-SO_OrientationType;
-std::string SO_OrientationToString(SO_OrientationType in)
+  SO_OrientationType;
+std::string
+SO_OrientationToString(SO_OrientationType in)
 {
   switch ( in )
     {
@@ -650,5 +651,6 @@ OrientImageFilter< TInputImage, TOutputImage >
      << m_FlipAxes
      << std::endl;
 }
+
 } // end namespace itk
 #endif

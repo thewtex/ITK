@@ -21,7 +21,7 @@
 namespace itk
 {
 MeshIOBase
-::MeshIOBase():
+::MeshIOBase() :
   m_ByteOrder(OrderNotApplicable),
   m_FileType(ASCII),
   m_UseCompression(false),
@@ -43,7 +43,8 @@ MeshIOBase
   m_UpdateCells(false),
   m_UpdatePointData(false),
   m_UpdateCellData(false)
-{}
+{
+}
 
 const MeshIOBase::ArrayOfExtensionsType &
 MeshIOBase
@@ -247,4 +248,5 @@ MeshIOBase
   os << indent << "Point pixel component type: " << GetComponentTypeAsString(m_PointPixelComponentType) << std::endl;
   os << indent << "Cell  pixel component type: " << GetComponentTypeAsString(m_CellPixelComponentType) << std::endl;
 }
+
 } // namespace itk end

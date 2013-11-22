@@ -45,6 +45,7 @@ LabelImageToStatisticsLabelMapFilter< TInputImage, TFeatureImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -108,5 +109,6 @@ LabelImageToStatisticsLabelMapFilter< TInputImage, TFeatureImage, TOutputImage >
   os << indent << "ComputeHistogram: " << m_ComputeHistogram << std::endl;
   os << indent << "NumberOfBins: " << m_NumberOfBins << std::endl;
 }
+
 } // end namespace itk
 #endif

@@ -95,7 +95,6 @@ ShrinkImageFilter< TInputImage, TOutputImage >
     }
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 void
 ShrinkImageFilter< TInputImage, TOutputImage >
@@ -109,7 +108,6 @@ ShrinkImageFilter< TInputImage, TOutputImage >
   this->Modified();
   m_ShrinkFactors[i] = factor;
 }
-
 
 /**
  *
@@ -311,7 +309,7 @@ ShrinkImageFilter< TInputImage, TOutputImage >
 
     // Round down so that all output pixels fit input input region
     outputSize[i] = static_cast<SizeValueType>(
-      vcl_floor( (double)inputSize[i] / (double)m_ShrinkFactors[i] ) );
+        vcl_floor( (double)inputSize[i] / (double)m_ShrinkFactors[i] ) );
 
     if ( outputSize[i] < 1 )
       {
@@ -321,7 +319,7 @@ ShrinkImageFilter< TInputImage, TOutputImage >
     // Because of the later origin shift this starting index is not
     // critical
     outputStartIndex[i] = static_cast<IndexValueType>(
-      vcl_ceil( (double)inputStartIndex[i] / (double)m_ShrinkFactors[i] ) );
+        vcl_ceil( (double)inputStartIndex[i] / (double)m_ShrinkFactors[i] ) );
     }
 
   outputPtr->SetSpacing(outputSpacing);
@@ -352,6 +350,7 @@ ShrinkImageFilter< TInputImage, TOutputImage >
 
   outputPtr->SetLargestPossibleRegion(outputLargestPossibleRegion);
 }
+
 } // end namespace itk
 
 #endif

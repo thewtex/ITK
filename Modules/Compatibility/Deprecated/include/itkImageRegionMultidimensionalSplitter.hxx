@@ -91,8 +91,9 @@ ImageRegionMultidimensionalSplitter< VImageDimension >
     splitIndex[i] += Math::Floor<IndexValueType>( ( splittedRegionIndex[i] ) * ( regionSize[i] / double(splits[i]) ) );
     if ( splittedRegionIndex[i] < splits[i] - 1 )
       {
-      splitSize[i] = Math::Floor<SizeValueType>( ( splittedRegionIndex[i] + 1 ) * ( regionSize[i] / double(splits[i]) ) )
-                     - splitIndex[i];
+      splitSize[i] =
+        Math::Floor<SizeValueType>( ( splittedRegionIndex[i] + 1 ) * ( regionSize[i] / double(splits[i]) ) )
+        - splitIndex[i];
       }
     else
       {
@@ -182,6 +183,7 @@ ImageRegionMultidimensionalSplitter< VImageDimension >
     splitRegionSize[maxSplitDim] = regionSize[maxSplitDim] / double(splits[maxSplitDim]);
     }
 }
+
 } // end namespace itk
 
 #endif

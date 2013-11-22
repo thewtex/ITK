@@ -25,13 +25,14 @@ namespace itk
 template< typename TInput, typename TOutput, typename TCriterion >
 QuadricDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
 ::QuadricDecimationQuadEdgeMeshFilter()
-{}
+{
+}
 
 template< typename TInput, typename TOutput, typename TCriterion >
 QuadricDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
 ::~QuadricDecimationQuadEdgeMeshFilter()
-{}
-
+{
+}
 
 template< typename TInput, typename TOutput, typename TCriterion >
 void
@@ -46,6 +47,7 @@ QuadricDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
   OutputQEType *                qe_it;
 
   OutputMeshType *outputMesh = this->GetOutput();
+
   while ( it != points->End() )
     {
     p_id = it->Index();
@@ -74,6 +76,7 @@ QuadricDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
   Superclass::DeletePoint(iIdToBeDeleted, iRemaining);
 
   QuadricElementMapIterator it = m_Quadric.find(iIdToBeDeleted);
+
   m_Quadric[iRemaining] += it->second;
   m_Quadric.erase(it);
 }
@@ -100,5 +103,6 @@ QuadricDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
 
   return Q.ComputeOptimalLocation(mid);
 }
+
 }
 #endif

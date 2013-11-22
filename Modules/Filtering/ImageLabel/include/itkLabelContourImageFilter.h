@@ -53,7 +53,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class LabelContourImageFilter:
+class LabelContourImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -87,31 +87,31 @@ public:
                       TOutputImage::ImageDimension);
 
   itkConceptMacro( SameDimension,
-    ( Concept::SameDimension< itkGetStaticConstMacro(InputImageDimension),
-                              itkGetStaticConstMacro(OutputImageDimension) > ) );
+                   ( Concept::SameDimension< itkGetStaticConstMacro(InputImageDimension),
+                                             itkGetStaticConstMacro(OutputImageDimension) > ) );
 
 #endif
 
   /**
    * Image typedef support
    */
-  typedef TInputImage                                 InputImageType;
-  typedef typename InputImageType::Pointer            InputImagePointer;
-  typedef typename InputImageType::IndexType          InputIndexType;
-  typedef typename InputImageType::SizeType           InputSizeType;
-  typedef typename InputImageType::OffsetType         InputOffsetType;
-  typedef typename InputImageType::PixelType          InputImagePixelType;
-  typedef typename InputImageType::SizeValueType      SizeValueType;
-  typedef typename InputImageType::OffsetValueType    OffsetValueType;
-  typedef typename InputImageType::PixelType          InputPixelType;
+  typedef TInputImage                              InputImageType;
+  typedef typename InputImageType::Pointer         InputImagePointer;
+  typedef typename InputImageType::IndexType       InputIndexType;
+  typedef typename InputImageType::SizeType        InputSizeType;
+  typedef typename InputImageType::OffsetType      InputOffsetType;
+  typedef typename InputImageType::PixelType       InputImagePixelType;
+  typedef typename InputImageType::SizeValueType   SizeValueType;
+  typedef typename InputImageType::OffsetValueType OffsetValueType;
+  typedef typename InputImageType::PixelType       InputPixelType;
 
-  typedef TOutputImage                          OutputImageType;
-  typedef typename OutputImageType::Pointer     OutputImagePointer;
-  typedef typename OutputImageType::RegionType  OutputRegionType;
-  typedef typename OutputImageType::IndexType   OutputIndexType;
-  typedef typename OutputImageType::SizeType    OutputSizeType;
-  typedef typename OutputImageType::OffsetType  OutputOffsetType;
-  typedef typename OutputImageType::PixelType   OutputImagePixelType;
+  typedef TOutputImage                         OutputImageType;
+  typedef typename OutputImageType::Pointer    OutputImagePointer;
+  typedef typename OutputImageType::RegionType OutputRegionType;
+  typedef typename OutputImageType::IndexType  OutputIndexType;
+  typedef typename OutputImageType::SizeType   OutputSizeType;
+  typedef typename OutputImageType::OffsetType OutputOffsetType;
+  typedef typename OutputImageType::PixelType  OutputImagePixelType;
 
   /**
    * Set/Get whether the connected components are defined strictly by
@@ -133,7 +133,9 @@ public:
 protected:
 
   LabelContourImageFilter();
-  virtual ~LabelContourImageFilter() {}
+  virtual
+  ~LabelContourImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -161,11 +163,11 @@ protected:
 private:
 
   LabelContourImageFilter(const Self &);
-  void operator = ( const Self& );
+  void operator =( const Self& );
 
   /** types to support the run length encoding of lines */
   struct RunLength
-  {
+    {
     /** run length information - may be a more type safe way of doing this */
     SizeValueType length;
 
@@ -173,7 +175,7 @@ private:
     InputIndexType where;
 
     InputImagePixelType label;
-  };
+    };
 
   typedef std::vector< RunLength >                  LineEncodingType;
   typedef typename LineEncodingType::iterator       LineEncodingIterator;
@@ -185,10 +187,10 @@ private:
   // the map storing lines
   typedef std::vector< LineEncodingType > LineMapType;
 
-  LineMapType           m_LineMap;
-  OutputImagePixelType  m_BackgroundValue;
-  ThreadIdType          m_NumberOfThreads;
-  bool                  m_FullyConnected;
+  LineMapType          m_LineMap;
+  OutputImagePixelType m_BackgroundValue;
+  ThreadIdType         m_NumberOfThreads;
+  bool                 m_FullyConnected;
 
   bool CheckNeighbors(const OutputIndexType & A,
                       const OutputIndexType & B) const;

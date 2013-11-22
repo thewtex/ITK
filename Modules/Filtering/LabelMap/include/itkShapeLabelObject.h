@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TLabel, unsigned int VImageDimension >
-class ShapeLabelObject:public LabelObject< TLabel, VImageDimension >
+class ShapeLabelObject : public LabelObject< TLabel, VImageDimension >
 {
 public:
   /** Standard class typedefs */
@@ -142,7 +142,8 @@ public:
 
   itkStaticConstMacro(PERIMETER_ON_BORDER_RATIO, AttributeType, 118);
 
-  static AttributeType GetAttributeFromName(const std::string & s)
+  static AttributeType
+  GetAttributeFromName(const std::string & s)
   {
     if ( s == "NumberOfPixels" )
       {
@@ -216,9 +217,11 @@ public:
     return Superclass::GetAttributeFromName(s);
   }
 
-  static std::string GetNameFromAttribute(const AttributeType & a)
+  static std::string
+  GetNameFromAttribute(const AttributeType & a)
   {
     std::string name;
+
     switch ( a )
       {
       case NUMBER_OF_PIXELS:
@@ -288,172 +291,206 @@ public:
 
   typedef Vector< double, VImageDimension > VectorType;
 
-  const RegionType & GetBoundingBox() const
+  const RegionType &
+  GetBoundingBox() const
   {
     return m_BoundingBox;
   }
 
-  void SetBoundingBox(const RegionType & v)
+  void
+  SetBoundingBox(const RegionType & v)
   {
     m_BoundingBox = v;
   }
 
-  const double & GetPhysicalSize() const
+  const double &
+  GetPhysicalSize() const
   {
     return m_PhysicalSize;
   }
 
-  void SetPhysicalSize(const double & v)
+  void
+  SetPhysicalSize(const double & v)
   {
     m_PhysicalSize = v;
   }
 
-  const SizeValueType & GetNumberOfPixels() const
+  const SizeValueType &
+  GetNumberOfPixels() const
   {
     return m_NumberOfPixels;
   }
 
-  void SetNumberOfPixels(const SizeValueType & v)
+  void
+  SetNumberOfPixels(const SizeValueType & v)
   {
     m_NumberOfPixels = v;
   }
 
-  const CentroidType & GetCentroid() const
+  const CentroidType &
+  GetCentroid() const
   {
     return m_Centroid;
   }
 
-  void SetCentroid(const CentroidType & centroid)
+  void
+  SetCentroid(const CentroidType & centroid)
   {
     m_Centroid = centroid;
   }
 
-  const SizeValueType & GetNumberOfPixelsOnBorder() const
+  const SizeValueType &
+  GetNumberOfPixelsOnBorder() const
   {
     return m_NumberOfPixelsOnBorder;
   }
 
-  void SetNumberOfPixelsOnBorder(const SizeValueType & v)
+  void
+  SetNumberOfPixelsOnBorder(const SizeValueType & v)
   {
     m_NumberOfPixelsOnBorder = v;
   }
 
-  const double & GetPerimeterOnBorder() const
+  const double &
+  GetPerimeterOnBorder() const
   {
     return m_PerimeterOnBorder;
   }
 
-  void SetPerimeterOnBorder(const double & v)
+  void
+  SetPerimeterOnBorder(const double & v)
   {
     m_PerimeterOnBorder = v;
   }
 
-  const double & GetFeretDiameter() const
+  const double &
+  GetFeretDiameter() const
   {
     return m_FeretDiameter;
   }
 
-  void SetFeretDiameter(const double & v)
+  void
+  SetFeretDiameter(const double & v)
   {
     m_FeretDiameter = v;
   }
 
-  const VectorType & GetPrincipalMoments() const
+  const VectorType &
+  GetPrincipalMoments() const
   {
     return m_PrincipalMoments;
   }
 
-  void SetPrincipalMoments(const VectorType & v)
+  void
+  SetPrincipalMoments(const VectorType & v)
   {
     m_PrincipalMoments = v;
   }
 
-  const MatrixType & GetPrincipalAxes() const
+  const MatrixType &
+  GetPrincipalAxes() const
   {
     return m_PrincipalAxes;
   }
 
-  void SetPrincipalAxes(const MatrixType & v)
+  void
+  SetPrincipalAxes(const MatrixType & v)
   {
     m_PrincipalAxes = v;
   }
 
-  const double & GetElongation() const
+  const double &
+  GetElongation() const
   {
     return m_Elongation;
   }
 
-  void SetElongation(const double & v)
+  void
+  SetElongation(const double & v)
   {
     m_Elongation = v;
   }
 
-  const double & GetPerimeter() const
+  const double &
+  GetPerimeter() const
   {
     return m_Perimeter;
   }
 
-  void SetPerimeter(const double & v)
+  void
+  SetPerimeter(const double & v)
   {
     m_Perimeter = v;
   }
 
-  const double & GetRoundness() const
+  const double &
+  GetRoundness() const
   {
     return m_Roundness;
   }
 
-  void SetRoundness(const double & v)
+  void
+  SetRoundness(const double & v)
   {
     m_Roundness = v;
   }
 
-  const double & GetEquivalentSphericalRadius() const
+  const double &
+  GetEquivalentSphericalRadius() const
   {
     return m_EquivalentSphericalRadius;
   }
 
-  void SetEquivalentSphericalRadius(const double & v)
+  void
+  SetEquivalentSphericalRadius(const double & v)
   {
     m_EquivalentSphericalRadius = v;
   }
 
-  const double & GetEquivalentSphericalPerimeter() const
+  const double &
+  GetEquivalentSphericalPerimeter() const
   {
     return m_EquivalentSphericalPerimeter;
   }
 
-  void SetEquivalentSphericalPerimeter(const double & v)
+  void
+  SetEquivalentSphericalPerimeter(const double & v)
   {
     m_EquivalentSphericalPerimeter = v;
   }
 
-  const VectorType & GetEquivalentEllipsoidDiameter() const
+  const VectorType &
+  GetEquivalentEllipsoidDiameter() const
   {
     return m_EquivalentEllipsoidDiameter;
   }
 
-  void SetEquivalentEllipsoidDiameter(const VectorType & v)
+  void
+  SetEquivalentEllipsoidDiameter(const VectorType & v)
   {
     m_EquivalentEllipsoidDiameter = v;
   }
 
-  const double & GetFlatness() const
+  const double &
+  GetFlatness() const
   {
     return m_Flatness;
   }
 
-  void SetFlatness(const double & v)
+  void
+  SetFlatness(const double & v)
   {
     m_Flatness = v;
   }
 
-  const double & GetPerimeterOnBorderRatio() const
+  const double &
+  GetPerimeterOnBorderRatio() const
   {
     return m_PerimeterOnBorderRatio;
   }
 
-  void SetPerimeterOnBorderRatio(const double & v)
+  void
+  SetPerimeterOnBorderRatio(const double & v)
   {
     m_PerimeterOnBorderRatio = v;
   }
@@ -467,7 +504,8 @@ public:
   /** Get the affine transform from principal axes to physical axes
    * This method returns an affine transform which transforms from
    * the principal axes coordinate system to physical coordinates. */
-  AffineTransformPointer GetPrincipalAxesToPhysicalAxesTransform() const
+  AffineTransformPointer
+  GetPrincipalAxesToPhysicalAxesTransform() const
   {
     typename AffineTransformType::MatrixType matrix;
     typename AffineTransformType::OffsetType offset;
@@ -492,7 +530,8 @@ public:
    * This method returns an affine transform which transforms from
    * the physical coordinate system to the principal axes coordinate
    * system. */
-  AffineTransformPointer GetPhysicalAxesToPrincipalAxesTransform(void) const
+  AffineTransformPointer
+  GetPhysicalAxesToPrincipalAxesTransform(void) const
   {
     typename AffineTransformType::MatrixType matrix;
     typename AffineTransformType::OffsetType offset;
@@ -515,12 +554,14 @@ public:
     return inverse;
   }
 
-  virtual void CopyAttributesFrom(const LabelObjectType *lo)
+  virtual void
+  CopyAttributesFrom(const LabelObjectType *lo)
   {
     Superclass::CopyAttributesFrom(lo);
 
     // copy the data of the current type if possible
     const Self *src = dynamic_cast< const Self * >( lo );
+
     if ( src == NULL )
       {
       return;
@@ -565,7 +606,8 @@ protected:
     m_PerimeterOnBorderRatio = 0;
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
 

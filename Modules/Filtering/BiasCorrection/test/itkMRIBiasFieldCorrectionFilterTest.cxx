@@ -24,7 +24,8 @@
 #include "itkSphereSpatialFunction.h"
 #include "itkMersenneTwisterRandomVariateGenerator.h"
 
-int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
+int
+itkMRIBiasFieldCorrectionFilterTest( int , char* [] )
 {
   const unsigned int ImageDimension = 3;
 
@@ -32,7 +33,7 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   typedef itk::Image< float, ImageDimension >            MaskType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType > ImageIteratorType;
 
-  bool SaveImages = false;
+  bool                  SaveImages = false;
   ImageType::SizeType   imageSize;
   ImageType::IndexType  imageIndex;
   ImageType::RegionType imageRegion;
@@ -40,7 +41,7 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   imageSize[1] = 30;
   imageSize[2] = 15;
   std::cout << "Random Test image size: " << imageSize[0] << "x"
-       << imageSize[1] << "x" << imageSize[2] << std::endl;
+            << imageSize[1] << "x" << imageSize[2] << std::endl;
 
   imageIndex.Fill( 0 );
   float spacing[ImageDimension] = {1.0, 1.0, 1.0};
@@ -100,7 +101,7 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   sphere->SetRadius( 5.0 );
 
   randomGenerator->SetSeed ( 2003 );
-  ImageIteratorType i_iter( image , imageRegion );
+  ImageIteratorType     i_iter( image , imageRegion );
   SphereType::InputType point;
   while ( !i_iter.IsAtEnd() )
     {
@@ -120,7 +121,7 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   // creates a bias field
   typedef itk::MultivariateLegendrePolynomial BiasFieldType;
   BiasFieldType::DomainSizeType biasSize(3);
-  int biasDegree = 3;
+  int                           biasDegree = 3;
   biasSize[0] = imageSize[0];
   biasSize[1] = imageSize[1];
   biasSize[2] = imageSize[2];
@@ -130,9 +131,9 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
 
   // generates the coefficients using the normal random variate generator.
   BiasFieldType::CoefficientArrayType
-    coefficients(bias.GetNumberOfCoefficients());
+    coefficients(bias.GetNumberOfCoefficients() );
   BiasFieldType::CoefficientArrayType
-    initCoefficients(bias.GetNumberOfCoefficients());
+    initCoefficients(bias.GetNumberOfCoefficients() );
 
   randomGenerator->SetSeed( 2003 );
   for ( unsigned int i = 0; i < bias.GetNumberOfCoefficients(); ++i )
@@ -153,7 +154,8 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   float temp;
   while ( !i_iter.IsAtEnd() )
     {
-    temp = i_iter.Get() * (2 + b_iter.Get()); // this is a multiplicative bias field
+    temp = i_iter.Get() * (2 + b_iter.Get() ); // this is a multiplicative bias
+                                               // field
     ib_iter.Set( temp );
     ++i_iter;
     ++ib_iter;
@@ -165,7 +167,6 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
     FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-
 
   // To see the debug output for each iteration, uncomment the
   // following line.
@@ -188,22 +189,24 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   std::cout << "Computing bias correction without mask, 2 classes 10,10 - 200,20" << std::endl;
   filter->SetInput( imageWithBias.GetPointer() );
   filter->IsBiasFieldMultiplicative( true ); // correct with multiplicative bias
-  filter->SetBiasFieldDegree( biasDegree ); // default value = 3
+  filter->SetBiasFieldDegree( biasDegree );  // default value = 3
   filter->SetTissueClassStatistics( classMeans, classSigmas );
   //filter->SetOptimizerGrowthFactor( 1.01 ); // default value
   //filter->SetOptimizerInitialRadius( 0.02 ); // default value
-  filter->SetUsingInterSliceIntensityCorrection( true ); // default value
-  filter->SetVolumeCorrectionMaximumIteration( 200 ); // default value = 100
+  filter->SetUsingInterSliceIntensityCorrection( true );  // default value
+  filter->SetVolumeCorrectionMaximumIteration( 200 );     // default value = 100
   filter->SetInterSliceCorrectionMaximumIteration( 100 ); // default value = 100
-  filter->SetUsingSlabIdentification( true ); // default value = false
-  filter->SetSlabBackgroundMinimumThreshold( 0 ); // default value
-  filter->SetSlabNumberOfSamples( 10 ); // default value
-  filter->SetSlabTolerance(0.0); // default value
-  filter->SetSlicingDirection( 2 ); // default value
-  filter->SetUsingBiasFieldCorrection( true ); // default value
-  filter->SetGeneratingOutput( true ); // default value
+  filter->SetUsingSlabIdentification( true );             // default value =
+                                                          // false
+  filter->SetSlabBackgroundMinimumThreshold( 0 );         // default value
+  filter->SetSlabNumberOfSamples( 10 );                   // default value
+  filter->SetSlabTolerance(0.0);                          // default value
+  filter->SetSlicingDirection( 2 );                       // default value
+  filter->SetUsingBiasFieldCorrection( true );            // default value
+  filter->SetGeneratingOutput( true );                    // default value
 
-  filter->SetInitialBiasFieldCoefficients(initCoefficients); //default value is all zero
+  filter->SetInitialBiasFieldCoefficients(initCoefficients); //default value is
+                                                             // all zero
 
   //timing
   long int t1 = time(NULL);
@@ -237,7 +240,7 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
     writer2->Update();
 
     WriterType::Pointer writer3 = WriterType::New();
-    writer3->SetInput(filter->GetOutput());
+    writer3->SetInput(filter->GetOutput() );
     writer3->SetFileName( "MRICorrected.mhd" );
     writer3->Update();
 
@@ -259,7 +262,7 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   filter->SetInputMask( image.GetPointer() );
   filter->SetOutputMask( image.GetPointer() );
   filter->SetInitialBiasFieldCoefficients(initCoefficients);
-  filter->SetVolumeCorrectionMaximumIteration( 200 ); // default value = 100
+  filter->SetVolumeCorrectionMaximumIteration( 200 );     // default value = 100
   filter->SetInterSliceCorrectionMaximumIteration( 100 ); // default value = 100
   //filter->SetOptimizerInitialRadius( 0.02 ); // default value
   t1 = time(NULL);
@@ -292,13 +295,15 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
   // default schedule is 2 2 2 - 1 1 1, let's change this
   std::cout << "Computing bias correction only with 2,2,2 resolution & no interSlice/Slab" << std::endl;
   filter->SetUsingInterSliceIntensityCorrection( false ); // default value
-  filter->SetUsingSlabIdentification( false ); // default value = false
+  filter->SetUsingSlabIdentification( false );            // default value =
+                                                          // false
   FilterType::ScheduleType schedule ( 1, ImageDimension);
   schedule.Fill( 2 );
-  filter->SetNumberOfLevels( 1 ); // Important to set this first, otherwise the filter rejects the new schedule
+  filter->SetNumberOfLevels( 1 ); // Important to set this first, otherwise the
+                                  // filter rejects the new schedule
   filter->SetSchedule( schedule );
   filter->SetInitialBiasFieldCoefficients(initCoefficients);
-  filter->SetVolumeCorrectionMaximumIteration( 200 ); // default value = 100
+  filter->SetVolumeCorrectionMaximumIteration( 200 );     // default value = 100
   filter->SetInterSliceCorrectionMaximumIteration( 100 ); // default value = 100
   //filter->SetOptimizerInitialRadius( 0.02 ); // default value
   t1 = time(NULL);
@@ -330,12 +335,13 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
 
   std::cout << "Computing bias correction only with 4,4,4 resolution & no interSlice/Slab" << std::endl;
   filter->SetUsingInterSliceIntensityCorrection( false ); // default value
-  filter->SetUsingSlabIdentification( false ); // default value = false
+  filter->SetUsingSlabIdentification( false );            // default value =
+                                                          // false
   schedule.Fill( 4 );
   filter->SetNumberOfLevels( 1 );
   //filter->SetOptimizerInitialRadius( 0.02 ); // default value
   filter->SetSchedule( schedule );
-  filter->SetVolumeCorrectionMaximumIteration( 200 ); // default value = 100
+  filter->SetVolumeCorrectionMaximumIteration( 200 );     // default value = 100
   filter->SetInterSliceCorrectionMaximumIteration( 100 ); // default value = 100
   filter->SetInitialBiasFieldCoefficients(initCoefficients);
   t1 = time(NULL);
@@ -365,17 +371,18 @@ int itkMRIBiasFieldCorrectionFilterTest ( int , char* [] )
     return EXIT_FAILURE;
     }
 
-  std::cout << "Computing bias correction only with 4,4,4 resolution & no interSlice/Slab & more iterations" << std::endl;
+  std::cout << "Computing bias correction only with 4,4,4 resolution & no interSlice/Slab & more iterations" <<
+    std::endl;
   initCoefficients = filter->GetEstimatedBiasFieldCoefficients();
   filter->SetInitialBiasFieldCoefficients(initCoefficients);
-  filter->SetVolumeCorrectionMaximumIteration( 2000 ); // default value = 100
+  filter->SetVolumeCorrectionMaximumIteration( 2000 );    // default value = 100
   filter->SetInterSliceCorrectionMaximumIteration( 100 ); // default value = 100
   t1 = time(NULL);
   filter->Update();
   t2 = time(NULL);
   std::cout << "Run time (in s)" << t2-t1  << std::endl;
 
-  double sumOfErrorFinal = 0.0;
+  double            sumOfErrorFinal = 0.0;
   ImageIteratorType o5_iter( filter->GetOutput(),
                              filter->GetOutput()->GetLargestPossibleRegion() );
   i_iter.GoToBegin();

@@ -61,7 +61,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedPointSet, typename TMovingImage >
-class PointSetToImageRegistrationMethod:public ProcessObject
+class PointSetToImageRegistrationMethod : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -175,12 +175,19 @@ public:
   // compatibility reasons, we check whether StartRegistration was
   // called directly or whether Update() (which in turn called
   // StartRegistration()).
-  void StartRegistration(void) { this->Update(); }
+  void
+  StartRegistration(void) {
+    this->Update();
+  }
+
 #endif
 
 protected:
   PointSetToImageRegistrationMethod();
-  virtual ~PointSetToImageRegistrationMethod() {}
+  virtual
+  ~PointSetToImageRegistrationMethod() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger the computation of

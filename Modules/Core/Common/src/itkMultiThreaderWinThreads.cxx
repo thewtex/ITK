@@ -35,15 +35,18 @@
 
 namespace itk
 {
-ThreadIdType MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
+ThreadIdType
+MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
 {
   SYSTEM_INFO sysInfo;
+
   GetSystemInfo(&sysInfo);
   ThreadIdType num = sysInfo.dwNumberOfProcessors;
   return num;
 }
 
-void MultiThreader::MultipleMethodExecute()
+void
+MultiThreader::MultipleMethodExecute()
 {
   ThreadIdType thread_loop;
 
@@ -82,10 +85,10 @@ void MultiThreader::MultipleMethodExecute()
     m_ThreadInfoArray[thread_loop].NumberOfThreads = m_NumberOfThreads;
 
     process_id[thread_loop] = (void *)
-                              _beginthreadex(0, 0,
-                                             ( unsigned int (__stdcall *)(void *) )m_MultipleMethod[thread_loop],
-                                             ( (void *)( &m_ThreadInfoArray[thread_loop] ) ), 0,
-                                             (unsigned int *)&threadId);
+      _beginthreadex(0, 0,
+                     ( unsigned int (__stdcall *)(void *) )m_MultipleMethod[thread_loop],
+                     ( (void *)( &m_ThreadInfoArray[thread_loop] ) ), 0,
+                     (unsigned int *)&threadId);
 
     if ( process_id == 0 )
       {
@@ -113,7 +116,8 @@ void MultiThreader::MultipleMethodExecute()
     }
 }
 
-ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
+ThreadIdType
+MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
 {
   ThreadIdType id = 0;
 
@@ -151,9 +155,9 @@ ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   // Using _beginthreadex on a PC
   //
   m_SpawnedThreadProcessID[id] = (void *)
-                                 _beginthreadex(0, 0, ( unsigned int (__stdcall *)(void *) )f,
-                                                ( (void *)( &m_SpawnedThreadInfoArray[id] ) ), 0,
-                                                (unsigned int *)&threadId);
+    _beginthreadex(0, 0, ( unsigned int (__stdcall *)(void *) )f,
+                   ( (void *)( &m_SpawnedThreadInfoArray[id] ) ), 0,
+                   (unsigned int *)&threadId);
   if ( m_SpawnedThreadProcessID[id] == 0 )
     {
     itkExceptionMacro("Error in thread creation !!!");
@@ -161,7 +165,8 @@ ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   return id;
 }
 
-void MultiThreader::TerminateThread(ThreadIdType ThreadID)
+void
+MultiThreader::TerminateThread(ThreadIdType ThreadID)
 {
   if ( !m_SpawnedThreadActiveFlag[ThreadID] )
     {
@@ -196,10 +201,12 @@ MultiThreader
   HANDLE threadHandle =  (HANDLE)_beginthreadex(0, 0,
                                                 ( unsigned int (__stdcall *)(void *) ) this->SingleMethodProxy,
                                                 ( (void *)threadInfo ), 0, (unsigned int *)&threadId);
+
   if ( threadHandle == NULL )
     {
     itkExceptionMacro("Error in thread creation !!!");
     }
   return threadHandle;
 }
+
 } // end namespace itk

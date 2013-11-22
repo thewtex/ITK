@@ -27,7 +27,8 @@
 #include "itkSurfaceSpatialObject.h"
 #include "itkTubeSpatialObject.h"
 
-int itkSpatialObjectPrintTest(int , char* [])
+int
+itkSpatialObjectPrintTest(int , char* [])
 {
   itk::BlobSpatialObject<3>::Pointer BlobSpatialObjectObj =
     itk::BlobSpatialObject<3>::New();
@@ -105,7 +106,7 @@ int itkSpatialObjectPrintTest(int , char* [])
     itk::TubeSpatialObject<3>::New();
   std::cout << "----------TubeSpatialObject " << TubeSpatialObjectObj;
 
-  itk::TubeSpatialObjectPoint<3> *  TubeSpatialObjectPointObj =
+  itk::TubeSpatialObjectPoint<3> * TubeSpatialObjectPointObj =
     new itk::TubeSpatialObjectPoint<3>;
   std::cout << "----------TubeSpatialObjectPoint " << TubeSpatialObjectPointObj;
   delete TubeSpatialObjectPointObj;

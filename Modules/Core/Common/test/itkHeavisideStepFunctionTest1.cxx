@@ -18,12 +18,13 @@
 
 #include "itkHeavisideStepFunction.h"
 
-int itkHeavisideStepFunctionTest1( int, char* [] )
+int
+itkHeavisideStepFunctionTest1( int, char* [] )
 {
-  typedef double    InputType;
-  typedef double    OutputType;
+  typedef double InputType;
+  typedef double OutputType;
 
-  typedef itk::HeavisideStepFunction< InputType, OutputType >  HeavisideFunctionBaseType;
+  typedef itk::HeavisideStepFunction< InputType, OutputType > HeavisideFunctionBaseType;
 
   HeavisideFunctionBaseType::Pointer functionBase0 = HeavisideFunctionBaseType::New();
 
@@ -38,8 +39,8 @@ int itkHeavisideStepFunctionTest1( int, char* [] )
   for( signed int x = minValue; x < maxValue; x++ )
     {
     const InputType ix = x * incValue;
-    OutputType f  = functionBase0->Evaluate( ix );
-    OutputType df = functionBase0->EvaluateDerivative( ix );
+    OutputType      f  = functionBase0->Evaluate( ix );
+    OutputType      df = functionBase0->EvaluateDerivative( ix );
     std::cout << ix << " " << f << " " << df << std::endl;
     }
 

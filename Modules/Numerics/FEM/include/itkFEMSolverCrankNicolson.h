@@ -101,7 +101,8 @@ public:
    * and mass matrix again. This is only generated before the
    * first iteration.
    */
-  void ResetIterations(void)
+  void
+  ResetIterations(void)
   {
     m_Iterations = 0;
   }
@@ -135,7 +136,8 @@ public:
   itkGetMacro(Rho, Float);
 
   /** Returns the time step used for dynamic problems. */
-  virtual Float GetTimeStep(void) const
+  virtual Float
+  GetTimeStep(void) const
   {
     return m_TimeStep;
   }
@@ -145,7 +147,8 @@ public:
    *
    * \param dt New time step.
    */
-  virtual void SetTimeStep(Float dt)
+  virtual void
+  SetTimeStep(Float dt)
   {
     m_TimeStep = dt;
   }
@@ -154,7 +157,6 @@ public:
    *  for the next iteration.
    */
   void RecomputeForceVector(unsigned int index);
-
 
   /* Finds a triplet that brackets the energy minimum.  From Numerical
     Recipes.*/
@@ -172,23 +174,28 @@ public:
 
   Float GetDeformationEnergy(Float t = 1.0);
 
-  inline Float GSSign(Float a, Float b)
+  inline Float
+  GSSign(Float a, Float b)
   {
     return b > 0.0 ? vcl_fabs(a) : -1. * vcl_fabs(a);
   }
-  inline Float GSMax(Float a, Float b)
+
+  inline Float
+  GSMax(Float a, Float b)
   {
     return a > b ? a : b;
   }
 
   void SetEnergyToMin(Float xmin);
 
-  inline LinearSystemWrapper * GetLS()
+  inline LinearSystemWrapper *
+  GetLS()
   {
     return this->m_ls;
   }
 
-  Float GetCurrentMaxSolution()
+  Float
+  GetCurrentMaxSolution()
   {
     return m_CurrentMaxSolution;
   }
@@ -200,7 +207,8 @@ public:
 protected:
 
   SolverCrankNicolson();
-  ~SolverCrankNicolson() { }
+  ~SolverCrankNicolson() {
+  }
 
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */

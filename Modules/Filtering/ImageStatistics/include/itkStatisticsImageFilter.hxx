@@ -19,7 +19,6 @@
 #define __itkStatisticsImageFilter_hxx
 #include "itkStatisticsImageFilter.h"
 
-
 #include "itkImageScanlineIterator.h"
 #include "itkProgressReporter.h"
 
@@ -27,7 +26,7 @@ namespace itk
 {
 template< typename TInputImage >
 StatisticsImageFilter< TInputImage >
-::StatisticsImageFilter():m_ThreadSum(1), m_SumOfSquares(1), m_Count(1), m_ThreadMin(1), m_ThreadMax(1)
+::StatisticsImageFilter() : m_ThreadSum(1), m_SumOfSquares(1), m_Count(1), m_ThreadMin(1), m_ThreadMax(1)
 {
   // first output is a copy of the image, DataObject created by
   // superclass
@@ -90,97 +89,97 @@ template< typename TInputImage >
 typename StatisticsImageFilter< TInputImage >::PixelObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetMinimumOutput()
-{
+  {
   return static_cast< PixelObjectType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename TInputImage >
 const typename StatisticsImageFilter< TInputImage >::PixelObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetMinimumOutput() const
-{
+  {
   return static_cast< const PixelObjectType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename TInputImage >
 typename StatisticsImageFilter< TInputImage >::PixelObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetMaximumOutput()
-{
+  {
   return static_cast< PixelObjectType * >( this->ProcessObject::GetOutput(2) );
-}
+  }
 
 template< typename TInputImage >
 const typename StatisticsImageFilter< TInputImage >::PixelObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetMaximumOutput() const
-{
+  {
   return static_cast< const PixelObjectType * >( this->ProcessObject::GetOutput(2) );
-}
+  }
 
 template< typename TInputImage >
 typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetMeanOutput()
-{
+  {
   return static_cast< RealObjectType * >( this->ProcessObject::GetOutput(3) );
-}
+  }
 
 template< typename TInputImage >
 const typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetMeanOutput() const
-{
+  {
   return static_cast< const RealObjectType * >( this->ProcessObject::GetOutput(3) );
-}
+  }
 
 template< typename TInputImage >
 typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetSigmaOutput()
-{
+  {
   return static_cast< RealObjectType * >( this->ProcessObject::GetOutput(4) );
-}
+  }
 
 template< typename TInputImage >
 const typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetSigmaOutput() const
-{
+  {
   return static_cast< const RealObjectType * >( this->ProcessObject::GetOutput(4) );
-}
+  }
 
 template< typename TInputImage >
 typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetVarianceOutput()
-{
+  {
   return static_cast< RealObjectType * >( this->ProcessObject::GetOutput(5) );
-}
+  }
 
 template< typename TInputImage >
 const typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetVarianceOutput() const
-{
+  {
   return static_cast< const RealObjectType * >( this->ProcessObject::GetOutput(5) );
-}
+  }
 
 template< typename TInputImage >
 typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetSumOutput()
-{
+  {
   return static_cast< RealObjectType * >( this->ProcessObject::GetOutput(6) );
-}
+  }
 
 template< typename TInputImage >
 const typename StatisticsImageFilter< TInputImage >::RealObjectType *
 StatisticsImageFilter< TInputImage >
 ::GetSumOutput() const
-{
+  {
   return static_cast< const RealObjectType * >( this->ProcessObject::GetOutput(6) );
-}
+  }
 
 template< typename TInputImage >
 void
@@ -188,6 +187,7 @@ StatisticsImageFilter< TInputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -202,6 +202,7 @@ StatisticsImageFilter< TInputImage >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -246,9 +247,9 @@ void
 StatisticsImageFilter< TInputImage >
 ::AfterThreadedGenerateData()
 {
-  ThreadIdType    i;
-  SizeValueType   count;
-  RealType        sumOfSquares;
+  ThreadIdType  i;
+  SizeValueType count;
+  RealType      sumOfSquares;
 
   ThreadIdType numberOfThreads = this->GetNumberOfThreads();
 
@@ -286,7 +287,7 @@ StatisticsImageFilter< TInputImage >
 
   // unbiased estimate
   variance = ( sumOfSquares - ( sum * sum / static_cast< RealType >( count ) ) )
-             / ( static_cast< RealType >( count ) - 1 );
+    / ( static_cast< RealType >( count ) - 1 );
   sigma = vcl_sqrt(variance);
 
   // Set the outputs
@@ -305,6 +306,7 @@ StatisticsImageFilter< TInputImage >
                        ThreadIdType threadId)
 {
   const SizeValueType size0 = outputRegionForThread.GetSize(0);
+
   if( size0 == 0)
     {
     return;
@@ -312,16 +314,16 @@ StatisticsImageFilter< TInputImage >
   RealType  realValue;
   PixelType value;
 
-  RealType sum = NumericTraits< RealType >::Zero;
-  RealType sumOfSquares = NumericTraits< RealType >::Zero;
+  RealType      sum = NumericTraits< RealType >::Zero;
+  RealType      sumOfSquares = NumericTraits< RealType >::Zero;
   SizeValueType count = NumericTraits< SizeValueType >::Zero;
-  PixelType min = NumericTraits< PixelType >::max();
-  PixelType max = NumericTraits< PixelType >::NonpositiveMin();
+  PixelType     min = NumericTraits< PixelType >::max();
+  PixelType     max = NumericTraits< PixelType >::NonpositiveMin();
 
   ImageScanlineConstIterator< TInputImage > it (this->GetInput(),  outputRegionForThread);
 
   // support progress methods/callbacks
-  const size_t numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
+  const size_t     numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
   ProgressReporter progress( this, threadId, numberOfLinesToProcess );
 
   // do the work
@@ -372,5 +374,6 @@ StatisticsImageFilter< TImage >
   os << indent << "Sigma: "    << this->GetSigma() << std::endl;
   os << indent << "Variance: " << this->GetVariance() << std::endl;
 }
+
 } // end namespace itk
 #endif

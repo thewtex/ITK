@@ -22,27 +22,27 @@
 #include "itkSTLContainerAdaptor.h"
 #include "itkSTLConstContainerAdaptor.h"
 
-
-int itkSTLContainerAdaptorTest(int, char* [] )
+int
+itkSTLContainerAdaptorTest(int, char* [] )
 {
 
-  typedef unsigned long   IndexType;
-  typedef int             ElementType;
+  typedef unsigned long IndexType;
+  typedef int           ElementType;
 
   unsigned int containerSize = 100;
 
   // Test with the VectorContainer
-  { // create a local scope
+    { // create a local scope
 
     std::cout << "Testing the VectorContainer " << std::endl;
 
-    typedef itk::VectorContainer<IndexType, ElementType>  VectorContainerType;
+    typedef itk::VectorContainer<IndexType, ElementType> VectorContainerType;
 
     VectorContainerType::Pointer vectorContainer = VectorContainerType::New();
 
     typedef std::vector<ElementType> STLVectorType;
 
-    STLVectorType  vectorSource;
+    STLVectorType vectorSource;
 
     for (unsigned int i = 0; i < containerSize; i++)
       {
@@ -58,8 +58,8 @@ int itkSTLContainerAdaptorTest(int, char* [] )
 
     vectorContainer->Print(std::cout);
 
-    { // define a local scope
-      AdaptorType adaptor( vectorContainer );
+      { // define a local scope
+      AdaptorType  adaptor( vectorContainer );
       TargetType & targetRef = adaptor.GetSTLContainerRef();
 
       std::cout << "Testing assignment... ";
@@ -67,8 +67,8 @@ int itkSTLContainerAdaptorTest(int, char* [] )
       targetRef.reserve( vectorSource.size() );
       targetRef.assign( vectorSource.begin(), vectorSource.end() );
 
-      STLVectorType::const_iterator it    = vectorSource.begin();
-      VectorContainerType::ConstIterator  cIter = vectorContainer->Begin();
+      STLVectorType::const_iterator      it    = vectorSource.begin();
+      VectorContainerType::ConstIterator cIter = vectorContainer->Begin();
       while( it != vectorSource.end() && cIter != vectorContainer->End() )
         {
         if( *it != cIter.Value() )
@@ -86,7 +86,6 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
-
       // Test of index access
       std::cout << "Testing index access... ";
       for (unsigned int i = 0; i < containerSize; i++)
@@ -99,17 +98,15 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
-
-    }
+      }
 
     typedef itk::STLConstContainerAdaptor<VectorContainerType> ConstAdaptorType;
     typedef ConstAdaptorType::TargetType                       ConstTargetType;
 
     std::cout << "----- Testing const Adaptor " << std::endl;
 
-
-    { // define a local scope
-      ConstAdaptorType constAdaptor(vectorContainer);
+      { // define a local scope
+      ConstAdaptorType  constAdaptor(vectorContainer);
       ConstTargetType & constTargetRef = constAdaptor.GetSTLConstContainerRef();
 
       STLVectorType destination;
@@ -117,8 +114,8 @@ int itkSTLContainerAdaptorTest(int, char* [] )
       std::cout << "Testing reading assignment... ";
       destination.assign( constTargetRef.begin(), constTargetRef.end() );
 
-      STLVectorType::const_iterator it    = destination.begin();
-      VectorContainerType::ConstIterator  cIter = vectorContainer->Begin();
+      STLVectorType::const_iterator      it    = destination.begin();
+      VectorContainerType::ConstIterator cIter = vectorContainer->Begin();
       while( it != destination.end() && cIter != vectorContainer->End() )
         {
         if( *it != cIter.Value() )
@@ -136,7 +133,6 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
-
       // Test of index access
       std::cout << "Testing index access... ";
       for (unsigned int i = 0; i < containerSize; i++)
@@ -149,32 +145,30 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
+      }
+
+    std::cout << std::endl;
+    std::cout << "VectorContainer test passed ! " << std::endl;
+
     }
-
-
-  std::cout << std::endl;
-  std::cout << "VectorContainer test passed ! " << std::endl;
-
-  }
 
   // Test with the MapContainer
 
-  typedef itk::MapContainer<IndexType, ElementType>  MapContainerType;
+  typedef itk::MapContainer<IndexType, ElementType> MapContainerType;
 
-  { // create a local scope
+    { // create a local scope
 
     std::cout << "Testing the MapContainer " << std::endl;
 
     MapContainerType::Pointer mapContainer = MapContainerType::New();
 
-    typedef std::map<int,ElementType>  STLMapType;
+    typedef std::map<int,ElementType> STLMapType;
     STLMapType mapSource;
 
     for (unsigned int i = 0; i < containerSize; i++)
       {
       mapSource[i] = containerSize - i;
-    }
-
+      }
 
     containerSize = static_cast<unsigned int>( mapSource.size() );
 
@@ -185,8 +179,8 @@ int itkSTLContainerAdaptorTest(int, char* [] )
 
     mapContainer->Print(std::cout);
 
-    { // define a local scope
-      AdaptorType adaptor( mapContainer );
+      { // define a local scope
+      AdaptorType  adaptor( mapContainer );
       TargetType & targetRef = adaptor.GetSTLContainerRef();
 
       std::cout << "Testing assignment... ";
@@ -196,8 +190,8 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         targetRef[i] = mapSource[i];
         }
 
-      STLMapType::const_iterator it    = mapSource.begin();
-      MapContainerType::ConstIterator  cIter = mapContainer->Begin();
+      STLMapType::const_iterator      it    = mapSource.begin();
+      MapContainerType::ConstIterator cIter = mapContainer->Begin();
       while( it != mapSource.end() && cIter != mapContainer->End() )
         {
         if( it->second != cIter.Value() )
@@ -215,7 +209,6 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
-
       // Test of index access
       std::cout << "Testing index access... ";
       for (unsigned int j = 0; j < containerSize; j++)
@@ -228,17 +221,15 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
-
-    }
+      }
 
     typedef itk::STLConstContainerAdaptor<MapContainerType> ConstAdaptorType;
     typedef ConstAdaptorType::TargetType                    ConstTargetType;
 
     std::cout << "----- Testing const Adaptor " << std::endl;
 
-
-    { // define a local scope
-      ConstAdaptorType constAdaptor(mapContainer);
+      { // define a local scope
+      ConstAdaptorType  constAdaptor(mapContainer);
       ConstTargetType & constTargetRef = constAdaptor.GetSTLConstContainerRef();
 
       STLMapType destination;
@@ -249,8 +240,8 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         destination[i] = constTargetRef.find(i)->second;
         }
 
-      STLMapType::const_iterator it    = destination.begin();
-      MapContainerType::ConstIterator  cIter = mapContainer->Begin();
+      STLMapType::const_iterator      it    = destination.begin();
+      MapContainerType::ConstIterator cIter = mapContainer->Begin();
       while( it != destination.end() && cIter != mapContainer->End() )
         {
         if( it->second != cIter.Value() )
@@ -268,7 +259,6 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
-
       // Test of index access
       std::cout << "Testing index access... ";
       for (unsigned int j = 0; j < containerSize; j++)
@@ -281,13 +271,12 @@ int itkSTLContainerAdaptorTest(int, char* [] )
         }
       std::cout << "Passed !" << std::endl;
 
+      }
+
+    std::cout << std::endl;
+    std::cout << "MapContainer test passed ! " << std::endl;
+
     }
-
-
-  std::cout << std::endl;
-  std::cout << "MapContainer test passed ! " << std::endl;
-
-  }
 
   return EXIT_SUCCESS;
 }

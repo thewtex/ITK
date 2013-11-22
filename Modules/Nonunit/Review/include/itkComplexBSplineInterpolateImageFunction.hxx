@@ -42,10 +42,12 @@ ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType 
  * Standard "PrintSelf" method
  */
 template< typename TImageType, typename TCoordRep, typename TCoefficientType >
-void ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
+void
+ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Spline Order: " << m_SplineOrder << std::endl;
   os << indent << "Real Interpolator: " << m_RealInterpolator << std::endl;
   os << indent << "Imaginary Interpolator: " << m_ImaginaryInterpolator << std::endl;
@@ -54,7 +56,8 @@ void ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficient
 }
 
 template< typename TImageType, typename TCoordRep, typename TCoefficientType >
-void ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
+void
+ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
 ::SetInputImage(const TImageType *inputData)
 {
   if ( inputData )
@@ -70,7 +73,8 @@ void ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficient
 }
 
 template< typename TImageType, typename TCoordRep, typename TCoefficientType >
-void ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
+void
+ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
 ::SetSplineOrder(unsigned int SplineOrder)
 {
   m_SplineOrder = SplineOrder;
@@ -80,7 +84,8 @@ void ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficient
 
 template< typename TImageType, typename TCoordRep, typename TCoefficientType >
 typename ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep,
-                                                 TCoefficientType >::OutputType ComplexBSplineInterpolateImageFunction<
+                                                 TCoefficientType >::OutputType
+ComplexBSplineInterpolateImageFunction<
   TImageType, TCoordRep, TCoefficientType >
 ::EvaluateAtContinuousIndex(const ContinuousIndexType & x) const
 {
@@ -89,10 +94,11 @@ typename ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep,
   typename InterpolatorType::OutputType imagPart =
     m_ImaginaryInterpolator->EvaluateAtContinuousIndex(x);
   typedef typename ComplexBSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >::OutputType
-  ReturnType;
+    ReturnType;
 
   return ReturnType(realPart, imagPart);
 }
+
 } // namespace itk
 
 #endif

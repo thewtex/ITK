@@ -19,11 +19,13 @@
 #include "itkAnalyzeImageIOTest.h"
 #include "itkNiftiImageIOFactory.h"
 
-int TestAnalyzeByteSwap(const std::string & AugmentName)
+int
+TestAnalyzeByteSwap(const std::string & AugmentName)
 {
   int rval;
-  typedef itk::Image<double, 3>               ImageType;
-  typedef itk::ImageFileReader< ImageType >   ImageReaderType;
+
+  typedef itk::Image<double, 3>             ImageType;
+  typedef itk::ImageFileReader< ImageType > ImageReaderType;
 
   if(WriteAnalyzeTestFiles(AugmentName) == -1)
     {
@@ -35,7 +37,7 @@ int TestAnalyzeByteSwap(const std::string & AugmentName)
   ImageType::Pointer big;
 
   itk::ImageFileReader<ImageType>::Pointer imageReader =
-  itk::ImageFileReader<ImageType>::New();
+    itk::ImageFileReader<ImageType>::New();
 
   itk::AnalyzeImageIO::Pointer io = itk::AnalyzeImageIO::New();
   imageReader->SetImageIO(io);
@@ -65,13 +67,13 @@ int TestAnalyzeByteSwap(const std::string & AugmentName)
 
   try
     {
-    itk::ImageRegionConstIterator<ImageType> littleIter(little, little->GetLargestPossibleRegion());
-    itk::ImageRegionConstIterator<ImageType> littlezIter(littlez, littlez->GetLargestPossibleRegion());
-    itk::ImageRegionConstIterator<ImageType> bigIter(big, big->GetLargestPossibleRegion());
+    itk::ImageRegionConstIterator<ImageType> littleIter(little, little->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIterator<ImageType> littlezIter(littlez, littlez->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIterator<ImageType> bigIter(big, big->GetLargestPossibleRegion() );
 
-    while(!littleIter.IsAtEnd())
+    while(!littleIter.IsAtEnd() )
       {
-      if( littleIter.Get() != bigIter.Get() || littlezIter.Get() != bigIter.Get())
+      if( littleIter.Get() != bigIter.Get() || littlezIter.Get() != bigIter.Get() )
         {
         break;
         }
@@ -80,7 +82,7 @@ int TestAnalyzeByteSwap(const std::string & AugmentName)
       ++bigIter;
       }
 
-    if(!littleIter.IsAtEnd() || !bigIter.IsAtEnd() || !littlezIter.IsAtEnd())
+    if(!littleIter.IsAtEnd() || !bigIter.IsAtEnd() || !littlezIter.IsAtEnd() )
       {
       rval = -1;
       }
@@ -93,21 +95,23 @@ int TestAnalyzeByteSwap(const std::string & AugmentName)
   return rval;
 }
 
-
-int itkAnalyzeImageIOTest(int ac, char* av[])
+int
+itkAnalyzeImageIOTest(int ac, char* av[])
 {
   int rval = 0;
+
   //Have two loops through the code, the first one
   //reads and writes with the legacy AnalyzeIO, and
   //the second reads a writes with the NiftiIO mechanism.
-  for(int loops=0;loops<2;loops++)
+  for(int loops=0; loops<2; loops++)
     {
     std::string AugmentName="NoneGiven";
     if(loops==1)
       {
       itk::ObjectFactoryBase::UnRegisterAllFactories();
       itk::AnalyzeImageIOFactory::RegisterOneFactory();
-      //itk::AnalyzeImageIOFactory::Pointer myAnalyzeIOFactory = itk::AnalyzeImageIOFactory::New();
+      //itk::AnalyzeImageIOFactory::Pointer myAnalyzeIOFactory =
+      // itk::AnalyzeImageIOFactory::New();
       //itk::ObjectFactoryBase::UnRegisterFactory(myAnalyzeIOFactory.GetPointer());
       AugmentName="Analyze";
       }
@@ -115,13 +119,15 @@ int itkAnalyzeImageIOTest(int ac, char* av[])
       {
       itk::ObjectFactoryBase::UnRegisterAllFactories();
       itk::NiftiImageIOFactory::RegisterOneFactory();
-      //itk::NiftiImageIOFactory::Pointer myNiftiIOFactory = itk::NiftiImageIOFactory::New();
+      //itk::NiftiImageIOFactory::Pointer myNiftiIOFactory =
+      // itk::NiftiImageIOFactory::New();
       //itk::ObjectFactoryBase::UnRegisterFactory(myNiftiIOFactory.GetPointer());
       AugmentName="Nifti";
       }
 
-    // copy ac and av in another var so we can reuse it in the second step of the loop
-    int ac2 = ac;
+    // copy ac and av in another var so we can reuse it in the second step of
+    // the loop
+    int    ac2 = ac;
     char** av2 = av;
 
     //
@@ -133,10 +139,11 @@ int itkAnalyzeImageIOTest(int ac, char* av[])
       itksys::SystemTools::ChangeDirectory(testdir);
       }
 
-    if(ac2 > 1) //This is a mechanism for reading unsigned char images for testing.
+    if(ac2 > 1) //This is a mechanism for reading unsigned char images for
+                // testing.
       {
       typedef itk::Image<unsigned char, 3> ImageType;
-      ImageType::Pointer input;
+      ImageType::Pointer                       input;
       itk::ImageFileReader<ImageType>::Pointer imageReader =
         itk::ImageFileReader<ImageType>::New();
 
@@ -144,7 +151,8 @@ int itkAnalyzeImageIOTest(int ac, char* av[])
       imageReader->SetImageIO(io);
       for(int imagenameindex=1; imagenameindex < ac2; imagenameindex++)
         {
-        //std::cout << "Attempting to read " << av2[imagenameindex] << std::endl;
+        //std::cout << "Attempting to read " << av2[imagenameindex] <<
+        // std::endl;
         try
           {
           imageReader->SetFileName(av2[imagenameindex]);

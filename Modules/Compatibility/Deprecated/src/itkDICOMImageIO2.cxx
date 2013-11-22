@@ -49,7 +49,8 @@ DICOMImageIO2::~DICOMImageIO2()
   delete m_AppHelper;
 }
 
-bool DICOMImageIO2::CanReadFile(const char *filename)
+bool
+DICOMImageIO2::CanReadFile(const char *filename)
 {
   bool open = m_Parser->OpenFile(filename);
 
@@ -61,11 +62,12 @@ bool DICOMImageIO2::CanReadFile(const char *filename)
   return magic;
 }
 
-void DICOMImageIO2::ReadDataCallback(doublebyte,
-                                     doublebyte,
-                                     itkdicomparser::DICOMParser::VRTypes,
-                                     unsigned char *val,
-                                     quadbyte len)
+void
+DICOMImageIO2::ReadDataCallback(doublebyte,
+                                doublebyte,
+                                itkdicomparser::DICOMParser::VRTypes,
+                                unsigned char *val,
+                                quadbyte len)
 {
   unsigned int imageBytes = static_cast< unsigned int >( this->GetImageSizeInBytes() );
 
@@ -80,7 +82,8 @@ void DICOMImageIO2::ReadDataCallback(doublebyte,
   std::copy(val, val + imageBytes, m_ImageDataBuffer);
 }
 
-void DICOMImageIO2::Read(void *buffer)
+void
+DICOMImageIO2::Read(void *buffer)
 {
   m_Parser->ClearAllDICOMTagCallbacks();
   m_AppHelper->RegisterCallbacks(m_Parser);
@@ -118,7 +121,8 @@ void DICOMImageIO2::Read(void *buffer)
 /**
  *  Read Information about the dicom file
  */
-void DICOMImageIO2::ReadImageInformation()
+void
+DICOMImageIO2::ReadImageInformation()
 {
   m_Parser->ClearAllDICOMTagCallbacks();
   m_AppHelper->RegisterCallbacks(m_Parser);
@@ -225,11 +229,13 @@ void DICOMImageIO2::ReadImageInformation()
 }
 
 /** Print Self Method */
-void DICOMImageIO2::PrintSelf(std::ostream & os, Indent indent) const
+void
+DICOMImageIO2::PrintSelf(std::ostream & os, Indent indent) const
 {
   unsigned int i;
 
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Spacing: ( ";
   for ( i = 0; i < m_NumberOfDimensions; i++ )
     {
@@ -348,4 +354,5 @@ DICOMImageIO2
 {
   m_AppHelper->GetModel(model);
 }
+
 } // end namespace itk

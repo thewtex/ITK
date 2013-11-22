@@ -22,7 +22,8 @@
 #include <iostream>
 #include <string>
 
-int itkPolygonCellTest(int, char* [] )
+int
+itkPolygonCellTest(int, char* [] )
 {
   /**
    * Define a mesh type that stores a PixelType of "int".  Use the defaults for
@@ -36,24 +37,22 @@ int itkPolygonCellTest(int, char* [] )
    * use the defaults for the other parameters.  Note that a cell's template
    * parameters must match those of the mesh into which it is inserted.
    */
-  typedef itk::CellInterface< int, CellTraits >           CellInterfaceType;
-  typedef itk::PolygonCell<CellInterfaceType>             PolygonCellType;
-
+  typedef itk::CellInterface< int, CellTraits > CellInterfaceType;
+  typedef itk::PolygonCell<CellInterfaceType>   PolygonCellType;
 
   /**
    * Typedef the generic cell type for the mesh.  It is an abstract class,
    * so we can only use information from it, like get its pointer type.
    */
-  typedef MeshType::CellType              CellType;
-  typedef CellType::CellAutoPointer       CellAutoPointer;
+  typedef MeshType::CellType        CellType;
+  typedef CellType::CellAutoPointer CellAutoPointer;
 
   /**
    * The type of point stored in the mesh. Because mesh was instantiated
    * with defaults (itkDefaultStaticMeshTraits), the point dimension is 3 and
    * the coordinate representation is float.
    */
-  typedef MeshType::PointType  PointType;
-
+  typedef MeshType::PointType PointType;
 
   /**
    * Create the mesh through its object factory.
@@ -66,7 +65,7 @@ int itkPolygonCellTest(int, char* [] )
    */
   MeshType::CoordRepType testPointCoords[8][3]
     = { {0,0,0}, {9,0,0}, {9,0,9}, {0,0,9},
-        {0,9,0}, {9,9,0}, {9,9,9}, {0,9,9} };
+            {0,9,0}, {9,9,0}, {9,9,9}, {0,9,9} };
 
   /**
    * Add our test points to the mesh.
@@ -76,20 +75,20 @@ int itkPolygonCellTest(int, char* [] )
    */
   for(int i=0; i < 8; ++i)
     {
-    mesh->SetPoint(i, PointType(testPointCoords[i]));
+    mesh->SetPoint(i, PointType(testPointCoords[i]) );
     }
 
   /**
    * Specify the method used for allocating cells
    */
-   mesh->SetCellsAllocationMethod( MeshType::CellsAllocatedDynamicallyCellByCell );
+  mesh->SetCellsAllocationMethod( MeshType::CellsAllocatedDynamicallyCellByCell );
 
   /**
    * Create the test cell. Note that testCell is a generic auto
    * pointer to a cell; in this example it ends up pointing to
    * different types of cells.
    */
-  CellAutoPointer testCell;
+  CellAutoPointer   testCell;
   PolygonCellType * newcell = new PolygonCellType;
   testCell.TakeOwnership( newcell ); // polymorphism
 
@@ -111,24 +110,24 @@ int itkPolygonCellTest(int, char* [] )
   std::cout << "PolygonCell pointer = " << (void const *)testCell.GetPointer() << std::endl;
   std::cout << "PolygonCell Owner   = " << testCell.IsOwner() << std::endl;
 
-  {
-  std::cout << "Test MakeCopy" << std::endl;
-
-  CellAutoPointer anotherCell;
-
-  testCell->MakeCopy( anotherCell );
-
-  if( anotherCell->GetNumberOfPoints() != testCell->GetNumberOfPoints() )
     {
-    std::cerr << "Make Copy failed !" << std::endl;
-    return EXIT_FAILURE;
+    std::cout << "Test MakeCopy" << std::endl;
+
+    CellAutoPointer anotherCell;
+
+    testCell->MakeCopy( anotherCell );
+
+    if( anotherCell->GetNumberOfPoints() != testCell->GetNumberOfPoints() )
+      {
+      std::cerr << "Make Copy failed !" << std::endl;
+      return EXIT_FAILURE;
+      }
     }
-  }
 
   /**
    * Exercise the methods AddPointId() and RemovePointId()
    */
-  {
+    {
     unsigned int np = newcell->GetNumberOfPoints();
 
     newcell->AddPointId( 100 );
@@ -144,7 +143,7 @@ int itkPolygonCellTest(int, char* [] )
       std::cerr << "RemovePointId failed !" << std::endl;
       return EXIT_FAILURE;
       }
-  }
+    }
 
   return EXIT_SUCCESS;
 }

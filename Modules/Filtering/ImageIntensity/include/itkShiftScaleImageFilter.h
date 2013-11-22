@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class ShiftScaleImageFilter:
+class ShiftScaleImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -134,7 +134,7 @@ private:
   Array< long > m_ThreadOverflow;
 
   const TInputImage *m_InputImage;
-  TOutputImage      *m_OutputImage;
+  TOutputImage *     m_OutputImage;
 };
 } // end namespace itk
 

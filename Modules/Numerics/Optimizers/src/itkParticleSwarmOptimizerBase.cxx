@@ -21,7 +21,6 @@
 namespace itk
 {
 
-
 ParticleSwarmOptimizerBase
 ::ParticleSwarmOptimizerBase(void)
 {
@@ -42,7 +41,6 @@ ParticleSwarmOptimizerBase
 {
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::SetNumberOfParticles( unsigned int n )
@@ -58,7 +56,6 @@ ParticleSwarmOptimizerBase
     }
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::SetInitialSwarm( const SwarmType &initialSwarm )
@@ -68,25 +65,24 @@ ParticleSwarmOptimizerBase
   if( !initialSwarm.empty() )
     {
     const SwarmType::const_iterator initialSwarm_END = initialSwarm.end();
-    const unsigned int n = initialSwarm[0].m_CurrentParameters.GetSize();
+    const unsigned int              n = initialSwarm[0].m_CurrentParameters.GetSize();
     //check that the dimensions of the swarm data are consistent
     for( SwarmType::const_iterator it = initialSwarm.begin();
-      it != initialSwarm_END; ++it )
+         it != initialSwarm_END; ++it )
       {
       if( (*it).m_CurrentParameters.GetSize() != n ||
-        (*it).m_CurrentVelocity.GetSize() != n ||
-        (*it).m_BestParameters.GetSize() != n )
+          (*it).m_CurrentVelocity.GetSize() != n ||
+          (*it).m_BestParameters.GetSize() != n )
         {
         itkExceptionMacro(<<"inconsistent dimensions in swarm data")
         }
       }
     this->m_Particles.insert( m_Particles.begin(),
-      initialSwarm.begin(), initialSwarm_END );
+                              initialSwarm.begin(), initialSwarm_END );
     this->m_NumberOfParticles = m_Particles.size();
     }
   Modified();
 }
-
 
 void
 ParticleSwarmOptimizerBase
@@ -99,22 +95,20 @@ ParticleSwarmOptimizerBase
     }
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::SetParameterBounds( ParameterBoundsType & bounds )
 {
   this->m_ParameterBounds.clear();
   this->m_ParameterBounds.insert( m_ParameterBounds.begin(),
-                            bounds.begin(), bounds.end() );
+                                  bounds.begin(), bounds.end() );
   Modified();
 }
-
 
 void
 ParticleSwarmOptimizerBase
 ::SetParameterBounds( std::pair<ParametersType::ValueType,
-                      ParametersType::ValueType> &bounds,
+                                ParametersType::ValueType> &bounds,
                       unsigned int n )
 {
   this->m_ParameterBounds.clear();
@@ -122,14 +116,12 @@ ParticleSwarmOptimizerBase
   Modified();
 }
 
-
 ParticleSwarmOptimizerBase::ParameterBoundsType
 ParticleSwarmOptimizerBase
 ::GetParameterBounds() const
 {
   return this->m_ParameterBounds;
 }
-
 
 void
 ParticleSwarmOptimizerBase
@@ -140,14 +132,12 @@ ParticleSwarmOptimizerBase
   this->m_ParametersConvergenceTolerance.Fill( convergenceTolerance );
 }
 
-
 ParticleSwarmOptimizerBase::CostFunctionType::MeasureType
 ParticleSwarmOptimizerBase
 ::GetValue() const
 {
   return this->m_FunctionBestValue;
 }
-
 
 const std::string
 ParticleSwarmOptimizerBase
@@ -156,13 +146,13 @@ ParticleSwarmOptimizerBase
   return this->m_StopConditionDescription.str();
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
 
   Superclass::PrintSelf( os, indent );
+
   os<<indent<<"Create swarm using [normal, uniform] distribution: ";
   os<<"["<<this->m_InitializeNormalDistribution<<", ";
   os<<!this->m_InitializeNormalDistribution<<"]\n";
@@ -183,7 +173,7 @@ ParticleSwarmOptimizerBase
   os<<indent<<"Seed: " << m_Seed << std::endl;
 
   os<<"\n";
-          //printing the swarm, usually should be avoided (too much information)
+  //printing the swarm, usually should be avoided (too much information)
   if( this->m_PrintSwarm && !m_Particles.empty() )
     {
     os<<indent<<"swarm data [current_parameters current_velocity current_value ";
@@ -192,12 +182,12 @@ ParticleSwarmOptimizerBase
     }
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::PrintSwarm( std::ostream& os, Indent indent ) const
 {
   std::vector<ParticleData>::const_iterator it, end;
+
   end = this->m_Particles.end();
   os<<indent<<"[\n";
   for( it = this->m_Particles.begin(); it != end; ++it )
@@ -214,25 +204,24 @@ ParticleSwarmOptimizerBase
   os<<indent<<"]\n";
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::PrintParamtersType( const ParametersType & x, std::ostream & os ) const
 {
   unsigned int sz = x.size();
+
   for ( unsigned int i=0; i<sz; i++ )
     {
     os << x[i] << " ";
     }
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::StartOptimization( void )
 {
   unsigned int j, k, n, index, prevIndex;
-  bool converged = false;
+  bool         converged = false;
   unsigned int bestValueMemorySize =
     this->m_NumberOfGenerationsWithMinimalImprovement+1;
   unsigned int percentileIndex =
@@ -240,19 +229,19 @@ ParticleSwarmOptimizerBase
                                (this->m_NumberOfParticles-1) + 0.5 );
 
   ValidateSettings();
-          //initialize particle locations, velocities, etc.
+  //initialize particle locations, velocities, etc.
   Initialize();
 
   InvokeEvent( StartEvent() );
 
-          //run the simulation
+  //run the simulation
   n = static_cast<unsigned int>( ( GetCostFunction() )->GetNumberOfParameters() );
   for( this->m_IterationIndex=1; m_IterationIndex<m_MaximalNumberOfIterations && !converged; m_IterationIndex++ )
     {
 
     UpdateSwarm();
 
-              //update the best function value/parameters
+    //update the best function value/parameters
     for( j=0; j<this->m_NumberOfParticles; j++ )
       {
       if( this->m_Particles[j].m_BestValue < m_FunctionBestValue )
@@ -264,27 +253,27 @@ ParticleSwarmOptimizerBase
 
     SetCurrentPosition( this->m_ParametersBestValue );
 
-                //update the best value memory
+    //update the best value memory
     index = this->m_IterationIndex%bestValueMemorySize;
     this->m_FunctionBestValueMemory[index] = m_FunctionBestValue;
-              //check for convergence. the m_FunctionBestValueMemory is a ring
-              //buffer with m_NumberOfGenerationsWithMinimalImprovement+1
-              //elements. the optimizer has converged if: (a) the difference
-              //between the first and last elements currently in the ring buffer
-              //is less than the user specificed threshold. and (b) the particles
-             //are close enough to the best particle.
+    //check for convergence. the m_FunctionBestValueMemory is a ring
+    //buffer with m_NumberOfGenerationsWithMinimalImprovement+1
+    //elements. the optimizer has converged if: (a) the difference
+    //between the first and last elements currently in the ring buffer
+    //is less than the user specificed threshold. and (b) the particles
+    //are close enough to the best particle.
     if( this->m_IterationIndex>=m_NumberOfGenerationsWithMinimalImprovement )
       {
       if( index ==  this->m_NumberOfGenerationsWithMinimalImprovement )
         prevIndex = 0;
       else
         prevIndex = index+1;
-                  //function value hasn't improved for a while, check the
-                  //parameter space to see if the "best" swarm has collapsed
-                  //around the swarm's best parameters, indicating convergence
+      //function value hasn't improved for a while, check the
+      //parameter space to see if the "best" swarm has collapsed
+      //around the swarm's best parameters, indicating convergence
       if( ( this->m_FunctionBestValueMemory[prevIndex] -
             this->m_FunctionBestValueMemory[index] ) <
-            this->m_FunctionConvergenceTolerance )
+          this->m_FunctionConvergenceTolerance )
         {
         converged = true;
         std::vector<ParametersType::ValueType> parameterDiffs( this->m_NumberOfParticles );
@@ -292,29 +281,28 @@ ParticleSwarmOptimizerBase
           {
           for( j=0; j<this->m_NumberOfParticles; j++ )
             {
-              parameterDiffs[j] =
-                fabs( this->m_Particles[j].m_BestParameters[k] -
-                      this->m_ParametersBestValue[k] );
+            parameterDiffs[j] =
+              fabs( this->m_Particles[j].m_BestParameters[k] -
+                    this->m_ParametersBestValue[k] );
             }
           std::nth_element( parameterDiffs.begin(),
                             parameterDiffs.begin()+percentileIndex,
                             parameterDiffs.end() );
           converged = converged &&
-                      parameterDiffs[percentileIndex] < this->m_ParametersConvergenceTolerance[k];
+            parameterDiffs[percentileIndex] < this->m_ParametersConvergenceTolerance[k];
           }
         }
       }
     InvokeEvent( IterationEvent() );
     }
 
-    this->m_StopConditionDescription << GetNameOfClass() << ": ";
-    if( converged )
-      this->m_StopConditionDescription << "successfuly converged after "<< m_IterationIndex <<" iterations";
-    else
-      this->m_StopConditionDescription << "terminated after "<< m_IterationIndex <<" iterations";
-    InvokeEvent( EndEvent() );
+  this->m_StopConditionDescription << GetNameOfClass() << ": ";
+  if( converged )
+    this->m_StopConditionDescription << "successfuly converged after "<< m_IterationIndex <<" iterations";
+  else
+    this->m_StopConditionDescription << "terminated after "<< m_IterationIndex <<" iterations";
+  InvokeEvent( EndEvent() );
 }
-
 
 void
 ParticleSwarmOptimizerBase
@@ -322,34 +310,34 @@ ParticleSwarmOptimizerBase
 {
   unsigned int i,n;
 
-               //we have to have a cost function
+  //we have to have a cost function
   if( GetCostFunction() == NULL )
     {
     itkExceptionMacro(<<"NULL cost function")
     }
-        //if we got here it is safe to get the number of parameters the cost
-        //function expects
+  //if we got here it is safe to get the number of parameters the cost
+  //function expects
   n =
     static_cast<unsigned int>( ( GetCostFunction() )->GetNumberOfParameters() );
 
-        //check that the number of parameters match
+  //check that the number of parameters match
   ParametersType initialPosition = GetInitialPosition();
   if( initialPosition.Size() != n )
     {
     itkExceptionMacro(<<"cost function and initial position dimensions mismatch")
     }
-              //at least one particle
+  //at least one particle
   if( this->m_NumberOfParticles == 0 )
     {
     itkExceptionMacro(<<"number of particles is zero")
     }
-               //at least one iteration (the initialization phase)
+  //at least one iteration (the initialization phase)
   if( this->m_MaximalNumberOfIterations == 0 )
     {
     itkExceptionMacro(<<"number of iterations is zero")
     }
-                    //we need at least one generation difference to
-                    //compare to the previous one
+  //we need at least one generation difference to
+  //compare to the previous one
   if( this->m_NumberOfGenerationsWithMinimalImprovement == 0 )
     {
     itkExceptionMacro(<<"number of generations with minimal improvement is zero")
@@ -361,14 +349,14 @@ ParticleSwarmOptimizerBase
     }
   for( i=0; i<n; i++ )
     {
-      if( initialPosition[i] < this->m_ParameterBounds[i].first ||
-          initialPosition[i] > this->m_ParameterBounds[i].second )
-        {
-        itkExceptionMacro(<<"initial position is outside specified parameter bounds")
-        }
+    if( initialPosition[i] < this->m_ParameterBounds[i].first ||
+        initialPosition[i] > this->m_ParameterBounds[i].second )
+      {
+      itkExceptionMacro(<<"initial position is outside specified parameter bounds")
+      }
     }
-        //if the user set an initial swarm, check that the number of parameters
-        //match and that they are inside the feasible region
+  //if the user set an initial swarm, check that the number of parameters
+  //match and that they are inside the feasible region
   if( !this->m_Particles.empty() )
     {
     if(this->m_Particles[0].m_CurrentParameters.GetSize() != n )
@@ -381,17 +369,17 @@ ParticleSwarmOptimizerBase
       ParticleData &p = (*it);
       for( i=0; i<n; i++ )
         {
-          if( p.m_CurrentParameters[i] < m_ParameterBounds[i].first ||
-              p.m_CurrentParameters[i] > m_ParameterBounds[i].second ||
-              p.m_BestParameters[i] < m_ParameterBounds[i].first ||
-              p.m_BestParameters[i] > m_ParameterBounds[i].second )
+        if( p.m_CurrentParameters[i] < m_ParameterBounds[i].first ||
+            p.m_CurrentParameters[i] > m_ParameterBounds[i].second ||
+            p.m_BestParameters[i] < m_ParameterBounds[i].first ||
+            p.m_BestParameters[i] > m_ParameterBounds[i].second )
           {
           itkExceptionMacro(<<"initial position is outside specified parameter bounds")
           }
         }
       }
     }
-             //parameters' convergence tolerance has to be positive
+  //parameters' convergence tolerance has to be positive
   for( i=0; i<n; i++ )
     {
     if ( this->m_ParametersConvergenceTolerance[i] < 0 )
@@ -399,10 +387,10 @@ ParticleSwarmOptimizerBase
       itkExceptionMacro(<<"negative parameters convergence tolerance")
       }
     }
-           //function convergence tolerance has to be positive
+  //function convergence tolerance has to be positive
   if ( this->m_FunctionConvergenceTolerance < 0 )
     {
-      itkExceptionMacro(<<"negative function convergence tolerance")
+    itkExceptionMacro(<<"negative function convergence tolerance")
     }
 }
 
@@ -412,6 +400,7 @@ ParticleSwarmOptimizerBase
 {
   itk::Statistics::MersenneTwisterRandomVariateGenerator::Pointer
     randomGenerator = Statistics::MersenneTwisterRandomVariateGenerator::GetInstance();
+
   if (m_UseSeed)
     {
     randomGenerator->SetSeed(m_Seed);
@@ -428,13 +417,13 @@ ParticleSwarmOptimizerBase
   this->m_IterationIndex = 0;
 
   this->m_FunctionBestValueMemory.resize( m_NumberOfGenerationsWithMinimalImprovement
-                                    + 1 );
-              //user did not supply initial swarm
+                                          + 1 );
+  //user did not supply initial swarm
   if( this->m_Particles.empty() )
     {
     RandomInitialization();
     }
-            //initialize best function value
+  //initialize best function value
   this->m_FunctionBestValue =
     itk::NumericTraits<CostFunctionType::MeasureType>::max();
   for(unsigned int i=0; i<this->m_Particles.size(); i++ )
@@ -448,40 +437,40 @@ ParticleSwarmOptimizerBase
   this->m_FunctionBestValueMemory[0] = m_FunctionBestValue;
 }
 
-
 void
 ParticleSwarmOptimizerBase
 ::RandomInitialization()
 {
   unsigned int i, j, n;
+
   n = GetInitialPosition().Size();
   ParameterBoundsType parameterBounds( this->m_ParameterBounds );
-  ParametersType mean = GetInitialPosition();
+  ParametersType      mean = GetInitialPosition();
   itk::Statistics::MersenneTwisterRandomVariateGenerator::Pointer
     randomGenerator = Statistics::MersenneTwisterRandomVariateGenerator::GetInstance();
 
-               //create swarm
+  //create swarm
   this->m_Particles.resize( m_NumberOfParticles );
   for( i=0; i<this->m_NumberOfParticles; i++ )
     {
-      this->m_Particles[i].m_BestParameters.SetSize( n );
-      this->m_Particles[i].m_CurrentParameters.SetSize( n );
-      this->m_Particles[i].m_CurrentVelocity.SetSize( n );
+    this->m_Particles[i].m_BestParameters.SetSize( n );
+    this->m_Particles[i].m_CurrentParameters.SetSize( n );
+    this->m_Particles[i].m_CurrentVelocity.SetSize( n );
     }
 
-    //user supplied initial position is always one of the particles
+  //user supplied initial position is always one of the particles
   this->m_Particles[0].m_CurrentParameters = mean;
 
-           //create particles with a normal distribution around the initial
-           //parameter values, inside the feasible region
+  //create particles with a normal distribution around the initial
+  //parameter values, inside the feasible region
   if( this->m_InitializeNormalDistribution )
     {
     ParametersType variance( mean.GetSize() );
-           //variance is set so that 3sigma == bounds
+    //variance is set so that 3sigma == bounds
     for( i=0; i<n; i++ )
       {
-        variance[i] = ( parameterBounds[i].second - parameterBounds[i].first )/3.0;
-        variance[i] *= variance[i];
+      variance[i] = ( parameterBounds[i].second - parameterBounds[i].first )/3.0;
+      variance[i] *= variance[i];
       }
 
     for( i=1; i<this->m_NumberOfParticles; i++ )
@@ -490,16 +479,16 @@ ParticleSwarmOptimizerBase
         {
         this->m_Particles[i].m_CurrentParameters[j] =
           randomGenerator->GetNormalVariate( mean[j], variance[j] );
-             //ensure that the particle is inside the feasible region
+        //ensure that the particle is inside the feasible region
         if( this->m_Particles[i].m_CurrentParameters[j] < parameterBounds[j].first ||
             this->m_Particles[i].m_CurrentParameters[j] > parameterBounds[j].second )
           {
-            j--;
+          j--;
           }
         }
       }
     }
-     //create particles with uniform distribution inside the feasible region
+  //create particles with uniform distribution inside the feasible region
   else
     {
     for( i=1; i<this->m_NumberOfParticles; i++ )
@@ -513,21 +502,21 @@ ParticleSwarmOptimizerBase
       }
     }
 
-         //initialize the particles' velocity, so that x_i+v_i is inside the
-         //feasible region, and set the best parameters to the current ones
+  //initialize the particles' velocity, so that x_i+v_i is inside the
+  //feasible region, and set the best parameters to the current ones
   for( i=0; i<this->m_NumberOfParticles; i++ )
     {
     for( j=0; j<n; j++ )
       {
       this->m_Particles[i].m_CurrentVelocity[j] =
-          ( randomGenerator->GetUniformVariate( parameterBounds[j].first,
-                                                parameterBounds[j].second ) -
-           this->m_Particles[i].m_CurrentParameters[j] );
+        ( randomGenerator->GetUniformVariate( parameterBounds[j].first,
+                                              parameterBounds[j].second ) -
+          this->m_Particles[i].m_CurrentParameters[j] );
       this->m_Particles[i].m_BestParameters[j] =
         this->m_Particles[i].m_CurrentParameters[j];
       }
     }
-            //initial function evaluations
+  //initial function evaluations
   for( i=0; i<this->m_NumberOfParticles; i++ )
     {
     this->m_Particles[i].m_CurrentValue =

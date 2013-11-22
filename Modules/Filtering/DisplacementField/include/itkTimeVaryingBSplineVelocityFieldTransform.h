@@ -70,10 +70,10 @@ class TimeVaryingBSplineVelocityFieldTransform :
 {
 public:
   /** Standard class typedefs. */
-  typedef TimeVaryingBSplineVelocityFieldTransform                 Self;
-  typedef VelocityFieldTransform<TScalar, NDimensions>             Superclass;
-  typedef SmartPointer<Self>                                       Pointer;
-  typedef SmartPointer<const Self>                                 ConstPointer;
+  typedef TimeVaryingBSplineVelocityFieldTransform     Self;
+  typedef VelocityFieldTransform<TScalar, NDimensions> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( TimeVaryingBSplineVelocityFieldTransform, VelocityFieldTransform );
@@ -85,23 +85,23 @@ public:
   typedef typename Superclass::InverseTransformBasePointer InverseTransformBasePointer;
 
   /** Interpolator types.*/
-  typedef typename Superclass::InterpolatorType                     InterpolatorType;
-  typedef typename Superclass::VelocityFieldInterpolatorType        VelocityFieldIntegratorType;
+  typedef typename Superclass::InterpolatorType              InterpolatorType;
+  typedef typename Superclass::VelocityFieldInterpolatorType VelocityFieldIntegratorType;
 
   /** Field types. */
-  typedef typename Superclass::DisplacementFieldType                DisplacementFieldType;
-  typedef typename Superclass::VelocityFieldType                    VelocityFieldType;
+  typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
+  typedef typename Superclass::VelocityFieldType     VelocityFieldType;
 
   /** Scalar type. */
-  typedef typename Superclass::ScalarType          ScalarType;
+  typedef typename Superclass::ScalarType ScalarType;
 
   /** Type of the input parameters. */
-  typedef typename Superclass::ParametersType          ParametersType;
-  typedef typename ParametersType::ValueType           ParametersValueType;
-  typedef typename Superclass::NumberOfParametersType  NumberOfParametersType;
+  typedef typename Superclass::ParametersType         ParametersType;
+  typedef typename ParametersType::ValueType          ParametersValueType;
+  typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
   /** Derivative type */
-  typedef typename Superclass::DerivativeType       DerivativeType;
+  typedef typename Superclass::DerivativeType DerivativeType;
 
   /** Dimension of the domain spaces. */
   itkStaticConstMacro( Dimension, unsigned int, NDimensions );
@@ -109,13 +109,13 @@ public:
   /** Dimension of the time varying velocity field. */
   itkStaticConstMacro( VelocityFieldDimension, unsigned int, NDimensions + 1 );
 
-  typedef typename VelocityFieldType::PointType         VelocityFieldPointType;
-  typedef typename VelocityFieldType::SizeType          VelocityFieldSizeType;
-  typedef typename VelocityFieldType::SpacingType       VelocityFieldSpacingType;
-  typedef typename VelocityFieldType::DirectionType     VelocityFieldDirectionType;
+  typedef typename VelocityFieldType::PointType     VelocityFieldPointType;
+  typedef typename VelocityFieldType::SizeType      VelocityFieldSizeType;
+  typedef typename VelocityFieldType::SpacingType   VelocityFieldSpacingType;
+  typedef typename VelocityFieldType::DirectionType VelocityFieldDirectionType;
 
-  typedef VelocityFieldType                             TimeVaryingVelocityFieldControlPointLatticeType;
-  typedef typename VelocityFieldType::Pointer           TimeVaryingVelocityFieldControlPointLatticePointer;
+  typedef VelocityFieldType                   TimeVaryingVelocityFieldControlPointLatticeType;
+  typedef typename VelocityFieldType::Pointer TimeVaryingVelocityFieldControlPointLatticePointer;
 
   typedef typename DisplacementFieldType::PixelType     DisplacementVectorType;
   typedef typename DisplacementFieldType::SizeType      DisplacementFieldSizeType;
@@ -124,16 +124,18 @@ public:
   typedef typename DisplacementFieldType::DirectionType DisplacementFieldDirectionType;
 
   /** Get the time-varying velocity field control point lattice. */
-  typename VelocityFieldType::Pointer GetTimeVaryingVelocityFieldControlPointLattice()
-    {
+  typename VelocityFieldType::Pointer
+  GetTimeVaryingVelocityFieldControlPointLattice()
+  {
     return this->GetModifiableVelocityField();
-    }
+  }
 
   /** Set the time-varying velocity field control point lattice.  */
-  virtual void SetTimeVaryingVelocityFieldControlPointLattice( VelocityFieldType * fieldLattice )
-    {
+  virtual void
+  SetTimeVaryingVelocityFieldControlPointLattice( VelocityFieldType * fieldLattice )
+  {
     this->SetVelocityField( fieldLattice );
-    }
+  }
 
   /** Update the transform's parameters by the adding values in \c update
    * to current parameter values.  We assume \c update is of the same length as Parameters.
@@ -144,7 +146,8 @@ public:
    */
   virtual void UpdateTransformParameters( const DerivativeType & update, ScalarType factor = 1.0 );
 
-  /** Trigger the computation of the displacement field by integrating the time-varying velocity field. */
+  /** Trigger the computation of the displacement field by integrating the
+    time-varying velocity field. */
   virtual void IntegrateVelocityField();
 
   /** Set/Get sampled velocity field origin */
@@ -169,20 +172,24 @@ public:
 
 protected:
   TimeVaryingBSplineVelocityFieldTransform();
-  virtual ~TimeVaryingBSplineVelocityFieldTransform();
+  virtual
+  ~TimeVaryingBSplineVelocityFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
 private:
-  TimeVaryingBSplineVelocityFieldTransform( const Self& ); //purposely not implementen
-  void operator=( const Self& ); //purposely not implemented
+  TimeVaryingBSplineVelocityFieldTransform( const Self& ); //purposely not
+                                                           // implementen
+  void operator=( const Self& );                           //purposely not
 
-  unsigned int                                                   m_SplineOrder;
-  bool                                                           m_TemporalPeriodicity;
+  // implemented
 
-  VelocityFieldPointType                                         m_VelocityFieldOrigin;
-  VelocityFieldSpacingType                                       m_VelocityFieldSpacing;
-  VelocityFieldDirectionType                                     m_VelocityFieldDirection;
-  VelocityFieldSizeType                                          m_VelocityFieldSize;
+  unsigned int m_SplineOrder;
+  bool         m_TemporalPeriodicity;
+
+  VelocityFieldPointType     m_VelocityFieldOrigin;
+  VelocityFieldSpacingType   m_VelocityFieldSpacing;
+  VelocityFieldDirectionType m_VelocityFieldDirection;
+  VelocityFieldSizeType      m_VelocityFieldSize;
 };
 
 } // end namespace itk

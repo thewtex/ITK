@@ -33,9 +33,11 @@ MetaArrayWriter
 
 MetaArrayWriter
 ::~MetaArrayWriter()
-{}
+{
+}
 
-void MetaArrayWriter
+void
+MetaArrayWriter
 ::ConvertTo(MET_ValueEnumType _metaElementType)
 {
   if ( m_Buffer != NULL )
@@ -47,7 +49,8 @@ void MetaArrayWriter
 }
 
 /** Update the writer */
-void MetaArrayWriter
+void
+MetaArrayWriter
 ::Update()
 {
   m_MetaArray.SetDoublePrecision(m_Precision);

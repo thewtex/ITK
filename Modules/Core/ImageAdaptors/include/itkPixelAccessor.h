@@ -62,11 +62,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  inline void Set(TInternalType & output, const TExternalType & input) const
-  { output = (TInternalType)input; }
+  inline void
+  Set(TInternalType & output, const TExternalType & input) const
+  {
+    output = (TInternalType)input;
+  }
 
-  inline TExternalType Get(const TInternalType & input) const
-  { return (TExternalType)input; }
+  inline TExternalType
+  Get(const TInternalType & input) const
+  {
+    return (TExternalType)input;
+  }
+
 };
 } // end namespace itk
 

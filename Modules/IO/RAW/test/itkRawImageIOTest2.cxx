@@ -21,11 +21,10 @@
 #include "itkRawImageIO.h"
 #include "itkImageFileReader.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-
-int itkRawImageIOTest2(int argc, char * argv [])
+int
+itkRawImageIOTest2(int argc, char * argv [])
 {
 
   if ( argc < 2 )
@@ -35,7 +34,7 @@ int itkRawImageIOTest2(int argc, char * argv [])
     }
 
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
   // Uncomment the following if you want to see each message independently
   // itk::OutputWindow::GetInstance()->PromptUserOn();
 
@@ -49,8 +48,8 @@ int itkRawImageIOTest2(int argc, char * argv [])
   io->SetFileDimensionality(3);
   io->SetNumberOfDimensions(3);
   unsigned int dim[3] = {50,50,10};
-  double spacing[3] = {1.0, 1.0, 1.0};
-  double origin[3] = {0.0,0.0,0.0};
+  double       spacing[3] = {1.0, 1.0, 1.0};
+  double       origin[3] = {0.0,0.0,0.0};
   for(unsigned int i=0; i<3; i++)
     {
     io->SetDimensions(i,dim[i]);

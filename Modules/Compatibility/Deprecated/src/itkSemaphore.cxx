@@ -27,16 +27,17 @@ extern "C" {
 namespace itk
 {
 #ifdef __APPLE__
-int Semaphore:: m_SemaphoreCount = 0;
+int Semaphore::m_SemaphoreCount = 0;
 #endif
 
 #ifdef ITK_USE_UNIX_IPC_SEMAPHORES
-int Semaphore::             m_IPCSemaphoreKey = 12345;
-SimpleMutexLock Semaphore:: m_Mutex;
+int             Semaphore::m_IPCSemaphoreKey = 12345;
+SimpleMutexLock Semaphore::m_Mutex;
 #endif
 
 #ifdef __APPLE__
-std::string Semaphore::GetUniqueName()
+std::string
+Semaphore::GetUniqueName()
 {
   char   s[255];
   time_t t = time(0);
@@ -70,7 +71,8 @@ Semaphore::Semaphore ()
 #endif
 }
 
-void Semaphore::Initialize(unsigned int value)
+void
+Semaphore::Initialize(unsigned int value)
 {
 #ifdef ITK_USE_UNIX_IPC_SEMAPHORES
   // Obtain a lock over the m_IPCSemaphoreKey so that the new semaphore is
@@ -124,7 +126,8 @@ void Semaphore::Initialize(unsigned int value)
 #endif
 }
 
-void Semaphore::Up()
+void
+Semaphore::Up()
 {
 #ifdef ITK_USE_UNIX_IPC_SEMAPHORES
   Semaphore::UnixIpcSemaphoreUp(m_Sema);
@@ -163,7 +166,8 @@ void Semaphore::Up()
 #endif
 }
 
-void Semaphore::Down()
+void
+Semaphore::Down()
 {
 #ifdef ITK_USE_UNIX_IPC_SEMAPHORES
   Semaphore::UnixIpcSemaphoreDown (m_Sema);
@@ -227,7 +231,8 @@ Semaphore::~Semaphore()
 #endif
 }
 
-void Semaphore::Remove()
+void
+Semaphore::Remove()
 {
 #ifdef ITK_USE_UNIX_IPC_SEMAPHORES
   if ( m_Sema != -1 )
@@ -289,7 +294,8 @@ void Semaphore::Remove()
 // UnixIpcSemaphoreCreate: will return the semaphore id (system wide)
 // of the semaphore number (key) you give.
 // If no semaphore has been established for this number, one is created.
-int Semaphore::UnixIpcSemaphoreCreate(int unix_semaphore_key)
+int
+Semaphore::UnixIpcSemaphoreCreate(int unix_semaphore_key)
 {
   int         sid = -1;
   std::string s;
@@ -318,7 +324,8 @@ int Semaphore::UnixIpcSemaphoreCreate(int unix_semaphore_key)
 // UnixIpcSemaphoreDown: the semaphore signal operation.
 // sid must be the system wide semaphore number
 // returned by UnixIpcSemaphoreCreate above
-void Semaphore::UnixIpcSemaphoreDown(int sid)
+void
+Semaphore::UnixIpcSemaphoreDown(int sid)
 {
   Semaphore::UnixIpcSemaphoreCall(sid, -1);
 }
@@ -326,7 +333,8 @@ void Semaphore::UnixIpcSemaphoreDown(int sid)
 // UnixIpcSemaphoreUp: the semaphore release operation.
 // sid must be the system wide semaphore number
 // returned by UnixIpcSemaphoreCreate above
-void Semaphore::UnixIpcSemaphoreUp(int sid)
+void
+Semaphore::UnixIpcSemaphoreUp(int sid)
 {
   Semaphore::UnixIpcSemaphoreCall(sid, 1);
 }
@@ -334,7 +342,8 @@ void Semaphore::UnixIpcSemaphoreUp(int sid)
 // UixIpcSemaphoreRemove: remove a semaphore from the system.
 // sid must be the system wide semaphore number
 // returned from UnixIpcSemaphoreCreate
-void Semaphore::UnixIpcSemaphoreRemove(int sid)
+void
+Semaphore::UnixIpcSemaphoreRemove(int sid)
 {
   std::string s;
 
@@ -359,7 +368,8 @@ void Semaphore::UnixIpcSemaphoreRemove(int sid)
 
 // UnixIpcSemaphoreCall: makes the system call semop for your given
 // semaphore and operation.
-void Semaphore::UnixIpcSemaphoreCall(int sid, int op)
+void
+Semaphore::UnixIpcSemaphoreCall(int sid, int op)
 {
   struct sembuf sb;
   std::string   s;

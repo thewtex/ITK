@@ -95,5 +95,6 @@ KappaSigmaThresholdImageFilter< TInputImage, TMaskImage, TOutputImage >
   os << indent << "Outside value: "
      << static_cast< typename NumericTraits< OutputPixelType >::PrintType >( this->m_OutsideValue ) << std::endl;
 }
+
 } // end namespace itk
 #endif

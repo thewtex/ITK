@@ -116,7 +116,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
     }
   this->m_BSplineEpsilon = 100 * vcl_numeric_limits<CoordRepType>::epsilon();
   while( static_cast<CoordRepType>( maximumNumberOfSpans ) ==
-    static_cast<CoordRepType>( maximumNumberOfSpans ) - this->m_BSplineEpsilon )
+         static_cast<CoordRepType>( maximumNumberOfSpans ) - this->m_BSplineEpsilon )
     {
     this->m_BSplineEpsilon *= 10;
     }
@@ -144,6 +144,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateAtParametricPoint( const PointType &point ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = ( point[i] - this->m_Origin[i] ) /
@@ -160,6 +161,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateAtIndex( const IndexType &idx ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = static_cast<CoordRepType>( idx[i] ) /
@@ -176,6 +178,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateAtContinuousIndex( const ContinuousIndexType &idx ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = idx[i] / static_cast<CoordRepType>( this->m_Size[i] - 1 );
@@ -201,10 +204,10 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
     if( p[i] < 0.0 || p[i] >= 1.0 )
       {
       itkExceptionMacro( "The specified point " << params
-        << " is outside the reparameterized domain [0, 1]." );
+                                                << " is outside the reparameterized domain [0, 1]." );
       }
     CoordRepType numberOfSpans = static_cast<CoordRepType>(
-      this->GetInputImage()->GetLargestPossibleRegion().GetSize()[i] );
+        this->GetInputImage()->GetLargestPossibleRegion().GetSize()[i] );
     if( !this->m_CloseDimension[i] )
       {
       numberOfSpans -= static_cast<CoordRepType>( this->m_SplineOrder[i] );
@@ -224,8 +227,8 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
     for( unsigned int j = 0; j < bsplineWeights[i].size(); j++ )
       {
       CoordRepType u = p[i] - static_cast<CoordRepType>( static_cast<unsigned>(
-        p[i] ) + j ) + 0.5 * static_cast<CoordRepType>(
-        this->m_SplineOrder[i] - 1 );
+                                                           p[i] ) + j ) + 0.5 * static_cast<CoordRepType>(
+          this->m_SplineOrder[i] - 1 );
 
       CoordRepType B = 1.0;
       switch( this->m_SplineOrder[i] )
@@ -298,6 +301,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateGradientAtParametricPoint( const PointType &point ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = ( point[i] - this->m_Origin[i] ) /
@@ -314,6 +318,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateGradientAtIndex( const IndexType &idx ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = static_cast<CoordRepType>( idx[i] ) /
@@ -330,6 +335,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateGradientAtContinuousIndex( const ContinuousIndexType &idx ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = idx[i] / static_cast<CoordRepType>( this->m_Size[i] - 1 );
@@ -355,10 +361,10 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
     if( p[i] < 0.0 || p[i] >= 1.0 )
       {
       itkExceptionMacro( "The specified point " << params
-        << " is outside the reparameterized domain [0, 1]." );
+                                                << " is outside the reparameterized domain [0, 1]." );
       }
     CoordRepType numberOfSpans = static_cast<CoordRepType>(
-      this->GetInputImage()->GetLargestPossibleRegion().GetSize()[i] );
+        this->GetInputImage()->GetLargestPossibleRegion().GetSize()[i] );
     if( !this->m_CloseDimension[i] )
       {
       numberOfSpans -= static_cast<CoordRepType>( this->m_SplineOrder[i] );
@@ -388,7 +394,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
       for( unsigned int j = 0; j < bsplineWeights[i].size(); j++ )
         {
         CoordRepType u = p[i] - static_cast<CoordRepType>(
-          static_cast<unsigned>( p[i] ) + j ) + 0.5 *
+            static_cast<unsigned>( p[i] ) + j ) + 0.5 *
           static_cast<CoordRepType>( this->m_SplineOrder[i] - 1 );
 
         CoordRepType B = 1.0;
@@ -466,9 +472,10 @@ typename BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::HessianComponentType
 BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateHessianAtParametricPoint( const PointType &point,
-  const unsigned int component ) const
+                                    const unsigned int component ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = ( point[i] - this->m_Origin[i] ) /
@@ -486,6 +493,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
   const IndexType &idx, const unsigned int component ) const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = static_cast<CoordRepType>( idx[i] ) /
@@ -500,9 +508,10 @@ typename BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::HessianComponentType
 BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::EvaluateHessianAtContinuousIndex( const ContinuousIndexType &idx,
-  const unsigned int component )  const
+                                    const unsigned int component )  const
 {
   PointType params;
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     params[i] = idx[i] / static_cast<CoordRepType>( this->m_Size[i] - 1 );
@@ -529,10 +538,10 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
     if( p[i] < 0.0 || p[i] >= 1.0 )
       {
       itkExceptionMacro( "The specified point " << params
-        << " is outside the reparameterized domain [0, 1]." );
+                                                << " is outside the reparameterized domain [0, 1]." );
       }
     CoordRepType numberOfSpans = static_cast<CoordRepType>(
-      this->GetInputImage()->GetLargestPossibleRegion().GetSize()[i] );
+        this->GetInputImage()->GetLargestPossibleRegion().GetSize()[i] );
     if( !this->m_CloseDimension[i] )
       {
       numberOfSpans -= static_cast<CoordRepType>( this->m_SplineOrder[i] );
@@ -540,7 +549,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
     p[i] = static_cast<CoordRepType>( p[i] ) * numberOfSpans;
     }
 
-  CoordRepType val;
+  CoordRepType         val;
   HessianComponentType hessian;
   hessian.SetSize( ImageDimension, ImageDimension );
   hessian.Fill( 0.0 );
@@ -565,7 +574,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
         for( unsigned int h = 0; h < bsplineWeights[i].size(); h++ )
           {
           CoordRepType u = p[i] - static_cast<CoordRepType>(
-            static_cast<unsigned>( p[i] ) + h ) + 0.5 *
+              static_cast<unsigned>( p[i] ) + h ) + 0.5 *
             static_cast<CoordRepType>( this->m_SplineOrder[i] - 1 );
 
           CoordRepType B = 1.0;
@@ -654,6 +663,7 @@ BSplineControlPointImageFunction<TInputImage, TCoordRep>
 ::PrintSelf( std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent );
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     this->m_Kernel[i]->Print( os, indent );

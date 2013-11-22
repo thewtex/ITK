@@ -486,9 +486,11 @@ BinaryDilateImageFilter< TInputImage, TOutput, TKernel >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Dilate Value: "
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( this->GetForegroundValue() ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

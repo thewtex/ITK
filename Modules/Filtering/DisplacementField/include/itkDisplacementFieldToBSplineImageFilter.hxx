@@ -58,7 +58,7 @@ DisplacementFieldToBSplineImageFilter<TInputImage, TOutputImage>
 ::GenerateData()
 {
   const InputFieldType * inputField = this->GetInput();
-  const RealImageType * confidenceImage = this->GetConfidenceImage();
+  const RealImageType *  confidenceImage = this->GetConfidenceImage();
 
   typename InputFieldType::DirectionType identity;
   identity.SetIdentity();
@@ -72,7 +72,8 @@ DisplacementFieldToBSplineImageFilter<TInputImage, TOutputImage>
 
   typedef ImportImageFilter<VectorType, ImageDimension> ImporterType;
   typename ImporterType::Pointer importer = ImporterType::New();
-  importer->SetImportPointer( const_cast<VectorType *>( inputField->GetBufferPointer() ), numberOfPixels, filterHandlesMemory );
+  importer->SetImportPointer(
+    const_cast<VectorType *>( inputField->GetBufferPointer() ), numberOfPixels, filterHandlesMemory );
   importer->SetRegion( inputField->GetBufferedRegion() );
   importer->SetOrigin( inputField->GetOrigin() );
   importer->SetSpacing( inputField->GetSpacing() );
@@ -84,10 +85,10 @@ DisplacementFieldToBSplineImageFilter<TInputImage, TOutputImage>
   typename PointSetType::Pointer fieldPoints = PointSetType::New();
   fieldPoints->Initialize();
 
-  typedef typename ImporterType::OutputImageType        ImporterOutputImageType;
-  typedef typename ImporterOutputImageType::RegionType  ImporterRegionType;
+  typedef typename ImporterType::OutputImageType       ImporterOutputImageType;
+  typedef typename ImporterOutputImageType::RegionType ImporterRegionType;
 
-  typedef typename InputFieldType::PointType InputFieldPointType;
+  typedef typename InputFieldType::PointType                                          InputFieldPointType;
   typedef ContinuousIndex<typename InputFieldPointType::CoordRepType, ImageDimension> ContinuousIndexType;
 
   typename WeightsContainerType::Pointer weights = WeightsContainerType::New();
@@ -96,7 +97,8 @@ DisplacementFieldToBSplineImageFilter<TInputImage, TOutputImage>
 
   const typename WeightsContainerType::Element boundaryWeight = 1.0e10;
 
-  ImageRegionConstIteratorWithIndex<typename ImporterType::OutputImageType> It( parametricInputField, parametricInputField->GetBufferedRegion() );
+  ImageRegionConstIteratorWithIndex<typename ImporterType::OutputImageType> It( parametricInputField,
+                                                                                parametricInputField->GetBufferedRegion() );
 
   itkDebugMacro( "Extracting points from input displacement field. " )
 

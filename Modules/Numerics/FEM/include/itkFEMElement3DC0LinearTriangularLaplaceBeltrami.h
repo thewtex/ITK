@@ -68,13 +68,14 @@ public:
    */
   Element3DC0LinearTriangularLaplaceBeltrami(NodeIDType n1_, NodeIDType n2_, NodeIDType n3_, Material::ConstPointer p_);
 
-   /** Get the degress of freesom for each node */
-  virtual unsigned int GetNumberOfDegreesOfFreedomPerNode(void) const
+  /** Get the degress of freesom for each node */
+  virtual unsigned int
+  GetNumberOfDegreesOfFreedomPerNode(void) const
   {
     return 1;
   }
 
-   /** Get the Stiffness matrix */
+  /** Get the Stiffness matrix */
   virtual void GetStiffnessMatrix(MatrixType & Ke) const;
 
 protected:

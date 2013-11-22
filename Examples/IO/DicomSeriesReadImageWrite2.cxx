@@ -50,7 +50,8 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
 
   if( argc < 3 )
@@ -68,16 +69,17 @@ int main( int argc, char* argv[] )
 // \code{signed short} pixel type that is commonly used for X-Rays CT scanners.
 //
 // The image orientation information contained in the direction cosines
-// of the DICOM header are read in and passed correctly down the image processing
+// of the DICOM header are read in and passed correctly down the image
+// processing
 // pipeline.
 //
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef signed short    PixelType;
-  const unsigned int      Dimension = 3;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >         ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
@@ -88,7 +90,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >        ReaderType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
 // Software Guide : EndCodeSnippet
 
@@ -100,7 +102,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO       ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
   ImageIOType::Pointer dicomIO = ImageIOType::New();
 
   reader->SetImageIO( dicomIO );
@@ -137,9 +139,12 @@ int main( int argc, char* argv[] )
 // \end{description}
 //
 // If this is not enough for your specific case you can always add some more
-// restrictions using the \code{AddSeriesRestriction()} method. In this example we will use
-// the DICOM Tag: 0008 0021 DA 1 Series Date, to sub-refine each series. The format
-// for passing the argument is a string containing first the group then the element
+// restrictions using the \code{AddSeriesRestriction()} method. In this example
+// we will use
+// the DICOM Tag: 0008 0021 DA 1 Series Date, to sub-refine each series. The
+// format
+// for passing the argument is a string containing first the group then the
+// element
 // of the DICOM tag, separed by a pipe (|) sign.
 //
 //
@@ -157,14 +162,12 @@ int main( int argc, char* argv[] )
   nameGenerator->SetDirectory( argv[1] );
 // Software Guide : EndCodeSnippet
 
-
   try
     {
     std::cout << std::endl << "The directory: " << std::endl;
     std::cout << std::endl << argv[1] << std::endl << std::endl;
     std::cout << "Contains the following DICOM Series: ";
     std::cout << std::endl << std::endl;
-
 
 // Software Guide : BeginLatex
 //
@@ -178,7 +181,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-    typedef std::vector< std::string >    SeriesIdContainer;
+    typedef std::vector< std::string > SeriesIdContainer;
 
     const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
 
@@ -190,7 +193,6 @@ int main( int argc, char* argv[] )
       ++seriesItr;
       }
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -216,7 +218,6 @@ int main( int argc, char* argv[] )
       }
 // Software Guide : EndCodeSnippet
 
-
     std::cout << std::endl << std::endl;
     std::cout << "Now reading series: " << std::endl << std::endl;
     std::cout << seriesIdentifier << std::endl;
@@ -233,7 +234,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-    typedef std::vector< std::string >   FileNamesContainer;
+    typedef std::vector< std::string > FileNamesContainer;
     FileNamesContainer fileNames;
 
     fileNames = nameGenerator->GetFileNames( seriesIdentifier );
@@ -273,7 +274,6 @@ int main( int argc, char* argv[] )
       }
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // At this point, we have a volumetric image in memory that we can access by
@@ -299,9 +299,8 @@ int main( int argc, char* argv[] )
     writer->SetInput( reader->GetOutput() );
 // Software Guide : EndCodeSnippet
 
-    std::cout  << "Writing the image as " << std::endl << std::endl;
-    std::cout  << argv[2] << std::endl << std::endl;
-
+    std::cout << "Writing the image as " << std::endl << std::endl;
+    std::cout << argv[2] << std::endl << std::endl;
 
 // Software Guide : BeginLatex
 //
@@ -333,7 +332,8 @@ int main( int argc, char* argv[] )
   // Note that in addition to writing the volumetric image to a file we could
   // have used it as the input for any 3D processing pipeline. Keep in mind that
   // DICOM is simply a file format and a network protocol. Once the image data
-  // has been loaded into memory, it behaves as any other volumetric dataset that
+  // has been loaded into memory, it behaves as any other volumetric dataset
+  // that
   // you could have loaded from any other file format.
   //
   // Software Guide : EndLatex

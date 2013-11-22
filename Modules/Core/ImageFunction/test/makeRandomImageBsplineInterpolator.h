@@ -19,20 +19,22 @@
 #include "itkBSplineResampleImageFunction.h"
 #include "itkRandomImageSource.h"
 template<typename BSplineInterpolatorFunctionType>
-typename BSplineInterpolatorFunctionType::Pointer makeRandomImageInterpolator(const int SplineOrder)
+typename BSplineInterpolatorFunctionType::Pointer
+makeRandomImageInterpolator(const int SplineOrder)
 {
   typedef typename BSplineInterpolatorFunctionType::ContinuousIndexType ContinuousIndexType;
   typedef typename BSplineInterpolatorFunctionType::CovariantVectorType CovariantVectorType;
-  typedef typename BSplineInterpolatorFunctionType::OutputType OutputType;
-  typedef typename BSplineInterpolatorFunctionType::InputImageType ImageType;;
+  typedef typename BSplineInterpolatorFunctionType::OutputType          OutputType;
+  typedef typename BSplineInterpolatorFunctionType::InputImageType      ImageType;
 
-  /** Generate a random input image and connect to BSpline decomposition filter */
+  /** Generate a random input image and connect to BSpline decomposition filter
+    */
 
   typedef itk::RandomImageSource<ImageType> SourceType;
   typename SourceType::Pointer source = SourceType::New();
     {
     typedef typename ImageType::DirectionType DirectionType;
-    DirectionType  nonTrivialDirection;
+    DirectionType nonTrivialDirection;
 
     nonTrivialDirection[0][0] = 0;
     nonTrivialDirection[0][1] = -1;
@@ -42,20 +44,20 @@ typename BSplineInterpolatorFunctionType::Pointer makeRandomImageInterpolator(co
     source->SetDirection( nonTrivialDirection );
     }
     {
-    typedef typename ImageType::SpacingType   SpacingType;
-    SpacingType    spacing;
+    typedef typename ImageType::SpacingType SpacingType;
+    SpacingType spacing;
     spacing.Fill( 2.0 );
     source->SetSpacing( spacing );
     }
     {
-    typedef typename ImageType::PointType     PointType;
-    PointType      origin;
+    typedef typename ImageType::PointType PointType;
+    PointType origin;
     origin.Fill ( 10.0 );
     source->SetOrigin( origin );
     }
     {
-    typedef typename ImageType::SizeType      SizeType;
-    SizeType       size;
+    typedef typename ImageType::SizeType SizeType;
+    SizeType size;
     size.Fill( 32 );
     source->SetSize( size );
     }

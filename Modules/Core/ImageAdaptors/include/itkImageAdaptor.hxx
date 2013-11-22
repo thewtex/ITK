@@ -43,7 +43,8 @@ ImageAdaptor< TImage, TAccessor >
 template< typename TImage, typename TAccessor >
 ImageAdaptor< TImage, TAccessor >
 ::~ImageAdaptor()
-{}
+{
+}
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -125,9 +126,9 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::OffsetValueType *
 ImageAdaptor< TImage, TAccessor >
 ::GetOffsetTable(void) const
-{
+  {
   return m_Image->GetOffsetTable();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -229,9 +230,9 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::SpacingType &
 ImageAdaptor< TImage, TAccessor >
 ::GetSpacing(void) const
-{
+  {
   return m_Image->GetSpacing();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -298,9 +299,9 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::PointType &
 ImageAdaptor< TImage, TAccessor >
 ::GetOrigin(void) const
-{
+  {
   return m_Image->GetOrigin();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -317,9 +318,9 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::DirectionType &
 ImageAdaptor< TImage, TAccessor >
 ::GetDirection(void) const
-{
+  {
   return m_Image->GetDirection();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -340,18 +341,18 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::InternalPixelType  *
 ImageAdaptor< TImage, TAccessor >
 ::GetBufferPointer() const
-{
+  {
   return m_Image->GetBufferPointer();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
 typename ImageAdaptor< TImage, TAccessor >::InternalPixelType  *
 ImageAdaptor< TImage, TAccessor >
 ::GetBufferPointer()
-{
+  {
   return m_Image->GetBufferPointer();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -396,10 +397,10 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::RegionType &
 ImageAdaptor< TImage, TAccessor >
 ::GetBufferedRegion(void) const
-{
+  {
   // delegation to internal image
   return m_Image->GetBufferedRegion();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -419,10 +420,10 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::RegionType &
 ImageAdaptor< TImage, TAccessor >
 ::GetLargestPossibleRegion(void) const
-{
+  {
   // delegation to internal image
   return m_Image->GetLargestPossibleRegion();
-}
+  }
 
 //----------------------------------------------------------------------------
 template< typename TImage, typename TAccessor >
@@ -468,10 +469,10 @@ template< typename TImage, typename TAccessor >
 const typename ImageAdaptor< TImage, TAccessor >::RegionType &
 ImageAdaptor< TImage, TAccessor >
 ::GetRequestedRegion(void) const
-{
+  {
   // delegation to internal image
   return m_Image->GetRequestedRegion();
-}
+  }
 } // end namespace itk
 
 #endif

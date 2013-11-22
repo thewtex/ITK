@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 
-class FRPROptimizer:
+class FRPROptimizer :
   public PowellOptimizer
 {
 public:
@@ -83,7 +83,8 @@ public:
 
 protected:
   FRPROptimizer();
-  virtual ~FRPROptimizer();
+  virtual
+  ~FRPROptimizer();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

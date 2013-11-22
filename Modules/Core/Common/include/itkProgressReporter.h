@@ -71,7 +71,8 @@ public:
   ~ProgressReporter();
 
   /** Called by a filter once per pixel.  */
-  void CompletedPixel()
+  void
+  CompletedPixel()
   {
     // Inline implementation for efficiency.
     if ( --m_PixelsBeforeUpdate == 0 )

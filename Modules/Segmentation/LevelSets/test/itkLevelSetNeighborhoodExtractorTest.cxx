@@ -19,9 +19,11 @@
 #include "itkLevelSetNeighborhoodExtractor.h"
 #include "itkFastMarchingImageFilter.h"
 
-int itkLevelSetNeighborhoodExtractorTest(int, char* [] )
+int
+itkLevelSetNeighborhoodExtractorTest(int, char* [] )
 {
   const unsigned int ImageDimension = 2;
+
   typedef float                                PixelType;
   typedef itk::Image<PixelType,ImageDimension> ImageType;
 

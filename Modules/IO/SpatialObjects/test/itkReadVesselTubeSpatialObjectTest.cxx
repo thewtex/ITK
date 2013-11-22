@@ -18,7 +18,8 @@
 
 #include "itkSpatialObjectReader.h"
 
-int itkReadVesselTubeSpatialObjectTest( int argc, char * argv[] )
+int
+itkReadVesselTubeSpatialObjectTest( int argc, char * argv[] )
 {
   if( argc < 2 )
     {
@@ -31,7 +32,7 @@ int itkReadVesselTubeSpatialObjectTest( int argc, char * argv[] )
   const char * inputVessel = argv[1];
 
   const unsigned int Dimension = 3;
-  typedef float      FloatType;
+  typedef float FloatType;
 
   typedef itk::SpatialObjectReader< Dimension > ReaderType;
 
@@ -49,7 +50,7 @@ int itkReadVesselTubeSpatialObjectTest( int argc, char * argv[] )
     }
 
   ReaderType::GroupPointer group = reader->GetGroup();
-  const unsigned int numberOfChildren = group->GetNumberOfChildren();
+  const unsigned int       numberOfChildren = group->GetNumberOfChildren();
   std::cout << "Number of children: " << numberOfChildren << std::endl;
   if( numberOfChildren != 1 )
     {

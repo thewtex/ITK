@@ -124,7 +124,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class ImageRegionConstIteratorWithIndex:public ImageConstIteratorWithIndex< TImage >
+class ImageRegionConstIteratorWithIndex : public ImageConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -148,13 +148,15 @@ public:
   typedef typename Superclass::AccessorType          AccessorType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
-  ImageRegionConstIteratorWithIndex():ImageConstIteratorWithIndex< TImage >() {}
+  ImageRegionConstIteratorWithIndex() : ImageConstIteratorWithIndex< TImage >() {
+  }
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
   ImageRegionConstIteratorWithIndex(const TImage *ptr,
-                                    const RegionType & region):
-    ImageConstIteratorWithIndex< TImage >(ptr, region) {}
+                                    const RegionType & region) :
+    ImageConstIteratorWithIndex< TImage >(ptr, region) {
+  }
 
   /** Constructor that can be used to cast from an ImageIterator to an
    * ImageRegionConstIteratorWithIndex. Many routines return an ImageIterator but for a
@@ -163,7 +165,10 @@ public:
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageRegionConstIteratorWithIndex. */
   ImageRegionConstIteratorWithIndex(const ImageConstIteratorWithIndex< TImage > & it)
-  { this->ImageConstIteratorWithIndex< TImage >::operator=(it); }
+  {
+    this->ImageConstIteratorWithIndex< TImage >::operator=(it);
+
+  }
 
   /** Increment (prefix) the fastest moving dimension of the iterator's index.
    * This operator will constrain the iterator within the region (i.e. the
@@ -182,6 +187,7 @@ public:
    * will be set to be one pixel past the beginning of the region.
    * \sa operator++ */
   Self & operator--();
+
 };
 } // end namespace itk
 

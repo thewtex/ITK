@@ -38,10 +38,10 @@ namespace itk
 class ITKCommon_EXPORT StoppingCriterionBase : public Object
 {
 public:
-  typedef StoppingCriterionBase       Self;
-  typedef Object                      Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef StoppingCriterionBase      Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   itkTypeMacro(StoppingCriterionBase, Object);
 
@@ -49,17 +49,20 @@ public:
   must stop).
       \return \c fasle else. */
   virtual bool IsSatisfied() const = 0;
+
   virtual std::string GetDescription() const = 0;
 
 protected:
   /** \brief Constructor */
   StoppingCriterionBase();
   /** \brief Destructor */
-  virtual ~StoppingCriterionBase();
+  virtual
+  ~StoppingCriterionBase();
 
 private:
   StoppingCriterionBase( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 
 }

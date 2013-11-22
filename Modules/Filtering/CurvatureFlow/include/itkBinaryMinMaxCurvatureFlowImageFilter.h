@@ -73,7 +73,7 @@ namespace itk
  * \ingroup ITKCurvatureFlow
  */
 template< typename TInputImage, typename TOutputImage >
-class BinaryMinMaxCurvatureFlowImageFilter:
+class BinaryMinMaxCurvatureFlowImageFilter :
   public MinMaxCurvatureFlowImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -116,7 +116,9 @@ protected:
 
 protected:
   BinaryMinMaxCurvatureFlowImageFilter();
-  ~BinaryMinMaxCurvatureFlowImageFilter() {}
+  ~BinaryMinMaxCurvatureFlowImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration.

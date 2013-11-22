@@ -21,7 +21,8 @@
 #include "itkFilterWatcher.h"
 #include "itkImageFileWriter.h"
 
-int itkGrayscaleFunctionErodeImageFilterTest(int argc, char* argv[] )
+int
+itkGrayscaleFunctionErodeImageFilterTest(int argc, char* argv[] )
 {
   unsigned int i;
 
@@ -33,16 +34,16 @@ int itkGrayscaleFunctionErodeImageFilterTest(int argc, char* argv[] )
   const unsigned short bgValue = 2;
 
   // Declare the types of the images
-  typedef itk::Image<unsigned short, myDimension>  myImageType;
+  typedef itk::Image<unsigned short, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>         myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>          mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create an image
   myImageType::Pointer inputImage  = myImageType::New();
@@ -65,7 +66,7 @@ int itkGrayscaleFunctionErodeImageFilterTest(int argc, char* argv[] )
   inputImage->Allocate();
 
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIterator<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIterator<myImageType> myIteratorType;
 
   // Create one iterator for image (this is a light object)
   myIteratorType it( inputImage, inputImage->GetBufferedRegion() );
@@ -121,10 +122,10 @@ int itkGrayscaleFunctionErodeImageFilterTest(int argc, char* argv[] )
 
   // Create the filter
   myFilterType::Pointer filter = myFilterType::New();
-  FilterWatcher watcher(filter, "filter");
+  FilterWatcher         watcher(filter, "filter");
 
   // Create the structuring element
-  myKernelType ball;
+  myKernelType           ball;
   myKernelType::SizeType ballSize;
   ballSize[0] = 1;
   ballSize[1] = 4;
@@ -138,14 +139,13 @@ int itkGrayscaleFunctionErodeImageFilterTest(int argc, char* argv[] )
   // Get the Smart Pointer to the Filter Output
   myImageType::Pointer outputImage = filter->GetOutput();
 
-
   // Execute the filter
   try
     {
 
     filter->Update();
     // Create an iterator for going through the image output
-    myIteratorType it2(outputImage, outputImage->GetBufferedRegion());
+    myIteratorType it2(outputImage, outputImage->GetBufferedRegion() );
 
     //  Print the content of the result image
     std::cout << "Result " << std::endl;
@@ -160,7 +160,7 @@ int itkGrayscaleFunctionErodeImageFilterTest(int argc, char* argv[] )
         std::cout << std::endl;
         }
       }
-   }
+    }
 
   catch (itk::ExceptionObject& e)
     {

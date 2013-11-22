@@ -51,18 +51,18 @@ namespace itk
  * \ingroup ITKFastMarching
  */
 template< typename TInput, typename TOutput,
-         typename TAuxValue,
-         unsigned int VAuxDimension >
-class FastMarchingExtensionImageFilterBase:
+          typename TAuxValue,
+          unsigned int VAuxDimension >
+class FastMarchingExtensionImageFilterBase :
   public FastMarchingImageFilterBase< TInput, TOutput >
 {
 public:
   /** Standard class typdedefs. */
-  typedef FastMarchingExtensionImageFilterBase              Self;
-  typedef FastMarchingImageFilterBase< TInput, TOutput >    Superclass;
-  typedef SmartPointer< Self >                              Pointer;
-  typedef SmartPointer< const Self >                        ConstPointer;
-  typedef typename Superclass::Traits                       Traits;
+  typedef FastMarchingExtensionImageFilterBase           Self;
+  typedef FastMarchingImageFilterBase< TInput, TOutput > Superclass;
+  typedef SmartPointer< Self >                           Pointer;
+  typedef SmartPointer< const Self >                     ConstPointer;
+  typedef typename Superclass::Traits                    Traits;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -89,23 +89,24 @@ public:
   typedef Image< AuxValueType, ImageDimension > AuxImageType;
   typedef typename AuxImageType::Pointer        AuxImagePointer;
 
-
   /** Index typedef support. */
-  typedef typename Superclass::NodeType       NodeType;
-  typedef typename Superclass::NodePairType   NodePairType;
+  typedef typename Superclass::NodeType     NodeType;
+  typedef typename Superclass::NodePairType NodePairType;
 
 //  typedef typename Superclass::NodeContainerType          NodeContainerType;
-//  typedef typename Superclass::NodeContainerPointer       NodeContainerPointer;
-//  typedef typename Superclass::NodeContainerConstIterator NodeContainerConstIterator;
+//  typedef typename Superclass::NodeContainerPointer
+//       NodeContainerPointer;
+//  typedef typename Superclass::NodeContainerConstIterator
+// NodeContainerConstIterator;
 
   typedef typename Superclass::NodePairContainerType    NodePairContainerType;
   typedef typename Superclass::NodePairContainerPointer NodePairContainerPointer;
   typedef typename Superclass::NodePairContainerConstIterator
     NodePairContainerConstIterator;
 
-  typedef typename Superclass::OutputImageType        OutputImageType;
-  typedef typename Superclass::OutputPixelType        OutputPixelType;
-  typedef typename Superclass::InternalNodeStructure  InternalNodeStructure;
+  typedef typename Superclass::OutputImageType       OutputImageType;
+  typedef typename Superclass::OutputPixelType       OutputPixelType;
+  typedef typename Superclass::InternalNodeStructure InternalNodeStructure;
 
   /** Get one of the extended auxiliary variable image. */
   AuxImageType * GetAuxiliaryImage( const unsigned int& idx );
@@ -127,7 +128,9 @@ public:
 
 protected:
   FastMarchingExtensionImageFilterBase();
-  ~FastMarchingExtensionImageFilterBase(){}
+  ~FastMarchingExtensionImageFilterBase(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void InitializeOutput(OutputImageType *);
@@ -143,8 +146,12 @@ protected:
   AuxValueContainerPointer m_AuxiliaryTrialValues;
 
 private:
-  FastMarchingExtensionImageFilterBase(const Self &); //purposely not implemented
-  void operator=(const Self &);                   //purposely not implemented
+  FastMarchingExtensionImageFilterBase(const Self &); //purposely not
+                                                      // implemented
+  void operator=(const Self &);                       //purposely not
+
+  // implemented
+
   AuxImageType * m_AuxImages[VAuxDimension];
 };
 } // namespace itk

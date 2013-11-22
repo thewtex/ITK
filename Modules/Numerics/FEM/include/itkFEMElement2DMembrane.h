@@ -95,7 +95,8 @@ public:
   /**
    * 2D stress elements have 2 DOFs per node.
    */
-  virtual unsigned int GetNumberOfDegreesOfFreedomPerNode(void) const
+  virtual unsigned int
+  GetNumberOfDegreesOfFreedomPerNode(void) const
   {
     return 2;
   }
@@ -103,12 +104,14 @@ public:
   /**
    * Get/Set the material properties for the element
    */
-  virtual Material::ConstPointer GetMaterial(void) const
+  virtual Material::ConstPointer
+  GetMaterial(void) const
   {
     return m_mat;
   }
 
-  virtual void SetMaterial(Material::ConstPointer mat_)
+  virtual void
+  SetMaterial(Material::ConstPointer mat_)
   {
     m_mat =
       dynamic_cast<const MaterialLinearElasticity *>( mat_.GetPointer() );

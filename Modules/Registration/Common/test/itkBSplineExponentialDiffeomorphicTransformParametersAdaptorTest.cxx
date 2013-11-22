@@ -19,10 +19,12 @@
 #include "itkBSplineExponentialDiffeomorphicTransform.h"
 #include "itkBSplineExponentialDiffeomorphicTransformParametersAdaptor.h"
 
-int itkBSplineExponentialDiffeomorphicTransformParametersAdaptorTest(int, char * [] )
+int
+itkBSplineExponentialDiffeomorphicTransformParametersAdaptorTest(int, char * [] )
 {
   const unsigned int SpaceDimension = 3;
-  typedef double CoordinateRepType;
+
+  typedef double                                                                           CoordinateRepType;
   typedef itk::BSplineExponentialDiffeomorphicTransform<CoordinateRepType, SpaceDimension> TransformType;
 
   /**
@@ -56,7 +58,6 @@ int itkBSplineExponentialDiffeomorphicTransformParametersAdaptorTest(int, char *
   zeroVector.Fill( 0 );
   displacementField->FillBuffer( zeroVector );
 
-
   TransformType::OutputVectorType nonzeroVector;
   nonzeroVector.Fill( 10.3 );
 
@@ -78,7 +79,7 @@ int itkBSplineExponentialDiffeomorphicTransformParametersAdaptorTest(int, char *
   TransformType::OutputPointType outputPointBeforeAdapt = transform->TransformPoint( point );
 
   SpacingType spacingBefore = transform->GetConstantVelocityField()->GetSpacing();
-  SizeType sizeBefore = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeBefore = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
 
   /**
    * Instantiate the adaptor
@@ -123,9 +124,8 @@ int itkBSplineExponentialDiffeomorphicTransformParametersAdaptorTest(int, char *
     return EXIT_FAILURE;
     }
 
-
   SpacingType spacingAfter = transform->GetConstantVelocityField()->GetSpacing();
-  SizeType sizeAfter = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeAfter = transform->GetConstantVelocityField()->GetLargestPossibleRegion().GetSize();
 
   std::cout << "Spacing: " << spacingBefore << "(before), " << spacingAfter << "(after)." << std::endl;
   std::cout << "Size: " << sizeBefore << "(before), " << sizeAfter << "(after)." << std::endl;
@@ -159,7 +159,8 @@ int itkBSplineExponentialDiffeomorphicTransformParametersAdaptorTest(int, char *
     std::cerr << "update field mesh conversion is incorrect." << std::endl;
     return EXIT_FAILURE;
     }
-  if( adaptor->GetNumberOfControlPointsForTheConstantVelocityField() != transform->GetNumberOfControlPointsForTheConstantVelocityField() )
+  if( adaptor->GetNumberOfControlPointsForTheConstantVelocityField() !=
+      transform->GetNumberOfControlPointsForTheConstantVelocityField() )
     {
     std::cerr << "total field mesh conversion is incorrect." << std::endl;
     return EXIT_FAILURE;

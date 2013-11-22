@@ -27,8 +27,8 @@
 #include "itkImageFileWriter.h"
 #include "itkRGBPixel.h"
 
-
-int itkMaskFeaturePointSelectionFilterTest( int argc, char * argv[] )
+int
+itkMaskFeaturePointSelectionFilterTest( int argc, char * argv[] )
 {
   if( argc < 2 )
     {
@@ -37,8 +37,8 @@ int itkMaskFeaturePointSelectionFilterTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef unsigned char                  InputPixelType;
-  typedef itk::RGBPixel<InputPixelType>  OutputPixelType;
+  typedef unsigned char                 InputPixelType;
+  typedef itk::RGBPixel<InputPixelType> OutputPixelType;
 
   typedef itk::Image< InputPixelType,  3 > InputImageType;
   typedef itk::Image< OutputPixelType, 3 > OutputImageType;
@@ -46,12 +46,12 @@ int itkMaskFeaturePointSelectionFilterTest( int argc, char * argv[] )
   typedef itk::Matrix< itk::SpacePrecisionType, 3, 3 > PointSetPixelType;
   typedef itk::PointSet< PointSetPixelType, 3 >        PointSetType;
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
-  typedef itk::MaskFeaturePointSelectionFilter< InputImageType, InputImageType, PointSetType >  FilterType;
+  typedef itk::MaskFeaturePointSelectionFilter< InputImageType, InputImageType, PointSetType > FilterType;
 
-  typedef FilterType::PointType       PointType;
-  typedef FilterType::InputImageType  ImageType;
+  typedef FilterType::PointType      PointType;
+  typedef FilterType::InputImageType ImageType;
 
   //Set up the reader
   ReaderType::Pointer reader = ReaderType::New();
@@ -69,19 +69,19 @@ int itkMaskFeaturePointSelectionFilterTest( int argc, char * argv[] )
 
   try
     {
-      filter->Update();
+    filter->Update();
     }
   catch ( itk::ExceptionObject &err )
     {
-      std::cerr << err << std::endl;
-      return EXIT_FAILURE;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
 
   //Set up the writer
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
-  typedef itk::ImageRegionConstIterator< InputImageType >         InputIteratorType;
+  typedef itk::ImageRegionConstIterator< InputImageType > InputIteratorType;
   InputIteratorType inputIterator( reader->GetOutput(), reader->GetOutput()->GetBufferedRegion() );
   typedef itk::ImageRegionIterator< OutputImageType > OutputIteratorType;
 
@@ -96,11 +96,11 @@ int itkMaskFeaturePointSelectionFilterTest( int argc, char * argv[] )
   outputIterator.GoToBegin();
 
   // Copy input image to output image
-  while (!outputIterator.IsAtEnd())
+  while (!outputIterator.IsAtEnd() )
     {
     OutputPixelType rgbPixel;
     rgbPixel.SetRed( inputIterator.Get() );
-    rgbPixel.SetGreen( inputIterator.Get());
+    rgbPixel.SetGreen( inputIterator.Get() );
     rgbPixel.SetBlue( inputIterator.Get() );
     outputIterator.Set( rgbPixel );
     ++outputIterator;
@@ -111,9 +111,9 @@ int itkMaskFeaturePointSelectionFilterTest( int argc, char * argv[] )
   typedef PointSetType::PointsContainer::ConstIterator PointIteratorType;
 
   PointIteratorType pointItr =
-          filter->GetOutput()->GetPoints()->Begin();
+    filter->GetOutput()->GetPoints()->Begin();
   PointIteratorType pointEnd =
-          filter->GetOutput()->GetPoints()->End();
+    filter->GetOutput()->GetPoints()->End();
 
   OutputImageType::IndexType index;
 

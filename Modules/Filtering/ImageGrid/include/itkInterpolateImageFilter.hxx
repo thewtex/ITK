@@ -37,7 +37,7 @@ InterpolateImageFilter< TInputImage, TOutputImage >
 
   // Set default interpolator to linear
   typedef LinearInterpolateImageFunction< IntermediateImageType >
-  LinearInterpolatorType;
+    LinearInterpolatorType;
   typename LinearInterpolatorType::Pointer interpolator =
     LinearInterpolatorType::New();
 
@@ -69,9 +69,9 @@ template< typename TInputImage, typename TOutputImage >
 const typename InterpolateImageFilter< TInputImage, TOutputImage >::InputImageType *
 InterpolateImageFilter< TInputImage, TOutputImage >
 ::GetInput2()
-{
+  {
   return static_cast< const TInputImage * >( this->ProcessObject::GetInput(1) );
-}
+  }
 
 /**
  * Print out a description of self
@@ -111,7 +111,7 @@ InterpolateImageFilter< TInputImage, TOutputImage >
   IntermediateImageRegionType intermediateRegion;
 
   typedef ImageToImageFilterDetail::ImageRegionCopier< ImageDimension + 1, ImageDimension >
-  RegionCopierType;
+    RegionCopierType;
   RegionCopierType regionCopier;
   regionCopier(intermediateRegion, outputRegion);
 
@@ -224,6 +224,7 @@ InterpolateImageFilter< TInputImage, TOutputImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

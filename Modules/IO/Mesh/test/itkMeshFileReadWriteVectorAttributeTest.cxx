@@ -20,7 +20,8 @@
 
 #include "itkMeshFileTestHelper.h"
 
-int itkMeshFileReadWriteVectorAttributeTest(int argc, char * argv[])
+int
+itkMeshFileReadWriteVectorAttributeTest(int argc, char * argv[])
 {
   if(argc < 3)
     {
@@ -31,10 +32,10 @@ int itkMeshFileReadWriteVectorAttributeTest(int argc, char * argv[])
   bool IsBinary = ( argc > 3 );
 
   const unsigned int dimension = 3;
-  typedef itk::CovariantVector< float, dimension >     PixelType;
+  typedef itk::CovariantVector< float, dimension > PixelType;
 
-  typedef itk::Mesh< PixelType, dimension >            MeshType;
-  typedef itk::QuadEdgeMesh< PixelType, dimension >    QEMeshType;
+  typedef itk::Mesh< PixelType, dimension >         MeshType;
+  typedef itk::QuadEdgeMesh< PixelType, dimension > QEMeshType;
 
   int result = EXIT_SUCCESS;
 

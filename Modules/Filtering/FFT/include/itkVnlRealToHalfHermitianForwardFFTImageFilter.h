@@ -37,8 +37,9 @@ namespace itk
  * \ingroup ITKFFT
  *
  */
-template< typename TInputImage, typename TOutputImage=Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
-class VnlRealToHalfHermitianForwardFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
+class VnlRealToHalfHermitianForwardFFTImageFilter :
   public RealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -53,8 +54,8 @@ public:
 
   typedef VnlRealToHalfHermitianForwardFFTImageFilter                           Self;
   typedef RealToHalfHermitianForwardFFTImageFilter<  TInputImage, TOutputImage> Superclass;
-  typedef SmartPointer< Self >                                                Pointer;
-  typedef SmartPointer< const Self >                                          ConstPointer;
+  typedef SmartPointer< Self >                                                  Pointer;
+  typedef SmartPointer< const Self >                                            ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -80,14 +81,20 @@ public:
 #endif
 
 protected:
-  VnlRealToHalfHermitianForwardFFTImageFilter() {}
-  ~VnlRealToHalfHermitianForwardFFTImageFilter() {}
+  VnlRealToHalfHermitianForwardFFTImageFilter() {
+  }
+
+  ~VnlRealToHalfHermitianForwardFFTImageFilter() {
+  }
 
   void GenerateData();
 
 private:
-  VnlRealToHalfHermitianForwardFFTImageFilter(const Self &); // purposely not implemented
-  void operator=(const Self &);           // purposely not implemented
+  VnlRealToHalfHermitianForwardFFTImageFilter(const Self &); // purposely not
+                                                             // implemented
+  void operator=(const Self &);                              // purposely not
+
+  // implemented
 
   typedef vnl_vector< vcl_complex< InputPixelType > > SignalVectorType;
 };

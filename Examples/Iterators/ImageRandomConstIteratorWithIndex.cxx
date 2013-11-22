@@ -23,7 +23,8 @@
 // location in its image region.
 //
 // \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!sample size}
-// \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!begin and end positions}
+// \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!begin and end
+// positions}
 //
 // The user must specify a sample size when creating this iterator. The sample
 // size, rather than a specific image index, defines the end position for the
@@ -36,7 +37,8 @@
 //
 // \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!example of using|(}
 // \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!and statistics}
-// Let's use the random iterator to estimate some simple image statistics. The next
+// Let's use the random iterator to estimate some simple image statistics. The
+// next
 // example calculates an estimate of the arithmetic mean of pixel values.
 //
 // First, include the appropriate header and declare pixel and image types.
@@ -50,7 +52,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 3 )
@@ -60,22 +63,22 @@ int main( int argc, char *argv[] )
     std::cerr << argv[0]
               << " inputImageFile numberOfSamples"
               << std::endl;
-      return -1;
+    return -1;
     }
 
 // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
 
-  typedef unsigned short                                      PixelType;
-  typedef itk::Image< PixelType, Dimension >                  ImageType;
+  typedef unsigned short                     PixelType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   typedef itk::ImageRandomConstIteratorWithIndex<
-                                          ImageType > ConstIteratorType;
+      ImageType > ConstIteratorType;
 // Software Guide : EndCodeSnippet
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ImageType::ConstPointer inputImage;
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer     reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
@@ -96,7 +99,9 @@ int main( int argc, char *argv[] )
 // \code{ReinitializeSeed} seeds the random number generator.  The iterator is
 // initialized over the entire valid image region.
 //
-//  \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!SetNumberOfSamples()}
+//
+//
+// \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!SetNumberOfSamples()}
 //  \index{itk::Image\-Random\-Const\-Iterator\-With\-Index!ReinitializeSeed()}
 // Software Guide : EndLatex
 
@@ -114,7 +119,7 @@ int main( int argc, char *argv[] )
 
 // Software Guide : BeginCodeSnippet
   float mean = 0.0f;
-  for ( inputIt.GoToBegin(); ! inputIt.IsAtEnd(); ++inputIt)
+  for ( inputIt.GoToBegin(); !inputIt.IsAtEnd(); ++inputIt)
     {
     mean += static_cast<float>( inputIt.Get() );
     }
@@ -132,14 +137,17 @@ int main( int argc, char *argv[] )
 // \begin{table}
 // \begin{center}
 // \begin{tabular}[]{rc|c|c|c}
-// & \multicolumn{4}{c}{\emph{Sample Size}} \\  & \code{\textbf{10}} & \code{\textbf{100}}
+// & \multicolumn{4}{c}{\emph{Sample Size}} \\  & \code{\textbf{10}} &
+// \code{\textbf{100}}
 // & \code{\textbf{1000}}
 // & \code{\textbf{10000}} \\ \cline{2-5}
-// \code{RatLungSlice1.mha} & 50.5 & 52.4 & 53.0 & 52.4 \\ \code{RatLungSlice2.mha}
+// \code{RatLungSlice1.mha} & 50.5 & 52.4 & 53.0 & 52.4 \\
+// \code{RatLungSlice2.mha}
 // & 46.7 & 47.5 & 47.4 & 47.6  \\ \code{BrainT1Slice.png}
 // & 47.2 & 64.1 & 68.0 & 67.8  \\ \end{tabular}
 // \protect\label{fig:ImageRandomConstIteratorWithIndexExample}
-// \itkcaption[ImageRandomConstIteratorWithIndex usage]{Estimates of mean image pixel
+// \itkcaption[ImageRandomConstIteratorWithIndex usage]{Estimates of mean image
+// pixel
 // value using the ImageRandomConstIteratorWithIndex at different sample
 // sizes.}
 // \end{center}

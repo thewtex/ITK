@@ -38,7 +38,8 @@ VectorLinearInterpolateImageFunction< TInputImage, TCoordRep >
 template< typename TInputImage, typename TCoordRep >
 VectorLinearInterpolateImageFunction< TInputImage, TCoordRep >
 ::VectorLinearInterpolateImageFunction()
-{}
+{
+}
 
 /**
  * PrintSelf
@@ -65,9 +66,10 @@ VectorLinearInterpolateImageFunction< TInputImage, TCoordRep >
    * Compute base index = closet index below point
    * Compute distance from point to base index
    */
-  IndexType baseIndex;
-  InternalComputationType    distance[ImageDimension];
+  IndexType                 baseIndex;
+  InternalComputationType   distance[ImageDimension];
   const TInputImage * const inputImgPtr=this->GetInputImage();
+
   for (unsigned int dim = 0; dim < ImageDimension; ++dim )
     {
     baseIndex[dim] = Math::Floor< IndexValueType >(index[dim]);
@@ -87,10 +89,11 @@ VectorLinearInterpolateImageFunction< TInputImage, TCoordRep >
 
   for ( unsigned int counter = 0; counter < m_Neighbors; ++counter )
     {
-    InternalComputationType overlap = 1.0;    // fraction overlap
-    unsigned int upper = counter;  // each bit indicates upper/lower neighbour
+    InternalComputationType overlap = 1.0;   // fraction overlap
+    unsigned int            upper = counter; // each bit indicates upper/lower
+                                             // neighbour
 
-    IndexType    neighIndex;
+    IndexType neighIndex;
     // get neighbor index and overlap fraction
     for ( unsigned int dim = 0; dim < ImageDimension; ++dim )
       {
@@ -139,6 +142,7 @@ VectorLinearInterpolateImageFunction< TInputImage, TCoordRep >
 
   return ( output );
 }
+
 } // end namespace itk
 
 #endif

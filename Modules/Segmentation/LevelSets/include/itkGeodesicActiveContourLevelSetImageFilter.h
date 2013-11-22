@@ -104,7 +104,7 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class GeodesicActiveContourLevelSetImageFilter:
+class GeodesicActiveContourLevelSetImageFilter :
   public SegmentationLevelSetImageFilter< TInputImage, TFeatureImage,
                                           TOutputPixelType >
 {
@@ -135,7 +135,8 @@ public:
 
   /** Set the value of sigma used to compute the edge potential map
    * derivatives  */
-  void SetDerivativeSigma(float value)
+  void
+  SetDerivativeSigma(float value)
   {
     if ( value != m_GeodesicActiveContourFunction->GetDerivativeSigma() )
       {
@@ -146,11 +147,16 @@ public:
 
   /** Get the value of sigma used to compute the edge potential map derivatives.
     */
-  float GetDerivativeSigma() const
-  { return m_GeodesicActiveContourFunction->GetDerivativeSigma(); }
+  float
+  GetDerivativeSigma() const
+  {
+    return m_GeodesicActiveContourFunction->GetDerivativeSigma();
+  }
 
 protected:
-  ~GeodesicActiveContourLevelSetImageFilter() {}
+  ~GeodesicActiveContourLevelSetImageFilter() {
+  }
+
   GeodesicActiveContourLevelSetImageFilter();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

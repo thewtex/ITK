@@ -26,7 +26,8 @@ This program tests operations of itk::FileTools.
 #include <string>
 #include "itkMacro.h"
 
-int itkDOMTest8( int argc, char* argv[] )
+int
+itkDOMTest8( int argc, char* argv[] )
 {
   if ( argc < 3 )
     {

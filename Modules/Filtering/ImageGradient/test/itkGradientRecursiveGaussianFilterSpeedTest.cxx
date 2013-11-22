@@ -18,8 +18,8 @@
 
 #include "itkGradientRecursiveGaussianImageFilter.h"
 
-
-int itkGradientRecursiveGaussianFilterSpeedTest(int argc, char* argv[] )
+int
+itkGradientRecursiveGaussianFilterSpeedTest(int argc, char* argv[] )
 {
   if( argc != 3 )
     {
@@ -36,20 +36,19 @@ int itkGradientRecursiveGaussianFilterSpeedTest(int argc, char* argv[] )
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>           myImageType;
+  typedef itk::Image<float, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
-
 
   // Define their size, and start index
   mySizeType size;
@@ -71,7 +70,7 @@ int itkGradientRecursiveGaussianFilterSpeedTest(int argc, char* argv[] )
   inputImage->Allocate();
 
   // Declare Iterator type for the input image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -103,18 +102,15 @@ int itkGradientRecursiveGaussianFilterSpeedTest(int argc, char* argv[] )
     }
 
   // Declare the type for the
-  typedef itk::GradientRecursiveGaussianImageFilter< myImageType >  myFilterType;
+  typedef itk::GradientRecursiveGaussianImageFilter< myImageType > myFilterType;
 
   typedef myFilterType::OutputImageType myGradientImageType;
-
 
   // Create a  Filter
   myFilterType::Pointer filter = myFilterType::New();
 
-
   // Connect the input images
   filter->SetInput( inputImage );
-
 
   // loop
   for( int i=0; i < reps; i++ )
@@ -135,7 +131,7 @@ int itkGradientRecursiveGaussianFilterSpeedTest(int argc, char* argv[] )
     myGradientImageType::Pointer outputImage = filter->GetOutput();
 
     // Declare Iterator type for the output image
-    typedef itk::ImageRegionIteratorWithIndex<myGradientImageType>  myOutputIteratorType;
+    typedef itk::ImageRegionIteratorWithIndex<myGradientImageType> myOutputIteratorType;
 
     // Create an iterator for going through the output image
     myOutputIteratorType itg( outputImage, outputImage->GetRequestedRegion() );

@@ -42,7 +42,8 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
 template<typename TInternalComputationValueType>
 ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
 ::~ObjectToObjectOptimizerBaseTemplate()
-{}
+{
+}
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
@@ -107,19 +108,19 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
     }
 
   /* Verify m_Scales. If m_Scales hasn't been set, initialize to all 1's. */
-  typedef typename ScalesType::ValueType     SValueType;
+  typedef typename ScalesType::ValueType SValueType;
   if( this->m_Scales.Size() > 0 )
     {
     if( this->m_Scales.Size() != this->m_Metric->GetNumberOfLocalParameters() )
       {
       itkExceptionMacro("Size of scales (" << this->m_Scales.Size()
-                        << ") must equal number of local parameters (" <<
+                                           << ") must equal number of local parameters (" <<
                         this->m_Metric->GetNumberOfLocalParameters() << ").");
       }
     /* Check that all values in m_Scales are > machine epsilon, to avoid
      * division by zero/epsilon.
      * Also check if scales are identity. */
-    typedef typename ScalesType::size_type     SizeType;
+    typedef typename ScalesType::size_type SizeType;
     this->m_ScalesAreIdentity = true;
     for( SizeType i=0; i < this->m_Scales.Size(); i++ )
       {
@@ -148,16 +149,18 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
     }
 
   /* Verify m_Weights. */
-  typedef typename ScalesType::ValueType     SValueType;
+  typedef typename ScalesType::ValueType SValueType;
   if( this->m_Weights.Size() > 0 )
     {
     if( this->m_Weights.Size() != this->m_Metric->GetNumberOfLocalParameters() )
       {
-      itkExceptionMacro("Size of weights (" << this->m_Weights.Size()
-                        << ") must equal number of local parameters (" << this->m_Metric->GetNumberOfLocalParameters() << ").");
+      itkExceptionMacro(
+        "Size of weights (" << this->m_Weights.Size()
+                            << ") must equal number of local parameters (" << this->m_Metric->GetNumberOfLocalParameters() <<
+        ").");
       }
     /* Check if they are identity within tolerance. */
-    typedef typename ScalesType::size_type     SizeType;
+    typedef typename ScalesType::size_type SizeType;
     this->m_WeightsAreIdentity = true;
     for( SizeType i=0; i < this->m_Weights.Size(); i++ )
       {
@@ -182,23 +185,23 @@ template<typename TInternalComputationValueType>
 const typename ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>::ParametersType &
 ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
 ::GetCurrentPosition() const
-{
+  {
   if( this->m_Metric.IsNull() )
     {
     itkExceptionMacro("m_Metric has not been assigned. Cannot get parameters.");
     }
   return this->m_Metric->GetParameters();
-}
+  }
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
 const typename ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>::MeasureType &
 ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
 ::GetValue() const
-{
+  {
   return this->GetCurrentMetricValue();
-}
+  }
 
-}//namespace itk
+} //namespace itk
 
 #endif

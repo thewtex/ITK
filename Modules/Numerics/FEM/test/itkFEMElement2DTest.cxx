@@ -31,7 +31,8 @@ void PrintNodalCoordinates1(Solver2DType *S, int w);
 
 void PrintK1(Solver2DType *S, int s);
 
-int itkFEMElement2DTest(int argc, char *argv[])
+int
+itkFEMElement2DTest(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -97,80 +98,80 @@ int itkFEMElement2DTest(int argc, char *argv[])
   // Define all expected solutions here
   double quad2smallExpectedSolution[8] =
     {
-      0, 0,
-      2.97334e-07, -1.20555e-06,
-      1.944e-06, -1.32333e-06,
-      0, 0
+    0, 0,
+    2.97334e-07, -1.20555e-06,
+    1.944e-06, -1.32333e-06,
+    0, 0
     };
   double quad2strainExpectedSolution[8] =
     {
-      0, 0,
-      2.56204e-07, -1.02482e-06,
-      1.67956e-06, -1.19562e-06,
-      0, 0
+    0, 0,
+    2.56204e-07, -1.02482e-06,
+    1.67956e-06, -1.19562e-06,
+    0, 0
     };
   double quad4ExpectedSolution[8] =
     {
-      0, 0,
-      0, 0,
-      0, 0,
-      0, 0
+    0, 0,
+    0, 0,
+    0, 0,
+    0, 0
     };
   double quad6gravExpectedSolution[8] =
     {
-      0, 0,
-      0, 0,
-      -5.32164e-08, 1.59649e-07,
-      5.32164e-08, 1.59649e-07
+    0, 0,
+    0, 0,
+    -5.32164e-08, 1.59649e-07,
+    5.32164e-08, 1.59649e-07
     };
   double quadlmExpectedSolution[8] =
     {
-      0, 0,
-      -8.76093e-05, -0.0135944,
-      -0.00420457, 0.00477804,
-      -0.0163679, -0.0360446,
+    0, 0,
+    -8.76093e-05, -0.0135944,
+    -0.00420457, 0.00477804,
+    -0.0163679, -0.0360446,
     };
   double trapezoidExpectedSolution[8] =
     {
-      0, 0,
-      0, 0,
-      0, 0,
-      0, 0
+    0, 0,
+    0, 0,
+    0, 0,
+    0, 0
     };
   double tri2ExpectedSolution[8] =
     {
-      0, 0,
-      9.86667e-07, -2.028e-05,
-      -9.76e-06, -5.67867e-05,
-      -2.87733e-05, -9.68267e-05
+    0, 0,
+    9.86667e-07, -2.028e-05,
+    -9.76e-06, -5.67867e-05,
+    -2.87733e-05, -9.68267e-05
     };
   double tri3ExpectedSolution[6] =
     {
-      0, 0,
-      0, 0,
-      0, 0
+    0, 0,
+    0, 0,
+    0, 0
     };
   double tri3eExpectedSolution[6] =
     {
-      0, 0,
-      0, 0,
-      0, 0
+    0, 0,
+    0, 0,
+    0, 0
     };
   double tri3qExpectedSolution[12] =
     {
-      0, 0,
-      -3.315e-07, 1.57527e-06,
-      4.98323e-06, 7.36775e-07,
-      -5.3625e-08, 2.18676e-06,
-      8.32488e-07, 1.04065e-06,
-      5.22113e-07, 2.42889e-06
+    0, 0,
+    -3.315e-07, 1.57527e-06,
+    4.98323e-06, 7.36775e-07,
+    -5.3625e-08, 2.18676e-06,
+    8.32488e-07, 1.04065e-06,
+    5.22113e-07, 2.42889e-06
     };
   double trussExpectedSolution[11] =
     {
-      0, 0, -0.179399,
-      0.00169764, -0.478397, 0,
-      0.00339527, 0, 0.179399,
-      0.392323, -0.505307
+    0, 0, -0.179399,
+    0.00169764, -0.478397, 0,
+    0.00339527, 0, 0.179399,
+    0.392323, -0.505307
     };
 
   // Run the Solver using all of the available numeric solvers
@@ -212,7 +213,7 @@ int itkFEMElement2DTest(int argc, char *argv[])
 
       solver->Update();
 
-      double      tolerance;
+      double tolerance;
       if( modelFile == "quad2-small.meta" )
         {
         tolerance = 10e-10;
@@ -281,7 +282,7 @@ int itkFEMElement2DTest(int argc, char *argv[])
 
       // itkpack and VNLDense solvers are sensitive to slight numerical
       // instabilities on windows. Ignore results for this FE problem
-      if ( ( modelFile == "tri3-q.meta" ) && ((s == 2) || (s == 1)) )
+      if ( ( modelFile == "tri3-q.meta" ) && ( (s == 2) || (s == 1) ) )
         {
         /* itpack does not correctly solve this problem */
         if (s== 1)
@@ -330,11 +331,13 @@ int itkFEMElement2DTest(int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-void PrintK1(Solver2DType *S, int s)
+void
+PrintK1(Solver2DType *S, int s)
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S->GetLinearSystemWrapper();
 
   std::cout << std::endl << "k" << s << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     std::cout << " [";
@@ -358,12 +361,14 @@ void PrintK1(Solver2DType *S, int s)
   std::cout << "];" << std::endl;
 }
 
-void PrintF1(Solver2DType *S, int s)
+void
+PrintF1(Solver2DType *S, int s)
 // Print F - the global load vector
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S->GetLinearSystemWrapper();
 
   std::cout << std::endl << "f" << s << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     if( j > 0 )
@@ -375,7 +380,8 @@ void PrintF1(Solver2DType *S, int s)
   std::cout << "];" << std::endl;
 }
 
-void PrintNodalCoordinates1(Solver2DType *S, int w)
+void
+PrintNodalCoordinates1(Solver2DType *S, int w)
 // Print the nodal coordinates
 {
   std::cout << std::endl << "Nodal coordinates: " << std::endl;
@@ -383,6 +389,7 @@ void PrintNodalCoordinates1(Solver2DType *S, int w)
   std::cout << "xyz" << w << "=[";
 
   int numberOfNodes = S->GetInput()->GetNumberOfNodes();
+
   for( int i = 0; i < numberOfNodes; i++ )
     {
     std::cout << " [";
@@ -392,7 +399,8 @@ void PrintNodalCoordinates1(Solver2DType *S, int w)
   std::cout << "];" << std::endl;
 }
 
-bool CheckDisplacements1(Solver2DType *S, int s, double *expectedResults, double tolerance)
+bool
+CheckDisplacements1(Solver2DType *S, int s, double *expectedResults, double tolerance)
 // Prints the components of the problem for debugging/reporting purposes
 {
   // std::cout << std::endl << "Check Displacements: " << std::endl;
@@ -401,10 +409,12 @@ bool CheckDisplacements1(Solver2DType *S, int s, double *expectedResults, double
   // std::cout << "Degrees of Freedom : " << numDOF << std::endl;
 
   bool foundError = false;
+
   for( int i = 0; i < numDOF; i++ )
     {
     double result = S->GetSolution(i);
-    // std::cout  << result << " " << expectedResults[i] << " " << tolerance << std::endl;
+    // std::cout  << result << " " << expectedResults[i] << " " << tolerance <<
+    // std::endl;
     if( vcl_fabs(expectedResults[i] - result) > tolerance )
       {
       std::cout << "ERROR: Solver " << s << " Index " << i << ". Expected " << expectedResults[i] << " Solution "

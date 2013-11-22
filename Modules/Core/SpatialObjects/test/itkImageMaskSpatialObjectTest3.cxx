@@ -33,18 +33,19 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageMaskSpatialObject.h"
 
-int itkImageMaskSpatialObjectTest3(int, char* [])
+int
+itkImageMaskSpatialObjectTest3(int, char* [])
 {
   const unsigned int NDimensions = 3;
-  int retval=EXIT_SUCCESS;
+  int                retval=EXIT_SUCCESS;
 
-  typedef itk::ImageMaskSpatialObject<NDimensions>     ImageMaskSpatialObjectType;
-  typedef ImageMaskSpatialObjectType::PixelType        PixelType;
-  typedef itk::Image<PixelType,NDimensions>            ImageType;
-  typedef ImageMaskSpatialObjectType::BoundingBoxType  BoundingBox;
+  typedef itk::ImageMaskSpatialObject<NDimensions>    ImageMaskSpatialObjectType;
+  typedef ImageMaskSpatialObjectType::PixelType       PixelType;
+  typedef itk::Image<PixelType,NDimensions>           ImageType;
+  typedef ImageMaskSpatialObjectType::BoundingBoxType BoundingBox;
 
-  ImageType::Pointer image = ImageType::New();
-  ImageType::SizeType size = {{ 5, 5, 5 }};
+  ImageType::Pointer   image = ImageType::New();
+  ImageType::SizeType  size = {{ 5, 5, 5 }};
   ImageType::PointType origin;
   origin[0] = origin[1] =  origin[2]=0.0;
   image->SetOrigin(origin);
@@ -106,12 +107,12 @@ int itkImageMaskSpatialObjectTest3(int, char* [])
     }
 
   typedef itk::ImageRegionIteratorWithIndex<ImageType> ImageRegionIteratorType;
-  ImageRegionIteratorType it(image,image->GetLargestPossibleRegion());
+  ImageRegionIteratorType it(image,image->GetLargestPossibleRegion() );
   for(it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
     ImageType::PointType point;
     image->TransformIndexToPhysicalPoint(it.GetIndex(),point);
-    if(imageMaskSpatialObject->IsInside(point))
+    if(imageMaskSpatialObject->IsInside(point) )
       {
       std::cerr << "Pixel Reported Inside mask, even though mask image is all zeros"
                 << std::endl;

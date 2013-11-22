@@ -69,7 +69,7 @@ namespace itk
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class VectorExpandImageFilter:
+class VectorExpandImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -125,6 +125,7 @@ public:
    * a minimum value of 1. Default is 1 for all dimensions. */
   itkSetMacro(ExpandFactors, ExpandFactorsArrayType);
   virtual void SetExpandFactors(const float factor);
+
   itkSetVectorMacro(ExpandFactors, const unsigned int, ImageDimension);
 
   /** Get the expand factors. */
@@ -166,7 +167,9 @@ public:
 protected:
 
   VectorExpandImageFilter();
-  ~VectorExpandImageFilter() {}
+  ~VectorExpandImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** VectorExpandImageFilter is implemented as a multithreaded filter.
@@ -189,8 +192,8 @@ private:
   VectorExpandImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
 
-  ExpandFactorsArrayType   m_ExpandFactors;
-  InterpolatorPointer      m_Interpolator;
+  ExpandFactorsArrayType m_ExpandFactors;
+  InterpolatorPointer    m_Interpolator;
 //TEST_RMV20100728 * \warning: The following is valid only when the flag
 //TEST_RMV20100728 * ITK_USE_CENTERED_PIXEL_COORDINATES_CONSISTENTLY is ON
 //TEST_RMV20100728 * The output image will not contain any padding, and

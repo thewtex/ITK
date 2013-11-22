@@ -19,7 +19,8 @@
 #include "itkWindowConvergenceMonitoringFunction.h"
 #include "vcl_cmath.h"
 
-int itkWindowConvergenceMonitoringFunctionTest( int itkNotUsed( argc ), char * [] )
+int
+itkWindowConvergenceMonitoringFunctionTest( int itkNotUsed( argc ), char * [] )
 {
   typedef float RealType;
 

@@ -24,14 +24,14 @@
 namespace itk
 {
 template< typename TImage, typename TKernel >
-class AnchorDilateImageFilter:
+class AnchorDilateImageFilter :
   public AnchorErodeDilateImageFilter< TImage, TKernel, std::greater< typename TImage::PixelType > >
 
 {
 public:
   typedef AnchorDilateImageFilter Self;
   typedef AnchorErodeDilateImageFilter< TImage, TKernel, std::less< typename TImage::PixelType > >
-                                  Superclass;
+    Superclass;
 
   /** Runtime information support. */
   itkTypeMacro(AnchorDilateImageFilter,
@@ -51,12 +51,16 @@ protected:
   {
     this->m_Boundary = NumericTraits< PixelType >::NonpositiveMin();
   }
-  virtual ~AnchorDilateImageFilter() {}
+
+  virtual
+  ~AnchorDilateImageFilter() {
+  }
 
 private:
 
   AnchorDilateImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };
 } // namespace itk
 

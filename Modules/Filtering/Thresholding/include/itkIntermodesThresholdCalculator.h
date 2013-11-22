@@ -57,10 +57,10 @@ class IntermodesThresholdCalculator : public HistogramThresholdCalculator<THisto
 {
 public:
   /** Standard class typedefs. */
-  typedef IntermodesThresholdCalculator   Self;
-  typedef Object                          Superclass;
-  typedef SmartPointer<Self>              Pointer;
-  typedef SmartPointer<const Self>        ConstPointer;
+  typedef IntermodesThresholdCalculator Self;
+  typedef Object                        Superclass;
+  typedef SmartPointer<Self>            Pointer;
+  typedef SmartPointer<const Self>      ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -69,10 +69,10 @@ public:
   itkTypeMacro(IntermodesThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
-  typedef typename HistogramType::InstanceIdentifier          InstanceIdentifier;
+  typedef typename HistogramType::InstanceIdentifier InstanceIdentifier;
 
   itkSetMacro( MaximumSmoothingIterations, SizeValueType );
   itkGetConstMacro( MaximumSmoothingIterations, SizeValueType );
@@ -89,17 +89,21 @@ protected:
     m_UseInterMode = true;
   }
 
-  virtual ~IntermodesThresholdCalculator() {}
+  virtual
+  ~IntermodesThresholdCalculator() {
+  }
 
   void GenerateData(void);
+
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  typedef typename HistogramType::TotalAbsoluteFrequencyType  TotalAbsoluteFrequencyType;
-  typedef typename HistogramType::AbsoluteFrequencyType       AbsoluteFrequencyType;
+  typedef typename HistogramType::TotalAbsoluteFrequencyType TotalAbsoluteFrequencyType;
+  typedef typename HistogramType::AbsoluteFrequencyType      AbsoluteFrequencyType;
 
 private:
   IntermodesThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                //purposely not implemented
+
   bool BimodalTest(const std::vector<double> & h);
 
   SizeValueType m_MaximumSmoothingIterations;
@@ -107,7 +111,6 @@ private:
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkIntermodesThresholdCalculator.hxx"

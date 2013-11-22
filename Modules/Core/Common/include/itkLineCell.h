@@ -39,7 +39,7 @@ namespace itk
  */
 
 template< typename TCellInterface >
-class LineCell:public TCellInterface
+class LineCell : public TCellInterface
 {
 public:
   /** Standard class typedefs. */
@@ -59,8 +59,12 @@ public:
          CellDimension    = 1 };
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::LINE_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::LINE_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -100,7 +104,8 @@ public:
       }
   }
 
-  ~LineCell() {}
+  ~LineCell() {
+  }
 
 protected:
   /** Store number of points needed for a line segment. */
@@ -109,6 +114,7 @@ protected:
 private:
   LineCell(const Self &);       //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

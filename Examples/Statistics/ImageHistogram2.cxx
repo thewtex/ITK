@@ -29,7 +29,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginLatex
 //
 // We should first include the header of the histogram generator and the image
@@ -46,7 +45,8 @@
 
 #include "itkImageFileReader.h"
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -56,7 +56,6 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginLatex
   //
   // The image type must be defined using the typical pair of pixel type and
@@ -64,14 +63,12 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char       PixelType;
-  const unsigned int          Dimension = 2;
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image<PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
 
@@ -90,7 +87,6 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginLatex
   //
   // We use now the image type in order to instantiate the type of the
@@ -103,12 +99,11 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ScalarImageToHistogramGenerator<
-                                 ImageType >   HistogramGeneratorType;
+      ImageType >   HistogramGeneratorType;
 
   HistogramGeneratorType::Pointer histogramGenerator =
-                                        HistogramGeneratorType::New();
+    HistogramGeneratorType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -120,7 +115,6 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginCodeSnippet
   histogramGenerator->SetInput(  reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -137,7 +131,6 @@ int main( int argc, char * argv [] )
   histogramGenerator->SetHistogramMax( 255.5 );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Finally we trigger the computation of the histogram by invoking the
@@ -153,7 +146,6 @@ int main( int argc, char * argv [] )
   histogramGenerator->Compute();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The resulting histogram can be obtained from the generator by invoking its
@@ -163,11 +155,10 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramGeneratorType::HistogramType  HistogramType;
+  typedef HistogramGeneratorType::HistogramType HistogramType;
 
   const HistogramType * histogram = histogramGenerator->GetOutput();
   // Software Guide : EndCodeSnippet
-
 
   const unsigned int histogramSize = histogram->Size();
 
@@ -179,7 +170,6 @@ int main( int argc, char * argv [] )
     std::cout << "bin = " << bin << " frequency = ";
     std::cout << histogram->GetFrequency( bin, 0 ) << std::endl;
     }
-
 
   // Software Guide : BeginLatex
   //
@@ -203,7 +193,6 @@ int main( int argc, char * argv [] )
     ++binNumber;
     }
   // Software Guide : EndCodeSnippet
-
 
   return 0;
 

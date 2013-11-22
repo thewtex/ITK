@@ -41,6 +41,7 @@ Mesh< TPixelType, VDimension, TMeshTraits >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number Of Points: "
      << ( ( this->m_PointsContainer.GetPointer() ) ?  this->m_PointsContainer->Size() : 0 ) << std::endl;
   os << indent << "Number Of Cell Links: "
@@ -80,21 +81,21 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename Mesh< TPixelType, VDimension, TMeshTraits >::CellLinksContainer *
 Mesh< TPixelType, VDimension, TMeshTraits >
 ::GetCellLinks()
-{
+  {
   itkDebugMacro("returning CellLinks container of "
                 << m_CellLinksContainer);
   return m_CellLinksContainer;
-}
+  }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 const typename Mesh< TPixelType, VDimension, TMeshTraits >::CellLinksContainer *
 Mesh< TPixelType, VDimension, TMeshTraits >
 ::GetCellLinks() const
-{
+  {
   itkDebugMacro("returning CellLinks container of "
                 << m_CellLinksContainer);
   return m_CellLinksContainer;
-}
+  }
 
 /**
  * Access routine to set the cells container.
@@ -120,19 +121,19 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename Mesh< TPixelType, VDimension, TMeshTraits >::CellsContainer *
 Mesh< TPixelType, VDimension, TMeshTraits >
 ::GetCells()
-{
+  {
   itkDebugMacro("returning Cells container of " << m_CellsContainer);
   return m_CellsContainer;
-}
+  }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 const typename Mesh< TPixelType, VDimension, TMeshTraits >::CellsContainer *
 Mesh< TPixelType, VDimension, TMeshTraits >
 ::GetCells() const
-{
+  {
   itkDebugMacro("returning Cells container of " << m_CellsContainer);
   return m_CellsContainer;
-}
+  }
 
 /**
  * Access routine to set the cell data container.
@@ -157,34 +158,34 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename Mesh< TPixelType, VDimension, TMeshTraits >::CellDataContainer *
 Mesh< TPixelType, VDimension, TMeshTraits >
 ::GetCellData()
-{
+  {
   itkDebugMacro("returning CellData container of "
                 << m_CellDataContainer);
   return m_CellDataContainer;
-}
+  }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 const typename Mesh< TPixelType, VDimension, TMeshTraits >::CellDataContainer *
 Mesh< TPixelType, VDimension, TMeshTraits >
 ::GetCellData() const
-{
+  {
   itkDebugMacro("returning CellData container of "
                 << m_CellDataContainer);
   return m_CellDataContainer;
-}
+  }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 const typename Mesh< TPixelType, VDimension, TMeshTraits >::BoundingBoxType *
 Mesh< TPixelType, VDimension, TMeshTraits >
 ::GetBoundingBox(void) const
-{
+  {
   m_BoundingBox->SetPoints( this->m_PointsContainer.GetPointer() );
   if ( m_BoundingBox->GetMTime() > this->GetMTime() )
     {
     m_BoundingBox->ComputeBoundingBox();
     }
   return m_BoundingBox;
-}
+  }
 
 /**
  * Access routine to set the boundary assignment container for a given
@@ -913,7 +914,7 @@ Mesh< TPixelType, VDimension, TMeshTraits >
       {
       CellType * boundaryptr = 0;
       const bool found = m_CellsContainer->
-                         GetElementIfIndexExists(boundaryId, &boundaryptr);
+        GetElementIfIndexExists(boundaryId, &boundaryptr);
       if ( found )
         {
         boundary.TakeNoOwnership(boundaryptr);
@@ -1201,6 +1202,7 @@ Mesh< TPixelType, VDimension, TMeshTraits >
   // test on the container will prevent premature deletion of cells.
   this->m_CellsAllocationMethod = mesh->m_CellsAllocationMethod;
 }
+
 } // end namespace itk
 
 #endif

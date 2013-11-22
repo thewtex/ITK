@@ -41,7 +41,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkListSample.h"
 #include "itkSubsample.h"
@@ -58,7 +57,8 @@
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -69,9 +69,9 @@ int main()
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Vector< float, 3 > MeasurementVectorType;
+  typedef itk::Vector< float, 3 >                              MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
-  SampleType::Pointer sample = SampleType::New();
+  SampleType::Pointer   sample = SampleType::New();
   MeasurementVectorType mv;
   mv[0] = 1.0;
   mv[1] = 2.0;
@@ -149,7 +149,6 @@ int main()
     ++iter;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //

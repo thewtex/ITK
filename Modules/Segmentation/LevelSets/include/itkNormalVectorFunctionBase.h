@@ -49,7 +49,7 @@ namespace itk
  */
 
 template< typename TSparseImageType >
-class NormalVectorFunctionBase:
+class NormalVectorFunctionBase :
   public FiniteDifferenceSparseImageFunction< TSparseImageType >
 {
 public:
@@ -83,24 +83,41 @@ public:
   typedef typename NodeType::NodeDataType NormalVectorType;
 
   /** Globaldata methods are not needed in this class. */
-  virtual void * GetGlobalDataPointer() const { return 0; }
-  virtual void ReleaseGlobalDataPointer(void *) const {}
+  virtual void *
+  GetGlobalDataPointer() const {
+    return 0;
+  }
+
+  virtual void
+  ReleaseGlobalDataPointer(void *) const {
+  }
 
   /** For the global time step, we return the time step parameter. */
-  virtual TimeStepType ComputeGlobalTimeStep(void *) const
-  { return m_TimeStep; }
+  virtual TimeStepType
+  ComputeGlobalTimeStep(void *) const
+  {
+    return m_TimeStep;
+  }
 
   /** Sets the time step. */
-  void SetTimeStep(const TimeStepType & ts)
-  { m_TimeStep = ts; }
+  void
+  SetTimeStep(const TimeStepType & ts)
+  {
+    m_TimeStep = ts;
+  }
 
   /** Returns the time step. */
-  TimeStepType GetTimeStep() const
-  { return m_TimeStep; }
+  TimeStepType
+  GetTimeStep() const
+  {
+    return m_TimeStep;
+  }
 
 protected:
   NormalVectorFunctionBase();
-  ~NormalVectorFunctionBase() {}
+  ~NormalVectorFunctionBase() {
+  }
+
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -109,6 +126,7 @@ private:
 
   NormalVectorFunctionBase(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

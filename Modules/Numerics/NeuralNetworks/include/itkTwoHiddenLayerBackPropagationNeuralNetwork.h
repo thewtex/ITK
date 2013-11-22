@@ -42,14 +42,16 @@ namespace Statistics
 
 template<typename TMeasurementVector, typename TTargetVector>
 class TwoHiddenLayerBackPropagationNeuralNetwork :
-    public MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector, BackPropagationLayer<TMeasurementVector, TTargetVector> >
+  public MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector,
+                                     BackPropagationLayer<TMeasurementVector, TTargetVector> >
 {
 public:
   typedef TwoHiddenLayerBackPropagationNeuralNetwork Self;
-  typedef MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector, BackPropagationLayer<TMeasurementVector, TTargetVector> >
-                                                     Superclass;
-  typedef SmartPointer<Self>                         Pointer;
-  typedef SmartPointer<const Self>                   ConstPointer;
+  typedef MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector,
+                                      BackPropagationLayer<TMeasurementVector, TTargetVector> >
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   typedef typename Superclass::ValueType             ValueType;
   typedef typename Superclass::MeasurementVectorType MeasurementVectorType;
@@ -85,10 +87,26 @@ public:
   //#define __USE_OLD_INTERFACE  Comment out to ensure that new interface works
 #ifdef __USE_OLD_INTERFACE
   //Original Function name before consistency naming changes
-  inline void SetNumOfHiddenNodes1(unsigned int x) { SetNumOfFirstHiddenNodes(x); }
-  inline unsigned int GetNumOfHiddenNodes1(void) const { return GetNumOfFirstHiddenNodes(); }
-  inline void SetNumOfHiddenNodes2(unsigned int x) { SetNumOfSecondHiddenNodes(x); }
-  inline unsigned int GetNumOfHiddenNodes2(void) const { return GetNumOfSecondHiddenNodes(); }
+  inline void
+  SetNumOfHiddenNodes1(unsigned int x) {
+    SetNumOfFirstHiddenNodes(x);
+  }
+
+  inline unsigned int
+  GetNumOfHiddenNodes1(void) const {
+    return GetNumOfFirstHiddenNodes();
+  }
+
+  inline void
+  SetNumOfHiddenNodes2(unsigned int x) {
+    SetNumOfSecondHiddenNodes(x);
+  }
+
+  inline unsigned int
+  GetNumOfHiddenNodes2(void) const {
+    return GetNumOfSecondHiddenNodes();
+  }
+
 #endif
 
   itkSetMacro(NumOfOutputNodes, unsigned int);
@@ -106,15 +124,21 @@ public:
   virtual NetworkOutputType GenerateOutput(TMeasurementVector samplevector);
 
   void SetInputFunction(InputFunctionInterfaceType* f);
+
   void SetInputTransferFunction(TransferFunctionInterfaceType* f);
+
   void SetFirstHiddenTransferFunction(TransferFunctionInterfaceType* f);
+
   void SetSecondHiddenTransferFunction(TransferFunctionInterfaceType* f);
+
   void SetOutputTransferFunction(TransferFunctionInterfaceType* f);
 
 protected:
 
   TwoHiddenLayerBackPropagationNeuralNetwork();
-  virtual ~TwoHiddenLayerBackPropagationNeuralNetwork() {};
+  virtual
+  ~TwoHiddenLayerBackPropagationNeuralNetwork() {
+  }
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;

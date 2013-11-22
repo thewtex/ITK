@@ -23,21 +23,22 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkStreamingImageFilter.h"
 
-int itkFFTConvolutionImageFilterTestInt(int argc, char * argv[])
+int
+itkFFTConvolutionImageFilterTestInt(int argc, char * argv[])
 {
 
   if ( argc < 4 )
     {
     std::cout << "Usage: " << argv[0]
-      << " inputImage kernelImage outputImage [normalizeImage] [outputRegionMode]" << std::endl;
+              << " inputImage kernelImage outputImage [normalizeImage] [outputRegionMode]" << std::endl;
     return EXIT_FAILURE;
     }
 
   const int ImageDimension = 2;
 
-  typedef unsigned char                          PixelType;
-  typedef itk::Image<PixelType, ImageDimension>  ImageType;
-  typedef itk::ImageFileReader<ImageType>        ReaderType;
+  typedef unsigned char                         PixelType;
+  typedef itk::Image<PixelType, ImageDimension> ImageType;
+  typedef itk::ImageFileReader<ImageType>       ReaderType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
   reader1->SetFileName( argv[1] );
@@ -83,7 +84,7 @@ int itkFFTConvolutionImageFilterTestInt(int argc, char * argv[])
   MonitorFilter::Pointer monitor = MonitorFilter::New();
   monitor->SetInput( convolver->GetOutput() );
 
-  const unsigned int numberOfStreamDivisions = 4;
+  const unsigned int                                         numberOfStreamDivisions = 4;
   itk::StreamingImageFilter< ImageType, ImageType >::Pointer streamingFilter =
     itk::StreamingImageFilter< ImageType, ImageType >::New();
   streamingFilter->SetNumberOfStreamDivisions( numberOfStreamDivisions );

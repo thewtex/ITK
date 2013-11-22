@@ -178,7 +178,7 @@ ITK_THREAD_RETURN_TYPE
 ThreadLogger
 ::ThreadFunction(void *pInfoStruct)
 {
-  struct MultiThreader:: ThreadInfoStruct *pInfo = (struct MultiThreader::ThreadInfoStruct *)pInfoStruct;
+  struct MultiThreader::ThreadInfoStruct *pInfo = (struct MultiThreader::ThreadInfoStruct *)pInfoStruct;
 
   if ( pInfo == NULL )
     {
@@ -194,7 +194,6 @@ ThreadLogger
 
   while ( 1 )
     {
-
 
     pInfo->ActiveFlagLock->Lock();
     int activeFlag = *pInfo->ActiveFlag;
@@ -236,7 +235,7 @@ ThreadLogger
       pLogger->m_OperationQ.pop();
       }
     pLogger->m_Mutex.Unlock();
-    itksys::SystemTools::Delay(pLogger->GetDelay());
+    itksys::SystemTools::Delay(pLogger->GetDelay() );
     }
   return ITK_THREAD_RETURN_VALUE;
 }

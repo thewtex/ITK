@@ -64,14 +64,14 @@ template<
   typename TInputImage,
   typename TOutputImage
   >
-class RecursiveMultiResolutionPyramidImageFilter:
+class RecursiveMultiResolutionPyramidImageFilter :
   public MultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
   typedef RecursiveMultiResolutionPyramidImageFilter Self;
   typedef MultiResolutionPyramidImageFilter< TInputImage, TOutputImage >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -110,7 +110,9 @@ public:
 
 protected:
   RecursiveMultiResolutionPyramidImageFilter();
-  ~RecursiveMultiResolutionPyramidImageFilter() {}
+  ~RecursiveMultiResolutionPyramidImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate the output data. */
@@ -120,7 +122,8 @@ private:
   RecursiveMultiResolutionPyramidImageFilter(const Self &); //purposely not
                                                             // implemented
   void operator=(const Self &);                             //purposely not
-                                                            // implemented
+
+  // implemented
 };
 } // namespace itk
 

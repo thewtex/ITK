@@ -37,15 +37,15 @@ RGBImageTotalAbsDifference(
   typedef itk::Image<PixelType, VDimension>                    RGBImageType;
   typedef itk::ImageRegionConstIteratorWithIndex<RGBImageType> IterType;
 
-  IterType validIt(valid, valid->GetLargestPossibleRegion());
+  IterType validIt(valid, valid->GetLargestPossibleRegion() );
   validIt.GoToBegin();
 
-  IterType testIt(test, test->GetLargestPossibleRegion());
+  IterType testIt(test, test->GetLargestPossibleRegion() );
   testIt.GoToBegin();
 
   TPixelValue totalDiff = 0;
 
-  while(!validIt.IsAtEnd())
+  while(!validIt.IsAtEnd() )
     {
     PixelType validPx = validIt.Get();
     PixelType testPx = testIt.Get();
@@ -69,7 +69,8 @@ RGBImageTotalAbsDifference(
       ++testIt2;
       IterType validIt2 = validIt;
       ++validIt2;
-      std::cerr << testIt.GetIndex() << " [ " << validPx << " " << validIt2.Get() << "] != [ " << testPx << " " << testIt2.Get() << " ]" << std::endl;
+      std::cerr << testIt.GetIndex() << " [ " << validPx << " " << validIt2.Get() << "] != [ " << testPx << " " <<
+        testIt2.Get() << " ]" << std::endl;
       return localDiff;
       }
 
@@ -82,37 +83,37 @@ RGBImageTotalAbsDifference(
   return totalDiff;
 }
 
-
 //-----------------------------------------------------------------------------
 // Convert the data in the IplImage to the templated type
 //
 template<typename TPixelType>
-IplImage* ConvertIplImageDataType(IplImage* in)
+IplImage*
+ConvertIplImageDataType(IplImage* in)
 {
   int depth = 0;
 
   // Figure out the right output type
-  if (typeid(TPixelType) == typeid(unsigned char))
+  if (typeid(TPixelType) == typeid(unsigned char) )
     {
     depth = IPL_DEPTH_8U;
     }
-  else if (typeid(TPixelType) == typeid(char))
+  else if (typeid(TPixelType) == typeid(char) )
     {
     depth = IPL_DEPTH_8S;
     }
-  else if (typeid(TPixelType) == typeid(unsigned short))
+  else if (typeid(TPixelType) == typeid(unsigned short) )
     {
     depth = IPL_DEPTH_16U;
     }
-  else if (typeid(TPixelType) == typeid(short))
+  else if (typeid(TPixelType) == typeid(short) )
     {
     depth = IPL_DEPTH_16S;
     }
-  else if (typeid(TPixelType) == typeid(float))
+  else if (typeid(TPixelType) == typeid(float) )
     {
     depth = IPL_DEPTH_32F;
     }
-  else if (typeid(TPixelType) == typeid(double))
+  else if (typeid(TPixelType) == typeid(double) )
     {
     depth = IPL_DEPTH_64F;
     }
@@ -126,22 +127,23 @@ IplImage* ConvertIplImageDataType(IplImage* in)
   return out;
 }
 
-
 //-----------------------------------------------------------------------------
 // Templated test function to do the heavy lifting for RGB case
 //
 template<typename TValueType, unsigned int VDimension>
-int itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
+int
+itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
 {
   // typedefs
   const unsigned int Dimension =                          VDimension;
-  typedef TValueType                                      ValueType;
-  typedef itk::RGBPixel< ValueType >                      PixelType;
-  typedef typename PixelType::ComponentType               ComponentType;
-  typedef itk::Image< PixelType, Dimension >              ImageType;
-  typedef itk::ImageFileReader<ImageType>                 ReaderType;
+
+  typedef TValueType                         ValueType;
+  typedef itk::RGBPixel< ValueType >         PixelType;
+  typedef typename PixelType::ComponentType  ComponentType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
+  typedef itk::ImageFileReader<ImageType>    ReaderType;
   typedef itk::Testing::ComparisonImageFilter<ImageType, ImageType>
-                                                          DifferenceFilterType;
+    DifferenceFilterType;
 
   //
   // Read the image directly
@@ -173,13 +175,13 @@ int itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
     itk::OpenCVImageBridge::IplImageToITKImage< ImageType >(inIpl);
 
   ComponentType itkIplDiff1 = RGBImageTotalAbsDifference<ComponentType, Dimension>(
-          baselineImage, outIplITK);
+      baselineImage, outIplITK);
 
   // Check results of IplImage -> itk::Image
   if ( itkIplDiff1 != itk::NumericTraits< ComponentType >::Zero )
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for IplImage -> ITK (RGB), with image difference = " << itkIplDiff1<< std::endl;
+              << " for IplImage -> ITK (RGB), with image difference = " << itkIplDiff1<< std::endl;
     cvReleaseImage(&inIpl);
     return EXIT_FAILURE;
     }
@@ -192,13 +194,13 @@ int itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
     itk::OpenCVImageBridge::CVMatToITKImage< ImageType >(inMat);
 
   ComponentType itkCvMatDiff = RGBImageTotalAbsDifference<ComponentType, Dimension>(
-          baselineImage, outMatITK);
+      baselineImage, outMatITK);
 
   // Check results of cv::Mat -> itk::Image
   if ( itkCvMatDiff != itk::NumericTraits< ComponentType >::Zero )
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for cv::Mat -> ITK (RGB)" << std::endl;
+              << " for cv::Mat -> ITK (RGB)" << std::endl;
     cvReleaseImage(&inIpl);
     return EXIT_FAILURE;
     }
@@ -216,7 +218,7 @@ int itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
   if (itkIplDiff != 0.0)
     {
     std::cerr << "Images didn't match for pixel type " << typeid(ValueType).name()
-      << " for ITK -> IplImage (RGB), with image difference = " << itkIplDiff << std::endl;
+              << " for ITK -> IplImage (RGB), with image difference = " << itkIplDiff << std::endl;
     cvReleaseImage(&dataConvertedInIpl);
     cvReleaseImage(&inIpl);
     cvReleaseImage(&outIpl);
@@ -230,11 +232,11 @@ int itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
 
   // check results of itk::Image -> IplImage
   IplImage outMatAsIpl = outMat;
-  double itkMatDiff = cvNorm(&outMatAsIpl, dataConvertedInIpl);
+  double   itkMatDiff = cvNorm(&outMatAsIpl, dataConvertedInIpl);
   if (itkMatDiff != 0.0)
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for ITK -> cv::Mat (RGB)" << std::endl;
+              << " for ITK -> cv::Mat (RGB)" << std::endl;
     cvReleaseImage(&dataConvertedInIpl);
     cvReleaseImage(&inIpl);
     cvReleaseImage(&outIpl);
@@ -251,7 +253,8 @@ int itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
 }
 
 template< typename TValue >
-int itkRunRGBTest( char* argv0, char* argv1 )
+int
+itkRunRGBTest( char* argv0, char* argv1 )
 {
   if (itkOpenCVImageBridgeTestTemplatedRGB< TValue, 2 >(argv0, argv1) == EXIT_FAILURE)
     {
@@ -268,7 +271,8 @@ int itkRunRGBTest( char* argv0, char* argv1 )
 //-----------------------------------------------------------------------------
 // Main test
 //
-int itkOpenCVImageBridgeRGBTest ( int argc, char *argv[] )
+int
+itkOpenCVImageBridgeRGBTest( int argc, char *argv[] )
 {
   //
   // Check arguments
@@ -300,7 +304,7 @@ int itkOpenCVImageBridgeRGBTest ( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-   std::cout << "rgb 513x512" << std::endl;
+  std::cout << "rgb 513x512" << std::endl;
 
   if( itkRunRGBTest< unsigned char >( argv[3], argv[3] ) == EXIT_FAILURE )
     {

@@ -5,14 +5,14 @@
 //
 
 struct A
-{
+  {
   char a;
-};
+  };
 
 struct B
-{
+  {
   char b;
-} __attribute__ ((aligned (64)));
+  } __attribute__ ( (aligned (64) ) );
 
 // fail for gcc 4.1
 #if __GNUC__ == 4 && __GNUC_MINOR__ == 1
@@ -32,29 +32,27 @@ class foo
   // NOTE: implicit constructor is required for this test
 
   struct A
-  {
+    {
     char a;
-  };
-  typedef A AlignedA __attribute__ ((aligned(64)));
+    };
+  typedef A AlignedA __attribute__ ( (aligned(64) ) );
   AlignedA *AlignedElementsOfA;
 };
-
 
 // This structure will generate a compiler error if the template
 // argument is false
 template<bool t> struct OnlyTrue;
 template<> struct OnlyTrue<true> { static const bool Result = true; };
 
-
-int main()
+int
+main()
 {
   foo<int> f;
 
-  typedef A AlignedA __attribute__ ((aligned(64)));
+  typedef A AlignedA __attribute__ ( (aligned(64) ) );
 
   return OnlyTrue<__alignof__( AlignedA ) == 64>::Result
-    && OnlyTrue<__alignof__( B ) == 64>::Result;
-
+         && OnlyTrue<__alignof__( B ) == 64>::Result;
 
   return 0;
 }

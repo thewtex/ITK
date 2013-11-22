@@ -28,7 +28,8 @@
 #include "itkRootTreeIterator.h"
 #include "itkTreeIteratorClone.h"
 
-int itkTreeContainerTest(int, char* [])
+int
+itkTreeContainerTest(int, char* [])
 {
   typedef int                          NodeType;
   typedef itk::TreeContainer<NodeType> TreeType;
@@ -48,9 +49,9 @@ int itkTreeContainerTest(int, char* [])
 
   // LevelOrderTreeIterator Test
   std::cout << "Testing LevelOrderTreeIterator: " << std::endl;
-  itk::LevelOrderTreeIterator<TreeType> levelIt(tree,10,tree->GetNode(2));
+  itk::LevelOrderTreeIterator<TreeType> levelIt(tree,10,tree->GetNode(2) );
   levelIt.GoToBegin();
-  while(!levelIt.IsAtEnd())
+  while(!levelIt.IsAtEnd() )
     {
     std::cout << levelIt.Get() << " ("<< levelIt.GetLevel() << ")" << std::endl;
     ++levelIt;
@@ -60,30 +61,30 @@ int itkTreeContainerTest(int, char* [])
   // IsLeaf()
   std::cout << "Testing IsLeaf(): ";
   levelIt.GoToBegin();
-  if(levelIt.IsLeaf())
+  if(levelIt.IsLeaf() )
     {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
     }
-   std::cout << "[SUCCESS]" << std::endl;
+  std::cout << "[SUCCESS]" << std::endl;
 
   // IsRoot()
   std::cout << "Testing IsRoot(): ";
-  if(!levelIt.IsRoot())
+  if(!levelIt.IsRoot() )
     {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
     }
-   std::cout << "[SUCCESS]" << std::endl;
+  std::cout << "[SUCCESS]" << std::endl;
 
   // HasParent()
   std::cout << "Testing HasParent(): ";
-  if(!levelIt.HasParent())
+  if(!levelIt.HasParent() )
     {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
     }
-   std::cout << "[SUCCESS]" << std::endl;
+  std::cout << "[SUCCESS]" << std::endl;
 
   // CountChildren()
   std::cout << "Testing CountChildren(): ";
@@ -92,14 +93,13 @@ int itkTreeContainerTest(int, char* [])
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
     }
-   std::cout << "[SUCCESS]" << std::endl;
-
+  std::cout << "[SUCCESS]" << std::endl;
 
   // ChildTreeIterator Test
   std::cout << "Testing ChildTreeIterator: " << std::endl;
   itk::ChildTreeIterator<TreeType> childIt(tree);
   childIt.GoToBegin();
-  while(!childIt.IsAtEnd())
+  while(!childIt.IsAtEnd() )
     {
     std::cout << childIt.Get() << std::endl;
     ++childIt;
@@ -107,9 +107,9 @@ int itkTreeContainerTest(int, char* [])
   std::cout << std::endl;
 
   std::cout << "Starting to another branch: " << std::endl;
-  itk::ChildTreeIterator<TreeType> childIt2(tree,tree->GetNode(2));
+  itk::ChildTreeIterator<TreeType> childIt2(tree,tree->GetNode(2) );
   childIt2.GoToBegin();
-  while(!childIt2.IsAtEnd())
+  while(!childIt2.IsAtEnd() )
     {
     std::cout << childIt2.Get() << std::endl;
     ++childIt2;
@@ -125,7 +125,7 @@ int itkTreeContainerTest(int, char* [])
     return EXIT_FAILURE;
     }
 
-  if(!childIt2.GoToParent())
+  if(!childIt2.GoToParent() )
     {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
@@ -148,7 +148,7 @@ int itkTreeContainerTest(int, char* [])
   std::cout << "Testing LeafTreeIterator: " << std::endl;
   itk::LeafTreeIterator<TreeType> leafIt(tree);
   leafIt.GoToBegin();
-  while(!leafIt.IsAtEnd())
+  while(!leafIt.IsAtEnd() )
     {
     std::cout << leafIt.Get() << std::endl;
     ++leafIt;
@@ -157,12 +157,11 @@ int itkTreeContainerTest(int, char* [])
   std::cout << std::endl;
   std::cout << "[SUCCESS]" << std::endl;
 
-
   // InOrderTreeIterator Test
   std::cout << "Testing InOrderTreeIterator: " << std::endl;
   itk::InOrderTreeIterator<TreeType> InOrderIt(tree);
   InOrderIt.GoToBegin();
-  while(!InOrderIt.IsAtEnd())
+  while(!InOrderIt.IsAtEnd() )
     {
     std::cout << InOrderIt.Get() << std::endl;
     ++InOrderIt;
@@ -170,12 +169,11 @@ int itkTreeContainerTest(int, char* [])
   std::cout << std::endl;
   std::cout << "[SUCCESS]" << std::endl;
 
-
   // PostOrderTreeIterator Test
   std::cout << "Testing PostOrderTreeIterator: " << std::endl;
   itk::PostOrderTreeIterator<TreeType> PostOrderIt(tree);
   PostOrderIt.GoToBegin();
-  while(!PostOrderIt.IsAtEnd())
+  while(!PostOrderIt.IsAtEnd() )
     {
     std::cout << PostOrderIt.Get() << std::endl;
     ++PostOrderIt;
@@ -185,9 +183,9 @@ int itkTreeContainerTest(int, char* [])
 
   // RootTreeIterator Test
   std::cout << "Testing RootTreeIterator: " << std::endl;
-  itk::RootTreeIterator<TreeType> RootIt(tree,tree->GetNode(6));
+  itk::RootTreeIterator<TreeType> RootIt(tree,tree->GetNode(6) );
   RootIt.GoToBegin();
-  while(!RootIt.IsAtEnd())
+  while(!RootIt.IsAtEnd() )
     {
     std::cout << RootIt.Get() << std::endl;
     ++RootIt;
@@ -195,12 +193,11 @@ int itkTreeContainerTest(int, char* [])
   std::cout << std::endl;
   std::cout << "[SUCCESS]" << std::endl;
 
-
   // PreOrderTreeIterator Test
   std::cout << "Testing PreOrderTreeIterator: " << std::endl;
   itk::PreOrderTreeIterator<TreeType> PreOrderIt(tree);
   PreOrderIt.GoToBegin();
-  while(!PreOrderIt.IsAtEnd())
+  while(!PreOrderIt.IsAtEnd() )
     {
     std::cout << PreOrderIt.Get() << std::endl;
     ++PreOrderIt;
@@ -208,10 +205,9 @@ int itkTreeContainerTest(int, char* [])
   std::cout << std::endl;
   std::cout << "[SUCCESS]" << std::endl;
 
-
   /** Now create the tree using iterators */
   std::cout << "Testing clear tree" << std::endl;
-  if(tree->Clear())
+  if(tree->Clear() )
     {
     std::cout << "[SUCCESS]" << std::endl;
     }
@@ -239,12 +235,12 @@ int itkTreeContainerTest(int, char* [])
   itk::LeafTreeIterator<TreeType> LeafIt2(tree);
   LeafIt2.GoToBegin();
   int i=6;
-  while(!LeafIt2.IsAtEnd())
+  while(!LeafIt2.IsAtEnd() )
     {
     LeafIt2.Add(i);
     i++;
     ++LeafIt2;
-    if(!LeafIt2.IsAtEnd())
+    if(!LeafIt2.IsAtEnd() )
       {
       ++LeafIt2;
       }
@@ -252,16 +248,17 @@ int itkTreeContainerTest(int, char* [])
   std::cout << tree << std::endl;
   std::cout << "[SUCCESS]" << std::endl;
 
-
   // Test the TreeIteratorClone
   typedef itk::TreeIteratorBase<TreeType>      IteratorType;
   typedef itk::TreeIteratorClone<IteratorType> MyIteratorClone;
   itk::PreOrderTreeIterator<TreeType> anIterator(tree);
-  MyIteratorClone aClone = anIterator;
+  MyIteratorClone                     aClone = anIterator;
   ++aClone; // step forward in the cloned iterator, anIterator unchanged.
   itk::PreOrderTreeIterator<TreeType> anotherIterator(tree);
-  aClone = anotherIterator; // the memory for the cloned version of  "anIterator" is freed.
-  ++aClone; // step forward in the cloned iterator, but now in post-order!
+  aClone = anotherIterator; // the memory for the cloned version of
+                            //  "anIterator" is freed.
+  ++aClone;                 // step forward in the cloned iterator, but now in
+                            // post-order!
 
   std::cout << "Test Done." << std::endl;
   return EXIT_SUCCESS;

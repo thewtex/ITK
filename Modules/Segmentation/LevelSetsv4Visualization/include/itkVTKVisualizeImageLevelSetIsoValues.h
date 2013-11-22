@@ -56,15 +56,15 @@ class VTKVisualizeImageLevelSetIsoValues
 template< typename TInputPixel, typename TLevelSet >
 class VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
   : public VTKVisualizeImageLevelSet<
-      Image< TInputPixel, 2 >,
-      ImageToVTKImageFilter< Image< TInputPixel, 2 > > >
+    Image< TInputPixel, 2 >,
+    ImageToVTKImageFilter< Image< TInputPixel, 2 > > >
 {
 public:
-  typedef VTKVisualizeImageLevelSetIsoValues                                             Self;
+  typedef VTKVisualizeImageLevelSetIsoValues Self;
   typedef VTKVisualizeImageLevelSet<  Image< TInputPixel, 2 >,
                                       ImageToVTKImageFilter< Image< TInputPixel, 2 > > > Superclass;
-  typedef SmartPointer< Self >                                                           Pointer;
-  typedef SmartPointer< const Self >                                                     ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -72,7 +72,7 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(VTKVisualizeImageLevelSetIsoValues, VTKVisualizeImageLevelSet);
 
-  typedef typename Superclass::InputImageType     InputImageType;
+  typedef typename Superclass::InputImageType InputImageType;
 
   typedef TLevelSet LevelSetType;
 
@@ -80,11 +80,13 @@ public:
 
   /** Set/Get the number of level set contours to visualize. */
   void SetNumberOfLevels( const SizeValueType numLevels );
+
   SizeValueType GetNumberOfLevels() const;
 
   /** Set/Get/ the maximum magnitude the levels contours are from the zero level
    * set. */
   void SetLevelLimit( double iLimit );
+
   double GetLevelLimit() const;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -94,19 +96,23 @@ public:
 
 protected:
   VTKVisualizeImageLevelSetIsoValues();
-  virtual ~VTKVisualizeImageLevelSetIsoValues();
+  virtual
+  ~VTKVisualizeImageLevelSetIsoValues();
 
   /** Render the visualization. */
   virtual void PrepareVTKPipeline();
 
 private:
-  VTKVisualizeImageLevelSetIsoValues( const Self& ); // purposely not implemented
-  void operator= ( const Self& ); // purposely not implemented
+  VTKVisualizeImageLevelSetIsoValues( const Self& ); // purposely not
+                                                     // implemented
+  void operator=( const Self& );                     // purposely not
+
+  // implemented
 
   typedef LevelSetTovtkImageData< LevelSetType >  LevelSetConverterType;
   typedef typename LevelSetConverterType::Pointer LevelSetConverterPointer;
 
-  LevelSetConverterPointer  m_LevelSetConverter;
+  LevelSetConverterPointer m_LevelSetConverter;
 
   vtkSmartPointer< vtkMarchingSquares > m_MarchingSquare;
   vtkSmartPointer< vtkPolyDataMapper >  m_ContourMapper;
@@ -114,11 +120,10 @@ private:
   vtkSmartPointer< vtkScalarBarActor >  m_ScalarBar;
   vtkSmartPointer< vtkLookupTable >     m_Lut;
 
-  IdentifierType  m_Count;
-  SizeValueType   m_NumberOfLevels;
-  double          m_LevelLimit;
+  IdentifierType m_Count;
+  SizeValueType  m_NumberOfLevels;
+  double         m_LevelLimit;
 };
-
 
 /**
  * \class VTKVisualizeImageLevelSetIsoValues
@@ -128,15 +133,15 @@ private:
 template< typename TInputPixel, typename TLevelSet >
 class VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
   : public VTKVisualizeImageLevelSet<
-      Image< TInputPixel, 3 >,
-      ImageToVTKImageFilter< Image< TInputPixel, 3 > > >
+    Image< TInputPixel, 3 >,
+    ImageToVTKImageFilter< Image< TInputPixel, 3 > > >
 {
 public:
-  typedef VTKVisualizeImageLevelSetIsoValues                                             Self;
+  typedef VTKVisualizeImageLevelSetIsoValues Self;
   typedef VTKVisualizeImageLevelSet<  Image< TInputPixel, 3 >,
                                       ImageToVTKImageFilter< Image< TInputPixel, 3 > > > Superclass;
-  typedef SmartPointer< Self >                                                           Pointer;
-  typedef SmartPointer< const Self >                                                     ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -144,20 +149,23 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(VTKVisualizeImageLevelSetIsoValues, VTKVisualizeImageLevelSet);
 
-  typedef typename Superclass::InputImageType     InputImageType;
+  typedef typename Superclass::InputImageType InputImageType;
 
   typedef TLevelSet LevelSetType;
 
   virtual void SetInputImage( const InputImageType * iImage );
+
   void SetLevelSet( LevelSetType * levelSet );
 
   /** Set/Get the number of level set contours to visualize. */
   void SetNumberOfLevels( const SizeValueType numLevels );
+
   SizeValueType GetNumberOfLevels() const;
 
   /** Set/Get/ the maximum magnitude the levels contours are from the zero level
    * set. */
   void SetLevelLimit( double iLimit );
+
   double GetLevelLimit() const;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -167,29 +175,33 @@ public:
 
 protected:
   VTKVisualizeImageLevelSetIsoValues();
-  virtual ~VTKVisualizeImageLevelSetIsoValues();
+  virtual
+  ~VTKVisualizeImageLevelSetIsoValues();
 
   /** Render the visualization. */
   virtual void PrepareVTKPipeline();
 
 private:
-  VTKVisualizeImageLevelSetIsoValues( const Self& ); // purposely not implemented
-  void operator= ( const Self& ); // purposely not implemented
+  VTKVisualizeImageLevelSetIsoValues( const Self& ); // purposely not
+                                                     // implemented
+  void operator=( const Self& );                     // purposely not
+
+  // implemented
 
   typedef LevelSetTovtkImageData< LevelSetType >  LevelSetConverterType;
   typedef typename LevelSetConverterType::Pointer LevelSetConverterPointer;
 
-  LevelSetConverterPointer  m_LevelSetConverter;
+  LevelSetConverterPointer m_LevelSetConverter;
 
-  vtkSmartPointer< vtkMarchingCubes >   m_MarchingCubes;
-  vtkSmartPointer< vtkPolyDataMapper >  m_ContourMapper;
-  vtkSmartPointer< vtkActor >           m_ContourActor;
-  vtkSmartPointer< vtkScalarBarActor >  m_ScalarBar;
-  vtkSmartPointer< vtkLookupTable >     m_Lut;
+  vtkSmartPointer< vtkMarchingCubes >  m_MarchingCubes;
+  vtkSmartPointer< vtkPolyDataMapper > m_ContourMapper;
+  vtkSmartPointer< vtkActor >          m_ContourActor;
+  vtkSmartPointer< vtkScalarBarActor > m_ScalarBar;
+  vtkSmartPointer< vtkLookupTable >    m_Lut;
 
-  IdentifierType  m_Count;
-  SizeValueType   m_NumberOfLevels;
-  double          m_LevelLimit;
+  IdentifierType m_Count;
+  SizeValueType  m_NumberOfLevels;
+  double         m_LevelLimit;
 };
 } // end namespace itk
 

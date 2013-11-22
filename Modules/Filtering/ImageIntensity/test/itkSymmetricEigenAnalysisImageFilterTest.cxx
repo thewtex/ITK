@@ -19,8 +19,8 @@
 #include "itkSymmetricSecondRankTensor.h"
 #include "itkSymmetricEigenAnalysisImageFilter.h"
 
-
-int itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
+int
+itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
@@ -30,26 +30,25 @@ int itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
   typedef itk::SymmetricSecondRankTensor< float, myDimension > myTensorType;
 
   // Declare the types of the images
-  typedef itk::Image< myTensorType, myDimension >  myInputImageType;
+  typedef itk::Image< myTensorType, myDimension > myInputImageType;
 
   // Define the type for storing the eigen-value
-  typedef itk::FixedArray< float, myDimension >  myValueArray;
+  typedef itk::FixedArray< float, myDimension > myValueArray;
 
   // Declare the types of the output images
-  typedef itk::Image< myValueArray, myDimension >  myOutputImageType;
+  typedef itk::Image< myValueArray, myDimension > myOutputImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   myInputImageType::Pointer inputImage  = myInputImageType::New();
-
 
   // Define their size, and start index
   mySizeType size;
@@ -72,7 +71,7 @@ int itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
 
   // Declare Iterator type for the input image
   typedef itk::ImageRegionIteratorWithIndex<
-                     myInputImageType>  myIteratorType;
+      myInputImageType>  myIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -95,12 +94,11 @@ int itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
     ++it;
     }
 
-
   // Declare the type for the filter
   typedef itk::SymmetricEigenAnalysisImageFilter<
-                                     myInputImageType,
-                                     myOutputImageType
-                                               >  myFilterType;
+      myInputImageType,
+      myOutputImageType
+      >  myFilterType;
   // Create a  Filter
   myFilterType::Pointer filter = myFilterType::New();
   filter->SetDimension( myTensorType::Dimension );
@@ -108,10 +106,9 @@ int itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
   // Connect the input images
   filter->SetInput( inputImage );
 
-
   // Execute the filter
   filter->Update();
-  filter->SetFunctor(filter->GetFunctor());
+  filter->SetFunctor(filter->GetFunctor() );
 
   // Get the Smart Pointer to the Filter Output
   // It is important to do it AFTER the filter is Updated
@@ -121,7 +118,7 @@ int itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
 
   // Declare Iterator type for the output image
   typedef itk::ImageRegionIteratorWithIndex<
-                                 myOutputImageType>  myOutputIteratorType;
+      myOutputImageType>  myOutputIteratorType;
 
   // Create an iterator for going through the output image
   myOutputIteratorType itg( outputImage,
@@ -135,7 +132,6 @@ int itkSymmetricEigenAnalysisImageFilterTest(int, char* [] )
     std::cout << itg.Get();
     ++itg;
     }
-
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;

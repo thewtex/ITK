@@ -55,7 +55,7 @@ public:
   typedef typename TImage::PixelType    PixelType;
   typedef typename PixelType::ValueType ScalarValueType;
   typedef Neighborhood< PixelType, itkGetStaticConstMacro(ImageDimension) >
-  NeighborhoodType;
+    NeighborhoodType;
 
   /** Extract the image and vector dimension from the image template parameter.
     */
@@ -72,14 +72,16 @@ public:
                        const OperatorType & op) const;
 
   /** Conversion operator. */
-  PixelType operator()(const ConstNeighborhoodIterator< TImage > & it,
-                       const OperatorType & op) const
+  PixelType
+  operator()(const ConstNeighborhoodIterator< TImage > & it,
+             const OperatorType & op) const
   {
     return this->operator()(std::slice(0, it.Size(), 1), it, op);
   }
 
   PixelType operator()(const std::slice & s, const NeighborhoodType & N,
                        const OperatorType & op) const;
+
 };
 } // end namespace itk
 

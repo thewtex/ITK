@@ -19,14 +19,14 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkAttributeOpeningLabelMapFilter.h"
 #include "itkLabelMapToLabelImageFilter.h"
 
 #include "itkTestingMacros.h"
 
-int itkAttributeOpeningLabelMapFilterTest1(int argc, char * argv[])
+int
+itkAttributeOpeningLabelMapFilterTest1(int argc, char * argv[])
 {
   if( argc != 5 )
     {
@@ -54,11 +54,11 @@ int itkAttributeOpeningLabelMapFilterTest1(int argc, char * argv[])
   ImageToLabelType::Pointer imageToLabel = ImageToLabelType::New();
   imageToLabel->SetInput( reader->GetOutput() );
 
-
   // The next step is made outside the pipeline model, so we call Update() now.
   imageToLabel->Update();
 
-  // Now we will valuate the attributes. The attribute will be the object position
+  // Now we will valuate the attributes. The attribute will be the object
+  // position
   // in the label map
   LabelMapType::Pointer labelMap = imageToLabel->GetOutput();
 
@@ -69,13 +69,12 @@ int itkAttributeOpeningLabelMapFilterTest1(int argc, char * argv[])
     labelObject->SetAttribute( pos++ );
     }
 
-
   typedef itk::AttributeOpeningLabelMapFilter< LabelMapType > LabelOpeningType;
   LabelOpeningType::Pointer opening = LabelOpeningType::New();
 
   //testing get and set macros for Lambda
   LabelOpeningType::AttributeValueType lambda =
-    static_cast<LabelOpeningType::AttributeValueType>(atof( argv[3] ));
+    static_cast<LabelOpeningType::AttributeValueType>(atof( argv[3] ) );
   opening->SetLambda( lambda );
   TEST_SET_GET_VALUE( lambda , opening->GetLambda() );
 

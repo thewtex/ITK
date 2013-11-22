@@ -30,18 +30,16 @@
  *
  */
 
-
 #include "itkAdaptImageFilter.h"
 #include "itkNthElementPixelAccessor.h"
 
 #include "vnl/vnl_sample.h"
 
-
 //-------------------------------------
 //     Typedefs for convenience
 //-------------------------------------
-typedef itk::Image< itk::Vector<float, 3>,   2 > myVectorImageType;
-typedef itk::ImageRegionIteratorWithIndex< myVectorImageType >  myVectorIteratorType;
+typedef itk::Image< itk::Vector<float, 3>,   2 >               myVectorImageType;
+typedef itk::ImageRegionIteratorWithIndex< myVectorImageType > myVectorIteratorType;
 
 typedef itk::NthElementPixelAccessor<float, itk::Vector<float, 3> > myAccessorType;
 
@@ -53,10 +51,11 @@ typedef itk::ImageRegionIteratorWithIndex< myImageType > myIteratorType;
 //   Main code
 //
 //-------------------------
-int itkAdaptImageFilterTest2(int, char* [] ) {
-
+int
+itkAdaptImageFilterTest2(int, char* [] ) {
 
   myVectorImageType::SizeType size;
+
   size[0] = 2;
   size[1] = 2;
 
@@ -70,13 +69,12 @@ int itkAdaptImageFilterTest2(int, char* [] ) {
 
   myVectorImageType::Pointer myImage = myVectorImageType::New();
 
-
   myImage->SetLargestPossibleRegion( region );
   myImage->SetBufferedRegion( region );
   myImage->SetRequestedRegion( region );
   myImage->Allocate();
 
-  myVectorIteratorType  it1( myImage, myImage->GetRequestedRegion() );
+  myVectorIteratorType it1( myImage, myImage->GetRequestedRegion() );
 
   // Value to initialize the pixels
   myVectorImageType::PixelType color;
@@ -104,7 +102,6 @@ int itkAdaptImageFilterTest2(int, char* [] ) {
     ++it1;
     }
 
-
   bool passed = true;
 
   // Get the first element
@@ -119,23 +116,23 @@ int itkAdaptImageFilterTest2(int, char* [] ) {
   adaptImage->SetInput(myImage);
   adaptImage->UpdateLargestPossibleRegion();
 
-  myIteratorType  it( adaptImage->GetOutput(), adaptImage->GetOutput()->GetRequestedRegion() );
+  myIteratorType it( adaptImage->GetOutput(), adaptImage->GetOutput()->GetRequestedRegion() );
 
   std::cout << "--- First component values --- " << std::endl;
 
   it.GoToBegin();
   it1.GoToBegin();
   while( !it.IsAtEnd() )
-  {
-  std::cout << it.Get()   << std::endl;
-  if (it.Get() != it1.Get()[0])
     {
-    passed = false;
-    }
+    std::cout << it.Get()   << std::endl;
+    if (it.Get() != it1.Get()[0])
+      {
+      passed = false;
+      }
 
-  ++it;
-  ++it1;
-  }
+    ++it;
+    ++it1;
+    }
 
   // Get the second element
   accessor.SetElementNumber(1);
@@ -149,16 +146,16 @@ int itkAdaptImageFilterTest2(int, char* [] ) {
   it.GoToBegin();
   it1.GoToBegin();
   while( !it.IsAtEnd() )
-  {
-  std::cout << it.Get()   << std::endl;
-  if (it.Get() != it1.Get()[1])
     {
-    passed = false;
-    }
+    std::cout << it.Get()   << std::endl;
+    if (it.Get() != it1.Get()[1])
+      {
+      passed = false;
+      }
 
-  ++it;
-  ++it1;
-  }
+    ++it;
+    ++it1;
+    }
 
   // Convert to the third component
   accessor.SetElementNumber(2);
@@ -172,16 +169,16 @@ int itkAdaptImageFilterTest2(int, char* [] ) {
   it.GoToBegin();
   it1.GoToBegin();
   while( !it.IsAtEnd() )
-  {
-  std::cout << it.Get()   << std::endl;
-  if (it.Get() != it1.Get()[2])
     {
-    passed = false;
-    }
+    std::cout << it.Get()   << std::endl;
+    if (it.Get() != it1.Get()[2])
+      {
+      passed = false;
+      }
 
-  ++it;
-  ++it1;
-  }
+    ++it;
+    ++it1;
+    }
 
   // Test access to Accessor
   std::cout << adaptImage->GetAccessor().GetElementNumber() << std::endl;

@@ -36,7 +36,8 @@ namespace itk
  * \ingroup ITKGPUImageFilterBase
  */
 
-template< typename TInputImage, typename TOutputImage, typename TParentImageFilter = BoxImageFilter< TInputImage, TOutputImage > >
+template< typename TInputImage, typename TOutputImage, typename TParentImageFilter =
+            BoxImageFilter< TInputImage, TOutputImage > >
 class GPUBoxImageFilter :
   public GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
@@ -72,10 +73,12 @@ public:
 protected:
   GPUBoxImageFilter() {
   }
+
   ~GPUBoxImageFilter() {
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     GPUSuperclass::PrintSelf(os, indent);
   }

@@ -29,12 +29,14 @@
 /*
 */
 
-int itkGeodesicActiveContourLevelSetImageFilterTest(int, char* [] )
+int
+itkGeodesicActiveContourLevelSetImageFilterTest(int, char* [] )
 {
 
-  const   unsigned int    ImageDimension = 2;
-  typedef unsigned char   PixelType;
-  typedef float           InternalPixelType;
+  const   unsigned int ImageDimension = 2;
+
+  typedef unsigned char PixelType;
+  typedef float         InternalPixelType;
 
   typedef itk::Image<PixelType,ImageDimension>         ImageType;
   typedef itk::Image<InternalPixelType,ImageDimension> InternalImageType;
@@ -85,7 +87,7 @@ int itkGeodesicActiveContourLevelSetImageFilterTest(int, char* [] )
   caster->SetInput( inputImage );
 
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter< InternalImageType,
-    InternalImageType > GradientImageType;
+                                                              InternalImageType > GradientImageType;
 
   GradientImageType::Pointer gradMagnitude = GradientImageType::New();
   gradMagnitude->SetInput( caster->GetOutput() );
@@ -132,7 +134,7 @@ int itkGeodesicActiveContourLevelSetImageFilterTest(int, char* [] )
    * Set up and run the shape detection filter
    */
   typedef itk::GeodesicActiveContourLevelSetImageFilter<
-    InternalImageType, InternalImageType > GeodesicActiveContourFilterType;
+      InternalImageType, InternalImageType > GeodesicActiveContourFilterType;
 
   GeodesicActiveContourFilterType::Pointer geodesicActiveContour = GeodesicActiveContourFilterType::New();
 

@@ -24,7 +24,8 @@
 
 namespace itk
 {
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
                          TInternalOutputImageType >
@@ -36,7 +37,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   m_SliceIndex = 0;
 }
 
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
@@ -64,8 +66,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
 
 }
 
-
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
@@ -77,7 +79,7 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   Superclass::GenerateInputRequestedRegion();
 
   InputDataObjectIterator it( this );
-  InputImageType * input  = dynamic_cast< InputImageType * >( it.GetInput() );
+  InputImageType *        input  = dynamic_cast< InputImageType * >( it.GetInput() );
 
   const RegionType &requestedInputRegion = input->GetRequestedRegion();
 
@@ -85,6 +87,7 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   // dimension. In that dimension we can stream the requested
   // slices.
   RegionType inputRegion = input->GetLargestPossibleRegion();
+
   inputRegion.SetIndex( m_Dimension, requestedInputRegion.GetIndex(m_Dimension) );
   inputRegion.SetSize( m_Dimension, requestedInputRegion.GetSize(m_Dimension) );
 
@@ -104,7 +107,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     }
 }
 
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
@@ -123,7 +127,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   this->SetOutputFilter(outputFilter);
 }
 
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
@@ -139,7 +144,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     }
 }
 
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
@@ -155,7 +161,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     }
 }
 
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
@@ -169,8 +176,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   this->AllocateOutputs();
 
   const RegionType requestedRegion = this->GetOutput( 0 )->GetRequestedRegion();
-  const IndexType requestedIndex = requestedRegion.GetIndex();
-  const SizeType requestedSize = requestedRegion.GetSize();
+  const IndexType  requestedIndex = requestedRegion.GetIndex();
+  const SizeType   requestedSize = requestedRegion.GetSize();
 
   InternalRegionType internalOutputRegion;
   InternalRegionType internalInputRegion;
@@ -201,9 +208,9 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   // keep the internal input around each iteration, because if the
   // fitlers are not run inplace, we don't need to reallocate each iteration
   for ( unsigned int i = 0; i < numberOfIndexedInputs; i++ )
-      {
-      internalInputs[i] = InternalInputImageType::New();
-      }
+    {
+    internalInputs[i] = InternalInputImageType::New();
+    }
 
   const IndexValueType sliceRangeMax =
     static_cast<IndexValueType>(requestedSize[m_Dimension] + requestedIndex[m_Dimension]);
@@ -214,11 +221,9 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     this->m_SliceIndex = slice;
     this->InvokeEvent( IterationEvent() );
 
-
     RegionType inputRegion = this->GetInput( 0 )->GetRequestedRegion();
     inputRegion.SetIndex( m_Dimension, slice );
     inputRegion.SetSize( m_Dimension, 1 );
-
 
     // this region is the current output region we
     // are iterating on
@@ -232,11 +237,15 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     itkDebugMacro( "outputRegion: " << outputRegion );
     itkDebugMacro( "internalOutputRegion: " << internalOutputRegion );
 
+    itkAssertOrThrowMacro(
+      inputRegion.GetNumberOfPixels() == internalInputRegion.GetNumberOfPixels(),
+      "inputRegion.GetNumberOfPixels() == internalInputRegion.GetNumberOfPixel()" );
+    itkAssertOrThrowMacro(
+      outputRegion.GetNumberOfPixels() == internalOutputRegion.GetNumberOfPixels(),
+      "outputRegion.GetNumberOfPixels() == internalOutputRegion.GetNumberOfPixel()" );
 
-    itkAssertOrThrowMacro( inputRegion.GetNumberOfPixels() == internalInputRegion.GetNumberOfPixels(), "inputRegion.GetNumberOfPixels() == internalInputRegion.GetNumberOfPixel()" );
-    itkAssertOrThrowMacro( outputRegion.GetNumberOfPixels() == internalOutputRegion.GetNumberOfPixels(), "outputRegion.GetNumberOfPixels() == internalOutputRegion.GetNumberOfPixel()" );
-
-    // reallocate the internal input at each slice, so the slice by slice filter can work
+    // reallocate the internal input at each slice, so the slice by slice filter
+    // can work
     // even if the pipeline is run in place
     for ( unsigned int i = 0; i < numberOfIndexedInputs; i++ )
       {
@@ -249,7 +258,8 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
 
     // run the filter on the current slice
     this->m_InputFilter->Modified();
-    this->m_OutputFilter->Modified(); // should not be needed, but may help in some cases
+    this->m_OutputFilter->Modified(); // should not be needed, but may help in
+                                      // some cases
     this->m_OutputFilter->GetOutput()->SetRequestedRegion(internalOutputRegion);
     this->m_OutputFilter->Update();
 
@@ -258,12 +268,14 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     // and copy the output slice to the output image
     for ( unsigned int i = 0; i < numberOfIndexedOutputs; i++ )
       {
-      ImageAlgorithm::Copy( this->m_OutputFilter->GetOutput( i ), this->GetOutput( i ), internalOutputRegion, outputRegion );
+      ImageAlgorithm::Copy( this->m_OutputFilter->GetOutput( i ), this->GetOutput(
+                              i ), internalOutputRegion, outputRegion );
       }
     }
 }
 
-template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType,
+template< typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType,
           typename TInternalOutputImageType >
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
@@ -279,6 +291,7 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
      << " " << this->m_OutputFilter.GetPointer() << std::endl;
   os << indent << "SliceIndex: " << m_SliceIndex << std::endl;
 }
+
 }
 
 #endif

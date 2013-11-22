@@ -24,11 +24,13 @@
 #include "itkRandomImageSource.h"
 #include "itkFilterWatcher.h"
 
-int itkStatisticsImageFilterTest(int, char* [] )
+int
+itkStatisticsImageFilterTest(int, char* [] )
 {
   std::cout << "itkStatisticsImageFilterTest Start" << std::endl;
 
   int status = 0;
+
   typedef itk::Image<int,3> FloatImage;
 
   FloatImage::Pointer    image  = FloatImage::New();
@@ -81,7 +83,6 @@ int itkStatisticsImageFilterTest(int, char* [] )
     status++;
     }
 
-
   // Now generate a real image
 
   typedef itk::RandomImageSource<FloatImage> SourceType;
@@ -96,10 +97,10 @@ int itkStatisticsImageFilterTest(int, char* [] )
   source->SetMin( static_cast< FloatImage::PixelType >( minValue ) );
   source->SetMax( static_cast< FloatImage::PixelType >( maxValue ) );
 
-  filter->SetInput(source->GetOutput());
+  filter->SetInput(source->GetOutput() );
   filter->UpdateLargestPossibleRegion();
 
-  double expectedSigma = vcl_sqrt((maxValue-minValue)*(maxValue-minValue)/12.0);
+  double expectedSigma = vcl_sqrt( (maxValue-minValue)*(maxValue-minValue)/12.0);
   double epsilon = (maxValue - minValue) * .001;
 
   if (vnl_math_abs(filter->GetSigma() - expectedSigma) > epsilon)
@@ -114,9 +115,9 @@ int itkStatisticsImageFilterTest(int, char* [] )
   double knownVariance = 10.0;
 
   typedef itk::Image<double,3> DoubleImage;
-  DoubleImage::Pointer dImage = DoubleImage::New();
-  DoubleImage::SizeType dsize;
-  DoubleImage::IndexType dindex;
+  DoubleImage::Pointer    dImage = DoubleImage::New();
+  DoubleImage::SizeType   dsize;
+  DoubleImage::IndexType  dindex;
   DoubleImage::RegionType dregion;
   dsize.Fill(50);
   dindex.Fill(0);
@@ -125,9 +126,9 @@ int itkStatisticsImageFilterTest(int, char* [] )
   dImage->SetRegions(dregion);
   dImage->Allocate();
   itk::ImageRegionIterator<DoubleImage> it(dImage, dregion);
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
-    it.Set(rvgen->GetNormalVariate(knownMean, knownVariance));
+    it.Set(rvgen->GetNormalVariate(knownMean, knownVariance) );
     ++it;
     }
   typedef itk::StatisticsImageFilter<DoubleImage> DFilterType;
@@ -137,16 +138,16 @@ int itkStatisticsImageFilterTest(int, char* [] )
   double testMean = dfilter->GetMean();
   double testVariance = dfilter->GetVariance();
   double diff = vnl_math_abs(testMean - knownMean);
-  if ((diff != 0.0 && knownMean != 0.0) &&
-      diff / vnl_math_abs(knownMean) > .01)
+  if ( (diff != 0.0 && knownMean != 0.0) &&
+       diff / vnl_math_abs(knownMean) > .01)
     {
     std::cout << "Expected mean is " << knownMean << ", computed mean is " << testMean << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "Expected mean is " << knownMean << ", computed mean is " << testMean << std::endl;
   diff = vnl_math_abs(testVariance - knownVariance);
-  if ((diff != 0.0 && knownVariance != 0.0) &&
-      diff / vnl_math_abs(knownVariance) > .1)
+  if ( (diff != 0.0 && knownVariance != 0.0) &&
+       diff / vnl_math_abs(knownVariance) > .1)
     {
     std::cout << "Expected variance is " << knownVariance << ", computed variance is " << testVariance << std::endl;
     return EXIT_FAILURE;

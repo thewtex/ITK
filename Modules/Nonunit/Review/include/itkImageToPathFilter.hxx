@@ -48,7 +48,8 @@ ImageToPathFilter< TInputImage, TOutputPath >
 template< typename TInputImage, typename TOutputPath >
 ImageToPathFilter< TInputImage, TOutputPath >
 ::~ImageToPathFilter()
-{}
+{
+}
 
 /**
  *
@@ -83,9 +84,9 @@ template< typename TInputImage, typename TOutputPath >
 const typename ImageToPathFilter< TInputImage, TOutputPath >::InputImageType *
 ImageToPathFilter< TInputImage, TOutputPath >
 ::GetInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage * >( this->GetPrimaryInput() );
-}
+  }
 
 /**
  *
@@ -94,9 +95,9 @@ template< typename TInputImage, typename TOutputPath >
 const typename ImageToPathFilter< TInputImage, TOutputPath >::InputImageType *
 ImageToPathFilter< TInputImage, TOutputPath >
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage * >( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 template< typename TInputImage, typename TOutputPath >
 void
@@ -105,6 +106,7 @@ ImageToPathFilter< TInputImage, TOutputPath >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

@@ -22,7 +22,8 @@
 #include <cstring>
 #include <string.h>
 
-int itkFixedArrayTest2(int, char* [] )
+int
+itkFixedArrayTest2(int, char* [] )
 {
   // Define the number of elements in the array
   const unsigned int nelements = 10000000L;
@@ -41,19 +42,18 @@ int itkFixedArrayTest2(int, char* [] )
   ArrayType * vec = new ArrayType[nelements+8];
 
   // Fill it up with zeros
-  memset(vec,0,(nelements+8)*sizeof(ArrayType));
-
+  memset(vec,0,(nelements+8)*sizeof(ArrayType) );
 
   // Display the alignment of the array
-  std::cout << "Initial alignment: " << (((size_t)vec)& 7) << "\n";
+  std::cout << "Initial alignment: " << ( ( (size_t)vec)& 7) << "\n";
 
   // Start a simple experiment
   t = clock();
   double acc1 = 0.0;
 
-  for (unsigned int i=0;i<nrun;++i)
+  for (unsigned int i=0; i<nrun; ++i)
     {
-    for (unsigned int j=0;j<nelements;++j)
+    for (unsigned int j=0; j<nelements; ++j)
       {
       acc1 += vec[j][0];
       }
@@ -66,7 +66,6 @@ int itkFixedArrayTest2(int, char* [] )
 
   std::cout << "Initial execution time: "
             << time1 << "ms\n";
-
 
   // We now force an 8 bytes aligned array
 
@@ -84,15 +83,15 @@ int itkFixedArrayTest2(int, char* [] )
 
   // Make sure the new pointer is well aligned by
   // displaying the alignment
-  std::cout << "New alignment: " << (((size_t)vec2)& 7) << "\n";
+  std::cout << "New alignment: " << ( ( (size_t)vec2)& 7) << "\n";
 
   // Start the simple experiment on the 8 byte aligned array
   t = clock();
   double acc2 = 0.0;
 
-  for (unsigned int i=0;i<nrun;++i)
+  for (unsigned int i=0; i<nrun; ++i)
     {
-    for (unsigned int j=0;j<nelements;++j)
+    for (unsigned int j=0; j<nelements; ++j)
       {
       acc2 += vec2[j][0];
       }
@@ -105,7 +104,6 @@ int itkFixedArrayTest2(int, char* [] )
 
   std::cout << "Execution time: "
             << time2 << "ms\n";
-
 
   // Free up the memory
   delete[] vec;
@@ -123,7 +121,6 @@ int itkFixedArrayTest2(int, char* [] )
     std::cerr << "Performance degraded below tolerance" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Make sure we do something with the sums otherwise everything
   // could be optimized away by the compiler

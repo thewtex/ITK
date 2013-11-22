@@ -59,10 +59,10 @@ public:
   typedef typename OutputImageType::Pointer   OutputImagePointer;
   typedef typename OutputImageType::PixelType OutputImagePixelType;
 
-  typedef double                              ParametersValueType;
-  typedef Array< ParametersValueType >        ParametersType;
+  typedef double                       ParametersValueType;
+  typedef Array< ParametersValueType > ParametersType;
 
-   /** ImageDimension constant */
+  /** ImageDimension constant */
   itkStaticConstMacro(OutputImageDimension,
                       unsigned int,
                       TOutputImage::ImageDimension);
@@ -83,17 +83,21 @@ public:
   virtual unsigned int GetNumberOfParameters() const = 0;
 
 protected:
-  ParametricImageSource() {};
-  virtual ~ParametricImageSource() {}
+  ParametricImageSource() {
+  }
+
+  virtual
+  ~ParametricImageSource() {
+  }
+
   void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   ParametricImageSource(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);        //purposely not implemented
 
 };
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkParametricImageSource.hxx"

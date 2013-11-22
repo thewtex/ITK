@@ -34,40 +34,41 @@
 #include "itkGPUBinaryThresholdImageFilter.h"
 
 template< unsigned int VImageDimension >
-int runGPUBinaryThresholdImageFilterTest(const std::string& inFile, const std::string& outFile)
+int
+runGPUBinaryThresholdImageFilterTest(const std::string& inFile, const std::string& outFile)
 {
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::GPUImage< InputPixelType,  VImageDimension >   InputImageType;
-  typedef itk::GPUImage< OutputPixelType, VImageDimension >   OutputImageType;
+  typedef itk::GPUImage< InputPixelType,  VImageDimension > InputImageType;
+  typedef itk::GPUImage< OutputPixelType, VImageDimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   typename ReaderType::Pointer reader = ReaderType::New();
   typename WriterType::Pointer writer = WriterType::New();
 
-  if(!itk::IsGPUAvailable())
-  {
+  if(!itk::IsGPUAvailable() )
+    {
     std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   reader->SetFileName( inFile );
   writer->SetFileName( outFile );
 
-  typedef itk::BinaryThresholdImageFilter< InputImageType, OutputImageType > ThresholdFilterType;
+  typedef itk::BinaryThresholdImageFilter< InputImageType, OutputImageType >    ThresholdFilterType;
   typedef itk::GPUBinaryThresholdImageFilter< InputImageType, OutputImageType > GPUThresholdFilterType;
 
   // threshold parameters
-  const InputPixelType upperThreshold = 255;
-  const InputPixelType lowerThreshold = 175;
+  const InputPixelType  upperThreshold = 255;
+  const InputPixelType  lowerThreshold = 175;
   const OutputPixelType outsideValue = 0;
   const OutputPixelType insideValue  = 255;
 
   for(int nThreads = 1; nThreads <= 8; nThreads++)
-  {
+    {
     typename ThresholdFilterType::Pointer CPUFilter = ThresholdFilterType::New();
     itk::TimeProbe cputimer;
     cputimer.Start();
@@ -89,7 +90,7 @@ int runGPUBinaryThresholdImageFilterTest(const std::string& inFile, const std::s
               << CPUFilter->GetNumberOfThreads() << " threads.\n" << std::endl;
 
     if( nThreads == 8 )
-    {
+      {
       typename GPUThresholdFilterType::Pointer GPUFilter = GPUThresholdFilterType::New();
 
       itk::TimeProbe gputimer;
@@ -113,19 +114,21 @@ int runGPUBinaryThresholdImageFilterTest(const std::string& inFile, const std::s
       // RMS Error check
       // ---------------
 
-      double diff = 0;
-      unsigned int nPix = 0;
-      itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(), CPUFilter->GetOutput()->GetLargestPossibleRegion());
-      itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(), GPUFilter->GetOutput()->GetLargestPossibleRegion());
+      double                                    diff = 0;
+      unsigned int                              nPix = 0;
+      itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(),
+                                                    CPUFilter->GetOutput()->GetLargestPossibleRegion() );
+      itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(),
+                                                    GPUFilter->GetOutput()->GetLargestPossibleRegion() );
 
       for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
-      {
-        double err = (double)(cit.Get()) - (double)(git.Get());
+        {
+        double err = (double)(cit.Get() ) - (double)(git.Get() );
         diff += err*err;
         nPix++;
-      }
+        }
       if (nPix > 0)
-      {
+        {
         double RMSError = sqrt( diff / (double)nPix );
         std::cout << "RMS Error : " << RMSError << std::endl;
         double RMSThreshold = 0;
@@ -134,58 +137,59 @@ int runGPUBinaryThresholdImageFilterTest(const std::string& inFile, const std::s
         // execute pipeline filter and write output
         writer->Update();
 
-        if (vnl_math_isnan(RMSError))
-        {
+        if (vnl_math_isnan(RMSError) )
+          {
           std::cout << "RMS Error is NaN! nPix: " << nPix << std::endl;
           return EXIT_FAILURE;
-        }
+          }
         if (RMSError > RMSThreshold)
-        {
+          {
           std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;
           return EXIT_FAILURE;
+          }
         }
-      }
       else
-      {
+        {
         std::cout << "No pixels in output!" << std::endl;
         return EXIT_FAILURE;
+        }
       }
     }
-  }
 
   return EXIT_SUCCESS;
 }
 
-int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
+int
+itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
 {
 
   if( argc <  3 )
-  {
+    {
     std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile [num_dimensions]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::string inFile( argv[1] );
   std::string outFile( argv[2] );
 
   unsigned int dim = 3;
   if( argc >= 4 )
-  {
+    {
     dim = atoi( argv[3] );
-  }
+    }
 
   if( dim == 2 )
-  {
+    {
     return runGPUBinaryThresholdImageFilterTest<2>(inFile, outFile);
-  }
+    }
   else if( dim == 3 )
-  {
+    {
     return runGPUBinaryThresholdImageFilterTest<3>(inFile, outFile);
-  }
+    }
   else
-  {
+    {
     std::cerr << "Error: only 2 or 3 dimensions allowed, " << dim << " selected." << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 }

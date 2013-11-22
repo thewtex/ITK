@@ -17,7 +17,6 @@
  *=========================================================================*/
 #include "itkFRPROptimizer.h"
 
-
 /**
  *  The objectif function is the quadratic form:
  *
@@ -47,16 +46,16 @@ public:
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType      ParametersType;
-  typedef Superclass::DerivativeType      DerivativeType;
-  typedef Superclass::MeasureType         MeasureType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
+  typedef Superclass::MeasureType    MeasureType;
 
   FRPRGradientCostFunction()
   {
   }
 
-
-  MeasureType  GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
 
     double x = parameters[0];
@@ -74,8 +73,9 @@ public:
 
   }
 
-  void GetDerivative( const ParametersType & parameters,
-                            DerivativeType & derivative ) const
+  void
+  GetDerivative( const ParametersType & parameters,
+                 DerivativeType & derivative ) const
   {
 
     double x = parameters[0];
@@ -86,6 +86,7 @@ public:
     std::cout << y << ") = ";
 
     DerivativeType temp(SpaceDimension);
+
     temp.Fill( 0 );
     derivative = temp;
     derivative[0] = 3 * x + 2 * y -2;
@@ -95,44 +96,41 @@ public:
 
   }
 
-
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
 
 private:
 
-
 };
 
-int itkFRPROptimizerTest(int, char* [] )
+int
+itkFRPROptimizerTest(int, char* [] )
 {
   std::cout << "FRPR Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::FRPROptimizer  OptimizerType;
+  typedef  itk::FRPROptimizer OptimizerType;
 
-  typedef OptimizerType::ScalesType        ScalesType;
+  typedef OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
-
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction
   FRPRGradientCostFunction::Pointer costFunction = FRPRGradientCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-
-  typedef FRPRGradientCostFunction::ParametersType    ParametersType;
+  typedef FRPRGradientCostFunction::ParametersType ParametersType;
 
   const unsigned int spaceDimension =
-                      costFunction->GetNumberOfParameters();
+    costFunction->GetNumberOfParameters();
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
 
   initialPosition[0] =  100;
   initialPosition[1] = -100;
@@ -141,111 +139,111 @@ int itkFRPROptimizerTest(int, char* [] )
   itkOptimizer->SetMaximize(false);
   itkOptimizer->SetMaximumIteration( 50 );
 
-  {
-  // Exercise the methods that set the optimization mode
-  std::cout << "Testing Fletch Reeves Mode" << std::endl;
-  itkOptimizer->SetToFletchReeves();
-
-  itkOptimizer->SetInitialPosition( initialPosition );
-
-  try
     {
-    itkOptimizer->StartOptimization();
-    }
-  catch( itk::ExceptionObject & e )
-    {
-    std::cout << "Exception thrown ! " << std::endl;
-    std::cout << "An error occurred during Optimization" << std::endl;
-    std::cout << "Location    = " << e.GetLocation()    << std::endl;
-    std::cout << "Description = " << e.GetDescription() << std::endl;
-    return EXIT_FAILURE;
-    }
+    // Exercise the methods that set the optimization mode
+    std::cout << "Testing Fletch Reeves Mode" << std::endl;
+    itkOptimizer->SetToFletchReeves();
 
-  ParametersType finalPosition = itkOptimizer->GetCurrentPosition();
-  std::cout << "Solution        = (";
-  std::cout << finalPosition[0] << ",";
-  std::cout << finalPosition[1] << ")" << std::endl;
+    itkOptimizer->SetInitialPosition( initialPosition );
 
-  //
-  // check results to see if it is within range
-  //
-  bool pass = true;
-  double trueParameters[2] = { 2, -2 };
-  for( unsigned int j = 0; j < 2; j++ )
-    {
-    if( vnl_math_abs( finalPosition[j] - trueParameters[j] ) > 0.01 )
-      pass = false;
-    }
+    try
+      {
+      itkOptimizer->StartOptimization();
+      }
+    catch( itk::ExceptionObject & e )
+      {
+      std::cout << "Exception thrown ! " << std::endl;
+      std::cout << "An error occurred during Optimization" << std::endl;
+      std::cout << "Location    = " << e.GetLocation()    << std::endl;
+      std::cout << "Description = " << e.GetDescription() << std::endl;
+      return EXIT_FAILURE;
+      }
 
-  // Exercise various member functions.
-  std::cout << "Maximize: " << itkOptimizer->GetMaximize() << std::endl;
-  std::cout << std::endl;
-  std::cout << "MaximumIteration: " << itkOptimizer->GetMaximumIteration();
-  std::cout << std::endl;
+    ParametersType finalPosition = itkOptimizer->GetCurrentPosition();
+    std::cout << "Solution        = (";
+    std::cout << finalPosition[0] << ",";
+    std::cout << finalPosition[1] << ")" << std::endl;
 
-  itkOptimizer->Print( std::cout );
+    //
+    // check results to see if it is within range
+    //
+    bool   pass = true;
+    double trueParameters[2] = { 2, -2 };
+    for( unsigned int j = 0; j < 2; j++ )
+      {
+      if( vnl_math_abs( finalPosition[j] - trueParameters[j] ) > 0.01 )
+        pass = false;
+      }
 
-  if( !pass )
-    {
-    std::cout << "Fletch Reeves test failed." << std::endl;
-    return EXIT_FAILURE;
-    }
+    // Exercise various member functions.
+    std::cout << "Maximize: " << itkOptimizer->GetMaximize() << std::endl;
+    std::cout << std::endl;
+    std::cout << "MaximumIteration: " << itkOptimizer->GetMaximumIteration();
+    std::cout << std::endl;
 
-  std::cout << "Fletch Reeves test passed." << std::endl;
-  }
+    itkOptimizer->Print( std::cout );
 
-  {
-  // Exercise the methods that set the optimization mode
-  std::cout << "Testing Polak Ribiere Mode" << std::endl;
-  itkOptimizer->SetToPolakRibiere();
+    if( !pass )
+      {
+      std::cout << "Fletch Reeves test failed." << std::endl;
+      return EXIT_FAILURE;
+      }
 
-  itkOptimizer->SetInitialPosition( initialPosition );
-
-  try
-    {
-    itkOptimizer->StartOptimization();
-    }
-  catch( itk::ExceptionObject & e )
-    {
-    std::cout << "Exception thrown ! " << std::endl;
-    std::cout << "An error occurred during Optimization" << std::endl;
-    std::cout << "Location    = " << e.GetLocation()    << std::endl;
-    std::cout << "Description = " << e.GetDescription() << std::endl;
-    return EXIT_FAILURE;
+    std::cout << "Fletch Reeves test passed." << std::endl;
     }
 
-  ParametersType finalPosition = itkOptimizer->GetCurrentPosition();
-  std::cout << "Solution        = (";
-  std::cout << finalPosition[0] << ",";
-  std::cout << finalPosition[1] << ")" << std::endl;
-
-  //
-  // check results to see if it is within range
-  //
-  bool pass = true;
-  double trueParameters[2] = { 2, -2 };
-  for( unsigned int j = 0; j < 2; j++ )
     {
-    if( vnl_math_abs( finalPosition[j] - trueParameters[j] ) > 0.01 )
-      pass = false;
+    // Exercise the methods that set the optimization mode
+    std::cout << "Testing Polak Ribiere Mode" << std::endl;
+    itkOptimizer->SetToPolakRibiere();
+
+    itkOptimizer->SetInitialPosition( initialPosition );
+
+    try
+      {
+      itkOptimizer->StartOptimization();
+      }
+    catch( itk::ExceptionObject & e )
+      {
+      std::cout << "Exception thrown ! " << std::endl;
+      std::cout << "An error occurred during Optimization" << std::endl;
+      std::cout << "Location    = " << e.GetLocation()    << std::endl;
+      std::cout << "Description = " << e.GetDescription() << std::endl;
+      return EXIT_FAILURE;
+      }
+
+    ParametersType finalPosition = itkOptimizer->GetCurrentPosition();
+    std::cout << "Solution        = (";
+    std::cout << finalPosition[0] << ",";
+    std::cout << finalPosition[1] << ")" << std::endl;
+
+    //
+    // check results to see if it is within range
+    //
+    bool   pass = true;
+    double trueParameters[2] = { 2, -2 };
+    for( unsigned int j = 0; j < 2; j++ )
+      {
+      if( vnl_math_abs( finalPosition[j] - trueParameters[j] ) > 0.01 )
+        pass = false;
+      }
+
+    // Exercise various member functions.
+    std::cout << "Maximize: " << itkOptimizer->GetMaximize() << std::endl;
+    std::cout << std::endl;
+    std::cout << "MaximumIteration: " << itkOptimizer->GetMaximumIteration();
+    std::cout << std::endl;
+
+    itkOptimizer->Print( std::cout );
+
+    if( !pass )
+      {
+      std::cout << "Polak Ribiere test failed." << std::endl;
+      return EXIT_FAILURE;
+      }
+
+    std::cout << "Polak Ribiere test passed." << std::endl;
     }
-
-  // Exercise various member functions.
-  std::cout << "Maximize: " << itkOptimizer->GetMaximize() << std::endl;
-  std::cout << std::endl;
-  std::cout << "MaximumIteration: " << itkOptimizer->GetMaximumIteration();
-  std::cout << std::endl;
-
-  itkOptimizer->Print( std::cout );
-
-  if( !pass )
-    {
-    std::cout << "Polak Ribiere test failed." << std::endl;
-    return EXIT_FAILURE;
-    }
-
-  std::cout << "Polak Ribiere test passed." << std::endl;
-  }
 
   return EXIT_SUCCESS;
 }

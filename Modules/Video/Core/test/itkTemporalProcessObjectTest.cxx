@@ -28,8 +28,8 @@ namespace itk
 namespace TemporalProcessObjectTest
 {
 
-typedef ::itk::SizeValueType       SizeValueType;
-typedef ::itk::OffsetValueType     OffsetValueType;
+typedef::itk::SizeValueType   SizeValueType;
+typedef::itk::OffsetValueType OffsetValueType;
 /** \class CallRecord
  * Record of a start or end of a GenerateDataCall from a
  * DummyTemporalProcessObject instance
@@ -53,23 +53,30 @@ public:
   }
 
   /** Access members */
-  SizeValueType GetCallerId() const
+  SizeValueType
+  GetCallerId() const
   {
     return m_CallerId;
   }
-  SizeValueType GetRecordType() const
+
+  SizeValueType
+  GetRecordType() const
   {
     return m_RecordType;
   }
-  SizeValueType GetMethodType() const
+
+  SizeValueType
+  GetMethodType() const
   {
     return m_MethodType;
   }
 
   /** Print out nicely */
-  void Print()
+  void
+  Print()
   {
     std::cout << "ID: " << m_CallerId << " -> ";
+
     if (m_MethodType == GENERATE_DATA)
       {
       std::cout << "GenerateData - ";
@@ -91,14 +98,16 @@ public:
   }
 
   /** Comparison operators */
-  bool operator==(const CallRecord& other) const
+  bool
+  operator==(const CallRecord& other) const
   {
     return (m_CallerId == other.GetCallerId() &&
             m_RecordType == other.GetRecordType() &&
             m_MethodType == other.GetMethodType() );
   }
 
-  bool operator!=(const CallRecord& other) const
+  bool
+  operator!=(const CallRecord& other) const
   {
     return !(*this == other);
   }
@@ -134,14 +143,16 @@ public:
   itkTypeMacro(DummyTemporalDataObject, TemporalDataObject);
 
   /** Override update for debug output */
-  virtual void Update()
+  virtual void
+  Update()
   {
     //std::cout << "Calling Update from temporal data object" << std::endl;
     Superclass::Update();
   }
 
   /** Override UpdateOutputInformation for debug output */
-  virtual void UpdateOutputInformation()
+  virtual void
+  UpdateOutputInformation()
   {
     //std::cout << "Calling UpdateOutputInformation from temporal data object"
     // << std::endl;
@@ -149,13 +160,15 @@ public:
   }
 
   /** Override PropagateRequestedRegion for debug output */
-  virtual void PropagateRequestedRegion() throw (itk::InvalidRequestedRegionError)
+  virtual void
+  PropagateRequestedRegion() throw (itk::InvalidRequestedRegionError)
   {
     Superclass::PropagateRequestedRegion();
   }
 
   /** Override UpdateOutputData for debug output */
-  virtual void UpdateOutputData()
+  virtual void
+  UpdateOutputData()
   {
     std::cout << "      UpdateOutputData from temporal data object" << std::endl;
 
@@ -166,7 +179,8 @@ public:
   }
 
   /** Fill buffer with X new frames */
-  void SetBufferToXNewFrames(SizeValueType  x)
+  void
+  SetBufferToXNewFrames(SizeValueType  x)
   {
     // Set the internal number of buffers
     m_DataObjectBuffer->SetNumberOfBuffers(x);
@@ -187,13 +201,15 @@ public:
   }
 
   /** Append the supplied data object */
-  void SetObjectAtFrame(SizeValueType frameNumber, DataObject* obj)
+  void
+  SetObjectAtFrame(SizeValueType frameNumber, DataObject* obj)
   {
     m_DataObjectBuffer->SetBufferContents(frameNumber, obj);
   }
 
   /** Get a bufferd frame */
-  DataObject::Pointer GetFrame(SizeValueType frameNumber)
+  DataObject::Pointer
+  GetFrame(SizeValueType frameNumber)
   {
     // if nothing buffered, just fail
     if (m_BufferedTemporalRegion.GetFrameDuration() == 0)
@@ -236,7 +252,8 @@ public:
   /*-REQUIRED IMPLEMENTATIONS------------------------------------------------*/
 
   /** TemporalStreamingGenerateData */
-  virtual void TemporalStreamingGenerateData()
+  virtual void
+  TemporalStreamingGenerateData()
   {
     // Create a START entry in the stack trace
     m_CallStack.push_back(CallRecord(m_IdNumber,
@@ -247,7 +264,7 @@ public:
     std::cout << "**(ID = " << m_IdNumber << ") - TemporalStreamingGenerateData" << std::endl;
     std::cout << "  -> output requested from: " << outputStart << " to "
               << this->GetOutput()->GetRequestedTemporalRegion().GetFrameDuration() +
-    outputStart - 1
+      outputStart - 1
               << std::endl;
 
     SizeValueType inputStart = this->GetInput()->GetRequestedTemporalRegion().GetFrameStart();
@@ -257,7 +274,7 @@ public:
     std::cout << "  -> input buffered from "
               << this->GetInput()->GetBufferedTemporalRegion().GetFrameStart() << " to "
               << this->GetInput()->GetBufferedTemporalRegion().GetFrameStart() +
-    this->GetInput()->GetBufferedTemporalRegion().GetFrameDuration() - 1
+      this->GetInput()->GetBufferedTemporalRegion().GetFrameDuration() - 1
               << std::endl;
 
     // Get the list of unbuffered frames
@@ -298,20 +315,23 @@ public:
   itkSetMacro(UnitOutputNumberOfFrames, SizeValueType);
 
   /** GetOutput will return the output on port 0 */
-  DummyTemporalDataObject::Pointer GetOutput()
+  DummyTemporalDataObject::Pointer
+  GetOutput()
   {
     return dynamic_cast<DummyTemporalDataObject*>(this->TemporalProcessObject::GetOutput(0) );
   }
 
   /** SetInput will set the 0th input */
   using Superclass::SetInput;
-  void SetInput(TemporalDataObject* tdo)
+  void
+  SetInput(TemporalDataObject* tdo)
   {
     this->ProcessObject::SetNthInput(0, tdo);
   }
 
   /** GetInput gets the 0th input as a DummyTemporalDataObject */
-  DummyTemporalDataObject::Pointer GetInput()
+  DummyTemporalDataObject::Pointer
+  GetInput()
   {
     return dynamic_cast<DummyTemporalDataObject*>(this->TemporalProcessObject::GetInput(0) );
   }
@@ -331,21 +351,24 @@ public:
   /*-DEBUG OVERRIDES---------------------------------------------------------*/
 
   /** Override Update for debug output */
-  virtual void Update()
+  virtual void
+  Update()
   {
     std::cout << "(ID = " << m_IdNumber << ") - Update" << std::endl;
     Superclass::Update();
   }
 
   /** Override UpdateOutputData for debug output */
-  virtual void UpdateOutputData(DataObject* dobj)
+  virtual void
+  UpdateOutputData(DataObject* dobj)
   {
     std::cout << "(ID = " << m_IdNumber << ") - UpdateOutputData" << std::endl;
     Superclass::UpdateOutputData(dobj);
   }
 
   /** Override GenerateData for debug output */
-  virtual void GenerateData()
+  virtual void
+  GenerateData()
   {
     // Create a START entry in the stack trace
     m_CallStack.push_back(CallRecord(m_IdNumber,
@@ -361,14 +384,16 @@ public:
   }
 
   /** Override EnlargeOutputRequestedTemporalRegion for debug output */
-  virtual void EnlargeOutputRequestedTemporalRegion(TemporalDataObject* output)
+  virtual void
+  EnlargeOutputRequestedTemporalRegion(TemporalDataObject* output)
   {
     std::cout << "(ID = " << m_IdNumber << ") - EnlargeOutputRequestedTemporalRegion" << std::endl;
     Superclass::EnlargeOutputRequestedTemporalRegion(output);
   }
 
   /** Override GenerateInputRequestedTemporalRegion for debug output */
-  virtual void GenerateInputRequestedTemporalRegion()
+  virtual void
+  GenerateInputRequestedTemporalRegion()
   {
     std::cout << "(ID = " << m_IdNumber << ") - GenerateInputRequestedTemporalRegion" << std::endl;
     Superclass::GenerateInputRequestedTemporalRegion();
@@ -398,12 +423,13 @@ private:
 /**
  * Test functionality of itkTemporalProcessObject
  */
-int itkTemporalProcessObjectTest( int ,
-                                  char* [] )
+int
+itkTemporalProcessObjectTest( int ,
+                              char* [] )
 {
 
-  typedef ::itk::SizeValueType       SizeValueType;
-  typedef ::itk::OffsetValueType     OffsetValueType;
+  typedef::itk::SizeValueType   SizeValueType;
+  typedef::itk::OffsetValueType OffsetValueType;
   //////
   // Set up pipeline
   //////
@@ -571,7 +597,7 @@ int itkTemporalProcessObjectTest( int ,
 
   // Print out duration of buffered output region
   itk::TemporalProcessObjectTest::DummyTemporalDataObject::Pointer outputObject = tpo3->GetOutput();
-  OffsetValueType                                                    outputStart =
+  OffsetValueType                                                  outputStart =
     outputObject->GetBufferedTemporalRegion().GetFrameStart();
   SizeValueType outputDuration =
     outputObject->GetBufferedTemporalRegion().GetFrameDuration();

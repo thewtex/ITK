@@ -25,21 +25,23 @@ namespace itk
 void
 VTKPolyDataMeshIOFactory
 ::PrintSelf(std::ostream &, Indent) const
-{}
+{
+}
 
 VTKPolyDataMeshIOFactory
 ::VTKPolyDataMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkVTKPolyDataMeshIO",
-                         "VTK Polydata IO",
-                         1,
-                         CreateObjectFunction< VTKPolyDataMeshIO >::New() );
+                          "itkVTKPolyDataMeshIO",
+                          "VTK Polydata IO",
+                          1,
+                          CreateObjectFunction< VTKPolyDataMeshIO >::New() );
 }
 
 VTKPolyDataMeshIOFactory
 ::~VTKPolyDataMeshIOFactory()
-{}
+{
+}
 
 const char *
 VTKPolyDataMeshIOFactory
@@ -54,4 +56,5 @@ VTKPolyDataMeshIOFactory
 {
   return "VTK MeshIO Factory, allows the loading of VTK polydata into insight";
 }
+
 } // end namespace itk

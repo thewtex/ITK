@@ -20,7 +20,8 @@
 
 #include "itkMeshFileTestHelper.h"
 
-int itkPolylineReadWriteTest(int argc, char * argv[])
+int
+itkPolylineReadWriteTest(int argc, char * argv[])
 {
   if( argc < 3 )
     {
@@ -31,8 +32,8 @@ int itkPolylineReadWriteTest(int argc, char * argv[])
   bool IsBinary = ( argc > 3 );
 
   const unsigned int dimension = 3;
-  typedef itk::VariableLengthVector< float >        PixelType;
-  typedef itk::Mesh< PixelType, dimension >         MeshType;
+  typedef itk::VariableLengthVector< float > PixelType;
+  typedef itk::Mesh< PixelType, dimension >  MeshType;
 
   if( test< MeshType >( argv[1], argv[2], IsBinary ) )
     {
@@ -40,4 +41,4 @@ int itkPolylineReadWriteTest(int argc, char * argv[])
     }
 
   return EXIT_SUCCESS;
-  }
+}

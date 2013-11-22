@@ -42,11 +42,10 @@
 #include "itkRescaleIntensityImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -55,7 +54,6 @@ int main( int argc, char ** argv )
     std::cerr << argv[0] << " inputImageFile  outputImageFile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -68,14 +66,13 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float               InputPixelType;
-  typedef unsigned char       OutputPixelType;
-  const   unsigned int        Dimension = 2;
+  typedef float         InputPixelType;
+  typedef unsigned char OutputPixelType;
+  const   unsigned int Dimension = 2;
 
-  typedef itk::Image< InputPixelType,  Dimension >    InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >    OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -93,10 +90,9 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -107,10 +103,9 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RescaleIntensityImageFilter<
-                                  InputImageType,
-                                  OutputImageType >    FilterType;
+      InputImageType,
+      OutputImageType >    FilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -128,7 +123,6 @@ int main( int argc, char ** argv )
   filter->SetOutputMinimum(   0 );
   filter->SetOutputMaximum( 255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -149,13 +143,11 @@ int main( int argc, char ** argv )
   writer->SetInput( filter->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-
 
   //  Software Guide : BeginLatex
   //
@@ -174,7 +166,6 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally we trigger the execution of the pipeline with the Update()
@@ -182,7 +173,6 @@ int main( int argc, char ** argv )
   //  version of the input image.
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   try
@@ -196,7 +186,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

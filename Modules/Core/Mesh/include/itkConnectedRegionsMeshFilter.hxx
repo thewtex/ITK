@@ -298,9 +298,9 @@ ConnectedRegionsMeshFilter< TInputMesh, TOutputMesh >
   // Create output cells
   //
   InputMeshCellsContainerPointer
-  outCells( InputMeshCellsContainer::New() );
+    outCells( InputMeshCellsContainer::New() );
   InputMeshCellDataContainerPointer
-  outCellData( InputMeshCellDataContainer::New() );
+    outCellData( InputMeshCellDataContainer::New() );
   cellId = 0;
   CellsContainerConstIterator    cell;
   CellDataContainerConstIterator cellData;
@@ -335,7 +335,7 @@ ConnectedRegionsMeshFilter< TInputMesh, TOutputMesh >
     {
     std::vector< IdentifierType >::iterator i;
     IdentifierType                          regionId;
-    bool                                   inReg = false;
+    bool                                    inReg = false;
     for ( cell = inCells->Begin(), cellData = inCellData->Begin();
           cell != inCells->End();
           ++cell, ++cellId )
@@ -423,6 +423,7 @@ ConnectedRegionsMeshFilter< TInputMesh, TOutputMesh >
 
   std::vector< IdentifierType >::iterator i;
   std::vector< IdentifierType > *         tmpWave;
+
   typename std::set< InputMeshCellIdentifier >::iterator citer;
 
   while ( m_Wave->size() > 0 )
@@ -458,6 +459,7 @@ ConnectedRegionsMeshFilter< TInputMesh, TOutputMesh >
     tmpWave->clear();
     } //while wave is propagating
 }
+
 } // end namespace itk
 
 #endif

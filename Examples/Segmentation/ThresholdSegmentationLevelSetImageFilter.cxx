@@ -60,19 +60,28 @@
 // values in $P$, while outside intensities yield negative values in $P$.
 //
 // \begin{figure} \center
+//
+//
 // \includegraphics[width=0.8\textwidth]{ThresholdSegmentationLevelSetImageFilterCollaborationDiagram1}
 // \itkcaption[ThresholdSegmentationLevelSetImageFilter collaboration
-// diagram]{Collaboration diagram for the ThresholdSegmentationLevelSetImageFilter
+// diagram]{Collaboration diagram for the
+// ThresholdSegmentationLevelSetImageFilter
 // applied to a segmentation task.}
 // \label{fig:ThresholdSegmentationLevelSetImageFilterDiagram}
 // \end{figure}
 //
 //  \begin{floatingfigure}[rlp]{6cm}
 //    \centering
-//    \includegraphics[width=6.5cm]{ThresholdSegmentationLevelSetImageFilterFigure1}
+//
+//
+//
+//
+//
+// \includegraphics[width=6.5cm]{ThresholdSegmentationLevelSetImageFilterFigure1}
 //    \caption[Propagation term for threshold-based level set segmentation]
 //            {Propagation term for threshold-based level set segmentation.
-//             From Equation~\ref{eqn:ThresholdSegmentationLevelSetImageFilterPropagationTerm}.
+//             From
+// Equation~\ref{eqn:ThresholdSegmentationLevelSetImageFilterPropagationTerm}.
 //             \label{fig:ThresholdSegmentationSpeedTerm}}
 //  \end{floatingfigure}
 //
@@ -92,7 +101,6 @@
 //
 // Software Guide : EndLatex
 
-
 #include "itkImage.h"
 // Software Guide : BeginCodeSnippet
 #include "itkThresholdSegmentationLevelSetImageFilter.h"
@@ -103,8 +111,8 @@
 #include "itkImageFileWriter.h"
 #include "itkZeroCrossingImageFilter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 8 )
     {
@@ -127,15 +135,15 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::BinaryThresholdImageFilter<InternalImageType, OutputImageType>
-                                                   ThresholdingFilterType;
+    ThresholdingFilterType;
 
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
 
@@ -154,7 +162,6 @@ int main( int argc, char *argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   //  We now declare the type of the \doxygen{FastMarchingImageFilter} that
   //  will be used to generate the initial level set in the form of a distance
   //  map.
@@ -162,7 +169,7 @@ int main( int argc, char *argv[] )
   typedef  itk::FastMarchingImageFilter< InternalImageType, InternalImageType >
     FastMarchingFilterType;
 
-  FastMarchingFilterType::Pointer  fastMarching = FastMarchingFilterType::New();
+  FastMarchingFilterType::Pointer fastMarching = FastMarchingFilterType::New();
 
   //  Software Guide : BeginLatex
   //
@@ -173,11 +180,11 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef  itk::ThresholdSegmentationLevelSetImageFilter< InternalImageType,
-    InternalImageType > ThresholdSegmentationLevelSetImageFilterType;
+                                                          InternalImageType >
+    ThresholdSegmentationLevelSetImageFilterType;
   ThresholdSegmentationLevelSetImageFilterType::Pointer thresholdSegmentation =
     ThresholdSegmentationLevelSetImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -189,9 +196,18 @@ int main( int argc, char *argv[] )
   //  and \code{SetCurvatureScaling()}. Both terms are set to 1.0 in this
   //  example.
   //
-  //  \index{itk::Threshold\-Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
-  //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
-  //  \index{itk::Threshold\-Segmentation\-Level\-Set\-Image\-Filter!SetCurvatureScaling()}
+  //
+  //
+  //
+  // \index{itk::Threshold\-Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
+  //
+  //
+  //
+  // \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
+  //
+  //
+  //
+  // \index{itk::Threshold\-Segmentation\-Level\-Set\-Image\-Filter!SetCurvatureScaling()}
   //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetCurvatureScaling()}
   //
   //  Software Guide : EndLatex
@@ -215,8 +231,8 @@ int main( int argc, char *argv[] )
   //  change in the level set function. When RMS change for an iteration is
   //  below a user-specified threshold, the solution is considered to have
   //  converged.
-    thresholdSegmentation->SetMaximumRMSError( 0.02 );
-    thresholdSegmentation->SetNumberOfIterations( 1200 );
+  thresholdSegmentation->SetMaximumRMSError( 0.02 );
+  thresholdSegmentation->SetNumberOfIterations( 1200 );
 
   //    thresholdSegmentation->SetMaximumRMSError( atof(argv[8]) );
   //    thresholdSegmentation->SetNumberOfIterations( atoi(argv[9]) );
@@ -266,12 +282,12 @@ int main( int argc, char *argv[] )
   //  container is defined as \code{NodeContainer} among the
   //  FastMarchingImageFilter traits.
   //
-  typedef FastMarchingFilterType::NodeContainer           NodeContainer;
-  typedef FastMarchingFilterType::NodeType                NodeType;
+  typedef FastMarchingFilterType::NodeContainer NodeContainer;
+  typedef FastMarchingFilterType::NodeType      NodeType;
 
   NodeContainer::Pointer seeds = NodeContainer::New();
 
-  InternalImageType::IndexType  seedPosition;
+  InternalImageType::IndexType seedPosition;
 
   seedPosition[0] = atoi( argv[3] );
   seedPosition[1] = atoi( argv[4] );
@@ -291,7 +307,7 @@ int main( int argc, char *argv[] )
 
   NodeType node;
 
-  const double seedValue = - initialDistance;
+  const double seedValue = -initialDistance;
 
   node.SetValue( seedValue );
   node.SetIndex( seedPosition );
@@ -301,7 +317,6 @@ int main( int argc, char *argv[] )
   //  the \code{InsertElement()}.
   seeds->Initialize();
   seeds->InsertElement( 0, node );
-
 
   //  The set of seed nodes is passed now to the
   //  FastMarchingImageFilter with the method
@@ -316,7 +331,6 @@ int main( int argc, char *argv[] )
 
   fastMarching->SetSpeedConstant( 1.0 );
 
-
   //  The FastMarchingImageFilter requires the user to specify the size of the
   //  image to be produced as output. This is done using the
   //  \code{SetOutputRegion()} method. Note that the size is obtained here from
@@ -324,7 +338,6 @@ int main( int argc, char *argv[] )
   //  only after the \code{Update()} methods of this filter has been called
   //  directly or indirectly. Other image parameters such as Origin, Spacing
   //  and Direction are set in a similar manner.
-
 
   //  Software Guide : BeginLatex
   //
@@ -360,7 +373,6 @@ int main( int argc, char *argv[] )
   std::cout << "No. elpased iterations: " << thresholdSegmentation->GetElapsedIterations() << std::endl;
   std::cout << "RMS change: " << thresholdSegmentation->GetRMSChange() << std::endl;
 
-
   // We write out some intermediate images for debugging.  These images can
   // help tune parameters.
   //
@@ -391,9 +403,18 @@ int main( int argc, char *argv[] )
   //
   //  \begin{figure}
   //  \includegraphics[width=0.24\textwidth]{BrainProtonDensitySlice}
-  //  \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterWhiteMatter}
-  //  \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle}
-  //  \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterGrayMatter}
+  //
+  //
+  //
+  // \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterWhiteMatter}
+  //
+  //
+  //
+  // \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle}
+  //
+  //
+  //
+  // \includegraphics[width=0.24\textwidth]{ThresholdSegmentationLevelSetImageFilterGrayMatter}
   // \itkcaption[ThresholdSegmentationLevelSet segmentations]{Images
   // generated by the segmentation process based on the
   // ThresholdSegmentationLevelSetImageFilter. From left to right:

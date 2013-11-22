@@ -28,6 +28,7 @@ ShapePriorSegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPi
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ShapeFunction: "        << m_ShapeFunction.GetPointer() << std::endl;
   os << indent << "Optimizer: "            << m_Optimizer.GetPointer() << std::endl;
   os << indent << "CostFunction: "         << m_CostFunction.GetPointer() << std::endl;
@@ -174,6 +175,7 @@ ShapePriorSegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPi
       }
     }
 }
+
 } // end namespace itk
 
 #endif

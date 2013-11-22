@@ -22,14 +22,16 @@
 #include "itkRescaleIntensityImageFilter.h"
 
 template < int VDimension >
-int itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
+int
+itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
 {
 
   // Verify the number of parameters in the command line
   if( argc < 5 )
     {
     std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] << "inputFileName outputFileName order sigma (maximum_error) (maximum_kernel_width)" << std::endl;
+    std::cerr << argv[0] << "inputFileName outputFileName order sigma (maximum_error) (maximum_kernel_width)" <<
+      std::endl;
     return EXIT_FAILURE;
     }
 
@@ -75,7 +77,7 @@ int itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
   double variance = atof( argv[4] );
   variance *= variance;
 
-  double maxError = 0.001;
+  double       maxError = 0.001;
   unsigned int maxKernelWidth = 100;
   if( argc == 6 )
     {
@@ -100,7 +102,7 @@ int itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
   function->SetNormalizeAcrossScale( true );
   function->SetUseImageSpacing( true );
   function->SetInterpolationMode( GaussianDerivativeImageFunctionType::NearestNeighbourInterpolation );
-  function->Initialize( );
+  function->Initialize();
 
   // Step over input and output images
   typedef itk::ImageRegionConstIterator< ImageType > ConstIteratorType;
@@ -111,12 +113,12 @@ int itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
   IteratorType out( output, output->GetRequestedRegion() );
   out.GoToBegin();
 
-  typedef typename GaussianDerivativeImageFunctionType::PointType  PointType;
+  typedef typename GaussianDerivativeImageFunctionType::PointType PointType;
   PointType point;
   typedef typename GaussianDerivativeImageFunctionType::ContinuousIndexType ContinuousIndexType;
   ContinuousIndexType cindex;
   const unsigned long nop = inputImage->GetRequestedRegion().GetNumberOfPixels();
-  unsigned long pixelNumber = 0;
+  unsigned long       pixelNumber = 0;
   while( !it.IsAtEnd() )
     {
     // To test all available Evaluate functions, we split it in three parts.
@@ -141,9 +143,9 @@ int itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
     }
 
   // Rescale output
-  typedef unsigned char                                                   OutputPixelType;
-  typedef itk::Image< OutputPixelType, Dimension >                        OutputImageType;
-  typedef itk::RescaleIntensityImageFilter< ImageType, OutputImageType >  RescaleType;
+  typedef unsigned char                                                  OutputPixelType;
+  typedef itk::Image< OutputPixelType, Dimension >                       OutputImageType;
+  typedef itk::RescaleIntensityImageFilter< ImageType, OutputImageType > RescaleType;
 
   typename RescaleType::Pointer rescaler = RescaleType::New();
   rescaler->SetInput( output );
@@ -170,69 +172,69 @@ int itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
   typedef typename GaussianDerivativeImageFunctionType::VarianceArrayType VarianceArrayType;
   VarianceArrayType varReturned = function->GetVariance();
   for ( unsigned int i = 0; i < Dimension; ++i )
-  {
-    if ( varReturned[ i ] != variance )
     {
+    if ( varReturned[ i ] != variance )
+      {
       std::cout << "GetVariance()[" << i << "] failed. Expected: "
-        << variance
-        << " but got: "
-        << varReturned[ i ] << std::endl;
+                << variance
+                << " but got: "
+                << varReturned[ i ] << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
-  typedef typename GaussianDerivativeImageFunctionType::OrderArrayType  OrderArrayType;
+  typedef typename GaussianDerivativeImageFunctionType::OrderArrayType OrderArrayType;
   OrderArrayType orderReturned = function->GetOrder();
   for ( unsigned int i = 0; i < Dimension; ++i )
-  {
-    if ( orderReturned[ i ] != order[ i ] )
     {
+    if ( orderReturned[ i ] != order[ i ] )
+      {
       std::cout << "GetOrder()[" << i << "] failed. Expected: "
-        << order[ i ]
-        << " but got: "
-        << orderReturned[ i ] << std::endl;
+                << order[ i ]
+                << " but got: "
+                << orderReturned[ i ] << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
   if ( function->GetMaximumError() != maxError )
-  {
+    {
     std::cout << "GetMaximumError failed. Expected: "
-      << maxError
-      << " but got: "
-      << function->GetMaximumError() << std::endl;
+              << maxError
+              << " but got: "
+              << function->GetMaximumError() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetNormalizeAcrossScale() != true )
-  {
+    {
     std::cout << "GetNormalizeAcrossScale failed. Expected: "
-      << true
-      << " but got: "
-      << function->GetNormalizeAcrossScale() << std::endl;
+              << true
+              << " but got: "
+              << function->GetNormalizeAcrossScale() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetUseImageSpacing() != true )
-  {
+    {
     std::cout << "GetUseImageSpacing failed. Expected: "
-      << true
-      << " but got: "
-      << function->GetUseImageSpacing() << std::endl;
+              << true
+              << " but got: "
+              << function->GetUseImageSpacing() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetMaximumKernelWidth() != maxKernelWidth )
-  {
+    {
     std::cout << "GetMaximumKernelWidth failed. Expected: "
-      << maxKernelWidth
-      << " but got: "
-      << function->GetMaximumKernelWidth() << std::endl;
+              << maxKernelWidth
+              << " but got: "
+              << function->GetMaximumKernelWidth() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetInterpolationMode() != GaussianDerivativeImageFunctionType::NearestNeighbourInterpolation )
-  {
+    {
     std::cout << "GetInterpolationMode failed. Expected: "
-      << GaussianDerivativeImageFunctionType::NearestNeighbourInterpolation
-      << " but got: "
-      << function->GetInterpolationMode() << std::endl;
+              << GaussianDerivativeImageFunctionType::NearestNeighbourInterpolation
+              << " but got: "
+              << function->GetInterpolationMode() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // Call PrintSelf.
   function->Print( std::cout );
@@ -240,7 +242,8 @@ int itkDiscreteGaussianDerivativeImageFunctionTestND( int argc, char* argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkDiscreteGaussianDerivativeImageFunctionTest(int argc, char* argv[] )
+int
+itkDiscreteGaussianDerivativeImageFunctionTest(int argc, char* argv[] )
 {
   return itkDiscreteGaussianDerivativeImageFunctionTestND< 2 >( argc, argv );
 }

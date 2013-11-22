@@ -22,7 +22,6 @@
 #include "itkProgressAccumulator.h"
 #include "itkBoxUtilities.h"
 
-
 /*
  *
  * This code was contributed in the Insight Journal paper:
@@ -38,7 +37,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 BoxMeanImageFilter< TInputImage, TOutputImage >
 ::BoxMeanImageFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -77,5 +77,6 @@ BoxMeanImageFilter< TInputImage, TOutputImage >
                                                             this->GetRadius(),
                                                             progress);
 }
+
 } // end namespace itk
 #endif

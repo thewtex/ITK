@@ -88,7 +88,7 @@ ComposeDisplacementFieldsImageFilter<InputImage, TOutputImage>
   typename InputFieldType::ConstPointer warpingField = this->GetWarpingField();
 
   ImageRegionConstIteratorWithIndex<InputFieldType> ItW( warpingField, region );
-  ImageRegionIterator<OutputFieldType> ItF( output, region );
+  ImageRegionIterator<OutputFieldType>              ItF( output, region );
 
   PointType pointIn1;
   PointType pointIn2;

@@ -34,7 +34,6 @@ NormalizeToConstantImageFilter< TInputImage, TOutputImage >
   m_Constant = NumericTraits<RealType>::One;
 }
 
-
 template < typename TInputImage, typename TOutputImage >
 void
 NormalizeToConstantImageFilter< TInputImage, TOutputImage >
@@ -44,6 +43,7 @@ NormalizeToConstantImageFilter< TInputImage, TOutputImage >
   Superclass::GenerateInputRequestedRegion();
 
   InputImageType * input0 = const_cast<InputImageType *>( this->GetInput(0) );
+
   if ( !input0 )
     {
     return;
@@ -52,7 +52,6 @@ NormalizeToConstantImageFilter< TInputImage, TOutputImage >
   input0->SetRequestedRegion( input0->GetLargestPossibleRegion() );
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 void
 NormalizeToConstantImageFilter< TInputImage, TOutputImage >
@@ -60,7 +59,7 @@ NormalizeToConstantImageFilter< TInputImage, TOutputImage >
 {
   this->AllocateOutputs();
   const InputImageType * input0 = this->GetInput(0);
-  OutputImageType * output0     = this->GetOutput(0);
+  OutputImageType *      output0     = this->GetOutput(0);
 
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
@@ -88,7 +87,6 @@ NormalizeToConstantImageFilter< TInputImage, TOutputImage >
   this->GraftOutput( div->GetOutput() );
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 void
 NormalizeToConstantImageFilter< TInputImage, TOutputImage >
@@ -99,5 +97,5 @@ NormalizeToConstantImageFilter< TInputImage, TOutputImage >
   os << indent << "Constant: "  << m_Constant << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

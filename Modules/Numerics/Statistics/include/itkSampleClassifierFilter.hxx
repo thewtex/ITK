@@ -45,6 +45,7 @@ SampleClassifierFilter< TSample >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NumberofClasses: "
      << this->GetNumberOfClasses() << std::endl;
   os << indent << "DecisionRule: "
@@ -174,7 +175,7 @@ SampleClassifierFilter< TSample >
   discriminantScores.resize(this->m_NumberOfClasses);
 
   MembershipSampleType *output = dynamic_cast< MembershipSampleType * >(
-    this->ProcessObject::GetOutput(0) );
+      this->ProcessObject::GetOutput(0) );
 
   output->SetSample( this->GetInput() );
   output->SetNumberOfClasses(this->m_NumberOfClasses);
@@ -189,7 +190,7 @@ SampleClassifierFilter< TSample >
     for ( unsigned int i = 0; i < this->m_NumberOfClasses; i++ )
       {
       discriminantScores[i] = membershipFunctionsWeightsArray[i]
-                              * membershipFunctions[i]->Evaluate(measurements);
+        * membershipFunctions[i]->Evaluate(measurements);
       }
 
     unsigned int classIndex;
@@ -204,9 +205,9 @@ template< typename TSample >
 const typename SampleClassifierFilter< TSample >::MembershipSampleType *
 SampleClassifierFilter< TSample >
 ::GetOutput() const
-{
+  {
   return static_cast< const MembershipSampleType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 } // end of namespace Statistics
 } // end of namespace itk
 

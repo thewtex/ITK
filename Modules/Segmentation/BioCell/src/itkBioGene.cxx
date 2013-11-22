@@ -35,7 +35,8 @@ Gene
  */
 Gene
 ::~Gene()
-{}
+{
+}
 
 /**
  *    Copy from another genome
@@ -117,5 +118,6 @@ Gene
   controlDomain.m_Type   = type;
   m_ControlDomains.push_back(controlDomain);
 }
+
 }  // end namespace bio
 }  // end namespace itk

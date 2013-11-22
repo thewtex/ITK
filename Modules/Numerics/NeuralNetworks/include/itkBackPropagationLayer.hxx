@@ -33,7 +33,8 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
 
 template<typename TMeasurementVector, typename TTargetVector>
 BackPropagationLayer<TMeasurementVector,TTargetVector>
-::~BackPropagationLayer() {}
+::~BackPropagationLayer() {
+}
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
@@ -64,6 +65,7 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
 {
   return m_NodeInputValues[i];
 }
+
 template<typename TMeasurementVector, typename TTargetVector>
 void
 BackPropagationLayer<TMeasurementVector,TTargetVector>
@@ -94,9 +96,9 @@ template<typename TMeasurementVector, typename TTargetVector>
 typename BackPropagationLayer<TMeasurementVector,TTargetVector>::ValueType *
 BackPropagationLayer<TMeasurementVector,TTargetVector>
 ::GetOutputVector()
-{
+  {
   return m_NodeOutputValues.data_block();
-}
+  }
 
 template<typename TMeasurementVector, typename TTargetVector>
 typename BackPropagationLayer<TMeasurementVector,TTargetVector>::ValueType
@@ -110,9 +112,9 @@ template<typename TMeasurementVector, typename TTargetVector>
 typename BackPropagationLayer<TMeasurementVector,TTargetVector>::ValueType *
 BackPropagationLayer<TMeasurementVector,TTargetVector>
 ::GetInputErrorVector()
-{
+  {
   return m_InputErrorValues.data_block();
-}
+  }
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
@@ -129,12 +131,13 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
 ::ForwardPropagate()
 {
   typename Superclass::InputFunctionInterfaceType::Pointer inputfunction = this->GetModifiableNodeInputFunction();
-  typename Superclass::TransferFunctionInterfaceType::Pointer transferfunction = this->GetModifiableActivationFunction();
+  typename Superclass::TransferFunctionInterfaceType::Pointer transferfunction =
+    this->GetModifiableActivationFunction();
   typename Superclass::WeightSetType::Pointer inputweightset = this->GetModifiableInputWeightSet();
 
   //API change WeightSets are just containers
-  const int wcols = inputweightset->GetNumberOfInputNodes();
-  const int wrows = inputweightset->GetNumberOfOutputNodes();
+  const int   wcols = inputweightset->GetNumberOfInputNodes();
+  const int   wrows = inputweightset->GetNumberOfOutputNodes();
   ValueType * inputvalues = inputweightset->GetInputValues();
 
   vnl_vector<ValueType> prevlayeroutputvector;
@@ -145,11 +148,11 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
   prevlayeroutputvector.update(tprevlayeroutputvector,0);
   prevlayeroutputvector[wcols-1]=m_Bias;
   vnl_diag_matrix<ValueType> PrevLayerOutput(prevlayeroutputvector);
-  ValueType * weightvalues = inputweightset->GetWeightValues();
-  vnl_matrix<ValueType> weightmatrix(weightvalues,wrows, wcols);
+  ValueType *                weightvalues = inputweightset->GetWeightValues();
+  vnl_matrix<ValueType>      weightmatrix(weightvalues,wrows, wcols);
 
-  const unsigned int rows = this->m_NumberOfNodes;
-  const unsigned int cols = this->m_InputWeightSet->GetNumberOfInputNodes();
+  const unsigned int    rows = this->m_NumberOfNodes;
+  const unsigned int    cols = this->m_InputWeightSet->GetNumberOfInputNodes();
   vnl_matrix<ValueType> inputmatrix;
   inputmatrix.set_size(rows, cols);
   inputmatrix=weightmatrix*PrevLayerOutput;
@@ -158,9 +161,9 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
 
   for (unsigned int j = 0; j < rows; j++)
     {
-    vnl_vector<ValueType> temp_vnl(inputmatrix.get_row(j));
-    m_NodeInputValues.put(j, inputfunction->Evaluate(temp_vnl.data_block()));
-    m_NodeOutputValues.put(j, transferfunction->Evaluate(m_NodeInputValues[j]));
+    vnl_vector<ValueType> temp_vnl(inputmatrix.get_row(j) );
+    m_NodeInputValues.put(j, inputfunction->Evaluate(temp_vnl.data_block() ) );
+    m_NodeOutputValues.put(j, transferfunction->Evaluate(m_NodeInputValues[j]) );
     }
 }
 
@@ -185,11 +188,12 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
 ::BackwardPropagate(InternalVectorType errors)
 {
   const int num_nodes = this->GetNumberOfNodes();
+
   typename Superclass::WeightSetType::Pointer inputweightset = Superclass::GetModifiableInputWeightSet();
 
   for (unsigned int i = 0; i < errors.Size(); i++)
     {
-    SetInputErrorValue(errors[i] * DActivation(GetInputValue(i)),
+    SetInputErrorValue(errors[i] * DActivation(GetInputValue(i) ),
                        i);
     }
 
@@ -198,23 +202,23 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
   vnl_vector<ValueType> inputerrorvector(GetInputErrorVector(),
                                          num_nodes);
   vnl_matrix<ValueType> DW_temp(inputweightset->GetNumberOfOutputNodes(),
-                                inputweightset->GetNumberOfInputNodes());
+                                inputweightset->GetNumberOfInputNodes() );
   vnl_matrix<ValueType> InputLayerOutput(1,
-                                         inputweightset->GetNumberOfInputNodes());
+                                         inputweightset->GetNumberOfInputNodes() );
   vnl_matrix<ValueType> tempInputLayerOutput(1,
                                              inputweightset->GetNumberOfInputNodes()-1);
-  tempInputLayerOutput.copy_in(inputweightset->GetInputValues());
+  tempInputLayerOutput.copy_in(inputweightset->GetInputValues() );
 
   InputLayerOutput.fill(0.0);
   for(unsigned int i=0; i<inputweightset->GetNumberOfInputNodes()-1; i++)
-    InputLayerOutput.put(0,i, tempInputLayerOutput.get(0,i));
+    InputLayerOutput.put(0,i, tempInputLayerOutput.get(0,i) );
 
   //InputLayerOutput.copy_in(inputweightset->GetInputValues());
   DW_temp = inputerrormatrix * InputLayerOutput;
   DW_temp.set_column(inputweightset->GetNumberOfInputNodes()-1,0.0);
 
-  inputweightset->SetDeltaValues(DW_temp.data_block());
-  inputweightset->SetDeltaBValues(GetInputErrorVector());
+  inputweightset->SetDeltaValues(DW_temp.data_block() );
+  inputweightset->SetDeltaBValues(GetInputErrorVector() );
 
 }
 
@@ -237,7 +241,6 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
 {
   return m_OutputErrorValues[i];
 }
-
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
@@ -274,35 +277,35 @@ BackPropagationLayer<TMeasurementVector,TTargetVector>
   for (unsigned int i = 0; i < cols; i++)
     {
     deltaww[i] = dot_product(deltamatrix.get_column(i),
-                             weightmatrix.get_column(i));
+                             weightmatrix.get_column(i) );
     }
 
   for (unsigned int i = 0; i < num_nodes; i++)
     {
-    SetInputErrorValue(deltaww[i] * DActivation(GetInputValue(i)),
+    SetInputErrorValue(deltaww[i] * DActivation(GetInputValue(i) ),
                        i);
     }
 
   vnl_matrix<ValueType> inputerrormatrix(GetInputErrorVector(),
                                          num_nodes, 1);
   vnl_matrix<ValueType> DW_temp(inputweightset->GetNumberOfOutputNodes(),
-                                inputweightset->GetNumberOfInputNodes());
+                                inputweightset->GetNumberOfInputNodes() );
   vnl_matrix<ValueType> InputLayerOutput(1,
-                                         inputweightset->GetNumberOfInputNodes());
+                                         inputweightset->GetNumberOfInputNodes() );
 
   //InputLayerOutput.copy_in(inputweightset->GetInputValues());
   vnl_matrix<ValueType> tempInputLayerOutput(1,
                                              inputweightset->GetNumberOfInputNodes()-1);
-  tempInputLayerOutput.copy_in(inputweightset->GetInputValues());
+  tempInputLayerOutput.copy_in(inputweightset->GetInputValues() );
 
   InputLayerOutput.fill(0.0);
   for(unsigned int i=0; i<inputweightset->GetNumberOfInputNodes()-1; i++)
-    InputLayerOutput.put(0,i, tempInputLayerOutput.get(0,i));
+    InputLayerOutput.put(0,i, tempInputLayerOutput.get(0,i) );
 
   DW_temp = inputerrormatrix * InputLayerOutput;
   DW_temp.set_column(inputweightset->GetNumberOfInputNodes()-1,0.0);
-  inputweightset->SetDeltaValues(DW_temp.data_block());
-  inputweightset->SetDeltaBValues(GetInputErrorVector());
+  inputweightset->SetDeltaValues(DW_temp.data_block() );
+  inputweightset->SetDeltaBValues(GetInputErrorVector() );
 }
 
 template<typename TMeasurementVector, typename TTargetVector>

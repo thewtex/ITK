@@ -20,20 +20,27 @@
 #include "itkTextOutput.h"
 #include "itkCommand.h"
 
-
 // The following classe is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
-int itkPermuteAxesImageFilterTest(int, char* [] )
+int
+itkPermuteAxesImageFilterTest(int, char* [] )
 {
 
   itk::OutputWindow::SetInstance( itk::TextOutput::New() );
@@ -43,10 +50,9 @@ int itkPermuteAxesImageFilterTest(int, char* [] )
   typedef itk::Image<PixelType,ImageDimension>   ImageType;
   typedef itk::PermuteAxesImageFilter<ImageType> PermuterType;
 
-
   // define a small input test
-  ImageType::IndexType index = {{ 10, 20, 30, 40 }};
-  ImageType::SizeType size = {{5,4,3,2}};
+  ImageType::IndexType  index = {{ 10, 20, 30, 40 }};
+  ImageType::SizeType   size = {{5,4,3,2}};
   ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
@@ -73,7 +79,6 @@ int itkPermuteAxesImageFilterTest(int, char* [] )
     ++inputIter;
     }
 
-
   // permute the image
   PermuterType::Pointer permuter = PermuterType::New();
 
@@ -82,7 +87,7 @@ int itkPermuteAxesImageFilterTest(int, char* [] )
 
   permuter->SetInput( inputImage );
 
-  ShowProgressObject progressWatch(permuter);
+  ShowProgressObject                                    progressWatch(permuter);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -167,7 +172,6 @@ int itkPermuteAxesImageFilterTest(int, char* [] )
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

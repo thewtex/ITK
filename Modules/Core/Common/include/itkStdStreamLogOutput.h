@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT StdStreamLogOutput:public LogOutput
+class ITKCommon_EXPORT StdStreamLogOutput : public LogOutput
 {
 public:
 
@@ -78,7 +78,8 @@ protected:
   StdStreamLogOutput();
 
   /** Destructor */
-  virtual ~StdStreamLogOutput();
+  virtual
+  ~StdStreamLogOutput();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

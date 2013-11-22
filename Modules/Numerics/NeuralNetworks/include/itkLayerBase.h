@@ -65,37 +65,61 @@ public:
   typedef enum {  INVALIDLAYER=0, INPUTLAYER=1, HIDDENLAYER=2, OUTPUTLAYER=3 } LayerTypeCode;
 
   virtual void SetNumberOfNodes(unsigned int);
+
   unsigned int GetNumberOfNodes() const;
 
   virtual ValueType GetInputValue(unsigned int) const = 0;
+
   virtual ValueType GetOutputValue(unsigned int) const = 0;
+
   virtual ValuePointer GetOutputVector() = 0;
 
-  virtual void ForwardPropagate(){};
-  virtual void ForwardPropagate(TMeasurementVector){};
+  virtual void
+  ForwardPropagate(){
+  }
 
-  virtual void BackwardPropagate(){};
-  virtual void BackwardPropagate(InternalVectorType){};
+  virtual void
+  ForwardPropagate(TMeasurementVector){
+  }
+
+  virtual void
+  BackwardPropagate(){
+  }
+
+  virtual void
+  BackwardPropagate(InternalVectorType){
+  }
 
   virtual ValueType GetOutputErrorValue(unsigned int) const = 0;
-  virtual void SetOutputErrorValues(TTargetVector) {};
+
+  virtual void
+  SetOutputErrorValues(TTargetVector) {
+  }
 
   virtual ValueType GetInputErrorValue(unsigned int) const = 0;
+
   virtual ValuePointer GetInputErrorVector() = 0;
-  virtual void SetInputErrorValue(ValueType, unsigned int) {};
+
+  virtual void
+  SetInputErrorValue(ValueType, unsigned int) {
+  }
 
   //itkSetObjectMacro(InputWeightSet, WeightSetInterfaceType);
   void SetInputWeightSet(WeightSetInterfaceType*);
+
   itkGetModifiableObjectMacro(InputWeightSet, WeightSetInterfaceType);
 
   //itkSetObjectMacro(OutputWeightSet, WeightSetInterfaceType);
   void SetOutputWeightSet(WeightSetInterfaceType*);
+
   itkGetModifiableObjectMacro(OutputWeightSet, WeightSetInterfaceType);
 
   void SetNodeInputFunction(InputFunctionInterfaceType* f);
+
   itkGetModifiableObjectMacro(NodeInputFunction, InputFunctionInterfaceType);
 
   void SetTransferFunction(TransferFunctionInterfaceType* f);
+
   itkGetModifiableObjectMacro(ActivationFunction, TransferFunctionInterfaceType);
 
   virtual ValueType Activation(ValueType) = 0;
@@ -106,11 +130,20 @@ public:
 
   //#define __USE_OLD_INTERFACE  Comment out to ensure that new interface works
 #ifdef __USE_OLD_INTERFACE
-  void SetLayerType(const LayerTypeCode value) { SetLayerTypeCode(value); }
-  LayerTypeCode GetLayerType(void) { return GetLayerTypeCode(); }
+  void
+  SetLayerType(const LayerTypeCode value) {
+    SetLayerTypeCode(value);
+  }
+
+  LayerTypeCode
+  GetLayerType(void) {
+    return GetLayerTypeCode();
+  }
+
   //For backwards compatibility
-  void SetLayerType(const unsigned int value)
-    {
+  void
+  SetLayerType(const unsigned int value)
+  {
     switch(value)
       {
       case 0:
@@ -129,7 +162,8 @@ public:
         //Throw Exception Here
         break;
       }
-    }
+  }
+
 #endif
   itkSetMacro(LayerId,unsigned int);
   itkGetConstReferenceMacro(LayerId,unsigned int);
@@ -154,7 +188,7 @@ protected:
   typename TransferFunctionInterfaceType::Pointer m_ActivationFunction;
   typename InputFunctionInterfaceType::Pointer    m_NodeInputFunction;
 
-}; //class layer base
+};  //class layer base
 
 } //namespace itk
 } //namespace statistics

@@ -24,7 +24,8 @@ namespace fem
 {
 
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer LoadLandmark::CreateAnother(void) const
+::itk::LightObject::Pointer
+LoadLandmark::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -50,15 +51,17 @@ namespace fem
 /**
  * Find the Element to which the LoadLandmark belongs
  */
-Element::ConstPointer LoadLandmark::GetAssignedElement(Element::ArrayType1::Pointer elements)
+Element::ConstPointer
+LoadLandmark::GetAssignedElement(Element::ArrayType1::Pointer elements)
 {
   int numElements = elements->Size();
+
   for( int n = 0; n < numElements; n++ )
     {
     Element::Pointer nel = elements->GetElement(n);
     if( (nel )->GetLocalFromGlobalCoordinates(m_Source, this->m_Point) )
       {
-      return dynamic_cast<const Element *>(nel.GetPointer());
+      return dynamic_cast<const Element *>(nel.GetPointer() );
       }
     }
 
@@ -69,7 +72,8 @@ Element::ConstPointer LoadLandmark::GetAssignedElement(Element::ArrayType1::Poin
  * Find the Element to which the LoadLandmark belongs
  */
 
-bool LoadLandmark::AssignToElement(Element::ArrayType::Pointer elements)
+bool
+LoadLandmark::AssignToElement(Element::ArrayType::Pointer elements)
 {
   bool isFound = false;
 
@@ -89,7 +93,8 @@ bool LoadLandmark::AssignToElement(Element::ArrayType::Pointer elements)
   return isFound;
 }
 
-bool LoadLandmark::AssignToElement(Element::ArrayType1::Pointer elements)
+bool
+LoadLandmark::AssignToElement(Element::ArrayType1::Pointer elements)
 {
   bool isFound = false;
 
@@ -97,6 +102,7 @@ bool LoadLandmark::AssignToElement(Element::ArrayType1::Pointer elements)
   // the pointer of the element
 
   int numElements = elements->Size();
+
   for( int n = 0;
        n < numElements && !isFound; n++ )
     {
@@ -112,17 +118,20 @@ bool LoadLandmark::AssignToElement(Element::ArrayType1::Pointer elements)
   return isFound;
 }
 
-void LoadLandmark::SetEta(double e)
+void
+LoadLandmark::SetEta(double e)
 {
   this->m_Eta = e;
 }
 
-double LoadLandmark::GetEta() const
+double
+LoadLandmark::GetEta() const
 {
   return this->m_Eta;
 }
 
-void LoadLandmark::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
+void
+LoadLandmark::ApplyLoad(Element::ConstPointer element, Element::VectorType & Fe)
 {
   const unsigned int NnDOF = element->GetNumberOfDegreesOfFreedomPerNode();
   const unsigned int Nnodes = element->GetNumberOfNodes();
@@ -177,9 +186,11 @@ void LoadLandmark::ApplyLoad(Element::ConstPointer element, Element::VectorType 
     }
 }
 
-void LoadLandmark::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadLandmark::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Eta: " << this->m_Eta << std::endl;
   os << indent << "Source: " << this->m_Source << std::endl;
   os << indent << "Target: " << this->m_Target << std::endl;

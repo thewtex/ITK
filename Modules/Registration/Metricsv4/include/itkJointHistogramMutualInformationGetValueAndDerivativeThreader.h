@@ -38,11 +38,12 @@ public:
   /** Standard class typedefs. */
   typedef JointHistogramMutualInformationGetValueAndDerivativeThreader Self;
   typedef ImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric >
-                                                                       Superclass;
-  typedef SmartPointer< Self >                                         Pointer;
-  typedef SmartPointer< const Self >                                   ConstPointer;
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  itkTypeMacro( JointHistogramMutualInformationGetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreader );
+  itkTypeMacro( JointHistogramMutualInformationGetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreader );
 
   itkNewMacro( Self );
 
@@ -77,7 +78,8 @@ public:
 
 protected:
   JointHistogramMutualInformationGetValueAndDerivativeThreader();
-  virtual ~JointHistogramMutualInformationGetValueAndDerivativeThreader();
+  virtual
+  ~JointHistogramMutualInformationGetValueAndDerivativeThreader();
 
   typedef Image< SizeValueType, 2 > JointHistogramType;
 
@@ -86,45 +88,56 @@ protected:
   virtual void AfterThreadedExecution();
 
   virtual bool ProcessPoint(
-        const VirtualIndexType &          virtualIndex,
-        const VirtualPointType &          virtualPoint,
-        const FixedImagePointType &       mappedFixedPoint,
-        const FixedImagePixelType &       mappedFixedPixelValue,
-        const FixedImageGradientType &    mappedFixedImageGradient,
-        const MovingImagePointType &      mappedMovingPoint,
-        const MovingImagePixelType &      mappedMovingPixelValue,
-        const MovingImageGradientType &   mappedMovingImageGradient,
-        MeasureType &                     metricValueReturn,
-        DerivativeType &                  localDerivativeReturn,
-        const ThreadIdType                threadID ) const;
+    const VirtualIndexType &          virtualIndex,
+    const VirtualPointType &          virtualPoint,
+    const FixedImagePointType &       mappedFixedPoint,
+    const FixedImagePixelType &       mappedFixedPixelValue,
+    const FixedImageGradientType &    mappedFixedImageGradient,
+    const MovingImagePointType &      mappedMovingPoint,
+    const MovingImagePixelType &      mappedMovingPixelValue,
+    const MovingImageGradientType &   mappedMovingImageGradient,
+    MeasureType &                     metricValueReturn,
+    DerivativeType &                  localDerivativeReturn,
+    const ThreadIdType                threadID ) const;
 
   inline InternalComputationValueType ComputeFixedImageMarginalPDFDerivative(
-                                        const MarginalPDFPointType & margPDFpoint,
-                                        const ThreadIdType threadID ) const;
+    const MarginalPDFPointType & margPDFpoint,
+    const ThreadIdType threadID ) const;
 
   inline InternalComputationValueType ComputeMovingImageMarginalPDFDerivative(
-                                        const MarginalPDFPointType & margPDFpoint,
-                                        const ThreadIdType threadID ) const;
+    const MarginalPDFPointType & margPDFpoint,
+    const ThreadIdType threadID ) const;
 
   inline InternalComputationValueType ComputeJointPDFDerivative(
-                                          const JointPDFPointType & jointPDFpoint,
-                                          const ThreadIdType threadID,
-                                          const SizeValueType ind ) const;
+    const JointPDFPointType & jointPDFpoint,
+    const ThreadIdType threadID,
+    const SizeValueType ind ) const;
+
   struct JointHistogramMIPerThreadStruct
     {
-    JointPDFInterpolatorPointer          JointPDFInterpolator;
-    MarginalPDFInterpolatorPointer       FixedImageMarginalPDFInterpolator;
-    MarginalPDFInterpolatorPointer       MovingImageMarginalPDFInterpolator;
+    JointPDFInterpolatorPointer JointPDFInterpolator;
+    MarginalPDFInterpolatorPointer FixedImageMarginalPDFInterpolator;
+    MarginalPDFInterpolatorPointer MovingImageMarginalPDFInterpolator;
     };
   itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, JointHistogramMIPerThreadStruct,
-                                            PaddedJointHistogramMIPerThreadStruct);
+                PaddedJointHistogramMIPerThreadStruct);
   itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedJointHistogramMIPerThreadStruct,
-                                               AlignedJointHistogramMIPerThreadStruct );
+                     AlignedJointHistogramMIPerThreadStruct );
   AlignedJointHistogramMIPerThreadStruct * m_JointHistogramMIPerThreadVariables;
 
 private:
-  JointHistogramMutualInformationGetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  JointHistogramMutualInformationGetValueAndDerivativeThreader( const Self & ); //
+                                                                                //
+                                                                                // purposely
+                                                                                //
+                                                                                // not
+                                                                                //
+                                                                                // implemented
+  void operator=( const Self & );                                               //
+
+  // purposely
+  // not
+  // implemented
 
   /** Internal pointer to the metric object in use by this threader.
    *  This will avoid costly dynamic casting in tight loops. */

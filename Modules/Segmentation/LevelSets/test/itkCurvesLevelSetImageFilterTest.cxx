@@ -31,12 +31,14 @@
 #include "itkImageFileWriter.h"
 #endif
 
-int itkCurvesLevelSetImageFilterTest(int, char* [] )
+int
+itkCurvesLevelSetImageFilterTest(int, char* [] )
 {
 
-  const   unsigned int    ImageDimension = 2;
-  typedef unsigned char   PixelType;
-  typedef float           InternalPixelType;
+  const   unsigned int ImageDimension = 2;
+
+  typedef unsigned char PixelType;
+  typedef float         InternalPixelType;
 
   typedef itk::Image<PixelType,ImageDimension>         ImageType;
   typedef itk::Image<InternalPixelType,ImageDimension> InternalImageType;
@@ -87,7 +89,7 @@ int itkCurvesLevelSetImageFilterTest(int, char* [] )
   caster->SetInput( inputImage );
 
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter< InternalImageType,
-    InternalImageType > GradientImageType;
+                                                              InternalImageType > GradientImageType;
 
   GradientImageType::Pointer gradMagnitude = GradientImageType::New();
   gradMagnitude->SetInput( caster->GetOutput() );
@@ -134,7 +136,7 @@ int itkCurvesLevelSetImageFilterTest(int, char* [] )
    * Set up and run the shape detection filter
    */
   typedef itk::CurvesLevelSetImageFilter<
-    InternalImageType, InternalImageType > CurvesFilterType;
+      InternalImageType, InternalImageType > CurvesFilterType;
 
   CurvesFilterType::Pointer curvesFilter = CurvesFilterType::New();
 
@@ -192,7 +194,7 @@ int itkCurvesLevelSetImageFilterTest(int, char* [] )
   WriterType::Pointer writer = WriterType::New();
 
   typedef itk::RescaleIntensityImageFilter< InternalImageType,
-    ImageType > RescaleFilterType;
+                                            ImageType > RescaleFilterType;
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   writer->SetFileName( "inputImage.png" );

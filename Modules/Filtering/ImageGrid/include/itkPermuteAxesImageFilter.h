@@ -48,7 +48,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class PermuteAxesImageFilter:
+class PermuteAxesImageFilter :
   public ImageToImageFilter< TImage, TImage >
 {
 public:
@@ -104,7 +104,9 @@ public:
 
 protected:
   PermuteAxesImageFilter();
-  ~PermuteAxesImageFilter() {}
+  ~PermuteAxesImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** PermuteAxesImageFilter can be implemented as a multithreaded filter.

@@ -28,7 +28,7 @@ namespace itk
 {
 template< typename TInputImage, typename TLevelSet >
 VTKVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
-::VTKVisualize2DSparseLevelSetLayersBase(): Superclass()
+::VTKVisualize2DSparseLevelSetLayersBase() : Superclass()
 {
   this->m_VTKImageActor = vtkSmartPointer< vtkImageActor >::New();
   this->m_VTKImageActor->InterpolateOff();
@@ -78,14 +78,15 @@ VTKVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
   this->m_Renderer->RemoveActor2D( m_VTKImageActor );
 
 #if VTK_MAJOR_VERSION <= 5
-    this->m_VTKImageActor->SetInput( this->m_VTKImage );
+  this->m_VTKImageActor->SetInput( this->m_VTKImage );
 #else
-    this->m_VTKImageActor->GetMapper()->SetInputData( this->m_VTKImage );
+  this->m_VTKImageActor->GetMapper()->SetInputData( this->m_VTKImage );
 #endif
 
   this->AddLayers();
 
   this->m_Renderer->AddActor2D( this->m_VTKImageActor );
 }
+
 }
 #endif

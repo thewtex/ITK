@@ -28,7 +28,6 @@ template <class T> class WantToHaveFriend;
 template <class T>
 bool operator==( const WantToHaveFriend<T> & a, const  WantToHaveFriend<T> & b );
 
-
 //
 // Here is our templated class
 //
@@ -40,14 +39,15 @@ public:
   typedef WantToHaveFriend Self;
 
   WantToHaveFriend()
-    {
+  {
     x = 0;
-    }
+  }
 
-  void DoNothing() const
-    {
+  void
+  DoNothing() const
+  {
     // of course... do nothing.
-    }
+  }
 
 //
 //  Here are the variants that some compilers use
@@ -55,6 +55,7 @@ public:
 
 #ifdef TRY_COMPILE_FRIEND_WITH_NULL_TEMPLATE_STRING
   friend bool operator==(const Self &, const Self &);
+
 #endif
 
 #ifdef TRY_COMPILE_FRIEND_WITH_EMPTY_TEMPLATE_BRACKETS
@@ -66,17 +67,20 @@ public:
 #endif
 
 private:
-   int x;
+  int x;
 };
 
 template <class T>
-bool operator==( const WantToHaveFriend<T> & a, const  WantToHaveFriend<T> & b )
-{ return a.x == b.x; }
-
-
-int main()
+bool
+operator==( const WantToHaveFriend<T> & a, const  WantToHaveFriend<T> & b )
 {
-  typedef WantToHaveFriend<int>  FriendlyType;
+  return a.x == b.x;
+}
+
+int
+main()
+{
+  typedef WantToHaveFriend<int> FriendlyType;
 
   FriendlyType foo1;
   FriendlyType foo2;
@@ -90,4 +94,3 @@ int main()
 
   return 0;
 }
-

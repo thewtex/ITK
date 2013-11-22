@@ -69,7 +69,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class MorphologyImageFilter:
+class MorphologyImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -117,13 +117,15 @@ public:
    * object during the time it is referenced.  The overriding condition
    * can be of a different type than the default type as long as it is
    * a subclass of ImageBoundaryCondition. */
-  void OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
+  void
+  OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
   {
     m_BoundaryCondition = i;
   }
 
   /** Rest the boundary condition to the default */
-  void ResetBoundaryCondition()
+  void
+  ResetBoundaryCondition()
   {
     m_BoundaryCondition = &m_DefaultBoundaryCondition;
   }
@@ -133,7 +135,9 @@ public:
 
 protected:
   MorphologyImageFilter();
-  ~MorphologyImageFilter() {}
+  ~MorphologyImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Multi-thread version GenerateData. */

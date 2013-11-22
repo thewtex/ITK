@@ -101,7 +101,7 @@
 #include "itkWarpImageFilter.h"
 
 unsigned int RmsCounter = 0;
-double MaxRmsE[4] = {0.8,  0.75,  0.4, 0.2};
+double       MaxRmsE[4] = {0.8,  0.75,  0.4, 0.2};
 
 //  The following section of code implements a Command observer
 //  that will monitor the evolution of the registration process.
@@ -112,51 +112,55 @@ double MaxRmsE[4] = {0.8,  0.75,  0.4, 0.2};
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef  itk::SmartPointer<Self>  Pointer;
+  typedef  CommandIterationUpdate  Self;
+  typedef  itk::Command            Superclass;
+  typedef  itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
   // define ITK short-hand types
-  typedef short                                  PixelType;
-  typedef float                                  InternalPixelType;
-  typedef itk::Image< PixelType, 2 >             ImageType;
-  typedef itk::Image< InternalPixelType, 2 >     InternalImageType;
-    typedef itk::Vector< float, 2 >              VectorPixelType;
-  typedef itk::Image< VectorPixelType, 2 >       DisplacementFieldType;
+  typedef short                              PixelType;
+  typedef float                              InternalPixelType;
+  typedef itk::Image< PixelType, 2 >         ImageType;
+  typedef itk::Image< InternalPixelType, 2 > InternalImageType;
+  typedef itk::Vector< float, 2 >            VectorPixelType;
+  typedef itk::Image< VectorPixelType, 2 >   DisplacementFieldType;
   typedef itk::SymmetricForcesDemonsRegistrationFilter< InternalImageType,
-    InternalImageType, DisplacementFieldType>    RegistrationFilterType;
+                                                        InternalImageType,
+                                                        DisplacementFieldType>    RegistrationFilterType;
 
-  public:
+public:
 
-    void Execute(const itk::Object *, const itk::EventObject & )
+  void
+  Execute(const itk::Object *, const itk::EventObject & )
+  {
+    std::cout << "Warning: The const Execute method shouldn't be called" << std::endl;
+  }
+
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
+    RegistrationFilterType * filter =
+      dynamic_cast<  RegistrationFilterType * >( caller );
+
+    if( !(itk::IterationEvent().CheckEvent( &event ) ) )
       {
-      std::cout << "Warning: The const Execute method shouldn't be called" << std::endl;
+      return;
       }
 
-    void Execute(itk::Object *caller, const itk::EventObject & event)
+    if(filter)
       {
-      RegistrationFilterType * filter =
-       dynamic_cast<  RegistrationFilterType * >( caller );
+      filter->SetMaximumRMSError(MaxRmsE[RmsCounter]);
+      std::cout << filter->GetMetric() <<  "  RMS Change: " << filter->GetRMSChange() << std::endl;
 
-      if( !(itk::IterationEvent().CheckEvent( &event )) )
-       {
-       return;
-       }
-
-      if(filter)
-        {
-        filter->SetMaximumRMSError(MaxRmsE[RmsCounter]);
-        std::cout << filter->GetMetric() <<  "  RMS Change: " << filter->GetRMSChange() << std::endl;
-
-        std::cout << "Level Tolerance=  "<<filter->GetMaximumRMSError ()<<std::endl;
-        }
+      std::cout << "Level Tolerance=  "<<filter->GetMaximumRMSError ()<<std::endl;
+      }
   }
-};
 
+};
 
 //
 // The following command observer reports the progress of the registration
@@ -165,29 +169,35 @@ protected:
 class CommandResolutionLevelUpdate : public itk::Command
 {
 public:
-  typedef  CommandResolutionLevelUpdate   Self;
-  typedef  itk::Command                   Superclass;
-  typedef  itk::SmartPointer<Self>        Pointer;
+  typedef  CommandResolutionLevelUpdate Self;
+  typedef  itk::Command                 Superclass;
+  typedef  itk::SmartPointer<Self>      Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandResolutionLevelUpdate() {};
+  CommandResolutionLevelUpdate() {
+  }
 
 public:
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
-  void Execute(const itk::Object *, const itk::EventObject & )
-    {
+  }
+
+  void
+  Execute(const itk::Object *, const itk::EventObject & )
+  {
     std::cout << "----------------------------------" << std::endl;
+
     RmsCounter = RmsCounter + 1;
     std::cout << "----------------------------------" << std::endl;
-    }
+  }
+
 };
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   // Verify the number of parameters in the command line
@@ -207,7 +217,7 @@ int main( int argc, char * argv [] )
   typedef itk::CastImageFilter< ImageType, InternalImageType > ImageCasterType;
 
   // setup input file readers
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer targetReader = ReaderType::New();
   targetReader->SetFileName( argv[1] );
   targetReader->Update();
@@ -224,7 +234,7 @@ int main( int argc, char * argv [] )
 
   // match the histograms between source and target
   typedef itk::HistogramMatchingImageFilter<
-    InternalImageType, InternalImageType >          MatchingFilterType;
+      InternalImageType, InternalImageType >          MatchingFilterType;
 
   MatchingFilterType::Pointer matcher = MatchingFilterType::New();
 
@@ -240,9 +250,9 @@ int main( int argc, char * argv [] )
   typedef itk::Image< VectorPixelType, Dimension > DisplacementFieldType;
 
   typedef itk::SymmetricForcesDemonsRegistrationFilter<
-    InternalImageType,
-    InternalImageType,
-    DisplacementFieldType>         RegistrationFilterType;
+      InternalImageType,
+      InternalImageType,
+      DisplacementFieldType>         RegistrationFilterType;
 
   RegistrationFilterType::Pointer filter = RegistrationFilterType::New();
 
@@ -254,12 +264,11 @@ int main( int argc, char * argv [] )
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   filter->AddObserver( itk::IterationEvent(), observer );
 
-
   // use multiresolution scheme
   typedef itk::MultiResolutionPDEDeformableRegistration<
-    InternalImageType,
-    InternalImageType,
-    DisplacementFieldType >       MultiResRegistrationFilterType;
+      InternalImageType,
+      InternalImageType,
+      DisplacementFieldType >       MultiResRegistrationFilterType;
 
   MultiResRegistrationFilterType::Pointer multires =
     MultiResRegistrationFilterType::New();
@@ -288,10 +297,9 @@ int main( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
   // compute the output (warped) image
   typedef itk::WarpImageFilter< ImageType, ImageType, DisplacementFieldType > WarperType;
-  typedef itk::LinearInterpolateImageFunction< ImageType, double > InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction< ImageType, double >            InterpolatorType;
 
   WarperType::Pointer warper = WarperType::New();
 
@@ -305,7 +313,7 @@ int main( int argc, char * argv [] )
   warper->SetOutputDirection( targetImage->GetDirection() );
   warper->SetDisplacementField( multires->GetOutput() );
 
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[3] );
   writer->SetInput( warper->GetOutput() );
@@ -320,9 +328,8 @@ int main( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
   // write the deformation field
-  typedef itk::ImageFileWriter< DisplacementFieldType >  DeformationWriterType;
+  typedef itk::ImageFileWriter< DisplacementFieldType > DeformationWriterType;
   DeformationWriterType::Pointer defwriter = DeformationWriterType::New();
   defwriter->SetFileName( argv[4] );
   defwriter->SetInput( multires->GetOutput() );

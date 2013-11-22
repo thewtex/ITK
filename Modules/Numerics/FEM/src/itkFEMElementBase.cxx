@@ -49,7 +49,8 @@ namespace fem
  *       that is suitable for any problem/element definition. A specifc
  *       element may override this implementation with its own simple one.
  */
-void Element::GetStiffnessMatrix(MatrixType & Ke) const
+void
+Element::GetStiffnessMatrix(MatrixType & Ke) const
 {
   // B and D matrices
   MatrixType B, D;
@@ -90,7 +91,8 @@ void Element::GetStiffnessMatrix(MatrixType & Ke) const
     }
 }
 
-Element::VectorType Element::GetStrainsAtPoint(const VectorType & pt, const Solution & sol, unsigned int index) const
+Element::VectorType
+Element::GetStrainsAtPoint(const VectorType & pt, const Solution & sol, unsigned int index) const
 // NOTE: pt should be in local coordinates already
 {
   MatrixType B;
@@ -109,10 +111,11 @@ Element::VectorType Element::GetStrainsAtPoint(const VectorType & pt, const Solu
   return e;
 }
 
-Element::VectorType Element::GetStressesAtPoint( const VectorType & itkNotUsed(pt),
-                                                 const VectorType & e,
-                                                 const Solution & itkNotUsed(sol),
-                                                 unsigned int itkNotUsed(index) ) const
+Element::VectorType
+Element::GetStressesAtPoint( const VectorType & itkNotUsed(pt),
+                             const VectorType & e,
+                             const Solution & itkNotUsed(sol),
+                             unsigned int itkNotUsed(index) ) const
 // NOTE: pt should be in local coordinates already
 {
   MatrixType D;
@@ -125,7 +128,8 @@ Element::VectorType Element::GetStressesAtPoint( const VectorType & itkNotUsed(p
   return sigma;
 }
 
-void Element::GetLandmarkContributionMatrix(float eta, MatrixType & Le) const
+void
+Element::GetLandmarkContributionMatrix(float eta, MatrixType & Le) const
 {
   // Provides the contribution of a landmark to the element stiffness
   // matrix
@@ -161,7 +165,8 @@ void Element::GetLandmarkContributionMatrix(float eta, MatrixType & Le) const
   Le = Le / ( eta );
 }
 
-Element::Float Element::GetElementDeformationEnergy(MatrixType & LocalSolution) const
+Element::Float
+Element::GetElementDeformationEnergy(MatrixType & LocalSolution) const
 {
   MatrixType U;
 
@@ -174,7 +179,8 @@ Element::Float Element::GetElementDeformationEnergy(MatrixType & LocalSolution) 
   return U[0][0];
 }
 
-void Element::GetMassMatrix(MatrixType & Me) const
+void
+Element::GetMassMatrix(MatrixType & Me) const
 {
   /*
    * If the function is not overiden, we compute consistent mass matrix
@@ -225,6 +231,7 @@ Element::InterpolateSolution(const VectorType & pt, const Solution & sol, unsign
 
   const unsigned int Nnodes = this->GetNumberOfNodes();
   const unsigned int Ndofs_per_node = this->GetNumberOfDegreesOfFreedomPerNode();
+
   for( unsigned int f = 0; f < Ndofs_per_node; f++ )
     {
     value = 0.0;
@@ -247,6 +254,7 @@ Element::InterpolateSolutionN(const VectorType & pt, const Solution & sol, unsig
 
   VectorType   shapef = this->ShapeFunctions(pt);
   unsigned int Nnodes = this->GetNumberOfNodes();
+
   for( unsigned int n = 0; n < Nnodes; n++ )
     {
     value += shapef[n] * sol.GetSolutionValue(this->GetNode(n)->GetDegreeOfFreedom(f), solutionIndex);
@@ -332,10 +340,11 @@ Element::JacobianInverse(const VectorType & pt, MatrixType & invJ, const MatrixT
   delete pJlocal;
 }
 
-void Element::ShapeFunctionGlobalDerivatives(const VectorType & pt,
-                                             MatrixType & shapeDgl,
-                                             const MatrixType *pJ,
-                                             const MatrixType *pshapeD) const
+void
+Element::ShapeFunctionGlobalDerivatives(const VectorType & pt,
+                                        MatrixType & shapeDgl,
+                                        const MatrixType *pJ,
+                                        const MatrixType *pshapeD) const
 {
   MatrixType *pshapeDlocal = 0;
   MatrixType *pJlocal = 0;
@@ -372,6 +381,7 @@ Element::GetGlobalFromLocalCoordinates(const VectorType & pt) const
 {
   unsigned int Nnodes = this->GetNumberOfNodes();
   MatrixType   nc(this->GetNumberOfSpatialDimensions(), Nnodes);
+
   for( unsigned int n = 0; n < Nnodes; n++ )
     {
     nc.set_column( n, this->GetNodeCoordinates(n) );
@@ -385,47 +395,49 @@ Element::GetGlobalFromLocalCoordinates(const VectorType & pt) const
 // Gauss-Legendre integration rule constants
 const Element::Float Element::gaussPoint[gaussMaxOrder + 1][gaussMaxOrder] =
   {
-            { 0.0 },
-            { 0.000000000000000 },
-            { 0.577350269189626, -0.577350269189626 },
-            { 0.774596669241483, 0.000000000000000, -0.774596669241483 },
-            { 0.861136311594053, 0.339981043584856, -0.339981043584856, -0.861136311594053 },
-            { 0.906179845938664, 0.538469310105683, 0.000000000000000, -0.538469310105683, -0.906179845938664 },
-            { 0.932469514203152, 0.661209386466264, 0.238619186083197, -0.238619186083197, -0.661209386466264,
-            -0.932469514203152 },
-            { 0.949107912342759, 0.741531185599394, 0.405845151377397, 0.000000000000000, -0.405845151377397,
-            -0.741531185599394, -0.949107912342759 },
-            { 0.960289856497536, 0.796666477413627, 0.525532409916329, 0.183434642495650, -0.183434642495650,
-            -0.525532409916329, -0.796666477413627, -0.960289856497536 },
-            { 0.968160239507626, 0.836031107326636, 0.613371432700590, 0.324253423403809, 0.000000000000000,
-            -0.324253423403809, -0.613371432700590, -0.836031107326636, -0.968160239507626 },
-            { 0.973906528517172, 0.865063366688985, 0.679409568299024, 0.433395394129247, 0.148874338981631,
-            -0.148874338981631, -0.433395394129247, -0.679409568299024, -0.865063366688985, -0.973906528517172 }
+                    { 0.0 },
+                    { 0.000000000000000 },
+                    { 0.577350269189626, -0.577350269189626 },
+                    { 0.774596669241483, 0.000000000000000, -0.774596669241483 },
+                    { 0.861136311594053, 0.339981043584856, -0.339981043584856, -0.861136311594053 },
+                    { 0.906179845938664, 0.538469310105683, 0.000000000000000, -0.538469310105683, -0.906179845938664 },
+                    { 0.932469514203152, 0.661209386466264, 0.238619186083197, -0.238619186083197, -0.661209386466264,
+                    -0.932469514203152 },
+                    { 0.949107912342759, 0.741531185599394, 0.405845151377397, 0.000000000000000, -0.405845151377397,
+                    -0.741531185599394, -0.949107912342759 },
+                    { 0.960289856497536, 0.796666477413627, 0.525532409916329, 0.183434642495650, -0.183434642495650,
+                    -0.525532409916329, -0.796666477413627, -0.960289856497536 },
+                    { 0.968160239507626, 0.836031107326636, 0.613371432700590, 0.324253423403809, 0.000000000000000,
+                    -0.324253423403809, -0.613371432700590, -0.836031107326636, -0.968160239507626 },
+                    { 0.973906528517172, 0.865063366688985, 0.679409568299024, 0.433395394129247, 0.148874338981631,
+                    -0.148874338981631, -0.433395394129247, -0.679409568299024, -0.865063366688985, -0.973906528517172 }
   };
 
 const Element::Float Element::gaussWeight[gaussMaxOrder + 1][gaussMaxOrder] =
   {
-            { 0.0 },
-            { 2.000000000000000 },
-            { 1.000000000000000, 1.000000000000000 },
-            { 0.555555555555555, 0.888888888888889, 0.555555555555555 },
-            { 0.347854845137454, 0.652145154862546, 0.652145154862546, 0.347854845137454 },
-            { 0.236926885056189, 0.478628670499366, 0.568888888888889, 0.478628670499366, 0.236926885056189 },
-            { 0.171324492379170, 0.360761573048139, 0.467913934572691, 0.467913934572691, 0.360761573048139,
-            0.171324492379170 },
-            { 0.129484966168869, 0.279705391489277, 0.381830050505119, 0.417959183673469, 0.381830050505119,
-            0.279705391489277, 0.129484966168869 },
-            { 0.101228536290376, 0.222381034453374, 0.313706645877887, 0.362683783378362, 0.362683783378362,
-            0.313706645877887, 0.222381034453374, 0.101228536290376 },
-            { 0.081274388361575, 0.180648160694858, 0.260610696402935, 0.312347077040003, 0.330239355001260,
-            0.312347077040003, 0.260610696402935, 0.180648160694858, 0.081274388361575 },
-            { 0.066671344308688, 0.149451349150581, 0.219086362515982, 0.269266719309996, 0.295524224714753,
-            0.295524224714753, 0.269266719309996, 0.219086362515982, 0.149451349150581, 0.066671344308688 }
+                    { 0.0 },
+                    { 2.000000000000000 },
+                    { 1.000000000000000, 1.000000000000000 },
+                    { 0.555555555555555, 0.888888888888889, 0.555555555555555 },
+                    { 0.347854845137454, 0.652145154862546, 0.652145154862546, 0.347854845137454 },
+                    { 0.236926885056189, 0.478628670499366, 0.568888888888889, 0.478628670499366, 0.236926885056189 },
+                    { 0.171324492379170, 0.360761573048139, 0.467913934572691, 0.467913934572691, 0.360761573048139,
+                    0.171324492379170 },
+                    { 0.129484966168869, 0.279705391489277, 0.381830050505119, 0.417959183673469, 0.381830050505119,
+                    0.279705391489277, 0.129484966168869 },
+                    { 0.101228536290376, 0.222381034453374, 0.313706645877887, 0.362683783378362, 0.362683783378362,
+                    0.313706645877887, 0.222381034453374, 0.101228536290376 },
+                    { 0.081274388361575, 0.180648160694858, 0.260610696402935, 0.312347077040003, 0.330239355001260,
+                    0.312347077040003, 0.260610696402935, 0.180648160694858, 0.081274388361575 },
+                    { 0.066671344308688, 0.149451349150581, 0.219086362515982, 0.269266719309996, 0.295524224714753,
+                    0.295524224714753, 0.269266719309996, 0.219086362515982, 0.149451349150581, 0.066671344308688 }
   };
 
-void Element::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "#IDs: " << this->m_EdgeIds.size() << std::endl;
   for( unsigned int i = 0; i < this->m_EdgeIds.size(); i++ )
     {

@@ -36,7 +36,7 @@ namespace itk
  */
 
 template< typename TCellInterface >
-class QuadrilateralCell:public TCellInterface, private QuadrilateralCellTopology
+class QuadrilateralCell : public TCellInterface, private QuadrilateralCellTopology
 {
 public:
   /** Standard class typedefs. */
@@ -62,8 +62,12 @@ public:
   itkStaticConstMacro(NumberOfDerivatives, unsigned int, 8);
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::QUADRILATERAL_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::QUADRILATERAL_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -115,20 +119,24 @@ public:
       }
   }
 
-  ~QuadrilateralCell() {}
+  ~QuadrilateralCell() {
+  }
 
 protected:
   /** Store the number of points needed for a quadrilateral. */
   PointIdentifier m_PointIds[NumberOfPoints];
 
   void InterpolationDerivs(const CoordRepType pointCoords[CellDimension], CoordRepType derivs[NumberOfDerivatives]);
-  void InterpolationFunctions(const CoordRepType pointCoords[CellDimension], InterpolationWeightType weights[NumberOfPoints]);
-  void EvaluateLocation(int &itkNotUsed(subId), const PointsContainer * points, const CoordRepType pointCoords[PointDimension],
+  void InterpolationFunctions(const CoordRepType pointCoords[CellDimension],
+                              InterpolationWeightType weights[NumberOfPoints]);
+  void EvaluateLocation(int &itkNotUsed(
+                          subId), const PointsContainer * points, const CoordRepType pointCoords[PointDimension],
                         CoordRepType x[PointDimension], InterpolationWeightType * weights);
 
 private:
   QuadrilateralCell(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

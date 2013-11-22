@@ -31,17 +31,20 @@
 #include "itkEllipseSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 //
-// Like most of the SpatialObjects, the \doxygen{EllipseSpatialObject} is templated
-// over the dimension of the space. In this example we create a 3-dimensional ellipse.
+// Like most of the SpatialObjects, the \doxygen{EllipseSpatialObject} is
+// templated
+// over the dimension of the space. In this example we create a 3-dimensional
+// ellipse.
 //
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::EllipseSpatialObject<3>   EllipseType;
+  typedef itk::EllipseSpatialObject<3> EllipseType;
   EllipseType::Pointer myEllipse = EllipseType::New();
 // Software Guide : EndCodeSnippet
 
@@ -90,7 +93,7 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   itk::Point<double,3> insidePoint;
   insidePoint.Fill(1.0);
-  if(myEllipse->IsInside(insidePoint))
+  if(myEllipse->IsInside(insidePoint) )
     {
     std::cout << "The point " << insidePoint;
     std::cout << " is really inside the ellipse" << std::endl;
@@ -98,7 +101,7 @@ int main( int , char *[] )
 
   itk::Point<double,3> outsidePoint;
   outsidePoint.Fill(3.0);
-  if(!myEllipse->IsInside(outsidePoint))
+  if(!myEllipse->IsInside(outsidePoint) )
     {
     std::cout << "The point " << outsidePoint;
     std::cout << " is really outside the ellipse" << std::endl;
@@ -114,7 +117,7 @@ int main( int , char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-   if(myEllipse->IsEvaluableAt(insidePoint))
+  if(myEllipse->IsEvaluableAt(insidePoint) )
     {
     std::cout << "The point " << insidePoint;
     std::cout << " is evaluable at the point " << insidePoint << std::endl;

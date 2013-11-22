@@ -18,7 +18,8 @@
 
 #include "itkMultiThreader.h"
 
-int itkMultiThreaderEnvTest(int argc, char* argv[])
+int
+itkMultiThreaderEnvTest(int argc, char* argv[])
 {
   // Choose a number of threads.
   if( argc != 2 )
@@ -28,15 +29,15 @@ int itkMultiThreaderEnvTest(int argc, char* argv[])
     }
   const unsigned int requiredValue = static_cast<unsigned int>( atoi( argv[1] ) );
 
-  itk::MultiThreader::Pointer    threader = itk::MultiThreader::New();
-  if(threader.IsNull())
+  itk::MultiThreader::Pointer threader = itk::MultiThreader::New();
+  if(threader.IsNull() )
     {
     return EXIT_FAILURE;
     }
   if( itk::MultiThreader::GetGlobalDefaultNumberOfThreads() != requiredValue )
     {
     std::cout << "ERROR: Wrong number of maximum number of threads set from environment. "
-      << requiredValue << " != " << itk::MultiThreader::GetGlobalDefaultNumberOfThreads() << std::endl;
+              << requiredValue << " != " << itk::MultiThreader::GetGlobalDefaultNumberOfThreads() << std::endl;
     return EXIT_FAILURE;
     }
   return EXIT_SUCCESS;

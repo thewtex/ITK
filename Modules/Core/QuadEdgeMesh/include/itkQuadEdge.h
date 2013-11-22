@@ -246,19 +246,42 @@ public:
 
   /** Object creation methods. */
   QuadEdge();
-  virtual ~QuadEdge();
+  virtual
+  ~QuadEdge();
 
   /** Sub-algebra Set methods. */
-  inline void SetOnext(Self *onext) { this->m_Onext = onext; }
-  inline void SetRot(Self *rot)     { this->m_Rot = rot; }
+  inline void
+  SetOnext(Self *onext) {
+    this->m_Onext = onext;
+  }
+
+  inline void
+  SetRot(Self *rot)     {
+    this->m_Rot = rot;
+  }
 
   /** Sub-algebra Get methods.
    *  Returns edge with same Origin (see
    *  "Accessing adjacent edges"). */
-  inline Self * GetOnext() { return this->m_Onext; }
-  inline Self * GetRot()   { return this->m_Rot; }
-  inline const Self * GetOnext() const { return this->m_Onext; }
-  inline const Self * GetRot() const { return this->m_Rot; }
+  inline Self *
+  GetOnext() {
+    return this->m_Onext;
+  }
+
+  inline Self *
+  GetRot()   {
+    return this->m_Rot;
+  }
+
+  inline const Self *
+  GetOnext() const {
+    return this->m_Onext;
+  }
+
+  inline const Self *
+  GetRot() const {
+    return this->m_Rot;
+  }
 
   /**
    * \brief Basic quad-edge topological method.
@@ -278,7 +301,8 @@ public:
    */
 // TODO fix this ref
 //   * \sa \ref DoxySurgeryConnectivity
-  inline void Splice(Self *b)
+  inline void
+  Splice(Self *b)
   {
     Self *aNext     = this->GetOnext();
     Self *bNext     = b->GetOnext();
@@ -297,7 +321,8 @@ public:
 
   /** Returns the symetric edge
    * (see "Accessing adjacent edges"). */
-  inline Self * GetSym()
+  inline Self *
+  GetSym()
   {
     if ( this->m_Rot )
       {
@@ -306,7 +331,8 @@ public:
     return ( this->m_Rot );
   }
 
-  inline const Self * GetSym() const
+  inline const Self *
+  GetSym() const
   {
     if ( this->m_Rot )
       {
@@ -363,7 +389,8 @@ public:
   const Self * GetDprev() const;
 
   /** Inverse operators */
-  inline Self * GetInvRot()
+  inline Self *
+  GetInvRot()
   {
 #ifdef NDEBUG
     return ( this->GetRot()->GetRot()->GetRot() );
@@ -378,11 +405,28 @@ public:
 #endif
   }
 
-  inline Self * GetInvOnext() { return this->GetOprev(); }
-  inline Self * GetInvLnext() { return this->GetLprev(); }
-  inline Self * GetInvRnext() { return this->GetRprev(); }
-  inline Self * GetInvDnext() { return this->GetDprev(); }
-  inline const Self * GetInvRot() const
+  inline Self *
+  GetInvOnext() {
+    return this->GetOprev();
+  }
+
+  inline Self *
+  GetInvLnext() {
+    return this->GetLprev();
+  }
+
+  inline Self *
+  GetInvRnext() {
+    return this->GetRprev();
+  }
+
+  inline Self *
+  GetInvDnext() {
+    return this->GetDprev();
+  }
+
+  inline const Self *
+  GetInvRot() const
   {
 #ifdef NDEBUG
     return ( this->GetRot()->GetRot()->GetRot() );
@@ -397,14 +441,37 @@ public:
 #endif
   }
 
-  inline const Self * GetInvOnext() const { return this->GetOprev(); }
-  inline const Self * GetInvLnext() const { return this->GetLprev(); }
-  inline const Self * GetInvRnext() const { return this->GetRprev(); }
-  inline const Self * GetInvDnext() const { return this->GetDprev(); }
+  inline const Self *
+  GetInvOnext() const {
+    return this->GetOprev();
+  }
+
+  inline const Self *
+  GetInvLnext() const {
+    return this->GetLprev();
+  }
+
+  inline const Self *
+  GetInvRnext() const {
+    return this->GetRprev();
+  }
+
+  inline const Self *
+  GetInvDnext() const {
+    return this->GetDprev();
+  }
 
   /** Queries. */
-  inline bool IsHalfEdge() const { return ( ( m_Onext == this ) || ( m_Rot == NULL ) ); }
-  inline bool IsIsolated() const { return ( this == this->GetOnext() ); }
+  inline bool
+  IsHalfEdge() const {
+    return ( ( m_Onext == this ) || ( m_Rot == NULL ) );
+  }
+
+  inline bool
+  IsIsolated() const {
+    return ( this == this->GetOnext() );
+  }
+
   bool IsEdgeInOnextRing(Self *testEdge) const;
 
   bool IsLnextGivenSizeCyclic(const int size) const;

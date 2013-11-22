@@ -26,7 +26,8 @@
 
 #include "itkPhilipsRECImageIO.h"
 
-int itkPhilipsRECImageIOOrientationTest( int argc, char * argv [] )
+int
+itkPhilipsRECImageIOOrientationTest( int argc, char * argv [] )
 {
 
   if( argc < 4 )
@@ -36,28 +37,28 @@ int itkPhilipsRECImageIOOrientationTest( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef short                                 PixelType;
-  typedef double                                ScalarType;
-  typedef itk::Image< PixelType, 3 >            ImageType;
-  typedef itk::PhilipsRECImageIO                PhilipsRECImageIOType;
+  typedef short                      PixelType;
+  typedef double                     ScalarType;
+  typedef itk::Image< PixelType, 3 > ImageType;
+  typedef itk::PhilipsRECImageIO     PhilipsRECImageIOType;
 
-  typedef itk::ImageFileReader< ImageType >     ReaderType;
-  typedef itk::ImageFileWriter< ImageType >     WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   typedef itk::AffineTransform< ScalarType, 3 > AffineTransformType;
   typedef itk::ResampleImageFilter< ImageType, ImageType, ScalarType >
-                                                ResampleImageFilterType;
+    ResampleImageFilterType;
   typedef itk::SubtractImageFilter< ImageType, ImageType, ImageType >
-                                                SubtractImageFilterType;
+    SubtractImageFilterType;
   typedef itk::NearestNeighborInterpolateImageFunction< ImageType, ScalarType >
-                                                NearestInterpType;
+    NearestInterpType;
 
   ReaderType::Pointer referenceReader = ReaderType::New();
-  referenceReader->SetImageIO(PhilipsRECImageIOType::New());
+  referenceReader->SetImageIO(PhilipsRECImageIOType::New() );
   referenceReader->SetFileName( argv[1] );
 
   ReaderType::Pointer targetReader = ReaderType::New();
-  targetReader->SetImageIO(PhilipsRECImageIOType::New());
+  targetReader->SetImageIO(PhilipsRECImageIOType::New() );
   targetReader->SetFileName( argv[2] );
 
   AffineTransformType::Pointer transform = AffineTransformType::New();

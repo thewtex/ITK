@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 
-class SpatialObjectFactoryBase:public ObjectFactoryBase
+class SpatialObjectFactoryBase : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -61,7 +61,8 @@ public:
   static void RegisterDefaultSpatialObjects();
 
   /** Register this SpatialObject */
-  static SpatialObjectFactoryBase * GetFactory()
+  static SpatialObjectFactoryBase *
+  GetFactory()
   {
     if ( m_Factory == 0 )
       {
@@ -74,11 +75,12 @@ public:
     return m_Factory;
   }
 
-  void RegisterSpatialObject(const char *classOverride,
-                             const char *overrideClassName,
-                             const char *description,
-                             bool enableFlag,
-                             CreateObjectFunctionBase *createFunction)
+  void
+  RegisterSpatialObject(const char *classOverride,
+                        const char *overrideClassName,
+                        const char *description,
+                        bool enableFlag,
+                        CreateObjectFunctionBase *createFunction)
   {
     this->RegisterOverride (classOverride, overrideClassName,
                             description, enableFlag, createFunction);
@@ -86,7 +88,8 @@ public:
 
 protected:
   SpatialObjectFactoryBase();
-  virtual ~SpatialObjectFactoryBase();
+  virtual
+  ~SpatialObjectFactoryBase();
 
 private:
   SpatialObjectFactoryBase(const Self &); //purposely not implemented

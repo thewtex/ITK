@@ -19,7 +19,6 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 // Software Guide : BeginLatex
 //
 // This example demonstrates how to use a variant of the ``demons'' algorithm to
@@ -33,7 +32,8 @@
 // unlikely that total symmetry may be achieved by this mechanism for the
 // entire registration process.
 //
-// The first step for using this filter is to include the following header files.
+// The first step for using this filter is to include the following header
+// files.
 //
 // Software Guide : EndLatex
 
@@ -47,45 +47,52 @@
 //  The following section of code implements a Command observer
 //  that will monitor the evolution of the registration process.
 //
-  class CommandIterationUpdate : public itk::Command
+class CommandIterationUpdate : public itk::Command
+{
+public:
+  typedef  CommandIterationUpdate                    Self;
+  typedef  itk::Command                              Superclass;
+  typedef  itk::SmartPointer<CommandIterationUpdate> Pointer;
+  itkNewMacro( CommandIterationUpdate );
+
+protected:
+  CommandIterationUpdate() {
+  }
+
+  typedef itk::Image< float, 2 >            InternalImageType;
+  typedef itk::Vector< float, 2 >           VectorPixelType;
+  typedef itk::Image<  VectorPixelType, 2 > DisplacementFieldType;
+
+  typedef itk::SymmetricForcesDemonsRegistrationFilter<
+      InternalImageType,
+      InternalImageType,
+      DisplacementFieldType>   RegistrationFilterType;
+
+public:
+
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
   {
-  public:
-    typedef  CommandIterationUpdate                     Self;
-    typedef  itk::Command                               Superclass;
-    typedef  itk::SmartPointer<CommandIterationUpdate>  Pointer;
-    itkNewMacro( CommandIterationUpdate );
-  protected:
-    CommandIterationUpdate() {};
+    Execute( (const itk::Object *)caller, event);
+  }
 
-    typedef itk::Image< float, 2 >            InternalImageType;
-    typedef itk::Vector< float, 2 >           VectorPixelType;
-    typedef itk::Image<  VectorPixelType, 2 > DisplacementFieldType;
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
+    const RegistrationFilterType * filter =
+      dynamic_cast< const RegistrationFilterType * >( object );
 
-    typedef itk::SymmetricForcesDemonsRegistrationFilter<
-                                InternalImageType,
-                                InternalImageType,
-                                DisplacementFieldType>   RegistrationFilterType;
-
-  public:
-
-    void Execute(itk::Object *caller, const itk::EventObject & event)
+    if( !(itk::IterationEvent().CheckEvent( &event ) ) )
       {
-        Execute( (const itk::Object *)caller, event);
+      return;
       }
+    std::cout << filter->GetMetric() << std::endl;
+  }
 
-    void Execute(const itk::Object * object, const itk::EventObject & event)
-      {
-         const RegistrationFilterType * filter =
-          dynamic_cast< const RegistrationFilterType * >( object );
-        if( !(itk::IterationEvent().CheckEvent( &event )) )
-          {
-          return;
-          }
-        std::cout << filter->GetMetric() << std::endl;
-      }
-  };
+};
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -106,20 +113,19 @@ int main( int argc, char *argv[] )
   const unsigned int Dimension = 2;
   typedef unsigned short PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
   // Software Guide : EndCodeSnippet
 
   // Set up the file readers
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
   typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
 
-  FixedImageReaderType::Pointer fixedImageReader   = FixedImageReaderType::New();
+  FixedImageReaderType::Pointer  fixedImageReader   = FixedImageReaderType::New();
   MovingImageReaderType::Pointer movingImageReader = MovingImageReaderType::New();
 
   fixedImageReader->SetFileName( argv[1] );
   movingImageReader->SetFileName( argv[2] );
-
 
   // Software Guide : BeginLatex
   //
@@ -138,9 +144,9 @@ int main( int argc, char *argv[] )
   typedef itk::CastImageFilter< MovingImageType,
                                 InternalImageType >  MovingImageCasterType;
 
-  FixedImageCasterType::Pointer fixedImageCaster = FixedImageCasterType::New();
+  FixedImageCasterType::Pointer  fixedImageCaster = FixedImageCasterType::New();
   MovingImageCasterType::Pointer movingImageCaster
-                                                = MovingImageCasterType::New();
+    = MovingImageCasterType::New();
 
   fixedImageCaster->SetInput( fixedImageReader->GetOutput() );
   movingImageCaster->SetInput( movingImageReader->GetOutput() );
@@ -156,7 +162,9 @@ int main( int argc, char *argv[] )
   //
   // \index{itk::Histogram\-Matching\-Image\-Filter}
   //
-  // The basic idea is to match the histograms of the two images at a user-specified number of quantile values. For robustness, the histograms are
+  // The basic idea is to match the histograms of the two images at a
+  // user-specified number of quantile values. For robustness, the histograms
+  // are
   // matched so that the background pixels are excluded from both histograms.
   // For MR images, a simple procedure is to exclude all gray values that are
   // smaller than the mean gray value of the image.
@@ -165,11 +173,10 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::HistogramMatchingImageFilter<
-                                    InternalImageType,
-                                    InternalImageType >   MatchingFilterType;
+      InternalImageType,
+      InternalImageType >   MatchingFilterType;
   MatchingFilterType::Pointer matcher = MatchingFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -187,14 +194,17 @@ int main( int argc, char *argv[] )
   matcher->SetReferenceImage( fixedImageCaster->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We then select the number of bins to represent the histograms and the
   // number of points or quantile values where the histogram is to be
   // matched.
   //
+  //
+  //
   // \index{itk::Histogram\-Matching\-Image\-Filter!Set\-Number\-Of\-Histogram\-Levels()}
+  //
+  //
   // \index{itk::Histogram\-Matching\-Image\-Filter!Set\-Number\-Of\-Match\-Points()}
   //
   // Software Guide : EndLatex
@@ -204,11 +214,12 @@ int main( int argc, char *argv[] )
   matcher->SetNumberOfMatchPoints( 7 );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Simple background extraction is done by thresholding at the mean
   // intensity.
+  //
+  //
   //
   // \index{itk::Histogram\-Matching\-Image\-Filter!Threshold\-At\-Mean\-Intensity\-On()}
   //
@@ -218,10 +229,10 @@ int main( int argc, char *argv[] )
   matcher->ThresholdAtMeanIntensityOn();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
-  // In the \doxygen{SymmetricForcesDemonsRegistrationFilter}, the deformation field is
+  // In the \doxygen{SymmetricForcesDemonsRegistrationFilter}, the deformation
+  // field is
   // represented as an image whose pixels are floating point vectors.
   //
   // \index{itk::Symmetric\-Forces\-Demons\-Registration\-Filter}
@@ -229,12 +240,12 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Vector< float, Dimension >                VectorPixelType;
-  typedef itk::Image<  VectorPixelType, Dimension >      DisplacementFieldType;
+  typedef itk::Vector< float, Dimension >           VectorPixelType;
+  typedef itk::Image<  VectorPixelType, Dimension > DisplacementFieldType;
   typedef itk::SymmetricForcesDemonsRegistrationFilter<
-                                InternalImageType,
-                                InternalImageType,
-                                DisplacementFieldType> RegistrationFilterType;
+      InternalImageType,
+      InternalImageType,
+      DisplacementFieldType> RegistrationFilterType;
   RegistrationFilterType::Pointer filter = RegistrationFilterType::New();
   // Software Guide : EndCodeSnippet
 
@@ -249,7 +260,11 @@ int main( int argc, char *argv[] )
   // filter.  The input moving image is the output of the histogram matching
   // filter.
   //
+  //
+  //
   // \index{itk::Symmetric\-Forces\-Demons\-Registration\-Filter!SetFixedImage()}
+  //
+  //
   // \index{itk::Symmetric\-Forces\-Demons\-Registration\-Filter!SetMovingImage()}
   //
   // Software Guide : EndLatex
@@ -259,14 +274,17 @@ int main( int argc, char *argv[] )
   filter->SetMovingImage( matcher->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The demons registration filter has two parameters: the number of
   // iterations to be performed and the standard deviation of the Gaussian
   // smoothing kernel to be applied to the deformation field after each
   // iteration.
+  //
+  //
   // \index{itk::Symmetric\-Forces\-Demons\-Registration\-Filter!SetNumberOfIterations()}
+  //
+  //
   // \index{itk::Symmetric\-Forces\-Demons\-Registration\-Filter!SetStandardDeviations()}
   //
   // Software Guide : EndLatex
@@ -275,7 +293,6 @@ int main( int argc, char *argv[] )
   filter->SetNumberOfIterations( 50 );
   filter->SetStandardDeviations( 1.0 );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -287,7 +304,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   filter->Update();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -307,15 +323,15 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::WarpImageFilter<
-                          MovingImageType,
-                          MovingImageType,
-                          DisplacementFieldType  >     WarperType;
+      MovingImageType,
+      MovingImageType,
+      DisplacementFieldType  >     WarperType;
   typedef itk::LinearInterpolateImageFunction<
-                                   MovingImageType,
-                                   double          >  InterpolatorType;
-  WarperType::Pointer warper = WarperType::New();
+      MovingImageType,
+      double          >  InterpolatorType;
+  WarperType::Pointer       warper = WarperType::New();
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-  FixedImageType::Pointer fixedImage = fixedImageReader->GetOutput();
+  FixedImageType::Pointer   fixedImage = fixedImageReader->GetOutput();
 
   warper->SetInput( movingImageReader->GetOutput() );
   warper->SetInterpolator( interpolator );
@@ -323,7 +339,6 @@ int main( int argc, char *argv[] )
   warper->SetOutputOrigin( fixedImage->GetOrigin() );
   warper->SetOutputDirection( fixedImage->GetDirection() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -340,17 +355,16 @@ int main( int argc, char *argv[] )
   warper->SetDisplacementField( filter->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   // Write warped image out to file
   typedef  unsigned char                           OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter<
-                        MovingImageType,
-                        OutputImageType >          CastFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+      MovingImageType,
+      OutputImageType >          CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
 
@@ -358,10 +372,10 @@ int main( int argc, char *argv[] )
   writer->SetInput( caster->GetOutput()   );
   writer->Update();
 
-
   // Software Guide : BeginLatex
   //
-  // Let's execute this example using the rat lung data from the previous example.
+  // Let's execute this example using the rat lung data from the previous
+  // example.
   // The associated data files can be found in \code{Examples/Data}:
   //
   // \begin{itemize}
@@ -370,9 +384,14 @@ int main( int argc, char *argv[] )
   // \end{itemize}
   //
   // \begin{figure} \center
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{DeformableRegistration2CheckerboardBefore}
+  //
+  //
   // \includegraphics[width=0.44\textwidth]{DeformableRegistration2CheckerboardAfter}
-  // \itkcaption[Demon's deformable registration output]{Checkerboard comparisons
+  // \itkcaption[Demon's deformable registration output]{Checkerboard
+  // comparisons
   // before and after demons-based deformable registration.}
   // \label{fig:DeformableRegistration3Output}
   // \end{figure}
@@ -384,7 +403,6 @@ int main( int argc, char *argv[] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginLatex
   //
   // It may be also desirable to write the deformation field as an image of
@@ -395,23 +413,23 @@ int main( int argc, char *argv[] )
   if( argc > 4 ) // if a fourth line argument has been provided...
     {
 
-  // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< DisplacementFieldType > FieldWriterType;
+    // Software Guide : BeginCodeSnippet
+    typedef itk::ImageFileWriter< DisplacementFieldType > FieldWriterType;
 
-  FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
-  fieldWriter->SetFileName( argv[4] );
-  fieldWriter->SetInput( filter->GetOutput() );
+    FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
+    fieldWriter->SetFileName( argv[4] );
+    fieldWriter->SetInput( filter->GetOutput() );
 
-  fieldWriter->Update();
-  // Software Guide : EndCodeSnippet
+    fieldWriter->Update();
+    // Software Guide : EndCodeSnippet
 
-  // Software Guide : BeginLatex
-  //
-  // Note that the file format used for writing the deformation field must be
-  // capable of representing multiple components per pixel. This is the case
-  // for the MetaImage and VTK file formats for example.
-  //
-  // Software Guide : EndLatex
+    // Software Guide : BeginLatex
+    //
+    // Note that the file format used for writing the deformation field must be
+    // capable of representing multiple components per pixel. This is the case
+    // for the MetaImage and VTK file formats for example.
+    //
+    // Software Guide : EndLatex
 
     }
 

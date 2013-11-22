@@ -16,14 +16,14 @@
  *
  *=========================================================================*/
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkJoinSeriesImageFilter.h"
 #include "itkExtractImageFilter.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-int itkJoinSeriesImageFilterStreamingTest(int argc, char* argv[] )
+int
+itkJoinSeriesImageFilterStreamingTest(int argc, char* argv[] )
 {
   typedef itk::Image< unsigned char, 3> ImageType;
   typedef itk::Image< unsigned char, 2> SliceImageType;
@@ -33,13 +33,11 @@ int itkJoinSeriesImageFilterStreamingTest(int argc, char* argv[] )
   typedef itk::JoinSeriesImageFilter<SliceImageType, ImageType> JoinSeriesFilterType;
   typedef itk::ImageFileWriter<ImageType>                       ImageFileWriterType;
 
-
   if ( argc < 3 )
     {
     std::cerr << "Usage: " << argv[0] << " InputImage OutputImage" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::string inputFileName = argv[1];
   std::string outputFileName = argv[2];
@@ -48,9 +46,8 @@ int itkJoinSeriesImageFilterStreamingTest(int argc, char* argv[] )
   reader->SetFileName( inputFileName );
   reader->UpdateOutputInformation();
 
-
-  const unsigned int numberOfSlices = itk::Math::CastWithRangeCheck<unsigned int>(reader->GetOutput()->GetLargestPossibleRegion().GetSize(2));
-
+  const unsigned int numberOfSlices = itk::Math::CastWithRangeCheck<unsigned int>(
+      reader->GetOutput()->GetLargestPossibleRegion().GetSize(2) );
 
   itk::PipelineMonitorImageFilter<ImageType>::Pointer monitor1 = itk::PipelineMonitorImageFilter<ImageType>::New();
   monitor1->SetInput( reader->GetOutput() );
@@ -82,7 +79,6 @@ int itkJoinSeriesImageFilterStreamingTest(int argc, char* argv[] )
 
     }
 
-
   itk::PipelineMonitorImageFilter<ImageType>::Pointer monitor2 = itk::PipelineMonitorImageFilter<ImageType>::New();
   monitor2->SetInput( joinSeries->GetOutput() );
 
@@ -90,7 +86,6 @@ int itkJoinSeriesImageFilterStreamingTest(int argc, char* argv[] )
   writer->SetInput( monitor2->GetOutput() );
   writer->SetFileName( outputFileName );
   writer->SetNumberOfStreamDivisions( numberOfSlices );
-
 
   try
     {
@@ -108,7 +103,7 @@ int itkJoinSeriesImageFilterStreamingTest(int argc, char* argv[] )
   // We can not use one of the standard verify all methods due to
   // multiple filters connected to the output of the reader
   if ( !(monitor1->VerifyInputFilterExecutedStreaming( numberOfSlices ) &&
-        monitor1->VerifyInputFilterMatchedUpdateOutputInformation()) )
+         monitor1->VerifyInputFilterMatchedUpdateOutputInformation() ) )
     {
     std::cerr << monitor1;
     return EXIT_FAILURE;

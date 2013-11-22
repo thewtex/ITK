@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMLoadBCMFCTest(int argc, char *argv[])
+int
+itkFEMLoadBCMFCTest(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -41,7 +41,10 @@ int itkFEMLoadBCMFCTest(int argc, char *argv[])
   typedef FEMSpatialObjectReaderType::Pointer FEMSpatialObjectReaderPointer;
   FEMSpatialObjectReaderPointer SpatialReader = FEMSpatialObjectReaderType::New();
   SpatialReader->SetFileName( argv[1] );
-//  SpatialReader->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/LoadBCMFCTest.meta");
+//
+//
+//
+// SpatialReader->SetFileName("C:/Research/ITKGit/ITK/Testing/Data/Input/FEM/LoadBCMFCTest.meta");
   SpatialReader->Update();
 
   FEMSpatialObjectReaderType::ScenePointer myScene = SpatialReader->GetScene();

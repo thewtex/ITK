@@ -24,37 +24,37 @@
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkOpenCVVideoIOFactory.h"
 
-
 //-----------------------------------------------------------------------------
 // Convert the data in the IplImage to the templated type
 //
 template<typename TPixelType>
-IplImage* ConvertIplImageDataType(IplImage* in)
+IplImage*
+ConvertIplImageDataType(IplImage* in)
 {
   int depth = 0;
 
   // Figure out the right output type
-  if (typeid(TPixelType) == typeid(unsigned char))
+  if (typeid(TPixelType) == typeid(unsigned char) )
     {
     depth = IPL_DEPTH_8U;
     }
-  else if (typeid(TPixelType) == typeid(char))
+  else if (typeid(TPixelType) == typeid(char) )
     {
     depth = IPL_DEPTH_8S;
     }
-  else if (typeid(TPixelType) == typeid(unsigned short))
+  else if (typeid(TPixelType) == typeid(unsigned short) )
     {
     depth = IPL_DEPTH_16U;
     }
-  else if (typeid(TPixelType) == typeid(short))
+  else if (typeid(TPixelType) == typeid(short) )
     {
     depth = IPL_DEPTH_16S;
     }
-  else if (typeid(TPixelType) == typeid(float))
+  else if (typeid(TPixelType) == typeid(float) )
     {
     depth = IPL_DEPTH_32F;
     }
-  else if (typeid(TPixelType) == typeid(double))
+  else if (typeid(TPixelType) == typeid(double) )
     {
     depth = IPL_DEPTH_64F;
     }
@@ -68,20 +68,21 @@ IplImage* ConvertIplImageDataType(IplImage* in)
   return out;
 }
 
-
 //-----------------------------------------------------------------------------
 // Templated test function to do the heavy lifting for scalar case
 //
 template<typename TPixelType, unsigned int VDimension>
-int itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
+int
+itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
 {
   // typedefs
   const unsigned int Dimension =                         VDimension;
-  typedef TPixelType                                     PixelType;
-  typedef itk::Image< PixelType, Dimension >             ImageType;
-  typedef itk::ImageFileReader<ImageType>                ReaderType;
+
+  typedef TPixelType                         PixelType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
+  typedef itk::ImageFileReader<ImageType>    ReaderType;
   typedef itk::Testing::ComparisonImageFilter<ImageType, ImageType>
-                                                         DifferenceFilterType;
+    DifferenceFilterType;
 
   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoIOFactory::New() );
 
@@ -124,7 +125,7 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
   if (total != 0)
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for IplImage -> ITK (scalar)" << std::endl;
+              << " for IplImage -> ITK (scalar)" << std::endl;
     cvReleaseImage(&inIpl);
     return EXIT_FAILURE;
     }
@@ -144,7 +145,7 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
   if (total != 0)
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for cv::Mat -> ITK (scalar)" << std::endl;
+              << " for cv::Mat -> ITK (scalar)" << std::endl;
     cvReleaseImage(&inIpl);
     return EXIT_FAILURE;
     }
@@ -156,22 +157,23 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
 
   // check results of itk::Image -> IplImage
   IplImage* dataConvertedInIpl = ConvertIplImageDataType<PixelType>(inIpl);
-  double itkIplDiff = cvNorm(outIpl, dataConvertedInIpl);
+  double    itkIplDiff = cvNorm(outIpl, dataConvertedInIpl);
 
   if (itkIplDiff != 0.0)
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for ITK -> IplImage (scalar)" <<";  itkIplDiff = "<<itkIplDiff<< std::endl;
+              << " for ITK -> IplImage (scalar)" <<";  itkIplDiff = "<<itkIplDiff<< std::endl;
     cvReleaseImage(&dataConvertedInIpl);
     cvReleaseImage(&inIpl);
     cvReleaseImage(&outIpl);
     return EXIT_FAILURE;
     }
 
-  // Test number of channels after force3Channels (if type is supported for color images)
+  // Test number of channels after force3Channels (if type is supported for
+  // color images)
   if (typeid(PixelType) == typeid(unsigned short) ||
       typeid(PixelType) == typeid(unsigned char) ||
-      typeid(PixelType) == typeid(float))
+      typeid(PixelType) == typeid(float) )
     {
     cvReleaseImage(&outIpl);
     outIpl = itk::OpenCVImageBridge::ITKImageToIplImage< ImageType >(baselineImage, true);
@@ -192,11 +194,11 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
 
   // check results of itk::Image -> IplImage
   IplImage outMatAsIpl = outMat;
-  double itkMatDiff = cvNorm(&outMatAsIpl, dataConvertedInIpl);
+  double   itkMatDiff = cvNorm(&outMatAsIpl, dataConvertedInIpl);
   if (itkMatDiff != 0.0)
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for ITK -> cv::Mat (scalar)" << std::endl;
+              << " for ITK -> cv::Mat (scalar)" << std::endl;
     cvReleaseImage(&dataConvertedInIpl);
     cvReleaseImage(&inIpl);
     cvReleaseImage(&outIpl);
@@ -213,7 +215,8 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
 }
 
 template< typename TPixel >
-int itkRunScalarTest( char* argv )
+int
+itkRunScalarTest( char* argv )
 {
   if (itkOpenCVImageBridgeTestTemplatedScalar< TPixel, 2 >(argv) == EXIT_FAILURE)
     {
@@ -227,11 +230,11 @@ int itkRunScalarTest( char* argv )
   return EXIT_SUCCESS;
 }
 
-
 //-----------------------------------------------------------------------------
 // Main test
 //
-int itkOpenCVImageBridgeGrayScaleTest ( int argc, char *argv[] )
+int
+itkOpenCVImageBridgeGrayScaleTest( int argc, char *argv[] )
 {
   //
   // Check arguments

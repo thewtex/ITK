@@ -25,12 +25,14 @@ namespace itk
 template< unsigned int VDimension, typename TInput >
 InteriorExteriorSpatialFunction< VDimension, TInput >
 ::InteriorExteriorSpatialFunction()
-{}
+{
+}
 
 template< unsigned int VDimension, typename TInput >
 InteriorExteriorSpatialFunction< VDimension, TInput >
 ::~InteriorExteriorSpatialFunction()
-{}
+{
+}
 
 template< unsigned int VDimension, typename TInput >
 void
@@ -39,6 +41,7 @@ InteriorExteriorSpatialFunction< VDimension, TInput >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

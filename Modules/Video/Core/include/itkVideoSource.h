@@ -72,7 +72,8 @@ public:
 
   /** Access the spacial dimensionality of the frames */
   itkStaticConstMacro(OutputFrameDimension, unsigned int, OutputFrameType::ImageDimension);
-  static unsigned int GetOutputFrameDimension()
+  static unsigned int
+  GetOutputFrameDimension()
   {
     return OutputFrameType::ImageDimension;
   }
@@ -147,12 +148,14 @@ protected:
 
   /** Method that gets called before threads are dispatched from
    * TemporalStreamingGeneratData */
-  virtual void BeforeThreadedGenerateData() {
+  virtual void
+  BeforeThreadedGenerateData() {
   }
 
   /** Method that gets called after all threads finish in
    * TemporalStreamingGenerateData */
-  virtual void AfterThreadedGenerateData() {
+  virtual void
+  AfterThreadedGenerateData() {
   }
 
   /** This method functions like SplitRequestedRegion in ImageSource and is
@@ -172,7 +175,8 @@ protected:
     };
 
   VideoSource();
-  virtual ~VideoSource();
+  virtual
+  ~VideoSource();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

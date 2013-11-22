@@ -23,7 +23,8 @@
 #include "itkCastImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   if( argc < 3)
     {
@@ -35,16 +36,16 @@ int main(int argc, char* argv[])
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
 
-  typedef unsigned char    CharPixelType;  //IO
-  typedef double          RealPixelType;  //Operations
+  typedef unsigned char CharPixelType;    //IO
+  typedef double        RealPixelType;    //Operations
 
-  const    unsigned int    Dimension = 2;
+  const    unsigned int Dimension = 2;
 
-  typedef itk::Image<CharPixelType, Dimension>    CharImageType;
-  typedef itk::Image<RealPixelType, Dimension>    RealImageType;
+  typedef itk::Image<CharPixelType, Dimension> CharImageType;
+  typedef itk::Image<RealPixelType, Dimension> RealImageType;
 
-  typedef itk::ImageFileReader< CharImageType >  ReaderType;
-  typedef itk::ImageFileWriter< CharImageType >  WriterType;
+  typedef itk::ImageFileReader< CharImageType > ReaderType;
+  typedef itk::ImageFileWriter< CharImageType > WriterType;
 
   typedef itk::CastImageFilter<CharImageType, RealImageType> CastToRealFilterType;
   typedef itk::CastImageFilter<RealImageType, CharImageType> CastToCharFilterType;
@@ -52,12 +53,12 @@ int main(int argc, char* argv[])
   typedef itk::RescaleIntensityImageFilter<RealImageType, RealImageType> RescaleFilter;
 
   typedef itk::LaplacianImageFilter<
-                              RealImageType,
-                              RealImageType >    LaplacianFilter;
+      RealImageType,
+      RealImageType >    LaplacianFilter;
 
   typedef itk::ZeroCrossingImageFilter<
-                              RealImageType,
-                              RealImageType>     ZeroCrossingFilter;
+      RealImageType,
+      RealImageType>     ZeroCrossingFilter;
 
   //Setting the IO
   ReaderType::Pointer reader = ReaderType::New();
@@ -65,11 +66,11 @@ int main(int argc, char* argv[])
 
   CastToRealFilterType::Pointer toReal = CastToRealFilterType::New();
   CastToCharFilterType::Pointer toChar = CastToCharFilterType::New();
-  RescaleFilter::Pointer rescale = RescaleFilter::New();
+  RescaleFilter::Pointer        rescale = RescaleFilter::New();
 
   //Setting the ITK pipeline filter
 
-  LaplacianFilter::Pointer lapFilter = LaplacianFilter::New();
+  LaplacianFilter::Pointer    lapFilter = LaplacianFilter::New();
   ZeroCrossingFilter::Pointer zeroFilter = ZeroCrossingFilter::New();
 
   reader->SetFileName( inputFilename  );
@@ -88,7 +89,6 @@ int main(int argc, char* argv[])
   lapFilter->SetInput( toReal->GetOutput() );
   zeroFilter->SetInput( lapFilter->GetOutput() );
   rescale->SetInput( zeroFilter->GetOutput() );
-
 
   try
     {

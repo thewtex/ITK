@@ -47,6 +47,7 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
                        ThreadIdType threadId)
 {
   const SizeValueType size0 = outputRegionForThread.GetSize(0);
+
   if( size0 == 0)
     {
     return;
@@ -55,7 +56,7 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
     static_cast< unsigned int >( this->GetNumberOfIndexedInputs() );
 
   typedef ImageScanlineConstIterator< TInputImage > ImageScanlineConstIteratorType;
-  std::vector< ImageScanlineConstIteratorType * >   inputItrVector;
+  std::vector< ImageScanlineConstIteratorType * > inputItrVector;
   inputItrVector.reserve(numberOfInputImages);
 
   // support progress methods/callbacks.
@@ -71,7 +72,7 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
       }
     }
 
-  const size_t numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
+  const size_t     numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
   ProgressReporter progress( this, threadId, numberOfLinesToProcess );
 
   const unsigned int numberOfValidInputImages = inputItrVector.size();
@@ -96,28 +97,28 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
 
   while ( !outputIt.IsAtEnd() )
     {
-     while ( !outputIt.IsAtEndOfLine() )
-       {
-       arrayIt = naryInputArray.begin();
-       regionIterators = inputItrVector.begin();
-       while ( regionIterators != regionItEnd )
-         {
-         *arrayIt++ = ( *regionIterators )->Get();
-         ++( *( *regionIterators ) );
-         ++regionIterators;
-         }
-       outputIt.Set( m_Functor(naryInputArray) );
-       ++outputIt;
-       }
+    while ( !outputIt.IsAtEndOfLine() )
+      {
+      arrayIt = naryInputArray.begin();
+      regionIterators = inputItrVector.begin();
+      while ( regionIterators != regionItEnd )
+        {
+        *arrayIt++ = ( *regionIterators )->Get();
+        ++( *( *regionIterators ) );
+        ++regionIterators;
+        }
+      outputIt.Set( m_Functor(naryInputArray) );
+      ++outputIt;
+      }
 
-     regionIterators = inputItrVector.begin();
-     while ( regionIterators != regionItEnd )
-       {
-       ( *regionIterators )->NextLine();
-       ++regionIterators;
-       }
-     outputIt.NextLine();
-     progress.CompletedPixel(); // potential exception thrown here
+    regionIterators = inputItrVector.begin();
+    while ( regionIterators != regionItEnd )
+      {
+      ( *regionIterators )->NextLine();
+      ++regionIterators;
+      }
+    outputIt.NextLine();
+    progress.CompletedPixel();  // potential exception thrown here
     }
 
   // Free memory
@@ -127,6 +128,7 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
     delete ( *regionIterators++ );
     }
 }
+
 } // end namespace itk
 
 #endif

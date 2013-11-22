@@ -19,7 +19,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkImageFileWriterUpdateLargestPossibleRegionTest(int argc, char* argv[])
+int
+itkImageFileWriterUpdateLargestPossibleRegionTest(int argc, char* argv[])
 {
   if( argc < 3 )
     {
@@ -30,22 +31,22 @@ int itkImageFileWriterUpdateLargestPossibleRegionTest(int argc, char* argv[])
   // We remove the output file
   itksys::SystemTools::RemoveFile(argv[2]);
 
-  typedef unsigned char             PixelType;
-  typedef itk::Image<PixelType,2>   ImageType;
+  typedef unsigned char           PixelType;
+  typedef itk::Image<PixelType,2> ImageType;
 
-  typedef itk::ImageFileReader<ImageType>         ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   reader->Update();
 
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   writer->SetFileName( argv[2] );
 
   ImageType::RegionType region = reader->GetOutput()->GetLargestPossibleRegion();
-  ImageType::IndexType index = region.GetIndex();
-  ImageType::SizeType size = region.GetSize();
+  ImageType::IndexType  index = region.GetIndex();
+  ImageType::SizeType   size = region.GetSize();
 
   itk::ImageIORegion ioregion(2);
   ioregion.SetIndex(0, index[0]);
@@ -55,7 +56,8 @@ int itkImageFileWriterUpdateLargestPossibleRegionTest(int argc, char* argv[])
 
   writer->SetIORegion(ioregion);
 
-  // using Update() should fail because the paste feature is not supported by the png writer
+  // using Update() should fail because the paste feature is not supported by
+  // the png writer
   int status = 1;
   try
     {
@@ -73,7 +75,8 @@ int itkImageFileWriterUpdateLargestPossibleRegionTest(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  // but it should succeed with UpdateLargestPossibleRegion() because the paste region
+  // but it should succeed with UpdateLargestPossibleRegion() because the paste
+  // region
   // is not used
   try
     {

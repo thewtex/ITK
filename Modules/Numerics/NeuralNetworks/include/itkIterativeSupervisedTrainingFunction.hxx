@@ -36,7 +36,8 @@ IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 }
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-void IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
+void
+IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 ::SetNumOfIterations(SizeValueType i)
 {
   this->SetIterations(i);
@@ -44,7 +45,8 @@ void IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 }
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-void IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
+void
+IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 ::Train(typename IterativeSupervisedTrainingFunction<TSample, TTargetVector, ScalarType>::NetworkType* Net,
         TSample* samples, TTargetVector* targets)
 {
@@ -53,8 +55,8 @@ void IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 
   InternalVectorType outputvector;
   InternalVectorType errorvector;
-  outputvector.SetSize(targets->GetMeasurementVectorSize());
-  errorvector.SetSize(targets->GetMeasurementVectorSize());
+  outputvector.SetSize(targets->GetMeasurementVectorSize() );
+  errorvector.SetSize(targets->GetMeasurementVectorSize() );
 
   //typename Superclass::OutputVectorType outputvector;
   typename Superclass::VectorType inputvector;
@@ -71,7 +73,7 @@ void IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
   SizeValueType i = 0;
   while (!m_Stop)
     {
-    int temp = rand() % (this->m_InputSamples.size());
+    int temp = rand() % (this->m_InputSamples.size() );
     inputvector = this->m_InputSamples[temp];
     targetvector = this->m_Targets[temp];
     outputvector = Net->GenerateOutput(inputvector);
@@ -82,7 +84,7 @@ void IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 #ifdef __OLD_CODE__
     outfile <<errorvector[0] << std::endl;
 #endif
-    Net->BackwardPropagate(this->m_PerformanceFunction->EvaluateDerivative(errorvector));
+    Net->BackwardPropagate(this->m_PerformanceFunction->EvaluateDerivative(errorvector) );
     Net->UpdateWeights(this->m_LearningRate);
     i++;
     if (i > num_iterations)
@@ -92,7 +94,7 @@ void IterativeSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
     }
 #ifdef __OLD_CODE__
   if (this->m_PerformanceFunction->Evaluate(errorvector) < m_Threshold
-   && i < num_iterations)
+      && i < num_iterations)
     {
     std::cout << "Goal Met " << std::endl;
     }

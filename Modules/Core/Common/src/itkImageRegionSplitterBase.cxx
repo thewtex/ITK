@@ -18,7 +18,6 @@
 
 #include "itkImageRegionSplitterBase.h"
 
-
 namespace itk
 {
 

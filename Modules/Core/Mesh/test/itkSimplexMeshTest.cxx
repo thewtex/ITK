@@ -22,21 +22,22 @@
 #include "itkDefaultDynamicMeshTraits.h"
 #include "itkTimeProbe.h"
 
-int itkSimplexMeshTest(int , char *[] )
+int
+itkSimplexMeshTest(int , char *[] )
 {
 
   // Declare the type of the input and output mesh
   typedef itk::DefaultDynamicMeshTraits<double, 3, 3, double, double, double> MeshTraits;
 
-  typedef itk::SimplexMesh<double,3,MeshTraits>           SimplexMeshType;
+  typedef itk::SimplexMesh<double,3,MeshTraits> SimplexMeshType;
 
-  typedef itk::SimplexMeshGeometry                        SimplexMeshGeometryType;
+  typedef itk::SimplexMeshGeometry SimplexMeshGeometryType;
 
-  typedef SimplexMeshType::CellType                       CellInterfaceType;
+  typedef SimplexMeshType::CellType CellInterfaceType;
 
   SimplexMeshType::Pointer simplexMesh = SimplexMeshType::New();
 
-  typedef  SimplexMeshType::NeighborListType              NeighborsListType;
+  typedef  SimplexMeshType::NeighborListType NeighborsListType;
 
   NeighborsListType* neighbors = NULL;
 
@@ -45,16 +46,15 @@ int itkSimplexMeshTest(int , char *[] )
    */
   SimplexMeshType::CoordRepType testPointCoords[8][3]
     = { {0,0,0}, {9,0,0}, {9,0,9}, {0,0,9},
-        {0,9,0}, {9,9,0}, {9,9,9}, {0,9,9} };
-
+            {0,9,0}, {9,9,0}, {9,9,9}, {0,9,9} };
 
   /**
    * Typedef the generic cell type for the mesh.  It is an abstract class,
    * so we can only use information from it, like get its pointer type.
    */
-  typedef SimplexMeshType::CellType       CellType;
-  typedef CellType::CellAutoPointer       CellAutoPointer;
-  typedef SimplexMeshType::PointType      PointType;
+  typedef SimplexMeshType::CellType  CellType;
+  typedef CellType::CellAutoPointer  CellAutoPointer;
+  typedef SimplexMeshType::PointType PointType;
 
   /**
    * Add our test points to the mesh.
@@ -64,19 +64,18 @@ int itkSimplexMeshTest(int , char *[] )
    */
   for(int i = 0; i < 8; ++i)
     {
-    simplexMesh->SetPoint(i, PointType(testPointCoords[i]));
+    simplexMesh->SetPoint(i, PointType(testPointCoords[i]) );
     simplexMesh->SetGeometryData(i, new SimplexMeshGeometryType );
     }
 
   /**
    * Specify the method used for allocating cells
    */
-   simplexMesh->SetCellsAllocationMethod( SimplexMeshType::CellsAllocatedDynamicallyCellByCell );
+  simplexMesh->SetCellsAllocationMethod( SimplexMeshType::CellsAllocatedDynamicallyCellByCell );
 
-
-   /**
-    * Exercise the AddEdge method
-    */
+  /**
+   * Exercise the AddEdge method
+   */
   simplexMesh->AddEdge( 0, 1 );
   simplexMesh->AddEdge( 0, 3 );
   simplexMesh->AddEdge( 0, 4 );
@@ -90,9 +89,9 @@ int itkSimplexMeshTest(int , char *[] )
   simplexMesh->AddEdge( 5, 6 );
   simplexMesh->AddEdge( 6, 7 );
 
-   /**
-    * Exercise the AddNeighbor method
-    */
+  /**
+   * Exercise the AddNeighbor method
+   */
   simplexMesh->AddNeighbor( 0, 1 );
   simplexMesh->AddNeighbor( 0, 3 );
   simplexMesh->AddNeighbor( 0, 4 );
@@ -105,7 +104,6 @@ int itkSimplexMeshTest(int , char *[] )
   simplexMesh->AddNeighbor( 4, 7 );
   simplexMesh->AddNeighbor( 5, 6 );
   simplexMesh->AddNeighbor( 6, 7 );
-
 
   // Now add the symmetric relationships
   simplexMesh->AddNeighbor( 1, 0 );

@@ -45,7 +45,7 @@ namespace itk
  * \ingroup ITKImageStatistics
  */
 template< typename TInputImage, typename TOutputImage >
-class GetAverageSliceImageFilter:public AccumulateImageFilter< TInputImage, TOutputImage >
+class GetAverageSliceImageFilter : public AccumulateImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -66,7 +66,10 @@ public:
 
 protected:
   GetAverageSliceImageFilter();
-  virtual ~GetAverageSliceImageFilter() {}
+  virtual
+  ~GetAverageSliceImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

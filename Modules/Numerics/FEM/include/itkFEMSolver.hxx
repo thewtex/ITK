@@ -58,6 +58,7 @@ Solver<VDimension>
 ::~Solver()
 {
   FEMObjectType *output = this->GetOutput();
+
   output->Clear();
 }
 
@@ -120,7 +121,7 @@ Solver<VDimension>
 template <unsigned int VDimension>
 void
 Solver<VDimension>
-::SetTimeStep(Float itkNotUsed(dt))
+::SetTimeStep(Float itkNotUsed(dt) )
 {
 }
 
@@ -135,7 +136,7 @@ Solver<VDimension>
 template <unsigned int VDimension>
 typename Solver<VDimension>::DataObjectPointer
 Solver<VDimension>
-::MakeOutput(DataObjectPointerArraySizeType itkNotUsed(idx))
+::MakeOutput(DataObjectPointerArraySizeType itkNotUsed(idx) )
 {
   return FEMObjectType::New().GetPointer();
 }
@@ -150,7 +151,7 @@ Solver<VDimension>
     return 0;
     }
 
-  return itkDynamicCastInDebugMode<FEMObjectType *>(this->ProcessObject::GetOutput(0));
+  return itkDynamicCastInDebugMode<FEMObjectType *>(this->ProcessObject::GetOutput(0) );
   }
 
 template <unsigned int VDimension>
@@ -184,6 +185,7 @@ Solver<VDimension>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "Global degrees of freedom: " << m_NGFN << std::endl;
   os << indent << "Multi freedom constraints: " << m_NMFC << std::endl;
   os << indent << "FEM Object: " << m_FEMObject << std::endl;
@@ -509,7 +511,8 @@ Solver<VDimension>
                                                                // element's
                                                                // number of
                                                                // DOF
-          for( unsigned int j = 0; j < Ne; j++ )               // step over all DOF
+          for( unsigned int j = 0; j < Ne; j++ )               // step over all
+                                                               // DOF
             {
             if( el->GetDegreeOfFreedom(j) >= m_NGFN )
               {
@@ -605,7 +608,8 @@ Solver<VDimension>
   // properly initialized.
   if( !m_ls->IsMatrixInitialized() )
     {
-    throw FEMExceptionSolution(__FILE__, __LINE__, "FEMObject::Solve()", "Master stiffness matrix was not initialized!");
+    throw FEMExceptionSolution(__FILE__, __LINE__, "FEMObject::Solve()",
+                               "Master stiffness matrix was not initialized!");
     }
   if( !m_ls->IsVectorInitialized() )
     {
@@ -620,7 +624,8 @@ Solver<VDimension>
   m_ls->InitializeSolution();
   m_ls->Solve();
 
-  // copy the input to the output and add the displacements to update the nodal co-ordinates
+  // copy the input to the output and add the displacements to update the nodal
+  // co-ordinates
   this->GetOutput()->DeepCopy(this->GetInput() );
   this->UpdateDisplacements();
   timer1.Stop();
@@ -644,7 +649,7 @@ Solver<VDimension>
     NodeType::Pointer node = femObject->GetNode(i);
     for( unsigned int j = 0; j < VDimension; j++ )
       {
-      pt[j] = node->GetCoordinates()[j] + m_ls->GetSolutionValue(node->GetDegreeOfFreedom(j));
+      pt[j] = node->GetCoordinates()[j] + m_ls->GetSolutionValue(node->GetDegreeOfFreedom(j) );
       }
     node->SetCoordinates(pt);
     }
@@ -659,6 +664,7 @@ Solver<VDimension>
   Element::MatrixType LocalSolution;
 
   unsigned int numberOfElements = m_FEMObject->GetNumberOfElements();
+
   for( unsigned int index = 0; index < numberOfElements; index++ )
     {
     Element::Pointer e = m_FEMObject->GetElement( index );
@@ -676,7 +682,8 @@ Solver<VDimension>
 }
 
 template <unsigned int VDimension>
-void Solver<VDimension>
+void
+Solver<VDimension>
 ::ApplyBC(int dim, unsigned int matrix)
 {
   // Vector with index 1 is used to store force correctios for BCs
@@ -717,10 +724,20 @@ void Solver<VDimension>
         // this is a symetric matrix...
         this->m_ls->SetMatrixValue(gfn, m_NGFN + c->GetIndex(), q->value, matrix);
         this->m_ls->SetMatrixValue(m_NGFN + c->GetIndex(), gfn, q->value, matrix); //
+                                                                                   //
+                                                                                   //
                                                                                    // this
+                                                                                   //
+                                                                                   //
                                                                                    // is
+                                                                                   //
+                                                                                   //
                                                                                    // a
+                                                                                   //
+                                                                                   //
                                                                                    // symetric
+                                                                                   //
+                                                                                   //
                                                                                    // matrix...
         }
 
@@ -763,6 +780,8 @@ void Solver<VDimension>
           // Store the appropriate value in bc correction vector (-K12*u2)
           //
           // See
+          //
+          //
           // http://titan.colorado.edu/courses.d/IFEM.d/IFEM.Ch04.d/IFEM.Ch04.pdf
           // chapter 4.1.3 (Matrix Forms of DBC Application Methods) for more
           // info.
@@ -836,7 +855,7 @@ Solver<VDimension>
 template <unsigned int VDimension>
 void
 Solver<VDimension>
-::FillInterpolationGrid( )
+::FillInterpolationGrid()
 {
   VectorType v1, v2;
 
@@ -844,6 +863,7 @@ Solver<VDimension>
 
   // Fill the interpolation grid with proper pointers to elements
   unsigned int numberOfElements = m_FEMObject->GetNumberOfElements();
+
   for( unsigned int index = 0; index < numberOfElements; index++ )
     {
     Element::Pointer e = m_FEMObject->GetElement( index );
@@ -958,6 +978,7 @@ Solver<VDimension>
                               const InterpolationGridDirectionType& direction)
 {
   InterpolationGridSizeType size = region.GetSize();
+
   for( unsigned int i = 0; i < FEMDimension; i++ )
     {
     if( size[i] == 0 )
@@ -973,7 +994,7 @@ Solver<VDimension>
   m_InterpolationGrid->SetRegions( region );
   m_InterpolationGrid->Allocate();
 
-   // Initialize all pointers in interpolation grid image to 0
+  // Initialize all pointers in interpolation grid image to 0
   m_InterpolationGrid->FillBuffer(0);
 
   FillInterpolationGrid();

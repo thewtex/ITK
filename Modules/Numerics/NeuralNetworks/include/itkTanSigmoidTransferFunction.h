@@ -56,17 +56,19 @@ public:
 protected:
 
   TanSigmoidTransferFunction();
-  virtual ~TanSigmoidTransferFunction();
+  virtual
+  ~TanSigmoidTransferFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkTanSigmoidTransferFunction.hxx"
+#include "itkTanSigmoidTransferFunction.hxx"
 #endif
 
 #endif

@@ -21,71 +21,99 @@
 
 /* Create a simple metric to use for testing here. */
 template< typename TFixedObject,  typename TMovingObject >
-class GradientDescentOptimizerBasev4TestMetric:
+class GradientDescentOptimizerBasev4TestMetric :
   public itk::ObjectToObjectMetricBase
 {
 public:
   /** Standard class typedefs. */
-  typedef GradientDescentOptimizerBasev4TestMetric      Self;
-  typedef itk::ObjectToObjectMetricBase                 Superclass;
-  typedef itk::SmartPointer< Self >                     Pointer;
-  typedef itk::SmartPointer< const Self >               ConstPointer;
+  typedef GradientDescentOptimizerBasev4TestMetric Self;
+  typedef itk::ObjectToObjectMetricBase            Superclass;
+  typedef itk::SmartPointer< Self >                Pointer;
+  typedef itk::SmartPointer< const Self >          ConstPointer;
 
-  typedef typename Superclass::MeasureType          MeasureType;
-  typedef typename Superclass::DerivativeType       DerivativeType;
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   itkTypeMacro(GradientDescentOptimizerBasev4TestMetric, ObjectToObjectMetricBase);
 
   itkNewMacro(Self);
 
   // Pure virtual functions that all Metrics must provide
-  unsigned int GetNumberOfParameters() const { return 5; }
+  unsigned int
+  GetNumberOfParameters() const {
+    return 5;
+  }
 
-  MeasureType GetValue() const
-    {
+  MeasureType
+  GetValue() const
+  {
     return itk::NumericTraits< MeasureType >::One;
-    }
+  }
 
-  virtual void GetDerivative( DerivativeType & derivative ) const
-    {
+  virtual void
+  GetDerivative( DerivativeType & derivative ) const
+  {
     derivative.Fill( itk::NumericTraits< ParametersValueType >::Zero );
-    }
+  }
 
-  virtual void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
-    {
+  virtual void
+  GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
+  {
     value = itk::NumericTraits< MeasureType >::One;
     derivative.Fill( itk::NumericTraits< ParametersValueType >::Zero );
-    }
+  }
 
-  unsigned int GetNumberOfLocalParameters() const
-  { return 3; }
+  unsigned int
+  GetNumberOfLocalParameters() const
+  {
+    return 3;
+  }
 
-  void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
+  void
+  UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {
+  }
 
-  const ParametersType & GetParameters() const
-  { return m_Parameters; }
+  const ParametersType &
+  GetParameters() const
+  {
+    return m_Parameters;
+  }
 
-  void SetParameters( ParametersType & ) {}
+  void
+  SetParameters( ParametersType & ) {
+  }
 
-  virtual bool HasLocalSupport() const
-    {
+  virtual bool
+  HasLocalSupport() const
+  {
     return false;
-    }
+  }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {
+  }
 
-  void PrintSelf(std::ostream& os, itk::Indent indent) const
-  { Superclass::PrintSelf( os, indent ); }
+  void
+  PrintSelf(std::ostream& os, itk::Indent indent) const
+  {
+    Superclass::PrintSelf( os, indent );
+  }
 
 protected:
-  GradientDescentOptimizerBasev4TestMetric() {}
-  ~GradientDescentOptimizerBasev4TestMetric() {}//purposely not implemented
+  GradientDescentOptimizerBasev4TestMetric() {
+  }
+
+  ~GradientDescentOptimizerBasev4TestMetric() {
+  }                                             //purposely not implemented
 
 private:
-  GradientDescentOptimizerBasev4TestMetric( const Self& ); //purposely not implemented
-  void operator = ( const Self& ); //purposely not implemented
+  GradientDescentOptimizerBasev4TestMetric( const Self& ); //purposely not
+                                                           // implemented
+  void operator =( const Self& );                          //purposely not
+
+  // implemented
 
   ParametersType m_Parameters;
 };
@@ -97,10 +125,10 @@ class GradientDescentOptimizerBasev4TestOptimizer
 {
 public:
   /** Standard "Self" typedef. */
-  typedef GradientDescentOptimizerBasev4TestOptimizer     Self;
-  typedef itk::GradientDescentOptimizerBasev4             Superclass;
-  typedef itk::SmartPointer< Self >                       Pointer;
-  typedef itk::SmartPointer< const Self >                 ConstPointer;
+  typedef GradientDescentOptimizerBasev4TestOptimizer Self;
+  typedef itk::GradientDescentOptimizerBasev4         Superclass;
+  typedef itk::SmartPointer< Self >                   Pointer;
+  typedef itk::SmartPointer< const Self >             ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -110,49 +138,60 @@ public:
                 GradientDescentOptimizerBasev4);
 
   /* Provide an override for the pure virtual StartOptimization */
-  void StartOptimization( bool doOnlyInitialization = false )
-    {
+  void
+  StartOptimization( bool doOnlyInitialization = false )
+  {
     Superclass::StartOptimization( doOnlyInitialization );
     std::cout << "StartOptimization called. doOnlyInitialization: " << doOnlyInitialization << std::endl;
-    }
+  }
 
-  void ResumeOptimization()
-    {
+  void
+  ResumeOptimization()
+  {
     std::cout << "ResumeOptimization called." << std::endl;
-    }
+  }
 
-  void ModifyGradientByScalesOverSubRange (const IndexRangeType& index )
-    {
+  void
+  ModifyGradientByScalesOverSubRange(const IndexRangeType& index )
+  {
     std::cout << "ModifyGradientByScalesOverSubRange called with index:"
               << index << std::endl;
-    }
+  }
 
-  void ModifyGradientByLearningRateOverSubRange (const IndexRangeType& index )
-    {
+  void
+  ModifyGradientByLearningRateOverSubRange(const IndexRangeType& index )
+  {
     std::cout << "ModifyGradientByLearningRateOverSubRange called with index:"
               << index << std::endl;
-    }
+  }
 
 protected:
 
-  GradientDescentOptimizerBasev4TestOptimizer(){}
-  ~GradientDescentOptimizerBasev4TestOptimizer(){}
+  GradientDescentOptimizerBasev4TestOptimizer(){
+  }
+
+  ~GradientDescentOptimizerBasev4TestOptimizer(){
+  }
 
 private:
-  GradientDescentOptimizerBasev4TestOptimizer(const Self& ); //purposely not implemented
-  void operator = (const Self&); //purposely not implemented
+  GradientDescentOptimizerBasev4TestOptimizer(const Self& ); //purposely not
+                                                             // implemented
+  void operator =(const Self&);                              //purposely not
+
+  // implemented
 
 };
 
-
-int itkGradientDescentOptimizerBasev4Test(int , char* [])
+int
+itkGradientDescentOptimizerBasev4Test(int , char* [])
 {
   const int ImageDimension = 2;
-  typedef itk::Image<double, ImageDimension>                    ImageType;
+
+  typedef itk::Image<double, ImageDimension> ImageType;
 
   typedef GradientDescentOptimizerBasev4TestMetric<ImageType,ImageType> MetricType;
 
-  MetricType::Pointer metric = MetricType::New();
+  MetricType::Pointer                                  metric = MetricType::New();
   GradientDescentOptimizerBasev4TestOptimizer::Pointer optimizer = GradientDescentOptimizerBasev4TestOptimizer::New();
 
   /* exercise some methods */

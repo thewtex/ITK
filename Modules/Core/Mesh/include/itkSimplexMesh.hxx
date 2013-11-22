@@ -40,7 +40,7 @@ namespace itk
  */
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SimplexMesh():m_LastCellId (0)
+::SimplexMesh() : m_LastCellId (0)
 {
   m_GeometryData = GeometryMapType::New();
 }
@@ -144,7 +144,7 @@ double
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
 ::GetPhi(PointIdentifier idx) const
 {
-  PointType            test;
+  PointType test;
 
   this->GetPoint(idx, &test);
 
@@ -239,6 +239,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
   // Release previous cell, if any.
   // See documentation of Mesh::SetCell().
   CellAutoPointer cellToDelete;
+
   this->GetCell(replaceIndex, cellToDelete);
   cellToDelete.TakeOwnership();
 
@@ -258,7 +259,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 
   os << indent << "LastCellId = " << m_LastCellId << std::endl;
 
-  GeometryMapPointer  geometryMap = this->GetGeometryData();
+  GeometryMapPointer geometryMap = this->GetGeometryData();
   os << indent << "GeometryData: " << geometryMap << std::endl;
 }
 
@@ -268,6 +269,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 ::SetGeometryData(PointIdentifier pointId, SimplexMeshGeometry *geometryData)
 {
   SimplexMeshGeometry* oldGeometryData;
+
   if( m_GeometryData->GetElementIfIndexExists(pointId, &oldGeometryData) )
     {
     delete oldGeometryData;
@@ -287,7 +289,7 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename SimplexMesh< TPixelType, VDimension, TMeshTraits >::NeighborListType *
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
 ::GetNeighbors(PointIdentifier idx, unsigned int radius, NeighborListType *list) const
-{
+  {
   if ( list == NULL )
     {
     list = new NeighborListType();
@@ -337,7 +339,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
       return list;
       }
     }
-}
+  }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
@@ -429,6 +431,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 
   return normal;
 }
+
 } // end namespace itk
 
 #endif

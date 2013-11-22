@@ -118,12 +118,12 @@ const typename ScalarImageToCooccurrenceMatrixFilter< TImageType,
 ScalarImageToCooccurrenceMatrixFilter< TImageType,
                                        THistogramFrequencyContainer >
 ::GetOutput() const
-{
+  {
   const HistogramType *output =
     static_cast< const HistogramType * >( this->ProcessObject::GetOutput(0) );
 
   return output;
-}
+  }
 
 template< typename TImageType, typename THistogramFrequencyContainer >
 typename ScalarImageToCooccurrenceMatrixFilter< TImageType,
@@ -380,6 +380,7 @@ ScalarImageToCooccurrenceMatrixFilter< TImageType,
                                                                                  Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Offsets: " << this->GetOffsets() << std::endl;
   os << indent << "Min: " << this->GetMin() << std::endl;
   os << indent << "Max: " << this->GetMax() << std::endl;
@@ -387,6 +388,7 @@ ScalarImageToCooccurrenceMatrixFilter< TImageType,
   os << indent << "Normalize: " << this->GetNormalize() << std::endl;
   os << indent << "InsidePixelValue: " << this->GetInsidePixelValue() << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

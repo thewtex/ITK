@@ -96,9 +96,9 @@ public:
 
   /** CovariantVector type. */
   typedef typename Superclass::InputCovariantVectorType
-  InputCovariantVectorType;
+    InputCovariantVectorType;
   typedef typename Superclass::OutputCovariantVectorType
-  OutputCovariantVectorType;
+    OutputCovariantVectorType;
 
   /** VnlVector type. */
   typedef typename Superclass::InputVnlVectorType  InputVnlVectorType;

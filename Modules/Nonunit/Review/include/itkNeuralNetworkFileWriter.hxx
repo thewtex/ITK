@@ -275,6 +275,7 @@ NeuralNetworkFileWriter< TNetwork >
       }
     }
 }
+
 } // namespace itk
 
 #endif

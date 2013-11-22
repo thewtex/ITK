@@ -25,9 +25,9 @@
 #include "itkImageRegionIterator.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
 template< typename TImage >
-void GenerateImage( typename TImage::Pointer ioImage )
+void
+GenerateImage( typename TImage::Pointer ioImage )
 {
   typename TImage::IndexType  index;
   index.Fill( 0 );
@@ -62,7 +62,8 @@ void GenerateImage( typename TImage::Pointer ioImage )
 
 }
 
-int vtkVisualize2DMalcolmLevelSetTest( int , char* [] )
+int
+vtkVisualize2DMalcolmLevelSetTest( int , char* [] )
 {
   typedef unsigned char PixelType;
   const unsigned int Dimension = 2;
@@ -71,7 +72,7 @@ int vtkVisualize2DMalcolmLevelSetTest( int , char* [] )
   ImageType::Pointer image = ImageType::New();
   GenerateImage< ImageType >( image );
 
-  typedef itk::MalcolmSparseLevelSetImage< Dimension >  LevelSetType;
+  typedef itk::MalcolmSparseLevelSetImage< Dimension > LevelSetType;
   typedef itk::BinaryImageToLevelSetImageAdaptor<
       ImageType, LevelSetType >                    BinaryToSparseAdaptorType;
 
@@ -81,7 +82,8 @@ int vtkVisualize2DMalcolmLevelSetTest( int , char* [] )
 
   LevelSetType::Pointer LevelSet = adaptor->GetLevelSet();
 
-//  typedef vtkVisualize2DLevelSetImage< ImageType, SparseLevelSetType::ImageType > VisualizationType;
+//  typedef vtkVisualize2DLevelSetImage< ImageType,
+// SparseLevelSetType::ImageType > VisualizationType;
 //  VisualizationType::Pointer viewer = VisualizationType::New();
 //  viewer->SetInputImage( image );
 //  viewer->SetLevelSet( LevelSet );

@@ -22,15 +22,15 @@
 #include "itkImageFileReader.h"
 #include "itkRawImageIO.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkRawImageIOTest(int argc, char* argv[])
+int
+itkRawImageIOTest(int argc, char* argv[])
 {
-  typedef itk::Image<unsigned short,2>    ImageType;
-  typedef ImageType::PixelType            PixelType;
+  typedef itk::Image<unsigned short,2> ImageType;
+  typedef ImageType::PixelType         PixelType;
   typedef itk::ImageRegionConstIterator<
-                                  ImageType > ImageIteratorType;
+      ImageType > ImageIteratorType;
   if(argc < 3)
     {
     std::cerr << "Usage: " << argv[0] << " Output1 Output2\n";
@@ -61,7 +61,7 @@ int itkRawImageIOTest(int argc, char* argv[])
   // Write out the image
   itk::ImageFileWriter<ImageType>::Pointer writer;
   writer = itk::ImageFileWriter<ImageType>::New();
-  writer->SetInput(random->GetOutput());
+  writer->SetInput(random->GetOutput() );
   writer->SetFileName(argv[1]);
   writer->SetImageIO(io);
 
@@ -91,9 +91,7 @@ int itkRawImageIOTest(int argc, char* argv[])
     std::cerr << excp << std::endl;
     }
 
-
   // Compare pixel by pixel in memory
-
 
   ImageIteratorType it( reader->GetOutput(),
                         reader->GetOutput()->GetBufferedRegion() );
@@ -119,9 +117,9 @@ int itkRawImageIOTest(int argc, char* argv[])
     ++ot;
     }
 
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   writer->SetFileName(argv[2]);
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
 
   try
     {
@@ -132,7 +130,6 @@ int itkRawImageIOTest(int argc, char* argv[])
     std::cerr << "Error while writing the image " << argv[2] << std::endl;
     std::cerr << excp << std::endl;
     }
-
 
   std::cerr << "Test PASSED ! " << std::endl;
   return EXIT_SUCCESS;

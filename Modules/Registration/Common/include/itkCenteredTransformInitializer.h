@@ -60,7 +60,7 @@ namespace itk
 template< typename TTransform,
           typename TFixedImage,
           typename TMovingImage >
-class CenteredTransformInitializer:public Object
+class CenteredTransformInitializer : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -97,9 +97,9 @@ public:
   typedef ImageMomentsCalculator< MovingImageType > MovingImageCalculatorType;
 
   typedef typename FixedImageCalculatorType::Pointer
-  FixedImageCalculatorPointer;
+    FixedImageCalculatorPointer;
   typedef typename MovingImageCalculatorType::Pointer
-  MovingImageCalculatorPointer;
+    MovingImageCalculatorPointer;
 
   /** Offset type. */
   typedef typename TransformType::OffsetType OffsetType;
@@ -124,8 +124,15 @@ public:
 
   /** Select between using the geometrical center of the images or
       using the center of mass given by the image intensities. */
-  void GeometryOn() { m_UseMoments = false; }
-  void MomentsOn()  { m_UseMoments = true; }
+  void
+  GeometryOn() {
+    m_UseMoments = false;
+  }
+
+  void
+  MomentsOn()  {
+    m_UseMoments = true;
+  }
 
   /** Get() access to the moments calculators */
   itkGetModifiableObjectMacro(FixedCalculator, FixedImageCalculatorType);
@@ -133,7 +140,8 @@ public:
 
 protected:
   CenteredTransformInitializer();
-  ~CenteredTransformInitializer(){}
+  ~CenteredTransformInitializer(){
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

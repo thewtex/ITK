@@ -27,8 +27,8 @@
 #include "itkLinearInterpolateImageFunction.h"
 #include "itkImageFileWriter.h"
 
-
-int itkPhysicsBasedNonRigidRegistrationMethodTest(int argc, char *argv[] )
+int
+itkPhysicsBasedNonRigidRegistrationMethodTest(int argc, char *argv[] )
 {
 
   const unsigned int ImageDimension = 3;
@@ -42,9 +42,9 @@ int itkPhysicsBasedNonRigidRegistrationMethodTest(int argc, char *argv[] )
   enum { FIXED_IMG = 1, MOVING_IMG, MASK_IMG, MESH, WARPED_IMG };
 
   // read fixed
-  typedef short                                          InputPixelType;
-  typedef itk::Image< InputPixelType,  ImageDimension >  InputImageType;
-  typedef itk::ImageFileReader< InputImageType >         ImageReaderType;
+  typedef short                                         InputPixelType;
+  typedef itk::Image< InputPixelType,  ImageDimension > InputImageType;
+  typedef itk::ImageFileReader< InputImageType >        ImageReaderType;
 
   ImageReaderType::Pointer readerFixed = ImageReaderType::New();
   readerFixed->SetFileName( argv[FIXED_IMG] );
@@ -58,8 +58,8 @@ int itkPhysicsBasedNonRigidRegistrationMethodTest(int argc, char *argv[] )
   readerMask->SetFileName( argv[MASK_IMG] );
 
   // read mesh
-  typedef itk::Mesh< float, ImageDimension >          MeshType;
-  typedef itk::VTKTetrahedralMeshReader< MeshType >   MeshReaderType;
+  typedef itk::Mesh< float, ImageDimension >        MeshType;
+  typedef itk::VTKTetrahedralMeshReader< MeshType > MeshReaderType;
 
   MeshReaderType::Pointer readerMesh = MeshReaderType::New();
   readerMesh->SetFileName( argv[MESH] );
@@ -78,8 +78,10 @@ int itkPhysicsBasedNonRigidRegistrationMethodTest(int argc, char *argv[] )
     }
 
   // main filter
-  typedef itk::Image< itk::Vector< float, ImageDimension >, ImageDimension >  DeformationFieldType;
-  typedef itk::fem::PhysicsBasedNonRigidRegistrationMethod<InputImageType, InputImageType, InputImageType, MeshType, DeformationFieldType> PBNRRFilterType;
+  typedef itk::Image< itk::Vector< float,
+                                   ImageDimension >, ImageDimension >            DeformationFieldType;
+  typedef itk::fem::PhysicsBasedNonRigidRegistrationMethod<InputImageType, InputImageType, InputImageType, MeshType,
+                                                           DeformationFieldType> PBNRRFilterType;
 
   PBNRRFilterType::Pointer filter = PBNRRFilterType::New();
   filter->SetFixedImage( readerFixed->GetOutput() );
@@ -125,9 +127,8 @@ int itkPhysicsBasedNonRigidRegistrationMethodTest(int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-
   // write warped image to file
-  typedef itk::ImageFileWriter< InputImageType >  WriterType;
+  typedef itk::ImageFileWriter< InputImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[WARPED_IMG] );

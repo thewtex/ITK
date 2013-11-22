@@ -66,6 +66,7 @@ DerivativeOperator< TPixel, VDimension, TAllocator >
 
   return coeff;
 }
+
 } // namespace itk
 
 #endif

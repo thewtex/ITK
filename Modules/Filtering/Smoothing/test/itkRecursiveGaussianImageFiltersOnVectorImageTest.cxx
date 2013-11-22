@@ -18,7 +18,8 @@
 #include "itkRecursiveGaussianImageFilter.h"
 #include "itkVectorImage.h"
 
-int itkRecursiveGaussianImageFiltersOnVectorImageTest(int, char* [] )
+int
+itkRecursiveGaussianImageFiltersOnVectorImageTest(int, char* [] )
 {
   // In this test, we will create a 9x9 image of vectors with pixels (4,4)
   // and (1,6) set to 'vector1'. We will filter it using
@@ -29,6 +30,7 @@ int itkRecursiveGaussianImageFiltersOnVectorImageTest(int, char* [] )
   const double       tolerance = 0.001;
 
   const unsigned int NumberOfComponents = 4;
+
   typedef double                                              PixelComponentType;
   typedef itk::VectorImage< PixelComponentType, Dimension >   ImageType;
   typedef ImageType::PixelType                                PixelType;
@@ -80,7 +82,7 @@ int itkRecursiveGaussianImageFiltersOnVectorImageTest(int, char* [] )
   // is filtered independently.
   //
   typedef itk::RecursiveGaussianImageFilter<
-          ImageType, ImageType >  FilterType;
+      ImageType, ImageType >  FilterType;
   FilterType::Pointer filterX = FilterType::New();
   FilterType::Pointer filterY = FilterType::New();
   filterX->SetDirection( 0 );   // 0 --> X direction
@@ -107,7 +109,7 @@ int itkRecursiveGaussianImageFiltersOnVectorImageTest(int, char* [] )
   //Test a few pixels of the  fitlered image
   //
   ImageType::Pointer filteredImage = filterY->GetOutput();
-  ConstIteratorType cit( filteredImage, filteredImage->GetRequestedRegion() );
+  ConstIteratorType  cit( filteredImage, filteredImage->GetRequestedRegion() );
   cit.SetDirection(0);
 
   index[0] = 4;
@@ -116,7 +118,7 @@ int itkRecursiveGaussianImageFiltersOnVectorImageTest(int, char* [] )
   if( vnl_math_abs(cit.Get()[0] - 0.160313) > tolerance )
     {
     std::cout << "[FAILED] Tensor(0,0) at index (4,4) must be 0.1603 but is "
-      << cit.Get()[0] << std::endl;
+              << cit.Get()[0] << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -126,7 +128,7 @@ int itkRecursiveGaussianImageFiltersOnVectorImageTest(int, char* [] )
   if( vnl_math_abs(cit.Get()[3] -0.0026944) > tolerance )
     {
     std::cout << "[FAILED] Tensor(3,3) at index (6,6) must be 0.0026944 but is "
-      << cit.Get()[3] << std::endl;
+              << cit.Get()[3] << std::endl;
     return EXIT_FAILURE;
     }
 

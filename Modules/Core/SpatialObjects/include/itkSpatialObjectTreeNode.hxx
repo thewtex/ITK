@@ -26,7 +26,7 @@ namespace itk
 /** Constructor */
 template< unsigned int TDimension >
 SpatialObjectTreeNode< TDimension >
-::SpatialObjectTreeNode():TreeNode< SpatialObject< TDimension > * >()
+::SpatialObjectTreeNode() : TreeNode< SpatialObject< TDimension > * >()
 {
   m_NodeToParentNodeTransform = TransformType::New();
   m_NodeToParentNodeTransform->SetIdentity();
@@ -41,6 +41,7 @@ SpatialObjectTreeNode< TDimension >
 ::PrintSelf( std::ostream & os, Indent indent ) const
 {
   Superclass::PrintSelf(os, indent );
+
   os << indent << "NodeToParentNodeTransform: "
      << m_NodeToParentNodeTransform << std::endl;
   os << indent << "NodeToWorldTransform: "
@@ -54,12 +55,14 @@ SpatialObjectTreeNode< TDimension >
 ::SetData(SpatialObjectType *data)
 {
   Superclass::Set(data);
+
   data->SetTreeNode(this); // give the pointer to the node to the spatial object
 }
 
 /** Compute the NodeToWorld transform based on the parent */
 template< unsigned int TDimension >
-void SpatialObjectTreeNode< TDimension >
+void
+SpatialObjectTreeNode< TDimension >
 ::ComputeNodeToWorldTransform()
 {
   m_NodeToWorldTransform->SetMatrix( m_NodeToParentNodeTransform->GetMatrix() );
@@ -78,7 +81,7 @@ template< unsigned int TDimension >
 typename SpatialObjectTreeNode< TDimension >::ChildrenListType *
 SpatialObjectTreeNode< TDimension >
 ::GetChildren(unsigned int depth, char *name) const
-{
+  {
   ChildrenListType *children = new ChildrenListType;
 
   typename ChildrenListType::const_iterator childrenListIt =
@@ -110,7 +113,7 @@ SpatialObjectTreeNode< TDimension >
     }
 
   return children;
-}
+  }
 
 #endif
 

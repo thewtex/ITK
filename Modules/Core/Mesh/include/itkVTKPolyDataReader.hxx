@@ -150,7 +150,7 @@ VTKPolyDataReader< TOutputMesh >
                       << "       numberOfPoints line= " << numberOfPoints);
     }
 
-  outputMesh->GetPoints()->Reserve(itk::Math::CastWithRangeCheck<PointIdentifier>(numberOfPoints));
+  outputMesh->GetPoints()->Reserve(itk::Math::CastWithRangeCheck<PointIdentifier>(numberOfPoints) );
 
   //
   // Load the point coordinates into the itk::Mesh
@@ -277,7 +277,7 @@ VTKPolyDataReader< TOutputMesh >
       {
       itkExceptionMacro(<< "Error reading file: " << m_FileName
                         << "point ids must be >= 0.\n"
-                           "ids=" << ids[0] << " " << ids[1] << " " << ids[2]);
+                        "ids=" << ids[0] << " " << ids[1] << " " << ids[2]);
       }
 
     const OffsetValueType signedNumberOfPoints
@@ -373,6 +373,7 @@ VTKPolyDataReader< TOutputMesh >
   os << indent << "Version: " << m_Version << std::endl;
   os << indent << "Header: " << m_Header << std::endl;
 }
+
 } //end of namespace itk
 
 #endif

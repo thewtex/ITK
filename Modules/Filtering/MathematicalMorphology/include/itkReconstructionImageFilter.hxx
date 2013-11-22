@@ -79,9 +79,9 @@ ReconstructionImageFilter< TInputImage, TOutputImage, TCompare >
 template< typename TInputImage, typename TOutputImage, typename TCompare >
 const typename ReconstructionImageFilter< TInputImage, TOutputImage, TCompare >::MarkerImageType *
 ReconstructionImageFilter< TInputImage, TOutputImage, TCompare >::GetMarkerImage()
-{
+  {
   return this->GetInput(0);
-}
+  }
 
 template< typename TInputImage, typename TOutputImage, typename TCompare >
 void
@@ -94,9 +94,9 @@ ReconstructionImageFilter< TInputImage, TOutputImage, TCompare >::SetMaskImage(c
 template< typename TInputImage, typename TOutputImage, typename TCompare >
 const typename ReconstructionImageFilter< TInputImage, TOutputImage, TCompare >::MaskImageType *
 ReconstructionImageFilter< TInputImage, TOutputImage, TCompare >::GetMaskImage()
-{
+  {
   return this->GetInput(1);
-}
+  }
 
 // a version that takes a padded copy of mask and marker
 template< typename TInputImage, typename TOutputImage, typename TCompare >
@@ -398,5 +398,6 @@ ReconstructionImageFilter< TInputImage, TOutputImage, TCompare >
   os << indent << "MarkerValue: " << m_MarkerValue << std::endl;
   os << indent << "UseInternalCopy: " << m_UseInternalCopy << std::endl;
 }
+
 }
 #endif

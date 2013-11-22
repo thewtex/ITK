@@ -49,7 +49,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class ClosingByReconstructionImageFilter:
+class ClosingByReconstructionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -121,7 +121,9 @@ public:
 
 protected:
   ClosingByReconstructionImageFilter();
-  ~ClosingByReconstructionImageFilter() {}
+  ~ClosingByReconstructionImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** ClosingByReconstructionImageFilter needs the entire input be

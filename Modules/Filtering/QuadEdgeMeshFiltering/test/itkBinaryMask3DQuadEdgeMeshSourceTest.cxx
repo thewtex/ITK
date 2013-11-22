@@ -22,29 +22,29 @@
 #include "itkBinaryMask3DMeshSource.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
-int itkBinaryMask3DQuadEdgeMeshSourceTest(int, char *[])
+int
+itkBinaryMask3DQuadEdgeMeshSourceTest(int, char *[])
 {
 
   // Define the dimension of the images
   const unsigned int Dimension = 3;
 
   // Declare the types of the output images
-  typedef itk::Image<unsigned short,   Dimension>   ImageType;
+  typedef itk::Image<unsigned short,   Dimension> ImageType;
 
   // Declare the type of the index,size and region to initialize images
-  typedef itk::Index<Dimension>                     IndexType;
-  typedef itk::Size<Dimension>                      SizeType;
-  typedef itk::ImageRegion<Dimension>               RegionType;
-  typedef ImageType::PixelType                      PixelType;
+  typedef itk::Index<Dimension>       IndexType;
+  typedef itk::Size<Dimension>        SizeType;
+  typedef itk::ImageRegion<Dimension> RegionType;
+  typedef ImageType::PixelType        PixelType;
 
   typedef itk::ImageRegionIteratorWithIndex<ImageType> IteratorType;
 
   // Declare the type of the Mesh
-  typedef itk::QuadEdgeMesh<double, 3>              MeshType;
-  typedef MeshType::PointType                       PointType;
+  typedef itk::QuadEdgeMesh<double, 3> MeshType;
+  typedef MeshType::PointType          PointType;
 
-  typedef itk::BinaryMask3DMeshSource< ImageType, MeshType >   MeshSourceType;
+  typedef itk::BinaryMask3DMeshSource< ImageType, MeshType > MeshSourceType;
 
   const PixelType backgroundValue = 0;
   const PixelType internalValue   = 1;

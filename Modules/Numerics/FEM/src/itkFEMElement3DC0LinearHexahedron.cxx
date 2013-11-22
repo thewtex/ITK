@@ -278,7 +278,8 @@ Element3DC0LinearHexahedron
   else
     {
     VectorType pc(3);
-    for( i = 0; i < 3; i++ ) // only approximate, not really true for warped hexa
+    for( i = 0; i < 3; i++ ) // only approximate, not really true for warped
+                             // hexa
       {
       if( localPt[i] < 0.0 )
         {
@@ -297,7 +298,8 @@ Element3DC0LinearHexahedron
     }
 }
 
-void Element3DC0LinearHexahedron::InterpolationFunctions(
+void
+Element3DC0LinearHexahedron::InterpolationFunctions(
   const VectorType & pcoords, VectorType & sf) const
 {
   Float rm, sm, tm;
@@ -317,7 +319,8 @@ void Element3DC0LinearHexahedron::InterpolationFunctions(
 }
 
 // ----------------------------------------------------------------------------
-void Element3DC0LinearHexahedron::InterpolationDerivs(
+void
+Element3DC0LinearHexahedron::InterpolationDerivs(
   const VectorType & pcoords, VectorType & derivs) const
 {
   Float rm, sm, tm;
@@ -357,15 +360,17 @@ void Element3DC0LinearHexahedron::InterpolationDerivs(
   derivs[23] = rm * pcoords[1];
 }
 
-itk::fem::Element::Float Element3DC0LinearHexahedron::Determinant3x3(const VectorType & c1,
-                                                                     const VectorType & c2,
-                                                                     const VectorType & c3) const
+itk::fem::Element::Float
+Element3DC0LinearHexahedron::Determinant3x3(const VectorType & c1,
+                                            const VectorType & c2,
+                                            const VectorType & c3) const
 {
   return c1[0] * c2[1] * c3[2] + c2[0] * c3[1] * c1[2] + c3[0] * c1[1] * c2[2]
          - c1[0] * c3[1] * c2[2] - c2[0] * c1[1] * c3[2] - c3[0] * c2[1] * c1[2];
 }
 
-void Element3DC0LinearHexahedron::PopulateEdgeIds(void)
+void
+Element3DC0LinearHexahedron::PopulateEdgeIds(void)
 {
   this->m_EdgeIds.resize(0);
 

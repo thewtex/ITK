@@ -21,10 +21,12 @@
 
 void test(int);
 
-int itkSignedDanielssonDistanceMapImageFilterTest(int, char* [] )
+int
+itkSignedDanielssonDistanceMapImageFilterTest(int, char* [] )
 {
 
   std::cout << "Test ITK Signed Danielsson Distance Map" << std::endl << std::endl;
+
   test(1);  // Test with a 9x9 square, with a 5x5 subsquare in the middle ON
   test(0);  // Test with 2 points.. same test and results as
             // DanielssonDistanceMap
@@ -32,15 +34,16 @@ int itkSignedDanielssonDistanceMapImageFilterTest(int, char* [] )
 
 }
 
-
-void test(int testIdx)
+void
+test(int testIdx)
 {
 
   const unsigned int Dimension = 2;
-  typedef float      PixelType;
 
-  typedef itk::Image< unsigned char, Dimension >  myImageType2D1;
-  typedef itk::Image< PixelType, Dimension >      myImageType2D2;
+  typedef float PixelType;
+
+  typedef itk::Image< unsigned char, Dimension > myImageType2D1;
+  typedef itk::Image< PixelType, Dimension >     myImageType2D2;
 
   /* TEST 1: For a point image, SignedDaniessonDistanceMapImageFilter should
    * give the same output as DaniessonDistanceMapImageFilter  */
@@ -97,10 +100,10 @@ void test(int testIdx)
     inputImage2D->SetPixel( index2D, 2);
     }
   else
-  {
+    {
     std::cout <<
       "Compute with a 9x9 image, with a 5x5 square at the center set to ON."
-      << std::endl << std::endl;
+              << std::endl << std::endl;
     //Test the signed Danielsson Output for the a 5x5 square in a 9x9 image
     int i,j;
     for (i=2; i<=6; i++)
@@ -112,12 +115,12 @@ void test(int testIdx)
         inputImage2D->SetPixel( index2D, 1);
         }
       }
-   }
+    }
 
   /* Create Danielsson Distance Map filter */
   typedef itk::SignedDanielssonDistanceMapImageFilter<
-                                            myImageType2D1,
-                                            myImageType2D2 > myFilterType2D;
+      myImageType2D1,
+      myImageType2D2 > myFilterType2D;
 
   myFilterType2D::Pointer filter2D = myFilterType2D::New();
 
@@ -129,14 +132,14 @@ void test(int testIdx)
   VoronoiImageType::Pointer outputVoronoi2D  = filter2D->GetVoronoiMap();
 
   myFilterType2D::VectorImageType::Pointer
-                    outputComponents = filter2D->GetVectorDistanceMap();
+    outputComponents = filter2D->GetVectorDistanceMap();
 
   filter2D->Update();
 
   /* Show Distance map */
   itk::ImageSliceConstIteratorWithIndex<myImageType2D2> it2D2(
-                                outputDistance2D,
-                                outputDistance2D->GetRequestedRegion() );
+    outputDistance2D,
+    outputDistance2D->GetRequestedRegion() );
 
   it2D2.GoToBegin();
   it2D2.SetFirstDirection ( 0 );
@@ -163,8 +166,8 @@ void test(int testIdx)
   std::cout << "Voronoi Map Image 2D" << std::endl << std::endl;
 
   itk::ImageSliceConstIteratorWithIndex< VoronoiImageType > it2D3(
-                                outputVoronoi2D,
-                                outputVoronoi2D->GetRequestedRegion() );
+    outputVoronoi2D,
+    outputVoronoi2D->GetRequestedRegion() );
 
   it2D3.SetFirstDirection( 0 );
   it2D3.SetSecondDirection( 1 );
@@ -190,8 +193,8 @@ void test(int testIdx)
   std::cout << "Components Map Image 2D" << std::endl << std::endl;
 
   itk::ImageSliceConstIteratorWithIndex< myFilterType2D::VectorImageType > it2D4(
-                                outputComponents,
-                                outputComponents->GetRequestedRegion() );
+    outputComponents,
+    outputComponents->GetRequestedRegion() );
 
   it2D4.SetFirstDirection( 0 );
   it2D4.SetSecondDirection( 1 );
@@ -203,7 +206,7 @@ void test(int testIdx)
       while( !it2D4.IsAtEndOfLine() )
         {
         std::cout << "[";
-        for (unsigned int i=0;i<2;i++)
+        for (unsigned int i=0; i<2; i++)
           {
           std::cout << it2D4.Get()[i];
           if( i==0 )

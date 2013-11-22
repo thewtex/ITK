@@ -31,7 +31,8 @@
 #include "itkTIFFImageIO.h"
 #include "itkVTKImageIO.h"
 
-int itkIOPrintTest(int , char* [])
+int
+itkIOPrintTest(int , char* [])
 {
   typedef itk::Image<unsigned char,2> ImageType;
   itk::ImageFileReader<ImageType>::Pointer reader =

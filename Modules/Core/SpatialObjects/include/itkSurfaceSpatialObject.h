@@ -36,7 +36,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class SurfaceSpatialObject:
+class SurfaceSpatialObject :
   public PointBasedSpatialObject<  TDimension >
 {
 public:
@@ -64,19 +64,27 @@ public:
 
   /** Returns a reference to the list of the Surface points. */
   PointListType & GetPoints(void);
+
   const PointListType & GetPoints(void) const;
 
   /** Return a point in the list given the index */
-  const SpatialObjectPointType * GetPoint(IdentifierType id) const
+  const SpatialObjectPointType *
+  GetPoint(IdentifierType id) const
   {
     return &( m_Points[id] );
   }
 
   /** Return a point in the list given the index */
-  SpatialObjectPointType * GetPoint(IdentifierType id) { return &( m_Points[id] ); }
+  SpatialObjectPointType *
+  GetPoint(IdentifierType id) {
+    return &( m_Points[id] );
+  }
 
   /** Return the number of points in the list */
-  SizeValueType GetNumberOfPoints(void) const { return m_Points.size(); }
+  SizeValueType
+  GetNumberOfPoints(void) const {
+    return m_Points.size();
+  }
 
   /** Set the list of Surface points. */
   void SetPoints(PointListType & newPoints);
@@ -115,10 +123,12 @@ protected:
   PointListType m_Points;
 
   SurfaceSpatialObject();
-  virtual ~SurfaceSpatialObject();
+  virtual
+  ~SurfaceSpatialObject();
 
   /** Method to print the object.*/
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

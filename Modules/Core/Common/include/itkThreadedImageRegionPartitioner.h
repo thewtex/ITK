@@ -47,10 +47,10 @@ class ThreadedImageRegionPartitioner
 {
 public:
   /** Standard class typedefs. */
-  typedef ThreadedImageRegionPartitioner                                   Self;
-  typedef ThreadedDomainPartitioner<ImageRegion<VDimension> >              Superclass;
-  typedef SmartPointer<Self>                                               Pointer;
-  typedef SmartPointer<const Self>                                         ConstPointer;
+  typedef ThreadedImageRegionPartitioner                      Self;
+  typedef ThreadedDomainPartitioner<ImageRegion<VDimension> > Superclass;
+  typedef SmartPointer<Self>                                  Pointer;
+  typedef SmartPointer<const Self>                            ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -59,7 +59,7 @@ public:
   itkTypeMacro(ThreadedImageRegionPartitioner, ThreadedDomainPartitioner);
 
   /** Type of the object being threaded over */
-  typedef typename Superclass::DomainType  DomainType;
+  typedef typename Superclass::DomainType DomainType;
 
   /** Deprecated typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int, VDimension);
@@ -80,19 +80,20 @@ public:
    */
   virtual
   ThreadIdType PartitionDomain(const ThreadIdType threadId,
-                           const ThreadIdType requestedTotal,
-                           const DomainType& completeRegion,
-                           DomainType& subRegion) const;
+                               const ThreadIdType requestedTotal,
+                               const DomainType& completeRegion,
+                               DomainType& subRegion) const;
 
 protected:
   ThreadedImageRegionPartitioner();
-  virtual ~ThreadedImageRegionPartitioner();
+  virtual
+  ~ThreadedImageRegionPartitioner();
 
   typedef ImageRegionSplitterSlowDimension ImageRegionSplitterType;
 
 private:
   ThreadedImageRegionPartitioner(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                 //purposely not implemented
 
   ImageRegionSplitterType::Pointer m_ImageRegionSplitter;
 };

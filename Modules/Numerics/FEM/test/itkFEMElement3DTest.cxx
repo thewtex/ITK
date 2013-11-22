@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMLinearSystemWrapperDenseVNL.h"
@@ -32,7 +31,8 @@ void PrintNodalCoordinates1(SolverType *S, int w);
 
 void PrintK1(SolverType *S, int s);
 
-int itkFEMElement3DTest(int argc, char *argv[])
+int
+itkFEMElement3DTest(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -44,7 +44,6 @@ int itkFEMElement3DTest(int argc, char *argv[])
   //which is all currently done as a HACK in
   //the initializaiton of the itk::FEMFactoryBase::GetFactory()
   itk::FEMFactoryBase::GetFactory()->RegisterDefaultTypes();
-
 
   // Solvers being tested
   int numsolvers = 3;
@@ -99,58 +98,58 @@ int itkFEMElement3DTest(int argc, char *argv[])
   // Define all expected solutions here
   double hex2expectedSolution[24] =
     {
-      -0.086324, -0.00055514, 0.121079,
-      0.0952793, -0.00331153, 0.114235,
-      0.0727445, 0.00768949, -0.0394109,
-      -0.0774779, -0.0115562, -0.0325665,
-      0, 0, 0.0713128,
-      0, 0, 0.0734239,
-      0.0439568, 0, 0.00211102,
-      -0.0397348, 0, 0
+    -0.086324, -0.00055514, 0.121079,
+    0.0952793, -0.00331153, 0.114235,
+    0.0727445, 0.00768949, -0.0394109,
+    -0.0774779, -0.0115562, -0.0325665,
+    0, 0, 0.0713128,
+    0, 0, 0.0734239,
+    0.0439568, 0, 0.00211102,
+    -0.0397348, 0, 0
     };
   double hex3ExpectedSolution[24] =
     {
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0
     };
   double hex4GravExpectedSolution[24] =
     {
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      9.27489e-08, 2.95922e-06, -9.27489e-08,
-      -1.49661e-06, 8.59118e-07, 1.38971e-06,
-      -1.32956e-06, -5.70152e-07, 1.32956e-06,
-      -1.38971e-06, 8.59118e-07, 1.49661e-06,
-      -1.59154e-06, 2.37079e-06, 1.59154e-06
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    9.27489e-08, 2.95922e-06, -9.27489e-08,
+    -1.49661e-06, 8.59118e-07, 1.38971e-06,
+    -1.32956e-06, -5.70152e-07, 1.32956e-06,
+    -1.38971e-06, 8.59118e-07, 1.49661e-06,
+    -1.59154e-06, 2.37079e-06, 1.59154e-06
     };
   double tetra2ExpectedSolution[15] =
     {
-      0, 0, 0,
-      0, 0, -0.000866667,
-      0, 0, -0.000866667,
-      0, 0, 0,
-      0, 0, 0
+    0, 0, 0,
+    0, 0, -0.000866667,
+    0, 0, -0.000866667,
+    0, 0, 0,
+    0, 0, 0
     };
   double tetra3ExpectedSolution[12] =
     {
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0
     };
   double tetra4gravExpectedSolution[12] =
     {
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 0,
-      0, 0, 1.46858e-05
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 1.46858e-05
     };
 
   // Run the Solver using all of the available numeric solvers
@@ -192,7 +191,7 @@ int itkFEMElement3DTest(int argc, char *argv[])
 
       solver->Update();
 
-      double      tolerance= 0.0;
+      double tolerance= 0.0;
       if( modelFile == "hexa2.meta" )
         {
         tolerance = 10e-6;
@@ -269,11 +268,13 @@ int itkFEMElement3DTest(int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-void PrintK1(SolverType *S, int s)
+void
+PrintK1(SolverType *S, int s)
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S->GetLinearSystemWrapper();
 
   std::cout << std::endl << "k" << s << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     std::cout << " [";
@@ -297,12 +298,14 @@ void PrintK1(SolverType *S, int s)
   std::cout << "];" << std::endl;
 }
 
-void PrintF1(SolverType *S, int s)
+void
+PrintF1(SolverType *S, int s)
 // Print F - the global load vector
 {
   itk::fem::LinearSystemWrapper::Pointer lsw = S->GetLinearSystemWrapper();
 
   std::cout << std::endl << "f" << s << "=[";
+
   for( unsigned int j = 0; j < lsw->GetSystemOrder(); j++ )
     {
     if( j > 0 )
@@ -314,7 +317,8 @@ void PrintF1(SolverType *S, int s)
   std::cout << "];" << std::endl;
 }
 
-void PrintNodalCoordinates1(SolverType *S, int w)
+void
+PrintNodalCoordinates1(SolverType *S, int w)
 // Print the nodal coordinates
 {
   std::cout << std::endl << "Nodal coordinates: " << std::endl;
@@ -322,6 +326,7 @@ void PrintNodalCoordinates1(SolverType *S, int w)
   std::cout << "xyz" << w << "=[";
 
   int numberOfNodes = S->GetInput()->GetNumberOfNodes();
+
   for( int i = 0; i < numberOfNodes; i++ )
     {
     std::cout << " [";
@@ -331,7 +336,8 @@ void PrintNodalCoordinates1(SolverType *S, int w)
   std::cout << "];" << std::endl;
 }
 
-bool CheckDisplacements1(SolverType *S, int s, double *expectedResults, double tolerance)
+bool
+CheckDisplacements1(SolverType *S, int s, double *expectedResults, double tolerance)
 // Prints the components of the problem for debugging/reporting purposes
 {
   // std::cout << std::endl << "Check Displacements: " << std::endl;
@@ -340,10 +346,12 @@ bool CheckDisplacements1(SolverType *S, int s, double *expectedResults, double t
   // std::cout << "Degrees of Freedom : " << numDOF << std::endl;
 
   bool foundError = false;
+
   for( int i = 0; i < numDOF; i++ )
     {
     double result = S->GetSolution(i);
-    // std::cout  << result << " " << expectedResults[i] << " " << tolerance << std::endl;
+    // std::cout  << result << " " << expectedResults[i] << " " << tolerance <<
+    // std::endl;
     if( vcl_fabs(expectedResults[i] - result) > tolerance )
       {
       std::cout << "ERROR: Solver " << s << " Index " << i << ". Expected " << expectedResults[i] << " Solution "

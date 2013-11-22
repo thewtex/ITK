@@ -79,7 +79,6 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(FiniteDifferenceFunctionLoad, LoadElement);
 
-
   /** CreateAnother method will clone the existing instance of this type,
    *  including its internal member variables. */
   virtual::itk::LightObject::Pointer CreateAnother(void) const;
@@ -102,19 +101,19 @@ public:
   typedef ImageRegionIteratorWithIndex<FixedImageType>  FixedRegionIteratorType;
 
   typedef NeighborhoodIterator<MovingImageType>
-  MovingNeighborhoodIteratorType;
+    MovingNeighborhoodIteratorType;
   typedef typename MovingNeighborhoodIteratorType::IndexType
-  MovingNeighborhoodIndexType;
+    MovingNeighborhoodIndexType;
   typedef typename MovingNeighborhoodIteratorType::RadiusType
-  MovingRadiusType;
+    MovingRadiusType;
   typedef typename MovingNeighborhoodIteratorType::RadiusType
-  RadiusType;
+    RadiusType;
   typedef NeighborhoodIterator<FixedImageType>
-  FixedNeighborhoodIteratorType;
+    FixedNeighborhoodIteratorType;
   typedef typename FixedNeighborhoodIteratorType::IndexType
-  FixedNeighborhoodIndexType;
+    FixedNeighborhoodIndexType;
   typedef typename FixedNeighborhoodIteratorType::RadiusType
-  FixedRadiusType;
+    FixedRadiusType;
 
   // Typedefs for Image Data
   typedef   typename  MovingImageType::PixelType MovingPixelType;
@@ -122,22 +121,21 @@ public:
   typedef   Float                                PixelType;
   typedef   Float                                ComputationType;
   typedef   Image<PixelType, itkGetStaticConstMacro(ImageDimension)>
-  ImageType;
+    ImageType;
   typedef   itk::Vector<float, itkGetStaticConstMacro(ImageDimension)>
-  VectorType;
+    VectorType;
   typedef   vnl_vector<Float> FEMVectorType;
   typedef   Image<VectorType, itkGetStaticConstMacro(ImageDimension)>
-  DisplacementFieldType;
+    DisplacementFieldType;
   typedef   typename DisplacementFieldType::Pointer DisplacementFieldTypePointer;
 
   typedef NeighborhoodIterator<DisplacementFieldType>
-  FieldIteratorType;
-
+    FieldIteratorType;
 
   /** PDEDeformableRegistrationFilterFunction type. */
   typedef PDEDeformableRegistrationFunction<FixedImageType, MovingImageType,
                                             DisplacementFieldType>
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
   typedef typename FiniteDifferenceFunctionType::Pointer FiniteDifferenceFunctionTypePointer;
 
   typedef typename FiniteDifferenceFunctionType::TimeStepType TimeStepType;
@@ -157,11 +155,11 @@ public:
   typedef unsigned long                                        ElementIdentifier;
   typedef VectorContainer<ElementIdentifier, Element::Pointer> ElementContainerType;
 
-
   /* This method sets the pointer to a FiniteDifferenceFunction object that
    * will be used by the filter to calculate updates at image pixels.
    * \returns A FiniteDifferenceObject pointer. */
-  void SetDifferenceFunction( FiniteDifferenceFunctionTypePointer drfp)
+  void
+  SetDifferenceFunction( FiniteDifferenceFunctionTypePointer drfp)
   {
     drfp->SetFixedImage(m_FixedImage);
     drfp->SetMovingImage(m_MovingImage);
@@ -171,7 +169,8 @@ public:
     this->m_DifferenceFunction = drfp;
   }
 
-  void SetMetric( FiniteDifferenceFunctionTypePointer drfp )
+  void
+  SetMetric( FiniteDifferenceFunctionTypePointer drfp )
   {
     this->SetDifferenceFunction( static_cast<FiniteDifferenceFunctionType *>(
                                    drfp.GetPointer() ) );
@@ -180,7 +179,8 @@ public:
   }
 
   /** Define the reference (moving) image. */
-  void SetMovingImage(MovingImageType* R)
+  void
+  SetMovingImage(MovingImageType* R)
   {
     m_MovingImage = R;
     m_MovingSize = m_MovingImage->GetLargestPossibleRegion().GetSize();
@@ -191,7 +191,8 @@ public:
   }
 
   /** Define the target (fixed) image. */
-  void SetFixedImage(FixedImageType* T)
+  void
+  SetFixedImage(FixedImageType* T)
   {
     m_FixedImage = T;
     m_FixedSize = T->GetLargestPossibleRegion().GetSize();
@@ -201,24 +202,28 @@ public:
       }
   }
 
-  MovingPointer GetMovingImage()
+  MovingPointer
+  GetMovingImage()
   {
     return m_MovingImage;
   }
 
-  FixedPointer GetFixedImage()
+  FixedPointer
+  GetFixedImage()
   {
     return m_FixedImage;
   }
 
   /** Define the metric region size. */
-  void SetMetricRadius(MovingRadiusType T)
+  void
+  SetMetricRadius(MovingRadiusType T)
   {
     m_MetricRadius  = T;
   }
 
   /** Get the metric region size. */
-  MovingRadiusType GetMetricRadius()
+  MovingRadiusType
+  GetMetricRadius()
   {
     return m_MetricRadius;
   }
@@ -227,12 +232,14 @@ public:
    * in each 1-dimensional line integral when evaluating the load.
    * This value is passed to the load implementation.
    */
-  void SetNumberOfIntegrationPoints(unsigned int i)
+  void
+  SetNumberOfIntegrationPoints(unsigned int i)
   {
     m_NumberOfIntegrationPoints = i;
   }
 
-  unsigned int GetNumberOfIntegrationPoints()
+  unsigned int
+  GetNumberOfIntegrationPoints()
   {
     return m_NumberOfIntegrationPoints;
   }
@@ -240,40 +247,45 @@ public:
   /** Set/Get the direction of the gradient (uphill or downhill).
     * E.g. the mean squares metric should be minimized while NCC and PR should be maximized.260
     */
-  void SetDescentDirectionMinimize( )
+  void
+  SetDescentDirectionMinimize()
   {
     m_Sign = 1.0;
   }
 
-  void SetDescentDirectionMaximize()
+  void
+  SetDescentDirectionMaximize()
   {
     m_Sign = -1.0;
   }
 
   /** Scaling of the similarity energy term */
-  void SetGamma(Float s)
+  void
+  SetGamma(Float s)
   {
     m_Gamma = s;
   }
 
-  void SetSolution(Solution::ConstPointer ptr)
+  void
+  SetSolution(Solution::ConstPointer ptr)
   {
     m_Solution = ptr;
   }
 
-  Solution::ConstPointer GetSolution()
+  Solution::ConstPointer
+  GetSolution()
   {
     return m_Solution;
   }
 
   // FIXME - WE ASSUME THE 2ND VECTOR (INDEX 1) HAS THE INFORMATION WE WANT
-  Float GetSolution(unsigned int i, unsigned int which = 0)
+  Float
+  GetSolution(unsigned int i, unsigned int which = 0)
   {
     return m_Solution->GetSolutionValue(i, which);
   }
 
   Float EvaluateMetricGivenSolution( ElementContainerType *el, Float step = 1.0);
-
 
   /**
    * Compute the image based load - implemented with ITK metric derivatives.
@@ -281,13 +293,15 @@ public:
   FEMVectorType Fe(FEMVectorType);
 
   /** Set the Displacement Field */
-  void SetDisplacementField( DisplacementFieldTypePointer df)
+  void
+  SetDisplacementField( DisplacementFieldTypePointer df)
   {
     m_DisplacementField = df;
   }
 
   /** Get the Displacement Field */
-  DisplacementFieldTypePointer GetDisplacementField()
+  DisplacementFieldTypePointer
+  GetDisplacementField()
   {
     return m_DisplacementField;
   }
@@ -307,7 +321,8 @@ public:
 protected:
 
 private:
-  FiniteDifferenceFunctionLoad(); // cannot be private until we always use smart pointers
+  FiniteDifferenceFunctionLoad(); // cannot be private until we always use smart
+                                  // pointers
 
   MovingPointer    m_MovingImage;
   FixedPointer     m_FixedImage;
@@ -315,10 +330,10 @@ private:
                                                                        image*/
   typename MovingImageType::SizeType  m_MovingSize;
   typename FixedImageType::SizeType   m_FixedSize;
-  unsigned int                        m_NumberOfIntegrationPoints;
-  unsigned int                        m_SolutionIndex;
-  unsigned int                        m_SolutionIndex2;
-  Float                               m_Gamma;
+  unsigned int m_NumberOfIntegrationPoints;
+  unsigned int m_SolutionIndex;
+  unsigned int m_SolutionIndex2;
+  Float        m_Gamma;
   typename Solution::ConstPointer     m_Solution;
   float                               m_GradSigma;
   float                               m_Sign;

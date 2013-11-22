@@ -50,7 +50,7 @@ public:
   typedef TriangleHelper< PointType > TriangleType;
 
   // *****************************************************************
-  QuadEdgeMeshDecimationQuadricElementHelper():
+  QuadEdgeMeshDecimationQuadricElementHelper() :
     m_Coefficients(itk::NumericTraits< CoordType >::Zero),
     m_A(PointDimension, PointDimension, itk::NumericTraits< CoordType >::Zero),
     m_B(itk::NumericTraits< CoordType >::Zero),
@@ -60,7 +60,7 @@ public:
     this->m_Rank = PointDimension;
   }
 
-  QuadEdgeMeshDecimationQuadricElementHelper(const CoefficientVectorType & iCoefficients):
+  QuadEdgeMeshDecimationQuadricElementHelper(const CoefficientVectorType & iCoefficients) :
     m_Coefficients(iCoefficients),
     m_A(PointDimension, PointDimension, itk::NumericTraits< CoordType >::Zero),
     m_B(itk::NumericTraits< CoordType >::Zero),
@@ -72,32 +72,38 @@ public:
   }
 
   ~QuadEdgeMeshDecimationQuadricElementHelper()
-  {}
+  {
+  }
 
-  CoefficientVectorType GetCoefficients() const
+  CoefficientVectorType
+  GetCoefficients() const
   {
     return this->m_Coefficients;
   }
 
-  VNLMatrixType GetAMatrix()
+  VNLMatrixType
+  GetAMatrix()
   {
     this->ComputeAMatrixAndBVector();
     return m_A;
   }
 
-  VNLVectorType GetBVector()
+  VNLVectorType
+  GetBVector()
   {
     ComputeAMatrixAndBVector();
     return m_B;
   }
 
-  unsigned int GetRank() const
+  unsigned int
+  GetRank() const
   {
     return m_Rank;
   }
 
   ///TODO this method should be really optimized!!!
-  inline CoordType ComputeError(const PointType & iP) const
+  inline CoordType
+  ComputeError(const PointType & iP) const
   {
     //     ComputeAMatrixAndBVector();
     vnl_svd< CoordType > svd(m_A, m_SVDAbsoluteThreshold);
@@ -133,14 +139,16 @@ public:
   }
 
   ///TODO this method should be really optimized!!!
-  inline CoordType ComputeErrorAtOptimalLocation(const PointType & iP)
+  inline CoordType
+  ComputeErrorAtOptimalLocation(const PointType & iP)
   {
     PointType optimal_location = ComputeOptimalLocation(iP);
 
     return ComputeError(optimal_location);
   }
 
-  PointType ComputeOptimalLocation(const PointType & iP)
+  PointType
+  ComputeOptimalLocation(const PointType & iP)
   {
     ComputeAMatrixAndBVector();
 
@@ -163,23 +171,27 @@ public:
   }
 
   ///TODO to be implemented!!!
-  PointType ComputeOptimalLocation(
+  PointType
+  ComputeOptimalLocation(
     const unsigned int & )
-  {}
+  {
+  }
 
-  void AddTriangle( const PointType & iP1,
-                    const PointType & iP2,
-                    const PointType & iP3,
-                    const CoordType & iWeight = static_cast< CoordType >( 1. ) )
+  void
+  AddTriangle( const PointType & iP1,
+               const PointType & iP2,
+               const PointType & iP3,
+               const CoordType & iWeight = static_cast< CoordType >( 1. ) )
   {
     VectorType N = TriangleType::ComputeNormal(iP1, iP2, iP3);
 
     AddPoint(iP1, N, iWeight);
   }
 
-  void AddPoint( const PointType & iP,
-                 const VectorType & iN,
-                 const CoordType & iWeight = static_cast< CoordType >( 1. ) )
+  void
+  AddPoint( const PointType & iP,
+            const VectorType & iN,
+            const CoordType & iWeight = static_cast< CoordType >( 1. ) )
   {
     unsigned int k(0), dim1, dim2;
 
@@ -199,7 +211,8 @@ public:
 
   // ***********************************************************************
   // operators
-  Self & operator=(const Self & iRight)
+  Self &
+  operator=(const Self & iRight)
   {
     if(this != &iRight)
       {
@@ -208,36 +221,42 @@ public:
     return *this;
   }
 
-  Self operator+(const Self & iRight) const
+  Self
+  operator+(const Self & iRight) const
   {
     return Self(this->m_Coefficients + iRight.m_Coefficients);
   }
 
-  Self & operator+=(const Self & iRight)
+  Self &
+  operator+=(const Self & iRight)
   {
     this->m_Coefficients += iRight.m_Coefficients;
     return *this;
   }
 
-  Self operator-(const Self & iRight) const
+  Self
+  operator-(const Self & iRight) const
   {
     return Self(this->m_Coefficients - iRight.m_Coefficients);
   }
 
-  Self & operator-=(const Self & iRight)
+  Self &
+  operator-=(const Self & iRight)
   {
     this->m_Coefficients -= iRight.m_Coefficients;
     return *this;
   }
 
-  Self operator*(const CoordType & iV) const
+  Self
+  operator*(const CoordType & iV) const
   {
     Self oElement = Self(this->m_Coefficients * iV);
 
     return oElement;
   }
 
-  Self & operator*=(const CoordType & iV)
+  Self &
+  operator*=(const CoordType & iV)
   {
     this->m_Coefficients *= iV;
     return *this;
@@ -253,7 +272,8 @@ protected:
   CoordType             m_SVDRelativeThreshold;
   //bool                        m_MatrixFilled;
 
-  void ComputeAMatrixAndBVector()
+  void
+  ComputeAMatrixAndBVector()
   {
     unsigned int k(0), dim1, dim2;
 
@@ -267,6 +287,7 @@ protected:
       }
     //m_MatrixFilled = true;
   }
+
 };
 }
 #endif

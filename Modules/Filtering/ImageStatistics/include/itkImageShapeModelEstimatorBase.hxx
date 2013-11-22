@@ -26,12 +26,14 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 ImageShapeModelEstimatorBase< TInputImage, TOutputImage >
 ::ImageShapeModelEstimatorBase(void)
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 ImageShapeModelEstimatorBase< TInputImage, TOutputImage >
 ::~ImageShapeModelEstimatorBase()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -56,6 +58,7 @@ ImageShapeModelEstimatorBase< TInputImage, TOutputImage >
   os << indent << "InputImage: ";
   os << m_InputImage.GetPointer() << std::endl;
 } // end PrintSelf
+
 } // namespace itk
 
 #endif

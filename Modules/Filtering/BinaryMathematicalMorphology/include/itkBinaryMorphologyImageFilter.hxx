@@ -45,6 +45,7 @@ BinaryMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 ::SetKernel(const KernelType & kernel)
 {
   Superclass::SetKernel(kernel);
+
   // Analyse it: the following process depends only on kernel
   this->AnalyzeKernel();
 }
@@ -339,12 +340,14 @@ BinaryMorphologyImageFilter< TInputImage, TOutput, TKernel >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Foreground Value: "
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( m_ForegroundValue ) << std::endl;
   os << indent << "Background Value: "
      << static_cast< typename NumericTraits< OutputPixelType >::PrintType >( m_BackgroundValue ) << std::endl;
   os << indent << "BoundaryToForeground: " << m_BoundaryToForeground << std::endl;
 }
+
 } // end namespace itk
 
 #endif

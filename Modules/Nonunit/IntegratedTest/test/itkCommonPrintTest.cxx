@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkAcosImageAdaptor.h"
 #include "itkAddImageAdaptor.h"
 #include "itkAsinImageAdaptor.h"
@@ -99,21 +98,21 @@
 #endif
 
 struct TestObject
-{
+  {
   float vector[3];
   int counter;
-};
+  };
 
-
-int itkCommonPrintTest(int , char* [])
+int
+itkCommonPrintTest(int , char* [])
 {
   typedef itk::Image<float,2>         InputType;
   typedef itk::Image<unsigned char,2> CharType;
   typedef itk::Image<float,2>         OutputType;
 
-  typedef itk::Point<float,3>   Point3DType;
-  typedef itk::Point<float,2>   PointType;
-  typedef itk::Mesh<PointType>  MeshType;
+  typedef itk::Point<float,3>  Point3DType;
+  typedef itk::Point<float,2>  PointType;
+  typedef itk::Mesh<PointType> MeshType;
 
   typedef itk::Vector<float,2>      VectorType;
   typedef itk::Image<VectorType, 2> VectorImageType;
@@ -123,7 +122,6 @@ int itkCommonPrintTest(int , char* [])
 
   // Used for CenteredTransformInitializer
   typedef itk::CenteredRigid2DTransform<float> TransformType;
-
 
   // Used for ImageAdaptor
   typedef itk::RedPixelAccessor<float> RedAccessorType;
@@ -216,7 +214,8 @@ int itkCommonPrintTest(int , char* [])
 
   itk::ElasticBodyReciprocalSplineKernelTransform<double,3>::Pointer ElasticBodyReciprocalSplineKernelTransformObj =
     itk::ElasticBodyReciprocalSplineKernelTransform<double,3>::New();
-  std::cout << "------------ElasticBodyReciprocalSplineKernelTransform" << ElasticBodyReciprocalSplineKernelTransformObj;
+  std::cout << "------------ElasticBodyReciprocalSplineKernelTransform" <<
+    ElasticBodyReciprocalSplineKernelTransformObj;
 
   itk::ElasticBodySplineKernelTransform<double,3>::Pointer ElasticBodySplineKernelTransformObj =
     itk::ElasticBodySplineKernelTransform<double,3>::New();
@@ -228,7 +227,7 @@ int itkCommonPrintTest(int , char* [])
 
   itk::EquivalencyTable::Pointer EquivalencyTableObj =
     itk::EquivalencyTable::New();
-  std:: cout << "-------------EquivalencyTable " << EquivalencyTableObj;
+  std::cout << "-------------EquivalencyTable " << EquivalencyTableObj;
 
   itk::Euler2DTransform<double>::Pointer Euler2DTransformObj =
     itk::Euler2DTransform<double>::New();
@@ -392,7 +391,7 @@ int itkCommonPrintTest(int , char* [])
 
   itk::OneWayEquivalencyTable::Pointer OneWayEquivalencyTableObj =
     itk::OneWayEquivalencyTable::New();
-  std:: cout << "-------------OneWayEquivalencyTable " << OneWayEquivalencyTableObj;
+  std::cout << "-------------OneWayEquivalencyTable " << OneWayEquivalencyTableObj;
 
   itk::PointSet<PointType,2>::Pointer PointSetObj =
     itk::PointSet<PointType,2>::New();
@@ -456,9 +455,11 @@ int itkCommonPrintTest(int , char* [])
     itk::SqrtImageAdaptor<InputType,OutputType>::New();
   std::cout << "------------SqrtImageAdaptor" << SqrtImageAdaptorObj;
 
-  itk::SymmetricEllipsoidInteriorExteriorSpatialFunction<>::Pointer SymmetricEllipsoidInteriorExteriorSpatialFunctionObj =
-    itk::SymmetricEllipsoidInteriorExteriorSpatialFunction<>::New();
-  std::cout << "------------SymmetricEllipsoidInteriorExteriorSpatialFunction" << SymmetricEllipsoidInteriorExteriorSpatialFunctionObj;
+  itk::SymmetricEllipsoidInteriorExteriorSpatialFunction<>::Pointer SymmetricEllipsoidInteriorExteriorSpatialFunctionObj
+    =
+      itk::SymmetricEllipsoidInteriorExteriorSpatialFunction<>::New();
+  std::cout << "------------SymmetricEllipsoidInteriorExteriorSpatialFunction" <<
+    SymmetricEllipsoidInteriorExteriorSpatialFunctionObj;
 
   itk::TanImageAdaptor<InputType,OutputType>::Pointer TanImageAdaptorObj =
     itk::TanImageAdaptor<InputType,OutputType>::New();
@@ -531,7 +532,6 @@ int itkCommonPrintTest(int , char* [])
   itk::XMLFileOutputWindow::Pointer XMLFileOutputWindowObj =
     itk::XMLFileOutputWindow::New();
   std::cout << "------------XMLFileOutputWindow" << XMLFileOutputWindowObj;
-
 
   return EXIT_SUCCESS;
 }

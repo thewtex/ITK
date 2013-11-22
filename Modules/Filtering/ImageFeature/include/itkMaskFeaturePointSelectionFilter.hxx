@@ -18,7 +18,6 @@
 #ifndef __itkMaskFeaturePointSelectionFilter_hxx
 #define __itkMaskFeaturePointSelectionFilter_hxx
 
-
 #include <map>
 #include "vnl/vnl_trace.h"
 #include "itkMaskFeaturePointSelectionFilter.h"
@@ -26,7 +25,6 @@
 #include "itkNumericTraits.h"
 #include "itkImageRegionIterator.h"
 #include "itkCompensatedSummation.h"
-
 
 namespace itk
 {
@@ -53,6 +51,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
 ::PrintSelf( std::ostream & os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "m_NonConnectivity: ";
   switch ( m_NonConnectivity )
     {
@@ -108,7 +107,8 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
   else
     {
     itkExceptionMacro( "Cannot use non-connectivity of value " << m_NonConnectivity
-      << ", expected a value in the range 0.." << ImageDimension - 1 << "." );
+                                                               << ", expected a value in the range 0.." << ImageDimension - 1 <<
+                       "." );
     }
 }
 
@@ -122,7 +122,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
 
   // fill inputs / outputs / misc
   const TImage * image = this->GetInput();
-  RegionType region = image->GetLargestPossibleRegion();
+  RegionType     region = image->GetLargestPossibleRegion();
   typename ImageType::SpacingType voxelSpacing = image->GetSpacing();
 
   FeaturePointsPointer pointSet = this->GetOutput();
@@ -132,14 +132,14 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
 
   PointsContainerPointer points = PointsContainer::New();
 
-  typedef typename FeaturePointsType::PointDataContainer  PointDataContainer;
-  typedef typename PointDataContainer::Pointer            PointDataContainerPointer;
+  typedef typename FeaturePointsType::PointDataContainer PointDataContainer;
+  typedef typename PointDataContainer::Pointer           PointDataContainerPointer;
 
   PointDataContainerPointer pointData = PointDataContainer::New();
 
   // initialize selectionMap
-  typedef unsigned char                         MapPixelType;
-  typedef Image< MapPixelType, ImageDimension>  SelectionMapType;
+  typedef unsigned char                        MapPixelType;
+  typedef Image< MapPixelType, ImageDimension> SelectionMapType;
   typename SelectionMapType::Pointer selectionMap = SelectionMapType::New();
 
   // The selectionMap only needs to have the same pixel grid of the input image,
@@ -157,7 +157,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
   else
     {
     // copy mask into selectionMap
-    ImageRegionConstIterator< MaskType > maskItr( mask, region );
+    ImageRegionConstIterator< MaskType >    maskItr( mask, region );
     ImageRegionIterator< SelectionMapType > mapItr( selectionMap, region );
     for ( maskItr.GoToBegin(), mapItr.GoToBegin(); !maskItr.IsAtEnd(); ++maskItr, ++mapItr )
       {
@@ -165,9 +165,10 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
       }
     }
 
-  // set safe region for picking feature points depending on whether tensors are computed
+  // set safe region for picking feature points depending on whether tensors are
+  // computed
   IndexType safeIndex = region.GetIndex();
-  SizeType safeSize = region.GetSize();
+  SizeType  safeSize = region.GetSize();
 
   if ( m_ComputeStructureTensors )
     {
@@ -191,7 +192,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
 
   // iterators for variance computing loop
   ImageRegionIterator< SelectionMapType > mapItr( selectionMap, region );
-  ConstNeighborhoodIterator< ImageType > imageItr( m_BlockRadius, image, region );
+  ConstNeighborhoodIterator< ImageType >  imageItr( m_BlockRadius, image, region );
   typedef typename ConstNeighborhoodIterator< ImageType >::NeighborIndexType NeighborSizeType;
   NeighborSizeType numPixelsInNeighborhood = imageItr.Size();
 
@@ -221,7 +222,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
       typedef typename MultiMapType::value_type PairType;
 
       // we only insert blocks with variance > 0
-      if(itk::NumericTraits<double>::IsPositive(variance))
+      if(itk::NumericTraits<double>::IsPositive(variance) )
         {
         pointMap.insert( PairType( variance, imageItr.GetIndex() ) );
         }
@@ -231,14 +232,15 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
   // number of points to select
   IndexValueType numberOfPointsInserted = -1; // initialize to -1
   IndexValueType maxNumberPointsToInserted = Math::Floor<SizeValueType>( 0.5 + pointMap.size() * m_SelectFraction );
-  const double TRACE_EPSILON = 1e-8;
+  const double   TRACE_EPSILON = 1e-8;
 
   // pick points with highest variance first (inverse iteration)
   typedef typename MultiMapType::reverse_iterator MapReverseIterator;
   MapReverseIterator rit = pointMap.rbegin();
   while ( rit != pointMap.rend() && numberOfPointsInserted < maxNumberPointsToInserted)
     {
-    // if point is not marked off in selection map and there are still points to be picked
+    // if point is not marked off in selection map and there are still points to
+    // be picked
     const IndexType & indexOfPointToPick = rit->second;
 
     // index should be inside the mask image (GetPixel = 1)
@@ -251,7 +253,9 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
         StructureTensorType tensor;
         tensor.Fill( 0 );
 
-        Matrix < SpacePrecisionType, ImageDimension, 1 > gradI; // vector declared as column matrix
+        Matrix < SpacePrecisionType, ImageDimension, 1 > gradI; // vector
+                                                                // declared as
+                                                                // column matrix
 
         SizeType radius;
         radius.Fill( 1 ); // iterate over neighbourhood of a voxel
@@ -260,7 +264,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
         center.SetSize( radius );
         center.SetIndex( indexOfPointToPick );
 
-        SizeType neighborRadiusForTensor = m_BlockRadius + m_BlockRadius;
+        SizeType                               neighborRadiusForTensor = m_BlockRadius + m_BlockRadius;
         ConstNeighborhoodIterator< ImageType > gradientItr( neighborRadiusForTensor, image, center );
 
         gradientItr.GoToBegin();
@@ -278,17 +282,18 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
             OffsetType right = off;
             right[ j ] += 1;
 
-            const ImagePixelType leftPixelValue  = image->GetPixel( gradientItr.GetIndex( left  ) );
-            const ImagePixelType rightPixelValue = image->GetPixel( gradientItr.GetIndex( right ) );
+            const ImagePixelType     leftPixelValue  = image->GetPixel( gradientItr.GetIndex( left  ) );
+            const ImagePixelType     rightPixelValue = image->GetPixel( gradientItr.GetIndex( right ) );
             const SpacePrecisionType doubleSpacing = voxelSpacing[ j ] * 2.0;
 
-            // using image GetPixel instead of iterator GetPixel since offsets might be outside of neighbourhood
+            // using image GetPixel instead of iterator GetPixel since offsets
+            // might be outside of neighbourhood
             gradI( j, 0 ) = ( leftPixelValue - rightPixelValue ) / doubleSpacing;
             }
 
           // Compute tensor product of gradI with itself
           const vnl_matrix< SpacePrecisionType > tnspose = gradI.GetTranspose();
-          StructureTensorType product ( gradI * tnspose );
+          StructureTensorType                    product ( gradI * tnspose );
           tensor += product;
           }
 
@@ -297,9 +302,9 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
         // trace should be non-zero
         if ( vnl_math_abs(trace) < TRACE_EPSILON )
           {
-            rit++;
-            numberOfPointsInserted--;
-            continue;
+          rit++;
+          numberOfPointsInserted--;
+          continue;
           }
 
         tensor /= trace;
@@ -327,6 +332,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
   pointSet->SetPoints( points );
   pointSet->SetPointData( pointData );
 }
+
 } // end namespace itk
 
 #endif

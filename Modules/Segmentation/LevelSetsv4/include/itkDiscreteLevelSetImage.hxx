@@ -177,7 +177,7 @@ DiscreteLevelSetImage< TOutput, VDimension >
     const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( inputIndexB ) );
 
     oHessian[dim1][dim1] = ( valueA + valueB - 2.0 * centerValue )
-        * vnl_math_sqr( this->m_NeighborhoodScales[dim1] );
+      * vnl_math_sqr( this->m_NeighborhoodScales[dim1] );
 
     inputIndexAa = inputIndexB;
     inputIndexBa = inputIndexB;
@@ -268,7 +268,7 @@ DiscreteLevelSetImage< TOutput, VDimension >
     const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( inputIndexB ) );
 
     oLaplacian += ( valueA + valueB - 2.0 * centerValue )
-        * vnl_math_sqr(this->m_NeighborhoodScales[dim1]);
+      * vnl_math_sqr(this->m_NeighborhoodScales[dim1]);
 
     inputIndexA[dim1] = inputIndex[dim1];
     inputIndexB[dim1] = inputIndex[dim1];
@@ -388,20 +388,20 @@ DiscreteLevelSetImage< TOutput, VDimension >
     const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( inputIndexB ) );
 
     data.Hessian.m_Value[dim1][dim1] =
-        ( valueA + valueB - 2.0 * centerValue ) * vnl_math_sqr( this->m_NeighborhoodScales[dim1] );
+      ( valueA + valueB - 2.0 * centerValue ) * vnl_math_sqr( this->m_NeighborhoodScales[dim1] );
 
     if( !backward )
       {
       data.BackwardGradient.m_Computed = true;
       data.BackwardGradient.m_Value[dim1] =
-          ( centerValue - valueB ) * this->m_NeighborhoodScales[dim1];
+        ( centerValue - valueB ) * this->m_NeighborhoodScales[dim1];
       }
 
     if( !forward )
       {
       data.ForwardGradient.m_Computed = true;
       data.ForwardGradient.m_Value[dim1]  =
-          ( valueA - centerValue ) * this->m_NeighborhoodScales[dim1];
+        ( valueA - centerValue ) * this->m_NeighborhoodScales[dim1];
       }
 
     inputIndexAa = inputIndexB;
@@ -444,7 +444,7 @@ DiscreteLevelSetImage< TOutput, VDimension >
       const OutputRealType valueDa = static_cast< OutputRealType >( this->Evaluate( inputIndexDa ) );
 
       data.Hessian.m_Value[dim1][dim2] =
-          data.Hessian.m_Value[dim2][dim1] =
+        data.Hessian.m_Value[dim2][dim1] =
           0.25 * ( valueAa - valueBa - valueCa + valueDa )
           * this->m_NeighborhoodScales[dim1] * this->m_NeighborhoodScales[dim2];
 
@@ -459,7 +459,7 @@ DiscreteLevelSetImage< TOutput, VDimension >
     inputIndexB[dim1] = inputIndex[dim1];
     }
 
-    data.Hessian.m_Computed = true;
+  data.Hessian.m_Computed = true;
 }
 
 // ----------------------------------------------------------------------------
@@ -470,8 +470,8 @@ DiscreteLevelSetImage< TOutput, VDimension >
 {
   OutputRealType oValue = NumericTraits< OutputRealType >::Zero;
 
-  HessianType   hessian = this->EvaluateHessian( inputIndex );
-  GradientType  grad = this->EvaluateGradient( inputIndex );
+  HessianType  hessian = this->EvaluateHessian( inputIndex );
+  GradientType grad = this->EvaluateGradient( inputIndex );
 
   for( unsigned int i = 0; i < Dimension; i++ )
     {
@@ -540,7 +540,7 @@ DiscreteLevelSetImage< TOutput, VDimension >
     const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( inputIndexB ) );
 
     data.Laplacian.m_Value +=
-        ( valueA + valueB - 2.0 * centerValue ) * vnl_math_sqr( this->m_NeighborhoodScales[dim1] );
+      ( valueA + valueB - 2.0 * centerValue ) * vnl_math_sqr( this->m_NeighborhoodScales[dim1] );
 
     inputIndexA[dim1] = inputIndex[dim1];
     inputIndexB[dim1] = inputIndex[dim1];
@@ -582,9 +582,9 @@ DiscreteLevelSetImage< TOutput, VDimension >
         if( j != i )
           {
           data.MeanCurvature.m_Value -= data.Gradient.m_Value[i]
-              * data.Gradient.m_Value[j] * data.Hessian.m_Value[i][j];
+            * data.Gradient.m_Value[j] * data.Hessian.m_Value[i][j];
           data.MeanCurvature.m_Value += data.Hessian.m_Value[j][j]
-              * data.Gradient.m_Value[i] * data.Gradient.m_Value[i];
+            * data.Gradient.m_Value[i] * data.Gradient.m_Value[i];
           }
         }
       }
@@ -751,7 +751,7 @@ DiscreteLevelSetImage< TOutput, VDimension >
     // image could not be cast back down
     itkExceptionMacro( << "itk::DiscreteLevelSetImage::CopyInformation() cannot cast "
                        << typeid( data ).name() << " to "
-                         << typeid( Self * ).name() );
+                       << typeid( Self * ).name() );
     }
 
   if ( !LevelSet )

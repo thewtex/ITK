@@ -59,8 +59,8 @@ namespace itkv3
  */
 template< typename TScalar = double >
 // type for scalars (float or double)
-class Rigid3DTransform:
-    public itk::Rigid3DTransform< TScalar >
+class Rigid3DTransform :
+  public itk::Rigid3DTransform< TScalar >
 {
 public:
   /** Standard class typedefs. */
@@ -68,7 +68,6 @@ public:
   typedef itk::Rigid3DTransform< TScalar > Superclass;
   typedef itk::SmartPointer< Self >        Pointer;
   typedef itk::SmartPointer< const Self >  ConstPointer;
-
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(Rigid3DTransform, itk::Rigid3DTransform);
@@ -108,16 +107,19 @@ public:
   typedef typename InverseTransformBaseType::Pointer    InverseTransformBasePointer;
 
 /** Get an inverse of this transform. */
-  bool GetInverse(Self *inverse) const
+  bool
+  GetInverse(Self *inverse) const
   {
-  return this->Superclass::GetInverse(inverse);
+    return this->Superclass::GetInverse(inverse);
   }
 
 /** Return an inverse of this transform. */
-virtual InverseTransformBasePointer GetInverseTransform() const
+  virtual InverseTransformBasePointer
+  GetInverseTransform() const
   {
-  Pointer inv = New();
-  return this->GetInverse(inv) ? inv.GetPointer() : NULL;
+    Pointer inv = New();
+
+    return this->GetInverse(inv) ? inv.GetPointer() : NULL;
   }
 
 protected:
@@ -128,6 +130,7 @@ protected:
 private:
   Rigid3DTransform(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };                                //class Rigid3DTransform
 }  // namespace itkv3
 #endif /* __itkv3Rigid3DTransform_h */

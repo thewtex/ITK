@@ -29,7 +29,8 @@
 namespace
 {
 
-int TestUnknowMetaDataBug( const std::string &fname )
+int
+TestUnknowMetaDataBug( const std::string &fname )
 {
   std::cout << "Testing for unknow meta data entry bug." << std::endl;
 
@@ -39,7 +40,7 @@ int TestUnknowMetaDataBug( const std::string &fname )
     typedef itk::Image<PixelType, 2> ImageType;
 
     ImageType::RegionType region;
-    ImageType::SizeType size = {{32,32}};
+    ImageType::SizeType   size = {{32,32}};
     region.SetSize( size );
 
     ImageType::Pointer image = ImageType::New();
@@ -49,8 +50,9 @@ int TestUnknowMetaDataBug( const std::string &fname )
 
     itk::MetaDataDictionary &dict = image->GetMetaDataDictionary();
 
-    itk::EncapsulateMetaData<float>(dict,"ASimpleFloatInitalized",static_cast<float>(1.234560F));
-    itk::EncapsulateMetaData<std::complex<float> >(dict,"AnUnsuportedComplexInitalized",std::complex<float>(1.234560F));
+    itk::EncapsulateMetaData<float>(dict,"ASimpleFloatInitalized",static_cast<float>(1.234560F) );
+    itk::EncapsulateMetaData<std::complex<float> >(dict,"AnUnsuportedComplexInitalized",
+                                                   std::complex<float>(1.234560F) );
 
     typedef itk::Testing::HashImageFilter<ImageType> Hasher;
     Hasher::Pointer hasher = Hasher::New();
@@ -60,7 +62,6 @@ int TestUnknowMetaDataBug( const std::string &fname )
 
     std::string originalHash = hasher->GetHash();
     std::cout << "\tOriginal image hash: " << originalHash << std::endl;
-
 
     // Write image out
     itk::ImageFileWriter<ImageType>::Pointer writer;
@@ -91,7 +92,8 @@ int TestUnknowMetaDataBug( const std::string &fname )
 
 }
 
-int itkMetaImageIOTest2(int argc, char* argv[])
+int
+itkMetaImageIOTest2(int argc, char* argv[])
 {
   if(argc < 2)
     {

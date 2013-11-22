@@ -27,12 +27,14 @@ namespace Statistics
 template< typename TSample >
 NeighborhoodSampler< TSample >
 ::NeighborhoodSampler()
-{}
+{
+}
 
 template< typename TSample >
 NeighborhoodSampler< TSample >
 ::~NeighborhoodSampler()
-{}
+{
+}
 
 template< typename TSample >
 void
@@ -69,6 +71,7 @@ NeighborhoodSampler< TSample >
   // m_Radius
   os << indent << "Radius: " << this->GetRadiusInput() << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

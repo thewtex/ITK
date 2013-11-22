@@ -32,10 +32,10 @@ class ExampleImageSource : public GaussianImageSource< TOutputImage >
 {
 public:
   /** Standard typedefs. */
-  typedef ExampleImageSource                   Self;
-  typedef GaussianImageSource< TOutputImage >  Superclass;
-  typedef SmartPointer< Self >                 Pointer;
-  typedef SmartPointer< const Self >           ConstPointer;
+  typedef ExampleImageSource                  Self;
+  typedef GaussianImageSource< TOutputImage > Superclass;
+  typedef SmartPointer< Self >                Pointer;
+  typedef SmartPointer< const Self >          ConstPointer;
 
   /** Output image typedefs */
   typedef TOutputImage                            OutputImageType;
@@ -49,14 +49,14 @@ public:
   typedef typename OutputImageType::SizeType      SizeType;
   typedef typename OutputImageType::SizeValueType SizeValueType;
 
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef std::vector< bool >                       EnabledArrayType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef std::vector< bool >                      EnabledArrayType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
-   /** ImageDimension constant */
+  /** ImageDimension constant */
   itkStaticConstMacro(OutputImageDimension,
                       unsigned int,
                       TOutputImage::ImageDimension);
@@ -68,9 +68,11 @@ public:
    * not mark the image source as modified; subclasses should override
    * this method to forward parameters through setters that call
    * Modified(). */
-  virtual void SetParameters( const ParametersType & parameters )
+  virtual void
+  SetParameters( const ParametersType & parameters )
   {
     ParametersType gaussianParameters = this->Superclass::GetParameters();
+
     for ( unsigned int i = 0; i < OutputImageDimension; ++i )
       {
       gaussianParameters[i] = parameters[i];
@@ -80,10 +82,12 @@ public:
   }
 
   /** Get the parameters for this source. */
-  virtual ParametersType GetParameters() const
+  virtual ParametersType
+  GetParameters() const
   {
     ParametersType gaussianParameters = this->Superclass::GetParameters();
     ParametersType parameters(OutputImageDimension);
+
     for ( unsigned int i = 0; i < OutputImageDimension; ++i )
       {
       parameters[i] = gaussianParameters[i];
@@ -93,23 +97,29 @@ public:
   }
 
   /** Get the number of parameters. */
-  virtual unsigned int GetNumberOfParameters() const
+  virtual unsigned int
+  GetNumberOfParameters() const
   {
     return OutputImageDimension;
   }
 
 protected:
-  ExampleImageSource() {};
-  virtual ~ExampleImageSource() {};
+  ExampleImageSource() {
+  }
+
+  virtual
+  ~ExampleImageSource() {
+  }
 
 private:
   ExampleImageSource(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  void operator=(const Self &);     // purposely not implemented
+
 };
 }
 
-
-int itkParametricBlindLeastSquaresDeconvolutionImageFilterTest(int argc, char* argv[])
+int
+itkParametricBlindLeastSquaresDeconvolutionImageFilterTest(int argc, char* argv[])
 {
   if ( argc < 6 )
     {
@@ -119,8 +129,8 @@ int itkParametricBlindLeastSquaresDeconvolutionImageFilterTest(int argc, char* a
     return EXIT_FAILURE;
     }
 
-  typedef float                              PixelType;
-  const unsigned int                         Dimension = 2;
+  typedef float PixelType;
+  const unsigned int Dimension = 2;
   typedef itk::Image< PixelType, Dimension > ImageType;
   typedef itk::ImageFileReader< ImageType >  ReaderType;
   typedef itk::ImageFileWriter< ImageType >  WriterType;

@@ -23,7 +23,8 @@
 namespace
 {
 
-bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pixelSpacing = 1.0 )
+bool
+NormalizeSineWave( double frequencyPerImage, unsigned int order, double pixelSpacing = 1.0 )
 {
   // for an image f(x) = sin ( w*x ), where w is a measure of
   // frequency, this methods verifies that the normalized scale-scale
@@ -31,7 +32,7 @@ bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pix
 
   const unsigned int ImageDimension = 1;
   const unsigned int imageSize = 1024;
-  const double tol = vcl_pow( .000001, 1.0 / order );
+  const double       tol = vcl_pow( .000001, 1.0 / order );
 
   double frequency = frequencyPerImage * 2.0 * vnl_math::pi / ( imageSize * pixelSpacing );
 
@@ -39,7 +40,7 @@ bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pix
   double sigma_max = vcl_sqrt( double( order ) ) / frequency;
 
   // the theoreical maximal value of the derivative, obtained at sigma_max
-  double expected_max = vcl_pow( double(order), order *0.5 ) * vcl_exp( - 0.5 * order );
+  double expected_max = vcl_pow( double(order), order *0.5 ) * vcl_exp( -0.5 * order );
 
   typedef itk::Image< double, ImageDimension > ImageType;
   ImageType::Pointer image = ImageType::New();
@@ -63,12 +64,11 @@ bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pix
     ImageType::PointType p;
     image->TransformIndexToPhysicalPoint( iter.GetIndex(), p );
     const double x = p[0];
-    double value = vcl_sin( x * frequency );
+    double       value = vcl_sin( x * frequency );
 
     iter.Set( value );
     ++iter;
     }
-
 
   typedef itk::RecursiveGaussianImageFilter<ImageType, ImageType> GaussianFilterType;
   GaussianFilterType::Pointer filter = GaussianFilterType::New();
@@ -144,7 +144,6 @@ bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pix
     ++oiter;
     }
 
-
   std::cout << "f: " << frequencyPerImage << " max: " << maxLx  << " expected max: " << expected_max << std::endl;
 
   if (  vcl_abs( maxLx - expected_max ) > .01 )
@@ -158,11 +157,13 @@ bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pix
 
 }
 
-int itkRecursiveGaussianScaleSpaceTest1(int, char* [] )
+int
+itkRecursiveGaussianScaleSpaceTest1(int, char* [] )
 {
   bool pass = true;
 
   std::cout << " Testing First Order Gaussian" << std::endl;
+
   pass  &= NormalizeSineWave( 1.5, 1);
   pass  &= NormalizeSineWave( 2.5, 1);
   pass  &= NormalizeSineWave( 5, 1 );

@@ -58,17 +58,21 @@ public:
   typedef typename Superclass::CoefficientVector CoefficientVector;
 
   /** Constructor. */
-  ImageKernelOperator() {}
+  ImageKernelOperator() {
+  }
 
   /** Copy constructor */
-  ImageKernelOperator(const Self & orig):
+  ImageKernelOperator(const Self & orig) :
     Neighborhood< TPixel, VDimension, TAllocator >(orig)
-  {}
+  {
+  }
 
   /** Assignment operator. */
-  Self & operator=(const Self & orig)
+  Self &
+  operator=(const Self & orig)
   {
     Superclass::operator=(orig);
+
     return *this;
   }
 
@@ -81,7 +85,8 @@ public:
   const ImageType * GetImageKernel() const;
 
   /** Prints information about the object. */
-  virtual void PrintSelf(std::ostream & os, Indent i) const
+  virtual void
+  PrintSelf(std::ostream & os, Indent i) const
   {
     os << i << "ImageKernelOperator { this=" << this
        << "} "  << std::endl;
@@ -99,8 +104,11 @@ private:
   typename ImageType::ConstPointer m_ImageKernel;
 
   /** For compatibility with itkWarningMacro */
-  const char * GetNameOfClass()
-  { return "itkImageKernelOperator"; }
+  const char *
+  GetNameOfClass()
+  {
+    return "itkImageKernelOperator";
+  }
 
 };
 } // namespace itk

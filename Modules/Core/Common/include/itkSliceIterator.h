@@ -49,11 +49,13 @@ class SliceIterator
 {
 public:
   /** Constructor. */
-  SliceIterator(TContainer *n, std::slice s):
-    m_ContainerPointer(n), m_Pos(0), m_Slice(s) {}
+  SliceIterator(TContainer *n, std::slice s) :
+    m_ContainerPointer(n), m_Pos(0), m_Slice(s) {
+  }
 
   /** Returns a SliceIterator that points to the beginning of the slice. */
-  SliceIterator Begin()
+  SliceIterator
+  Begin()
   {
     SliceIterator ans = *this;
 
@@ -62,7 +64,8 @@ public:
   }
 
   /** Returns a SliceIterator that points to one past the end of the slice. */
-  SliceIterator End()
+  SliceIterator
+  End()
   {
     SliceIterator ans = *this;
 
@@ -71,14 +74,16 @@ public:
   }
 
   /** Increments the iterator. */
-  SliceIterator operator++()
+  SliceIterator
+  operator++()
   {
     m_Pos++;
     return *this;
   }
 
   /** Increments the iterator. */
-  SliceIterator operator++(int)
+  SliceIterator
+  operator++(int)
   {
     SliceIterator ans  = *this;
 
@@ -88,17 +93,24 @@ public:
 
   /** Returns the element at position n of the slice. Sets the
    * iterator to point to position n. */
-  TPixel & operator[](OffsetValueType n)
-  { return this->Loc(m_Pos = n); }
+  TPixel &
+  operator[](OffsetValueType n)
+  {
+    return this->Loc(m_Pos = n);
+  }
 
   /** Dereferences the iterator, returning the value that it points
    * to. */
-  TPixel & operator*()
-  { return Loc(m_Pos); }
+  TPixel &
+  operator*()
+  {
+    return Loc(m_Pos);
+  }
 
   /** Returns the logical && of the boolean == of two slice iterator positions,
    * stride, and start locations. */
-  bool operator==(const SliceIterator & orig)
+  bool
+  operator==(const SliceIterator & orig)
   {
     return orig.m_Pos == this->m_Pos
            &&   orig.m_Slice.stride() == this->m_Slice.stride()
@@ -106,7 +118,8 @@ public:
   }
 
   /** Returns the logical inverse of the boolean == of two slice iterators. */
-  bool operator!=(const SliceIterator & orig)
+  bool
+  operator!=(const SliceIterator & orig)
   {
     return !operator==(orig);
   }
@@ -114,7 +127,8 @@ public:
   /** Returns the boolean < of two slice iterator positions.  Result
    * is only true if the slice iterators have the same stride and
    * start location. */
-  bool operator<(const SliceIterator & orig)
+  bool
+  operator<(const SliceIterator & orig)
   {
     return this->m_Pos < orig.m_Pos
            &&   this->m_Slice.stride() == orig.m_Slice.stride()
@@ -123,7 +137,8 @@ public:
 
 private:
   /** Returns the value located at position n of the slice. */
-  TPixel & Loc(OffsetValueType n) const
+  TPixel &
+  Loc(OffsetValueType n) const
   {
     const OffsetValueType start  = static_cast< OffsetValueType >( m_Slice.start() );
     const OffsetValueType stride = static_cast< OffsetValueType >( m_Slice.stride() );

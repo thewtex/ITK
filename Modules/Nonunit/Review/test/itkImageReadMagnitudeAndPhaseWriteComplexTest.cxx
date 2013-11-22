@@ -34,7 +34,8 @@
 #include "itkImageFileWriter.h"
 #include "itkMagnitudeAndPhaseToComplexImageFilter.h"
 
-int itkImageReadMagnitudeAndPhaseWriteComplexTest( int argc, char * argv[] )
+int
+itkImageReadMagnitudeAndPhaseWriteComplexTest( int argc, char * argv[] )
 {
   if( argc != 4 )
     {
@@ -47,18 +48,18 @@ int itkImageReadMagnitudeAndPhaseWriteComplexTest( int argc, char * argv[] )
   typedef float InputPixelType;
   typedef float OutputPixelType;
 
-  typedef itk::Image< InputPixelType  ,  Dimension >                    InputImageType;
-  typedef itk::Image< std::complex<OutputPixelType> ,  Dimension >      OutputImageType;
+  typedef itk::Image< InputPixelType  ,  Dimension >               InputImageType;
+  typedef itk::Image< std::complex<OutputPixelType> ,  Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType >      ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >     WriterType;
+  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   typedef itk::MagnitudeAndPhaseToComplexImageFilter <
-    InputImageType, InputImageType, OutputImageType > MagnitudeAndPhase2ComplexFilterType;
+      InputImageType, InputImageType, OutputImageType > MagnitudeAndPhase2ComplexFilterType;
 
-  ReaderType::Pointer readerReal = ReaderType::New();
-  ReaderType::Pointer readerImag = ReaderType::New();
-  WriterType::Pointer writer = WriterType::New();
+  ReaderType::Pointer                          readerReal = ReaderType::New();
+  ReaderType::Pointer                          readerImag = ReaderType::New();
+  WriterType::Pointer                          writer = WriterType::New();
   MagnitudeAndPhase2ComplexFilterType::Pointer MagnitudeAndPhase2Complex = MagnitudeAndPhase2ComplexFilterType::New();
 
   readerReal->SetFileName( argv[1] );
@@ -69,10 +70,10 @@ int itkImageReadMagnitudeAndPhaseWriteComplexTest( int argc, char * argv[] )
   readerReal->Update();
   readerImag->Update();
 
-  MagnitudeAndPhase2Complex->SetInput1(readerReal->GetOutput());
-  MagnitudeAndPhase2Complex->SetInput2(readerImag->GetOutput());
+  MagnitudeAndPhase2Complex->SetInput1(readerReal->GetOutput() );
+  MagnitudeAndPhase2Complex->SetInput2(readerImag->GetOutput() );
 
-  writer->SetInput(MagnitudeAndPhase2Complex->GetOutput());
+  writer->SetInput(MagnitudeAndPhase2Complex->GetOutput() );
   try
     {
     writer->Update();

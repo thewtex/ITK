@@ -38,7 +38,7 @@ namespace itk
  * \brief Create instances of BioRadImageIO objects using an object factory.
  * \ingroup ITKIOBioRad
  */
-class ITKIOBioRad_EXPORT BioRadImageIOFactory:public ObjectFactoryBase
+class ITKIOBioRad_EXPORT BioRadImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -59,7 +59,8 @@ public:
   itkTypeMacro(BioRadImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory()
+  static void
+  RegisterOneFactory()
   {
     BioRadImageIOFactory::Pointer bioradFactory = BioRadImageIOFactory::New();
 
@@ -73,6 +74,7 @@ protected:
 private:
   BioRadImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

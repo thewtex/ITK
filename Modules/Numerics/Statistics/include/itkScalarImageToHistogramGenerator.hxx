@@ -45,9 +45,9 @@ template< typename TImage >
 const typename ScalarImageToHistogramGenerator< TImage >::HistogramType *
 ScalarImageToHistogramGenerator< TImage >
 ::GetOutput() const
-{
+  {
   return m_HistogramGenerator->GetOutput();
-}
+  }
 
 template< typename TImage >
 void
@@ -106,9 +106,11 @@ ScalarImageToHistogramGenerator< TImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "ImageToListSample adaptor = " << m_ImageToListSampleAdaptor << std::endl;
   os << "HistogramGenerator = " << m_HistogramGenerator << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

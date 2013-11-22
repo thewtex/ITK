@@ -26,12 +26,14 @@ namespace itk
 template< typename TLevelSet >
 LevelSetTovtkImageDataBase< TLevelSet >
 ::LevelSetTovtkImageDataBase()
-  {}
+{
+}
 
 template< typename TLevelSet >
 LevelSetTovtkImageDataBase< TLevelSet >
 ::~LevelSetTovtkImageDataBase()
-  {}
+{
+}
 
 template< typename TLevelSet >
 void

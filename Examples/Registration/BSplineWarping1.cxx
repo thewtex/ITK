@@ -24,7 +24,6 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -51,28 +50,33 @@ public:
   itkNewMacro( Self );
 
 protected:
-  CommandProgressUpdate() {};
+  CommandProgressUpdate() {
+  }
 
 public:
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     const itk::ProcessObject * filter =
       dynamic_cast< const itk::ProcessObject * >( object );
-    if( ! itk::ProgressEvent().CheckEvent( &event ) )
+
+    if( !itk::ProgressEvent().CheckEvent( &event ) )
       {
       return;
       }
     std::cout << filter->GetProgress() << std::endl;
-    }
+  }
+
 };
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
 
   if( argc < 5 )
@@ -86,17 +90,16 @@ int main( int argc, char * argv[] )
     }
 
 // Software Guide : BeginCodeSnippet
-  const     unsigned int   ImageDimension = 2;
+  const     unsigned int ImageDimension = 2;
 
-  typedef   unsigned char                            PixelType;
-  typedef   itk::Image< PixelType, ImageDimension >  FixedImageType;
-  typedef   itk::Image< PixelType, ImageDimension >  MovingImageType;
+  typedef   unsigned char                           PixelType;
+  typedef   itk::Image< PixelType, ImageDimension > FixedImageType;
+  typedef   itk::Image< PixelType, ImageDimension > MovingImageType;
 
-  typedef   itk::ImageFileReader< FixedImageType  >  FixedReaderType;
-  typedef   itk::ImageFileReader< MovingImageType >  MovingReaderType;
+  typedef   itk::ImageFileReader< FixedImageType  > FixedReaderType;
+  typedef   itk::ImageFileReader< MovingImageType > MovingReaderType;
 
-  typedef   itk::ImageFileWriter< MovingImageType >  MovingWriterType;
-
+  typedef   itk::ImageFileWriter< MovingImageType > MovingWriterType;
 
   FixedReaderType::Pointer fixedReader = FixedReaderType::New();
   fixedReader->SetFileName( argv[2] );
@@ -112,16 +115,13 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   MovingReaderType::Pointer movingReader = MovingReaderType::New();
   MovingWriterType::Pointer movingWriter = MovingWriterType::New();
 
   movingReader->SetFileName( argv[3] );
   movingWriter->SetFileName( argv[4] );
 
-
   FixedImageType::ConstPointer fixedImage = fixedReader->GetOutput();
-
 
   typedef itk::ResampleImageFilter< MovingImageType,
                                     FixedImageType  >  FilterType;
@@ -129,7 +129,7 @@ int main( int argc, char * argv[] )
   FilterType::Pointer resampler = FilterType::New();
 
   typedef itk::LinearInterpolateImageFunction<
-                       MovingImageType, double >  InterpolatorType;
+      MovingImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
@@ -143,18 +143,15 @@ int main( int argc, char * argv[] )
   resampler->SetOutputOrigin(  fixedOrigin  );
   resampler->SetOutputDirection(  fixedDirection  );
 
-
   FixedImageType::RegionType fixedRegion = fixedImage->GetBufferedRegion();
   FixedImageType::SizeType   fixedSize =  fixedRegion.GetSize();
   resampler->SetSize( fixedSize );
   resampler->SetOutputStartIndex(  fixedRegion.GetIndex() );
 
-
   resampler->SetInput( movingReader->GetOutput() );
 
   movingWriter->SetInput( resampler->GetOutput() );
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -167,7 +164,6 @@ int main( int argc, char * argv[] )
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 
   const unsigned int SpaceDimension = ImageDimension;
@@ -175,9 +171,9 @@ int main( int argc, char * argv[] )
   typedef double CoordinateRepType;
 
   typedef itk::BSplineTransform<
-                            CoordinateRepType,
-                            SpaceDimension,
-                            SplineOrder >     TransformType;
+      CoordinateRepType,
+      SpaceDimension,
+      SplineOrder >     TransformType;
 
   TransformType::Pointer bsplineTransform = TransformType::New();
 
@@ -187,13 +183,13 @@ int main( int argc, char * argv[] )
 
   const unsigned int numberOfGridNodes = 7;
 
-  TransformType::PhysicalDimensionsType   fixedPhysicalDimensions;
-  TransformType::MeshSizeType             meshSize;
+  TransformType::PhysicalDimensionsType fixedPhysicalDimensions;
+  TransformType::MeshSizeType           meshSize;
 
   for( unsigned int i=0; i< SpaceDimension; i++ )
     {
     fixedPhysicalDimensions[i] = fixedSpacing[i] * static_cast<double>(
-      fixedSize[i] - 1 );
+        fixedSize[i] - 1 );
     }
   meshSize.Fill( numberOfGridNodes - SplineOrder );
 
@@ -203,10 +199,9 @@ int main( int argc, char * argv[] )
   bsplineTransform->SetTransformDomainMeshSize( meshSize );
   bsplineTransform->SetTransformDomainDirection( fixedDirection );
 
-
-  typedef TransformType::ParametersType     ParametersType;
+  typedef TransformType::ParametersType ParametersType;
   const unsigned int numberOfParameters =
-               bsplineTransform->GetNumberOfParameters();
+    bsplineTransform->GetNumberOfParameters();
 
   const unsigned int numberOfNodes = numberOfParameters / SpaceDimension;
 
@@ -233,7 +228,6 @@ int main( int argc, char * argv[] )
 //  is passed to the B-spline transform using the \code{SetParameters()}.
 //
 //  Software Guide : EndLatex
-
 
 // Software Guide : BeginCodeSnippet
   std::ifstream infile;
@@ -262,10 +256,9 @@ int main( int argc, char * argv[] )
 
 //  Software Guide : EndCodeSnippet
 
-   CommandProgressUpdate::Pointer observer = CommandProgressUpdate::New();
+  CommandProgressUpdate::Pointer observer = CommandProgressUpdate::New();
 
-   resampler->AddObserver( itk::ProgressEvent(), observer );
-
+  resampler->AddObserver( itk::ProgressEvent(), observer );
 
 //  Software Guide : BeginLatex
 //
@@ -290,10 +283,9 @@ int main( int argc, char * argv[] )
     }
 //  Software Guide : EndCodeSnippet
 
-
-  typedef itk::Point<  float, ImageDimension >      PointType;
-  typedef itk::Vector< float, ImageDimension >      VectorType;
-  typedef itk::Image< VectorType, ImageDimension >  DisplacementFieldType;
+  typedef itk::Point<  float, ImageDimension >     PointType;
+  typedef itk::Vector< float, ImageDimension >     VectorType;
+  typedef itk::Image< VectorType, ImageDimension > DisplacementFieldType;
 
   DisplacementFieldType::Pointer field = DisplacementFieldType::New();
   field->SetRegions( fixedRegion );
@@ -307,13 +299,13 @@ int main( int argc, char * argv[] )
 
   fi.GoToBegin();
 
-  TransformType::InputPointType  fixedPoint;
-  TransformType::OutputPointType movingPoint;
+  TransformType::InputPointType    fixedPoint;
+  TransformType::OutputPointType   movingPoint;
   DisplacementFieldType::IndexType index;
 
   VectorType displacement;
 
-  while( ! fi.IsAtEnd() )
+  while( !fi.IsAtEnd() )
     {
     index = fi.GetIndex();
     field->TransformIndexToPhysicalPoint( index, fixedPoint );
@@ -323,7 +315,7 @@ int main( int argc, char * argv[] )
     ++fi;
     }
 
-  typedef itk::ImageFileWriter< DisplacementFieldType >  FieldWriterType;
+  typedef itk::ImageFileWriter< DisplacementFieldType > FieldWriterType;
   FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
 
   fieldWriter->SetInput( field );
@@ -348,7 +340,7 @@ int main( int argc, char * argv[] )
     fieldWriter->SetFileName( argv[6] );
     try
       {
-      typedef itk::TransformFileWriter    TransformWriterType;
+      typedef itk::TransformFileWriter TransformWriterType;
       TransformWriterType::Pointer transformWriter = TransformWriterType::New();
       transformWriter->AddTransform( bsplineTransform );
       transformWriter->SetFileName( argv[6] );

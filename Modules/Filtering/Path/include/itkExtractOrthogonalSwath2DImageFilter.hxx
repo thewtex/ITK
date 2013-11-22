@@ -178,11 +178,11 @@ ExtractOrthogonalSwath2DImageFilter< TImage >
   typedef ImageRegionIteratorWithIndex< ImageType >           OutputIterator;
   typedef LinearInterpolateImageFunction< ImageType, double > InterpolatorType;
 
-  ImageIndexType          index;
-  double                  orthogonalOffset;
-  PathInputType           pathInput;
+  ImageIndexType                      index;
+  double                              orthogonalOffset;
+  PathInputType                       pathInput;
   ContinuousIndex<SpacePrecisionType> continousIndex;
-  PathVectorType          pathDerivative;
+  PathVectorType                      pathDerivative;
   typename InterpolatorType::Pointer interpolator = InterpolatorType::New();
   interpolator->SetInputImage(inputImagePtr);
 
@@ -194,8 +194,8 @@ ExtractOrthogonalSwath2DImageFilter< TImage >
 
     // what position along the path coresponds to this column of the swath?
     pathInput = inputPathPtr->StartOfInput()
-                + double( inputPathPtr->EndOfInput() - inputPathPtr->StartOfInput() )
-                * double(index[0]) / double(m_Size[0]);
+      + double( inputPathPtr->EndOfInput() - inputPathPtr->StartOfInput() )
+      * double(index[0]) / double(m_Size[0]);
 
     // What is the orghogonal offset from the path in the input image for this
     // particular index in the output swath image?
@@ -240,11 +240,13 @@ void
 ExtractOrthogonalSwath2DImageFilter< TImage >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Size:  " << m_Size << std::endl;
   os << indent << "DefaultPixelValue:  "
      << static_cast< typename NumericTraits< ImagePixelType >::PrintType >( m_DefaultPixelValue )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

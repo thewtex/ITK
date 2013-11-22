@@ -32,14 +32,12 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkResampleImageFilter.h"
 #include "itkConstantBoundaryCondition.h"
 #include "itkWindowedSincInterpolateImageFunction.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -51,8 +49,8 @@
 #include "itkAffineTransform.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -61,15 +59,15 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  const     unsigned int Dimension = 2;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -81,18 +79,19 @@ int main( int argc, char * argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The Resampling filter is instantiated and created just like in previous examples.
+  //  The Resampling filter is instantiated and created just like in previous
+  // examples.
   //  The Transform is instantiated and connected to the resampling filter.
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ResampleImageFilter<
-                  InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
-  typedef itk::AffineTransform< double, Dimension >  TransformType;
+  typedef itk::AffineTransform< double, Dimension > TransformType;
 
   TransformType::Pointer transform = TransformType::New();
 
@@ -126,24 +125,23 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ConstantBoundaryCondition< InputImageType >
-                                                        BoundaryConditionType;
+    BoundaryConditionType;
 
   const unsigned int WindowRadius = 5;
 
   typedef itk::Function::HammingWindowFunction<WindowRadius>
-                                                           WindowFunctionType;
+    WindowFunctionType;
 
   typedef itk::WindowedSincInterpolateImageFunction<
-            InputImageType, WindowRadius, WindowFunctionType,
-            BoundaryConditionType, double  >                 InterpolatorType;
+      InputImageType, WindowRadius, WindowFunctionType,
+      BoundaryConditionType, double  >                 InterpolatorType;
 
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
 
   filter->SetInterpolator( interpolator );
 
   filter->SetDefaultPixelValue( 100 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -154,23 +152,21 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   reader->Update();
   const InputImageType::SpacingType&
-    spacing = reader->GetOutput()->GetSpacing();
+  spacing = reader->GetOutput()->GetSpacing();
   const InputImageType::PointType&
-    origin  = reader->GetOutput()->GetOrigin();
+  origin  = reader->GetOutput()->GetOrigin();
   const InputImageType::DirectionType&
-    direction  = reader->GetOutput()->GetDirection();
+                           direction  = reader->GetOutput()->GetDirection();
   InputImageType::SizeType size =
-      reader->GetOutput()->GetLargestPossibleRegion().GetSize();
+    reader->GetOutput()->GetLargestPossibleRegion().GetSize();
   filter->SetOutputOrigin( origin );
   filter->SetOutputSpacing( spacing );
   filter->SetOutputDirection( direction );
   filter->SetSize( size );
   // Software Guide : EndCodeSnippet
 
-
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
-
 
   TransformType::OutputVectorType translation1;
 
@@ -182,21 +178,17 @@ int main( int argc, char * argv[] )
 
   transform->Translate( translation1 );
 
-
   std::cout << "imageCenterX = " << imageCenterX << std::endl;
   std::cout << "imageCenterY = " << imageCenterY << std::endl;
-
 
   const double degreesToRadians = vcl_atan(1.0) / 45.0;
   const double angle = angleInDegrees * degreesToRadians;
   transform->Rotate2D( -angle, false );
 
-
   TransformType::OutputVectorType translation2;
   translation2[0] =   imageCenterX;
   translation2[1] =   imageCenterY;
   transform->Translate( translation2, false );
-
 
   //  Software Guide : BeginLatex
   //

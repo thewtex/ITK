@@ -21,7 +21,8 @@
  * In this test, we check to see that the derivative is calculated
  * correctly for spline orders 2 through 10
  */
-int itkCoxDeBoorBSplineKernelFunctionTest2( int argc, char * argv [] )
+int
+itkCoxDeBoorBSplineKernelFunctionTest2( int argc, char * argv [] )
 {
   if ( argc < 1 )
     {
@@ -43,7 +44,7 @@ int itkCoxDeBoorBSplineKernelFunctionTest2( int argc, char * argv [] )
       {
       KernelType::RealType derivative = kernel->EvaluateDerivative( t );
       if( vnl_math_abs( derivative - ( kernelOrderMinus1->Evaluate( t + 0.5 )
-           - kernelOrderMinus1->Evaluate( t - 0.5 ) ) ) > 1e-10 )
+                                       - kernelOrderMinus1->Evaluate( t - 0.5 ) ) ) > 1e-10 )
         {
         return EXIT_FAILURE;
         }

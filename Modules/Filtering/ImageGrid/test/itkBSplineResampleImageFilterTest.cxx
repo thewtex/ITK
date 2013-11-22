@@ -50,7 +50,8 @@ typedef itk::ImageRegionIterator<IntImageType2D>          IntInputIterator;
 
 void set2DData(ImageType2D::Pointer);
 
-void PrintImageData(ImageTypePtr2D imgPtr)
+void
+PrintImageData(ImageTypePtr2D imgPtr)
 {
   typedef itk::ImageLinearIteratorWithIndex<ImageType2D> Iterator;
 
@@ -79,21 +80,23 @@ void PrintImageData(ImageTypePtr2D imgPtr)
         std::cout << outIt.Get() << ", ";
         ++outIt;
         }
-       outIt.NextLine();
-       std::cout << std::endl;
+      outIt.NextLine();
+      std::cout << std::endl;
       }
     }
 }
 
-void set2DData(ImageType2D::Pointer imgPtr)
+void
+set2DData(ImageType2D::Pointer imgPtr)
 {
   SizeType2D size = { {4,4} };
-  double mydata[ 49 ] = {  0, 1, 2, 3,
-    1, 2, 3, 4,
-    2, 3, 4, 5,
-    3, 4, 3, 2};
+  double     mydata[ 49 ] = {  0, 1, 2, 3,
+                               1, 2, 3, 4,
+                               2, 3, 4, 5,
+                               3, 4, 3, 2};
 
   ImageType2D::RegionType region;
+
   region.SetSize( size );
 
   imgPtr->SetLargestPossibleRegion( region );
@@ -117,15 +120,17 @@ void set2DData(ImageType2D::Pointer imgPtr)
     }
 }
 
-void setInt2DData(IntImageType2D::Pointer imgPtr)
+void
+setInt2DData(IntImageType2D::Pointer imgPtr)
 {
   IntSizeType2D size = { {4,4} };
-  int mydata[ 49 ] = {  0, 1, 2, 3,
-    1, 2, 3, 4,
-    2, 3, 4, 5,
-    3, 4, 3, 2};
+  int           mydata[ 49 ] = {  0, 1, 2, 3,
+                                  1, 2, 3, 4,
+                                  2, 3, 4, 5,
+                                  3, 4, 3, 2};
 
   IntImageType2D::RegionType region;
+
   region.SetSize( size );
 
   imgPtr->SetLargestPossibleRegion( region );
@@ -149,36 +154,42 @@ void setInt2DData(IntImageType2D::Pointer imgPtr)
     }
 }
 
-bool VerifyResultsHigherOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
+bool
+VerifyResultsHigherOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
 {
   double * ERptr;
+
   ERptr = ExpectedResults;
 
   InputIterator ActualResultsIter( ActualResults, ActualResults->GetLargestPossibleRegion() );
-  double percentErr = 0;
+  double        percentErr = 0;
 
   while (!ActualResultsIter.IsAtEnd() )
     {
     double val1 = ActualResultsIter.Get();
 
-    percentErr += vnl_math_abs( ( val1 - * ERptr ) / val1 );
+    percentErr += vnl_math_abs( ( val1 - *ERptr ) / val1 );
 
     ++ActualResultsIter;
     ++ERptr;
     }
 
-  //Mean error is determined over the number of pixels, which in the test case is 16
+  //Mean error is determined over the number of pixels, which in the test case
+  // is 16
   if( (percentErr/16) > 0.05 )
     {
-    // std::cout << "*** Error: total error is more than 10%: " << percentErr << std::endl;
+    // std::cout << "*** Error: total error is more than 10%: " << percentErr <<
+    // std::endl;
     return false;
     }
   return true;
 }
 
-bool VerifyResults3rdOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
+bool
+VerifyResults3rdOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
 {
   double * ERptr;
+
   ERptr = ExpectedResults;
 
   InputIterator ActualResultsIter( ActualResults, ActualResults->GetLargestPossibleRegion() );
@@ -186,7 +197,7 @@ bool VerifyResults3rdOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedR
   while (!ActualResultsIter.IsAtEnd() )
     {
     double val1 = ActualResultsIter.Get();
-    if( vnl_math_abs( val1 - * ERptr ) > 1e-6 )
+    if( vnl_math_abs( val1 - *ERptr ) > 1e-6 )
       {
       // std::cout << "*** Error: value should be " << trueValue << std::endl;
       return false;
@@ -197,53 +208,60 @@ bool VerifyResults3rdOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedR
   return true;
 }
 
-bool VerifyResults2ndOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
+bool
+VerifyResults2ndOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
 {
   double * ERptr;
+
   ERptr = ExpectedResults;
 
   InputIterator ActualResultsIter( ActualResults, ActualResults->GetLargestPossibleRegion() );
-  double percentErr = 0;
+  double        percentErr = 0;
 
   while (!ActualResultsIter.IsAtEnd() )
     {
     double val1 = ActualResultsIter.Get();
 
-    percentErr += vnl_math_abs( ( val1 - * ERptr ) / val1 );
+    percentErr += vnl_math_abs( ( val1 - *ERptr ) / val1 );
 
     ++ActualResultsIter;
     ++ERptr;
     }
 
-  //Mean error is determined over the number of pixels, which in the test case is 16
+  //Mean error is determined over the number of pixels, which in the test case
+  // is 16
   if( (percentErr/16) > 0.1 )
     {
-    // std::cout << "*** Error: total error is more than 10%: " << percentErr << std::endl;
+    // std::cout << "*** Error: total error is more than 10%: " << percentErr <<
+    // std::endl;
     return false;
     }
   return true;
 }
 
 //Spline order 1 or 0
-bool VerifyResultsLowerOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
+bool
+VerifyResultsLowerOrderSpline(ImageTypePtr2D ActualResults, double *ExpectedResults)
 {
   double * ERptr;
+
   ERptr = ExpectedResults;
 
   InputIterator ActualResultsIter( ActualResults, ActualResults->GetLargestPossibleRegion() );
-  double percentErr = 0;
+  double        percentErr = 0;
 
   while (!ActualResultsIter.IsAtEnd() )
     {
     double val1 = ActualResultsIter.Get();
 
-    percentErr += vnl_math_abs( ( val1 - * ERptr ) / val1 );
+    percentErr += vnl_math_abs( ( val1 - *ERptr ) / val1 );
 
     ++ActualResultsIter;
     ++ERptr;
     }
 
-  //Mean error is determined over the number of pixels, which in the test case is 16
+  //Mean error is determined over the number of pixels, which in the test case
+  // is 16
   //Threshold error is much higher since the order of the spline is lower.
   if( (percentErr)/16 > 0.6 )
     {
@@ -252,8 +270,8 @@ bool VerifyResultsLowerOrderSpline(ImageTypePtr2D ActualResults, double *Expecte
   return true;
 }
 
-
-int test2D_Standard_l2_NthOrderSpline_filter(unsigned int splineOrder)
+int
+test2D_Standard_l2_NthOrderSpline_filter(unsigned int splineOrder)
 {
   int flag = 0;
 
@@ -268,13 +286,13 @@ int test2D_Standard_l2_NthOrderSpline_filter(unsigned int splineOrder)
 
   // l2 norm resampler.
   typedef itk::BSplineDownsampleImageFilter<ImageType2D,ImageType2D> DownsamplerType2D;
-  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D> UpsamplerType2D;
+  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D>   UpsamplerType2D;
 
   DownsamplerType2D::Pointer downSampler = DownsamplerType2D::New();
-  FilterWatcher downWatcher(downSampler, "test2D_Standard_l2_filter");
+  FilterWatcher              downWatcher(downSampler, "test2D_Standard_l2_filter");
 
-  UpsamplerType2D::Pointer   upSampler =   UpsamplerType2D::New();
-  FilterWatcher upWatcher(upSampler, "test2D_Standard_l2_filter");
+  UpsamplerType2D::Pointer upSampler =   UpsamplerType2D::New();
+  FilterWatcher            upWatcher(upSampler, "test2D_Standard_l2_filter");
 
   downSampler->SetSplineOrder(splineOrder);
   upSampler->SetSplineOrder(splineOrder);
@@ -284,7 +302,7 @@ int test2D_Standard_l2_NthOrderSpline_filter(unsigned int splineOrder)
   ImageTypePtr2D outImage1 = downSampler->GetOutput();
   PrintImageData(outImage1);
   upSampler->SetInput( outImage1 );
-    upSampler->Update();
+  upSampler->Update();
   ImageTypePtr2D outImage2 = upSampler->GetOutput();
   PrintImageData(outImage2);
 
@@ -322,8 +340,8 @@ int test2D_Standard_l2_NthOrderSpline_filter(unsigned int splineOrder)
   return flag;
 }
 
-
-int test2D_Standard_L2_NthOrderSpline_filter(unsigned int splineOrder)
+int
+test2D_Standard_L2_NthOrderSpline_filter(unsigned int splineOrder)
 {
   int flag = 0;
 
@@ -337,15 +355,15 @@ int test2D_Standard_L2_NthOrderSpline_filter(unsigned int splineOrder)
                               2.787102, 3.221627, 3.657944, 3.744552};
 
   // L2 norm resampler.
-  typedef itk::BSplineL2ResampleImageFilterBase<ImageType2D, ImageType2D> ResamplerType;
+  typedef itk::BSplineL2ResampleImageFilterBase<ImageType2D, ImageType2D>          ResamplerType;
   typedef itk::BSplineDownsampleImageFilter<ImageType2D,ImageType2D,ResamplerType> DownsamplerType2D;
-  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D,ResamplerType> UpsamplerType2D;
+  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D,ResamplerType>   UpsamplerType2D;
 
   DownsamplerType2D::Pointer downSampler = DownsamplerType2D::New();
-  FilterWatcher downWatcher(downSampler, "test2D_Standard_L2_filter");
+  FilterWatcher              downWatcher(downSampler, "test2D_Standard_L2_filter");
 
-  UpsamplerType2D::Pointer   upSampler =   UpsamplerType2D::New();
-  FilterWatcher upWatcher(upSampler, "test2D_Standard_L2_filter");
+  UpsamplerType2D::Pointer upSampler =   UpsamplerType2D::New();
+  FilterWatcher            upWatcher(upSampler, "test2D_Standard_L2_filter");
 
   downSampler->SetSplineOrder(splineOrder);
   upSampler->SetSplineOrder(splineOrder);
@@ -355,7 +373,7 @@ int test2D_Standard_L2_NthOrderSpline_filter(unsigned int splineOrder)
   ImageTypePtr2D outImage1 = downSampler->GetOutput();
   PrintImageData(outImage1);
   upSampler->SetInput( outImage1 );
-    upSampler->Update();
+  upSampler->Update();
   ImageTypePtr2D outImage2 = upSampler->GetOutput();
   PrintImageData(outImage2);
 
@@ -393,7 +411,8 @@ int test2D_Standard_L2_NthOrderSpline_filter(unsigned int splineOrder)
   return flag;
 }
 
-int test2D_Centered_l2_NthOrderSpline_filter(unsigned int splineOrder)
+int
+test2D_Centered_l2_NthOrderSpline_filter(unsigned int splineOrder)
 {
   int flag = 0;
 
@@ -407,14 +426,14 @@ int test2D_Centered_l2_NthOrderSpline_filter(unsigned int splineOrder)
                               1.691146, 3.411135, 3.468862, 3.507621};
 
   // L2 norm resampler.
-  typedef itk::BSplineCenteredResampleImageFilterBase<ImageType2D, ImageType2D> ResamplerType;
+  typedef itk::BSplineCenteredResampleImageFilterBase<ImageType2D, ImageType2D>    ResamplerType;
   typedef itk::BSplineDownsampleImageFilter<ImageType2D,ImageType2D,ResamplerType> DownsamplerType2D;
-  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D,ResamplerType> UpsamplerType2D;
+  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D,ResamplerType>   UpsamplerType2D;
 
   DownsamplerType2D::Pointer downSampler = DownsamplerType2D::New();
-  FilterWatcher downWatcher(downSampler, "test2D_Centered_l2_filter");
+  FilterWatcher              downWatcher(downSampler, "test2D_Centered_l2_filter");
   UpsamplerType2D::Pointer   upSampler =   UpsamplerType2D::New();
-  FilterWatcher upWatcher(upSampler, "test2D_Centered_l2_filter");
+  FilterWatcher              upWatcher(upSampler, "test2D_Centered_l2_filter");
   downSampler->SetSplineOrder(splineOrder);
   upSampler->SetSplineOrder(splineOrder);
 
@@ -423,7 +442,7 @@ int test2D_Centered_l2_NthOrderSpline_filter(unsigned int splineOrder)
   ImageTypePtr2D outImage1 = downSampler->GetOutput();
   PrintImageData(outImage1);
   upSampler->SetInput( outImage1 );
-    upSampler->Update();
+  upSampler->Update();
   ImageTypePtr2D outImage2 = upSampler->GetOutput();
   PrintImageData(outImage2);
   bool sameResults = false;
@@ -460,11 +479,11 @@ int test2D_Centered_l2_NthOrderSpline_filter(unsigned int splineOrder)
     std::cout << "" << std::endl;
     }
 
-
   return flag;
 }
 
-int testIntInputDoubleOutput()
+int
+testIntInputDoubleOutput()
 {
   int flag = 0;
 
@@ -480,15 +499,15 @@ int testIntInputDoubleOutput()
                               1.691146, 3.411135, 3.468862, 3.507621};
 
   // L2 norm resampler.
-  typedef itk::BSplineCenteredResampleImageFilterBase<IntImageType2D, ImageType2D> ResamplerType;
+  typedef itk::BSplineCenteredResampleImageFilterBase<IntImageType2D, ImageType2D>    ResamplerType;
   typedef itk::BSplineDownsampleImageFilter<IntImageType2D,ImageType2D,ResamplerType> DownsamplerType2D;
-  typedef itk::BSplineCenteredResampleImageFilterBase<ImageType2D, ImageType2D> ResamplerType2;
+  typedef itk::BSplineCenteredResampleImageFilterBase<ImageType2D, ImageType2D>       ResamplerType2;
 
   typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D,ResamplerType2> UpsamplerType2D;
 
   DownsamplerType2D::Pointer downSampler = DownsamplerType2D::New();
   UpsamplerType2D::Pointer   upSampler =   UpsamplerType2D::New();
-  int splineOrder = 3;
+  int                        splineOrder = 3;
   downSampler->SetSplineOrder(splineOrder);
   upSampler->SetSplineOrder(splineOrder);
 
@@ -500,7 +519,7 @@ int testIntInputDoubleOutput()
 //  PrintImageData(image);
 //  upSampler->SetInput( downSampler->GetOutput() );
   upSampler->SetInput( outImage1 );
-    upSampler->Update();
+  upSampler->Update();
   ImageTypePtr2D outImage2 = upSampler->GetOutput();
   PrintImageData(outImage2);
   bool sameResults = VerifyResults3rdOrderSpline(outImage2, ExpectedResults);
@@ -517,9 +536,9 @@ int testIntInputDoubleOutput()
   return flag;
 }
 
-
 //Test for Centered_L2 filter with Nth order spline
-int test2D_Centered_L2_NthOrderSpline_filter(unsigned int splineOrder)
+int
+test2D_Centered_L2_NthOrderSpline_filter(unsigned int splineOrder)
 {
   int flag = 0;
 
@@ -533,14 +552,14 @@ int test2D_Centered_L2_NthOrderSpline_filter(unsigned int splineOrder)
                               1.690034, 3.409774, 3.468826, 3.507932};
 
   // L2 norm resampler.
-  typedef itk::BSplineCenteredL2ResampleImageFilterBase<ImageType2D, ImageType2D> ResamplerType;
+  typedef itk::BSplineCenteredL2ResampleImageFilterBase<ImageType2D, ImageType2D>  ResamplerType;
   typedef itk::BSplineDownsampleImageFilter<ImageType2D,ImageType2D,ResamplerType> DownsamplerType2D;
-  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D,ResamplerType> UpsamplerType2D;
+  typedef itk::BSplineUpsampleImageFilter<ImageType2D,ImageType2D,ResamplerType>   UpsamplerType2D;
 
   DownsamplerType2D::Pointer downSampler = DownsamplerType2D::New();
-  FilterWatcher downWatcher(downSampler, "test2D_Centered_L2_filter");
+  FilterWatcher              downWatcher(downSampler, "test2D_Centered_L2_filter");
   UpsamplerType2D::Pointer   upSampler =   UpsamplerType2D::New();
-  FilterWatcher upWatcher(upSampler, "test2D_Centered_L2_filter");
+  FilterWatcher              upWatcher(upSampler, "test2D_Centered_L2_filter");
   //int splineOrder = 2;
   downSampler->SetSplineOrder(splineOrder);
   upSampler->SetSplineOrder(splineOrder);
@@ -596,8 +615,8 @@ int test2D_Centered_L2_NthOrderSpline_filter(unsigned int splineOrder)
 
 int
 itkBSplineResampleImageFilterTest(
-    int itkNotUsed(argc),
-    char * itkNotUsed(argv) [] )
+  int itkNotUsed(argc),
+  char * itkNotUsed(argv) [] )
 {
   int flag = 0;
   int dummyflag = 0;
@@ -700,9 +719,11 @@ itkBSplineResampleImageFilterTest(
   if (flag != 0) {
     std::cout << "*** " << flag << " tests failed" << std::endl;
 
-    return EXIT_FAILURE; }
+    return EXIT_FAILURE;
+    }
   else {
     std::cout << "All tests successfully passed" << std::endl;
-    return EXIT_SUCCESS; }
+    return EXIT_SUCCESS;
+    }
 
 }

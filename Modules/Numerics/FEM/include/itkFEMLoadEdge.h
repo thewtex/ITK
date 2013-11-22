@@ -74,6 +74,7 @@ public:
    * Get the edge force values
    */
   const vnl_matrix<itk::fem::Element::Float> & GetForce() const;
+
   vnl_matrix<itk::fem::Element::Float> & GetForce();
 
   /** Apply the load to the specified element */

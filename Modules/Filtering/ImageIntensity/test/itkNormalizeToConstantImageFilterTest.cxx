@@ -22,7 +22,8 @@
 #include "itkRandomImageSource.h"
 #include "itkFilterWatcher.h"
 
-int itkNormalizeToConstantImageFilterTest( int, char* [] )
+int
+itkNormalizeToConstantImageFilterTest( int, char* [] )
 {
   std::cout << "itkNormalizeToConstantImageFilterTest Start" << std::endl;
 

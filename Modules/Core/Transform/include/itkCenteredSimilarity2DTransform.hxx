@@ -32,7 +32,7 @@ CenteredSimilarity2DTransform<TScalar>
 // Constructor with arguments
 template <typename TScalar>
 CenteredSimilarity2DTransform<TScalar>::CenteredSimilarity2DTransform(unsigned int spaceDimension,
-                                                                          unsigned int parametersDimension) :
+                                                                      unsigned int parametersDimension) :
   Superclass(spaceDimension, parametersDimension)
 {
 }
@@ -141,11 +141,11 @@ CenteredSimilarity2DTransform<TScalar>
 
   // compute derivatives with respect to the center part
   // first with respect to cx
-  jacobian[0][2] = 1.0 - ca * this-> GetScale();
-  jacobian[1][2] =     -sa * this->  GetScale();
+  jacobian[0][2] = 1.0 - ca * this->GetScale();
+  jacobian[1][2] =     -sa * this->GetScale();
   // then with respect to cy
   jacobian[0][3] =       sa * this->GetScale();
-  jacobian[1][3] = 1.0 - ca * this-> GetScale();
+  jacobian[1][3] = 1.0 - ca * this->GetScale();
 
   // compute derivatives with respect to the translation part
   // first with respect to tx

@@ -50,18 +50,19 @@ public:
   IdentifierType GetParentIdentifier(void) const;
 
   enum CellCycleState
-  {
+    {
     M = 1UL,
     Gap1,
     S,
     Gap2,
     Gap0,
     Apop
-  };
+    };
 
 protected:
   CellBase();
-  virtual ~CellBase();
+  virtual
+  ~CellBase();
 
   virtual void Grow(void);
 

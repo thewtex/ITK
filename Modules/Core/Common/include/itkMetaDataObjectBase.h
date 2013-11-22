@@ -44,7 +44,7 @@ namespace itk
  * \author Hans J. Johnson
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT MetaDataObjectBase:public LightObject
+class ITKCommon_EXPORT MetaDataObjectBase : public LightObject
 {
 public:
   /** Smart pointer typedef support. */
@@ -81,13 +81,15 @@ protected:
 /**
  * Default destructor
  */
-  virtual ~MetaDataObjectBase();
+  virtual
+  ~MetaDataObjectBase();
   MetaDataObjectBase();
 
 private:
   //void * operator new(size_t nothing) {};//purposefully not implemented
   MetaDataObjectBase(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 }
 

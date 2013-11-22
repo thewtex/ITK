@@ -47,7 +47,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class GrayscaleFunctionErodeImageFilter:
+class GrayscaleFunctionErodeImageFilter :
   public MorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -111,7 +111,8 @@ public:
 
 protected:
   GrayscaleFunctionErodeImageFilter();
-  ~GrayscaleFunctionErodeImageFilter() {}
+  ~GrayscaleFunctionErodeImageFilter() {
+  }
 
   /** Evaluate image neighborhood with kernel to find the new value
    * for the center pixel value

@@ -23,7 +23,7 @@ namespace itk
 // HDF uses hierarchical paths to find particular data
 // in a file. These strings are used by both reading and
 // writing.
-const std::string HDF5CommonPathNames::transformGroupName(std::string("/TransformGroup"));
+const std::string HDF5CommonPathNames::transformGroupName(std::string("/TransformGroup") );
 const std::string HDF5CommonPathNames::transformTypeName("/TransformType");
 const std::string HDF5CommonPathNames::transformFixedName("/TranformFixedParameters");
 const std::string HDF5CommonPathNames::transformParamsName("/TranformParameters");
@@ -42,6 +42,7 @@ const std::string
 GetTransformName(int i)
 {
   std::stringstream s;
+
   s << HDF5CommonPathNames::transformGroupName;
   s << "/";
   s << i;

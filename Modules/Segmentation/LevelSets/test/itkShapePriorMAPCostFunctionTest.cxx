@@ -36,7 +36,8 @@
  * of the original parameters.
  *
  */
-int itkShapePriorMAPCostFunctionTest( int, char *[])
+int
+itkShapePriorMAPCostFunctionTest( int, char *[])
 {
 
   typedef float PixelType;
@@ -50,9 +51,9 @@ int itkShapePriorMAPCostFunctionTest( int, char *[])
   ShapeFunctionType::Pointer shape = ShapeFunctionType::New();
   shape->Initialize();
 
- /**
-   * Set up a statistical model of the shape parameters.
-   */
+  /**
+    * Set up a statistical model of the shape parameters.
+    */
   typedef itk::ShapePriorMAPCostFunction<ImageType,PixelType> CostFunctionType;
   typedef CostFunctionType::NodeType                          NodeType;
   typedef CostFunctionType::NodeContainerType                 NodeContainerType;
@@ -67,7 +68,6 @@ int itkShapePriorMAPCostFunctionTest( int, char *[])
   stddev[1] = 2.5;
   stddev[2] = 2.5;
 
-
   /**
    * Set the shape parameters to be perturbation of the mean
    */
@@ -76,7 +76,6 @@ int itkShapePriorMAPCostFunctionTest( int, char *[])
   parameters[1] = mean[1] - 4.0;
   parameters[2] = mean[2] - 6.0;
   shape->SetParameters( parameters );
-
 
   /**
    * Create an input level set and active region container
@@ -92,17 +91,16 @@ int itkShapePriorMAPCostFunctionTest( int, char *[])
 
   NodeContainerType::Pointer activeRegion  = NodeContainerType::New();
 
-
   typedef itk::ImageRegionIteratorWithIndex<ImageType> Iterator;
   Iterator iter( input, region );
   iter.GoToBegin();
 
   unsigned int counter = 0;
-  PixelType activeRegionThreshold = 3.0;
+  PixelType    activeRegionThreshold = 3.0;
 
   while ( !iter.IsAtEnd() )
     {
-    ImageType::IndexType index;
+    ImageType::IndexType         index;
     ShapeFunctionType::PointType point;
     index = iter.GetIndex();
     input->TransformIndexToPhysicalPoint( index, point );
@@ -131,7 +129,6 @@ int itkShapePriorMAPCostFunctionTest( int, char *[])
   edgeMap->Allocate();
   edgeMap->FillBuffer( 1.0 );
 
-
   /**
    * Set up the cost function
    */
@@ -153,7 +150,6 @@ int itkShapePriorMAPCostFunctionTest( int, char *[])
   weights.Fill( 1.5 );
 
   costFunction->SetWeights( weights );
-
 
   // Initialize cost function before use
   try

@@ -18,17 +18,18 @@
 
 #include "itkVoronoiSegmentationImageFilter.h"
 
-int itkVoronoiSegmentationImageFilterTest(int, char* [] ){
+int
+itkVoronoiSegmentationImageFilterTest(int, char* [] ){
   const int WIDTH = 256;
   const int HEIGHT = 256;
 
-  typedef itk::Image<unsigned short,2> UShortImage;
-  typedef itk::Image<unsigned char,2>  PriorImage;
+  typedef itk::Image<unsigned short,2>                                              UShortImage;
+  typedef itk::Image<unsigned char,2>                                               PriorImage;
   typedef itk::VoronoiSegmentationImageFilter<UShortImage, UShortImage, PriorImage> VorSeg;
 
-  VorSeg::Pointer testVorseg(VorSeg::New());
-  UShortImage::Pointer inputIMG = UShortImage::New();
-  UShortImage::SizeType size={{WIDTH,HEIGHT}};
+  VorSeg::Pointer        testVorseg(VorSeg::New() );
+  UShortImage::Pointer   inputIMG = UShortImage::New();
+  UShortImage::SizeType  size={{WIDTH,HEIGHT}};
   UShortImage::IndexType index;
   index.Fill(0);
 
@@ -43,37 +44,36 @@ int itkVoronoiSegmentationImageFilterTest(int, char* [] ){
   inputIMG->SetRequestedRegion( region );
   inputIMG->Allocate();
 
-
   itk::ImageRegionIteratorWithIndex <UShortImage> it(inputIMG, region);
 
   // background: random field with mean: 500, std: 50
   std::cout << "Setting background random pattern image" << std::endl;
-  while( !it.IsAtEnd()) {
-    it.Set((unsigned short)(vnl_sample_uniform(450,550)) );
+  while( !it.IsAtEnd() ) {
+    it.Set( (unsigned short)(vnl_sample_uniform(450,550) ) );
     ++it;
-  }
+    }
 
   //object (2): random field with mean: 520, std: 20;
   std::cout << "Defining object #2" << std::endl;
   unsigned int i;
   unsigned int j;
-  for(i = 30; i < 94; i++){
+  for(i = 30; i < 94; i++) {
     index[0] = i;
-    for (j = 30; j< 94; j++){
+    for (j = 30; j< 94; j++) {
       index[1] = j;
-      inputIMG->SetPixel(index, (unsigned short)(vnl_sample_uniform(500,540)) );
+      inputIMG->SetPixel(index, (unsigned short)(vnl_sample_uniform(500,540) ) );
+      }
     }
-  }
 
-  for(i = 150; i < 214; i++){
+  for(i = 150; i < 214; i++) {
     index[0] = i;
-    for (j = 150; j< 214; j++){
+    for (j = 150; j< 214; j++) {
       index[1] = j;
-      inputIMG->SetPixel(index, (unsigned short)(vnl_sample_uniform(500,540)) );
+      inputIMG->SetPixel(index, (unsigned short)(vnl_sample_uniform(500,540) ) );
+      }
     }
-  }
 
-  int k;
+  int            k;
   unsigned short TestImg[65536];
 
   testVorseg->SetInput(inputIMG);
@@ -91,12 +91,12 @@ int itkVoronoiSegmentationImageFilterTest(int, char* [] ){
   itk::ImageRegionIteratorWithIndex <UShortImage> ot(testVorseg->GetOutput(), region);
 
   k=0;
-  while( !ot.IsAtEnd()){
+  while( !ot.IsAtEnd() ) {
     TestImg[k]=ot.Get();
     TestImg[k] = TestImg[k];  // dummy line to eliminate warning
     k++;
     ++ot;
-  }
+    }
 
   /* Test Ok on local machine.
   FILE *imgfile = fopen("output.raw","wb");

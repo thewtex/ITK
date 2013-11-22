@@ -56,7 +56,7 @@ namespace itk
  * \ingroup MeshSegmentation
  */
 template< typename TInputMesh, typename TOutputMesh >
-class DeformableMesh3DFilter:public MeshToMeshFilter< TInputMesh, TOutputMesh >
+class DeformableMesh3DFilter : public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -160,6 +160,7 @@ protected:
   ~DeformableMesh3DFilter();
   DeformableMesh3DFilter(const Self &); // purposely not implemented
   void operator=(const Self &);         // purposely not implemented
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();

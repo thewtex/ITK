@@ -78,7 +78,7 @@ public:
    */
   class MFCTerm
   {
-  public:
+public:
     /**
      * Pointer to element, which holds the DOF that is affected by MFC
      */
@@ -101,6 +101,7 @@ public:
             Element::Float value_) : m_element(element_), dof(dof_), value(value_)
     {
     }
+
   };
 
   /**
@@ -109,7 +110,8 @@ public:
   typedef std::vector<MFCTerm> LhsType;
 
   /** Default constructor */
-  LoadBCMFC() : m_Index(0), m_LeftHandSide(), m_RightHandSide()  {}
+  LoadBCMFC() : m_Index(0), m_LeftHandSide(), m_RightHandSide()  {
+  }
 
   /**
    * With this constructor, we can easy fix the global
@@ -152,6 +154,7 @@ public:
   /** Returns the array containing the left hand side boundary condition
     values*/
   const std::vector<MFCTerm> & GetLeftHandSideArray() const;
+
   std::vector<MFCTerm> & GetLeftHandSideArray();
 
   /** Returns the array containing the right hand side boundary condition

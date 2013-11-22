@@ -59,7 +59,6 @@ MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
   this->Modified();
 }
 
-
 template<typename TMeasurementVector, typename TTargetVector,typename TLearningLayer>
 MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::~MultilayerNeuralNetworkBase()
@@ -72,7 +71,7 @@ MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::AddLayer(LayerInterfaceType* layer)
 {
   //Automatically set the layer Id based on position in the layer vector.
-  layer->SetLayerId(m_Layers.size());
+  layer->SetLayerId(m_Layers.size() );
   m_Layers.push_back(layer);
 //#define __USE_OLD_INTERFACE  Comment out to ensure that new interface works
 #ifdef __USE_OLD_INTERFACE
@@ -84,18 +83,17 @@ template<typename TMeasurementVector, typename TTargetVector,typename TLearningL
 typename MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>::LayerInterfaceType*
 MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::GetLayer(int layer_id)
-{
+  {
   return m_Layers[layer_id].GetPointer();
-}
-
+  }
 
 template<typename TMeasurementVector, typename TTargetVector,typename TLearningLayer>
 const typename MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>::LayerInterfaceType*
 MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::GetLayer(int layer_id) const
-{
+  {
   return m_Layers[layer_id].GetPointer();
-}
+  }
 
 template<typename TMeasurementVector, typename TTargetVector,typename TLearningLayer>
 typename MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>::NetworkOutputType
@@ -112,7 +110,7 @@ MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
     this->m_Layers[i + 1]->ForwardPropagate();
     }
   NetworkOutputType temp_output;
-  temp_output.SetSize(this->m_Layers[i]->GetNumberOfNodes());
+  temp_output.SetSize(this->m_Layers[i]->GetNumberOfNodes() );
   for(unsigned int k=0; k<temp_output.Size(); k++)
     {
     temp_output[k]=this->m_Layers[i]->GetOutputVector()[k];
@@ -126,6 +124,7 @@ MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::BackwardPropagate(NetworkOutputType errors)
 {
   unsigned int i = this->m_Layers.size();
+
   i--;
   this->m_Layers[i]->BackwardPropagate(errors);
   i--;
@@ -142,6 +141,7 @@ MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::InitializeWeights()
 {
   unsigned int num_wts = this->m_Weights.size();
+
   for(unsigned int i=0; i<num_wts; i++)
     {
     this->m_Weights[i]->InitializeWeights();
@@ -151,9 +151,10 @@ MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 template<typename TMeasurementVector, typename TTargetVector,typename TLearningLayer>
 void
 MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
-::UpdateWeights(ValueType itkNotUsed(lr))
+::UpdateWeights(ValueType itkNotUsed(lr) )
 {
   unsigned int i = this->m_Layers.size();
+
   while(i>1)
     {
     i--;
@@ -167,7 +168,7 @@ void
 MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::AddWeightSet(typename LayerInterfaceType::WeightSetInterfaceType* weightset)
 {
-  weightset->SetWeightSetId(m_Weights.size());
+  weightset->SetWeightSetId(m_Weights.size() );
   m_Weights.push_back(weightset);
   //#define __USE_OLD_INTERFACE  Comment out to ensure that new interface works
 #ifdef __USE_OLD_INTERFACE
@@ -176,26 +177,28 @@ MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 }
 
 #ifdef __USE_OLD_INTERFACE
-//Moved definition to header in attempt to fix compiler issues on MS Express 5.0 compiler.
+//Moved definition to header in attempt to fix compiler issues on MS Express 5.0
+// compiler.
 template<typename TMeasurementVector, typename TTargetVector,typename TLearningLayer>
-typename MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>::LayerInterfaceType::WeightSetInterfaceType*
+typename MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,
+                                     TLearningLayer>::LayerInterfaceType::WeightSetInterfaceType*
 MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::GetWeightSet(unsigned int id)
-{
+  {
   return m_Weights[id].GetPointer();
-}
+  }
 #endif
 
 #ifdef __USE_OLD_INTERFACE
 template<typename TMeasurementVector, typename TTargetVector,typename TLearningLayer>
-const typename MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>::LayerInterfaceType::WeightSetInterfaceType*
+const typename MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,
+                                           TLearningLayer>::LayerInterfaceType::WeightSetInterfaceType*
 MultilayerNeuralNetworkBase<TMeasurementVector,TTargetVector,TLearningLayer>
 ::GetWeightSet(unsigned int id) const
-{
+  {
   return m_Weights[id].GetPointer();
-}
+  }
 #endif
-
 
 template<typename TMeasurementVector, typename TTargetVector,typename TLearningLayer>
 void

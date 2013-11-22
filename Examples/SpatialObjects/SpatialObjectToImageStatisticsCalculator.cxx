@@ -21,7 +21,8 @@
 // \index{itk::Spatial\-Object\-To\-Image\-Statistics\-Calculator}
 // This example describes how to use the
 // \doxygen{SpatialObjectToImageStatisticsCalculator} to compute statistics
-// of an \doxygen{Image} only in a region defined inside a given \doxygen{SpatialObject}.
+// of an \doxygen{Image} only in a region defined inside a given
+// \doxygen{SpatialObject}.
 //
 // Software Guide : EndLatex
 
@@ -33,7 +34,8 @@
 #include "itkEllipseSpatialObject.h"
 #include "itkRandomImageSource.h"
 
-int main(int, char * [] )
+int
+main(int, char * [] )
 {
 // Software Guide : BeginLatex
 // We first create a test image using the \doxygen{RandomImageSource}
@@ -43,7 +45,7 @@ int main(int, char * [] )
   typedef itk::Image< unsigned char, 2 >      ImageType;
   typedef itk::RandomImageSource< ImageType > RandomImageSourceType;
   RandomImageSourceType::Pointer randomImageSource
-                                               = RandomImageSourceType::New();
+    = RandomImageSourceType::New();
   ImageType::SizeValueType size[2];
   size[0] = 10;
   size[1] = 10;
@@ -72,7 +74,7 @@ int main(int, char * [] )
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
   typedef itk::SpatialObjectToImageStatisticsCalculator<
-    ImageType, EllipseType > CalculatorType;
+      ImageType, EllipseType > CalculatorType;
   CalculatorType::Pointer calculator = CalculatorType::New();
 // Software Guide : EndCodeSnippet
 
@@ -84,7 +86,8 @@ int main(int, char * [] )
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
-// And we also pass the SpatialObject. The statistics will be computed inside the SpatialObject
+// And we also pass the SpatialObject. The statistics will be computed inside
+// the SpatialObject
 // (Internally the calculator is using the \code{IsInside()} function).
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
@@ -93,7 +96,8 @@ int main(int, char * [] )
 
 // Software Guide : BeginLatex
 // At the end we trigger the computation via the \code{Update()} function and we
-// can retrieve the mean and the covariance matrix using \code{GetMean()} and \code{GetCovarianceMatrix()}
+// can retrieve the mean and the covariance matrix using \code{GetMean()} and
+// \code{GetCovarianceMatrix()}
 // respectively.
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet

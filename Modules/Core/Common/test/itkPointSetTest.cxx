@@ -32,7 +32,8 @@ typedef PointSet::PointType PointType;
  * The point set that is created consists of a 100 random points.
  */
 
-int itkPointSetTest(int, char* [] )
+int
+itkPointSetTest(int, char* [] )
 {
   /**
    * Define the 3d geometric positions for 8 points in a cube.
@@ -42,7 +43,7 @@ int itkPointSetTest(int, char* [] )
   /**
    * Create the point set through its object factory.
    */
-  PointSet::Pointer pset(PointSet::New());
+  PointSet::Pointer pset(PointSet::New() );
 
   /**
    * Add our test points to the mesh.
@@ -56,12 +57,12 @@ int itkPointSetTest(int, char* [] )
     for(int i=0; i < 100; ++i)
       {
       testPointCoords[0] = (PointSet::CoordRepType)
-        vnl_sample_uniform((double)-1.0,(double)1.0);
+        vnl_sample_uniform( (double)-1.0,(double)1.0);
       testPointCoords[1] = (PointSet::CoordRepType)
-        vnl_sample_uniform((double)-1.0,(double)1.0);
+        vnl_sample_uniform( (double)-1.0,(double)1.0);
       testPointCoords[2] = (PointSet::CoordRepType)
-        vnl_sample_uniform((double)-1.0,(double)1.0);
-      pset->SetPoint(i, PointType(testPointCoords));
+        vnl_sample_uniform( (double)-1.0,(double)1.0);
+      pset->SetPoint(i, PointType(testPointCoords) );
       }
     }
   catch(...)

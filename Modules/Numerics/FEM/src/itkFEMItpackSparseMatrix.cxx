@@ -73,7 +73,8 @@ ItpackSparseMatrix::ItpackSparseMatrix(integer order, integer maxNonZeroValues)
   m_A = 0;
 }
 
-void ItpackSparseMatrix::Initialize()
+void
+ItpackSparseMatrix::Initialize()
 {
   /* is matrix ready for initialization */
   if( ( m_N <= 0 ) || ( m_NZ <= 0 ) )
@@ -118,7 +119,8 @@ void ItpackSparseMatrix::Initialize()
     }
 }
 
-void ItpackSparseMatrix::Clear()
+void
+ItpackSparseMatrix::Clear()
 {
   /* free variables */
   delete[] m_IA;
@@ -141,7 +143,8 @@ void ItpackSparseMatrix::Clear()
   m_A = 0;
 }
 
-void ItpackSparseMatrix::Finalize()
+void
+ItpackSparseMatrix::Finalize()
 {
   /* check */
   if( ( m_MatrixFinalized != 0 ) || ( m_MatrixInitialized == 0 ) )
@@ -162,7 +165,8 @@ void ItpackSparseMatrix::Finalize()
   m_MatrixFinalized = 1;
 }
 
-void ItpackSparseMatrix::UnFinalize()
+void
+ItpackSparseMatrix::UnFinalize()
 {
   /* check if this op makes sense*/
   if( ( m_MatrixFinalized == 0 ) || ( m_MatrixInitialized == 0 ) )
@@ -183,7 +187,8 @@ void ItpackSparseMatrix::UnFinalize()
   m_MatrixFinalized = 0;
 }
 
-void ItpackSparseMatrix::Set(integer i, integer j, doublereal value)
+void
+ItpackSparseMatrix::Set(integer i, integer j, doublereal value)
 {
   /* check for dynamic form */
   if( m_MatrixInitialized == 0 )
@@ -219,7 +224,8 @@ void ItpackSparseMatrix::Set(integer i, integer j, doublereal value)
     }
 }
 
-void ItpackSparseMatrix::Add(integer i, integer j, doublereal value)
+void
+ItpackSparseMatrix::Add(integer i, integer j, doublereal value)
 {
   /* ignore add zero */
   if( value == 0.0 )
@@ -260,7 +266,8 @@ void ItpackSparseMatrix::Add(integer i, integer j, doublereal value)
     }
 }
 
-ItpackSparseMatrix::doublereal ItpackSparseMatrix::Get(integer i, integer j)
+ItpackSparseMatrix::doublereal
+ItpackSparseMatrix::Get(integer i, integer j)
 {
   doublereal returnValue = 0.0; /* set to default return value */
   integer    fortranJ = j + 1;
@@ -292,7 +299,8 @@ ItpackSparseMatrix::doublereal ItpackSparseMatrix::Get(integer i, integer j)
   return returnValue;
 }
 
-ItpackSparseMatrix::doublereal * ItpackSparseMatrix::GetA()
+ItpackSparseMatrix::doublereal *
+ItpackSparseMatrix::GetA()
 {
   if( m_MatrixInitialized == 0 )
     {
@@ -306,7 +314,8 @@ ItpackSparseMatrix::doublereal * ItpackSparseMatrix::GetA()
   return m_A;
 }
 
-ItpackSparseMatrix::integer * ItpackSparseMatrix::GetIA()
+ItpackSparseMatrix::integer *
+ItpackSparseMatrix::GetIA()
 {
   if( m_MatrixInitialized == 0 )
     {
@@ -320,7 +329,8 @@ ItpackSparseMatrix::integer * ItpackSparseMatrix::GetIA()
   return m_IA;
 }
 
-ItpackSparseMatrix::integer * ItpackSparseMatrix::GetJA()
+ItpackSparseMatrix::integer *
+ItpackSparseMatrix::GetJA()
 {
   if( m_MatrixInitialized == 0 )
     {
@@ -334,7 +344,8 @@ ItpackSparseMatrix::integer * ItpackSparseMatrix::GetJA()
   return m_JA;
 }
 
-void ItpackSparseMatrix::mult(doublereal *vector, doublereal *result)
+void
+ItpackSparseMatrix::mult(doublereal *vector, doublereal *result)
 {
   /* finalize matrix */
   if( m_MatrixFinalized == 0 )
@@ -366,7 +377,8 @@ void ItpackSparseMatrix::mult(doublereal *vector, doublereal *result)
     }
 }
 
-void ItpackSparseMatrix::mult(ItpackSparseMatrix *rightMatrix, ItpackSparseMatrix *resultMatrix)
+void
+ItpackSparseMatrix::mult(ItpackSparseMatrix *rightMatrix, ItpackSparseMatrix *resultMatrix)
 {
   /* ensure appropriate matrix sizes */
   if( m_N != rightMatrix->GetOrder() )
@@ -412,7 +424,8 @@ void ItpackSparseMatrix::mult(ItpackSparseMatrix *rightMatrix, ItpackSparseMatri
     }
 }
 
-void ItpackSparseMatrix::SetCompressedRow(integer *ia, integer *ja, doublereal *a)
+void
+ItpackSparseMatrix::SetCompressedRow(integer *ia, integer *ja, doublereal *a)
 {
   m_IA = ia;
   m_JA = ja;

@@ -37,7 +37,8 @@ MixtureModelComponentBase< TSample >
 template< typename TSample >
 MixtureModelComponentBase< TSample >
 ::~MixtureModelComponentBase()
-{}
+{
+}
 
 template< typename TSample >
 void
@@ -130,9 +131,9 @@ template< typename TSample >
 typename MixtureModelComponentBase< TSample >::MembershipFunctionType *
 MixtureModelComponentBase< TSample >
 ::GetMembershipFunction()
-{
+  {
   return m_MembershipFunction;
-}
+  }
 
 template< typename TSample >
 inline double
@@ -179,6 +180,7 @@ MixtureModelComponentBase< TSample >
 {
   this->GenerateData();
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

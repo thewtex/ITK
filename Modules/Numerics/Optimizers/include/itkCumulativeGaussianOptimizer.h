@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 
-class CumulativeGaussianOptimizer:
+class CumulativeGaussianOptimizer :
   public MultipleValuedNonLinearOptimizer
 {
 public:
@@ -93,7 +93,8 @@ public:
 
 protected:
   CumulativeGaussianOptimizer();
-  virtual ~CumulativeGaussianOptimizer();
+  virtual
+  ~CumulativeGaussianOptimizer();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

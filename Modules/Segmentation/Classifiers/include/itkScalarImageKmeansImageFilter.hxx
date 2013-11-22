@@ -36,7 +36,8 @@ ScalarImageKmeansImageFilter< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void ScalarImageKmeansImageFilter< TInputImage, TOutputImage >
+void
+ScalarImageKmeansImageFilter< TInputImage, TOutputImage >
 ::SetImageRegion(const ImageRegionType & region)
 {
   m_ImageRegion = region;
@@ -196,7 +197,7 @@ ScalarImageKmeansImageFilter< TInputImage, TOutputImage >
     // If a region is defined to constrain classification to, we need to label
     // pixels outside with numberOfClasses + 1.
     typedef ImageRegionExclusionIteratorWithIndex< OutputImageType >
-    ExclusionImageIteratorType;
+      ExclusionImageIteratorType;
     ExclusionImageIteratorType exIt( outputPtr, outputPtr->GetBufferedRegion() );
     exIt.SetExclusionRegion(region);
     exIt.GoToBegin();
@@ -244,11 +245,13 @@ ScalarImageKmeansImageFilter< TInputImage, TOutputImage >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Final Means " << m_FinalMeans << std::endl;
   os << indent << "Use Contiguous Labels " << m_UseNonContiguousLabels << std::endl;
   os << indent << "Image Region Defined: " << m_ImageRegionDefined << std::endl;
   os << indent << "Image Region: " << m_ImageRegion << std::endl;
 }
+
 } // end namespace itk
 
 #endif

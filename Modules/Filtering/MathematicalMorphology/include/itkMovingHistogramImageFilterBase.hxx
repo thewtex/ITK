@@ -179,11 +179,17 @@ MovingHistogramImageFilterBase< TInputImage, TOutputImage, TKernel >
     }
 
   m_PixelsPerTranslation = axisCount[m_Axes[ImageDimension - 1]] / 2;  //
+                                                                       //
+                                                                       //
                                                                        // divided
                                                                        // by 2
+                                                                       //
+                                                                       //
                                                                        // because
                                                                        // there
                                                                        // is 2
+                                                                       //
+                                                                       //
                                                                        // directions
                                                                        // on the
                                                                        // axis
@@ -225,5 +231,6 @@ MovingHistogramImageFilterBase< TInputImage, TOutputImage, TKernel >
 
   os << indent << "PixelsPerTranslation: " << m_PixelsPerTranslation << std::endl;
 }
+
 } // end namespace itk
 #endif

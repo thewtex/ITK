@@ -38,24 +38,24 @@ namespace itk
 template<typename TImageToImageFilter>
 class ImageFilterToVideoFilterWrapper :
   public VideoToVideoFilter<
-          itk::VideoStream<typename TImageToImageFilter::InputImageType>,
-          itk::VideoStream<typename TImageToImageFilter::OutputImageType> >
+    itk::VideoStream<typename TImageToImageFilter::InputImageType>,
+    itk::VideoStream<typename TImageToImageFilter::OutputImageType> >
 {
 public:
 
   /** Standard class typedefs */
-  typedef TImageToImageFilter                                ImageFilterType;
-  typedef typename ImageFilterType::InputImageType           InputFrameType;
-  typedef typename ImageFilterType::OutputImageType          OutputFrameType;
-  typedef itk::VideoStream< InputFrameType >                 InputVideoStreamType;
-  typedef itk::VideoStream< OutputFrameType >                OutputVideoStreamType;
+  typedef TImageToImageFilter                       ImageFilterType;
+  typedef typename ImageFilterType::InputImageType  InputFrameType;
+  typedef typename ImageFilterType::OutputImageType OutputFrameType;
+  typedef itk::VideoStream< InputFrameType >        InputVideoStreamType;
+  typedef itk::VideoStream< OutputFrameType >       OutputVideoStreamType;
 
   typedef ImageFilterToVideoFilterWrapper< ImageFilterType > Self;
   typedef VideoToVideoFilter< InputVideoStreamType,
                               OutputVideoStreamType >        Superclass;
-  typedef SmartPointer< Self >                               Pointer;
-  typedef SmartPointer< const Self >                         ConstPointer;
-  typedef WeakPointer< const Self >                          ConstWeakPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef WeakPointer< const Self >  ConstWeakPointer;
 
   itkNewMacro(Self);
 
@@ -69,7 +69,9 @@ protected:
 
   /** Constructor and Destructor */
   ImageFilterToVideoFilterWrapper();
-  virtual ~ImageFilterToVideoFilterWrapper() {}
+  virtual
+  ~ImageFilterToVideoFilterWrapper() {
+  }
 
   /** PrintSelf */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -83,8 +85,7 @@ protected:
 
 private:
   ImageFilterToVideoFilterWrapper(const Self &); // purposely not implemented
-  void operator=(const Self &);            // purposely not implemented
-
+  void operator=(const Self &);                  // purposely not implemented
 
 };  // end class ImageFilterToVideoFilterWrapper
 

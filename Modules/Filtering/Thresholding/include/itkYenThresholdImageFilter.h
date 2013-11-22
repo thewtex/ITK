@@ -48,15 +48,15 @@ namespace itk {
 
 template<typename TInputImage, typename TOutputImage, typename TMaskImage=TOutputImage>
 class YenThresholdImageFilter :
-    public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
+  public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
 {
 public:
   /** Standard Self typedef */
-  typedef YenThresholdImageFilter                                     Self;
+  typedef YenThresholdImageFilter Self;
   typedef HistogramThresholdImageFilter<TInputImage,TOutputImage,
                                         TMaskImage>                   Superclass;
-  typedef SmartPointer<Self>                                          Pointer;
-  typedef SmartPointer<const Self>                                    ConstPointer;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -64,14 +64,14 @@ public:
   /** Runtime information support. */
   itkTypeMacro(YenThresholdImageFilter, HistogramThresholdImageFilter);
 
-  typedef TInputImage                       InputImageType;
-  typedef TOutputImage                      OutputImageType;
-  typedef TMaskImage                        MaskImageType;
+  typedef TInputImage  InputImageType;
+  typedef TOutputImage OutputImageType;
+  typedef TMaskImage   MaskImageType;
 
   /** Image pixel value typedef. */
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename MaskImageType::PixelType    MaskPixelType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename MaskImageType::PixelType   MaskPixelType;
 
   /** Image related typedefs. */
   typedef typename InputImageType::Pointer  InputImagePointer;
@@ -98,14 +98,17 @@ public:
 
 protected:
   YenThresholdImageFilter()
-    {
+  {
     this->SetCalculator( CalculatorType::New() );
-    }
-  ~YenThresholdImageFilter(){};
+  }
+
+  ~YenThresholdImageFilter(){
+  }
 
 private:
   YenThresholdImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);          //purposely not implemented
+
 }; // end of class
 
 } // end namespace itk

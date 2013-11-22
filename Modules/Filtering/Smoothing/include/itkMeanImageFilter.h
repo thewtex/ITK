@@ -45,7 +45,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class MeanImageFilter:
+class MeanImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -90,7 +90,9 @@ public:
 
 protected:
   MeanImageFilter();
-  virtual ~MeanImageFilter() {}
+  virtual
+  ~MeanImageFilter() {
+  }
 
   /** MeanImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData()
@@ -108,6 +110,7 @@ protected:
 private:
   MeanImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -39,29 +39,31 @@ public:
       }
   }
 
-  double Evaluate( const IndexType& index , const SizeType& size,
-                   const SizeType& clampSize, const float& padValue)
+  double
+  Evaluate( const IndexType& index , const SizeType& size,
+            const SizeType& clampSize, const float& padValue)
   {
     double accum = m_Offset;
+
     for( int j = 0; j < VDimension; j++ )
       {
-         if ( static_cast< unsigned int >( index[j] ) < size[j] )
-           {
-           if ( static_cast< unsigned int >( index[j] ) >= clampSize[j] )
-             {
-             //Interpolators behave this way in half-pixel band at image perimeter
-             accum += m_Coeff[j] * (double) (clampSize[j]-1);
-             }
-           else
-             {
-             accum += m_Coeff[j] * (double) index[j];
-             }
-           }
-         else
-           {
-           accum = padValue;
-           break;
-           }
+      if ( static_cast< unsigned int >( index[j] ) < size[j] )
+        {
+        if ( static_cast< unsigned int >( index[j] ) >= clampSize[j] )
+          {
+          //Interpolators behave this way in half-pixel band at image perimeter
+          accum += m_Coeff[j] * (double) (clampSize[j]-1);
+          }
+        else
+          {
+          accum += m_Coeff[j] * (double) index[j];
+          }
+        }
+      else
+        {
+        accum = padValue;
+        break;
+        }
       }
 
     return accum;
@@ -72,7 +74,6 @@ public:
 
 };
 
-
 // The following three classes are used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
@@ -82,14 +83,18 @@ public:
   {
     m_Process = o;
   }
-  void ShowProgress()
+
+  void
+  ShowProgress()
   {
     std::cout << "Progress " << m_Process->GetProgress() << std::endl;
   }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
-int itkWarpVectorImageFilterTest(int, char* [] )
+int
+itkWarpVectorImageFilterTest(int, char* [] )
 {
   const unsigned int ImageDimension = 2;
 
@@ -97,18 +102,17 @@ int itkWarpVectorImageFilterTest(int, char* [] )
   typedef itk::Image<VectorType,ImageDimension> FieldType;
 
   // In this case, the image to be warped is also a vector field.
-  typedef FieldType             ImageType;
-  typedef ImageType::PixelType  PixelType;
-  typedef ImageType::IndexType  IndexType;
+  typedef FieldType            ImageType;
+  typedef ImageType::PixelType PixelType;
+  typedef ImageType::IndexType IndexType;
 
   bool testPassed = true;
-
 
   //=============================================================
 
   std::cout << "Create the input image pattern." << std::endl;
   ImageType::RegionType region;
-  ImageType::SizeType size = {{64, 64}};
+  ImageType::SizeType   size = {{64, 64}};
   region.SetSize( size );
 
   ImageType::Pointer input = ImageType::New();
@@ -116,8 +120,7 @@ int itkWarpVectorImageFilterTest(int, char* [] )
   input->SetBufferedRegion( region );
   input->Allocate();
 
-
-  unsigned int j;
+  unsigned int                 j;
   ImagePattern<ImageDimension> pattern;
   pattern.m_Offset = 64;
   for( j = 0; j < ImageDimension; j++ )
@@ -141,7 +144,7 @@ int itkWarpVectorImageFilterTest(int, char* [] )
   unsigned int factors[ImageDimension] = { 2, 3 };
 
   ImageType::RegionType fieldRegion;
-  ImageType::SizeType fieldSize;
+  ImageType::SizeType   fieldSize;
   for( j = 0; j < ImageDimension; j++ )
     {
     fieldSize[j] = size[j] * factors[j] + 5;
@@ -157,7 +160,7 @@ int itkWarpVectorImageFilterTest(int, char* [] )
 
   for( FieldIterator fieldIter( field, fieldRegion ); !fieldIter.IsAtEnd(); ++fieldIter )
     {
-    IndexType index = fieldIter.GetIndex();
+    IndexType  index = fieldIter.GetIndex();
     VectorType displacement;
     for( j = 0; j < ImageDimension; j++ )
       {
@@ -177,7 +180,7 @@ int itkWarpVectorImageFilterTest(int, char* [] )
   warper->SetDisplacementField( field );
   warper->SetEdgePaddingValue( padValue );
 
-  ShowProgressObject progressWatch(warper);
+  ShowProgressObject                                    progressWatch(warper);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -212,7 +215,7 @@ int itkWarpVectorImageFilterTest(int, char* [] )
 
   // compute non-padded output region
   ImageType::RegionType validRegion;
-  ImageType::SizeType validSize = validRegion.GetSize();
+  ImageType::SizeType   validSize = validRegion.GetSize();
   //Needed to deal with incompatibility of various IsInside()s &
   //nearest-neighbour type interpolation on half-band at perimeter of
   //image. Evaluate() now has logic for this outer half-band.
@@ -266,7 +269,7 @@ int itkWarpVectorImageFilterTest(int, char* [] )
     if( validRegion.IsInside( index ) )
       {
 
-    PixelType trueValue = pattern.Evaluate( outIter.GetIndex(), validSize, clampSize, padValue );
+      PixelType trueValue = pattern.Evaluate( outIter.GetIndex(), validSize, clampSize, padValue );
       for( unsigned int k=0; k<ImageDimension; k++ )
         {
         if( vnl_math_abs( trueValue[k] - value[k] ) > 1e-4 )
@@ -319,7 +322,7 @@ int itkWarpVectorImageFilterTest(int, char* [] )
   std::cout << "Compare standalone and streamed outputs" << std::endl;
 
   Iterator streamIter( streamer->GetOutput(),
-    streamer->GetOutput()->GetBufferedRegion() );
+                       streamer->GetOutput()->GetBufferedRegion() );
 
   outIter.GoToBegin();
   streamIter.GoToBegin();
@@ -333,7 +336,6 @@ int itkWarpVectorImageFilterTest(int, char* [] )
     ++outIter;
     ++streamIter;
     }
-
 
   if ( !testPassed )
     {
@@ -364,9 +366,9 @@ int itkWarpVectorImageFilterTest(int, char* [] )
   if (!testPassed) {
     std::cout << "Test failed" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
- std::cout << "Test passed." << std::endl;
- return EXIT_SUCCESS;
+  std::cout << "Test passed." << std::endl;
+  return EXIT_SUCCESS;
 
 }

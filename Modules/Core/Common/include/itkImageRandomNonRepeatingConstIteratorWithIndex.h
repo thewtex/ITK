@@ -51,7 +51,8 @@ public:
     m_Value = 0.0;
   }
 
-  bool operator<(const NodeOfPermutation & b) const
+  bool
+  operator<(const NodeOfPermutation & b) const
   {
     if ( m_Priority == b.m_Priority )
       {
@@ -62,6 +63,7 @@ public:
       return m_Priority < b.m_Priority;
       }
   }
+
 };
 
 /** \class RandomPermutation
@@ -84,16 +86,18 @@ public:
     this->Shuffle();
   }
 
-  RandomPermutation &operator=(const RandomPermutation &it)
-    {
-      delete[] m_Permutation;
-      m_Size = it.m_Size;
-      m_Permutation = new NodeOfPermutation[m_Size];
-      m_Generator = it.m_Generator;
-      return *this;
-    }
+  RandomPermutation &
+  operator=(const RandomPermutation &it)
+  {
+    delete[] m_Permutation;
+    m_Size = it.m_Size;
+    m_Permutation = new NodeOfPermutation[m_Size];
+    m_Generator = it.m_Generator;
+    return *this;
+  }
 
-  void Dump()
+  void
+  Dump()
   {
     for ( SizeValueType i = 0; i < m_Size; i++ )
       {
@@ -103,7 +107,8 @@ public:
       }
   }
 
-  void SetPriority(SizeValueType i, SizeValueType priority)
+  void
+  SetPriority(SizeValueType i, SizeValueType priority)
   {
     if ( i > m_Size )
       {
@@ -115,7 +120,8 @@ public:
       }
   }
 
-  void Shuffle()
+  void
+  Shuffle()
   {
     for ( SizeValueType i = 0; i < m_Size; i++ )
       {
@@ -125,7 +131,8 @@ public:
     std::sort(m_Permutation, m_Permutation + m_Size);
   }
 
-  SizeValueType operator[](SizeValueType i)
+  SizeValueType
+  operator[](SizeValueType i)
   {
     return m_Permutation[i].m_Index;
   }
@@ -136,15 +143,18 @@ public:
   }
 
   /** Reinitialize the seed of the random number generator */
-  void ReinitializeSeed()
+  void
+  ReinitializeSeed()
   {
     m_Generator->Initialize();
   }
 
-  void ReinitializeSeed(unsigned int seed)
+  void
+  ReinitializeSeed(unsigned int seed)
   {
     m_Generator->SetSeed (seed);
   }
+
 };
 
 /** \class ImageRandomNonRepeatingConstIteratorWithIndex
@@ -220,7 +230,7 @@ public:
  * \endwiki
  */
 template< typename TImage >
-class ImageRandomNonRepeatingConstIteratorWithIndex:public ImageConstIteratorWithIndex< TImage >
+class ImageRandomNonRepeatingConstIteratorWithIndex : public ImageConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -270,27 +280,31 @@ public:
   Self & operator=(const Self & it);
 
   /** Move an iterator to the beginning of the region. */
-  void GoToBegin(void)
+  void
+  GoToBegin(void)
   {
     m_NumberOfSamplesDone = 0L;
     this->UpdatePosition();
   }
 
   /** Move an iterator to one position past the End of the region. */
-  void GoToEnd(void)
+  void
+  GoToEnd(void)
   {
     m_NumberOfSamplesDone = m_NumberOfSamplesRequested;
     this->UpdatePosition();
   }
 
   /** Is the iterator at the beginning of the region? */
-  bool IsAtBegin(void) const
+  bool
+  IsAtBegin(void) const
   {
     return ( m_NumberOfSamplesDone == 0L );
   }
 
   /** Is the iterator at the end of the region? */
-  bool IsAtEnd(void) const
+  bool
+  IsAtEnd(void) const
   {
     return ( m_NumberOfSamplesDone >= m_NumberOfSamplesRequested );
   }
@@ -310,7 +324,8 @@ public:
 
   /** Increment (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator-- */
-  Self & operator++()
+  Self &
+  operator++()
   {
     m_NumberOfSamplesDone++;
     this->UpdatePosition();
@@ -319,7 +334,8 @@ public:
 
   /** Decrement (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator++ */
-  Self & operator--()
+  Self &
+  operator--()
   {
     m_NumberOfSamplesDone--;
     this->UpdatePosition();

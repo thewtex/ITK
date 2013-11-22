@@ -50,7 +50,7 @@ namespace itk
  */
 typedef std::vector< std::string > FilenamesContainer;
 typedef std::vector< std::string > SerieUIDContainer;
-class GDCMSeriesFileNames:public ProcessObject
+class GDCMSeriesFileNames : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -73,7 +73,8 @@ public:
   void SetInputDirectory(std::string const & name);
 
   /** Set the directory that contains the DICOM series. */
-  void SetDirectory(std::string const & name)
+  void
+  SetDirectory(std::string const & name)
   {
     SetInputDirectory(name);
   }
@@ -84,7 +85,8 @@ public:
   const FilenamesContainer & GetInputFileNames();
 
   /** Set the directory where the output DICOM serie should be written. */
-  void SetOutputDirectory(std::string const & name)
+  void
+  SetOutputDirectory(std::string const & name)
   {
     m_OutputDirectory = name;
     this->Modified();
@@ -127,7 +129,8 @@ public:
    *   and SeriesName to identify when a single SeriesUID contains
    *   multiple 3D volumes - as can occur with perfusion and DTI imaging
    */
-  bool GetUseSeriesDetails(void)
+  bool
+  GetUseSeriesDetails(void)
   {
     return m_UseSeriesDetails;
   }
@@ -138,7 +141,8 @@ public:
    *   useful to determine which series should be read - e.g., to determine
    *   which is the T2 scan, etc.
    */
-  gdcm::SerieHelper * GetSeriesHelper(void)
+  gdcm::SerieHelper *
+  GetSeriesHelper(void)
   {
     return m_SerieHelper;
   }
@@ -149,7 +153,8 @@ public:
    * series. Format for tag is "group|element" of a DICOM tag.
    * \warning User need to set SetUseSeriesDetails(true)
    */
-  void AddSeriesRestriction(const std::string & tag)
+  void
+  AddSeriesRestriction(const std::string & tag)
   {
     m_SerieHelper->AddRestriction(tag);
   }

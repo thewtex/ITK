@@ -74,7 +74,7 @@ namespace itk
 template< typename TInputImage,
           typename TMembershipFunction,
           typename TTrainingImage >
-class ImageGaussianModelEstimator:
+class ImageGaussianModelEstimator :
   public ImageModelEstimatorBase< TInputImage, TMembershipFunction >
 {
 public:
@@ -154,6 +154,7 @@ private:
   virtual void EstimateModels();
 
   void EstimateGaussianModelParameters();
+
 }; // class ImageGaussianModelEstimator
 } // namespace itk
 

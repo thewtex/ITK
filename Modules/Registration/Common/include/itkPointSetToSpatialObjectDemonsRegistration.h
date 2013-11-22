@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedPointSet, typename TMovingSpatialObject >
-class PointSetToSpatialObjectDemonsRegistration:public ProcessObject
+class PointSetToSpatialObjectDemonsRegistration : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -97,19 +97,27 @@ public:
    * compatibility reasons, we check whether StartRegistration was
    * called directly or whether Update() (which in turn called
    * StartRegistration()). */
-  void StartRegistration(void) { this->Update(); }
+  void
+  StartRegistration(void) {
+    this->Update();
+  }
+
 #endif
 
 protected:
   PointSetToSpatialObjectDemonsRegistration();
-  virtual ~PointSetToSpatialObjectDemonsRegistration() {}
+  virtual
+  ~PointSetToSpatialObjectDemonsRegistration() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   PointSetToSpatialObjectDemonsRegistration(const Self &); //purposely not
                                                            // implemented
   void operator=(const Self &);                            //purposely not
-                                                           // implemented
+
+  // implemented
 
   MovingSpatialObjectConstPointer m_MovingSpatialObject;
   FixedPointSetConstPointer       m_FixedPointSet;

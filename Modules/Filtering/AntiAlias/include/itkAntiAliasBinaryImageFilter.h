@@ -104,7 +104,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class AntiAliasBinaryImageFilter:
+class AntiAliasBinaryImageFilter :
   public SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -139,13 +139,15 @@ public:
 
   /** Set/Get the maximum number of iterations allowed for the solver.  This
    *  prevents infinite loops if a solution "bounces". */
-  void SetMaximumIterations(unsigned int i)
+  void
+  SetMaximumIterations(unsigned int i)
   {
     itkWarningMacro("SetMaximumIterations is deprecated.  Please use SetNumberOfIterations instead.");
     this->SetNumberOfIterations(i);
   }
 
-  unsigned int GetMaximumIterations()
+  unsigned int
+  GetMaximumIterations()
   {
     itkWarningMacro("GetMaximumIterations is deprecated. Please use GetNumberOfIterations instead.");
     return this->GetNumberOfIterations();
@@ -162,7 +164,9 @@ public:
 
 protected:
   AntiAliasBinaryImageFilter();
-  ~AntiAliasBinaryImageFilter() {}
+  ~AntiAliasBinaryImageFilter() {
+  }
+
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Overridden from the parent class to indroduce a constraint on

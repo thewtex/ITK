@@ -16,16 +16,15 @@
  *
  *=========================================================================*/
 
-
 #include "itkScalarImageToCooccurrenceListSampleFilter.h"
 
-int itkScalarImageToCooccurrenceListSampleFilterTest( int , char *[] )
+int
+itkScalarImageToCooccurrenceListSampleFilterTest( int , char *[] )
 {
   //Data definitions
-  const unsigned int  IMGWIDTH         =  5;
-  const unsigned int  IMGHEIGHT        =  5;
-  const unsigned int  NDIMENSION       =  2;
-
+  const unsigned int IMGWIDTH         =  5;
+  const unsigned int IMGHEIGHT        =  5;
+  const unsigned int NDIMENSION       =  2;
 
   //------------------------------------------------------
   //Create a simple test images
@@ -33,7 +32,6 @@ int itkScalarImageToCooccurrenceListSampleFilterTest( int , char *[] )
   typedef itk::Image<int, NDIMENSION> InputImageType;
 
   typedef itk::ImageRegionIterator< InputImageType > InputImageIterator;
-
 
   InputImageType::Pointer image = InputImageType::New();
 
@@ -77,9 +75,8 @@ int itkScalarImageToCooccurrenceListSampleFilterTest( int , char *[] )
     std::cout << "\n";
     }
 
-
   typedef itk::Statistics::ScalarImageToCooccurrenceListSampleFilter <
-                                  InputImageType > CooccurrenceListType;
+      InputImageType > CooccurrenceListType;
 
   CooccurrenceListType::Pointer filter = CooccurrenceListType::New();
 
@@ -125,7 +122,7 @@ int itkScalarImageToCooccurrenceListSampleFilterTest( int , char *[] )
 
   std::vector< MeasurementVectorType > baselineVectorList;
 
-  int  val[2];
+  int val[2];
 
   val[0] = 2;
   val[1] = 3;
@@ -142,7 +139,6 @@ int itkScalarImageToCooccurrenceListSampleFilterTest( int , char *[] )
   val[0] = 3;
   val[1] = 4;
   baselineVectorList.push_back( val );
-
 
   val[0] = 4;
   val[1] = 5;
@@ -215,8 +211,8 @@ int itkScalarImageToCooccurrenceListSampleFilterTest( int , char *[] )
   while ( s_iter != sample->End() )
     {
 
-    MeasurementVectorType  v = s_iter.GetMeasurementVector();
-    MeasurementVectorType  vbase = *it;
+    MeasurementVectorType v = s_iter.GetMeasurementVector();
+    MeasurementVectorType vbase = *it;
 
     if ( vbase != v )
       {

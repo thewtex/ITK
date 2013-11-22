@@ -19,7 +19,6 @@
 #define __itkNonUniformBSpline_h
 #if !defined( ITK_LEGACY_REMOVE )
 
-
 #include <vector>
 
 #include "itkPoint.h"
@@ -45,7 +44,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class NonUniformBSpline:
+class NonUniformBSpline :
   public Object
 {
 public:
@@ -146,7 +145,8 @@ protected:
   /**
    * Virtual destructor
    */
-  virtual ~NonUniformBSpline();
+  virtual
+  ~NonUniformBSpline();
 
   /**
    * Method to print the object.

@@ -51,12 +51,13 @@ itkNrrdImageIOTestGenerateRandomImage(unsigned int size)
   source->SetSpacing(spacing);
 
   source->Update();
-  return (source->GetOutput());
+  return (source->GetOutput() );
 }
 
 template<typename TPixelType, unsigned int VImageDimension>
-int itkNrrdImageIOTestReadWriteTest(std::string fn, unsigned int size,
-                                    std::string inputFile, bool compression=false)
+int
+itkNrrdImageIOTestReadWriteTest(std::string fn, unsigned int size,
+                                std::string inputFile, bool compression=false)
 {
   typedef itk::Image<TPixelType, VImageDimension> ImageType;
 
@@ -76,7 +77,7 @@ int itkNrrdImageIOTestReadWriteTest(std::string fn, unsigned int size,
     typename itk::ImageFileReader<ImageType>::Pointer tmpReader
       = itk::ImageFileReader<ImageType>::New();
     tmpReader->SetImageIO(io);
-    tmpReader->SetFileName(inputFile.c_str());
+    tmpReader->SetFileName(inputFile.c_str() );
     try
       {
       tmpReader->Update();
@@ -99,12 +100,12 @@ int itkNrrdImageIOTestReadWriteTest(std::string fn, unsigned int size,
   // Write, then read the image.
   try
     {
-    writer->SetFileName(fn.c_str());
+    writer->SetFileName(fn.c_str() );
     if (compression==true)
-      { writer->UseCompressionOn(); }
+              { writer->UseCompressionOn(); }
     else
-      { writer->UseCompressionOff();}
-    reader->SetFileName(fn.c_str());
+              { writer->UseCompressionOff();}
+    reader->SetFileName(fn.c_str() );
     //writer->SetFileName("testDebug.mhd");
     //reader->SetFileName("testDebug.mhd");
 
@@ -115,10 +116,10 @@ int itkNrrdImageIOTestReadWriteTest(std::string fn, unsigned int size,
     return EXIT_FAILURE;
     }
 
-    writer->SetInput(image);
+  writer->SetInput(image);
 
-    image->Print(std::cout);
-    std::cout << "----------" << std::endl;
+  image->Print(std::cout);
+  std::cout << "----------" << std::endl;
 
   try
     {
@@ -141,10 +142,10 @@ int itkNrrdImageIOTestReadWriteTest(std::string fn, unsigned int size,
   std::cout << std::endl;
 
   // Compare input and output images.
-  itk::ImageRegionIterator<ImageType> a(image, image->GetRequestedRegion());
+  itk::ImageRegionIterator<ImageType> a(image, image->GetRequestedRegion() );
   itk::ImageRegionIterator<ImageType> b(reader->GetOutput(),
-                                        reader->GetOutput()->GetRequestedRegion());
-  for (a.GoToBegin(), b.GoToBegin(); ! a.IsAtEnd(); ++a, ++b)
+                                        reader->GetOutput()->GetRequestedRegion() );
+  for (a.GoToBegin(), b.GoToBegin(); !a.IsAtEnd(); ++a, ++b)
     {
     if ( b.Get() != a.Get() )
       {

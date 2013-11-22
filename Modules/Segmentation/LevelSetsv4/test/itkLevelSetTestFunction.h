@@ -33,7 +33,7 @@ namespace itk
  * \f$ f(x,y) = \sqrt{ (x-5)(x-5) + (y-4)(y-4) } - 3 \f$
  */
 template< typename TPixel >
-class LevelSetTestFunction: public LightObject
+class LevelSetTestFunction : public LightObject
 {
 public:
   typedef LevelSetTestFunction       Self;
@@ -47,11 +47,11 @@ public:
 
   itkStaticConstMacro(Dimension, unsigned int, 2);
 
-  typedef TPixel                                        PixelType;
+  typedef TPixel PixelType;
 
-  typedef Image< PixelType, Dimension >                 ImageType;
-  typedef typename ImageType::IndexType                 IndexType;
-  typedef typename ImageType::PointType                 PointType;
+  typedef Image< PixelType, Dimension > ImageType;
+  typedef typename ImageType::IndexType IndexType;
+  typedef typename ImageType::PointType PointType;
 
   typedef typename NumericTraits< PixelType >::RealType OutputRealType;
   typedef CovariantVector< OutputRealType, Dimension >  GradientType;
@@ -62,11 +62,13 @@ public:
   GradientType   EvaluateGradient( const PointType & point ) const;
 
 protected:
-  LevelSetTestFunction() {}
+  LevelSetTestFunction() {
+  }
 
 private:
   LevelSetTestFunction( const Self & ); // purposely not implemented
   void operator=( const Self & );       // purposely not implemented
+
 };
 
 } // end namespace itk

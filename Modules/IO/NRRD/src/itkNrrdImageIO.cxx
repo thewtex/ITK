@@ -40,7 +40,8 @@ NrrdImageIO::~NrrdImageIO()
 {
 }
 
-bool NrrdImageIO::SupportsDimension(unsigned long dim)
+bool
+NrrdImageIO::SupportsDimension(unsigned long dim)
 {
   if ( 1 == this->GetNumberOfComponents() )
     {
@@ -52,7 +53,8 @@ bool NrrdImageIO::SupportsDimension(unsigned long dim)
     }
 }
 
-void NrrdImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+NrrdImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
@@ -156,7 +158,8 @@ NrrdImageIO::ITKToNrrdComponentType(const ImageIOBase::IOComponentType itkCompon
   return nrrdTypeUnknown;
 }
 
-bool NrrdImageIO::CanReadFile(const char *filename)
+bool
+NrrdImageIO::CanReadFile(const char *filename)
 {
   // Check the extension first to avoid opening files that do not
   // look like nrrds.  The file must have an appropriate extension to be
@@ -220,7 +223,8 @@ bool NrrdImageIO::CanReadFile(const char *filename)
   return false;
 }
 
-void NrrdImageIO::ReadImageInformation()
+void
+NrrdImageIO::ReadImageInformation()
 {
   // This method determines the following and sets the appropriate value in
   // the parent IO class:
@@ -554,7 +558,7 @@ void NrrdImageIO::ReadImageInformation()
     MetaDataDictionary & thisDic = this->GetMetaDataDictionary();
     // Necessary to clear dict if ImageIO object is re-used
     thisDic.Clear();
-    std::string          classname( this->GetNameOfClass() );
+    std::string classname( this->GetNameOfClass() );
     EncapsulateMetaData< std::string >(thisDic, ITK_InputFilterName, classname);
     for ( unsigned int kvpi = 0; kvpi < nrrdKeyValueSize(nrrd); kvpi++ )
       {
@@ -699,10 +703,11 @@ void NrrdImageIO::ReadImageInformation()
     }
 }
 
-void NrrdImageIO::Read(void *buffer)
+void
+NrrdImageIO::Read(void *buffer)
 {
-  Nrrd *       nrrd = nrrdNew();
-  bool         nrrdAllocated;
+  Nrrd * nrrd = nrrdNew();
+  bool   nrrdAllocated;
 
   // NOTE the main reason the logic becomes complicated here is that
   // ITK has to be the one to allocate the data segment ("buffer")
@@ -833,7 +838,8 @@ void NrrdImageIO::Read(void *buffer)
     }
 }
 
-bool NrrdImageIO::CanWriteFile(const char *name)
+bool
+NrrdImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -859,12 +865,14 @@ bool NrrdImageIO::CanWriteFile(const char *name)
   return false;
 }
 
-void NrrdImageIO::WriteImageInformation(void)
+void
+NrrdImageIO::WriteImageInformation(void)
 {
   // Nothing needs doing here.
 }
 
-void NrrdImageIO::Write(const void *buffer)
+void
+NrrdImageIO::Write(const void *buffer)
 {
   Nrrd *       nrrd = nrrdNew();
   NrrdIoState *nio = nrrdIoStateNew();

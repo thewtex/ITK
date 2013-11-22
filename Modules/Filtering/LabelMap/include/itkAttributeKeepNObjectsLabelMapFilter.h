@@ -39,9 +39,9 @@ namespace itk {
  * \ingroup ITKLabelMap
  */
 template<typename TImage, typename TAttributeAccessor=
-    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+           typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class AttributeKeepNObjectsLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -58,7 +58,7 @@ public:
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
 
-  typedef TAttributeAccessor AttributeAccessorType;
+  typedef TAttributeAccessor                                 AttributeAccessorType;
   typedef typename AttributeAccessorType::AttributeValueType AttributeValueType;
 
   /** ImageDimension constants */
@@ -80,7 +80,7 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
   /**
@@ -100,42 +100,51 @@ public:
 
 protected:
   AttributeKeepNObjectsLabelMapFilter();
-  ~AttributeKeepNObjectsLabelMapFilter() {};
+  ~AttributeKeepNObjectsLabelMapFilter() {
+  }
 
   void GenerateData();
 
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   class ReverseComparator
+  {
+public:
+    bool
+    operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
     {
-    public:
-    bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
-      {
       return m_Accessor( a ) < m_Accessor( b );
-      }
-    ReverseComparator() : m_Accessor() {}
-    private:
-     AttributeAccessorType m_Accessor;
-    };
+    }
+
+    ReverseComparator() : m_Accessor() {
+    }
+
+private:
+    AttributeAccessorType m_Accessor;
+  };
 
   class Comparator
+  {
+public:
+    bool
+    operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
     {
-  public:
-    bool operator()( const typename LabelObjectType::Pointer & a, const typename LabelObjectType::Pointer & b )
-      {
       return m_Accessor( a ) > m_Accessor( b );
-      }
-    Comparator(): m_Accessor () {}
-  private:
+    }
+
+    Comparator() : m_Accessor () {
+    }
+
+private:
     AttributeAccessorType m_Accessor;
-    };
+  };
 
 private:
   AttributeKeepNObjectsLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                      //purposely not implemented
 
-  bool           m_ReverseOrdering;
-  SizeValueType  m_NumberOfObjects;
+  bool          m_ReverseOrdering;
+  SizeValueType m_NumberOfObjects;
 
 }; // end of class
 

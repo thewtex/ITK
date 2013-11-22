@@ -28,7 +28,6 @@
 #ifndef __itkMeshSource_h
 #define __itkMeshSource_h
 
-
 #include "itkProcessObject.h"
 
 namespace itk
@@ -46,7 +45,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TOutputMesh >
-class MeshSource:public ProcessObject
+class MeshSource : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -143,7 +142,10 @@ public:
 
 protected:
   MeshSource();
-  virtual ~MeshSource() {}
+  virtual
+  ~MeshSource() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Requested region of Mesh is specified as i of N unstructured regions.

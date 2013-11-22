@@ -72,7 +72,8 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
     {
     itkDebugMacro( "Smooothing the update field." );
 
-    DisplacementVectorType *updateFieldPointer = reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>(update).data_block() );
+    DisplacementVectorType *updateFieldPointer =
+      reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>(update).data_block() );
 
     typename ImporterType::Pointer importer = ImporterType::New();
     importer->SetImportPointer( updateFieldPointer, numberOfPixels, importFilterWillReleaseMemory );
@@ -85,9 +86,12 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
     updateField->Update();
     updateField->DisconnectPipeline();
 
-    DisplacementFieldPointer smoothedField = this->GaussianSmoothDisplacementField( updateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
+    DisplacementFieldPointer smoothedField = this->GaussianSmoothDisplacementField( updateField,
+                                                                                    this->m_GaussianSmoothingVarianceForTheUpdateField );
 
-    ImageAlgorithm::Copy< DisplacementFieldType, DisplacementFieldType >( smoothedField, updateField, smoothedField->GetBufferedRegion(), updateField->GetBufferedRegion() );
+    ImageAlgorithm::Copy< DisplacementFieldType, DisplacementFieldType >( smoothedField, updateField,
+                                                                          smoothedField->GetBufferedRegion(),
+                                                                          updateField->GetBufferedRegion() );
     }
 
   //
@@ -120,9 +124,12 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
     totalField->Update();
     totalField->DisconnectPipeline();
 
-    DisplacementFieldPointer totalSmoothField = this->GaussianSmoothDisplacementField( totalField, this->m_GaussianSmoothingVarianceForTheTotalField );
+    DisplacementFieldPointer totalSmoothField = this->GaussianSmoothDisplacementField( totalField,
+                                                                                       this->m_GaussianSmoothingVarianceForTheTotalField );
 
-    ImageAlgorithm::Copy< DisplacementFieldType, DisplacementFieldType >( totalSmoothField, totalField, totalSmoothField->GetBufferedRegion(), totalField->GetBufferedRegion() );
+    ImageAlgorithm::Copy< DisplacementFieldType, DisplacementFieldType >( totalSmoothField, totalField,
+                                                                          totalSmoothField->GetBufferedRegion(),
+                                                                          totalField->GetBufferedRegion() );
     }
 }
 
@@ -187,15 +194,17 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
   const typename DisplacementFieldType::SizeType size = region.GetSize();
   const typename DisplacementFieldType::IndexType startIndex = region.GetIndex();
 
-  ImageRegionIteratorWithIndex< DisplacementFieldType > fieldIt( field, field->GetLargestPossibleRegion() );
-  ImageRegionConstIteratorWithIndex< DisplacementFieldType > smoothedFieldIt( smoothField, smoothField->GetLargestPossibleRegion() );
+  ImageRegionIteratorWithIndex< DisplacementFieldType >      fieldIt( field, field->GetLargestPossibleRegion() );
+  ImageRegionConstIteratorWithIndex< DisplacementFieldType > smoothedFieldIt( smoothField,
+                                                                              smoothField->GetLargestPossibleRegion() );
   for( fieldIt.GoToBegin(), smoothedFieldIt.GoToBegin(); !fieldIt.IsAtEnd(); ++fieldIt, ++smoothedFieldIt )
     {
     typename DisplacementFieldType::IndexType index = fieldIt.GetIndex();
     bool isOnBoundary = false;
     for ( unsigned int dimension = 0; dimension < Superclass::Dimension; ++dimension )
       {
-      if( index[dimension] == startIndex[dimension] || index[dimension] == static_cast<IndexValueType>( size[dimension] ) - startIndex[dimension] - 1 )
+      if( index[dimension] == startIndex[dimension] || index[dimension] ==
+          static_cast<IndexValueType>( size[dimension] ) - startIndex[dimension] - 1 )
         {
         isOnBoundary = true;
         break;
@@ -222,8 +231,8 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
   LightObject::Pointer loPtr = Superclass::InternalClone();
 
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -233,12 +242,12 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
   //
   // set fields not in the fixed parameters.
   rval->SetGaussianSmoothingVarianceForTheUpdateField
-    (this->GetGaussianSmoothingVarianceForTheUpdateField());
+    (this->GetGaussianSmoothingVarianceForTheUpdateField() );
   rval->SetGaussianSmoothingVarianceForTheTotalField
-    (this->GetGaussianSmoothingVarianceForTheTotalField());
+    (this->GetGaussianSmoothingVarianceForTheTotalField() );
 
-  rval->SetFixedParameters(this->GetFixedParameters());
-  rval->SetParameters(this->GetParameters());
+  rval->SetFixedParameters(this->GetFixedParameters() );
+  rval->SetParameters(this->GetParameters() );
 
   return loPtr;
 }
@@ -256,6 +265,7 @@ PrintSelf( std::ostream& os, Indent indent ) const
      << indent << "m_GaussianSmoothingVarianceForTheTotalField: " << this->m_GaussianSmoothingVarianceForTheTotalField
      << std::endl;
 }
+
 } // namespace itk
 
 #endif

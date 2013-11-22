@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #ifndef __itkLevelSetEvolutionBase_hxx
 #define __itkLevelSetEvolutionBase_hxx
 
@@ -38,7 +37,8 @@ LevelSetEvolutionBase< TEquationContainer, TLevelSet >
 template< typename TEquationContainer, typename TLevelSet >
 LevelSetEvolutionBase< TEquationContainer, TLevelSet >
 ::~LevelSetEvolutionBase()
-{}
+{
+}
 
 template< typename TEquationContainer, typename TLevelSet >
 void
@@ -100,7 +100,7 @@ LevelSetEvolutionBase< TEquationContainer, TLevelSet >
     itkGenericExceptionMacro( << "this->m_LevelSetContainer != this->m_EquationContainer->GetLevelSetContainer()" << std::endl
                               << this->m_LevelSetContainer.GetPointer() << " != " << this->m_EquationContainer->GetLevelSetContainer()
                               << std::endl
-      );
+                              );
     }
 
   // Get the image to be segmented
@@ -163,8 +163,8 @@ LevelSetEvolutionBase< TEquationContainer, TLevelSet >
       {
       // Iterator over the region for the current levelset overlap identifier.
       typedef typename DomainMapImageFilterType::LevelSetDomain LevelSetListImageDomainType;
-      const LevelSetListImageDomainType & levelSetListImageDomain = mapIt->second;
-      ImageRegionConstIteratorWithIndex< InputImageType > it( inputImage, *(levelSetListImageDomain.GetRegion()) );
+      const LevelSetListImageDomainType &                 levelSetListImageDomain = mapIt->second;
+      ImageRegionConstIteratorWithIndex< InputImageType > it( inputImage, *(levelSetListImageDomain.GetRegion() ) );
       it.GoToBegin();
 
       while( !it.IsAtEnd() )
@@ -189,9 +189,10 @@ LevelSetEvolutionBase< TEquationContainer, TLevelSet >
       ++mapIt;
       }
     }
-  else // assume there is one level set that covers the RequestedRegion of the InputImage
+  else // assume there is one level set that covers the RequestedRegion of the
+       // InputImage
     {
-    TermContainerPointer termContainer = this->m_EquationContainer->GetEquation( 0 );
+    TermContainerPointer                                termContainer = this->m_EquationContainer->GetEquation( 0 );
     ImageRegionConstIteratorWithIndex< InputImageType > it( inputImage, inputImage->GetRequestedRegion() );
     it.GoToBegin();
     while( !it.IsAtEnd() )

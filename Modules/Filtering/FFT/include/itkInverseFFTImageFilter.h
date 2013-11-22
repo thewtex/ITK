@@ -40,17 +40,18 @@ namespace itk
  * \sa ForwardFFTImageFilter, InverseFFTImageFilter
  * \ingroup ITKFFT
  */
-template< typename TInputImage, typename TOutputImage=Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
-class InverseFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
+class InverseFFTImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 
 {
 public:
   /** Standard class typedefs. */
-  typedef TInputImage                          InputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
 
   typedef InverseFFTImageFilter                                 Self;
   typedef ImageToImageFilter< InputImageType, OutputImageType > Superclass;
@@ -67,8 +68,12 @@ public:
   static Pointer New(void);
 
 protected:
-  InverseFFTImageFilter() {}
-  virtual ~InverseFFTImageFilter(){}
+  InverseFFTImageFilter() {
+  }
+
+  virtual
+  ~InverseFFTImageFilter(){
+  }
 
   /** This class requires the entire input. */
   virtual void GenerateInputRequestedRegion();
@@ -80,6 +85,7 @@ protected:
 private:
   InverseFFTImageFilter(const Self &); // purposely not implemented
   void operator=(const Self &);        // purposely not implemented
+
 };
 } // end namespace itk
 

@@ -47,16 +47,16 @@ namespace itk
  * \ingroup ITKFastMarching
  */
 template< typename TInput, typename TOutput >
-class FastMarchingUpwindGradientImageFilterBase:
+class FastMarchingUpwindGradientImageFilterBase :
   public FastMarchingImageFilterBase< TInput, TOutput >
 {
 public:
   /** Standard class typdedefs. */
-  typedef FastMarchingUpwindGradientImageFilterBase       Self;
-  typedef FastMarchingImageFilterBase< TInput, TOutput >  Superclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
-  typedef typename Superclass::Traits                     Traits;
+  typedef FastMarchingUpwindGradientImageFilterBase      Self;
+  typedef FastMarchingImageFilterBase< TInput, TOutput > Superclass;
+  typedef SmartPointer< Self >                           Pointer;
+  typedef SmartPointer< const Self >                     ConstPointer;
+  typedef typename Superclass::Traits                    Traits;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -69,10 +69,10 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       Superclass::ImageDimension );
 
-  typedef typename Superclass::NodeType           NodeType;
-  typedef typename Superclass::OutputImageType    OutputImageType;
-  typedef typename Superclass::OutputPixelType    OutputPixelType;
-  typedef typename Superclass::OutputSpacingType  OutputSpacingType;
+  typedef typename Superclass::NodeType          NodeType;
+  typedef typename Superclass::OutputImageType   OutputImageType;
+  typedef typename Superclass::OutputPixelType   OutputPixelType;
+  typedef typename Superclass::OutputSpacingType OutputSpacingType;
 
   /** GradientPixel typedef support. */
   typedef CovariantVector< OutputPixelType,
@@ -90,23 +90,25 @@ public:
 
 protected:
   FastMarchingUpwindGradientImageFilterBase();
-  ~FastMarchingUpwindGradientImageFilterBase(){}
+  ~FastMarchingUpwindGradientImageFilterBase(){
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void InitializeOutput( OutputImageType* oImage );
 
   virtual void UpdateNeighbors( OutputImageType* oImage,
-                               const NodeType& iNode );
+                                const NodeType& iNode );
 
   virtual void ComputeGradient(OutputImageType* oImage,
                                const NodeType& iNode );
 
 private:
   FastMarchingUpwindGradientImageFilterBase(const Self &); //purposely not
-                                                       // implemented
+  // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 };
 
 /* this class was made in the case where isotropic and anisotropic fast

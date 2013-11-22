@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include <iostream>
 #include "itkInitializationBiasedParticleSwarmOptimizer.h"
 #include "itkParticleSwarmOptimizerTestFunctions.h"
@@ -32,13 +31,11 @@ static OptimizerType::RandomVariateGeneratorType::IntegerType seedOffset = 0;
  */
 int IBPSOTest1();
 
-
 /**
  * Test using a 2D quadratic function (single minimum), check that converges
  * correctly.
  */
 int IBPSOTest2();
-
 
 /**
  * Test using the 2D Rosenbrock function.
@@ -52,7 +49,8 @@ bool initalizationBasedTestVerboseFlag = false;
 * the same test multiple times and deem it a success if the number of successful
 * runs is above a threshold.
 */
-int itkInitializationBiasedParticleSwarmOptimizerTest(int argc, char* argv[] )
+int
+itkInitializationBiasedParticleSwarmOptimizerTest(int argc, char* argv[] )
 {
   if( argc > 1 )
     {
@@ -60,12 +58,12 @@ int itkInitializationBiasedParticleSwarmOptimizerTest(int argc, char* argv[] )
     }
 
   unsigned int i, allIterations=10;
-  double threshold = 0.8;
+  double       threshold = 0.8;
   unsigned int success1, success2, success3;
 
   std::cout << "Initialization Biased Particle Swarm Optimizer Test \n \n";
 
- success1 = success2 = success3 = 0;
+  success1 = success2 = success3 = 0;
   for( i=0; i<allIterations; i++ )
     {
     if( EXIT_SUCCESS == IBPSOTest1() )
@@ -95,29 +93,30 @@ int itkInitializationBiasedParticleSwarmOptimizerTest(int argc, char* argv[] )
   return EXIT_SUCCESS;
 }
 
-
-int IBPSOTest1()
+int
+IBPSOTest1()
 {
   std::cout << "Particle Swarm Optimizer Test 1 [f(x) = if(x<0) x^2+4x; else 2x^2-8x]\n";
   std::cout << "-------------------------------\n";
 
   double knownParameters = 2.0;
 
-    //the function we want to optimize
+  //the function we want to optimize
   ParticleSwarmTestF1::Pointer costFunction =
     ParticleSwarmTestF1::New();
 
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
+
   itkOptimizer->UseSeedOn();
   itkOptimizer->SetSeed(8775070 + seedOffset++);
 
-         // set optimizer parameters
+  // set optimizer parameters
   OptimizerType::ParameterBoundsType bounds;
   bounds.push_back( std::make_pair( -10, 10 ) );
-  unsigned int numberOfParticles = 10;
-  unsigned int maxIterations = 200;
-  double xTolerance = 0.1;
-  double fTolerance = 0.001;
+  unsigned int                  numberOfParticles = 10;
+  unsigned int                  maxIterations = 200;
+  double                        xTolerance = 0.1;
+  double                        fTolerance = 0.001;
   OptimizerType::ParametersType initialParameters( 1 ), finalParameters;
 
   itkOptimizer->SetParameterBounds( bounds );
@@ -159,7 +158,7 @@ int IBPSOTest1()
       std::cout << "[Test 1 FAILURE]" << std::endl;
       return EXIT_FAILURE;
       }
-             //run optimization again with a different initial value
+    //run optimization again with a different initial value
     initialParameters[0] =  2.5;
     itkOptimizer->ClearSwarm();
     itkOptimizer->SetInitialPosition( initialParameters );
@@ -201,32 +200,33 @@ int IBPSOTest1()
   return EXIT_SUCCESS;
 }
 
-
-int IBPSOTest2()
+int
+IBPSOTest2()
 {
   std::cout << "Particle Swarm Optimizer Test 2 [f(x) = 1/2 x^T A x - b^T x]\n";
   std::cout << "----------------------------------\n";
 
   itk::Array<double> knownParameters( 2 );
+
   knownParameters[0] = 2.0;
   knownParameters[1] = -2.0;
 
-    //the function we want to optimize
+  //the function we want to optimize
   ParticleSwarmTestF2::Pointer costFunction =
     ParticleSwarmTestF2::New();
 
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
   itkOptimizer->UseSeedOn();
   itkOptimizer->SetSeed(8775070 + seedOffset++);
 
-         // set optimizer parameters
+  // set optimizer parameters
   OptimizerType::ParameterBoundsType bounds;
   bounds.push_back( std::make_pair( -10, 10 ) );
   bounds.push_back( std::make_pair( -10, 10 ) );
-  unsigned int numberOfParticles = 10;
-  unsigned int maxIterations = 200;
-  double xTolerance = 0.1;
-  double fTolerance = 0.001;
+  unsigned int                  numberOfParticles = 10;
+  unsigned int                  maxIterations = 200;
+  double                        xTolerance = 0.1;
+  double                        fTolerance = 0.001;
   OptimizerType::ParametersType initialParameters( 2 ), finalParameters;
 
   itkOptimizer->SetParameterBounds( bounds );
@@ -283,31 +283,33 @@ int IBPSOTest2()
   return EXIT_SUCCESS;
 }
 
-int IBPSOTest3()
+int
+IBPSOTest3()
 {
   std::cout << "Particle Swarm Optimizer Test 3 [f(x,y) = (1-x)^2 + 100(y-x^2)^2]\n";
   std::cout << "----------------------------------\n";
 
   itk::Array<double> knownParameters( 2 );
+
   knownParameters[0] = 1.0;
   knownParameters[1] = 1.0;
 
-    //the function we want to optimize
+  //the function we want to optimize
   ParticleSwarmTestF3::Pointer costFunction =
     ParticleSwarmTestF3::New();
 
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
   itkOptimizer->UseSeedOn();
   itkOptimizer->SetSeed(8775070 + seedOffset++);
 
-         // set optimizer parameters
+  // set optimizer parameters
   OptimizerType::ParameterBoundsType bounds;
   bounds.push_back( std::make_pair( -100, 100 ) );
   bounds.push_back( std::make_pair( -100, 100 ) );
-  unsigned int numberOfParticles = 100;
-  unsigned int maxIterations = 1000;
-  double xTolerance = 0.1;
-  double fTolerance = 0.01;
+  unsigned int                  numberOfParticles = 100;
+  unsigned int                  maxIterations = 1000;
+  double                        xTolerance = 0.1;
+  double                        fTolerance = 0.01;
   OptimizerType::ParametersType initialParameters( 2 ), finalParameters;
 
   itkOptimizer->SetParameterBounds( bounds );
@@ -351,9 +353,9 @@ int IBPSOTest3()
       return EXIT_FAILURE;
       }
 
-                //initial position near known minimum (1,1) - for PSO this
-                //makes no difference when the initial swarm is generated using
-                //a uniform distribution
+    //initial position near known minimum (1,1) - for PSO this
+    //makes no difference when the initial swarm is generated using
+    //a uniform distribution
     initialParameters[0] =  10;
     initialParameters[1] = 10;
     itkOptimizer->SetInitialPosition( initialParameters );
@@ -384,9 +386,9 @@ int IBPSOTest3()
       return EXIT_FAILURE;
       }
 
-                //initial position near known minimum (1,1) - potentially reduce
-                //the number of iterations by initializing particles using a normal
-                //distribution centered on initial parameter values
+    //initial position near known minimum (1,1) - potentially reduce
+    //the number of iterations by initializing particles using a normal
+    //distribution centered on initial parameter values
     initialParameters[0] =  10;
     initialParameters[1] = 10;
     itkOptimizer->SetInitialPosition( initialParameters );

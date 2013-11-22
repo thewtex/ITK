@@ -66,7 +66,8 @@ public:
   itkTypeMacro(MRCImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     MRCImageIOFactory::Pointer vtkFactory = MRCImageIOFactory::New();
 

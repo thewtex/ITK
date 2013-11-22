@@ -21,17 +21,17 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageRegionExclusionIteratorWithIndex.h"
 
-
 template< typename TRegion >
-static bool RunTest(const TRegion & region, const TRegion & exclusionRegion)
+static bool
+RunTest(const TRegion & region, const TRegion & exclusionRegion)
 {
   const unsigned int ImageDimension = TRegion::ImageDimension;
 
-  typedef itk::Index< ImageDimension >                  IndexPixelType;
-  typedef unsigned char                                 ValuePixelType;
+  typedef itk::Index< ImageDimension > IndexPixelType;
+  typedef unsigned char                ValuePixelType;
 
-  typedef itk::Image< IndexPixelType, ImageDimension >  IndexImageType;
-  typedef itk::Image< ValuePixelType, ImageDimension >  ValueImageType;
+  typedef itk::Image< IndexPixelType, ImageDimension > IndexImageType;
+  typedef itk::Image< ValuePixelType, ImageDimension > ValueImageType;
 
   typename IndexImageType::Pointer myIndexImage = IndexImageType::New();
 
@@ -47,8 +47,8 @@ static bool RunTest(const TRegion & region, const TRegion & exclusionRegion)
   myValueImage->SetRequestedRegion( region );
   myValueImage->Allocate();
 
-  typedef itk::ImageRegionIteratorWithIndex< ValueImageType >  ValueIteratorType;
-  typedef itk::ImageRegionIteratorWithIndex< IndexImageType >  IndexIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< ValueImageType > ValueIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< IndexImageType > IndexIteratorType;
 
   const unsigned char normalRegionValue    = 100;
   const unsigned char exclusionRegionValue = 200;
@@ -100,9 +100,9 @@ static bool RunTest(const TRegion & region, const TRegion & exclusionRegion)
   ev.SetExclusionRegion( exclusionRegion );
   ei.SetExclusionRegion( exclusionRegion );
 
-  unsigned int numberOfPixelsVisited = 0;
+  unsigned int       numberOfPixelsVisited = 0;
   const unsigned int pixelsToVisit  = region.GetNumberOfPixels() -
-                                      croppedExclusionRegion.GetNumberOfPixels();
+    croppedExclusionRegion.GetNumberOfPixels();
 
   ev.GoToBegin();
   ei.GoToBegin();
@@ -252,10 +252,11 @@ static bool RunTest(const TRegion & region, const TRegion & exclusionRegion)
   return true;
 }
 
-
-int itkImageRegionExclusionIteratorWithIndexTest(int, char* [] )
+int
+itkImageRegionExclusionIteratorWithIndexTest(int, char* [] )
 {
-  const unsigned int                    Dimension = 3;
+  const unsigned int Dimension = 3;
+
   typedef itk::Size< Dimension >        SizeType;
   typedef itk::Index< Dimension >       IndexType;
   typedef itk::ImageRegion< Dimension > RegionType;

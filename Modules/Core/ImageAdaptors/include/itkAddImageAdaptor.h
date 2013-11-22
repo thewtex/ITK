@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage >
-class AddImageAdaptor:public
+class AddImageAdaptor : public
   ImageAdaptor< TImage,
                 Accessor::AddPixelAccessor< typename TImage::PixelType >   >
 {
@@ -56,20 +56,31 @@ public:
   itkNewMacro(Self);
 
   /** Set the value to be added to image pixels */
-  void SetValue(const PixelType newvalue)
-  { this->GetPixelAccessor().SetValue(newvalue); }
+  void
+  SetValue(const PixelType newvalue)
+  {
+    this->GetPixelAccessor().SetValue(newvalue);
+  }
 
   /** Get the value to be added to image pixels */
-  PixelType GetValue() const
-  { return this->GetPixelAccessor().GetValue(); }
+  PixelType
+  GetValue() const
+  {
+    return this->GetPixelAccessor().GetValue();
+  }
 
 protected:
-  AddImageAdaptor() {}
-  virtual ~AddImageAdaptor() {}
+  AddImageAdaptor() {
+  }
+
+  virtual
+  ~AddImageAdaptor() {
+  }
 
 private:
   AddImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

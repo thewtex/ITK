@@ -59,7 +59,9 @@ ErodeObjectMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "BackgroundValue : " << m_BackgroundValue << std::endl;
 }
+
 } // end namespace itk
 #endif

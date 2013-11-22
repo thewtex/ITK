@@ -109,9 +109,11 @@ FourierSeriesPath< VDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Cos Coefficients:  " << m_CosCoefficients << std::endl;
   os << indent << "Sin Coefficients:  " << m_SinCoefficients << std::endl;
 }
+
 } // end namespaceitk
 
 #endif

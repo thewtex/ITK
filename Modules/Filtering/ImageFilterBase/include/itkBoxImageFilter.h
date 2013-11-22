@@ -37,7 +37,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class BoxImageFilter:
+class BoxImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -83,7 +83,8 @@ public:
 
 protected:
   BoxImageFilter();
-  ~BoxImageFilter() {}
+  ~BoxImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

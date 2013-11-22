@@ -53,7 +53,7 @@ template< typename TInputImage,
                                            typename NumericTraits< typename TInputImage::PixelType >::RealType,
                                            TInputImage::ImageDimension >,
                                          TInputImage::ImageDimension > >
-class GradientRecursiveGaussianImageFilter:
+class GradientRecursiveGaussianImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -64,10 +64,10 @@ public:
   typedef SmartPointer< const Self >                      ConstPointer;
 
   /** Pixel Type of the input image. May be scalar or vector. */
-  typedef TInputImage                                           InputImageType;
-  typedef typename TInputImage::PixelType                       PixelType;
-  typedef typename NumericTraits< PixelType >::RealType         RealType;
-  typedef typename NumericTraits< PixelType >::ScalarRealType   ScalarRealType;
+  typedef TInputImage                                         InputImageType;
+  typedef typename TInputImage::PixelType                     PixelType;
+  typedef typename NumericTraits< PixelType >::RealType       RealType;
+  typedef typename NumericTraits< PixelType >::ScalarRealType ScalarRealType;
 
   /** Define the image type for internal computations
       RealType is usually 'double' in NumericTraits.
@@ -88,7 +88,6 @@ public:
   typedef Image< InternalRealType,
                  itkGetStaticConstMacro(ImageDimension) >   RealImageType;
 
-
   /**  Output Image Nth Element Adaptor
    *  This adaptor allows to use conventional scalar
    *  smoothing filters to compute each one of the
@@ -100,15 +99,15 @@ public:
 
   /**  Smoothing filter type */
   typedef RecursiveGaussianImageFilter<
-    RealImageType,
-    RealImageType
-    >    GaussianFilterType;
+      RealImageType,
+      RealImageType
+      >    GaussianFilterType;
 
   /**  Derivative filter type, it will be the first in the pipeline  */
   typedef RecursiveGaussianImageFilter<
-    InputImageType,
-    RealImageType
-    >    DerivativeFilterType;
+      InputImageType,
+      RealImageType
+      >    DerivativeFilterType;
 
   /**  Pointer to a gaussian filter.  */
   typedef typename GaussianFilterType::Pointer GaussianFilterPointer;
@@ -135,12 +134,14 @@ public:
 
   /** Set Sigma value. Sigma is measured in the units of image spacing.  */
   void SetSigma(ScalarRealType sigma);
+
   RealType GetSigma() const;
 
   /** Define which normalization factor will be used for the Gaussian
    *  \sa  RecursiveGaussianImageFilter::SetNormalizeAcrossScale
    */
   void SetNormalizeAcrossScale(bool normalizeInScaleSpace);
+
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
   /** GradientRecursiveGaussianImageFilter needs all of the input to produce an
@@ -174,7 +175,10 @@ public:
 
 protected:
   GradientRecursiveGaussianImageFilter();
-  virtual ~GradientRecursiveGaussianImageFilter() {}
+  virtual
+  ~GradientRecursiveGaussianImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
@@ -188,20 +192,23 @@ protected:
 private:
 
   template <typename TValueType>
-  void TransformOutputPixel( ImageRegionIterator< VectorImage<TValueType, ImageDimension> > &it )
+  void
+  TransformOutputPixel( ImageRegionIterator< VectorImage<TValueType, ImageDimension> > &it )
   {
     // To transform Variable length vector we need to convert to and
     // fro the CovariantVectorType
     const CovariantVectorType gradient( it.Get().GetDataPointer() );
-    CovariantVectorType physicalGradient;
+    CovariantVectorType       physicalGradient;
+
     it.GetImage()->TransformLocalVectorToPhysicalVector(gradient, physicalGradient );
     it.Set( OutputPixelType( physicalGradient.GetDataPointer(), ImageDimension, false ) );
   }
 
   template <typename T >
-  void TransformOutputPixel( ImageRegionIterator< T > &it )
+  void
+  TransformOutputPixel( ImageRegionIterator< T > &it )
   {
-    OutputPixelType correctedGradient;
+    OutputPixelType         correctedGradient;
     const OutputPixelType & gradient = it.Get();
 
     const unsigned int nComponents = NumericTraits<OutputPixelType>::GetLength( gradient )/ImageDimension;
@@ -212,7 +219,8 @@ private:
       GradientVectorType correctedComponentGradient;
       for (unsigned int dim = 0; dim < ImageDimension; dim++ )
         {
-        componentGradient[dim] = DefaultConvertPixelTraits<OutputPixelType>::GetNthComponent( nc*ImageDimension+dim, gradient );
+        componentGradient[dim] = DefaultConvertPixelTraits<OutputPixelType>::GetNthComponent( nc*ImageDimension+dim,
+                                                                                              gradient );
         }
       it.GetImage()->TransformLocalVectorToPhysicalVector(componentGradient, correctedComponentGradient );
       for (unsigned int dim = 0; dim < ImageDimension; dim++ )
@@ -225,13 +233,14 @@ private:
   }
 
   template <template<typename, unsigned int> class P, class T, unsigned int N>
-    void TransformOutputPixel( ImageRegionIterator< Image< P<T,N>, N > > &it )
+  void
+  TransformOutputPixel( ImageRegionIterator< Image< P<T,N>, N > > &it )
   {
     const OutputPixelType gradient = it.Get();
+
     // This uses the more efficient set by reference method
     it.GetImage()->TransformLocalVectorToPhysicalVector(gradient, it.Value() );
   }
-
 
   GradientRecursiveGaussianImageFilter(const Self &); //purposely not
                                                       // implemented

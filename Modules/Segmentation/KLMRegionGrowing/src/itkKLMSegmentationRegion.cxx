@@ -27,13 +27,15 @@ KLMSegmentationRegion
 
 KLMSegmentationRegion
 ::~KLMSegmentationRegion()
-{}
+{
+}
 
 void
 KLMSegmentationRegion
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Mean region intensity   : " << m_MeanRegionIntensity
      << std::endl;
   os << indent << "Region border object" << std::endl;
@@ -88,7 +90,7 @@ KLMSegmentationRegion
   double region2Area = region->GetRegionArea();
 
   double scaleArea = ( region1Area * region2Area )
-                     / ( region1Area + region2Area );
+    / ( region1Area + region2Area );
 
   return scaleArea * cost;
 }
@@ -353,7 +355,7 @@ KLMSegmentationRegion
       {
       // Add the lengths of the borders
       double newLength = ( *thatRegionBordersIt )->GetBorderLength()
-                         + ( *thisRegionBordersIt )->GetBorderLength();
+        + ( *thisRegionBordersIt )->GetBorderLength();
 
       ( *thisRegionBordersIt )->SetBorderLength(newLength);
 
@@ -535,4 +537,5 @@ KLMSegmentationRegion
 
   std::cout << "------------------------------" << std::endl;
 } //end PrintRegionInfo
+
 } // namespace itk

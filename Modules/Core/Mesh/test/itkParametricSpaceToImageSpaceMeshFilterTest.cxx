@@ -19,21 +19,21 @@
 #include "itkParametricSpaceToImageSpaceMeshFilter.h"
 #include "itkMesh.h"
 
-
-int itkParametricSpaceToImageSpaceMeshFilterTest(int, char* [] )
+int
+itkParametricSpaceToImageSpaceMeshFilterTest(int, char* [] )
 {
-  typedef   itk::Point<float,2>                          MeshPointDataType;
+  typedef   itk::Point<float,2> MeshPointDataType;
 
-  typedef   itk::Mesh< MeshPointDataType, 3 >            InputMeshType;
-  typedef   itk::Mesh< InputMeshType::PointType, 2 >     ImageSpaceMeshType;
+  typedef   itk::Mesh< MeshPointDataType, 3 >        InputMeshType;
+  typedef   itk::Mesh< InputMeshType::PointType, 2 > ImageSpaceMeshType;
 
   typedef   itk::ParametricSpaceToImageSpaceMeshFilter<
-                                      InputMeshType,
-                                      ImageSpaceMeshType
-                                     >         ParametricFilterType;
+      InputMeshType,
+      ImageSpaceMeshType
+      >         ParametricFilterType;
 
   ParametricFilterType::Pointer
-                      parametercFilter = ParametricFilterType::New();
+    parametercFilter = ParametricFilterType::New();
   if( parametercFilter.IsNull() )
     {
     return EXIT_FAILURE;

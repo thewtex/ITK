@@ -18,7 +18,6 @@
 #ifndef __itkNiftiImageIOFactory_h
 #define __itkNiftiImageIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -28,7 +27,7 @@ namespace itk
    * \brief Create instances of NiftiImageIO objects using an object factory.
    * \ingroup ITKIONIFTI
    */
-class NiftiImageIOFactory:public ObjectFactoryBase
+class NiftiImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +48,8 @@ public:
   itkTypeMacro(NiftiImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     NiftiImageIOFactory::Pointer metaFactory = NiftiImageIOFactory::New();
 
@@ -64,6 +64,7 @@ protected:
 private:
   NiftiImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };
 } // end namespace itk
 

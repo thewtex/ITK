@@ -20,7 +20,8 @@
 //
 // \index{itk::bio::CellularAggregate}
 //
-// The following example illustrates the use of Cellular Algorithms for performing image segmentation.
+// The following example illustrates the use of Cellular Algorithms for
+// performing image segmentation.
 // Cellular algorithms are implemented by combining the following classes
 //
 // \subdoxygen{bio}{CellularAggregate}
@@ -29,17 +30,15 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkBioCellularAggregate.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 #include "itkVTKPolyDataWriter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 9 )
     {
@@ -48,7 +47,6 @@ int main( int argc, char *argv[] )
     std::cerr << " inputImage  seedX seedY seedZ lowThreshold highThreshold iterations outputMesh.vtk" << std::endl;
     return 1;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -59,11 +57,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 3;
-  typedef itk::Image< InternalPixelType, Dimension >  ImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 3;
+  typedef itk::Image< InternalPixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -73,10 +70,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::bio::CellularAggregate< Dimension >  CellularAggregateType;
-  typedef CellularAggregateType::BioCellType        CellType;
+  typedef itk::bio::CellularAggregate< Dimension > CellularAggregateType;
+  typedef CellularAggregateType::BioCellType       CellType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -87,7 +83,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   CellularAggregateType::Pointer cellularAggregate
-                                               = CellularAggregateType::New();
+    = CellularAggregateType::New();
   // Software Guide : EndCodeSnippet
 
   // We instantiate reader and writer types
@@ -140,13 +136,13 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-  ImageType::IndexType  index;
+  ImageType::IndexType index;
 
   index[0] = atoi( argv[2] );
   index[1] = atoi( argv[3] );
   index[2] = atoi( argv[4] );
 
-  CellType::PointType  position;
+  CellType::PointType position;
 
   reader->GetOutput()->TransformIndexToPhysicalPoint( index, position );
 
@@ -168,7 +164,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   CellType * egg = CellType::CreateEgg();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -194,7 +189,6 @@ int main( int argc, char *argv[] )
   CellType::SetChemoAttractantHighThreshold( atof( argv[6] ) );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The newly created Cell is passed to the \code{CellularAggregate} object
@@ -207,7 +201,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   cellularAggregate->SetEgg( egg, position );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -233,9 +226,7 @@ int main( int argc, char *argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   std::cout << " Final number of Cells = " << cellularAggregate->GetNumberOfCells() << std::endl;
-
 
   //  Write the mesh to a file
   //
@@ -257,6 +248,5 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-
   return EXIT_SUCCESS;
-  }
+}

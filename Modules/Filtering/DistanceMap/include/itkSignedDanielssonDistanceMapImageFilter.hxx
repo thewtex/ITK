@@ -37,15 +37,15 @@ SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage
 
   // distance map
   this->SetNthOutput( 0,
-    static_cast< OutputImageType* >( this->MakeOutput( 0 ).GetPointer() ) );
+                      static_cast< OutputImageType* >( this->MakeOutput( 0 ).GetPointer() ) );
 
   // voronoi map
   this->SetNthOutput( 1,
-    static_cast< VoronoiImageType* >( this->MakeOutput( 1 ).GetPointer() ) );
+                      static_cast< VoronoiImageType* >( this->MakeOutput( 1 ).GetPointer() ) );
 
   // distance vectors
   this->SetNthOutput( 2,
-    static_cast< VectorImageType* >( this->MakeOutput( 2 ).GetPointer() ) );
+                      static_cast< VectorImageType* >( this->MakeOutput( 2 ).GetPointer() ) );
 
   //Default values
   this->m_SquaredDistance     = false;  //Should we remove this ?
@@ -80,10 +80,10 @@ typename
 SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::OutputImageType *
 SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetDistanceMap(void)
-{
+  {
   return dynamic_cast< OutputImageType * >(
-           this->ProcessObject::GetOutput(0) );
-}
+    this->ProcessObject::GetOutput(0) );
+  }
 
 /**
  *  Return Closest Points Map
@@ -93,10 +93,10 @@ typename
 SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::VoronoiImageType *
 SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetVoronoiMap(void)
-{
+  {
   return dynamic_cast< VoronoiImageType * >(
-           this->ProcessObject::GetOutput(1) );
-}
+    this->ProcessObject::GetOutput(1) );
+  }
 
 /**
  *  Return the distance vectors
@@ -106,17 +106,18 @@ typename
 SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::VectorImageType *
 SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetVectorDistanceMap(void)
-{
+  {
   return dynamic_cast< VectorImageType * >(
-           this->ProcessObject::GetOutput(2) );
-}
+    this->ProcessObject::GetOutput(2) );
+  }
 
 /**
  *  Compute Distance and Voronoi maps by calling
  * DanielssonDistanceMapImageFilter twice.
  */
 template< typename TInputImage, typename TOutputImage, typename TVoronoiImage >
-void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
+void
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GenerateData()
 {
   //Set up mini pipeline filter
@@ -124,7 +125,7 @@ void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoi
   progress->SetMiniPipelineFilter(this);
 
   typedef DanielssonDistanceMapImageFilter<
-    InputImageType, OutputImageType, VoronoiImageType >  FilterType;
+      InputImageType, OutputImageType, VoronoiImageType >  FilterType;
   typename FilterType::Pointer filter1 = FilterType::New();
   typename FilterType::Pointer filter2 = FilterType::New();
 
@@ -148,13 +149,13 @@ void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoi
   //as the uninverted input.
 
   typedef BinaryBallStructuringElement<
-    InputPixelType,
-    InputImageDimension  > StructuringElementType;
+      InputPixelType,
+      InputImageDimension  > StructuringElementType;
 
   typedef BinaryDilateImageFilter<
-    InputImageType,
-    InputImageType,
-    StructuringElementType >     DilatorType;
+      InputImageType,
+      InputImageType,
+      StructuringElementType >     DilatorType;
 
   typename DilatorType::Pointer dilator = DilatorType::New();
 
@@ -207,15 +208,18 @@ void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoi
  *  Print Self
  */
 template< typename TInputImage, typename TOutputImage, typename TVoronoiImage >
-void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
+void
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Signed Danielson Distance: " << std::endl;
   os << indent << "Use Image Spacing : " << m_UseImageSpacing << std::endl;
   os << indent << "Squared Distance  : " << m_SquaredDistance << std::endl;
   os << indent << "Inside is positive  : " << m_InsideIsPositive << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -38,7 +38,8 @@
 
 #include "itkImageFileReader.h"
 
-int main(int argc, char * argv [] )
+int
+main(int argc, char * argv [] )
 {
 
   if( argc < 7 )
@@ -48,38 +49,41 @@ int main(int argc, char * argv [] )
     return 1;
     }
   const char *inputFileName      =       argv[1];
-  const float sigma              = atof( argv[2] );  // Suggested value = 5 * pixel spacing
+  const float sigma              = atof( argv[2] );  // Suggested value = 5 *
+                                                     // pixel spacing
   const int   numberOfIterations = atoi( argv[3] );  // Suggested value = 100
   const float timeStep           = atof( argv[4] );  // Suggested value = 0.1
-  const float externalForceScale = atof( argv[5] );   // Suggested value = 10  (linked to stiffness)
-  const float stiffness          = atof( argv[6] );   // Suggested value = 0.1 (linked to force scale)
+  const float externalForceScale = atof( argv[5] );  // Suggested value = 10
+                                                     //  (linked to stiffness)
+  const float stiffness          = atof( argv[6] );  // Suggested value = 0.1
+                                                     // (linked to force scale)
 
-  typedef double                            MeshPixelType;
-  typedef itk::Mesh< MeshPixelType >        MeshType;
+  typedef double                     MeshPixelType;
+  typedef itk::Mesh< MeshPixelType > MeshType;
 
   unsigned const int Dimension = 3;
 
-  typedef   float                               PixelType;
-  typedef itk::Image<PixelType, Dimension>      ImageType;
+  typedef   float                          PixelType;
+  typedef itk::Image<PixelType, Dimension> ImageType;
 
   typedef itk::GradientRecursiveGaussianImageFilter<
-                                        ImageType
-                                           > GradientFilterType;
+      ImageType
+      > GradientFilterType;
 
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<
-                                        ImageType,ImageType>
-                                                      GradientMagnitudeFilterType;
+      ImageType,ImageType>
+    GradientMagnitudeFilterType;
 
-  typedef itk::DeformableMesh3DFilter<MeshType,MeshType>  DeformableFilterType;
+  typedef itk::DeformableMesh3DFilter<MeshType,MeshType> DeformableFilterType;
 
-  typedef itk::ImageFileReader< ImageType       >  ReaderType;
+  typedef itk::ImageFileReader< ImageType       > ReaderType;
 
-  ReaderType::Pointer       imageReader   =  ReaderType::New();
+  ReaderType::Pointer imageReader   =  ReaderType::New();
 
   imageReader->SetFileName( inputFileName );
 
-  GradientMagnitudeFilterType::Pointer  gradientMagnitudeFilter
-                      = GradientMagnitudeFilterType::New();
+  GradientMagnitudeFilterType::Pointer gradientMagnitudeFilter
+    = GradientMagnitudeFilterType::New();
 
   try
     {
@@ -100,15 +104,15 @@ int main(int argc, char * argv [] )
 
   GradientFilterType::Pointer gradientMapFilter = GradientFilterType::New();
 
-  gradientMapFilter->SetInput( gradientMagnitudeFilter->GetOutput());
+  gradientMapFilter->SetInput( gradientMagnitudeFilter->GetOutput() );
   gradientMapFilter->SetSigma( sigma );
 
   gradientMapFilter->Update();
 
   DeformableFilterType::Pointer deformableModelFilter =
-                                     DeformableFilterType::New();
+    DeformableFilterType::New();
 
-  typedef itk::SphereMeshSource< MeshType >        MeshSourceType;
+  typedef itk::SphereMeshSource< MeshType > MeshSourceType;
 
   MeshSourceType::Pointer meshSource = MeshSourceType::New();
 
@@ -138,7 +142,7 @@ int main(int argc, char * argv [] )
 
   deformableModelFilter->SetGradient( gradientMapFilter->GetOutput() );
 
-  typedef itk::CovariantVector<double, 2>           StiffnessType;
+  typedef itk::CovariantVector<double, 2> StiffnessType;
 
   StiffnessType stiffnessVector;
   stiffnessVector[0] = stiffness;

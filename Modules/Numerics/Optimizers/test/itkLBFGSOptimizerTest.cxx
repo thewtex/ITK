@@ -42,20 +42,20 @@ class LBFGSCostFunction : public itk::SingleValuedCostFunction
 {
 public:
 
-  typedef LBFGSCostFunction                 Self;
-  typedef itk::SingleValuedCostFunction     Superclass;
-  typedef itk::SmartPointer<Self>           Pointer;
-  typedef itk::SmartPointer<const Self>     ConstPointer;
+  typedef LBFGSCostFunction             Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
   itkNewMacro( Self );
   itkTypeMacro( LBFCostFunction, SingleValuedCostFunction );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType              ParametersType;
-  typedef Superclass::DerivativeType              DerivativeType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
 
-  typedef vnl_vector<double>                      VectorType;
-  typedef vnl_matrix<double>                      MatrixType;
+  typedef vnl_vector<double> VectorType;
+  typedef vnl_matrix<double> MatrixType;
 
   typedef double MeasureType;
 
@@ -63,7 +63,8 @@ public:
   {
   }
 
-  double GetValue( const ParametersType & position ) const
+  double
+  GetValue( const ParametersType & position ) const
   {
     double x = position[0];
     double y = position[1];
@@ -79,8 +80,9 @@ public:
     return val;
   }
 
-  void GetDerivative( const ParametersType & position,
-                            DerivativeType  & derivative ) const
+  void
+  GetDerivative( const ParametersType & position,
+                 DerivativeType  & derivative ) const
   {
     double x = position[0];
     double y = position[1];
@@ -97,27 +99,26 @@ public:
     std::cout << derivative[1] << ")" << std::endl;
   }
 
-
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
 
 private:
 
-
 };
 
-
-int itkLBFGSOptimizerTest(int, char* [] )
+int
+itkLBFGSOptimizerTest(int, char* [] )
 {
   std::cout << "LBFGS Optimizer Test \n \n";
 
-  typedef  itk::LBFGSOptimizer                   OptimizerType;
-  typedef  OptimizerType::InternalOptimizerType  vnlOptimizerType;
+  typedef  itk::LBFGSOptimizer                  OptimizerType;
+  typedef  OptimizerType::InternalOptimizerType vnlOptimizerType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction adapter
   LBFGSCostFunction::Pointer costFunction = LBFGSCostFunction::New();
@@ -137,7 +138,8 @@ int itkLBFGSOptimizerTest(int, char* [] )
   const double LineSearch_Tol   = 0.9;   // Line search tolerance
   const double Step_Length      = 1.0;   // Default step length
 
-  // const double F_Tolerance      = 1e-3;  // Function value tolerance: not used
+  // const double F_Tolerance      = 1e-3;  // Function value tolerance: not
+  // used
   // const double X_Tolerance      = 1e-8;  // Search space tolerance: not used
   // const double Epsilon_Function = 1e-10; // Step : not used
 
@@ -145,7 +147,7 @@ int itkLBFGSOptimizerTest(int, char* [] )
 
   vnlOptimizer->set_check_derivatives( 0 );
 
-  const unsigned int SpaceDimension = 2;
+  const unsigned int            SpaceDimension = 2;
   OptimizerType::ParametersType initialValue(SpaceDimension);
 
   // We start not so far from  | 2 -2 |
@@ -190,25 +192,25 @@ int itkLBFGSOptimizerTest(int, char* [] )
   finalPosition = itkOptimizer->GetCurrentPosition();
 
   std::cout << "Solution        = ("
-    << finalPosition[0] << ","
-    << finalPosition[1] << ")" << std::endl;
+            << finalPosition[0] << ","
+            << finalPosition[1] << ")" << std::endl;
 
   std::cout << "End condition   = "
-    << itkOptimizer->GetStopConditionDescription() << std::endl;
+            << itkOptimizer->GetStopConditionDescription() << std::endl;
   std::cout << "Trace   = " << itkOptimizer->GetTrace() << std::endl;
   std::cout << "LineSearchAccuracy   = "
-    << itkOptimizer->GetLineSearchAccuracy() << std::endl;
+            << itkOptimizer->GetLineSearchAccuracy() << std::endl;
   std::cout << "GradientConvergenceTolerance   = "
-    << itkOptimizer->GetGradientConvergenceTolerance() << std::endl;
+            << itkOptimizer->GetGradientConvergenceTolerance() << std::endl;
   std::cout << "DefaultStepLength   = "
-    << itkOptimizer->GetDefaultStepLength() << std::endl;
+            << itkOptimizer->GetDefaultStepLength() << std::endl;
   std::cout << "MaximumNumberOfFunctionEvaluations   = "
-    << itkOptimizer->GetMaximumNumberOfFunctionEvaluations() << std::endl;
+            << itkOptimizer->GetMaximumNumberOfFunctionEvaluations() << std::endl;
 
   //
   // check results to see if it is within range
   //
-  bool pass = true;
+  bool   pass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {

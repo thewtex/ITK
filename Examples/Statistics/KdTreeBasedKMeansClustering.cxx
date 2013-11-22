@@ -102,7 +102,8 @@
 // Software Guide : BeginLatex
 //
 // To generate the clusters, we must create k instances of
-// \subdoxygen{Statistics}{DistanceToCentroidMembershipFunction} function as the membership
+// \subdoxygen{Statistics}{DistanceToCentroidMembershipFunction} function as the
+// membership
 // functions for each cluster and plug that---along with a sample---into an
 // \subdoxygen{Statistics}{SampleClassifierFilter} object to get a
 // \subdoxygen{Statistics}{MembershipSample} that stores pairs of measurement
@@ -126,7 +127,8 @@
 #include "itkNormalVariateGenerator.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -138,7 +140,7 @@ int main()
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Vector< double, 1 > MeasurementVectorType;
+  typedef itk::Vector< double, 1 >                             MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   sample->SetMeasurementVectorSize( 1 );
@@ -164,7 +166,8 @@ int main()
   // \begin{figure}
   //   \center
   //   \includegraphics[width=0.8\textwidth]{TwoNormalDensityFunctionPlot}
-  //   \itkcaption[Two normal distributions plot]{Two normal distributions' probability density plot
+  //   \itkcaption[Two normal distributions plot]{Two normal distributions'
+  // probability density plot
   // (The means are 100 and 200, and the standard deviation is 30 )}
   //  \protect\label{fig:TwoNormalDensityFunctionPlot}
   // \end{figure}
@@ -178,8 +181,8 @@ int main()
   normalGenerator->Initialize( 101 );
 
   MeasurementVectorType mv;
-  double mean = 100;
-  double standardDeviation = 30;
+  double                mean = 100;
+  double                standardDeviation = 30;
   for ( unsigned int i = 0; i < 100; ++i )
     {
     mv[0] = ( normalGenerator->GetVariate() * standardDeviation ) + mean;
@@ -195,7 +198,6 @@ int main()
     sample->PushBack( mv );
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -213,7 +215,6 @@ int main()
   treeGenerator->SetBucketSize( 16 );
   treeGenerator->Update();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -245,7 +246,7 @@ int main()
   // Software Guide : BeginCodeSnippet
   typedef TreeGeneratorType::KdTreeType TreeType;
   typedef itk::Statistics::KdTreeBasedKmeansEstimator< TreeType >
-                                        EstimatorType;
+    EstimatorType;
   EstimatorType::Pointer estimator = EstimatorType::New();
 
   EstimatorType::ParametersType initialMeans(2);
@@ -266,7 +267,6 @@ int main()
     std::cout << "    estimated mean : " << estimatedMeans[i] << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -299,8 +299,8 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::DistanceToCentroidMembershipFunction<
-                                MeasurementVectorType > MembershipFunctionType;
-  typedef itk::Statistics::MinimumDecisionRule          DecisionRuleType;
+      MeasurementVectorType > MembershipFunctionType;
+  typedef itk::Statistics::MinimumDecisionRule DecisionRuleType;
   DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
 
   typedef itk::Statistics::SampleClassifierFilter< SampleType > ClassifierType;
@@ -311,7 +311,7 @@ int main()
   classifier->SetNumberOfClasses( 2 );
 
   typedef ClassifierType::ClassLabelVectorObjectType
-                                               ClassLabelVectorObjectType;
+    ClassLabelVectorObjectType;
   typedef ClassifierType::ClassLabelVectorType ClassLabelVectorType;
   typedef ClassifierType::ClassLabelType       ClassLabelType;
 
@@ -359,9 +359,9 @@ int main()
   for ( unsigned int i = 0; i < 2; i++ )
     {
     MembershipFunctionType::Pointer membershipFunction
-                                               = MembershipFunctionType::New();
+      = MembershipFunctionType::New();
     MembershipFunctionType::CentroidType centroid(
-                                          sample->GetMeasurementVectorSize() );
+      sample->GetMeasurementVectorSize() );
     for ( unsigned int j = 0; j < sample->GetMeasurementVectorSize(); j++ )
       {
       centroid[j] = estimatedMeans[index++];
@@ -385,7 +385,7 @@ int main()
   const ClassifierType::MembershipSampleType* membershipSample =
     classifier->GetOutput();
   ClassifierType::MembershipSampleType::ConstIterator iter
-                                                   = membershipSample->Begin();
+    = membershipSample->Begin();
 
   while ( iter != membershipSample->End() )
     {

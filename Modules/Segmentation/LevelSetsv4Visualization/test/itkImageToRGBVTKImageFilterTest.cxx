@@ -31,7 +31,8 @@
 #include "itkImageRegionIterator.h"
 
 template< typename TImage >
-void GenerateImage( typename TImage::Pointer ioImage )
+void
+GenerateImage( typename TImage::Pointer ioImage )
 {
   typename TImage::IndexType  index;
   index.Fill( 0 );
@@ -65,7 +66,8 @@ void GenerateImage( typename TImage::Pointer ioImage )
     }
 }
 
-int itkImageToRGBVTKImageFilterTest( int argc, char* argv[] )
+int
+itkImageToRGBVTKImageFilterTest( int argc, char* argv[] )
 {
   (void) argc;
   (void) argv;
@@ -87,34 +89,34 @@ int itkImageToRGBVTKImageFilterTest( int argc, char* argv[] )
   for( int i = 0; i < 50; i++ )
     {
     PixelType* vtkpixel =
-        static_cast< PixelType* >( VTKImage->GetScalarPointer( i, i, 0 ) );
+      static_cast< PixelType* >( VTKImage->GetScalarPointer( i, i, 0 ) );
     vtkpixel[0] = 255;
     vtkpixel[1] = 0;
     vtkpixel[2] = 0;
 
     vtkpixel =
-        static_cast< PixelType* >( VTKImage->GetScalarPointer( i, 49-i, 0 ) );
+      static_cast< PixelType* >( VTKImage->GetScalarPointer( i, 49-i, 0 ) );
     vtkpixel[0] = 0;
     vtkpixel[1] = 0;
     vtkpixel[2] = 255;
     }
 
   vtkSmartPointer< vtkImageActor > input_Actor =
-      vtkSmartPointer< vtkImageActor >::New();
+    vtkSmartPointer< vtkImageActor >::New();
 #if VTK_MAJOR_VERSION <= 5
   input_Actor->SetInput( VTKImage );
 #else
   input_Actor->GetMapper()->SetInputData( VTKImage );
 #endif
   vtkSmartPointer< vtkRenderer > ren =
-      vtkSmartPointer< vtkRenderer >::New();
+    vtkSmartPointer< vtkRenderer >::New();
   ren->SetBackground( 0.5, 0.5, 0.5 );
 
   vtkSmartPointer< vtkRenderWindowInteractor > iren =
-      vtkSmartPointer< vtkRenderWindowInteractor >::New();
+    vtkSmartPointer< vtkRenderWindowInteractor >::New();
 
   vtkSmartPointer< vtkRenderWindow > renWin =
-      vtkSmartPointer< vtkRenderWindow >::New();
+    vtkSmartPointer< vtkRenderWindow >::New();
 
   ren->AddActor ( input_Actor );
 

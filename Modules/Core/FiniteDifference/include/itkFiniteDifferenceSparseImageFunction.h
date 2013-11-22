@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKFiniteDifference
  */
 template< typename TSparseImageType >
-class FiniteDifferenceSparseImageFunction:
+class FiniteDifferenceSparseImageFunction :
   public FiniteDifferenceFunction< TSparseImageType >
 {
 public:
@@ -81,9 +81,10 @@ public:
    *  class because we need to work with neighborhoods of pointers to data
    *  variables instead of neighborhoods of data directly. This function is
    *  replaced by the ComputeSparseUpdate function. */
-  virtual PixelType ComputeUpdate(const NeighborhoodType &,
-                                  void *,
-                                  const FloatOffsetType &)
+  virtual PixelType
+  ComputeUpdate(const NeighborhoodType &,
+                void *,
+                const FloatOffsetType &)
   {
     return static_cast< PixelType >( 0 );
   }
@@ -105,16 +106,23 @@ public:
    *  the above examples are stored in the nodes of the SparseImage
    *  itself. Therefore, this function will have to know about the NodeType it
    *  is dealing with. This function does nothing by default. */
-  virtual void PrecomputeSparseUpdate(NeighborhoodType &) const {}
+  virtual void
+  PrecomputeSparseUpdate(NeighborhoodType &) const {
+  }
 
 protected:
-  FiniteDifferenceSparseImageFunction() {}
-  ~FiniteDifferenceSparseImageFunction() {}
+  FiniteDifferenceSparseImageFunction() {
+  }
+
+  ~FiniteDifferenceSparseImageFunction() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   FiniteDifferenceSparseImageFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

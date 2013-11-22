@@ -1198,7 +1198,7 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
 ::AddCells(unsigned char celltype, unsigned char celltran, int index)
 {
 
-  int             i;
+  int              i;
   IdentifierType **currentrowtmp;
   IdentifierType **currentframetmp;
 
@@ -2402,15 +2402,14 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
 
       ContinuousIndexType indTemp;
       indTemp[0] = m_LocationOffset[nodesid[i]][0]
-                   + ( index % m_ImageWidth )
-                   + m_RegionOfInterest.GetIndex()[0];
+        + ( index % m_ImageWidth )
+        + m_RegionOfInterest.GetIndex()[0];
       indTemp[1] = m_LocationOffset[nodesid[i]][1]
-                   + ( ( index % ( m_ImageWidth * m_ImageHeight ) ) / m_ImageWidth )
-                   + m_RegionOfInterest.GetIndex()[1];
+        + ( ( index % ( m_ImageWidth * m_ImageHeight ) ) / m_ImageWidth )
+        + m_RegionOfInterest.GetIndex()[1];
       indTemp[2] = m_LocationOffset[nodesid[i]][2]
-                   + ( index / ( m_ImageWidth * m_ImageHeight ) )
-                   + m_RegionOfInterest.GetIndex()[2];
-
+        + ( index / ( m_ImageWidth * m_ImageHeight ) )
+        + m_RegionOfInterest.GetIndex()[2];
 
       // We transform the point to the physical space since the mesh does not
       // have the notion
@@ -2495,7 +2494,8 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
       if ( ( m_LastRowNum != 0 )
            && ( ( nodesid[i] == 1 ) || ( nodesid[i] == 5 ) || ( nodesid[i] == 9 ) || ( nodesid[i] == 10 ) ) )
         {
-        globalnodesid[i] = this->SearchThroughLastRow( ( index % m_ImageWidth ) * 13 + nodesid[i], 0, m_LastRowNum - 1 );
+        globalnodesid[i] =
+          this->SearchThroughLastRow( ( index % m_ImageWidth ) * 13 + nodesid[i], 0, m_LastRowNum - 1 );
         if ( m_PointFound != 0 ) { continue; }
         else
           {
@@ -2518,13 +2518,13 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
           {
           if ( nodesid[i] == 4 ) { globalnodesid[i] =
                                      this->SearchThroughLastFrame(
-                                        ( index % ( m_ImageWidth * m_ImageHeight ) ) * 13 - 11, 0,
+                                       ( index % ( m_ImageWidth * m_ImageHeight ) ) * 13 - 11, 0,
                                        m_LastFrameNum - 1 ); }
           if ( nodesid[i] == 1 ) { globalnodesid[i] =
                                      this->SearchThroughLastFrame(
-                                        ( index
-                                          % ( m_ImageWidth
-                                              * m_ImageHeight ) - m_ImageWidth ) * 13 + 3, 0,
+                                       ( index
+                                         % ( m_ImageWidth
+                                             * m_ImageHeight ) - m_ImageWidth ) * 13 + 3, 0,
                                        m_LastFrameNum - 1 ); }
           if ( m_PointFound != 0 ) { continue; }
           }
@@ -2685,11 +2685,12 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
      << m_RegionOfInterestProvidedByUser
      << std::endl;
 
-     os << indent
+  os << indent
      << "RegionOfInterest: "
      << m_RegionOfInterest
      << std::endl;
 }
+
 } /** end namespace itk. */
 
 #endif

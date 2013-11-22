@@ -34,19 +34,26 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class Div
 {
 public:
-  Div() {}
-  ~Div() {}
-  bool operator!=(const Div &) const
+  Div() {
+  }
+
+  ~Div() {
+  }
+
+  bool
+  operator!=(const Div &) const
   {
     return false;
   }
 
-  bool operator==(const Div & other) const
+  bool
+  operator==(const Div & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     if ( B != (TInput2)0 )
       {
@@ -57,6 +64,7 @@ public:
       return NumericTraits< TOutput >::max( static_cast<TOutput>(A) );
       }
   }
+
 };
 }
 /** \class DivideImageFilter
@@ -77,7 +85,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class DivideImageFilter:
+class DivideImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Div<
@@ -128,14 +136,19 @@ public:
 #endif
 
 protected:
-  DivideImageFilter() {}
-  virtual ~DivideImageFilter() {}
+  DivideImageFilter() {
+  }
 
-  void GenerateData()
-    {
+  virtual
+  ~DivideImageFilter() {
+  }
+
+  void
+  GenerateData()
+  {
     const typename Superclass::DecoratedInput2ImagePixelType *input
-       = dynamic_cast< const typename Superclass::DecoratedInput2ImagePixelType * >(
-        this->ProcessObject::GetInput(1) );
+      = dynamic_cast< const typename Superclass::DecoratedInput2ImagePixelType * >(
+          this->ProcessObject::GetInput(1) );
     if( input != NULL && input->Get() == itk::NumericTraits< typename TInputImage2::PixelType >::Zero )
       {
       itkGenericExceptionMacro(<<"The constant value used as denominator should not be set to zero");
@@ -144,11 +157,11 @@ protected:
       {
       Superclass::GenerateData();
       }
-    }
+  }
 
 private:
   DivideImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);    //purposely not implemented
 
 };
 } // end namespace itk

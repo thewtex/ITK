@@ -28,7 +28,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 RecursiveSeparableImageFilter< TInputImage, TOutputImage >
-::RecursiveSeparableImageFilter():
+::RecursiveSeparableImageFilter() :
   m_N0( 1.0 ),
   m_N1( 1.0 ),
   m_N2( 1.0 ),
@@ -65,7 +65,7 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
 ::GetInputImage(void)
 {
   return dynamic_cast< const TInputImage * >(
-           ( ProcessObject::GetInput(0) ) );
+    ( ProcessObject::GetInput(0) ) );
 }
 
 /**
@@ -105,7 +105,7 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
     {
     scratch[i]  = RealType(data[i]      * m_N0 + data[i - 1]    * m_N1 + data[i - 2]    * m_N2 + data[i - 3]    * m_N3);
     scratch[i] -= RealType(
-      scratch[i - 1] * m_D1 + scratch[i - 2] * m_D2 + scratch[i - 3] * m_D3 + scratch[i - 4] * m_D4);
+        scratch[i - 1] * m_D1 + scratch[i - 2] * m_D2 + scratch[i - 3] * m_D3 + scratch[i - 4] * m_D4);
     }
 
   /**
@@ -134,9 +134,10 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
   // note that the outV2value is multiplied by the Boundary coefficients m_BMi
   scratch[ln - 1] -= RealType(outV2         * m_BM1 + outV2         * m_BM2 + outV2         * m_BM3 + outV2 * m_BM4);
   scratch[ln - 2] -= RealType(scratch[ln - 1] * m_D1  + outV2         * m_BM2 + outV2         * m_BM3 + outV2 * m_BM4);
-  scratch[ln - 3] -= RealType(scratch[ln - 2] * m_D1  + scratch[ln - 1] * m_D2  + outV2         * m_BM3 + outV2 * m_BM4);
+  scratch[ln -
+          3] -= RealType(scratch[ln - 2] * m_D1  + scratch[ln - 1] * m_D2  + outV2         * m_BM3 + outV2 * m_BM4);
   scratch[ln - 4] -= RealType(
-    scratch[ln - 3] * m_D1  + scratch[ln - 2] * m_D2  + scratch[ln - 1] * m_D3  + outV2 * m_BM4);
+      scratch[ln - 3] * m_D1  + scratch[ln - 2] * m_D2  + scratch[ln - 1] * m_D3  + outV2 * m_BM4);
 
   /**
    * Recursively filter the rest
@@ -144,9 +145,9 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
   for ( unsigned int i = ln - 4; i > 0; i-- )
     {
     scratch[i - 1]  = RealType(
-      data[i]    * m_M1 + data[i + 1]    * m_M2 + data[i + 2]    * m_M3 + data[i + 3]    * m_M4);
+        data[i]    * m_M1 + data[i + 1]    * m_M2 + data[i + 2]    * m_M3 + data[i + 3]    * m_M4);
     scratch[i - 1] -= RealType(
-      scratch[i] * m_D1 + scratch[i + 1] * m_D2 + scratch[i + 2] * m_D3 + scratch[i + 3] * m_D4);
+        scratch[i] * m_D1 + scratch[i + 1] * m_D2 + scratch[i + 2] * m_D3 + scratch[i + 3] * m_D4);
     }
 
   /**
@@ -187,7 +188,6 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
     }
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 const ImageRegionSplitterBase*
 RecursiveSeparableImageFilter< TInputImage, TOutputImage >
@@ -215,7 +215,6 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
 
   const typename InputImageType::SpacingType & pixelSize =
     inputImage->GetSpacing();
-
 
   this->m_ImageRegionSplitter->SetDirection(m_Direction);
 
@@ -276,8 +275,9 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
     inputIterator.GoToBegin();
     outputIterator.GoToBegin();
 
-    const SizeValueType numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / outputRegionForThread.GetSize(this->m_Direction);
-    ProgressReporter   progress(this, threadId, numberOfLinesToProcess, 10);
+    const SizeValueType numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() /
+      outputRegionForThread.GetSize(this->m_Direction);
+    ProgressReporter progress(this, threadId, numberOfLinesToProcess, 10);
 
     while ( !inputIterator.IsAtEnd() && !outputIterator.IsAtEnd() )
       {
@@ -334,6 +334,7 @@ RecursiveSeparableImageFilter< TInputImage, TOutputImage >
 
   os << indent << "Direction: " << m_Direction << std::endl;
 }
+
 } // end namespace itk
 
 #endif

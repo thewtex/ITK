@@ -45,12 +45,14 @@
 
 #include "itkImage.h"
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   // Software Guide : BeginLatex
   //
   // The Vector class is templated over the type used to represent
-  // the coordinate in space and over the dimension of the space.  In this example,
+  // the coordinate in space and over the dimension of the space.  In this
+  // example,
   // we want the vector dimension to match the image dimension, but this is by
   // no means a requirement. We could have defined a four-dimensional image
   // with three-dimensional vectors as pixels.
@@ -62,15 +64,15 @@ int main(int, char *[])
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Vector< float, 3 >       PixelType;
-  typedef itk::Image< PixelType, 3 >    ImageType;
+  typedef itk::Vector< float, 3 >    PixelType;
+  typedef itk::Image< PixelType, 3 > ImageType;
   // Software Guide : EndCodeSnippet
 
   // Then the image object can be created
   ImageType::Pointer image = ImageType::New();
 
   // The image region should be initialized
-  const ImageType::IndexType start = {{0,0,0}}; //First index at {X,Y,Z}
+  const ImageType::IndexType start = {{0,0,0}};      //First index at {X,Y,Z}
   const ImageType::SizeType  size = {{200,200,200}}; //Size of {X,Y,Z}
 
   ImageType::RegionType region;
@@ -82,7 +84,7 @@ int main(int, char *[])
   image->Allocate();
 
   // The image buffer is initialized to a particular value
-  ImageType::PixelType  initialValue;
+  ImageType::PixelType initialValue;
 
   // A vector can initialize all its components to the
   // same value by using the Fill() method.
@@ -103,7 +105,7 @@ int main(int, char *[])
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  ImageType::PixelType   pixelValue;
+  ImageType::PixelType pixelValue;
   pixelValue[0] =  1.345;   // x component
   pixelValue[1] =  6.841;   // y component
   pixelValue[2] =  3.295;   // x component

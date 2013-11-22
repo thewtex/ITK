@@ -21,23 +21,23 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkPNGImageIOTest2(int argc, char * argv[])
+int
+itkPNGImageIOTest2(int argc, char * argv[])
 {
   if( argc < 3)
     {
     std::cerr << "Usage: " << argv[0] << " input output\n";
     return EXIT_FAILURE;
     }
-  const unsigned int                      Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef unsigned char                   PixelType;
   typedef itk::Image<PixelType,Dimension> ImageType;
   typedef itk::ImageFileReader<ImageType> ReaderType;
   typedef itk::ImageFileWriter<ImageType> WriterType;
-  ImageType::Pointer                      readResult;
-  ImageType::Pointer                      baseline;
+  ImageType::Pointer readResult;
+  ImageType::Pointer baseline;
   try
     {
     //

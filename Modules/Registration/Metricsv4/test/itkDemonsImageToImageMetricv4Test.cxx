@@ -27,25 +27,27 @@
  * TODO Numerical verification.
  */
 
-int itkDemonsImageToImageMetricv4Test(int, char ** const)
+int
+itkDemonsImageToImageMetricv4Test(int, char ** const)
 {
 
   const unsigned int imageSize = 5;
   const unsigned int imageDimensionality = 3;
-  typedef itk::Image< double, imageDimensionality >              ImageType;
 
-  ImageType::SizeType       size;
+  typedef itk::Image< double, imageDimensionality > ImageType;
+
+  ImageType::SizeType size;
   size.Fill( imageSize );
-  ImageType::IndexType      index;
+  ImageType::IndexType index;
   index.Fill( 0 );
-  ImageType::RegionType     region;
+  ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
-  ImageType::SpacingType    spacing;
+  ImageType::SpacingType spacing;
   spacing.Fill(1.0);
-  ImageType::PointType      origin;
+  ImageType::PointType origin;
   origin.Fill(0);
-  ImageType::DirectionType  direction;
+  ImageType::DirectionType direction;
   direction.SetIdentity();
 
   /* Create simple test images. */
@@ -87,8 +89,10 @@ int itkDemonsImageToImageMetricv4Test(int, char ** const)
     }
 
   /* Transforms */
-  typedef itk::TranslationTransform<double,imageDimensionality> TranslationTransformType;
-  typedef itk::GaussianSmoothingOnUpdateDisplacementFieldTransform< double, imageDimensionality> DisplacementTransformType;
+  typedef itk::TranslationTransform<double,
+                                    imageDimensionality>                                 TranslationTransformType;
+  typedef itk::GaussianSmoothingOnUpdateDisplacementFieldTransform< double,
+                                                                    imageDimensionality> DisplacementTransformType;
 
   TranslationTransformType::Pointer translationTransform = TranslationTransformType::New();
   translationTransform->SetIdentity();
@@ -140,7 +144,7 @@ int itkDemonsImageToImageMetricv4Test(int, char ** const)
     }
 
   // Evaluate with GetValueAndDerivative
-  MetricType::MeasureType valueReturn1, valueReturn2;
+  MetricType::MeasureType    valueReturn1, valueReturn2;
   MetricType::DerivativeType derivativeReturn;
 
   try

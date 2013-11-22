@@ -96,7 +96,7 @@ SpatialObjectToImageStatisticsCalculator< TInputImage, TInputSpatialObject, TSam
   if ( ( m_Image->GetMTime() == m_InternalImageTime )
        &&
        ( m_SpatialObject->GetMTime() == m_InternalSpatialObjectTime )
-        )
+       )
     {
     return; // No need to update
     }
@@ -203,6 +203,7 @@ SpatialObjectToImageStatisticsCalculator< TInputImage, TInputSpatialObject, TSam
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Image: " << m_Image << std::endl;
   os << indent << "SpatialObject: " << m_SpatialObject << std::endl;
   os << indent << "Mean: " << m_Mean << std::endl;
@@ -214,6 +215,7 @@ SpatialObjectToImageStatisticsCalculator< TInputImage, TInputSpatialObject, TSam
   os << indent << "SampleDirection: " << m_SampleDirection << std::endl;
   os << indent << "Sample: " << m_Sample << std::endl;
 }
+
 } // end namespace itk
 
 #endif

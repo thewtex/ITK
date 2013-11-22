@@ -53,7 +53,7 @@ Hessian3DToVesselnessMeasureImageFilter< TPixel >
   typename OutputImageType::Pointer output = this->GetOutput();
 
   typedef typename EigenAnalysisFilterType::OutputImageType
-  EigenValueOutputImageType;
+    EigenValueOutputImageType;
 
   m_SymmetricEigenValueFilter->Update();
 
@@ -64,7 +64,7 @@ Hessian3DToVesselnessMeasureImageFilter< TPixel >
   EigenValueArrayType                                   eigenValue;
   ImageRegionConstIterator< EigenValueOutputImageType > it;
   it = ImageRegionConstIterator< EigenValueOutputImageType >(
-    eigenImage, eigenImage->GetRequestedRegion() );
+      eigenImage, eigenImage->GetRequestedRegion() );
   ImageRegionIterator< OutputImageType > oit;
   this->AllocateOutputs();
   oit = ImageRegionIterator< OutputImageType >( output,
@@ -117,6 +117,7 @@ Hessian3DToVesselnessMeasureImageFilter< TPixel >
   os << indent << "Alpha1: " << m_Alpha1 << std::endl;
   os << indent << "Alpha2: " << m_Alpha2 << std::endl;
 }
+
 } // end namespace itk
 
 #endif

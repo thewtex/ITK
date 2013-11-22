@@ -86,13 +86,16 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 ::InitializeForIteration() const
 {
   Superclass::InitializeForIteration();
+
   if( this->m_NumberOfValidPoints == 0 )
     {
     itkExceptionMacro("There are no fixed points within the virtual domain.");
     }
 
   // Pre-calc some values for efficiency
-  this->m_TotalNumberOfPoints = static_cast<RealType>( this->m_NumberOfValidPoints + this->m_MovingDensityFunction->GetInputPointSet()->GetNumberOfPoints() );
+  this->m_TotalNumberOfPoints =
+    static_cast<RealType>( this->m_NumberOfValidPoints +
+                           this->m_MovingDensityFunction->GetInputPointSet()->GetNumberOfPoints() );
   this->m_Prefactor0 = -1.0 / static_cast<RealType>( this->m_TotalNumberOfPoints );
   if( this->m_Alpha != 1.0 )
     {
@@ -107,8 +110,9 @@ typename JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 ::GetLocalNeighborhoodValue( const PointType & point, const PixelType & itkNotUsed( pixel ) ) const
 {
-  MeasureType value;
+  MeasureType         value;
   LocalDerivativeType derivative;
+
   this->ComputeValueAndDerivative( point, value, derivative, true, false );
   return value;
 }
@@ -117,7 +121,9 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 template<typename TPointSet>
 void
 JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
-::GetLocalNeighborhoodValueAndDerivative( const PointType & point, MeasureType & value, LocalDerivativeType & derivative, const PixelType & itkNotUsed( pixel ) ) const
+::GetLocalNeighborhoodValueAndDerivative( const PointType & point, MeasureType & value,
+                                          LocalDerivativeType & derivative,
+                                          const PixelType & itkNotUsed( pixel ) ) const
 {
   this->ComputeValueAndDerivative( point, value, derivative, true, true );
 }
@@ -125,7 +131,8 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 template<typename TPointSet>
 void
 JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
-::ComputeValueAndDerivative( const PointType & samplePoint, MeasureType & value, LocalDerivativeType & derivativeReturn, bool calcValue, bool calcDerivative ) const
+::ComputeValueAndDerivative( const PointType & samplePoint, MeasureType & value, LocalDerivativeType & derivativeReturn,
+                             bool calcValue, bool calcDerivative ) const
 {
   if( calcDerivative )
     {
@@ -136,8 +143,10 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
   /**
    * first term only
    */
-  typename PointSetType::PointIdentifier numberOfMovingPoints = this->m_MovingDensityFunction->GetInputPointSet()->GetNumberOfPoints();
-  RealType probabilityStar = this->m_MovingDensityFunction->Evaluate( samplePoint ) * static_cast<RealType>( numberOfMovingPoints );
+  typename PointSetType::PointIdentifier numberOfMovingPoints =
+    this->m_MovingDensityFunction->GetInputPointSet()->GetNumberOfPoints();
+  RealType probabilityStar = this->m_MovingDensityFunction->Evaluate( samplePoint ) *
+    static_cast<RealType>( numberOfMovingPoints );
 
   probabilityStar /= this->m_TotalNumberOfPoints;
 
@@ -165,7 +174,8 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     RealType probabilityStarFactor = vcl_pow( probabilityStar, static_cast<RealType>( 2.0 - this->m_Alpha ) );
 
     typename DensityFunctionType::NeighborsIdentifierType neighbors;
-    this->m_MovingDensityFunction->GetPointsLocator()->FindClosestNPoints( samplePoint, this->m_EvaluationKNeighborhood, neighbors );
+    this->m_MovingDensityFunction->GetPointsLocator()->FindClosestNPoints( samplePoint, this->m_EvaluationKNeighborhood,
+                                                                           neighbors );
 
     for( SizeValueType n = 0; n < neighbors.size(); n++ )
       {
@@ -176,7 +186,8 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
         continue;
         }
 
-      typename GaussianType::MeanVectorType mean = this->m_MovingDensityFunction->GetGaussian( neighbors[n] )->GetMean();
+      typename GaussianType::MeanVectorType mean =
+        this->m_MovingDensityFunction->GetGaussian( neighbors[n] )->GetMean();
 
       Array<CoordRepType> diffMean( PointDimension );
       for( unsigned int i = 0; i < PointDimension; i++ )
@@ -186,12 +197,13 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
       if( this->m_UseAnisotropicCovariances )
         {
-        typename GaussianType::CovarianceMatrixType Ci = this->m_MovingDensityFunction->GetGaussian( neighbors[n] )->GetInverseCovariance();
+        typename GaussianType::CovarianceMatrixType Ci =
+          this->m_MovingDensityFunction->GetGaussian( neighbors[n] )->GetInverseCovariance();
         diffMean = Ci * diffMean;
         }
       else
         {
-        diffMean /= this->m_FixedDensityFunction->GetGaussian( neighbors[n] )->GetCovariance()(0, 0);
+        diffMean /= this->m_FixedDensityFunction->GetGaussian( neighbors[n] )->GetCovariance() (0, 0);
         }
 
       DerivativeValueType factor = this->m_Prefactor1 * gaussian / probabilityStarFactor;
@@ -247,6 +259,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     }
 
 }
+
 } // end namespace itk
 
 #endif

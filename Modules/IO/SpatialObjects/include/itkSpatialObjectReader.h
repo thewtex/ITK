@@ -34,7 +34,7 @@ template< unsigned int NDimensions = 3,
           typename PixelType = unsigned char,
           typename TMeshTraits = DefaultStaticMeshTraits< PixelType, NDimensions, NDimensions >
           >
-class SpatialObjectReader:public Object
+class SpatialObjectReader : public Object
 {
 public:
 
@@ -53,7 +53,7 @@ public:
   /** base type for MetaConverters -- bidirections conversion btw
    *  SpatialObject & MetaObject
    */
-  typedef MetaConverterBase< NDimensions >  MetaConverterBaseType;
+  typedef MetaConverterBase< NDimensions > MetaConverterBaseType;
 
   /** Method for creation through the object factory */
   itkNewMacro(Self);
@@ -72,12 +72,26 @@ public:
   itkGetStringMacro(FileName);
 
   /** Get the output */
-  ScenePointer GetScene(void) { return m_Scene; }
-  GroupPointer GetGroup(void) { return m_Group; }
+  ScenePointer
+  GetScene(void) {
+    return m_Scene;
+  }
+
+  GroupPointer
+  GetGroup(void) {
+    return m_Group;
+  }
 
   /** Set/GetEvent */
-  const MetaEvent * GetEvent() { return m_MetaToSpatialConverter.GetEvent(); }
-  void SetEvent(MetaEvent *event) { m_MetaToSpatialConverter.SetEvent(event); }
+  const MetaEvent *
+  GetEvent() {
+    return m_MetaToSpatialConverter.GetEvent();
+  }
+
+  void
+  SetEvent(MetaEvent *event) {
+    m_MetaToSpatialConverter.SetEvent(event);
+  }
 
   /** Add a converter for a new MetaObject/SpatialObject type */
   void RegisterMetaConverter(const char *metaTypeName,
@@ -91,7 +105,8 @@ protected:
   std::string m_FileName;
 
   SpatialObjectReader();
-  virtual ~SpatialObjectReader();
+  virtual
+  ~SpatialObjectReader();
 
 private:
 

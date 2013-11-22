@@ -29,7 +29,6 @@
 #define __itkVTKImageIO_h
 #include "ITKIOVTKExport.h"
 
-
 #include <fstream>
 #include "itkStreamingImageIOBase.h"
 
@@ -46,8 +45,8 @@ namespace itk
  *
  * \ingroup ITKIOVTK
  */
-class ITKIOVTK_EXPORT VTKImageIO:
-  public StreamingImageIOBase
+class ITKIOVTK_EXPORT VTKImageIO :
+  public              StreamingImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -63,15 +62,14 @@ public:
   itkTypeMacro(VTKImageIO, StreamingImageIOBase);
 
 // see super class for documentation
-  //
-  // overidden to return true only when supported
+//
+// overidden to return true only when supported
   virtual bool CanStreamWrite(void);
 
   // see super class for documentation
   //
   // overidden to return true only when supported
   virtual bool CanStreamRead(void);
-
 
   /*-------- This part of the interface deals with reading data. ------ */
 
@@ -93,14 +91,19 @@ public:
 
   /** Writes the spacing and dimensions of the image.
    * Assumes SetFileName has been called with a valid file name. */
-  virtual void WriteImageInformation() {}
+  virtual void
+  WriteImageInformation() {
+  }
 
   /** Writes the data to disk from the memory buffer provided. Make sure
    * that the IORegion has been set properly. */
   virtual void Write(const void *buffer);
 
   /** returns the header size, if it is unknown it will return 0 */
-  virtual SizeType GetHeaderSize() const { return this->m_HeaderSize; }
+  virtual SizeType
+  GetHeaderSize() const {
+    return this->m_HeaderSize;
+  }
 
 protected:
   VTKImageIO();
@@ -116,29 +119,30 @@ protected:
 
   /** Convenient method to read a buffer as ASCII text. */
   virtual void ReadBufferAsASCII(std::istream & os, void *buffer,
-                         IOComponentType ctype,
-                         SizeType numberOfBytesToBeRead);
+                                 IOComponentType ctype,
+                                 SizeType numberOfBytesToBeRead);
 
   /** Convenient method to write a buffer as ASCII text. */
   virtual void WriteBufferAsASCII(std::ostream & os, const void *buffer,
-                          IOComponentType ctype,
-                          SizeType numberOfBytesToWrite);
+                                  IOComponentType ctype,
+                                  SizeType numberOfBytesToWrite);
 
   /** We have a special method to read symmetric second rank tensors because
    * the VTK file format expands the symmetry and only supports 3D tensors. */
   virtual void ReadSymmetricTensorBufferAsBinary(std::istream& os,
-    void *buffer,
-    StreamingImageIOBase::SizeType num);
+                                                 void *buffer,
+                                                 StreamingImageIOBase::SizeType num);
 
   /** We have a special method to write symmetric second rank tensors because
    * the VTK file format expands the symmetry and only supports 3D tensors. */
   virtual void WriteSymmetricTensorBufferAsBinary(std::ostream& os,
-    const void *buffer,
-    StreamingImageIOBase::SizeType num);
+                                                  const void *buffer,
+                                                  StreamingImageIOBase::SizeType num);
 
 private:
-  VTKImageIO(const Self &);    //purposely not implemented
+  VTKImageIO(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
   void SetPixelTypeFromString(const std::string & pixelType);
 
   /** Return the number of pixels in the IOregion. */

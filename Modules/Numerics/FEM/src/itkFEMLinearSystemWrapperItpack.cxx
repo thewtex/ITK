@@ -59,7 +59,8 @@ LinearSystemWrapperItpack::LinearSystemWrapperItpack()
   m_Solutions = 0;
 }
 
-void LinearSystemWrapperItpack::InitializeMatrix(unsigned int matrixIndex)
+void
+LinearSystemWrapperItpack::InitializeMatrix(unsigned int matrixIndex)
 {
   /* error checking */
   if( !m_Order )
@@ -97,7 +98,8 @@ void LinearSystemWrapperItpack::InitializeMatrix(unsigned int matrixIndex)
   ( *m_Matrices )[matrixIndex].SetMaxNonZeroValues(m_MaximumNonZeroValues);
 }
 
-bool LinearSystemWrapperItpack::IsMatrixInitialized(unsigned int matrixIndex)
+bool
+LinearSystemWrapperItpack::IsMatrixInitialized(unsigned int matrixIndex)
 {
   if( !m_Matrices )
     {
@@ -115,7 +117,8 @@ bool LinearSystemWrapperItpack::IsMatrixInitialized(unsigned int matrixIndex)
   return true;
 }
 
-void LinearSystemWrapperItpack::InitializeVector(unsigned int vectorIndex)
+void
+LinearSystemWrapperItpack::InitializeVector(unsigned int vectorIndex)
 {
   /* error checking */
   if( !m_Order )
@@ -152,7 +155,8 @@ void LinearSystemWrapperItpack::InitializeVector(unsigned int vectorIndex)
     }
 }
 
-bool LinearSystemWrapperItpack::IsVectorInitialized(unsigned int vectorIndex)
+bool
+LinearSystemWrapperItpack::IsVectorInitialized(unsigned int vectorIndex)
 {
   if( !m_Vectors )
     {
@@ -166,7 +170,8 @@ bool LinearSystemWrapperItpack::IsVectorInitialized(unsigned int vectorIndex)
   return true;
 }
 
-void LinearSystemWrapperItpack::InitializeSolution(unsigned int solutionIndex)
+void
+LinearSystemWrapperItpack::InitializeSolution(unsigned int solutionIndex)
 {
   /* FIX ME: exceptions */
   if( !m_Order )
@@ -203,7 +208,8 @@ void LinearSystemWrapperItpack::InitializeSolution(unsigned int solutionIndex)
     }
 }
 
-bool LinearSystemWrapperItpack::IsSolutionInitialized(unsigned int solutionIndex)
+bool
+LinearSystemWrapperItpack::IsSolutionInitialized(unsigned int solutionIndex)
 {
   if( !m_Solutions )
     {
@@ -217,7 +223,8 @@ bool LinearSystemWrapperItpack::IsSolutionInitialized(unsigned int solutionIndex
   return true;
 }
 
-void LinearSystemWrapperItpack::DestroyMatrix(unsigned int matrixIndex)
+void
+LinearSystemWrapperItpack::DestroyMatrix(unsigned int matrixIndex)
 {
   /* FIX ME: exceptions */
   if( m_Matrices )
@@ -225,17 +232,18 @@ void LinearSystemWrapperItpack::DestroyMatrix(unsigned int matrixIndex)
     if( matrixIndex >= m_NumberOfMatrices )
       {
       throw FEMExceptionLinearSystemBounds(__FILE__,
-                                          __LINE__,
-                                          "LinearSystemWrapperItpack::DestroyMatrix",
-                                          "m_Matrices",
-                                          matrixIndex);
+                                           __LINE__,
+                                           "LinearSystemWrapperItpack::DestroyMatrix",
+                                           "m_Matrices",
+                                           matrixIndex);
       }
 
     ( *m_Matrices )[matrixIndex].Clear();
     }
 }
 
-void LinearSystemWrapperItpack::DestroyVector(unsigned int vectorIndex)
+void
+LinearSystemWrapperItpack::DestroyVector(unsigned int vectorIndex)
 {
   /* FIXME: exceptions */
   if( m_Vectors )
@@ -243,10 +251,10 @@ void LinearSystemWrapperItpack::DestroyVector(unsigned int vectorIndex)
     if( vectorIndex >= m_NumberOfVectors )
       {
       throw FEMExceptionLinearSystemBounds(__FILE__,
-                                          __LINE__,
-                                          "LinearSystemWrapperItpack::DestroyVector",
-                                          "m_Vectors",
-                                          vectorIndex);
+                                           __LINE__,
+                                           "LinearSystemWrapperItpack::DestroyVector",
+                                           "m_Vectors",
+                                           vectorIndex);
       }
 
     /* delete vector */
@@ -255,7 +263,8 @@ void LinearSystemWrapperItpack::DestroyVector(unsigned int vectorIndex)
     }
 }
 
-void LinearSystemWrapperItpack::DestroySolution(unsigned int solutionIndex)
+void
+LinearSystemWrapperItpack::DestroySolution(unsigned int solutionIndex)
 {
   // FIXME: exceptions
   if( m_Solutions )
@@ -263,10 +272,10 @@ void LinearSystemWrapperItpack::DestroySolution(unsigned int solutionIndex)
     if( solutionIndex >= m_NumberOfSolutions )
       {
       throw FEMExceptionLinearSystemBounds(__FILE__,
-                                          __LINE__,
-                                          "LinearSystemWrapperItpack::DestroySolution",
-                                          "m_Solutions",
-                                          solutionIndex);
+                                           __LINE__,
+                                           "LinearSystemWrapperItpack::DestroySolution",
+                                           "m_Solutions",
+                                           solutionIndex);
       }
 
     /* delete vector */
@@ -275,9 +284,10 @@ void LinearSystemWrapperItpack::DestroySolution(unsigned int solutionIndex)
     }
 }
 
-LinearSystemWrapperItpack::Float LinearSystemWrapperItpack::GetMatrixValue(unsigned int i,
-                                                                           unsigned int j,
-                                                                           unsigned int matrixIndex) const
+LinearSystemWrapperItpack::Float
+LinearSystemWrapperItpack::GetMatrixValue(unsigned int i,
+                                          unsigned int j,
+                                          unsigned int matrixIndex) const
 {
   /* error checking */
   if( !m_Matrices )
@@ -309,7 +319,8 @@ LinearSystemWrapperItpack::Float LinearSystemWrapperItpack::GetMatrixValue(unsig
   return ( *m_Matrices )[matrixIndex].Get(i, j);
 }
 
-void LinearSystemWrapperItpack::SetMatrixValue(unsigned int i, unsigned int j, Float value, unsigned int matrixIndex)
+void
+LinearSystemWrapperItpack::SetMatrixValue(unsigned int i, unsigned int j, Float value, unsigned int matrixIndex)
 {
   /* error checking */
   if( !m_Matrices )
@@ -341,7 +352,8 @@ void LinearSystemWrapperItpack::SetMatrixValue(unsigned int i, unsigned int j, F
   ( ( *m_Matrices )[matrixIndex] ).Set(i, j, value);
 }
 
-void LinearSystemWrapperItpack::AddMatrixValue(unsigned int i, unsigned int j, Float value, unsigned int matrixIndex)
+void
+LinearSystemWrapperItpack::AddMatrixValue(unsigned int i, unsigned int j, Float value, unsigned int matrixIndex)
 {
   // FIXME: error checking
   if( !m_Matrices )
@@ -372,9 +384,10 @@ void LinearSystemWrapperItpack::AddMatrixValue(unsigned int i, unsigned int j, F
   ( ( *m_Matrices )[matrixIndex] ).Add(i, j, value);
 }
 
-void LinearSystemWrapperItpack::GetColumnsOfNonZeroMatrixElementsInRow(unsigned int row,
-                                                                       ColumnArray & cols,
-                                                                       unsigned int matrixIndex)
+void
+LinearSystemWrapperItpack::GetColumnsOfNonZeroMatrixElementsInRow(unsigned int row,
+                                                                  ColumnArray & cols,
+                                                                  unsigned int matrixIndex)
 {
   /* FIXME: error checking */
   if( !m_Matrices )
@@ -427,7 +440,8 @@ void LinearSystemWrapperItpack::GetColumnsOfNonZeroMatrixElementsInRow(unsigned 
     }
 }
 
-void LinearSystemWrapperItpack::ScaleMatrix(Float scale, unsigned int matrixIndex)
+void
+LinearSystemWrapperItpack::ScaleMatrix(Float scale, unsigned int matrixIndex)
 {
   /* error checking */
   if( !m_Matrices )
@@ -454,8 +468,9 @@ void LinearSystemWrapperItpack::ScaleMatrix(Float scale, unsigned int matrixInde
     }
 }
 
-LinearSystemWrapperItpack::Float LinearSystemWrapperItpack::GetVectorValue(unsigned int i,
-                                                                           unsigned int vectorIndex) const
+LinearSystemWrapperItpack::Float
+LinearSystemWrapperItpack::GetVectorValue(unsigned int i,
+                                          unsigned int vectorIndex) const
 {
   /* error checking */
   if( !m_Vectors )
@@ -493,7 +508,8 @@ LinearSystemWrapperItpack::Float LinearSystemWrapperItpack::GetVectorValue(unsig
   return ( *m_Vectors )[vectorIndex][i];
 }
 
-void LinearSystemWrapperItpack::SetVectorValue(unsigned int i, Float value, unsigned int vectorIndex)
+void
+LinearSystemWrapperItpack::SetVectorValue(unsigned int i, Float value, unsigned int vectorIndex)
 {
   /* error checking */
   if( !m_Vectors )
@@ -531,7 +547,8 @@ void LinearSystemWrapperItpack::SetVectorValue(unsigned int i, Float value, unsi
   ( *m_Vectors )[vectorIndex][i] = value;
 }
 
-void LinearSystemWrapperItpack::AddVectorValue(unsigned int i, Float value, unsigned int vectorIndex)
+void
+LinearSystemWrapperItpack::AddVectorValue(unsigned int i, Float value, unsigned int vectorIndex)
 {
   /*( error checking */
   if( !m_Vectors )
@@ -569,8 +586,9 @@ void LinearSystemWrapperItpack::AddVectorValue(unsigned int i, Float value, unsi
   ( *m_Vectors )[vectorIndex][i] += value;
 }
 
-LinearSystemWrapperItpack::Float LinearSystemWrapperItpack::GetSolutionValue(unsigned int i,
-                                                                             unsigned int solutionIndex) const
+LinearSystemWrapperItpack::Float
+LinearSystemWrapperItpack::GetSolutionValue(unsigned int i,
+                                            unsigned int solutionIndex) const
 {
   // FIXME: error checking
   if( ( i >= m_Order ) || !m_Solutions || ( solutionIndex >= m_NumberOfSolutions ) || !( *m_Solutions )[solutionIndex] )
@@ -580,7 +598,8 @@ LinearSystemWrapperItpack::Float LinearSystemWrapperItpack::GetSolutionValue(uns
   return ( *m_Solutions )[solutionIndex][i];
 }
 
-void LinearSystemWrapperItpack::SetSolutionValue(unsigned int i, Float value, unsigned int solutionIndex)
+void
+LinearSystemWrapperItpack::SetSolutionValue(unsigned int i, Float value, unsigned int solutionIndex)
 {
   /* error checking */
   if( !m_Solutions )
@@ -618,7 +637,8 @@ void LinearSystemWrapperItpack::SetSolutionValue(unsigned int i, Float value, un
   ( *m_Solutions )[solutionIndex][i] = value;
 }
 
-void LinearSystemWrapperItpack::AddSolutionValue(unsigned int i, Float value, unsigned int solutionIndex)
+void
+LinearSystemWrapperItpack::AddSolutionValue(unsigned int i, Float value, unsigned int solutionIndex)
 {
   /* error checking */
   if( !m_Solutions )
@@ -655,7 +675,8 @@ void LinearSystemWrapperItpack::AddSolutionValue(unsigned int i, Float value, un
   ( *m_Solutions )[solutionIndex][i] += value;
 }
 
-void LinearSystemWrapperItpack::Solve(void)
+void
+LinearSystemWrapperItpack::Solve(void)
 {
   /* error checking */
   if( !m_Order || !m_Matrices || !m_Vectors || !m_Solutions )
@@ -764,7 +785,7 @@ void LinearSystemWrapperItpack::Solve(void)
       throw FEMExceptionLinearSystem(__FILE__,
                                      __LINE__,
                                      "LinearSystemWrapperItpack::Solve",
-                                     msg.str().c_str());
+                                     msg.str().c_str() );
     }
   m_IPARM[7] = NW;
   IWKSP = new integer[3 * N];
@@ -811,7 +832,8 @@ void LinearSystemWrapperItpack::Solve(void)
     }
 }
 
-void LinearSystemWrapperItpack::SwapMatrices(unsigned int matrixIndex1, unsigned int matrixIndex2)
+void
+LinearSystemWrapperItpack::SwapMatrices(unsigned int matrixIndex1, unsigned int matrixIndex2)
 {
   /* error checking */
   if( !m_Matrices )
@@ -855,12 +877,14 @@ void LinearSystemWrapperItpack::SwapMatrices(unsigned int matrixIndex1, unsigned
   ( *m_Matrices )[matrixIndex1].SetCompressedRow(ia, ja, a);
 }
 
-void LinearSystemWrapperItpack::SwapVectors(unsigned int vectorIndex1, unsigned int vectorIndex2)
+void
+LinearSystemWrapperItpack::SwapVectors(unsigned int vectorIndex1, unsigned int vectorIndex2)
 {
   /* error checking */
   if( !m_Vectors )
     {
-    throw FEMExceptionLinearSystem(__FILE__, __LINE__, "LinearSystemWrapperItpack::SwapVectors", "No vectors allocated");
+    throw FEMExceptionLinearSystem(__FILE__, __LINE__, "LinearSystemWrapperItpack::SwapVectors",
+                                   "No vectors allocated");
     }
   if( vectorIndex1 >= m_NumberOfVectors )
     {
@@ -885,7 +909,8 @@ void LinearSystemWrapperItpack::SwapVectors(unsigned int vectorIndex1, unsigned 
   ( *m_Vectors )[vectorIndex2] = temp;
 }
 
-void LinearSystemWrapperItpack::SwapSolutions(unsigned int solutionIndex1, unsigned int solutionIndex2)
+void
+LinearSystemWrapperItpack::SwapSolutions(unsigned int solutionIndex1, unsigned int solutionIndex2)
 {
   /* error checking */
   if( !m_Solutions )
@@ -918,8 +943,9 @@ void LinearSystemWrapperItpack::SwapSolutions(unsigned int solutionIndex1, unsig
   ( *m_Solutions )[solutionIndex2] = temp;
 }
 
-void LinearSystemWrapperItpack::CopySolution2Vector(unsigned solutionIndex,
-                                                    unsigned int vectorIndex)
+void
+LinearSystemWrapperItpack::CopySolution2Vector(unsigned solutionIndex,
+                                               unsigned int vectorIndex)
 {
   /* error checking */
   if( !m_Vectors )
@@ -961,7 +987,8 @@ void LinearSystemWrapperItpack::CopySolution2Vector(unsigned solutionIndex,
     }
 }
 
-void LinearSystemWrapperItpack::CopyVector2Solution(unsigned vectorIndex, unsigned int solutionIndex)
+void
+LinearSystemWrapperItpack::CopyVector2Solution(unsigned vectorIndex, unsigned int solutionIndex)
 {
   /* error checking */
   if( !m_Vectors )
@@ -1003,9 +1030,10 @@ void LinearSystemWrapperItpack::CopyVector2Solution(unsigned vectorIndex, unsign
     }
 }
 
-void LinearSystemWrapperItpack::MultiplyMatrixMatrix(unsigned int resultMatrixIndex,
-                                                     unsigned int leftMatrixIndex,
-                                                     unsigned int rightMatrixIndex)
+void
+LinearSystemWrapperItpack::MultiplyMatrixMatrix(unsigned int resultMatrixIndex,
+                                                unsigned int leftMatrixIndex,
+                                                unsigned int rightMatrixIndex)
 {
   /* error checking */
   if( !m_Matrices )
@@ -1040,12 +1068,14 @@ void LinearSystemWrapperItpack::MultiplyMatrixMatrix(unsigned int resultMatrixIn
                                          rightMatrixIndex);
     }
 
-  ( *m_Matrices )[leftMatrixIndex].mult( &( ( *m_Matrices )[rightMatrixIndex] ), &( ( *m_Matrices )[resultMatrixIndex] ) );
+  ( *m_Matrices )[leftMatrixIndex].mult( &( ( *m_Matrices )[rightMatrixIndex] ),
+                                         &( ( *m_Matrices )[resultMatrixIndex] ) );
 }
 
-void LinearSystemWrapperItpack::MultiplyMatrixVector(unsigned int resultVectorIndex,
-                                                     unsigned int matrixIndex,
-                                                     unsigned int vectorIndex)
+void
+LinearSystemWrapperItpack::MultiplyMatrixVector(unsigned int resultVectorIndex,
+                                                unsigned int matrixIndex,
+                                                unsigned int vectorIndex)
 {
   /* error checking */
   if( !m_Matrices )
@@ -1091,10 +1121,10 @@ void LinearSystemWrapperItpack::MultiplyMatrixVector(unsigned int resultVectorIn
   ( *m_Matrices )[matrixIndex].mult( ( *m_Vectors )[vectorIndex], ( *m_Vectors )[resultVectorIndex] );
 }
 
-
-void LinearSystemWrapperItpack::MultiplyMatrixSolution(unsigned int resultVectorIndex,
-                                                       unsigned int matrixIndex,
-                                                       unsigned int solutionIndex)
+void
+LinearSystemWrapperItpack::MultiplyMatrixSolution(unsigned int resultVectorIndex,
+                                                  unsigned int matrixIndex,
+                                                  unsigned int solutionIndex)
 {
   /* error checking */
   if( !m_Matrices )
@@ -1151,7 +1181,6 @@ void LinearSystemWrapperItpack::MultiplyMatrixSolution(unsigned int resultVector
   /* perform multiplication */
   ( *m_Matrices )[matrixIndex].mult( ( *m_Solutions )[solutionIndex], ( *m_Vectors )[resultVectorIndex] );
 }
-
 
 LinearSystemWrapperItpack::~LinearSystemWrapperItpack(void)
 {

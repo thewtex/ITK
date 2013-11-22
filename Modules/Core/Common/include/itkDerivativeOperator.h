@@ -64,48 +64,58 @@ namespace itk
  */
 template< typename TPixel, unsigned int VDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class DerivativeOperator:
+class DerivativeOperator :
   public NeighborhoodOperator< TPixel, VDimension, TAllocator >
 {
 public:
   /** Standard class typedefs. */
   typedef DerivativeOperator Self;
   typedef NeighborhoodOperator<
-    TPixel, VDimension, TAllocator >           Superclass;
+      TPixel, VDimension, TAllocator >           Superclass;
 
   typedef typename Superclass::PixelType     PixelType;
   typedef typename Superclass::PixelRealType PixelRealType;
 
   /** Constructor. */
-  DerivativeOperator():m_Order(1) {}
+  DerivativeOperator() : m_Order(1) {
+  }
 
   /** Copy constructor. */
-  DerivativeOperator(const Self & other):
+  DerivativeOperator(const Self & other) :
     NeighborhoodOperator< TPixel, VDimension, TAllocator >(other)
-  { m_Order = other.m_Order;  }
+  {
+    m_Order = other.m_Order;
+  }
 
   /** Assignment operator */
-  Self & operator=(const Self & other)
+  Self &
+  operator=(const Self & other)
   {
     if(this != &other)
       {
       Superclass::operator=(other);
+
       m_Order = other.m_Order;
       }
     return *this;
   }
 
   /** Sets the order of the derivative. */
-  void SetOrder(const unsigned int & order)
+  void
+  SetOrder(const unsigned int & order)
   {
     this->m_Order = order;
   }
 
   /** Returns the order of the derivative. */
-  unsigned int GetOrder() const { return m_Order; }
+  unsigned int
+  GetOrder() const {
+    return m_Order;
+  }
 
   /** Prints some debugging information */
-  virtual void PrintSelf(std::ostream & os, Indent i) const
+  virtual void
+  PrintSelf(std::ostream & os, Indent i) const
   {
     os << i << "DerivativeOperator { this=" << this
        << ", m_Order = " << m_Order << "}" << std::endl;
@@ -121,8 +131,11 @@ protected:
   CoefficientVector GenerateCoefficients();
 
   /** Arranges coefficients spatially in the memory buffer. */
-  void Fill(const CoefficientVector & coeff)
-  {   Superclass::FillCenteredDirectional(coeff);  }
+  void
+  Fill(const CoefficientVector & coeff)
+  {
+    Superclass::FillCenteredDirectional(coeff);
+  }
 
 private:
   /** Order of the derivative. */

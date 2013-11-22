@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include <iostream>
 
 #include "itkAutomaticTopologyMeshSource.h"
@@ -26,13 +25,13 @@ itkAutomaticTopologyMeshSourceTest(int, char* [] )
 {
 
   // Declare the type of the Mesh
-  typedef itk::Mesh<double>                         MeshType;
-  typedef MeshType::PointType                       PointType;
-  typedef MeshType::CellType                        CellType;
+  typedef itk::Mesh<double>   MeshType;
+  typedef MeshType::PointType PointType;
+  typedef MeshType::CellType  CellType;
 
-  typedef itk::AutomaticTopologyMeshSource< MeshType >   MeshSourceType;
-  typedef MeshSourceType::IdentifierType                 IdentifierType;
-  typedef MeshSourceType::IdentifierArrayType            IdentifierArrayType;
+  typedef itk::AutomaticTopologyMeshSource< MeshType > MeshSourceType;
+  typedef MeshSourceType::IdentifierType               IdentifierType;
+  typedef MeshSourceType::IdentifierArrayType          IdentifierArrayType;
 
   MeshSourceType::Pointer meshSource;
 
@@ -73,12 +72,12 @@ itkAutomaticTopologyMeshSourceTest(int, char* [] )
   // the Add[Cell] methods only use the first N entries of the array.
 
   IdentifierArrayType idArray( 8 );
-  {
-  for( IdentifierType i = 0; i < 8; i++ )
     {
-    idArray[ i ] = i;
+    for( IdentifierType i = 0; i < 8; i++ )
+      {
+      idArray[ i ] = i;
+      }
     }
-  }
 
   meshSource->AddVertex( idArray );
   meshSource->AddLine( idArray );
@@ -163,14 +162,14 @@ itkAutomaticTopologyMeshSourceTest(int, char* [] )
   // Add cells using C arrays of point coordinates.
   MeshSourceType::CoordinateType points[8][3] =
     {
-      {3, 0, 0},
-      {4, 0, 0},
-      {3, 1, 0},
-      {4, 1, 0},
-      {3, 0, 1},
-      {4, 0, 1},
-      {3, 1, 1},
-      {4, 1, 1}
+          {3, 0, 0},
+          {4, 0, 0},
+          {3, 1, 0},
+          {4, 1, 0},
+          {3, 0, 1},
+          {4, 0, 1},
+          {3, 1, 1},
+          {4, 1, 1}
     };
 
   meshSource->AddVertex( points[7] );
@@ -182,7 +181,7 @@ itkAutomaticTopologyMeshSourceTest(int, char* [] )
                              points[4], points[5], points[6], points[7] );
 
   // Print out the resulting mesh data.
-  std::cout << MeshType::Pointer(meshSource->GetOutput()) << std::endl;
+  std::cout << MeshType::Pointer(meshSource->GetOutput() ) << std::endl;
 
   // Now do a sanity check.  Create a mesh consisting of a pair of
   // tetrahedra sharing a face and a pair of cubes sharing a face, and

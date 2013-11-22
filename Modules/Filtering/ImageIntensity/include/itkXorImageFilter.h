@@ -34,22 +34,30 @@ template< typename TInput1, typename TInput2 = TInput1, typename TOutput = TInpu
 class XOR
 {
 public:
-  XOR() {}
-  ~XOR() {}
-  bool operator!=(const XOR &) const
+  XOR() {
+  }
+
+  ~XOR() {
+  }
+
+  bool
+  operator!=(const XOR &) const
   {
     return false;
   }
 
-  bool operator==(const XOR & other) const
+  bool
+  operator==(const XOR & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     return static_cast< TOutput >( A ^ B );
   }
+
 };
 }
 /** \class XorImageFilter
@@ -80,7 +88,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class XorImageFilter:
+class XorImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::XOR<
@@ -119,12 +127,17 @@ public:
 #endif
 
 protected:
-  XorImageFilter() {}
-  virtual ~XorImageFilter() {}
+  XorImageFilter() {
+  }
+
+  virtual
+  ~XorImageFilter() {
+  }
 
 private:
   XorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

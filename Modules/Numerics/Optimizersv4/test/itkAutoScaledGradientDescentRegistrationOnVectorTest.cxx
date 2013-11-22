@@ -33,26 +33,28 @@
  */
 
 template< typename TMovingTransform >
-int itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated(int numberOfIterations, double shiftOfStep, std::string scalesOption)
+int
+itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated(int numberOfIterations, double shiftOfStep,
+                                                              std::string scalesOption)
 {
   const unsigned int Dimension = TMovingTransform::SpaceDimension;
 
   typedef itk::Vector<float, 2> PixelType;
 
   // Fixed Image Type
-  typedef itk::Image<PixelType,Dimension>               FixedImageType;
+  typedef itk::Image<PixelType,Dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<PixelType,Dimension>               MovingImageType;
+  typedef itk::Image<PixelType,Dimension> MovingImageType;
 
   // Size Type
-  typedef typename MovingImageType::SizeType            SizeType;
+  typedef typename MovingImageType::SizeType SizeType;
 
   // ImageSource
   typedef typename itk::testhelper::ImageRegistrationMethodImageSource<
-                                  typename FixedImageType::PixelType,
-                                  typename MovingImageType::PixelType,
-                                  Dimension >         ImageSourceType;
+      typename FixedImageType::PixelType,
+      typename MovingImageType::PixelType,
+      Dimension >         ImageSourceType;
 
   typename FixedImageType::ConstPointer    fixedImage;
   typename MovingImageType::ConstPointer   movingImage;
@@ -83,8 +85,10 @@ int itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated(int numberOfIt
   typedef typename MovingTransformType::ParametersType ParametersType;
 
   // Metric
-  typedef itk::VectorImageToImageMetricTraitsv4< FixedImageType, MovingImageType, FixedImageType, PixelType::Dimension, double > MetricTraitsType;
-  typedef itk::MeanSquaresImageToImageMetricv4< FixedImageType, MovingImageType, FixedImageType, double, MetricTraitsType > MetricType;
+  typedef itk::VectorImageToImageMetricTraitsv4< FixedImageType, MovingImageType, FixedImageType, PixelType::Dimension,
+                                                 double >          MetricTraitsType;
+  typedef itk::MeanSquaresImageToImageMetricv4< FixedImageType, MovingImageType, FixedImageType, double,
+                                                MetricTraitsType > MetricType;
   typename MetricType::Pointer metric = MetricType::New();
 
   // Assign images and transforms to the metric.
@@ -98,14 +102,14 @@ int itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated(int numberOfIt
   metric->Initialize();
 
   // Optimizer
-  typedef itk::GradientDescentOptimizerv4  OptimizerType;
+  typedef itk::GradientDescentOptimizerv4 OptimizerType;
   OptimizerType::Pointer optimizer = OptimizerType::New();
 
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
 
   // Instantiate an Observer to report the progress of the Optimization
-  typedef itk::CommandIterationUpdate< OptimizerType >  CommandIterationType;
+  typedef itk::CommandIterationUpdate< OptimizerType > CommandIterationType;
   CommandIterationType::Pointer iterationCommand = CommandIterationType::New();
   iterationCommand->SetOptimizer( optimizer.GetPointer() );
 
@@ -113,7 +117,7 @@ int itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated(int numberOfIt
   typename itk::OptimizerParameterScalesEstimator::Pointer scalesEstimator;
 
   typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType > ShiftScalesEstimatorType;
-  typedef itk::RegistrationParameterScalesFromJacobian< MetricType > JacobianScalesEstimatorType;
+  typedef itk::RegistrationParameterScalesFromJacobian< MetricType >      JacobianScalesEstimatorType;
 
   if (scalesOption.compare("shift") == 0)
     {
@@ -206,7 +210,8 @@ int itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated(int numberOfIt
     }
 }
 
-int itkAutoScaledGradientDescentRegistrationOnVectorTest(int argc, char ** const argv)
+int
+itkAutoScaledGradientDescentRegistrationOnVectorTest(int argc, char ** const argv)
 {
   if( argc > 3 )
     {
@@ -217,7 +222,7 @@ int itkAutoScaledGradientDescentRegistrationOnVectorTest(int argc, char ** const
     return EXIT_FAILURE;
     }
   unsigned int numberOfIterations = 30;
-  double shiftOfStep = 1.0;
+  double       shiftOfStep = 1.0;
 
   if( argc >= 2 )
     {
@@ -232,11 +237,14 @@ int itkAutoScaledGradientDescentRegistrationOnVectorTest(int argc, char ** const
 
   std::cout << std::endl << "Optimizing translation transform with shift scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
-  int ret1 = itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "shift");
+  int ret1 = itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated<TranslationTransformType>(numberOfIterations,
+                                                                                                     shiftOfStep,
+                                                                                                     "shift");
 
   std::cout << std::endl << "Optimizing translation transform with Jacobian scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
-  int ret2 = itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated<TranslationTransformType>(numberOfIterations, 0.0, "jacobian");
+  int ret2 = itkAutoScaledGradientDescentRegistrationOnVectorTestTemplated<TranslationTransformType>(numberOfIterations,
+                                                                                                     0.0, "jacobian");
 
   if ( ret1 == EXIT_SUCCESS && ret2 == EXIT_SUCCESS )
     {

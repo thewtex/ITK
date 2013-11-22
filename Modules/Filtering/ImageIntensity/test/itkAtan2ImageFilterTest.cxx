@@ -19,32 +19,32 @@
 #include "itkAtan2ImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
-int itkAtan2ImageFilterTest(int, char* [] )
+int
+itkAtan2ImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int ImageDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, ImageDimension>  InputImageType;
-  typedef itk::Image<float, ImageDimension>  OutputImageType;
+  typedef itk::Image<float, ImageDimension> InputImageType;
+  typedef itk::Image<float, ImageDimension> OutputImageType;
 
   // Declare Iterator types apropriated for each image
   typedef itk::ImageRegionIteratorWithIndex<
-                                  InputImageType>  InputIteratorType;
+      InputImageType>  InputIteratorType;
 
   typedef itk::ImageRegionIteratorWithIndex<
-                                  OutputImageType>  OutputIteratorType;
+      OutputImageType>  OutputIteratorType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<ImageDimension>         IndexType;
+  typedef itk::Index<ImageDimension> IndexType;
 
   // Declare the type of the size
-  typedef itk::Size<ImageDimension>          SizeType;
+  typedef itk::Size<ImageDimension> SizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<ImageDimension>   RegionType;
+  typedef itk::ImageRegion<ImageDimension> RegionType;
 
   // Create two images
   InputImageType::Pointer sinImage    = InputImageType::New();
@@ -89,7 +89,6 @@ int itkAtan2ImageFilterTest(int, char* [] )
     ++it1;
     }
 
-
   // Create one iterator for the Input Image (this is a light object)
   InputIteratorType it2( cosImage, cosImage->GetBufferedRegion() );
 
@@ -106,15 +105,12 @@ int itkAtan2ImageFilterTest(int, char* [] )
     ++it2;
     }
 
-
   // Declare the type for the Atan filter
   typedef itk::Atan2ImageFilter<
-    InputImageType, InputImageType, OutputImageType  >  FilterType;
-
+      InputImageType, InputImageType, OutputImageType  >  FilterType;
 
   // Create the Filter
   FilterType::Pointer filter = FilterType::New();
-
 
   // Connect the input images
   filter->SetInput1( sinImage );
@@ -122,7 +118,6 @@ int itkAtan2ImageFilterTest(int, char* [] )
 
   // Get the Smart Pointer to the Filter Output
   OutputImageType::Pointer outputImage = filter->GetOutput();
-
 
   // Execute the filter
   filter->Update();

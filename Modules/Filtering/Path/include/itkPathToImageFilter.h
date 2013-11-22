@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TInputPath, typename TOutputImage >
-class PathToImageFilter:public ImageSource< TOutputImage >
+class PathToImageFilter : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -107,12 +107,15 @@ protected:
   PathToImageFilter();
   ~PathToImageFilter();
 
-  virtual void GenerateOutputInformation(){}  // do nothing
+  virtual void
+  GenerateOutputInformation(){
+  }                                           // do nothing
+
   virtual void GenerateData();
 
-  SizeType m_Size;
-  double m_Spacing[OutputImageDimension];
-  double m_Origin[OutputImageDimension];
+  SizeType  m_Size;
+  double    m_Spacing[OutputImageDimension];
+  double    m_Origin[OutputImageDimension];
   ValueType m_PathValue;
   ValueType m_BackgroundValue;
 
@@ -121,6 +124,7 @@ protected:
 private:
   PathToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

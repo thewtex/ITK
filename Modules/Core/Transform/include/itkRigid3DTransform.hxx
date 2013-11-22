@@ -24,28 +24,32 @@ namespace itk
 {
 // Constructor with default arguments
 template< typename TScalar >
-Rigid3DTransform< TScalar >::Rigid3DTransform():
+Rigid3DTransform< TScalar >::Rigid3DTransform() :
   Superclass(ParametersDimension)
-{}
+{
+}
 
 // Constructor with default arguments
 template< typename TScalar >
-Rigid3DTransform< TScalar >::Rigid3DTransform(unsigned int paramDim):
+Rigid3DTransform< TScalar >::Rigid3DTransform(unsigned int paramDim) :
   Superclass(paramDim)
-{}
+{
+}
 
 // Constructor with default arguments
 template< typename TScalar >
 Rigid3DTransform< TScalar >::Rigid3DTransform(const MatrixType & matrix,
-                                                  const OutputVectorType & offset):
+                                              const OutputVectorType & offset) :
   Superclass(matrix, offset)
-{}
+{
+}
 
 // Destructor
 template< typename TScalar >
 Rigid3DTransform< TScalar >::
 ~Rigid3DTransform()
-{}
+{
+}
 
 // Print self
 template< typename TScalar >
@@ -165,15 +169,16 @@ typename Rigid3DTransform< TScalar >::InverseTransformBasePointer
 Rigid3DTransform< TScalar >::GetInverseTransform() const
 {
   Pointer inv = New();
+
   return this->GetInverse(inv) ? inv.GetPointer() : NULL;
 }
 
 template< typename TScalar >
 const typename Rigid3DTransform< TScalar >::MatrixType &
 Rigid3DTransform< TScalar >::GetRotationMatrix() const
-{
+  {
   return this->GetMatrix();
-}
+  }
 
 template< typename TScalar >
 void
@@ -181,6 +186,7 @@ Rigid3DTransform< TScalar >::SetRotationMatrix(const MatrixType & matrix)
 {
   this->SetMatrix(matrix);
 }
+
 #endif // end ITK_LEGACY_REMOVE
 #endif // ITKV3_COMPATIBILITY
 
@@ -232,6 +238,7 @@ Rigid3DTransform< TScalar >::BackTransform(const OutputCovariantVectorType & vec
     " Instead, please use GetInverse() to generate an inverse transform and then perform the transform using that inverted transform.");
   return this->GetMatrix() * vect;
 }
+
 #endif // end ITK_LEGACY_REMOVE
 
 } // namespace

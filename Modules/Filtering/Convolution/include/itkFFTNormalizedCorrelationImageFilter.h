@@ -96,7 +96,7 @@ namespace itk
 
 template <typename TInputImage, typename TOutputImage >
 class FFTNormalizedCorrelationImageFilter :
-    public MaskedFFTNormalizedCorrelationImageFilter< TInputImage, TOutputImage >
+  public MaskedFFTNormalizedCorrelationImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -117,18 +117,23 @@ public:
                       TOutputImage::ImageDimension);
 
   /** Extract some information from the image types. */
-   typedef TInputImage                               InputImageType;
-   typedef TOutputImage                              OutputImageType;
-   typedef typename InputImageType::RegionType       InputRegionType;
-   typedef typename InputImageType::Pointer          InputImagePointer;
-   typedef typename InputImageType::ConstPointer     InputImageConstPointer;
-   typedef typename InputImageType::SizeType         InputSizeType;
-   typedef typename OutputImageType::Pointer         OutputImagePointer;
-   typedef typename OutputImageType::PixelType       OutputPixelType;
+  typedef TInputImage                           InputImageType;
+  typedef TOutputImage                          OutputImageType;
+  typedef typename InputImageType::RegionType   InputRegionType;
+  typedef typename InputImageType::Pointer      InputImagePointer;
+  typedef typename InputImageType::ConstPointer InputImageConstPointer;
+  typedef typename InputImageType::SizeType     InputSizeType;
+  typedef typename OutputImageType::Pointer     OutputImagePointer;
+  typedef typename OutputImageType::PixelType   OutputPixelType;
 
 protected:
-  FFTNormalizedCorrelationImageFilter() {}
-  virtual ~FFTNormalizedCorrelationImageFilter() {}
+  FFTNormalizedCorrelationImageFilter() {
+  }
+
+  virtual
+  ~FFTNormalizedCorrelationImageFilter() {
+  }
+
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Standard pipeline method.*/
@@ -136,7 +141,7 @@ protected:
 
 private:
   FFTNormalizedCorrelationImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                      //purposely not implemented
 
   // Member variables.
 };

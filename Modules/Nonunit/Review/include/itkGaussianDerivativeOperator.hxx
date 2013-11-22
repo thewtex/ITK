@@ -62,6 +62,7 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
   if(this != &other)
     {
     Superclass::operator=(other);
+
     m_NormalizeAcrossScale = other.m_NormalizeAcrossScale;
     m_Spacing = other.m_Spacing;
     m_Order = other.m_Order;
@@ -86,7 +87,6 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
     {
     return coeff;
     }
-
 
   // Calculate scale-space normalization factor for derivatives
   double norm = (m_NormalizeAcrossScale && m_Order ? vcl_pow(m_Variance, m_Order / 2.0) : 1.0 );
@@ -217,7 +217,8 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
     m *= m;
     accumulator = 1.0 + m * ( 3.5156229 + m * ( 3.0899424 + m * ( 1.2067492
                                                                   + m
-                                                                  * ( 0.2659732 + m * ( 0.360768e-1 + m * 0.45813e-2 ) ) ) ) );
+                                                                  * ( 0.2659732 + m *
+                                                                      ( 0.360768e-1 + m * 0.45813e-2 ) ) ) ) );
     }
   else
     {
@@ -233,10 +234,10 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
                                                                                                        ( 0.2635537e-1 +
                                                                                                          m *
                                                                                                          ( -0.1647633e-1
-       +
-       m
-       *
-       0.392377e-2 ) ) ) ) ) ) ) );
+                                                                                                           +
+                                                                                                           m
+                                                                                                           *
+                                                                                                           0.392377e-2 ) ) ) ) ) ) ) );
     }
   return accumulator;
 }
@@ -256,7 +257,8 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
     accumulator = d * ( 0.5 + m * ( 0.87890594 + m * ( 0.51498869 + m * ( 0.15084934
                                                                           + m
                                                                           * ( 0.2658733e-1 + m
-                                                                              * ( 0.301532e-2 + m * 0.32411e-3 ) ) ) ) ) );
+                                                                              * ( 0.301532e-2 + m *
+                                                                                  0.32411e-3 ) ) ) ) ) );
     }
   else
     {
@@ -264,7 +266,9 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
     accumulator = 0.2282967e-1 + m * ( -0.2895312e-1 + m * ( 0.1787654e-1
                                                              - m * 0.420059e-2 ) );
     accumulator = 0.39894228 + m * ( -0.3988024e-1 + m * ( -0.362018e-2
-                                                           + m * ( 0.163801e-2 + m * ( -0.1031555e-1 + m * accumulator ) ) ) );
+                                                           + m *
+                                                           ( 0.163801e-2 + m *
+                                                             ( -0.1031555e-1 + m * accumulator ) ) ) );
 
     accumulator *= ( vcl_exp(d) / vcl_sqrt(d) );
     }
@@ -286,6 +290,8 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
   if ( n < 2 )
     {
     throw ExceptionObject(__FILE__, __LINE__, "Order of modified bessel is > 2.", ITK_LOCATION);  //
+                                                                                                  //
+                                                                                                  //
                                                                                                   // placeholder
     }
   if ( y == 0.0 ) { return 0.0; }
@@ -294,7 +300,7 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
     toy = 2.0 / vcl_fabs(y);
     qip = accumulator = 0.0;
     qi = 1.0;
-    for ( j = 2 * ( n + (int)(DIGITS*vcl_sqrt((double)n) ) ); j > 0; j-- )
+    for ( j = 2 * ( n + (int)(DIGITS*vcl_sqrt( (double)n) ) ); j > 0; j-- )
       {
       qim = qip + j * toy * qi;
       qip = qi;

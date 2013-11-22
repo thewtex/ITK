@@ -41,7 +41,8 @@ LSMImageIOFactory::LSMImageIOFactory()
 }
 
 LSMImageIOFactory::~LSMImageIOFactory()
-{}
+{
+}
 
 const char *
 LSMImageIOFactory::GetITKSourceVersion() const
@@ -60,9 +61,10 @@ LSMImageIOFactory::GetDescription() const
 
 static bool LSMImageIOFactoryHasBeenRegistered;
 
-void LSMImageIOFactoryRegister__Private(void)
+void
+LSMImageIOFactoryRegister__Private(void)
 {
-  if( ! LSMImageIOFactoryHasBeenRegistered )
+  if( !LSMImageIOFactoryHasBeenRegistered )
     {
     LSMImageIOFactoryHasBeenRegistered = true;
     LSMImageIOFactory::RegisterOneFactory();

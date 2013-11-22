@@ -52,6 +52,7 @@ FastMarchingUpwindGradientImageFilter< TLevelSet, TSpeedImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Target points: " << m_TargetPoints.GetPointer() << std::endl;
   os << indent << "Reached points: " << m_ReachedTargetPoints.GetPointer() << std::endl;
   os << indent << "Gradient image: " << m_GradientImage.GetPointer() << std::endl;
@@ -316,6 +317,7 @@ FastMarchingUpwindGradientImageFilter< TLevelSet, TSpeedImage >
 
   gradientImage->SetPixel(index, gradientPixel);
 }
+
 } // namespace itk
 
 #endif

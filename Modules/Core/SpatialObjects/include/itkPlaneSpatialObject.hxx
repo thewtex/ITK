@@ -37,7 +37,8 @@ PlaneSpatialObject< TDimension >
 template< unsigned int TDimension >
 PlaneSpatialObject< TDimension >
 ::~PlaneSpatialObject()
-{}
+{
+}
 
 /** Test whether a point is inside or outside the object
  *  For computational speed purposes, it is faster if the method does not
@@ -170,9 +171,11 @@ PlaneSpatialObject< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "LowerPoint: " << m_LowerPoint << std::endl;
   os << indent << "UpperPoint: " << m_UpperPoint << std::endl;
 }
+
 } // end namespace itk
 
 #endif

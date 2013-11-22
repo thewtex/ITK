@@ -80,10 +80,10 @@ const typename PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisp
 ::FixedImageType *
 PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::GetFixedImage() const
-{
+  {
   return dynamic_cast< const FixedImageType * >
          ( this->ProcessObject::GetInput(1) );
-}
+  }
 
 /*
  * Set the moving image.
@@ -105,10 +105,10 @@ const typename PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisp
 ::MovingImageType *
 PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::GetMovingImage() const
-{
+  {
   return dynamic_cast< const MovingImageType * >
          ( this->ProcessObject::GetInput(2) );
-}
+  }
 
 /*
  *
@@ -198,6 +198,7 @@ PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Smooth deformation field: "
      << ( m_SmoothDisplacementField ? "on" : "off" ) << std::endl;
   unsigned int j = 0;
@@ -333,6 +334,7 @@ PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
   // request the largest possible region for the moving image
   MovingImagePointer movingPtr =
     const_cast< MovingImageType * >( this->GetMovingImage() );
+
   if ( movingPtr )
     {
     movingPtr->SetRequestedRegionToLargestPossibleRegion();
@@ -343,7 +345,7 @@ PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
   DisplacementFieldPointer inputPtr =
     const_cast< DisplacementFieldType * >( this->GetInput() );
   DisplacementFieldPointer outputPtr = this->GetOutput();
-  FixedImagePointer       fixedPtr =
+  FixedImagePointer        fixedPtr =
     const_cast< FixedImageType * >( this->GetFixedImage() );
 
   if ( inputPtr )
@@ -406,14 +408,14 @@ PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
   typedef typename VectorType::ValueType                 ScalarType;
   typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
   typedef VectorNeighborhoodOperatorImageFilter<
-    DisplacementFieldType,
-    DisplacementFieldType >                              SmootherType;
+      DisplacementFieldType,
+      DisplacementFieldType >                              SmootherType;
 
   OperatorType *oper = new OperatorType;
   typename SmootherType::Pointer smoother = SmootherType::New();
 
   typedef typename DisplacementFieldType::PixelContainerPointer
-  PixelContainerPointer;
+    PixelContainerPointer;
   PixelContainerPointer swapPtr;
 
   // graft the output field onto the mini-pipeline
@@ -462,12 +464,12 @@ PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
   // The update buffer will be overwritten with new data.
   DisplacementFieldPointer field = this->GetUpdateBuffer();
 
-  typedef typename DisplacementFieldType::PixelType       VectorType;
-  typedef typename VectorType::ValueType                  ScalarType;
-  typedef GaussianOperator< ScalarType, ImageDimension >  OperatorType;
+  typedef typename DisplacementFieldType::PixelType      VectorType;
+  typedef typename VectorType::ValueType                 ScalarType;
+  typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
   typedef VectorNeighborhoodOperatorImageFilter<
-    DisplacementFieldType,
-    DisplacementFieldType >                               SmootherType;
+      DisplacementFieldType,
+      DisplacementFieldType >                               SmootherType;
 
   OperatorType opers[ImageDimension];
   typename SmootherType::Pointer smoothers[ImageDimension];
@@ -509,6 +511,7 @@ PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
                                    ->GetLargestPossibleRegion() );
   field->CopyInformation( smoothers[ImageDimension - 1]->GetOutput() );
 }
+
 } // end namespace itk
 
 #endif

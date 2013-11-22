@@ -39,7 +39,6 @@ LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
 {
 }
 
-
 template< typename TInput, typename TLevelSetContainer, typename TPropagationImage >
 void
 LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
@@ -127,7 +126,7 @@ LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
          const LevelSetDataType& iData )
 {
   const LevelSetOutputRealType zero = NumericTraits< LevelSetOutputRealType >::Zero;
-  LevelSetOutputRealType propagation_gradient = zero;
+  LevelSetOutputRealType       propagation_gradient = zero;
 
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {

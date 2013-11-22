@@ -22,7 +22,8 @@
 
 #include <fstream>
 
-int itkJPEG2000ImageIOTest05( int argc, char * argv[] )
+int
+itkJPEG2000ImageIOTest05( int argc, char * argv[] )
 {
   if( argc < 2 )
     {
@@ -30,12 +31,11 @@ int itkJPEG2000ImageIOTest05( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
+  typedef unsigned char           PixelType;
+  typedef itk::Image<PixelType,3> ImageType;
+  typedef itk::Image<PixelType,2> OutputImageType;
 
-  typedef unsigned char             PixelType;
-  typedef itk::Image<PixelType,3>   ImageType;
-  typedef itk::Image<PixelType,2>   OutputImageType;
-
-  typedef itk::ImageFileReader<ImageType>         ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   //reader->SetUseStreaming( true );
@@ -60,7 +60,6 @@ int itkJPEG2000ImageIOTest05( int argc, char * argv[] )
 
   WriterType::Pointer writer = WriterType::New();
 
-
   char format[4096];
   sprintf (format, "%s/series.%%d.%s", argv[2], argv[3]);
 
@@ -74,7 +73,7 @@ int itkJPEG2000ImageIOTest05( int argc, char * argv[] )
   fit->SetIncrementIndex(1);
   fit->SetSeriesFormat (format);
 
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   writer->SetFileNames(  fit->GetFileNames() );
 
   try

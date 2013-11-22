@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class GrayscaleConnectedClosingImageFilter:
+class GrayscaleConnectedClosingImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -105,7 +105,9 @@ public:
 
 protected:
   GrayscaleConnectedClosingImageFilter();
-  ~GrayscaleConnectedClosingImageFilter() {}
+  ~GrayscaleConnectedClosingImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GrayscaleConnectedClosingImageFilter needs the entire input be

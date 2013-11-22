@@ -27,14 +27,16 @@ typedef itk::Image<itk::Index<4>, 4> TestImageType;
 typedef itk::Offset<4>               OffsetType;
 
 extern void println(const char *s);
+
 extern TestImageType::Pointer GetTestImage(int , int , int , int );
 
-
 template<typename TIteratorType>
-void printnb( const TIteratorType &nb, bool full)
+void
+printnb( const TIteratorType &nb, bool full)
 {
-  unsigned long count = 1;
+  unsigned long       count = 1;
   const unsigned long sz = nb.GetRadius()[0] *2 +1;
+
   typename TIteratorType::ConstIterator it;
   if (full)
     {
@@ -45,7 +47,7 @@ void printnb( const TIteratorType &nb, bool full)
       std::cout << **it << " ";
       if ( (count % sz) == 0 ) std::cout << std::endl;
       ++it;
-      count ++;
+      count++;
       }
     }
   else
@@ -55,18 +57,19 @@ void printnb( const TIteratorType &nb, bool full)
 }
 
 template<unsigned int N>
-void FillImage(itk::Image<itk::Index<N>,N> *img)
+void
+FillImage(itk::Image<itk::Index<N>,N> *img)
 {
   typedef itk::Index<N>            IndexType;
   typedef itk::Image<IndexType, N> ImageType;
   const itk::Size<N> size = img->GetRequestedRegion().GetSize();
 
   unsigned int i;
-  IndexType loop;
+  IndexType    loop;
   loop.Fill(0);
-  itk::ImageRegionIterator<ImageType> it(img, img->GetRequestedRegion());
+  itk::ImageRegionIterator<ImageType> it(img, img->GetRequestedRegion() );
 
-  while (! it.IsAtEnd() )
+  while (!it.IsAtEnd() )
     {
     it.Value() = loop;
     for (i = 0; i <N; ++i)
@@ -81,6 +84,5 @@ void FillImage(itk::Image<itk::Index<N>,N> *img)
     ++it;
     }
 }
-
 
 #endif

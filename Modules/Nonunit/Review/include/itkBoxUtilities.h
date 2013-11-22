@@ -38,7 +38,6 @@
  *
  */
 
-
 namespace itk
 {
 template< typename TIterator >
@@ -206,15 +205,15 @@ BoxMeanCalculatorFunction(const TInputImage *accImage,
                           ProgressReporter & progress)
 {
   // typedefs
-  typedef TInputImage                           InputImageType;
-  typedef typename TInputImage::RegionType      RegionType;
-  typedef typename TInputImage::SizeType        SizeType;
-  typedef typename TInputImage::IndexType       IndexType;
-  typedef typename TInputImage::PixelType       PixelType;
-  typedef typename TInputImage::OffsetType      OffsetType;
-  typedef TOutputImage                          OutputImageType;
-  typedef typename TOutputImage::PixelType      OutputPixelType;
-  typedef typename TInputImage::PixelType       InputPixelType;
+  typedef TInputImage                      InputImageType;
+  typedef typename TInputImage::RegionType RegionType;
+  typedef typename TInputImage::SizeType   SizeType;
+  typedef typename TInputImage::IndexType  IndexType;
+  typedef typename TInputImage::PixelType  PixelType;
+  typedef typename TInputImage::OffsetType OffsetType;
+  typedef TOutputImage                     OutputImageType;
+  typedef typename TOutputImage::PixelType OutputPixelType;
+  typedef typename TInputImage::PixelType  InputPixelType;
   // use the face generator for speed
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< InputImageType > FaceCalculatorType;
   typedef typename FaceCalculatorType::FaceListType                             FaceListType;
@@ -334,7 +333,7 @@ BoxMeanCalculatorFunction(const TInputImage *accImage,
         currentKernelRegion.SetIndex(kernelRegionIdx);
         currentKernelRegion.Crop(inputRegion);
         OffsetValueType edgepixelscount = currentKernelRegion.GetNumberOfPixels();
-        AccPixType Sum = 0;
+        AccPixType      Sum = 0;
         // rules are : for each corner,
         //               for each dimension
         //                  if dimension offset is positive -> this is
@@ -390,16 +389,16 @@ BoxSigmaCalculatorFunction(const TInputImage *accImage,
                            ProgressReporter & progress)
 {
   // typedefs
-  typedef TInputImage                           InputImageType;
-  typedef typename TInputImage::RegionType      RegionType;
-  typedef typename TInputImage::SizeType        SizeType;
-  typedef typename TInputImage::IndexType       IndexType;
-  typedef typename TInputImage::PixelType       PixelType;
-  typedef typename TInputImage::OffsetType      OffsetType;
-  typedef TOutputImage                          OutputImageType;
-  typedef typename TOutputImage::PixelType      OutputPixelType;
-  typedef typename TInputImage::PixelType       InputPixelType;
-  typedef typename InputPixelType::ValueType    ValueType;
+  typedef TInputImage                        InputImageType;
+  typedef typename TInputImage::RegionType   RegionType;
+  typedef typename TInputImage::SizeType     SizeType;
+  typedef typename TInputImage::IndexType    IndexType;
+  typedef typename TInputImage::PixelType    PixelType;
+  typedef typename TInputImage::OffsetType   OffsetType;
+  typedef TOutputImage                       OutputImageType;
+  typedef typename TOutputImage::PixelType   OutputPixelType;
+  typedef typename TInputImage::PixelType    InputPixelType;
+  typedef typename InputPixelType::ValueType ValueType;
   // use the face generator for speed
   typedef typename NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< InputImageType > FaceCalculatorType;
   typedef typename FaceCalculatorType::FaceListType                                      FaceListType;
@@ -495,7 +494,8 @@ BoxSigmaCalculatorFunction(const TInputImage *accImage,
           ++( CornerItVec[k] );
           }
 
-        oIt.Set( static_cast< OutputPixelType >( vcl_sqrt( ( SquareSum - Sum * Sum / pixelscount ) / ( pixelscount - 1 ) ) ) );
+        oIt.Set( static_cast< OutputPixelType >( vcl_sqrt( ( SquareSum - Sum * Sum /
+                                                             pixelscount ) / ( pixelscount - 1 ) ) ) );
         progress.CompletedPixel();
         }
       }
@@ -522,8 +522,8 @@ BoxSigmaCalculatorFunction(const TInputImage *accImage,
         currentKernelRegion.SetIndex(kernelRegionIdx);
         currentKernelRegion.Crop(inputRegion);
         SizeValueType edgepixelscount = currentKernelRegion.GetNumberOfPixels();
-        AccPixType Sum = 0;
-        AccPixType SquareSum = 0;
+        AccPixType    Sum = 0;
+        AccPixType    SquareSum = 0;
         // rules are : for each corner,
         //               for each dimension
         //                  if dimension offset is positive -> this is
@@ -653,6 +653,7 @@ BoxSquareAccumulateFunction(const TInputImage *inputImage,
     progress.CompletedPixel();
     }
 }
+
 } //namespace itk
 
 #endif

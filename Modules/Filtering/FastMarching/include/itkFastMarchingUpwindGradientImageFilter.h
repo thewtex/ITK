@@ -57,8 +57,8 @@ namespace itk
  */
 template<
   typename TLevelSet,
-  typename TSpeedImage = Image< float,  TLevelSet ::ImageDimension > >
-class FastMarchingUpwindGradientImageFilter:
+  typename TSpeedImage = Image< float,  TLevelSet::ImageDimension > >
+class FastMarchingUpwindGradientImageFilter :
   public FastMarchingImageFilter< TLevelSet, TSpeedImage >
 {
 public:
@@ -99,19 +99,26 @@ public:
   /** Set the container of Target Points.
    * If a target point is reached, the propagation stops.
    * Trial points are represented as a VectorContainer of LevelSetNodes. */
-  void SetTargetPoints(NodeContainer *points)
+  void
+  SetTargetPoints(NodeContainer *points)
   {
     m_TargetPoints = points;
     this->Modified();
   }
 
   /** Get the container of Target Points. */
-  NodeContainerPointer GetTargetPoints()
-  { return m_TargetPoints; }
+  NodeContainerPointer
+  GetTargetPoints()
+  {
+    return m_TargetPoints;
+  }
 
   /** Get the container of Reached Target Points. */
-  NodeContainerPointer GetReachedTargetPoints()
-  { return m_ReachedTargetPoints; }
+  NodeContainerPointer
+  GetReachedTargetPoints()
+  {
+    return m_ReachedTargetPoints;
+  }
 
   /** GradientPixel typedef support. */
   typedef CovariantVector< PixelType,
@@ -125,8 +132,11 @@ public:
   typedef typename GradientImageType::Pointer GradientImagePointer;
 
   /** Get the gradient image. */
-  GradientImagePointer GetGradientImage() const
-  { return m_GradientImage; }
+  GradientImagePointer
+  GetGradientImage() const
+  {
+    return m_GradientImage;
+  }
 
   /** Set the GenerateGradientImage flag. Instrument the algorithm to generate
    * the gradient of the Eikonal equation solution while fast marching. */
@@ -148,18 +158,30 @@ public:
    */
   itkSetMacro(TargetReachedMode, int);
   itkGetConstReferenceMacro(TargetReachedMode, int);
-  void SetTargetReachedModeToNoTargets()
-  { this->SetTargetReachedMode(NoTargets); }
-  void SetTargetReachedModeToOneTarget()
-  { this->SetTargetReachedMode(OneTarget); }
-  void SetTargetReachedModeToSomeTargets(SizeValueType numberOfTargets)
+  void
+  SetTargetReachedModeToNoTargets()
+  {
+    this->SetTargetReachedMode(NoTargets);
+  }
+
+  void
+  SetTargetReachedModeToOneTarget()
+  {
+    this->SetTargetReachedMode(OneTarget);
+  }
+
+  void
+  SetTargetReachedModeToSomeTargets(SizeValueType numberOfTargets)
   {
     this->SetTargetReachedMode(SomeTargets);
     m_NumberOfTargets = numberOfTargets;
   }
 
-  void SetTargetReachedModeToAllTargets()
-  { this->SetTargetReachedMode(AllTargets); }
+  void
+  SetTargetReachedModeToAllTargets()
+  {
+    this->SetTargetReachedMode(AllTargets);
+  }
 
   /** Get the number of targets. */
   itkGetConstReferenceMacro(NumberOfTargets, SizeValueType);
@@ -188,7 +210,9 @@ public:
 
 protected:
   FastMarchingUpwindGradientImageFilter();
-  ~FastMarchingUpwindGradientImageFilter(){}
+  ~FastMarchingUpwindGradientImageFilter(){
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void Initialize(LevelSetImageType *);
@@ -207,7 +231,8 @@ private:
   FastMarchingUpwindGradientImageFilter(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   NodeContainerPointer m_TargetPoints;
   NodeContainerPointer m_ReachedTargetPoints;

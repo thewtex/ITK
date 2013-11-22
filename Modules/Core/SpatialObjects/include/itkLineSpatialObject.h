@@ -40,7 +40,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class LineSpatialObject:
+class LineSpatialObject :
   public PointBasedSpatialObject<  TDimension >
 {
 public:
@@ -67,23 +67,37 @@ public:
   itkTypeMacro(LineSpatialObject, PointBasedSpatialObject);
 
   /** Returns a reference to the list of the Line points. */
-  PointListType & GetPoints(void) { return m_Points; }
-  ConstPointListType & GetPoints(void) const { return m_Points; }
+  PointListType &
+  GetPoints(void) {
+    return m_Points;
+  }
+
+  ConstPointListType &
+  GetPoints(void) const {
+    return m_Points;
+  }
 
   /** Set the list of line points. */
   void SetPoints(PointListType & newPoints);
 
   /** Return a point in the list given the index */
-  const SpatialObjectPointType * GetPoint(IdentifierType id) const
+  const SpatialObjectPointType *
+  GetPoint(IdentifierType id) const
   {
     return &( m_Points[id] );
   }
 
   /** Return a point in the list given the index */
-  SpatialObjectPointType * GetPoint(IdentifierType id) { return &( m_Points[id] ); }
+  SpatialObjectPointType *
+  GetPoint(IdentifierType id) {
+    return &( m_Points[id] );
+  }
 
   /** Return the number of points in the list */
-  SizeValueType GetNumberOfPoints(void) const { return m_Points.size(); }
+  SizeValueType
+  GetNumberOfPoints(void) const {
+    return m_Points.size();
+  }
 
   /** Returns true if the line is evaluable at the requested point,
    *  false otherwise. */
@@ -116,10 +130,12 @@ protected:
   PointListType m_Points;
 
   LineSpatialObject();
-  virtual ~LineSpatialObject();
+  virtual
+  ~LineSpatialObject();
 
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

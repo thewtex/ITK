@@ -18,10 +18,10 @@
 #include "itkMeshFileReader.h"
 #include "itkMeshFileWriter.h"
 
-
 #include "itkSmoothingQuadEdgeMeshFilter.h"
 
-int itkSmoothingQuadEdgeMeshFilterTest( int argc, char* argv[] )
+int
+itkSmoothingQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
   // ** ERROR MESSAGE AND HELP ** //
   if( argc < 4 )
@@ -39,16 +39,16 @@ int itkSmoothingQuadEdgeMeshFilterTest( int argc, char* argv[] )
   typedef float Coord;
   const unsigned int Dimension = 3;
 
-  typedef itk::QuadEdgeMesh< Coord, Dimension >  MeshType;
-  typedef itk::MeshFileReader< MeshType >        ReaderType;
-  typedef itk::MeshFileWriter< MeshType >        WriterType;
+  typedef itk::QuadEdgeMesh< Coord, Dimension > MeshType;
+  typedef itk::MeshFileReader< MeshType >       ReaderType;
+  typedef itk::MeshFileWriter< MeshType >       WriterType;
 
   // ** READ THE FILE IN **
-  ReaderType::Pointer reader = ReaderType::New( );
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
-    reader->Update( );
+    reader->Update();
     }
   catch( itk::ExceptionObject & excp )
     {
@@ -57,24 +57,24 @@ int itkSmoothingQuadEdgeMeshFilterTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  unsigned int nb_iter;
+  unsigned int      nb_iter;
   std::stringstream ssout( argv[2] );
   ssout >>nb_iter;
 
-  double relaxation_factor;
+  double            relaxation_factor;
   std::stringstream ssout2( argv[3] );
   ssout2 >>relaxation_factor;
 
-  bool del_conf;
+  bool              del_conf;
   std::stringstream ssout3( argv[4] );
   ssout3 >>del_conf;
 
-  MeshType::Pointer mesh = reader->GetOutput( );
+  MeshType::Pointer mesh = reader->GetOutput();
 
   itk::OnesMatrixCoefficients< MeshType > coeff0;
 
   typedef itk::SmoothingQuadEdgeMeshFilter< MeshType, MeshType > SmoothingType;
-  SmoothingType::Pointer filter = SmoothingType::New( );
+  SmoothingType::Pointer filter = SmoothingType::New();
   filter->SetInput( mesh );
   filter->SetNumberOfIterations( nb_iter );
   filter->SetRelaxationFactor( relaxation_factor );
@@ -83,10 +83,10 @@ int itkSmoothingQuadEdgeMeshFilterTest( int argc, char* argv[] )
   filter->Update();
 
   // ** WRITE OUTPUT **
-  WriterType::Pointer writer = WriterType::New( );
-  writer->SetInput( filter->GetOutput( ) );
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[5] );
-  writer->Update( );
+  writer->Update();
 
   // ** PRINT **
   std::cout << filter;

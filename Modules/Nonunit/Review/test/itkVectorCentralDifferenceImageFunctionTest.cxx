@@ -19,14 +19,16 @@
 #include "itkVectorCentralDifferenceImageFunction.h"
 #include "itkImageRegionIterator.h"
 
-int itkVectorCentralDifferenceImageFunctionTest(int, char* [] )
+int
+itkVectorCentralDifferenceImageFunctionTest(int, char* [] )
 {
   const unsigned int ImageDimension = 2;
   const unsigned int VectorDimension = 3;
+
   typedef itk::Vector<short,VectorDimension>   PixelType;
   typedef itk::Image<PixelType,ImageDimension> ImageType;
 
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 16 );
   ImageType::RegionType region( size );
@@ -47,7 +49,7 @@ int itkVectorCentralDifferenceImageFunctionTest(int, char* [] )
     }
 
   // set up central difference calculator
-  typedef float CoordRepType;
+  typedef float                                                             CoordRepType;
   typedef itk::VectorCentralDifferenceImageFunction<ImageType,CoordRepType> FunctionType;
   FunctionType::Pointer function = FunctionType::New();
 
@@ -95,7 +97,6 @@ int itkVectorCentralDifferenceImageFunctionTest(int, char* [] )
   point[0] = 15.0;
   std::cout << "Point: " << cindex << " Derivative:" << std::endl;
   std::cout << function->Evaluate( point ) << std::endl;
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

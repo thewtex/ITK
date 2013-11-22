@@ -33,7 +33,8 @@ FRPROptimizer
 
 FRPROptimizer
 ::~FRPROptimizer()
-{}
+{
+}
 
 void
 FRPROptimizer
@@ -242,9 +243,11 @@ FRPROptimizer
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Optimization Type = " << m_OptimizationType << std::endl;
   os << indent << "0=FletchReeves, 1=PolakRibiere" << std::endl;
   os << indent << "Use unit length gradient = " << m_UseUnitLengthGradient << std::endl;
 }
+
 } // end of namespace itk
 #endif

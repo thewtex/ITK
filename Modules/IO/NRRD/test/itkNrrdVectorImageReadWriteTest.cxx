@@ -23,7 +23,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkNrrdVectorImageReadWriteTest( int ac, char* av[] )
+int
+itkNrrdVectorImageReadWriteTest( int ac, char* av[] )
 {
   if(ac < 2)
     {
@@ -34,7 +35,7 @@ int itkNrrdVectorImageReadWriteTest( int ac, char* av[] )
   typedef itk::Vector<float, 4>    PixelType;
   typedef itk::Image<PixelType, 3> myImage;
 
-  typedef itk::ImageFileReader<myImage>  ReaderType;
+  typedef itk::ImageFileReader<myImage> ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -72,7 +73,6 @@ int itkNrrdVectorImageReadWriteTest( int ac, char* av[] )
     std::cerr << e << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

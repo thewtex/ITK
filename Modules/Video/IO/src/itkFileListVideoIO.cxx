@@ -45,9 +45,11 @@ FileListVideoIO::~FileListVideoIO()
 //
 // PrintSelf
 //
-void FileListVideoIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+FileListVideoIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
+
   if (!m_ImageIO.IsNull() )
     {
     os << indent << "Internal ImageIO:" << std::endl;
@@ -58,7 +60,8 @@ void FileListVideoIO::PrintSelf(std::ostream & os, Indent indent) const
 //
 // FinishReadingOrWriting
 //
-void FileListVideoIO::FinishReadingOrWriting()
+void
+FileListVideoIO::FinishReadingOrWriting()
 {
   this->ResetMembers();
 
@@ -67,7 +70,8 @@ void FileListVideoIO::FinishReadingOrWriting()
 //
 // SetFileName -- Split list based on ';'
 //
-void FileListVideoIO::SetFileName(const std::string& fileList)
+void
+FileListVideoIO::SetFileName(const std::string& fileList)
 {
   SetFileName(fileList.c_str() );
 }
@@ -75,7 +79,8 @@ void FileListVideoIO::SetFileName(const std::string& fileList)
 //
 // SetFileName -- Split list based on ';'
 //
-void FileListVideoIO::SetFileName(const char* fileList)
+void
+FileListVideoIO::SetFileName(const char* fileList)
 {
   m_FileNames = SplitFileNames(fileList);
 
@@ -96,6 +101,7 @@ FileListVideoIO
 
   size_t pos = 0;
   size_t len = fileList.length();
+
   while (pos != std::string::npos && len > 0)
     {
     // Get the substring
@@ -125,7 +131,8 @@ FileListVideoIO
 //
 // SetReadFromFile
 //
-void FileListVideoIO::SetReadFromFile()
+void
+FileListVideoIO::SetReadFromFile()
 {
   if (!m_ReaderOpen && !m_WriterOpen)
     {
@@ -140,7 +147,8 @@ void FileListVideoIO::SetReadFromFile()
 //
 // SetReadFromCamera
 //
-void FileListVideoIO::SetReadFromCamera()
+void
+FileListVideoIO::SetReadFromCamera()
 {
   itkExceptionMacro("Read From Camera is not supported by this VideoIO");
 }
@@ -148,12 +156,14 @@ void FileListVideoIO::SetReadFromCamera()
 //
 // CanReadFile
 //
-bool FileListVideoIO::CanReadFile(const char* filename)
+bool
+FileListVideoIO::CanReadFile(const char* filename)
 {
   // Make sure file names have been specified
-  std::string strFileName = filename;
+  std::string              strFileName = filename;
   std::vector<std::string> fileList = SplitFileNames(strFileName);
-  if (fileList.empty())
+
+  if (fileList.empty() )
     {
     return false;
     }
@@ -178,7 +188,8 @@ bool FileListVideoIO::CanReadFile(const char* filename)
 //
 // CanReadCamera
 //
-bool FileListVideoIO::CanReadCamera( itk::SizeValueType itkNotUsed(cameraID) )const
+bool
+FileListVideoIO::CanReadCamera( itk::SizeValueType itkNotUsed(cameraID) ) const
 {
   return false;
 }
@@ -186,7 +197,8 @@ bool FileListVideoIO::CanReadCamera( itk::SizeValueType itkNotUsed(cameraID) )co
 //
 // ReadImageInformation
 //
-void FileListVideoIO::ReadImageInformation()
+void
+FileListVideoIO::ReadImageInformation()
 {
   // Open from a file
   if (m_ReadType == ReadFromFile)
@@ -249,7 +261,8 @@ void FileListVideoIO::ReadImageInformation()
 //
 // Read
 //
-void FileListVideoIO::Read(void *buffer)
+void
+FileListVideoIO::Read(void *buffer)
 {
   // Make sure we've already called ReadImageInformation (dimensions are
   // non-zero)
@@ -278,7 +291,8 @@ void FileListVideoIO::Read(void *buffer)
 //
 // SetNextFrameToRead
 //
-bool FileListVideoIO::SetNextFrameToRead(FrameOffsetType frameNumber)
+bool
+FileListVideoIO::SetNextFrameToRead(FrameOffsetType frameNumber)
 {
 
   if (frameNumber >= m_FrameTotal)
@@ -293,7 +307,8 @@ bool FileListVideoIO::SetNextFrameToRead(FrameOffsetType frameNumber)
 //
 // GetSpacing
 //
-double FileListVideoIO::GetSpacing(unsigned int i) const
+double
+FileListVideoIO::GetSpacing(unsigned int i) const
 {
   if (!m_ReaderOpen)
     {
@@ -305,7 +320,8 @@ double FileListVideoIO::GetSpacing(unsigned int i) const
 //
 // GetOrigin
 //
-double FileListVideoIO::GetOrigin(unsigned int i) const
+double
+FileListVideoIO::GetOrigin(unsigned int i) const
 {
   if (!m_ReaderOpen)
     {
@@ -333,12 +349,14 @@ std::vector< double > FileListVideoIO::GetDirection(unsigned int i) const
 //
 // CanWriteFile
 //
-bool FileListVideoIO::CanWriteFile(const char* filename)
+bool
+FileListVideoIO::CanWriteFile(const char* filename)
 {
 
   // Make sure file names have been specified
   std::vector<std::string> fileList = SplitFileNames(filename);
-  if (fileList.empty())
+
+  if (fileList.empty() )
     {
     return false;
     }
@@ -363,7 +381,8 @@ bool FileListVideoIO::CanWriteFile(const char* filename)
 //
 // WriteImageInformation
 //
-void FileListVideoIO::WriteImageInformation()
+void
+FileListVideoIO::WriteImageInformation()
 {
   if (!m_WriterOpen)
     {
@@ -376,7 +395,8 @@ void FileListVideoIO::WriteImageInformation()
 //
 // SetWriterParameters
 //
-void FileListVideoIO::SetWriterParameters(
+void
+FileListVideoIO::SetWriterParameters(
   TemporalRatioType framesPerSecond,
   const std::vector<SizeValueType>& dim,
   const char* itkNotUsed(fourCC),
@@ -400,11 +420,12 @@ void FileListVideoIO::SetWriterParameters(
 //
 // Write
 //
-void FileListVideoIO::Write(const void *buffer)
+void
+FileListVideoIO::Write(const void *buffer)
 {
 
   // Make sure parameters are specified
-  if (m_Dimensions.empty())
+  if (m_Dimensions.empty() )
     {
     itkExceptionMacro("Can not write with empty parameters. You probably need to call SetWriterParameters");
     }
@@ -443,7 +464,8 @@ void FileListVideoIO::Write(const void *buffer)
 //
 // OpenReader
 //
-void FileListVideoIO::OpenReader()
+void
+FileListVideoIO::OpenReader()
 {
   if (m_ReaderOpen)
     {
@@ -456,7 +478,7 @@ void FileListVideoIO::OpenReader()
     }
 
   // Make sure FileNames have been specified
-  if (m_FileNames.empty())
+  if (m_FileNames.empty() )
     {
     itkExceptionMacro("Can not open reader without file names set");
     }
@@ -490,7 +512,8 @@ void FileListVideoIO::OpenReader()
 //
 // OpenWriter
 //
-void FileListVideoIO::OpenWriter()
+void
+FileListVideoIO::OpenWriter()
 {
   if (m_WriterOpen)
     {
@@ -524,7 +547,8 @@ void FileListVideoIO::OpenWriter()
 //
 // ResetMembers
 //
-void FileListVideoIO::ResetMembers()
+void
+FileListVideoIO::ResetMembers()
 {
   m_ImageIO = NULL;
   m_FileNames.clear();

@@ -54,9 +54,9 @@ const typename
 HistogramToTextureFeaturesFilter< THistogram >::HistogramType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetInput() const
-{
+  {
   return itkDynamicCastInDebugMode< const HistogramType * >( this->GetPrimaryInput() );
-}
+  }
 
 template< typename THistogram >
 typename
@@ -132,21 +132,21 @@ HistogramToTextureFeaturesFilter< THistogram >::GenerateData(void)
 
     IndexType index = inputHistogram->GetIndex( hit.GetInstanceIdentifier() );
     energy += frequency * frequency;
-    entropy -= ( frequency > 0.0001 ) ? frequency *vcl_log(frequency) / log2:0;
+    entropy -= ( frequency > 0.0001 ) ? frequency *vcl_log(frequency) / log2 : 0;
     correlation += ( ( index[0] - pixelMean ) * ( index[1] - pixelMean ) * frequency )
-                   / pixelVarianceSquared;
+      / pixelVarianceSquared;
     inverseDifferenceMoment += frequency
-                               / ( 1.0 + ( index[0] - index[1] ) * ( index[0] - index[1] ) );
+      / ( 1.0 + ( index[0] - index[1] ) * ( index[0] - index[1] ) );
     inertia += ( index[0] - index[1] ) * ( index[0] - index[1] ) * frequency;
     clusterShade += vcl_pow( ( index[0] - pixelMean ) + ( index[1] - pixelMean ), 3 )
-                    * frequency;
+      * frequency;
     clusterProminence += vcl_pow( ( index[0] - pixelMean ) + ( index[1] - pixelMean ), 4 )
-                         * frequency;
+      * frequency;
     haralickCorrelation += index[0] * index[1] * frequency;
     }
 
   haralickCorrelation = ( haralickCorrelation - marginalMean * marginalMean )
-                        / marginalDevSquared;
+    / marginalDevSquared;
 
   MeasurementObjectType *energyOutputObject =
     static_cast< MeasurementObjectType * >( this->ProcessObject::GetOutput(0) );
@@ -268,72 +268,72 @@ const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetEnergyOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename THistogram >
 const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetEntropyOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename THistogram >
 const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetCorrelationOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(2) );
-}
+  }
 
 template< typename THistogram >
 const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetInverseDifferenceMomentOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(3) );
-}
+  }
 
 template< typename THistogram >
 const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetInertiaOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(4) );
-}
+  }
 
 template< typename THistogram >
 const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetClusterShadeOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(5) );
-}
+  }
 
 template< typename THistogram >
 const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetClusterProminenceOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(6) );
-}
+  }
 
 template< typename THistogram >
 const
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementObjectType *
 HistogramToTextureFeaturesFilter< THistogram >
 ::GetHaralickCorrelationOutput() const
-{
+  {
   return static_cast< const MeasurementObjectType * >( this->ProcessObject::GetOutput(7) );
-}
+  }
 
 template< typename THistogram >
 typename HistogramToTextureFeaturesFilter< THistogram >::MeasurementType
@@ -406,7 +406,7 @@ HistogramToTextureFeaturesFilter< THistogram >
 {
   switch ( feature )
     {
-    case Energy :
+    case Energy:
       return this->GetEnergy();
     case Entropy:
       return this->GetEntropy();
@@ -434,6 +434,7 @@ HistogramToTextureFeaturesFilter< THistogram >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

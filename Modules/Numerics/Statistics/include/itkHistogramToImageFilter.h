@@ -47,23 +47,23 @@ namespace itk
  */
 
 template< typename THistogram, typename TImage, typename TFunction >
-class HistogramToImageFilter:
+class HistogramToImageFilter :
   public ImageSource< TImage >
 {
 public:
 
   /** Standard class typedefs. */
-  typedef TFunction                                           FunctorType;
-  typedef HistogramToImageFilter                              Self;
-  typedef ImageSource< TImage >                               Superclass;
-  typedef SmartPointer< Self >                                Pointer;
-  typedef SmartPointer< const Self >                          ConstPointer;
+  typedef TFunction                  FunctorType;
+  typedef HistogramToImageFilter     Self;
+  typedef ImageSource< TImage >      Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  typedef TImage                                              OutputImageType;
-  typedef typename Superclass::Pointer                        OutputImagePointer;
-  typedef typename OutputImageType::SpacingType               SpacingType;
-  typedef typename OutputImageType::PointType                 PointType;
-  typedef typename OutputImageType::PixelType                 OutputPixelType;
+  typedef TImage                                OutputImageType;
+  typedef typename Superclass::Pointer          OutputImagePointer;
+  typedef typename OutputImageType::SpacingType SpacingType;
+  typedef typename OutputImageType::PointType   PointType;
+  typedef typename OutputImageType::PixelType   OutputPixelType;
 
   // Define an iterator to iterate through the image
   typedef itk::ImageRegionIteratorWithIndex< OutputImageType > ImageIteratorType;
@@ -98,7 +98,8 @@ public:
    * This method requires an operator!=() be defined on the functor
    * (or the compiler's default implementation of operator!=() being
    * appropriate). */
-  void SetFunctor(const FunctorType & functor)
+  void
+  SetFunctor(const FunctorType & functor)
   {
     m_Functor = functor;
     this->Modified();
@@ -108,8 +109,15 @@ public:
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer.) */
-  FunctorType & GetFunctor() { return m_Functor; }
-  const FunctorType & GetFunctor() const { return m_Functor; }
+  FunctorType &
+  GetFunctor() {
+    return m_Functor;
+  }
+
+  const FunctorType &
+  GetFunctor() const {
+    return m_Functor;
+  }
 
   void SetTotalFrequency(SizeValueType n);
 
@@ -128,6 +136,7 @@ protected:
 private:
   HistogramToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

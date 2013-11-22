@@ -19,7 +19,6 @@
 #define __itkRegularExpressionSeriesFileNames_h
 #include "ITKIOImageBaseExport.h"
 
-
 #include "itkObject.h"
 #include "itkObjectFactory.h"
 #include "itkMacro.h"
@@ -68,7 +67,7 @@ namespace itk
  *
  * \ingroup ITKIOImageBase
  */
-class ITKIOImageBase_EXPORT RegularExpressionSeriesFileNames:public Object
+class ITKIOImageBase_EXPORT RegularExpressionSeriesFileNames : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -108,13 +107,17 @@ public:
   const std::vector< std::string > & GetFileNames();
 
 protected:
-  RegularExpressionSeriesFileNames():
+  RegularExpressionSeriesFileNames() :
     m_Directory("."),
     m_SubMatch(1),
     m_NumericSort(false),
     m_RegularExpression(".*\\.([0-9]+)")
-  {}
-  ~RegularExpressionSeriesFileNames() {}
+  {
+  }
+
+  ~RegularExpressionSeriesFileNames() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

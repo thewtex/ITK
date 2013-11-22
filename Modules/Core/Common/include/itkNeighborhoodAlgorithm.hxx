@@ -40,7 +40,9 @@ ImageBoundaryFacesCalculator< TImage >
   // and regionTOProcess (size = 5x5),
 
   FaceListType faceList;
-  // The portion of the regionToProcess that is outside of the image bufferedRegion
+
+  // The portion of the regionToProcess that is outside of the image
+  // bufferedRegion
   // doesn't make sense. If the regionToProcess is completely outside of
   // the image bufferedRegion, return a empty region list.
   if( !regionToProcess.Crop( img->GetBufferedRegion() ) )
@@ -54,15 +56,19 @@ ImageBoundaryFacesCalculator< TImage >
   const SizeType  rSize  = regionToProcess.GetSize();
 
   IndexValueType overlapLow, overlapHigh;
-  IndexType    fStart;       // Boundary, "face"
-  SizeType     fSize;        // region data.
-  RegionType   fRegion;
-  SizeType     nbSize  = regionToProcess.GetSize();  // Non-boundary region
-  IndexType    nbStart = regionToProcess.GetIndex(); // data.
-  RegionType   nbRegion;
+  IndexType      fStart;     // Boundary, "face"
+  SizeType       fSize;      // region data.
+  RegionType     fRegion;
+  SizeType       nbSize  = regionToProcess.GetSize();  // Non-boundary region
+  IndexType      nbStart = regionToProcess.GetIndex(); // data.
+  RegionType     nbRegion;
 
-  IndexType    vrStart = rStart; //start index of variable processed region which has considered the boundary region in last direction
-  SizeType     vrSize = rSize; //size of variable processed region which has considered the boundary region in last direction
+  IndexType vrStart = rStart;  //start index of variable processed region which
+                               // has considered the boundary region in last
+                               // direction
+  SizeType vrSize = rSize;     //size of variable processed region which has
+                               // considered the boundary region in last
+                               // direction
 
   for ( i = 0; i < ImageDimension; ++i )
     {
@@ -90,11 +96,11 @@ ImageBoundaryFacesCalculator< TImage >
           // Boundary region cannot be outside the region to process
           if( -overlapLow > static_cast< IndexValueType >( rSize[i] ) )
             {
-            overlapLow = - static_cast< IndexValueType >( rSize[i] );
+            overlapLow = -static_cast< IndexValueType >( rSize[i] );
             }
           fSize[j] = -overlapLow;
-          vrSize[j] += overlapLow; //change start and size in this direction
-          vrStart[j] -= overlapLow;//to ensure no duplicate pixels at corners
+          vrSize[j] += overlapLow;  //change start and size in this direction
+          vrStart[j] -= overlapLow; //to ensure no duplicate pixels at corners
           }
         else
           {
@@ -131,7 +137,7 @@ ImageBoundaryFacesCalculator< TImage >
           // Boundary region cannot be outside the region to process
           if( -overlapHigh > static_cast< IndexValueType >( rSize[i] ) )
             {
-            overlapHigh = - static_cast< IndexValueType >( rSize[i] );
+            overlapHigh = -static_cast< IndexValueType >( rSize[i] );
             }
           fStart[j] = rStart[j] + static_cast< IndexValueType >( rSize[j] ) + overlapHigh;
           fSize[j] = -overlapHigh;
@@ -182,6 +188,7 @@ CalculateOutputWrapOffsetModifiers< TImage >
     }
   return ans;
 }
+
 } // end namespace NeighborhoodAlgorithm
 } // end namespace itk
 

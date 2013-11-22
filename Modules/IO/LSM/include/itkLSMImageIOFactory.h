@@ -37,7 +37,7 @@ namespace itk
  * \brief Create instances of LSMImageIO objects using an object factory.
  * \ingroup ITKIOLSM
  */
-class LSMImageIOFactory:public ObjectFactoryBase
+class LSMImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -58,7 +58,8 @@ public:
   itkTypeMacro(LSMImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory()
+  static void
+  RegisterOneFactory()
   {
     LSMImageIOFactory::Pointer lsmFactory = LSMImageIOFactory::New();
 
@@ -72,6 +73,7 @@ protected:
 private:
   LSMImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

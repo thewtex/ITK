@@ -91,6 +91,7 @@ SumOfSquaresImageFunction< TInputImage, TCoordRep >
 
   return ( sumOfSquares );
 }
+
 } // end namespace itk
 
 #endif

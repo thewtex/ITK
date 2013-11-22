@@ -33,20 +33,30 @@ template< typename TInput1, typename TInput2 = TInput1, typename TOutput = TInpu
 class Mult
 {
 public:
-  Mult() {}
-  ~Mult() {}
-  bool operator!=(const Mult &) const
+  Mult() {
+  }
+
+  ~Mult() {
+  }
+
+  bool
+  operator!=(const Mult &) const
   {
     return false;
   }
 
-  bool operator==(const Mult & other) const
+  bool
+  operator==(const Mult & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
-  { return (TOutput)( A * B ); }
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
+  {
+    return (TOutput)( A * B );
+  }
+
 };
 }
 /** \class MultiplyImageFilter
@@ -66,7 +76,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class MultiplyImageFilter:
+class MultiplyImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Mult<
@@ -103,12 +113,17 @@ public:
 #endif
 
 protected:
-  MultiplyImageFilter() {}
-  virtual ~MultiplyImageFilter() {}
+  MultiplyImageFilter() {
+  }
+
+  virtual
+  ~MultiplyImageFilter() {
+  }
 
 private:
   MultiplyImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };
 } // end namespace itk
 

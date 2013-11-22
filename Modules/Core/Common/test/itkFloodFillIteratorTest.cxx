@@ -25,7 +25,8 @@
 #include "itkSphereSpatialFunction.h"
 #include "itkFloodFilledSpatialFunctionConditionalIterator.h"
 
-int itkFloodFillIteratorTest(int, char* [] )
+int
+itkFloodFillIteratorTest(int, char* [] )
 {
   const unsigned int dim = 3;
 
@@ -55,7 +56,8 @@ int itkFloodFillIteratorTest(int, char* [] )
   TImageType::RegionType largestPossibleRegion;
   // Resize the region
   largestPossibleRegion.SetSize( sourceImageSizeObject );
-  // Set the largest legal region size (i.e. the size of the whole sourceImage) to what we just defined
+  // Set the largest legal region size (i.e. the size of the whole sourceImage)
+  // to what we just defined
   sourceImage->SetLargestPossibleRegion( largestPossibleRegion );
   // Set the buffered region
   sourceImage->SetBufferedRegion( largestPossibleRegion );
@@ -94,7 +96,7 @@ int itkFloodFillIteratorTest(int, char* [] )
   std::cout << "Sphere spatial function created" << std::endl;
 
   //---------Create and initialize a spatial function iterator-----------
-  TImageType::IndexType seedPos;
+  TImageType::IndexType            seedPos;
   const TImageType::IndexValueType pos[] = {10,10,10};
   seedPos.SetIndex(pos);
 

@@ -31,24 +31,23 @@ PipelineMonitorImageFilter<TImageType>
   this->ClearPipelineSavedInformation();
 }
 
-
 template <typename TImageType>
 bool
 PipelineMonitorImageFilter<TImageType>
 ::VerifyDownStreamFilterExecutedPropagation(void)
 {
   bool ret = true;
+
   // we expect that the propagation is not going to be called
   // extra times
   if (m_OutputRequestedRegions.size() != this->GetNumberOfUpdates() ||
-      m_InputRequestedRegions.size() != this->GetNumberOfUpdates())
+      m_InputRequestedRegions.size() != this->GetNumberOfUpdates() )
     {
     itkWarningMacro(<<"Down stream filter didn't execute PropagateRequestedRegion well");
     ret = false;
     }
   return ret;
 }
-
 
 template <typename TImageType>
 bool
@@ -59,11 +58,11 @@ PipelineMonitorImageFilter<TImageType>
     {
     return true;
     }
-  else if (expectedNumber < 0 && static_cast<unsigned int>(- expectedNumber) <=  this->GetNumberOfUpdates())
+  else if (expectedNumber < 0 && static_cast<unsigned int>(-expectedNumber) <=  this->GetNumberOfUpdates() )
     {
     return true;
     }
-  else if ( expectedNumber == static_cast<int>(this->GetNumberOfUpdates()) )
+  else if ( expectedNumber == static_cast<int>(this->GetNumberOfUpdates() ) )
     {
     return true;
     }
@@ -73,13 +72,13 @@ PipelineMonitorImageFilter<TImageType>
   return false;
 }
 
-
 template <typename TImageType>
 bool
 PipelineMonitorImageFilter<TImageType>
 ::VerifyInputFilterMatchedUpdateOutputInformation(void)
 {
   InputImageConstPointer input =  this->GetInput();
+
   if (input->GetSpacing() != m_UpdatedOutputSpacing)
     {
     itkWarningMacro(<<"The input filter's Spacing does not match UpdateOutputInformation");
@@ -98,17 +97,18 @@ PipelineMonitorImageFilter<TImageType>
   if(input->GetLargestPossibleRegion() != m_UpdatedOutputLargestPossibleRegion)
     {
     itkWarningMacro(<<"The input filter's LargestPossibleRegion does not match UpdateOutputInformation");
-    itkWarningMacro(<<"input: " << input->GetLargestPossibleRegion() << "updated: " << m_UpdatedOutputLargestPossibleRegion );
+    itkWarningMacro(
+      <<"input: " << input->GetLargestPossibleRegion() << "updated: " << m_UpdatedOutputLargestPossibleRegion );
     return false;
     }
-  if(m_UpdatedBufferedRegions.size() && !m_UpdatedOutputLargestPossibleRegion.IsInside(m_UpdatedBufferedRegions.back()))
+  if(m_UpdatedBufferedRegions.size() &&
+     !m_UpdatedOutputLargestPossibleRegion.IsInside(m_UpdatedBufferedRegions.back() ) )
     {
     itkWarningMacro(<<"The input filter's BufferedRegion is not contained by LargestPossibleRegion");
     return false;
     }
   return true;
 }
-
 
 template <typename TImageType>
 bool
@@ -117,8 +117,9 @@ PipelineMonitorImageFilter<TImageType>
 {
   // we expect that the input filter's output image's buffered
   // region is going to match it's requested region
-  bool ret = true;
+  bool         ret = true;
   unsigned int i;
+
   for (i = 0; i < m_UpdatedBufferedRegions.size(); ++i)
     {
     if (m_UpdatedBufferedRegions[i] != m_UpdatedRequestedRegions[i])
@@ -130,7 +131,6 @@ PipelineMonitorImageFilter<TImageType>
   return ret;
 }
 
-
 template <typename TImageType>
 bool
 PipelineMonitorImageFilter<TImageType>
@@ -140,7 +140,7 @@ PipelineMonitorImageFilter<TImageType>
   // region is going to match it's requested region, which is going
   // to match the requested region at the end of propagation
   //
-  bool ret = true;
+  bool         ret = true;
   unsigned int i = m_UpdatedBufferedRegions.size();
   unsigned int j = m_InputRequestedRegions.size();
 
@@ -156,7 +156,6 @@ PipelineMonitorImageFilter<TImageType>
   return ret;
 }
 
-
 template <typename TImageType>
 bool
 PipelineMonitorImageFilter<TImageType>
@@ -170,19 +169,17 @@ PipelineMonitorImageFilter<TImageType>
   return true;
 }
 
-
 template <typename TImageType>
 bool
 PipelineMonitorImageFilter<TImageType>
 ::VerifyAllInputCanStream(int expectedNumber)
 {
   return VerifyInputFilterExecutedStreaming(expectedNumber) &&
-    VerifyDownStreamFilterExecutedPropagation() &&
-    VerifyInputFilterMatchedRequestedRegions() &&
-    VerifyInputFilterBufferedRequestedRegions() &&
-    VerifyInputFilterMatchedUpdateOutputInformation();
+         VerifyDownStreamFilterExecutedPropagation() &&
+         VerifyInputFilterMatchedRequestedRegions() &&
+         VerifyInputFilterBufferedRequestedRegions() &&
+         VerifyInputFilterMatchedUpdateOutputInformation();
 }
-
 
 template <typename TImageType>
 bool
@@ -190,9 +187,9 @@ PipelineMonitorImageFilter<TImageType>
 ::VerifyAllInputCanNotStream(void)
 {
   return VerifyDownStreamFilterExecutedPropagation() &&
-    VerifyInputFilterRequestedLargestRegion() &&
-    VerifyInputFilterBufferedRequestedRegions() &&
-    VerifyInputFilterMatchedUpdateOutputInformation();
+         VerifyInputFilterRequestedLargestRegion() &&
+         VerifyInputFilterBufferedRequestedRegions() &&
+         VerifyInputFilterMatchedUpdateOutputInformation();
 }
 
 template <typename TImageType>
@@ -201,9 +198,8 @@ PipelineMonitorImageFilter<TImageType>
 ::VerifyAllNoUpdate(void)
 {
   return VerifyDownStreamFilterExecutedPropagation() &&
-    m_NumberOfUpdates == 0;
+         m_NumberOfUpdates == 0;
 }
-
 
 template <typename TImageType>
 void
@@ -223,7 +219,6 @@ PipelineMonitorImageFilter<TImageType>
   ++m_NumberOfClearPipeline;
 }
 
-
 template <typename TImageType>
 void
 PipelineMonitorImageFilter<TImageType>
@@ -236,14 +231,13 @@ PipelineMonitorImageFilter<TImageType>
 
   Superclass::GenerateOutputInformation();
 
-  InputImageConstPointer  input  = this->GetInput();
+  InputImageConstPointer input  = this->GetInput();
   m_UpdatedOutputOrigin = input->GetOrigin();
   m_UpdatedOutputDirection = input->GetDirection();
   m_UpdatedOutputSpacing = input->GetSpacing();
   m_UpdatedOutputLargestPossibleRegion = input->GetLargestPossibleRegion();
   itkDebugMacro("GenerateOutputInformation called");
 }
-
 
 template <typename TImageType>
 void
@@ -254,11 +248,10 @@ PipelineMonitorImageFilter<TImageType>
   Superclass::PropagateRequestedRegion(output);
 
   // record the regions after everything has executed
-  itkDebugMacro("After PropagateRequestedRegion: " << this->GetInput()->GetRequestedRegion());
-  this->m_InputRequestedRegions.push_back(this->GetInput()->GetRequestedRegion());
-  this->m_OutputRequestedRegions.push_back(this->GetOutput()->GetRequestedRegion());
+  itkDebugMacro("After PropagateRequestedRegion: " << this->GetInput()->GetRequestedRegion() );
+  this->m_InputRequestedRegions.push_back(this->GetInput()->GetRequestedRegion() );
+  this->m_OutputRequestedRegions.push_back(this->GetOutput()->GetRequestedRegion() );
 }
-
 
 template <typename TImageType>
 void
@@ -268,9 +261,8 @@ PipelineMonitorImageFilter<TImageType>
   // call the superclass' implementation of this method
   Superclass::EnlargeOutputRequestedRegion(output);
 
-  itkDebugMacro("EnlargeOutputRequestRegion: " << this->GetOutput()->GetRequestedRegion());
+  itkDebugMacro("EnlargeOutputRequestRegion: " << this->GetOutput()->GetRequestedRegion() );
 }
-
 
 template <typename TImageType>
 void
@@ -282,9 +274,8 @@ PipelineMonitorImageFilter<TImageType>
 
   // this is not very interesting as it's always going to be the
   // output requested region
-  itkDebugMacro("GenerateInputRequestRegion: " << this->GetInput()->GetRequestedRegion());
+  itkDebugMacro("GenerateInputRequestRegion: " << this->GetInput()->GetRequestedRegion() );
 }
-
 
 template <typename TImageType>
 void
@@ -294,15 +285,17 @@ PipelineMonitorImageFilter<TImageType>
   // Get pointers to the input and output
   InputImagePointer output = this->GetOutput();
   InputImagePointer input =
-    const_cast< TImageType * >( this->GetInput());
+    const_cast< TImageType * >( this->GetInput() );
 
   // Graft the input Onto the output, so that we run "in-place"
   this->GraftOutput(input);
 
-  itkDebugMacro("GenerateData Buffered: " << this->GetInput()->GetBufferedRegion() << " Requested:" << this->GetInput()->GetRequestedRegion());
+  itkDebugMacro(
+    "GenerateData Buffered: " << this->GetInput()->GetBufferedRegion() << " Requested:" <<
+    this->GetInput()->GetRequestedRegion() );
 
-  m_UpdatedBufferedRegions.push_back(this->GetInput()->GetBufferedRegion());
-  m_UpdatedRequestedRegions.push_back(this->GetInput()->GetRequestedRegion());
+  m_UpdatedBufferedRegions.push_back(this->GetInput()->GetBufferedRegion() );
+  m_UpdatedRequestedRegions.push_back(this->GetInput()->GetRequestedRegion() );
 
   ++m_NumberOfUpdates;
 
@@ -312,34 +305,40 @@ PipelineMonitorImageFilter<TImageType>
   input->ReleaseData();
 }
 
-
 template <typename TImageType>
 void
 PipelineMonitorImageFilter<TImageType>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
+
   os << indent << "m_NumberOfUpdates: " << m_NumberOfUpdates << std::endl;
 
   os << indent << "m_NumberOfClearPipeline: " << m_NumberOfClearPipeline << std::endl;
 
-  os << indent << "m_ClearPipelineOnGenerateOutputInformation: " << m_ClearPipelineOnGenerateOutputInformation << std::endl;
+  os << indent << "m_ClearPipelineOnGenerateOutputInformation: " << m_ClearPipelineOnGenerateOutputInformation <<
+    std::endl;
 
   os << indent << "m_OutputRequestedRegions:"<< std::endl;
-  for (typename RegionVectorType::const_iterator i = m_OutputRequestedRegions.begin(); i != m_OutputRequestedRegions.end(); ++i)
-    i->Print(os, indent.GetNextIndent());
+  for (typename RegionVectorType::const_iterator i = m_OutputRequestedRegions.begin();
+       i != m_OutputRequestedRegions.end(); ++i)
+    i->Print(os, indent.GetNextIndent() );
 
   os << indent << "m_InputRequestedRegions:"<< std::endl;
-  for (typename RegionVectorType::const_iterator i = m_InputRequestedRegions.begin(); i != m_InputRequestedRegions.end(); ++i)
-    i->Print(os, indent.GetNextIndent());
+  for (typename RegionVectorType::const_iterator i =
+         m_InputRequestedRegions.begin(); i != m_InputRequestedRegions.end();
+       ++i)
+    i->Print(os, indent.GetNextIndent() );
 
   os << indent << "m_UpdatedBufferedRegions:"<< std::endl;
-  for (typename RegionVectorType::const_iterator i = m_UpdatedBufferedRegions.begin(); i != m_UpdatedBufferedRegions.end(); ++i)
-    i->Print(os, indent.GetNextIndent());
+  for (typename RegionVectorType::const_iterator i = m_UpdatedBufferedRegions.begin();
+       i != m_UpdatedBufferedRegions.end(); ++i)
+    i->Print(os, indent.GetNextIndent() );
 
   os << indent << "m_UpdatedRequestedRegions:"<< std::endl;
-  for (typename RegionVectorType::const_iterator i = m_UpdatedRequestedRegions.begin(); i != m_UpdatedRequestedRegions.end(); ++i)
-    i->Print(os, indent.GetNextIndent());
+  for (typename RegionVectorType::const_iterator i = m_UpdatedRequestedRegions.begin();
+       i != m_UpdatedRequestedRegions.end(); ++i)
+    i->Print(os, indent.GetNextIndent() );
 
   os << indent << "m_UpdatedOutputOrigin:" << std::endl;
   os << indent.GetNextIndent() << m_UpdatedOutputOrigin << std::endl;
@@ -348,7 +347,7 @@ PipelineMonitorImageFilter<TImageType>
   os << indent << "m_UpdatedOutputSpacing:" << std::endl;
   os << indent.GetNextIndent() << m_UpdatedOutputSpacing << std::endl;
   os << indent << "m_UpdatedOutputLargestPossibleRegion: " << std::endl;
-  m_UpdatedOutputLargestPossibleRegion.Print(os, indent.GetNextIndent());
+  m_UpdatedOutputLargestPossibleRegion.Print(os, indent.GetNextIndent() );
 }
 
 }

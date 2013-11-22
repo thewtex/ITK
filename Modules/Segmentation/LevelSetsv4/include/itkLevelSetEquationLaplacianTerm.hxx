@@ -37,7 +37,6 @@ LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 {
 }
 
-
 template< typename TInput, typename TLevelSetContainer >
 void
 LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >

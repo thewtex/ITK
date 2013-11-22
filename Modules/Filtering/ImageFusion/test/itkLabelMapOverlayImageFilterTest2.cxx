@@ -22,8 +22,8 @@
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkLabelMapOverlayImageFilter.h"
 
-
-int itkLabelMapOverlayImageFilterTest2(int argc, char * argv[])
+int
+itkLabelMapOverlayImageFilterTest2(int argc, char * argv[])
 {
   if( argc != 5 )
     {
@@ -46,7 +46,6 @@ int itkLabelMapOverlayImageFilterTest2(int argc, char * argv[])
 
   ReaderType::Pointer reader2 = ReaderType::New();
   reader2->SetFileName( argv[2] );
-
 
   typedef itk::LabelMapOverlayImageFilter< ConverterType::OutputImageType, IType, OType > ColorizerType;
   ColorizerType::Pointer colorizer = ColorizerType::New();

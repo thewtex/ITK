@@ -36,20 +36,20 @@ namespace itk
  * \ingroup ITKDisplacementField
  */
 template
-  <class TScalar, unsigned int NDimensions>
+<class TScalar, unsigned int NDimensions>
 class GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform
-: public TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
+  : public TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
 {
 public:
   /** Standard class typedefs. */
-  typedef GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform   Self;
-  typedef TimeVaryingVelocityFieldTransform<TScalar, NDimensions>      Superclass;
-  typedef SmartPointer<Self>                                           Pointer;
-  typedef SmartPointer<const Self>                                     ConstPointer;
+  typedef GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform Self;
+  typedef TimeVaryingVelocityFieldTransform<TScalar, NDimensions>    Superclass;
+  typedef SmartPointer<Self>                                         Pointer;
+  typedef SmartPointer<const Self>                                   ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform,
-                                                TimeVaryingVelocityFieldTransform );
+                TimeVaryingVelocityFieldTransform );
 
   /** New macro for creation of through a Smart Pointer */
   itkSimpleNewMacro( Self );
@@ -58,17 +58,16 @@ public:
   itkStaticConstMacro( TimeVaryingVelocityFieldDimension, unsigned int, NDimensions+1 );
 
   /** Types from superclass */
-  typedef typename Superclass::ScalarType                         ScalarType;
-  typedef typename Superclass::DerivativeType                     DerivativeType;
-  typedef typename DerivativeType::ValueType                      DerivativeValueType;
-  typedef typename Superclass::VelocityFieldType                  VelocityFieldType;
+  typedef typename Superclass::ScalarType        ScalarType;
+  typedef typename Superclass::DerivativeType    DerivativeType;
+  typedef typename DerivativeType::ValueType     DerivativeValueType;
+  typedef typename Superclass::VelocityFieldType VelocityFieldType;
 
-  typedef typename Superclass::TimeVaryingVelocityFieldType       TimeVaryingVelocityFieldType;
-  typedef typename Superclass::TimeVaryingVelocityFieldPointer    TimeVaryingVelocityFieldPointer;
+  typedef typename Superclass::TimeVaryingVelocityFieldType    TimeVaryingVelocityFieldType;
+  typedef typename Superclass::TimeVaryingVelocityFieldPointer TimeVaryingVelocityFieldPointer;
 
-  typedef typename VelocityFieldType::PixelType                   DisplacementVectorType;
-  typedef typename DisplacementVectorType::ValueType              DisplacementVectorValueType;
-
+  typedef typename VelocityFieldType::PixelType      DisplacementVectorType;
+  typedef typename DisplacementVectorType::ValueType DisplacementVectorValueType;
 
   /**
    * Get/Set the Gaussian spatial smoothing variance for the update field.
@@ -112,29 +111,38 @@ public:
    * Uses m_GaussSmoothSigma to change the variance for the GaussianOperator.
    * \warning Not thread safe. Does its own threading.
    */
-  virtual TimeVaryingVelocityFieldPointer GaussianSmoothTimeVaryingVelocityField( VelocityFieldType *, ScalarType, ScalarType );
+  virtual TimeVaryingVelocityFieldPointer GaussianSmoothTimeVaryingVelocityField( VelocityFieldType *, ScalarType,
+                                                                                  ScalarType );
 
 protected:
   GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform();
-  virtual ~GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform();
+  virtual
+  ~GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Track when the temporary displacement field used during smoothing
    * was last modified/initialized. We only want to change it if the
    * main displacement field is also changed, i.e. assigned to a new object */
-  ModifiedTimeType                  m_GaussianSmoothingTempFieldModifiedTime;
+  ModifiedTimeType m_GaussianSmoothingTempFieldModifiedTime;
 
   /** Used in GaussianSmoothTimeVaryingVelocityField as variance for the
    * GaussianOperator
    */
-  ScalarType                        m_GaussianSpatialSmoothingVarianceForTheUpdateField;
-  ScalarType                        m_GaussianSpatialSmoothingVarianceForTheTotalField;
-  ScalarType                        m_GaussianTemporalSmoothingVarianceForTheUpdateField;
-  ScalarType                        m_GaussianTemporalSmoothingVarianceForTheTotalField;
+  ScalarType m_GaussianSpatialSmoothingVarianceForTheUpdateField;
+  ScalarType m_GaussianSpatialSmoothingVarianceForTheTotalField;
+  ScalarType m_GaussianTemporalSmoothingVarianceForTheUpdateField;
+  ScalarType m_GaussianTemporalSmoothingVarianceForTheTotalField;
 
 private:
-  GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform( const Self& ); //purposely
+                                                                             //
+                                                                             // not
+                                                                             //
+                                                                             // implemented
+  void operator=( const Self& );                                             //purposely
+
+  // not
+  // implemented
 
 };
 

@@ -21,7 +21,8 @@
 #include "itkKdTreeGenerator.h"
 #include <fstream>
 
-int itkKdTreeTest1(int argc , char * argv [] )
+int
+itkKdTreeTest1(int argc , char * argv [] )
 {
   if( argc < 4 )
     {
@@ -37,7 +38,7 @@ int itkKdTreeTest1(int argc , char * argv [] )
   NumberGeneratorType::Pointer randomNumberGenerator = NumberGeneratorType::GetInstance();
   randomNumberGenerator->Initialize();
 
-  typedef itk::Array< double > MeasurementVectorType;
+  typedef itk::Array< double >                                 MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   const SampleType::MeasurementVectorSizeType measurementVectorSize = 2;
@@ -48,7 +49,7 @@ int itkKdTreeTest1(int argc , char * argv [] )
   //
   // Generate a sample of random points
   //
-  const unsigned int numberOfDataPoints = atoi( argv[1] );
+  const unsigned int    numberOfDataPoints = atoi( argv[1] );
   MeasurementVectorType mv( measurementVectorSize );
   for (unsigned int i = 0; i < numberOfDataPoints; ++i )
     {
@@ -75,7 +76,7 @@ int itkKdTreeTest1(int argc , char * argv [] )
 
   MeasurementVectorType queryPoint( measurementVectorSize );
 
-  unsigned int numberOfNeighbors = 1;
+  unsigned int                           numberOfNeighbors = 1;
   TreeType::InstanceIdentifierVectorType neighbors;
 
   MeasurementVectorType result( measurementVectorSize );
@@ -113,7 +114,7 @@ int itkKdTreeTest1(int argc , char * argv [] )
     for ( unsigned int i = 0; i < numberOfNeighbors; ++i )
       {
       const double distance =
-        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ));
+        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ) );
 
       if( distance > vnl_math::eps )
         {
@@ -154,11 +155,11 @@ int itkKdTreeTest1(int argc , char * argv [] )
     // Compute the distance to the "presumed" nearest neighbor
     //
     double result_dist = vcl_sqrt(
-          (result[0] - queryPoint[0]) *
-          (result[0] - queryPoint[0]) +
-          (result[1] - queryPoint[1]) *
-          (result[1] - queryPoint[1])
-          );
+        (result[0] - queryPoint[0]) *
+        (result[0] - queryPoint[0]) +
+        (result[1] - queryPoint[1]) *
+        (result[1] - queryPoint[1])
+        );
 
     //
     // Compute the distance to all other points, to verify
@@ -197,18 +198,17 @@ int itkKdTreeTest1(int argc , char * argv [] )
 
     }
 
-
   if( argc > 4 )
     {
     //
-    // Plot out the tree structure to the console in the format used by Graphviz dot
+    // Plot out the tree structure to the console in the format used by Graphviz
+    // dot
     //
     std::ofstream plotFile;
     plotFile.open( argv[4] );
     tree->PlotTree( plotFile );
     plotFile.close();
     }
-
 
   if( numberOfFailedPoints1 )
     {
@@ -222,12 +222,10 @@ int itkKdTreeTest1(int argc , char * argv [] )
     std::cerr << " points failed to find the correct closest point." << std::endl;
     }
 
-
   if( numberOfFailedPoints1 || numberOfFailedPoints2 )
     {
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test PASSED." << std::endl;
   return EXIT_SUCCESS;

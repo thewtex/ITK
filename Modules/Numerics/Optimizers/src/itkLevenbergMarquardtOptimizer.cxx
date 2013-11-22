@@ -236,6 +236,7 @@ LevenbergMarquardtOptimizer
   reason << this->GetNameOfClass() << ": " << ( ( outcome.str().size() > 0 ) ? outcome.str().c_str() : "" );
   return reason.str();
 }
+
 } // end namespace itk
 
 #endif

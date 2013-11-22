@@ -60,10 +60,12 @@ public:
                     unsigned long stepsPerUpdate = 100);
 
   /** Destructor */
-  ~IterationReporter() {}
+  ~IterationReporter() {
+  }
 
   /** Called by a filter once per iteration.  */
-  void CompletedStep()
+  void
+  CompletedStep()
   {
     // Inline implementation for efficiency.
     // We don't need to test for thread id 0 here because the

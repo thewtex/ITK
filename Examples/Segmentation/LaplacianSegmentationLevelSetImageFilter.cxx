@@ -59,6 +59,8 @@
 // anisotropic diffusion filter.
 //
 // \begin{figure} \center
+//
+//
 // \includegraphics[width=0.9\textwidth]{LaplacianSegmentationLevelSetImageFilterCollaborationDiagram1}
 // \itkcaption[LaplacianSegmentationLevelSetImageFilter collaboration
 // diagram]{An image processing pipeline using
@@ -83,7 +85,8 @@
 #include "itkImageFileWriter.h"
 #include "itkZeroCrossingImageFilter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 9 )
     {
@@ -106,16 +109,16 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::BinaryThresholdImageFilter<
-                        InternalImageType,
-                        OutputImageType    >       ThresholdingFilterType;
+      InternalImageType,
+      OutputImageType    >       ThresholdingFilterType;
 
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
 
@@ -147,7 +150,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientAnisotropicDiffusionImageFilter< InternalImageType,
-    InternalImageType> DiffusionFilterType;
+                                                        InternalImageType> DiffusionFilterType;
   DiffusionFilterType::Pointer diffusion = DiffusionFilterType::New();
   diffusion->SetNumberOfIterations( atoi(argv[4]) );
   diffusion->SetTimeStep(0.125);
@@ -163,11 +166,11 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::LaplacianSegmentationLevelSetImageFilter< InternalImageType,
-            InternalImageType > LaplacianSegmentationLevelSetImageFilterType;
+                                                         InternalImageType >
+    LaplacianSegmentationLevelSetImageFilterType;
   LaplacianSegmentationLevelSetImageFilterType::Pointer laplacianSegmentation
-            = LaplacianSegmentationLevelSetImageFilterType::New();
+    = LaplacianSegmentationLevelSetImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -177,8 +180,14 @@ int main( int argc, char *argv[] )
   // weight of the propagation term.  The curvature term weight is set to its
   // default of $1$.  The advection term is not used in this filter.
   //
-  //  \index{itk::Laplacian\-Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
-  //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
+  //
+  //
+  //
+  // \index{itk::Laplacian\-Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
+  //
+  //
+  //
+  // \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
   //
   //  Software Guide : EndLatex
 
@@ -280,13 +289,21 @@ int main( int argc, char *argv[] )
   //
   //  \begin{figure}
   //  \includegraphics[width=0.32\textwidth]{BrainProtonDensitySlice}
-  //  \includegraphics[width=0.32\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle}
-  //  \includegraphics[width=0.32\textwidth]{LaplacianSegmentationLevelSetImageFilterVentricle}
-  //  \itkcaption[Segmentation results of LaplacianLevelSetImageFilter]{Results of
+  //
+  //
+  //
+  // \includegraphics[width=0.32\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle}
+  //
+  //
+  //
+  // \includegraphics[width=0.32\textwidth]{LaplacianSegmentationLevelSetImageFilterVentricle}
+  //  \itkcaption[Segmentation results of LaplacianLevelSetImageFilter]{Results
+  // of
   //  applying LaplacianSegmentationLevelSetImageFilter to a prior ventricle
   //  segmentation.  Shown from left to right are the original image, the
   //  prior segmentation of the ventricle from
-  //  Figure~\ref{fig:ThresholdSegmentationLevelSetImageFilter}, and the refinement of the
+  //  Figure~\ref{fig:ThresholdSegmentationLevelSetImageFilter}, and the
+  // refinement of the
   //  prior using LaplacianSegmentationLevelSetImageFilter.}
   //  \label{fig:LaplacianSegmentationLevelSetImageFilter}
   //  \end{figure}

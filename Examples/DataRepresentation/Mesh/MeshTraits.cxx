@@ -60,7 +60,6 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkMesh.h"
 #include "itkDefaultStaticMeshTraits.h"
@@ -70,7 +69,8 @@
 #include "itkVector.h"
 #include "itkMatrix.h"
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -79,10 +79,12 @@ int main(int, char *[])
   //
   //  \begin{description}
   //  \item[PixelType.] The type associated with every point.
-  //  \item[PointDimension.] The dimension of the space in which the mesh is embedded.
+  //  \item[PointDimension.] The dimension of the space in which the mesh is
+  // embedded.
   //  \item[MaxTopologicalDimension.] The highest dimension of the mesh cells.
   //  \item[CoordRepType.] The type used to represent space coordinates.
-  //  \item[InterpolationWeightType.]  The type used to represent interpolation weights.
+  //  \item[InterpolationWeightType.]  The type used to represent interpolation
+  // weights.
   //  \item[CellPixelType.] The type associated with every cell.
   //  \end{description}
   //
@@ -92,7 +94,8 @@ int main(int, char *[])
   //  that this is a 2D manifold better know as a \emph{surface}. The data type
   //  associated with points is defined to be a four-dimensional vector. This
   //  type could represent values of membership for a four-classes segmentation
-  //  method.  The value selected for the cells are $4\times3$ matrices which could
+  //  method.  The value selected for the cells are $4\times3$ matrices which
+  // could
   //  have for example the derivative of the membership values with respect to
   //  coordinates in space. Finally a \code{double} type is selected for
   //  representing space coordinates on the mesh points and also for the weight
@@ -106,19 +109,18 @@ int main(int, char *[])
   const unsigned int PointDimension = 3;
   const unsigned int MaxTopologicalDimension = 2;
 
-  typedef itk::Vector<double,4>                  PixelType;
-  typedef itk::Matrix<double,4,3>                CellDataType;
+  typedef itk::Vector<double,4>   PixelType;
+  typedef itk::Matrix<double,4,3> CellDataType;
 
   typedef double CoordinateType;
   typedef double InterpolationWeightType;
 
   typedef itk::DefaultStaticMeshTraits<
-            PixelType, PointDimension, MaxTopologicalDimension,
-            CoordinateType, InterpolationWeightType, CellDataType > MeshTraits;
+      PixelType, PointDimension, MaxTopologicalDimension,
+      CoordinateType, InterpolationWeightType, CellDataType > MeshTraits;
 
   typedef itk::Mesh< PixelType, PointDimension, MeshTraits > MeshType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -130,10 +132,9 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellType                CellType;
-  typedef itk::LineCell< CellType >         LineType;
+  typedef MeshType::CellType        CellType;
+  typedef itk::LineCell< CellType > LineType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -150,7 +151,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
 
   typedef MeshType::PointType PointType;
   PointType point;
@@ -164,7 +165,6 @@ int main(int, char *[])
     mesh->SetPoint( id, point );
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -184,7 +184,7 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   CellType::CellAutoPointer line;
-  const unsigned int numberOfCells = numberOfPoints-1;
+  const unsigned int        numberOfCells = numberOfPoints-1;
   for(unsigned int cellId=0; cellId<numberOfCells; cellId++)
     {
     line.TakeOwnership(  new LineType  );
@@ -193,7 +193,6 @@ int main(int, char *[])
     mesh->SetCell( cellId, line );   // insert the cell
     }
   // Software Guide : EndCodeSnippet
-
 
   std::cout << "Points = " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "Cells  = " << mesh->GetNumberOfCells()  << std::endl;
@@ -217,7 +216,6 @@ int main(int, char *[])
 
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Cell data can be read from the Mesh with the
@@ -239,7 +237,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Neither \code{SetCellData()} or \code{GetCellData()} are efficient ways
@@ -251,7 +248,6 @@ int main(int, char *[])
   // Software Guide : BeginCodeSnippet
   typedef MeshType::CellDataContainer::ConstIterator CellDataIterator;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -277,7 +273,6 @@ int main(int, char *[])
   CellDataIterator end               = mesh->GetCellData()->End();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally a standard loop is used to iterate over all the cell data
@@ -288,7 +283,6 @@ int main(int, char *[])
   //  \index{CellDataIterator!increment}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   while( cellDataIterator != end )

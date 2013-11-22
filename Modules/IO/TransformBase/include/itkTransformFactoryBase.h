@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKIOTransformBase
  */
 
-class TransformFactoryBase:public ObjectFactoryBase
+class TransformFactoryBase : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -61,7 +61,8 @@ public:
   static void RegisterDefaultTransforms();
 
   /** Register this transform */
-  static TransformFactoryBase * GetFactory()
+  static TransformFactoryBase *
+  GetFactory()
   {
     if ( m_Factory == 0 )
       {
@@ -74,18 +75,20 @@ public:
     return m_Factory;
   }
 
-  void RegisterTransform(const char *classOverride,
-                         const char *overrideClassName,
-                         const char *description,
-                         bool enableFlag,
-                         CreateObjectFunctionBase *createFunction)
+  void
+  RegisterTransform(const char *classOverride,
+                    const char *overrideClassName,
+                    const char *description,
+                    bool enableFlag,
+                    CreateObjectFunctionBase *createFunction)
   {
     this->RegisterOverride (classOverride, overrideClassName, description, enableFlag, createFunction);
   }
 
 protected:
   TransformFactoryBase();
-  virtual ~TransformFactoryBase();
+  virtual
+  ~TransformFactoryBase();
 
 private:
   TransformFactoryBase(const Self &); //purposely not implemented

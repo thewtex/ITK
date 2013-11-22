@@ -36,12 +36,11 @@
 
 #include "itkFEMLoadPoint.h"
 
-
 #include "itkMetaFEMObjectConverter.h"
 
 namespace itk
 {
-FEMFactoryBase * FEMFactoryBase::m_Factory = 0;
+FEMFactoryBase *    FEMFactoryBase::m_Factory = 0;
 SimpleFastMutexLock FEMFactoryBase::m_CreationLock;
 
 FEMFactoryBase::FEMFactoryBase()
@@ -52,7 +51,8 @@ FEMFactoryBase::~FEMFactoryBase()
 {
 }
 
-void FEMFactoryBase::RegisterDefaultTypes()
+void
+FEMFactoryBase::RegisterDefaultTypes()
 {
   //if( m_Factory == 0 )
     {

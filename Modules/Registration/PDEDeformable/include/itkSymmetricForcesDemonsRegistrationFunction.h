@@ -58,7 +58,7 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class SymmetricForcesDemonsRegistrationFunction:
+class SymmetricForcesDemonsRegistrationFunction :
   public PDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage, TDisplacementField >
 {
@@ -67,7 +67,7 @@ public:
   typedef SymmetricForcesDemonsRegistrationFunction Self;
   typedef PDEDeformableRegistrationFunction< TFixedImage,
                                              TMovingImage, TDisplacementField >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -92,7 +92,7 @@ public:
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldTypePointer
-  DisplacementFieldTypePointer;
+    DisplacementFieldTypePointer;
 
   /** Inherit some enums from the superclass. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
@@ -119,20 +119,30 @@ public:
   typedef typename GradientCalculatorType::Pointer         GradientCalculatorPointer;
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
-  { m_MovingImageInterpolator = ptr; }
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
+  {
+    m_MovingImageInterpolator = ptr;
+  }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
-  { return m_MovingImageInterpolator; }
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
+  {
+    return m_MovingImageInterpolator;
+  }
 
   /** This class uses a constant timestep of 1. */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
-  { return m_TimeStep; }
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
+  {
+    return m_TimeStep;
+  }
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -157,12 +167,18 @@ public:
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
-  virtual double GetMetric() const
-  { return m_Metric; }
+  virtual double
+  GetMetric() const
+  {
+    return m_Metric;
+  }
 
   /** Get the rms change in displacement field. */
-  virtual const double & GetRMSChange() const
-  { return m_RMSChange; }
+  virtual const double &
+  GetRMSChange() const
+  {
+    return m_RMSChange;
+  }
 
   /** Set/Get the threshold below which the absolute difference of
    * intensity yields a match. When the intensities match between a
@@ -174,7 +190,9 @@ public:
 
 protected:
   SymmetricForcesDemonsRegistrationFunction();
-  ~SymmetricForcesDemonsRegistrationFunction() {}
+  ~SymmetricForcesDemonsRegistrationFunction() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** FixedImage image neighborhood iterator type. */
@@ -186,7 +204,7 @@ protected:
     double m_SumOfSquaredDifference;
     SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
-  };
+    };
 
 private:
   SymmetricForcesDemonsRegistrationFunction(const Self &); //purposely not

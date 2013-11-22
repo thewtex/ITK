@@ -71,7 +71,9 @@ public:
   virtual HessianType   EvaluateHessian( const InputType& iP ) const = 0;
 
   virtual OutputRealType EvaluateLaplacian( const InputType& iP ) const = 0;
+
   virtual OutputRealType EvaluateGradientNorm( const InputType& iP ) const;
+
   virtual OutputRealType EvaluateMeanCurvature( const InputType& iP ) const = 0;
 
   /** \class DataType
@@ -83,31 +85,36 @@ public:
    */
   template< typename T >
   class DataType
+  {
+public:
+    DataType( const std::string& iName ) :
+      m_Name( iName ), m_Computed( false )
     {
-    public:
-      DataType( const std::string& iName ) :
-        m_Name( iName ), m_Computed( false )
-        {}
-      DataType( const DataType& iData ) : m_Name( iData.m_Name ),
-        m_Value( iData.m_Value ), m_Computed( iData.m_Computed )
-      {}
+    }
 
-      ~DataType() {}
+    DataType( const DataType& iData ) : m_Name( iData.m_Name ),
+      m_Value( iData.m_Value ), m_Computed( iData.m_Computed )
+    {
+    }
 
-      std::string m_Name;
-      T           m_Value;
-      bool        m_Computed;
+    ~DataType() {
+    }
 
-      void operator =( const DataType& iData )
-        {
-        this->m_Name = iData.m_Name;
-        this->m_Value = iData.m_Value;
-        this->m_Computed = iData.m_Computed;
-        }
+    std::string m_Name;
+    T           m_Value;
+    bool        m_Computed;
 
-    private:
-      DataType();
-    };
+    void
+    operator =( const DataType& iData )
+    {
+      this->m_Name = iData.m_Name;
+      this->m_Value = iData.m_Value;
+      this->m_Computed = iData.m_Computed;
+    }
+
+private:
+    DataType();
+  };
 
   /** \struct LevelSetDataType
    *  \brief Convenient data structure to cache computed characteristics
@@ -119,7 +126,7 @@ public:
       Hessian( "Hessian" ), Laplacian( "Laplacian" ),
       GradientNorm( "GradientNorm" ), MeanCurvature( "MeanCurvature" ),
       ForwardGradient( "ForwardGradient" ), BackwardGradient( "BackwardGradient" )
-      {
+    {
       Value.m_Value = NumericTraits< OutputType >::Zero;
       Gradient.m_Value.Fill( NumericTraits< OutputRealType >::Zero );
       Hessian.m_Value.Fill( NumericTraits< OutputRealType >::Zero );
@@ -128,18 +135,21 @@ public:
       MeanCurvature.m_Value = NumericTraits< OutputRealType >::Zero;
       ForwardGradient.m_Value.Fill( NumericTraits< OutputRealType >::Zero );
       BackwardGradient.m_Value.Fill( NumericTraits< OutputRealType >::Zero );
-      }
+    }
 
     LevelSetDataType( const LevelSetDataType& iData ) : Value( iData.Value ),
       Gradient( iData.Gradient ), Hessian( iData.Hessian ),
       Laplacian( iData.Laplacian ), GradientNorm( iData.GradientNorm ),
       MeanCurvature( iData.MeanCurvature ), ForwardGradient( iData.ForwardGradient ),
-      BackwardGradient( iData.BackwardGradient ) {}
+      BackwardGradient( iData.BackwardGradient ) {
+    }
 
-    ~LevelSetDataType() {}
+    ~LevelSetDataType() {
+    }
 
-    void operator = ( const LevelSetDataType& iData )
-      {
+    void
+    operator =( const LevelSetDataType& iData )
+    {
       Value = iData.Value;
       Gradient = iData.Gradient;
       Hessian = iData.Hessian;
@@ -148,26 +158,33 @@ public:
       MeanCurvature = iData.MeanCurvature;
       ForwardGradient = iData.ForwardGradient;
       BackwardGradient = iData.BackwardGradient;
-      }
+    }
 
     /** the boolean value stores if it has already been computed */
-    DataType< OutputType >      Value;
-    DataType< GradientType >    Gradient;
-    DataType< HessianType >     Hessian;
-    DataType< OutputRealType >  Laplacian;
-    DataType< OutputRealType >  GradientNorm;
-    DataType< OutputRealType >  MeanCurvature;
-    DataType< GradientType >    ForwardGradient;
-    DataType< GradientType >    BackwardGradient;
+    DataType< OutputType > Value;
+    DataType< GradientType > Gradient;
+    DataType< HessianType > Hessian;
+    DataType< OutputRealType > Laplacian;
+    DataType< OutputRealType > GradientNorm;
+    DataType< OutputRealType > MeanCurvature;
+    DataType< GradientType > ForwardGradient;
+    DataType< GradientType > BackwardGradient;
     };
 
   virtual void Evaluate( const InputType& iP, LevelSetDataType& ioData ) const = 0;
+
   virtual void EvaluateGradient( const InputType& iP, LevelSetDataType& ioData ) const = 0;
+
   virtual void EvaluateHessian( const InputType& iP, LevelSetDataType& ioData ) const = 0;
+
   virtual void EvaluateLaplacian( const InputType& iP, LevelSetDataType& ioData ) const = 0;
+
   virtual void EvaluateGradientNorm( const InputType& iP, LevelSetDataType& ioData ) const;
+
   virtual void EvaluateMeanCurvature( const InputType& iP, LevelSetDataType& ioData ) const;
+
   virtual void EvaluateForwardGradient( const InputType& iP, LevelSetDataType& ioData ) const = 0;
+
   virtual void EvaluateBackwardGradient( const InputType& iP, LevelSetDataType& ioData ) const = 0;
 
   /** Returns true if iP is inside the level set, i.e. \f$\phi(p) \le 0 \f$ */
@@ -211,7 +228,9 @@ public:
 
 protected:
   LevelSetBase();
-  virtual ~LevelSetBase() {}
+  virtual
+  ~LevelSetBase() {
+  }
 
   // If the RegionType is ITK_UNSTRUCTURED_REGION, then the following
   // variables represent the maximum number of region that the data
@@ -230,8 +249,8 @@ protected:
   RegionType m_RequestedRegion;
 
 private:
-  LevelSetBase( const Self& ); // purposely left unimplemented
-  void operator = ( const Self& ); // purposely left unimplemented
+  LevelSetBase( const Self& );    // purposely left unimplemented
+  void operator =( const Self& ); // purposely left unimplemented
 
 };
 }

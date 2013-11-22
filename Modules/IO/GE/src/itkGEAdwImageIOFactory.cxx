@@ -21,8 +21,10 @@
 
 namespace itk
 {
-void GEAdwImageIOFactory::PrintSelf(std::ostream &, Indent) const
-{}
+void
+GEAdwImageIOFactory::PrintSelf(std::ostream &, Indent) const
+{
+}
 
 GEAdwImageIOFactory::GEAdwImageIOFactory()
 {
@@ -34,7 +36,8 @@ GEAdwImageIOFactory::GEAdwImageIOFactory()
 }
 
 GEAdwImageIOFactory::~GEAdwImageIOFactory()
-{}
+{
+}
 
 const char *
 GEAdwImageIOFactory::GetITKSourceVersion(void) const
@@ -53,9 +56,10 @@ GEAdwImageIOFactory::GetDescription() const
 
 static bool GEAdwImageIOFactoryHasBeenRegistered;
 
-void ITKIOGE_EXPORT GEAdwImageIOFactoryRegister__Private(void)
+void ITKIOGE_EXPORT
+GEAdwImageIOFactoryRegister__Private(void)
 {
-  if( ! GEAdwImageIOFactoryHasBeenRegistered )
+  if( !GEAdwImageIOFactoryHasBeenRegistered )
     {
     GEAdwImageIOFactoryHasBeenRegistered = true;
     GEAdwImageIOFactory::RegisterOneFactory();

@@ -20,7 +20,8 @@
 #include "itkImageFileWriter.h"
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 
-int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
+int
+itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
 {
   if( argc < 4 )
     {
@@ -33,9 +34,9 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
   typedef unsigned char InputPixelType;
   typedef double        OutputPixelType;
 
-  typedef itk::Image< InputPixelType, Dimension >     InputImageType;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
 
-  typedef itk::ImageFileReader< InputImageType >      InputReaderType;
+  typedef itk::ImageFileReader< InputImageType > InputReaderType;
   InputReaderType::Pointer reader = InputReaderType::New();
   reader->SetFileName( argv[1] );
 
@@ -53,10 +54,10 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
   std::cout << "Input image read" << std::endl;
 
   typedef itk::WhitakerSparseLevelSetImage< OutputPixelType, Dimension >
-      LevelSetType;
+    LevelSetType;
 
   typedef itk::BinaryImageToLevelSetImageAdaptor< InputImageType,
-      LevelSetType > BinaryToSparseAdaptorType;
+                                                  LevelSetType > BinaryToSparseAdaptorType;
 
   BinaryToSparseAdaptorType::Pointer adaptor = BinaryToSparseAdaptorType::New();
   adaptor->SetInputImage( input );
@@ -64,17 +65,17 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
 
   std::cout << "Finished converting to sparse format" << std::endl;
 
-  typedef LevelSetType::LayerIdType             LayerIdType;
+  typedef LevelSetType::LayerIdType LayerIdType;
   LevelSetType::Pointer sparseLevelSet = adaptor->GetModifiableLevelSet();
 
-  typedef itk::Image< OutputPixelType, Dimension >    OutputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   OutputImageType::Pointer output = OutputImageType::New();
   output->SetRegions( input->GetLargestPossibleRegion() );
   output->CopyInformation( input );
   output->Allocate();
   output->FillBuffer( 0.0 );
 
-  typedef itk::Image< char, Dimension >               StatusImageType;
+  typedef itk::Image< char, Dimension > StatusImageType;
   StatusImageType::Pointer statusImage = StatusImageType::New();
   statusImage->SetRegions( input->GetLargestPossibleRegion() );
   statusImage->CopyInformation( input );
@@ -100,7 +101,7 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
     ++sIt;
     }
 
-  typedef itk::ImageFileWriter< OutputImageType >     OutputWriterType;
+  typedef itk::ImageFileWriter< OutputImageType > OutputWriterType;
   OutputWriterType::Pointer outputWriter = OutputWriterType::New();
   outputWriter->SetFileName( argv[2] );
   outputWriter->SetInput( output );
@@ -115,7 +116,7 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::ImageFileWriter< StatusImageType >     StatusWriterType;
+  typedef itk::ImageFileWriter< StatusImageType > StatusWriterType;
   StatusWriterType::Pointer statusWriter = StatusWriterType::New();
   statusWriter->SetFileName( argv[3] );
   statusWriter->SetInput( statusImage );
@@ -130,9 +131,9 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
     }
 
   for( LayerIdType lyr = sparseLevelSet->MinusTwoLayer();
-      lyr <= sparseLevelSet->PlusTwoLayer(); lyr ++ )
+       lyr <= sparseLevelSet->PlusTwoLayer(); lyr++ )
     {
-    LevelSetType::LayerType layer = sparseLevelSet->GetLayer( lyr );
+    LevelSetType::LayerType     layer = sparseLevelSet->GetLayer( lyr );
     LevelSetType::LayerIterator lIt = layer.begin();
 
     std::cout << "*** " << static_cast< int >( lyr ) << " ***" <<std::endl;
@@ -145,8 +146,8 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
     std::cout << std::endl;
     }
 
-  typedef itk::LabelObject< unsigned long, 2 >  LabelObjectType;
-  typedef LabelObjectType::Pointer              LabelObjectPointer;
+  typedef itk::LabelObject< unsigned long, 2 > LabelObjectType;
+  typedef LabelObjectType::Pointer             LabelObjectPointer;
 
   LabelObjectPointer labelObject = LabelObjectType::New();
   LabelObjectPointer labelObjectSrc = sparseLevelSet->GetAsLabelObject<unsigned long>();

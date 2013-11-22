@@ -53,14 +53,14 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TFeatureImageType = TImageType >
-class ThresholdSegmentationLevelSetFunction:
+class ThresholdSegmentationLevelSetFunction :
   public SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 {
 public:
   /** Standard class typedefs. */
   typedef ThresholdSegmentationLevelSetFunction Self;
   typedef SegmentationLevelSetFunction< TImageType, TFeatureImageType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
   typedef TFeatureImageType          FeatureImageType;
@@ -82,18 +82,34 @@ public:
                       Superclass::ImageDimension);
 
   /** Set/Get threshold values */
-  void SetUpperThreshold(FeatureScalarType f)
-  { m_UpperThreshold = f; }
-  FeatureScalarType GetUpperThreshold() const
-  { return m_UpperThreshold; }
-  void SetLowerThreshold(FeatureScalarType f)
-  { m_LowerThreshold = f; }
-  FeatureScalarType GetLowerThreshold() const
-  { return m_LowerThreshold; }
+  void
+  SetUpperThreshold(FeatureScalarType f)
+  {
+    m_UpperThreshold = f;
+  }
+
+  FeatureScalarType
+  GetUpperThreshold() const
+  {
+    return m_UpperThreshold;
+  }
+
+  void
+  SetLowerThreshold(FeatureScalarType f)
+  {
+    m_LowerThreshold = f;
+  }
+
+  FeatureScalarType
+  GetLowerThreshold() const
+  {
+    return m_LowerThreshold;
+  }
 
   virtual void CalculateSpeedImage();
 
-  virtual void Initialize(const RadiusType & r)
+  virtual void
+  Initialize(const RadiusType & r)
   {
     Superclass::Initialize(r);
 
@@ -104,12 +120,14 @@ public:
 
   /** Set/Get the weight applied to the edge (Laplacian) attractor in the speed
    *  term function. Zero will turn this term off. */
-  void SetEdgeWeight(const ScalarValueType p)
+  void
+  SetEdgeWeight(const ScalarValueType p)
   {
     m_EdgeWeight = p;
   }
 
-  ScalarValueType GetEdgeWeight() const
+  ScalarValueType
+  GetEdgeWeight() const
   {
     return m_EdgeWeight;
   }
@@ -117,12 +135,14 @@ public:
   /** Anisotropic diffusion is applied to the FeatureImage before calculatign
    * the Laplacian (edge) term. This method sets/gets the smoothing
    * conductance. */
-  void SetSmoothingConductance(const ScalarValueType p)
+  void
+  SetSmoothingConductance(const ScalarValueType p)
   {
     m_SmoothingConductance = p;
   }
 
-  ScalarValueType GetSmoothingConductance() const
+  ScalarValueType
+  GetSmoothingConductance() const
   {
     return m_SmoothingConductance;
   }
@@ -130,12 +150,14 @@ public:
   /** Anisotropic diffusion is applied to the FeatureImage before calculating
    * the Laplacian (edge) term. This method sets/gets the number of diffusion
    * iterations. */
-  void SetSmoothingIterations(const int p)
+  void
+  SetSmoothingIterations(const int p)
   {
     m_SmoothingIterations = p;
   }
 
-  int GetSmoothingIterations() const
+  int
+  GetSmoothingIterations() const
   {
     return m_SmoothingIterations;
   }
@@ -143,12 +165,14 @@ public:
   /** Anisotropic diffusion is applied to the FeatureImage before calculating
    * the Laplacian (edge) term. This method sets/gets the diffusion time
    * step. */
-  void SetSmoothingTimeStep(const ScalarValueType i)
+  void
+  SetSmoothingTimeStep(const ScalarValueType i)
   {
     m_SmoothingTimeStep = i;
   }
 
-  ScalarValueType GetSmoothingTimeStep() const
+  ScalarValueType
+  GetSmoothingTimeStep() const
   {
     return m_SmoothingTimeStep;
   }
@@ -167,16 +191,21 @@ protected:
     this->SetEdgeWeight(0.0);
   }
 
-  virtual ~ThresholdSegmentationLevelSetFunction(){}
+  virtual
+  ~ThresholdSegmentationLevelSetFunction(){
+  }
 
   ThresholdSegmentationLevelSetFunction(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  // implemented
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "UpperThreshold: " << m_UpperThreshold << std::endl;
     os << indent << "LowerThreshold: " << m_LowerThreshold << std::endl;
     os << indent << "EdgeWeight: " << m_EdgeWeight << std::endl;

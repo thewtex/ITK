@@ -47,14 +47,14 @@ template< typename TInput, // Input image or mesh
           typename TLevelSetContainer,
           typename TPropagationImage = TInput >
 class LevelSetEquationPropagationTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  public LevelSetEquationTermBase< TInput, TLevelSetContainer >
 {
 public:
-  typedef LevelSetEquationPropagationTerm       Self;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef SmartPointer< const Self >            ConstPointer;
+  typedef LevelSetEquationPropagationTerm Self;
+  typedef SmartPointer< Self >            Pointer;
+  typedef SmartPointer< const Self >      ConstPointer;
   typedef LevelSetEquationTermBase< TInput, TLevelSetContainer >
-                                                Superclass;
+    Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro( Self );
@@ -68,29 +68,29 @@ public:
   typedef typename Superclass::InputPixelType     InputPixelType;
   typedef typename Superclass::InputPixelRealType InputPixelRealType;
 
-  typedef typename Superclass::LevelSetContainerType      LevelSetContainerType;
-  typedef typename Superclass::LevelSetContainerPointer   LevelSetContainerPointer;
-  typedef typename Superclass::LevelSetType               LevelSetType;
-  typedef typename Superclass::LevelSetPointer            LevelSetPointer;
-  typedef typename Superclass::LevelSetOutputPixelType    LevelSetOutputPixelType;
-  typedef typename Superclass::LevelSetOutputRealType     LevelSetOutputRealType;
-  typedef typename Superclass::LevelSetInputIndexType     LevelSetInputIndexType;
-  typedef typename Superclass::LevelSetGradientType       LevelSetGradientType;
-  typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
-  typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
-  typedef typename Superclass::LevelSetDataType           LevelSetDataType;
+  typedef typename Superclass::LevelSetContainerType    LevelSetContainerType;
+  typedef typename Superclass::LevelSetContainerPointer LevelSetContainerPointer;
+  typedef typename Superclass::LevelSetType             LevelSetType;
+  typedef typename Superclass::LevelSetPointer          LevelSetPointer;
+  typedef typename Superclass::LevelSetOutputPixelType  LevelSetOutputPixelType;
+  typedef typename Superclass::LevelSetOutputRealType   LevelSetOutputRealType;
+  typedef typename Superclass::LevelSetInputIndexType   LevelSetInputIndexType;
+  typedef typename Superclass::LevelSetGradientType     LevelSetGradientType;
+  typedef typename Superclass::LevelSetHessianType      LevelSetHessianType;
+  typedef typename Superclass::LevelSetIdentifierType   LevelSetIdentifierType;
+  typedef typename Superclass::LevelSetDataType         LevelSetDataType;
 
   typedef typename Superclass::HeavisideType         HeavisideType;
   typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
 
   itkStaticConstMacro(ImageDimension, unsigned int, InputImageType::ImageDimension);
 
-  typedef TPropagationImage                       PropagationImageType;
-  typedef typename PropagationImageType::Pointer  PropagationImagePointer;
+  typedef TPropagationImage                      PropagationImageType;
+  typedef typename PropagationImageType::Pointer PropagationImagePointer;
 
   /** Neighborhood radius type */
-  typedef ZeroFluxNeumannBoundaryCondition< InputImageType > DefaultBoundaryConditionType;
-  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType RadiusType;
+  typedef ZeroFluxNeumannBoundaryCondition< InputImageType >                        DefaultBoundaryConditionType;
+  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType          RadiusType;
   typedef ConstNeighborhoodIterator< InputImageType, DefaultBoundaryConditionType > NeighborhoodType;
 
   typedef Vector< LevelSetOutputRealType, itkGetStaticConstMacro(ImageDimension) > NeighborhoodScalesType;
@@ -118,7 +118,8 @@ public:
 protected:
   LevelSetEquationPropagationTerm();
 
-  virtual ~LevelSetEquationPropagationTerm();
+  virtual
+  ~LevelSetEquationPropagationTerm();
 
   PropagationImagePointer m_PropagationImage;
 
@@ -129,12 +130,14 @@ protected:
   /** Returns the term contribution for a given location iP, i.e.
    *  \f$ \omega_i( p ) \f$. */
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& iP );
+
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& iP,
                                         const LevelSetDataType& iData );
 
 private:
   LevelSetEquationPropagationTerm( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  void operator =( const Self& );                 // purposely not implemented
+
 };
 
 }

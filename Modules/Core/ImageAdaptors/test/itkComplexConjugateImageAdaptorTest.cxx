@@ -19,16 +19,17 @@
 #include "itkComplexConjugateImageAdaptor.h"
 #include "itkImageRegionIterator.h"
 
-
 typedef std::complex< float >                          PixelType;
 typedef itk::Image< PixelType, 2 >                     ImageType;
 typedef itk::ComplexConjugateImageAdaptor< ImageType > AdaptorType;
 
-int itkComplexConjugateImageAdaptorTest(int, char* [])
+int
+itkComplexConjugateImageAdaptorTest(int, char* [])
 {
   // Create a test image.
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size = {{10, 10}};
+
   image->SetRegions( size );
   image->Allocate();
   ImageType::RegionType region = image->GetLargestPossibleRegion();
@@ -38,7 +39,7 @@ int itkComplexConjugateImageAdaptorTest(int, char* [])
   itk::ImageRegionIterator< ImageType> iter( image, region );
   for ( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
     {
-    float randMax = static_cast< float >( RAND_MAX );
+    float     randMax = static_cast< float >( RAND_MAX );
     PixelType pixel( static_cast< float >( rand() ) / randMax,
                      static_cast< float >( rand() ) / randMax );
     iter.Set( pixel );

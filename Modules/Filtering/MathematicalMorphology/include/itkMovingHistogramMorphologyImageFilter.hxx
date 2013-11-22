@@ -49,5 +49,6 @@ MovingHistogramMorphologyImageFilter< TInputImage, TOutputImage, TKernel, THisto
 
   os << indent << "Boundary: " << m_Boundary << std::endl;
 }
+
 } // end namespace itk
 #endif

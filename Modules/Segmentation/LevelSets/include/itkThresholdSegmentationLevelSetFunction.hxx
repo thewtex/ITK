@@ -27,7 +27,8 @@
 namespace itk
 {
 template< typename TImageType, typename TFeatureImageType >
-void ThresholdSegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+ThresholdSegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateSpeedImage()
 {
   typename GradientAnisotropicDiffusionImageFilter< TFeatureImageType, TFeatureImageType >::Pointer
@@ -86,6 +87,7 @@ void ThresholdSegmentationLevelSetFunction< TImageType, TFeatureImageType >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

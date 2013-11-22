@@ -19,16 +19,17 @@
 #include "itkConnectedComponentImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkConnectedComponentImageFilterTooManyObjectsTest(int itkNotUsed(argc), char*[] itkNotUsed(argv))
+int
+itkConnectedComponentImageFilterTooManyObjectsTest(int itkNotUsed(argc), char*[] itkNotUsed(argv) )
 {
 
-  typedef   unsigned char  PixelType;
-  const     unsigned int   Dimension = 2;
-  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef   unsigned char PixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 
   // create a test input image with more objects in it than what the output type
   // can handle - 255
-  ImageType::Pointer img = ImageType::New();
+  ImageType::Pointer  img = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 512 );
   img->SetRegions( size );

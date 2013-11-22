@@ -24,8 +24,8 @@
 
 #include <fstream>
 
-
-int itkDeformationFieldSourceTest( int argc, char * argv[] )
+int
+itkDeformationFieldSourceTest( int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -36,16 +36,16 @@ int itkDeformationFieldSourceTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   float          VectorComponentType;
+  const     unsigned int Dimension = 2;
+  typedef   float VectorComponentType;
 
-  typedef   itk::Vector< VectorComponentType, Dimension >    VectorType;
+  typedef   itk::Vector< VectorComponentType, Dimension > VectorType;
 
-  typedef itk::Image< VectorType,  Dimension >   DeformationFieldType;
+  typedef itk::Image< VectorType,  Dimension > DeformationFieldType;
 
   typedef itk::DeformationFieldSource<
-                                DeformationFieldType
-                                             >  FilterType;
+      DeformationFieldType
+      >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -57,9 +57,9 @@ int itkDeformationFieldSourceTest( int argc, char * argv[] )
   DeformationFieldType::PointType origin;
   origin.Fill( 0.0 );
 
-  DeformationFieldType::RegionType     region;
-  DeformationFieldType::SizeType       size;
-  DeformationFieldType::IndexType      start;
+  DeformationFieldType::RegionType region;
+  DeformationFieldType::SizeType   size;
+  DeformationFieldType::IndexType  start;
 
   size[0] = 128;
   size[1] = 128;
@@ -73,7 +73,6 @@ int itkDeformationFieldSourceTest( int argc, char * argv[] )
   DeformationFieldType::DirectionType direction;
   direction.SetIdentity();
 
-
   filter->SetOutputSpacing( spacing );
   filter->SetOutputOrigin( origin );
   filter->SetOutputRegion( region );
@@ -81,9 +80,9 @@ int itkDeformationFieldSourceTest( int argc, char * argv[] )
 
   //  Create source and target landmarks.
   //
-  typedef FilterType::LandmarkContainerPointer   LandmarkContainerPointer;
-  typedef FilterType::LandmarkContainer          LandmarkContainerType;
-  typedef FilterType::LandmarkPointType          LandmarkPointType;
+  typedef FilterType::LandmarkContainerPointer LandmarkContainerPointer;
+  typedef FilterType::LandmarkContainer        LandmarkContainerType;
+  typedef FilterType::LandmarkPointType        LandmarkPointType;
 
   LandmarkContainerType::Pointer sourceLandmarks = LandmarkContainerType::New();
   LandmarkContainerType::Pointer targetLandmarks = LandmarkContainerType::New();
@@ -114,7 +113,6 @@ int itkDeformationFieldSourceTest( int argc, char * argv[] )
 
   pointsFile.close();
 
-
   filter->SetSourceLandmarks( sourceLandmarks.GetPointer() );
   filter->SetTargetLandmarks( targetLandmarks.GetPointer() );
 
@@ -133,7 +131,7 @@ int itkDeformationFieldSourceTest( int argc, char * argv[] )
 
   WriterType::Pointer writer = WriterType::New();
 
-  writer->SetInput (filter->GetOutput());
+  writer->SetInput (filter->GetOutput() );
   writer->SetFileName( argv[2] );
 
   try

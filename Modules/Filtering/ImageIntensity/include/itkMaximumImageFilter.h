@@ -33,19 +33,26 @@ template< typename TInput1, typename TInput2 = TInput1, typename TOutput = TInpu
 class Maximum
 {
 public:
-  Maximum() {}
-  ~Maximum() {}
-  bool operator!=(const Maximum &) const
+  Maximum() {
+  }
+
+  ~Maximum() {
+  }
+
+  bool
+  operator!=(const Maximum &) const
   {
     return false;
   }
 
-  bool operator==(const Maximum & other) const
+  bool
+  operator==(const Maximum & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     if ( A > B )
       {
@@ -56,6 +63,7 @@ public:
       return static_cast< TOutput >( B );
       }
   }
+
 };
 }
 /** \class MaximumImageFilter
@@ -77,7 +85,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class MaximumImageFilter:
+class MaximumImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Maximum<
@@ -120,12 +128,17 @@ public:
 #endif
 
 protected:
-  MaximumImageFilter() {}
-  virtual ~MaximumImageFilter() {}
+  MaximumImageFilter() {
+  }
+
+  virtual
+  ~MaximumImageFilter() {
+  }
 
 private:
   MaximumImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

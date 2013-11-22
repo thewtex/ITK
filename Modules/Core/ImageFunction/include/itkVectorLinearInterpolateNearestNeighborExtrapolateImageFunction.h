@@ -51,7 +51,7 @@ namespace itk
  *
  */
 template< typename TInputImage, typename TCoordRep = float >
-class VectorLinearInterpolateNearestNeighborExtrapolateImageFunction:
+class VectorLinearInterpolateNearestNeighborExtrapolateImageFunction :
   public VectorInterpolateImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -95,21 +95,24 @@ public:
 
   /** Should check if an index is inside the image buffer, however we
    * require that it answers true to use the extrapolation possibility. */
-  virtual bool IsInsideBuffer(const IndexType &) const
+  virtual bool
+  IsInsideBuffer(const IndexType &) const
   {
     return true;
   }
 
   /** Should check if a point is inside the image buffer, however we
    * require that it answers true to use the extrapolation possibility. */
-  virtual bool IsInsideBuffer(const PointType &) const
+  virtual bool
+  IsInsideBuffer(const PointType &) const
   {
     return true;
   }
 
   /** Should check if a continuous index is inside the image buffer, however we
    * require that it answers true to use the extrapolation possibility. */
-  virtual bool IsInsideBuffer(const ContinuousIndexType &) const
+  virtual bool
+  IsInsideBuffer(const ContinuousIndexType &) const
   {
     return true;
   }
@@ -131,17 +134,24 @@ public:
 
 protected:
   VectorLinearInterpolateNearestNeighborExtrapolateImageFunction();
-  virtual ~VectorLinearInterpolateNearestNeighborExtrapolateImageFunction() {}
+  virtual
+  ~VectorLinearInterpolateNearestNeighborExtrapolateImageFunction() {
+  }
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   VectorLinearInterpolateNearestNeighborExtrapolateImageFunction(const Self &); //purposely
+                                                                                //
+                                                                                //
                                                                                 // not
+                                                                                //
+                                                                                //
                                                                                 // implemented
   void operator=(const Self &);                                                 //purposely
-                                                                                // not
-                                                                                // implemented
+
+  // not
+  // implemented
 
   /** Number of neighbors used in the interpolation */
   static const unsigned int m_Neighbors;

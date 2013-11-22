@@ -22,12 +22,14 @@
 // Define floating point type to use for the test.
 typedef double Real;
 
-bool different(Real a, Real b)
+bool
+different(Real a, Real b)
 {
   return vcl_fabs(a-b) > 1e-6;
 }
 
-int itkVectorTest(int, char* [] )
+int
+itkVectorTest(int, char* [] )
 {
   bool passed = true;
 
@@ -37,127 +39,122 @@ int itkVectorTest(int, char* [] )
   RealVector t;
   RealVector r;
 
-  int i = 4;
+  int  i = 4;
   Real f = 2.1;
 
   s.Fill(3.0);
-  if (different(s[0], 3.0) || different(s[1], 3.0))
+  if (different(s[0], 3.0) || different(s[1], 3.0) )
     {
     passed = false;
     }
 
   s.Fill(2);
-  if (different(s[0], 2.0) || different(s[1], 2.0))
+  if (different(s[0], 2.0) || different(s[1], 2.0) )
     {
     passed = false;
     }
 
   s.Fill(i);
-  if (different(s[0], i) || different(s[1], i))
+  if (different(s[0], i) || different(s[1], i) )
     {
     passed = false;
     }
 
   s.Fill(f);
-  if (different(s[0], f) || different(s[1], f))
+  if (different(s[0], f) || different(s[1], f) )
     {
     passed = false;
     }
 
-
   t = s;
-  if (different(t[0], s[0]) || different(t[1], s[1]))
+  if (different(t[0], s[0]) || different(t[1], s[1]) )
     {
     passed = false;
     }
 
   s = -t;
-  if (different(s[0], -t[0]) || different(s[1], -t[1]))
+  if (different(s[0], -t[0]) || different(s[1], -t[1]) )
     {
     passed = false;
     }
 
   s.Fill(3.0);
   s *= 2.5;
-  if (different(s[0], 7.5) || different(s[1], 7.5))
+  if (different(s[0], 7.5) || different(s[1], 7.5) )
     {
     passed = false;
     }
 
   s /= 2.0;
-  if (different(s[0], 3.75) || different(s[1], 3.75))
+  if (different(s[0], 3.75) || different(s[1], 3.75) )
     {
     passed = false;
     }
 
-
   s.Fill(3.8);
   s *= f;
-  if (different(s[0], 7.98) || different(s[1], 7.98))
+  if (different(s[0], 7.98) || different(s[1], 7.98) )
     {
     passed = false;
     }
 
   s /= f;
-  if (different(s[0], 3.8) || different(s[1], 3.8))
+  if (different(s[0], 3.8) || different(s[1], 3.8) )
     {
     passed = false;
     }
 
   s += t;
-  if (different(s[0], 5.9) || different(s[1], 5.9))
+  if (different(s[0], 5.9) || different(s[1], 5.9) )
     {
     passed = false;
     }
-
 
   s -= t;
-  if (different(s[0], 3.8) || different(s[1], 3.8))
+  if (different(s[0], 3.8) || different(s[1], 3.8) )
     {
     passed = false;
     }
 
-
   r = s + t;
-  if (different(r[0], 5.9) || different(r[1], 5.9))
+  if (different(r[0], 5.9) || different(r[1], 5.9) )
     {
     passed = false;
     }
 
   r = s - t;
-  if (different(r[0], 1.7) || different(r[1], 1.7))
+  if (different(r[0], 1.7) || different(r[1], 1.7) )
     {
     passed = false;
     }
 
-
   r = s * 10.0;
-  if (different(r[0], 38.0) || different(r[1], 38.0))
+  if (different(r[0], 38.0) || different(r[1], 38.0) )
     {
     passed = false;
     }
 
   r = s / 10.0;
-  if (different(r[0], .38) || different(r[1], .38))
+  if (different(r[0], .38) || different(r[1], .38) )
     {
     passed = false;
     }
 
   r = s * f;
-  if (different(r[0], 7.98) || different(r[1], 7.98))
+  if (different(r[0], 7.98) || different(r[1], 7.98) )
     {
     passed = false;
     }
 
   f = 2.0;
   r = s / f;
-  if (different(r[0], 1.9) || different(r[1], 1.9))
+  if (different(r[0], 1.9) || different(r[1], 1.9) )
     {
     passed = false;
     }
 
   r[1] = 7.0;
-  if (different(r[0], 1.9) || different(r[1], 7.0))
+  if (different(r[0], 1.9) || different(r[1], 7.0) )
     {
     passed = false;
     }
@@ -174,7 +171,6 @@ int itkVectorTest(int, char* [] )
     {
     passed = false;
     }
-
 
   typedef itk::Vector<float, 3> RealVector3;
   RealVector3 a, b, c;

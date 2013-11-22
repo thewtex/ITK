@@ -157,9 +157,9 @@ NeuralNetworkFileReader< TNetwork >
     }
 
   //#define __USE_OLD_INTERFACE  Comment out to ensure that new interface works
-  #ifdef __USE_OLD_INTERFACE
+#ifdef __USE_OLD_INTERFACE
   this->m_Network->SetNumOfLayers(num_layers);
-  #endif
+#endif
 
   mF = new MET_FieldRecordType;
   MET_InitReadField(mF, "Layer_Id", MET_UINT, true);
@@ -251,8 +251,8 @@ NeuralNetworkFileReader< TNetwork >
         {
         std::cout << "SumInputFunction" << std::endl;
         typedef Statistics::SumInputFunction
-        < MeasurementVectorValueType *, MeasurementVectorValueType >
-        ifType;
+          < MeasurementVectorValueType *, MeasurementVectorValueType >
+          ifType;
         typename  ifType::Pointer ifcn = ifType::New();
         layerptr->SetNodeInputFunction(ifcn);
         }
@@ -390,6 +390,7 @@ NeuralNetworkFileReader< TNetwork >
     }
   this->m_InputFile.close();
 }
+
 } // namespace itk
 
 #endif

@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT Win32OutputWindow:public OutputWindow
+class ITKCommon_EXPORT Win32OutputWindow : public OutputWindow
 {
 public:
   /** Standard class typedefs. */
@@ -73,8 +73,11 @@ public:
                                   WPARAM wParam, LPARAM lParam);
 
 protected:
-  Win32OutputWindow() {}
-  virtual ~Win32OutputWindow();
+  Win32OutputWindow() {
+  }
+
+  virtual
+  ~Win32OutputWindow();
 
   void PromptText(const char *text);
 
@@ -91,4 +94,4 @@ private:
 } // end namespace itk
 
 #endif // _MSC_VER
-#endif  //  __itkWin32OutputWindow_h
+#endif //  __itkWin32OutputWindow_h

@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh, typename TTransform >
-class TransformMeshFilter:
+class TransformMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -72,7 +72,9 @@ public:
 
 protected:
   TransformMeshFilter();
-  ~TransformMeshFilter() {}
+  ~TransformMeshFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Requested Data */
@@ -84,6 +86,7 @@ protected:
 private:
   TransformMeshFilter(const TransformMeshFilter &); //purposely not implemented
   void operator=(const TransformMeshFilter &);      //purposely not implemented
+
 };
 } // end namespace itk
 

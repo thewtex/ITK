@@ -173,7 +173,7 @@ AccumulateImageFilter< TInputImage, TOutputImage >
   typename TInputImage::IndexType AccumulatedIndex = inputImage->GetLargestPossibleRegion().GetIndex();
 
   typename TInputImage::SizeValueType  SizeAccumulateDimension = AccumulatedSize[m_AccumulateDimension];
-  double                               SizeAccumulateDimensionDouble = static_cast< double >( SizeAccumulateDimension );
+  double SizeAccumulateDimensionDouble = static_cast< double >( SizeAccumulateDimension );
   typename TInputImage::IndexValueType IndexAccumulateDimension = AccumulatedIndex[m_AccumulateDimension];
   for ( unsigned int i = 0; i < InputImageDimension; i++ )
     {
@@ -228,6 +228,7 @@ AccumulateImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream & os,
   os << indent << "AccumulateDimension: " << m_AccumulateDimension << std::endl;
   os << indent << "Average: " << ( m_Average ? "On" : "Off" ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

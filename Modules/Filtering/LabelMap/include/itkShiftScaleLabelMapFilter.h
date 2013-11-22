@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class ShiftScaleLabelMapFilter:
+class ShiftScaleLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -51,12 +51,12 @@ public:
   typedef SmartPointer< const Self >      ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage                                        ImageType;
-  typedef typename ImageType::Pointer                   ImagePointer;
-  typedef typename ImageType::ConstPointer              ImageConstPointer;
-  typedef typename ImageType::PixelType                 PixelType;
-  typedef typename ImageType::IndexType                 IndexType;
-  typedef typename ImageType::LabelObjectType           LabelObjectType;
+  typedef TImage                              ImageType;
+  typedef typename ImageType::Pointer         ImagePointer;
+  typedef typename ImageType::ConstPointer    ImageConstPointer;
+  typedef typename ImageType::PixelType       PixelType;
+  typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::LabelObjectType LabelObjectType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
@@ -90,7 +90,8 @@ public:
 
 protected:
   ShiftScaleLabelMapFilter();
-  ~ShiftScaleLabelMapFilter() {}
+  ~ShiftScaleLabelMapFilter() {
+  }
 
   void GenerateData();
 
@@ -104,6 +105,7 @@ protected:
 private:
   ShiftScaleLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };                                        // end of class
 } // end namespace itk
 

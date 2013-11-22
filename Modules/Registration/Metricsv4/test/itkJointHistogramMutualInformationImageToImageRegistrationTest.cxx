@@ -38,13 +38,13 @@
 
 #include <iomanip>
 
-namespace{
+namespace {
 
 template < typename TOptimizer, typename TMIMetric >
 /** \class JointPDFStatus
  * \brief Save the JointPDF from the metric to an image file and check to make sure
  * they are normalized properly. */
-class JointPDFStatus: public itk::Command
+class JointPDFStatus : public itk::Command
 {
 public:
   typedef JointPDFStatus            Self;
@@ -56,35 +56,40 @@ public:
   typedef TOptimizer OptimizerType;
   typedef TMIMetric  MIMetricType;
 
-  void SetMIMetric( const MIMetricType * metric )
-    {
+  void
+  SetMIMetric( const MIMetricType * metric )
+  {
     this->m_MIMetric = metric;
-    }
+  }
 
-  void SetOutputFileNameBase( const char * filename )
-    {
+  void
+  SetOutputFileNameBase( const char * filename )
+  {
     this->m_OutputFileNameBase = filename;
-    }
+  }
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     const OptimizerType * optimizer =
       dynamic_cast< const OptimizerType * >( object );
-    if( !(itk::IterationEvent().CheckEvent( &event )) )
+
+    if( !(itk::IterationEvent().CheckEvent( &event ) ) )
       {
       return;
       }
     std::cout << "Current optimizer iteration: " << optimizer->GetCurrentIteration() << "\n";
     std::cout << "Current optimizer value:     " << optimizer->GetCurrentMetricValue() << "\n";
 
-    std::string  ext = itksys::SystemTools::GetFilenameExtension( this->m_OutputFileNameBase );
-    std::string name = itksys::SystemTools::GetFilenameWithoutExtension( this->m_OutputFileNameBase );
-    std::string path = itksys::SystemTools::GetFilenamePath( this->m_OutputFileNameBase );
+    std::string        ext = itksys::SystemTools::GetFilenameExtension( this->m_OutputFileNameBase );
+    std::string        name = itksys::SystemTools::GetFilenameWithoutExtension( this->m_OutputFileNameBase );
+    std::string        path = itksys::SystemTools::GetFilenamePath( this->m_OutputFileNameBase );
     std::ostringstream ostrm;
     ostrm << name << "_jointpdf_" << this->m_Count << ext;
     std::cout << "Writing joint pdf to:        " << ostrm.str() << std::endl;
@@ -100,21 +105,21 @@ public:
     // Check for correct normalization.
     typedef itk::ImageRegionConstIterator< JointPDFType > IteratorType;
     IteratorType it( jointPDF, jointPDF->GetBufferedRegion() );
-    double sum = 0.0;
-    for( it.GoToBegin(); ! it.IsAtEnd(); ++it )
+    double       sum = 0.0;
+    for( it.GoToBegin(); !it.IsAtEnd(); ++it )
       {
       sum += it.Get();
       }
     std::cout << "The PDF sum is               " << std::setprecision( 20 ) << sum << std::endl;
 
     ++this->m_Count;
-    }
+  }
 
 protected:
-  JointPDFStatus(): m_Count( 0 )
-    {
+  JointPDFStatus() : m_Count( 0 )
+  {
     this->m_Writer = WriterType::New();
-    }
+  }
 
 private:
   const MIMetricType * m_MIMetric;
@@ -127,7 +132,8 @@ private:
 };
 }
 
-int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, char *argv[])
+int
+itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, char *argv[])
 {
 
   if( argc < 4 )
@@ -153,18 +159,18 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
     numberOfDisplacementIterations = atoi( argv[5] );
     }
   std::cout << " iterations "<< numberOfIterations
-    << " displacementIterations " << numberOfDisplacementIterations << std::endl;
+            << " displacementIterations " << numberOfDisplacementIterations << std::endl;
 
   const unsigned int Dimension = 2;
   typedef double PixelType; //I assume png is unsigned short
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
   typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
 
-  FixedImageReaderType::Pointer fixedImageReader   = FixedImageReaderType::New();
+  FixedImageReaderType::Pointer  fixedImageReader   = FixedImageReaderType::New();
   MovingImageReaderType::Pointer movingImageReader = MovingImageReaderType::New();
 
   fixedImageReader->SetFileName( argv[1] );
@@ -172,26 +178,26 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
 
   //get the images
   fixedImageReader->Update();
-  FixedImageType::Pointer  fixedImage = fixedImageReader->GetOutput();
+  FixedImageType::Pointer fixedImage = fixedImageReader->GetOutput();
   movingImageReader->Update();
   MovingImageType::Pointer movingImage = movingImageReader->GetOutput();
 
-  /** define a resample filter that will ultimately be used to deform the image */
+  /** define a resample filter that will ultimately be used to deform the image
+    */
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
   ResampleFilterType::Pointer resample = ResampleFilterType::New();
 
-
   /** create a composite transform holder for other transforms  */
-  typedef itk::CompositeTransform<double, Dimension>    CompositeType;
-  typedef CompositeType::ScalarType                     ScalarType;
+  typedef itk::CompositeTransform<double, Dimension> CompositeType;
+  typedef CompositeType::ScalarType                  ScalarType;
 
   CompositeType::Pointer compositeTransform = CompositeType::New();
 
   //create an affine transform
   typedef itk::AffineTransform<double, Dimension>
-                                                    AffineTransformType;
+    AffineTransformType;
   AffineTransformType::Pointer affineTransform = AffineTransformType::New();
   affineTransform->SetIdentity();
   std::cout <<" affineTransform params prior to optimization " << affineTransform->GetParameters() << std::endl;
@@ -225,34 +231,37 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   identityTransform->SetIdentity();
 
   // The metric
-  typedef itk::JointHistogramMutualInformationImageToImageMetricv4 < FixedImageType, MovingImageType >  MetricType;
-  typedef MetricType::FixedSampledPointSetType                                                              PointSetType;
+  typedef itk::JointHistogramMutualInformationImageToImageMetricv4 < FixedImageType, MovingImageType > MetricType;
+  typedef MetricType::FixedSampledPointSetType                                                         PointSetType;
   MetricType::Pointer metric = MetricType::New();
   metric->SetNumberOfHistogramBins(20);
 
-  typedef PointSetType::PointType     PointType;
-  PointSetType::Pointer               pset(PointSetType::New());
-  unsigned long ind=0,ct=0;
+  typedef PointSetType::PointType PointType;
+  PointSetType::Pointer                             pset(PointSetType::New() );
+  unsigned long                                     ind=0,ct=0;
   itk::ImageRegionIteratorWithIndex<FixedImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
   for( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {
     // take every N^th point
     if ( ct % 20 == 0  ) // about a factor of 5 speed-up over dense
       {
-        PointType pt;
-        fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
-        pset->SetPoint(ind, pt);
-        ind++;
+      PointType pt;
+      fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+      pset->SetPoint(ind, pt);
+      ind++;
       }
-      ct++;
+    ct++;
     }
-    // brief profiling notes on mutual information affine registration macbook air , mi using every 20th point for sparse
-    //  1 thread dense = 10 sec
-    //  2 thread dense = 7.5  sec
-    //  1 thread sparse = 2.2 sec
-    //  2 thread sparse = 1.8 sec
-    // this uses only 1500 points so it's probably not a great multi-thread test for the sparse case
-  std::cout << "Setting point set with " << ind << " points of " << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
+  // brief profiling notes on mutual information affine registration macbook air
+  // , mi using every 20th point for sparse
+  //  1 thread dense = 10 sec
+  //  2 thread dense = 7.5  sec
+  //  1 thread sparse = 2.2 sec
+  //  2 thread sparse = 1.8 sec
+  // this uses only 1500 points so it's probably not a great multi-thread test
+  // for the sparse case
+  std::cout << "Setting point set with " << ind << " points of " <<
+    fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
   metric->SetFixedSampledPointSet( pset );
   metric->SetUseFixedSampledPointSet( true );
   std::cout << "Testing metric with point set..." << std::endl;
@@ -270,12 +279,13 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   metric->Initialize();
 
   typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType > RegistrationParameterScalesFromShiftType;
-  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
+  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator =
+    RegistrationParameterScalesFromShiftType::New();
   shiftScaleEstimator->SetMetric(metric);
 
   std::cout << "First do an affine registration " << std::endl;
-  typedef itk::GradientDescentOptimizerv4  OptimizerType;
-  OptimizerType::Pointer  optimizer = OptimizerType::New();
+  typedef itk::GradientDescentOptimizerv4 OptimizerType;
+  OptimizerType::Pointer optimizer = OptimizerType::New();
   typedef JointPDFStatus< OptimizerType, MetricType > JointPDFStatusType;
   JointPDFStatusType::Pointer jointPDFStatus = JointPDFStatusType::New();
   jointPDFStatus->SetOutputFileNameBase( argv[3] );
@@ -286,15 +296,20 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   optimizer->SetScalesEstimator( shiftScaleEstimator );
   optimizer->StartOptimization();
 
-  std::cout << "Number of threads: metric: " << metric->GetNumberOfThreadsUsed() << " optimizer: " << optimizer->GetNumberOfThreads() << std::endl;
+  std::cout << "Number of threads: metric: " << metric->GetNumberOfThreadsUsed() << " optimizer: " <<
+    optimizer->GetNumberOfThreads() << std::endl;
   std::cout << "GetNumberOfSkippedFixedSampledPoints: " << metric->GetNumberOfSkippedFixedSampledPoints() << std::endl;
 
   std::cout << "Follow affine with deformable registration " << std::endl;
   // now add the displacement field to the composite transform
   compositeTransform->AddTransform( affineTransform );
   compositeTransform->AddTransform( displacementTransform );
-  compositeTransform->SetAllTransformsToOptimizeOn(); //Set back to optimize all.
-  compositeTransform->SetOnlyMostRecentTransformToOptimizeOn(); //set to optimize the displacement field
+  compositeTransform->SetAllTransformsToOptimizeOn();           //Set back to
+                                                                // optimize all.
+  compositeTransform->SetOnlyMostRecentTransformToOptimizeOn(); //set to
+                                                                // optimize the
+                                                                // displacement
+                                                                // field
   metric->SetMovingTransform( compositeTransform );
   metric->SetUseFixedSampledPointSet( false );
   metric->Initialize();
@@ -331,7 +346,6 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
 
   std::cout << "GetNumberOfSkippedFixedSampledPoints: " << metric->GetNumberOfSkippedFixedSampledPoints() << std::endl;
 
-
   //warp the image with the displacement field
   resample->SetTransform( compositeTransform );
   resample->SetInput( movingImageReader->GetOutput() );
@@ -343,26 +357,26 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   resample->Update();
 
   //write out the displacement field
-  typedef itk::ImageFileWriter< DisplacementFieldType >  DisplacementWriterType;
-  DisplacementWriterType::Pointer      displacementwriter =  DisplacementWriterType::New();
-  std::string outfilename( argv[3] );
-  std::string  ext = itksys::SystemTools::GetFilenameExtension( outfilename );
-  std::string name = itksys::SystemTools::GetFilenameWithoutExtension( outfilename );
-  std::string path = itksys::SystemTools::GetFilenamePath( outfilename );
-  std::string defout = path + std::string( "/" ) + name + std::string("_def") + ext;
+  typedef itk::ImageFileWriter< DisplacementFieldType > DisplacementWriterType;
+  DisplacementWriterType::Pointer displacementwriter =  DisplacementWriterType::New();
+  std::string                     outfilename( argv[3] );
+  std::string                     ext = itksys::SystemTools::GetFilenameExtension( outfilename );
+  std::string                     name = itksys::SystemTools::GetFilenameWithoutExtension( outfilename );
+  std::string                     path = itksys::SystemTools::GetFilenamePath( outfilename );
+  std::string                     defout = path + std::string( "/" ) + name + std::string("_def") + ext;
   displacementwriter->SetFileName( defout.c_str() );
   displacementwriter->SetInput( displacementTransform->GetDisplacementField() );
   displacementwriter->Update();
 
   //write the warped image into a file
-  typedef double                                    OutputPixelType;
-  typedef itk::Image< OutputPixelType, Dimension >  OutputImageType;
+  typedef double                                   OutputPixelType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter<
-                        MovingImageType,
-                        OutputImageType >           CastFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >   WriterType;
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+      MovingImageType,
+      OutputImageType >           CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
   writer->SetFileName( argv[3] );
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput() );

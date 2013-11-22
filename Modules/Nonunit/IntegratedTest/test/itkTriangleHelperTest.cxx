@@ -19,7 +19,8 @@
 #include "itkTriangleHelper.h"
 #include <iostream>
 
-int itkTriangleHelperTest( int argc, char* argv[] )
+int
+itkTriangleHelperTest( int argc, char* argv[] )
 {
   (void) argc;
   (void) argv;
@@ -90,7 +91,7 @@ int itkTriangleHelperTest( int argc, char* argv[] )
   std::cout <<TriangleHelperType::Cotangent( a, Org, a ) <<std::endl;
 
   std::cout <<TriangleHelperType::ComputeBarycenter( 1., a, 2., Org, 3., b )
-    <<std::endl;
+            <<std::endl;
 
   PointType barycenter =
     TriangleHelperType::ComputeBarycenter( 0., a, 1., Org, -1., b );
@@ -104,15 +105,15 @@ int itkTriangleHelperTest( int argc, char* argv[] )
     }
 
   if( vnl_math_abs( TriangleHelperType::ComputeAngle( a, Org, b )
-        - 0.25 * vnl_math::pi ) > 1e-6 )
+                    - 0.25 * vnl_math::pi ) > 1e-6 )
     {
     std::cout <<"TriangleHelperType::ComputeAngle( a, Org, b ) FAILED"
-      <<std::endl;
+              <<std::endl;
     return EXIT_FAILURE;
     }
 
   std::cout <<TriangleHelperType::ComputeGravityCenter( a, Org, b )
-    <<std::endl;
+            <<std::endl;
 
   PointType Circum;
   Circum[0] = 0.5;
@@ -124,7 +125,7 @@ int itkTriangleHelperTest( int argc, char* argv[] )
   if( barycenter.SquaredEuclideanDistanceTo( Circum ) > 1e-6 )
     {
     std::cout <<"TriangleHelperType::ComputeCircumCenter( a, Org, b ) FAILED"
-      <<std::endl;
+              <<std::endl;
     return EXIT_FAILURE;
     }
 
@@ -133,7 +134,7 @@ int itkTriangleHelperTest( int argc, char* argv[] )
   if( barycenter.SquaredEuclideanDistanceTo( Circum ) > 1e-6 )
     {
     std::cout <<"TriangleHelperType::ComputeConstrainedCircumCenter(a,Org,b)"
-      <<" FAILED" <<std::endl;
+              <<" FAILED" <<std::endl;
     return EXIT_FAILURE;
     }
 
@@ -141,7 +142,7 @@ int itkTriangleHelperTest( int argc, char* argv[] )
   if( vnl_math_abs( area - 0.25 ) > 1e-6 )
     {
     std::cout <<"TriangleHelperType::ComputeArea( a, Org, b ) FAILED"
-      <<std::endl;
+              <<std::endl;
     return EXIT_FAILURE;
     }
 

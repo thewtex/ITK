@@ -324,6 +324,7 @@ QuadEdgeMeshLineCell< TCellInterface >
 {
   return 2;
 }
+
 } // end namespace itk
 
 #endif

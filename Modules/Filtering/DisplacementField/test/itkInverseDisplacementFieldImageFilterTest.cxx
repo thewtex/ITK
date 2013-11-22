@@ -20,7 +20,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-int itkInverseDisplacementFieldImageFilterTest( int argc, char * argv[] )
+int
+itkInverseDisplacementFieldImageFilterTest( int argc, char * argv[] )
 {
 
   if( argc < 2 )
@@ -39,9 +40,9 @@ int itkInverseDisplacementFieldImageFilterTest( int argc, char * argv[] )
   typedef itk::Image< VectorType,  Dimension > DisplacementFieldType;
 
   typedef itk::InverseDisplacementFieldImageFilter<
-    DisplacementFieldType,
-    DisplacementFieldType
-    >  FilterType;
+      DisplacementFieldType,
+      DisplacementFieldType
+      >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -158,7 +159,8 @@ int itkInverseDisplacementFieldImageFilterTest( int argc, char * argv[] )
     if(vcl_abs(fp2[0] + fp1[0]) > 0.001
        || vcl_abs(fp2[1] + fp1[1]) > 0.001)
       {
-      std::cerr<<"Loop invariant not satisfied for index "<<it.GetIndex()<<" : f^-1(f(p1) + p1 ) + f(p1)  = 0"<<   std::endl;
+      std::cerr<<"Loop invariant not satisfied for index "<<it.GetIndex()<<" : f^-1(f(p1) + p1 ) + f(p1)  = 0"<<
+        std::endl;
       std::cerr<<"f(p1) = "<<fp1<<std::endl;
       std::cerr<<"f^-1(f(p1) + p1 ) = "<<fp2<<std::endl;
       std::cerr<<"diff: "<<fp1[0]+fp2[0]<<", "<<fp1[1]+fp2[1]<<std::endl;

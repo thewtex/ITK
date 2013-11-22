@@ -110,10 +110,13 @@ public:
   typedef SmartPointer<const Self>                          ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const {
+  virtual const char*
+  GetITKSourceVersion() const {
     return ITK_SOURCE_VERSION;
   }
-  const char* GetDescription() const {
+
+  const char*
+  GetDescription() const {
     return "A Factory for GPUGradientAnisotropicDiffusionImageFilter";
   }
 
@@ -124,7 +127,8 @@ public:
   itkTypeMacro(GPUGradientAnisotropicDiffusionImageFilterFactory, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GPUGradientAnisotropicDiffusionImageFilterFactory::Pointer factory =
       GPUGradientAnisotropicDiffusionImageFilterFactory::New();
@@ -137,8 +141,9 @@ private:
                                                                   // not
                                                                   // implemented
   void operator=(const Self&);                                    //purposely
-                                                                  // not
-                                                                  // implemented
+
+  // not
+  // implemented
 
 #define GradientAnisotropicDiffusionImageFilterTypeMacro(ipt,opt,dm) \
     { \

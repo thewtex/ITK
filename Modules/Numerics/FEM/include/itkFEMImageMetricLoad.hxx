@@ -300,6 +300,7 @@ ImageMetricLoad<TMoving, TFixed>
   // ------------------------------------------------------------
 
   VectorType OutVec;
+
   for( unsigned int k = 0; k < ImageDimension; k++ )
     {
     if( vnl_math_isnan(Gpos[k])  || vnl_math_isinf(Gpos[k])
@@ -324,7 +325,8 @@ ImageMetricLoad<TMoving, TFixed>
     // Set the size of the image region
     parameters[k] = Gsol[k];
     //this gives the translation by the vector field
-    //where the piece of reference image currently lines up under the above translation
+    //where the piece of reference image currently lines up under the above
+    // translation
     //position in reference image
     rindex[k] = (long)( Gpos[k] + Gsol[k] + 0.5 );
     tindex[k] = (long)( Gpos[k] + 0.5 ) - (long)m_MetricRadius[k] / 2;
@@ -430,27 +432,41 @@ ImageMetricLoad<TMoving, TFixed>
     parameters[k] = InVec[k + ImageDimension];                          // this
                                                                         // gives
                                                                         // the
+                                                                        //
+                                                                        //
                                                                         // translation
                                                                         // by
                                                                         // the
+                                                                        //
+                                                                        //
                                                                         // vector
                                                                         // field
     rindex[k] = (long)( InVec[k] + InVec[k + ImageDimension] + 0.5 );   // where
                                                                         // the
                                                                         // piece
                                                                         // of
+                                                                        //
+                                                                        //
                                                                         // reference
                                                                         // image
+                                                                        //
+                                                                        //
                                                                         // currently
                                                                         // lines
                                                                         // up
                                                                         // under
                                                                         // the
                                                                         // above
+                                                                        //
+                                                                        //
                                                                         // translation
     tindex[k] = (long)( InVec[k] + 0.5 ) - (long)m_MetricRadius[k] / 2; //
+                                                                        //
+                                                                        //
                                                                         // position
                                                                         // in
+                                                                        //
+                                                                        //
                                                                         // reference
                                                                         // image
     int hibordercheck = (int)tindex[k] + (int)m_MetricRadius[k] - (int)m_TarSize[k];
@@ -468,8 +484,12 @@ ImageMetricLoad<TMoving, TFixed>
       regionRadius[k] = m_MetricRadius[k];
       }
     tindex[k] = (long)( InVec[k] + 0.5 ) - (long)regionRadius[k] / 2;  //
+                                                                       //
+                                                                       //
                                                                        // position
                                                                        // in
+                                                                       //
+                                                                       //
                                                                        // reference
                                                                        // image
     }
@@ -519,13 +539,19 @@ ImageMetricLoad<TMoving, TFixed>
     parameters[k] = Gsol[k];                                           // this
                                                                        // gives
                                                                        // the
+                                                                       //
+                                                                       //
                                                                        // translation
                                                                        // by the
                                                                        // vector
                                                                        // field
     tindex[k] = (long)( Gpos[k] + 0.5 ) - (long)m_MetricRadius[k] / 2; //
+                                                                       //
+                                                                       //
                                                                        // position
                                                                        // in
+                                                                       //
+                                                                       //
                                                                        // reference
                                                                        // image
     if( tindex[k] > m_TarSize[k] - 1 || tindex[k] < 0 )
@@ -547,8 +573,12 @@ ImageMetricLoad<TMoving, TFixed>
       regionRadius[k] = m_MetricRadius[k];
       }
     tindex[k] = (long)( Gpos[k] + 0.5 ) - (long)regionRadius[k] / 2;  //
+                                                                      //
+                                                                      //
                                                                       // position
                                                                       // in
+                                                                      //
+                                                                      //
                                                                       // reference
                                                                       // image
     }
@@ -639,13 +669,19 @@ ImageMetricLoad<TMoving, TFixed>
     parameters[k] = Gsol[k];                                           // this
                                                                        // gives
                                                                        // the
+                                                                       //
+                                                                       //
                                                                        // translation
                                                                        // by the
                                                                        // vector
                                                                        // field
     tindex[k] = (long)( Gpos[k] + 0.5 ) - (long)m_MetricRadius[k] / 2; //
+                                                                       //
+                                                                       //
                                                                        // position
                                                                        // in
+                                                                       //
+                                                                       //
                                                                        // reference
                                                                        // image
     if( tindex[k] > m_TarSize[k] - 1 || tindex[k] < 0 )
@@ -667,8 +703,12 @@ ImageMetricLoad<TMoving, TFixed>
       regionRadius[k] = m_MetricRadius[k];
       }
     tindex[k] = (long)( Gpos[k] + 0.5 ) - (long)regionRadius[k] / 2;  //
+                                                                      //
+                                                                      //
                                                                       // position
                                                                       // in
+                                                                      //
+                                                                      //
                                                                       // reference
                                                                       // image
     }
@@ -819,7 +859,7 @@ ImageMetricLoad<TMoving, TFixed>
 
   //Element::VectorType force_tmp;
   //
-  Element::Float w;
+  Element::Float      w;
   Element::VectorType force(Ndofs, 0.0);
   for( unsigned int i = 0; i < Nip; i++ )
     {
@@ -864,7 +904,8 @@ ImageMetricLoad<TMoving, TFixed>
     // that it is equal to the number of DOFs per node. If the Fg returned
     // a vector with less dimensions, we add zero elements. If the Fg
     // returned a vector with more dimensions, we remove the extra dimensions.
-    force.fill(0.0); //HACK:  Is this setting to all zeros necessary given that the next line overwrites the values anyway
+    force.fill(0.0); //HACK:  Is this setting to all zeros necessary given that
+                     // the next line overwrites the values anyway
     force = this->Fe(gip, gsol);
     // Calculate the equivalent nodal loads
     for( unsigned int n = 0; n < Nnodes; n++ )
@@ -884,6 +925,7 @@ ImageMetricLoad<TMoving, TFixed>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Metric Gradient Image: " << this->m_MetricGradientImage << std::endl;
   os << indent << "Moving Image: " << this->m_RefImage << std::endl;
   os << indent << "Fixed Image: " << this->m_TarImage << std::endl;

@@ -38,15 +38,16 @@
 #include "itkPointSet.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
   //  \begin{floatingfigure}[rlp]{6cm}
   //    \centering
   //    \includegraphics[width=4cm]{PointSetWithVectors}
-  //    \caption[PointSet with Vectors as PixelType]{Vectors as PixelType.\label{fig:PointSetWithVectors}}
+  //    \caption[PointSet with Vectors as PixelType]{Vectors as
+  // PixelType.\label{fig:PointSetWithVectors}}
   //  \end{floatingfigure}
   //
   //  The Vector class is templated over the type used to represent
@@ -63,9 +64,9 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 3;
-  typedef itk::Vector< float, Dimension >    PixelType;
-  // Software Guide : EndCodeSnippet
 
+  typedef itk::Vector< float, Dimension > PixelType;
+  // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
   //
@@ -76,9 +77,8 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::PointSet< PixelType, Dimension > PointSetType;
-  PointSetType::Pointer  pointSet = PointSetType::New();
+  PointSetType::Pointer pointSet = PointSetType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -93,8 +93,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointSetType::PixelType   tangent;
-  PointSetType::PointType   point;
+  PointSetType::PixelType tangent;
+  PointSetType::PointType point;
 
   unsigned int pointId =  0;
   const double radius = 300.0;
@@ -114,7 +114,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We can now visit all the points and use the vector on the pixel values to
@@ -127,13 +126,12 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef  PointSetType::PointDataContainer::ConstIterator PointDataIterator;
   PointDataIterator pixelIterator = pointSet->GetPointData()->Begin();
   PointDataIterator pixelEnd      = pointSet->GetPointData()->End();
 
-  typedef  PointSetType::PointsContainer::Iterator     PointIterator;
+  typedef  PointSetType::PointsContainer::Iterator PointIterator;
   PointIterator pointIterator = pointSet->GetPoints()->Begin();
   PointIterator pointEnd      = pointSet->GetPoints()->End();
 
@@ -145,7 +143,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that the \code{ConstIterator} was used here instead of the normal
@@ -156,7 +153,6 @@ int main(int, char *[])
   //  \index{const-correctness}
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -181,7 +177,6 @@ int main(int, char *[])
     ++pointIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

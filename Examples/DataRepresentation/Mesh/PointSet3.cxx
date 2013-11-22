@@ -31,10 +31,10 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkPointSet.h"
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -48,10 +48,8 @@ int main(int, char *[])
   typedef itk::PointSet< PixelType, 3 > PointSetType;
   // Software Guide : EndCodeSnippet
 
-
   // A point set is instantiated here
-  PointSetType::Pointer  pointSet = PointSetType::New();
-
+  PointSetType::Pointer pointSet = PointSetType::New();
 
   //  Software Guide : BeginLatex
   //
@@ -68,10 +66,9 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   unsigned int dataId =  0;
-  PixelType value     = 79;
+  PixelType    value     = 79;
   pointSet->SetPointData( dataId++, value );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -90,7 +87,7 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
 
-  const bool found = pointSet->GetPointData( dataId, & value );
+  const bool found = pointSet->GetPointData( dataId, &value );
   if( found )
     {
     std::cout << "Pixel value = " << value << std::endl;
@@ -118,9 +115,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef PointSetType::PointDataContainer      PointDataContainer;
+  typedef PointSetType::PointDataContainer PointDataContainer;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -134,11 +130,9 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   PointDataContainer::Pointer pointData = PointDataContainer::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -162,7 +156,6 @@ int main(int, char *[])
   pointData->InsertElement( pointId++ , value1 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally the PointDataContainer can be assigned to the PointSet. This will
@@ -177,7 +170,6 @@ int main(int, char *[])
   pointSet->SetPointData( pointData );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The PointDataContainer can be obtained from the PointSet using the
@@ -189,9 +181,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointDataContainer::Pointer  pointData2 = pointSet->GetPointData();
+  PointDataContainer::Pointer pointData2 = pointSet->GetPointData();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -206,9 +197,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef PointDataContainer::Iterator     PointDataIterator;
+  typedef PointDataContainer::Iterator PointDataIterator;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -221,9 +211,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointDataIterator  pointDataIterator = pointData2->Begin();
+  PointDataIterator pointDataIterator = pointData2->Begin();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -250,7 +239,6 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that as in STL, the iterator returned by the \code{End()} method is
@@ -259,7 +247,6 @@ int main(int, char *[])
   //  visiting the last element in the container.
   //
   //  Software Guide : EndLatex
-
 
   return 0;
 }

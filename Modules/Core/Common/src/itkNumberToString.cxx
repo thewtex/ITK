@@ -24,29 +24,33 @@ namespace itk
 {
 
 template<>
-std::string NumberToString<double>::operator() (double val)
+std::string
+NumberToString<double>::operator()(double val)
 {
-  char buf[256];
-  double_conversion::StringBuilder builder(buf,sizeof(buf));
+  char                             buf[256];
+  double_conversion::StringBuilder builder(buf,sizeof(buf) );
+
   builder.Reset();
-  if(!m_DoubleToStringConverter.ToShortest(val,&builder))
+  if(!m_DoubleToStringConverter.ToShortest(val,&builder) )
     {
     itkGenericExceptionMacro(<< "Conversion failed for " << val);
     }
-  return std::string(builder.Finalize());
+  return std::string(builder.Finalize() );
 }
 
 template<>
-std::string NumberToString<float>::operator() (float val)
+std::string
+NumberToString<float>::operator()(float val)
 {
-  char buf[256];
-  double_conversion::StringBuilder builder(buf,sizeof(buf));
+  char                             buf[256];
+  double_conversion::StringBuilder builder(buf,sizeof(buf) );
+
   builder.Reset();
-  if(!m_DoubleToStringConverter.ToShortestSingle(val,&builder))
+  if(!m_DoubleToStringConverter.ToShortestSingle(val,&builder) )
     {
     itkGenericExceptionMacro(<< "Conversion failed for " << val);
     }
-  return std::string(builder.Finalize());
+  return std::string(builder.Finalize() );
 }
 
 }

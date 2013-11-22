@@ -23,7 +23,8 @@
 #include "itkSinRegularizedHeavisideStepFunction.h"
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 
-int itkLevelSetEquationTermContainerTest( int argc, char* argv[] )
+int
+itkLevelSetEquationTermContainerTest( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -34,41 +35,41 @@ int itkLevelSetEquationTermContainerTest( int argc, char* argv[] )
 
   const unsigned int Dimension = 2;
 
-  typedef unsigned short                                    InputPixelType;
-  typedef itk::Image< InputPixelType, Dimension >           InputImageType;
-  typedef itk::IdentifierType                               IdentifierType;
+  typedef unsigned short                          InputPixelType;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
+  typedef itk::IdentifierType                     IdentifierType;
 
-  typedef unsigned short                                    InputPixelType;
-  typedef itk::Image< InputPixelType, Dimension >           InputImageType;
+  typedef unsigned short                          InputPixelType;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
 
-  typedef float                                             PixelType;
+  typedef float PixelType;
   typedef itk::WhitakerSparseLevelSetImage< PixelType, Dimension >
-                                                            SparseLevelSetType;
+    SparseLevelSetType;
   typedef itk::BinaryImageToLevelSetImageAdaptor< InputImageType, SparseLevelSetType >
-                                                            BinaryToSparseAdaptorType;
+    BinaryToSparseAdaptorType;
 
   typedef itk::LevelSetContainer< IdentifierType, SparseLevelSetType >
-                                                            LevelSetContainerType;
+    LevelSetContainerType;
 
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
-                                                                           ChanAndVeseInternalTermType;
+    ChanAndVeseInternalTermType;
 
-  typedef std::list< IdentifierType >                       IdListType;
-  typedef itk::Image< IdListType, Dimension >               IdListImageType;
-  typedef itk::Image< short, Dimension >                    CacheImageType;
+  typedef std::list< IdentifierType >         IdListType;
+  typedef itk::Image< IdListType, Dimension > IdListImageType;
+  typedef itk::Image< short, Dimension >      CacheImageType;
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
-                                                            DomainMapImageFilterType;
+    DomainMapImageFilterType;
 
   typedef itk::LevelSetEquationLaplacianTerm< InputImageType, LevelSetContainerType >
-                                                            LaplacianTermType;
+    LaplacianTermType;
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
-                                                            ChanAndVeseInternalTermType;
+    ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >
-                                                            TermContainerType;
+    TermContainerType;
 
-  typedef SparseLevelSetType::OutputRealType                  LevelSetOutputRealType;
+  typedef SparseLevelSetType::OutputRealType LevelSetOutputRealType;
   typedef itk::SinRegularizedHeavisideStepFunction< LevelSetOutputRealType, LevelSetOutputRealType >
-                                                            HeavisideFunctionBaseType;
+    HeavisideFunctionBaseType;
   typedef itk::ImageRegionIteratorWithIndex< InputImageType > InputIteratorType;
 
   // load binary mask

@@ -38,10 +38,12 @@ SimplexMeshVolumeCalculator< TInputMesh >
 template< typename TInputMesh >
 SimplexMeshVolumeCalculator< TInputMesh >
 ::~SimplexMeshVolumeCalculator()
-{}
+{
+}
 
 template< typename TInputMesh >
-void SimplexMeshVolumeCalculator< TInputMesh >
+void
+SimplexMeshVolumeCalculator< TInputMesh >
 ::Initialize()
 {
   SimplexVisitorInterfacePointer simplexVisitor = SimplexVisitorInterfaceType::New();
@@ -63,7 +65,8 @@ void SimplexMeshVolumeCalculator< TInputMesh >
 }
 
 template< typename TInputMesh >
-void SimplexMeshVolumeCalculator< TInputMesh >
+void
+SimplexMeshVolumeCalculator< TInputMesh >
 ::Finalize()
 {
   // Compute fraction of elements that primarily point along the x, y
@@ -79,7 +82,8 @@ void SimplexMeshVolumeCalculator< TInputMesh >
 }
 
 template< typename TInputMesh >
-IdentifierType SimplexMeshVolumeCalculator< TInputMesh >
+IdentifierType
+SimplexMeshVolumeCalculator< TInputMesh >
 ::FindCellId(IdentifierType id1, IdentifierType id2, IdentifierType id3)
 {
   typedef std::set< typename InputMeshType::PointIdentifier > PointSetType;
@@ -218,7 +222,8 @@ SimplexMeshVolumeCalculator< TInputMesh >
 }
 
 template< typename TInputMesh >
-void SimplexMeshVolumeCalculator< TInputMesh >
+void
+SimplexMeshVolumeCalculator< TInputMesh >
 ::Compute()
 {
   this->Initialize();
@@ -266,6 +271,7 @@ SimplexMeshVolumeCalculator< TInputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
 //  os << indent << "Mesh   = " << m_SimplexMesh << std::endl;
   os << indent << "Area = " << m_Area << std::endl;
   os << indent << "Volume = " << m_Volume << std::endl;
@@ -277,6 +283,7 @@ SimplexMeshVolumeCalculator< TInputMesh >
   os << indent << "Kz = " << m_Kz << std::endl;
   os << indent << "NumberOfTriangles: " << m_NumberOfTriangles << std::endl;
 }
+
 } // end of namspace itk
 
 #endif

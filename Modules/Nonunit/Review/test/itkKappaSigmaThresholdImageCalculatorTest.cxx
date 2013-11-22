@@ -19,8 +19,8 @@
 #include "itkKappaSigmaThresholdImageCalculator.h"
 #include "itkImageFileReader.h"
 
-
-int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
+int
+itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
 {
   if( argc < 5 )
     {
@@ -31,8 +31,8 @@ int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef signed short                          PixelType;
-  const unsigned int                            Dimension = 2;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image< PixelType, Dimension >     ImageType;
   typedef itk::Image< unsigned char, Dimension > MaskType;
@@ -42,7 +42,7 @@ int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
 
   reader->SetFileName( argv[1] );
 
-  typedef itk::KappaSigmaThresholdImageCalculator< ImageType, MaskType >  CalculatorType;
+  typedef itk::KappaSigmaThresholdImageCalculator< ImageType, MaskType > CalculatorType;
 
   std::cout << "Testing Kappa Sigma Image Calulator:\n";
 
@@ -68,7 +68,6 @@ int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
   std::cout << "Sigma factor         = " << calculator->GetSigmaFactor() << std::endl;
   std::cout << "Mask value           = " << calculator->GetMaskValue() << std::endl;
 
-
   calculator->Compute();
 
   PixelType threshold = calculator->GetOutput();
@@ -77,8 +76,10 @@ int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
   std::cout << "Threshold: " << threshold;
   std::cout << std::endl;
 
-  // Note that this notion of "expected" value is only for regression testing of the class.
-  // In a typical usage of this class, you will simply take the calculator->GetOutput().
+  // Note that this notion of "expected" value is only for regression testing of
+  // the class.
+  // In a typical usage of this class, you will simply take the
+  // calculator->GetOutput().
   PixelType expectedThreshold = atoi( argv[4] );
 
   if( vnl_math_abs( expectedThreshold - threshold ) > 1e-3 )

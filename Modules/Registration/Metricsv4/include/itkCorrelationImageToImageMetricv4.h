@@ -71,18 +71,19 @@ namespace itk
  */
 template <typename TFixedImage, typename TMovingImage, typename TVirtualImage = TFixedImage,
           typename TInternalComputationValueType = double,
-          typename TMetricTraits = DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
+          typename TMetricTraits =
+            DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
           >
 class CorrelationImageToImageMetricv4 :
   public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
 {
 public:
   /** Standard class typedefs. */
-  typedef CorrelationImageToImageMetricv4                                           Self;
+  typedef CorrelationImageToImageMetricv4 Self;
   typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage,
-                             TInternalComputationValueType,TMetricTraits>  Superclass;
-  typedef SmartPointer<Self>                                                        Pointer;
-  typedef SmartPointer<const Self>                                                  ConstPointer;
+                               TInternalComputationValueType,TMetricTraits>  Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -91,35 +92,36 @@ public:
   itkTypeMacro(CorrelationImageToImageMetricv4, ImageToImageMetricv4);
 
   /** Superclass types */
-  typedef typename Superclass::MeasureType             MeasureType;
-  typedef typename Superclass::DerivativeType          DerivativeType;
+  typedef typename Superclass::MeasureType    MeasureType;
+  typedef typename Superclass::DerivativeType DerivativeType;
 
-  typedef typename Superclass::FixedImagePointType     FixedImagePointType;
-  typedef typename Superclass::FixedImagePixelType     FixedImagePixelType;
-  typedef typename Superclass::FixedImageGradientType  FixedImageGradientType;
+  typedef typename Superclass::FixedImagePointType    FixedImagePointType;
+  typedef typename Superclass::FixedImagePixelType    FixedImagePixelType;
+  typedef typename Superclass::FixedImageGradientType FixedImageGradientType;
 
   typedef typename Superclass::MovingImagePointType    MovingImagePointType;
   typedef typename Superclass::MovingImagePixelType    MovingImagePixelType;
   typedef typename Superclass::MovingImageGradientType MovingImageGradientType;
 
-  typedef typename Superclass::MovingTransformType        MovingTransformType;
-  typedef typename Superclass::JacobianType               JacobianType;
-  typedef typename Superclass::VirtualImageType           VirtualImageType;
-  typedef typename Superclass::VirtualIndexType           VirtualIndexType;
-  typedef typename Superclass::VirtualPointType           VirtualPointType;
-  typedef typename Superclass::VirtualPointSetType        VirtualPointSetType;
+  typedef typename Superclass::MovingTransformType MovingTransformType;
+  typedef typename Superclass::JacobianType        JacobianType;
+  typedef typename Superclass::VirtualImageType    VirtualImageType;
+  typedef typename Superclass::VirtualIndexType    VirtualIndexType;
+  typedef typename Superclass::VirtualPointType    VirtualPointType;
+  typedef typename Superclass::VirtualPointSetType VirtualPointSetType;
 
   /* Image dimension accessors */
   itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
-      TVirtualImage::ImageDimension);
+                      TVirtualImage::ImageDimension);
   itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
-      TFixedImage::ImageDimension);
+                      TFixedImage::ImageDimension);
   itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
-      TMovingImage::ImageDimension);
+                      TMovingImage::ImageDimension);
 
 protected:
   CorrelationImageToImageMetricv4();
-  virtual ~CorrelationImageToImageMetricv4();
+  virtual
+  ~CorrelationImageToImageMetricv4();
 
   /** Perform any initialization required before each evaluation of
    * \c GetValueAndDerivative. This is distinct from Initialize, which
@@ -127,22 +129,37 @@ protected:
    * a registration loop. */
   virtual void InitializeForIteration() const;
 
-  friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Self >;
+  friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< Superclass::
+                                                                                                      VirtualImageDimension >,
+                                                                      Self >;
   friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedIndexedContainerPartitioner, Self >;
-  friend class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Self >;
+  friend class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::
+                                                                                                  VirtualImageDimension >,
+                                                                  Self >;
   friend class ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Self >;
 
-  friend class CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >;
-  friend class CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >;
-  typedef CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >
+  friend class CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass
+                                                                                                             ::
+                                                                                                             VirtualImageDimension >,
+                                                                             Superclass, Self >;
+  friend class CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner,
+                                                                             Superclass, Self >;
+  typedef CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::
+                                                                                                        VirtualImageDimension >,
+                                                                        Superclass, Self >
     CorrelationDenseGetValueAndDerivativeThreaderType;
-  typedef CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >
+  typedef CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass,
+                                                                        Self >
     CorrelationSparseGetValueAndDerivativeThreaderType;
 
-  friend class CorrelationImageToImageMetricv4HelperThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >;
+  friend class CorrelationImageToImageMetricv4HelperThreader< ThreadedImageRegionPartitioner< Superclass::
+                                                                                              VirtualImageDimension >,
+                                                              Superclass, Self >;
   friend class CorrelationImageToImageMetricv4HelperThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >;
 
-  typedef CorrelationImageToImageMetricv4HelperThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >
+  typedef CorrelationImageToImageMetricv4HelperThreader< ThreadedImageRegionPartitioner< Superclass::
+                                                                                         VirtualImageDimension >,
+                                                         Superclass, Self >
     CorrelationHelperDenseThreaderType;
   typedef CorrelationImageToImageMetricv4HelperThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >
     CorrelationHelperSparseThreaderType;
@@ -160,7 +177,8 @@ protected:
 
 private:
   CorrelationImageToImageMetricv4(const Self &); //purposely not implemented
-  void operator = (const Self &); //purposely not implemented
+  void operator =(const Self &);                 //purposely not implemented
+
 };
 
 } // end namespace itk

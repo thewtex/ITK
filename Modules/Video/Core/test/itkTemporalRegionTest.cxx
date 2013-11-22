@@ -20,7 +20,8 @@
 /**
  * Test the basic functionality of Temporal Regions
  */
-int itkTemporalRegionTest( int , char* [] )
+int
+itkTemporalRegionTest( int , char* [] )
 {
 
 #define CHECK_FOR_VALUE(a,b)                                            \
@@ -34,7 +35,7 @@ int itkTemporalRegionTest( int , char* [] )
 
   // Test arrays for frame durations
   itk::SizeValueType testFrameStart = 0;
-  itk::SizeValueType   testFrameDuration = 20;
+  itk::SizeValueType testFrameDuration = 20;
 
   // Test time stamps and intervals
   itk::RealTimeStamp    stamp0;

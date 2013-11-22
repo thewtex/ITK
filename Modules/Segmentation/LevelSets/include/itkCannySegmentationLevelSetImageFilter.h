@@ -129,14 +129,14 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class CannySegmentationLevelSetImageFilter:
+class CannySegmentationLevelSetImageFilter :
   public SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
 {
 public:
   /** Standard class typedefs */
   typedef CannySegmentationLevelSetImageFilter Self;
   typedef  SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -161,22 +161,39 @@ public:
 
   /** Set the Threshold parameter of the CannyEdgeDetectionImageFilter
    * used by the underlying level set function. */
-  void SetThreshold(ScalarValueType v)
-  { this->m_CannyFunction->SetThreshold(v); }
-  ScalarValueType GetThreshold() const
-  { return this->m_CannyFunction->GetThreshold(); }
+  void
+  SetThreshold(ScalarValueType v)
+  {
+    this->m_CannyFunction->SetThreshold(v);
+  }
+
+  ScalarValueType
+  GetThreshold() const
+  {
+    return this->m_CannyFunction->GetThreshold();
+  }
 
   /** Set the Variance parameter of the CannyEdgeDetectionImageFilter
    * used by the underlying level set function. */
-  void SetVariance(double v)
-  { this->m_CannyFunction->SetVariance(v); }
-  double GetVariance() const
-  { return this->m_CannyFunction->GetVariance(); }
+  void
+  SetVariance(double v)
+  {
+    this->m_CannyFunction->SetVariance(v);
+  }
+
+  double
+  GetVariance() const
+  {
+    return this->m_CannyFunction->GetVariance();
+  }
 
   /** Get the Canny image that was used to create the speed and
       advection images */
-  OutputImageType * GetCannyImage(void)
-  { return this->m_CannyFunction->GetCannyImage(); }
+  OutputImageType *
+  GetCannyImage(void)
+  {
+    return this->m_CannyFunction->GetCannyImage();
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -186,14 +203,17 @@ public:
 #endif
 
 protected:
-  ~CannySegmentationLevelSetImageFilter() {}
+  ~CannySegmentationLevelSetImageFilter() {
+  }
+
   CannySegmentationLevelSetImageFilter();
 
 private:
   CannySegmentationLevelSetImageFilter(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 
   typename CannyFunctionType::Pointer m_CannyFunction;
 };

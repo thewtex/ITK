@@ -102,8 +102,8 @@ namespace Statistics
  * \wikiexample{Utilities/MersenneTwisterRandomVariateGenerator,Random number generator}
  * \endwiki
  */
-class ITKCommon_EXPORT MersenneTwisterRandomVariateGenerator:
-  public RandomVariateGeneratorBase
+class ITKCommon_EXPORT MersenneTwisterRandomVariateGenerator :
+  public               RandomVariateGeneratorBase
 {
 public:
 
@@ -189,10 +189,16 @@ public:
 
   // Re-seeding functions with same behavior as initializers
   inline void SetSeed(const IntegerType oneSeed);
-  // inline void SetSeed(IntegerType *bigSeed, const IntegerType seedLength = StateVectorLength);
+
+  // inline void SetSeed(IntegerType *bigSeed, const IntegerType seedLength =
+  // StateVectorLength);
   inline void SetSeed();
+
   // Return the current seed
-  IntegerType GetSeed() { return this->m_Seed; };
+  IntegerType
+  GetSeed() {
+    return this->m_Seed;
+  }
 
   /*
   // Saving and loading generator state
@@ -201,9 +207,14 @@ public:
   */
 
 protected:
-  inline MersenneTwisterRandomVariateGenerator();
-  virtual ~MersenneTwisterRandomVariateGenerator() {}
-  virtual void PrintSelf(std::ostream & os, Indent indent) const
+  inline
+  MersenneTwisterRandomVariateGenerator();
+  virtual
+  ~MersenneTwisterRandomVariateGenerator() {
+  }
+
+  virtual void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
 
@@ -229,22 +240,36 @@ protected:
   IntegerType *pNext;                    // next value to get from state
   int          left;                     // number of values left before reload
                                          // needed
-  IntegerType  m_Seed;                   // Seed value
+  IntegerType m_Seed;                    // Seed value
 
   /* Reload array with N new values */
   void reload();
 
-  IntegerType hiBit(const IntegerType & u) const { return u & 0x80000000; }
-  IntegerType loBit(const IntegerType & u) const { return u & 0x00000001; }
-  IntegerType loBits(const IntegerType & u) const { return u & 0x7fffffff; }
-  IntegerType mixBits(const IntegerType & u, const IntegerType & v) const
+  IntegerType
+  hiBit(const IntegerType & u) const {
+    return u & 0x80000000;
+  }
+
+  IntegerType
+  loBit(const IntegerType & u) const {
+    return u & 0x00000001;
+  }
+
+  IntegerType
+  loBits(const IntegerType & u) const {
+    return u & 0x7fffffff;
+  }
+
+  IntegerType
+  mixBits(const IntegerType & u, const IntegerType & v) const
   {
     return hiBit(u) | loBits(v);
   }
 
-  IntegerType twist(const IntegerType & m, const IntegerType & s0, const IntegerType & s1) const
+  IntegerType
+  twist(const IntegerType & m, const IntegerType & s0, const IntegerType & s1) const
   {
-    return m ^ ( mixBits(s0, s1) >> 1 ) ^ ( -static_cast<int32_t>(loBit(s1)) & 0x9908b0df );
+    return m ^ ( mixBits(s0, s1) >> 1 ) ^ ( -static_cast<int32_t>(loBit(s1) ) & 0x9908b0df );
   }
 
   static IntegerType hash(vcl_time_t t, vcl_clock_t c);
@@ -267,6 +292,7 @@ MersenneTwisterRandomVariateGenerator::hash(vcl_time_t t, vcl_clock_t c)
   unsigned char *p = (unsigned char *)&t;
 
   const unsigned int sizeOfT = static_cast< unsigned int >( sizeof(t) );
+
   for ( unsigned int i = 0; i < sizeOfT; ++i )
     {
     h1 *= UCHAR_MAX + 2U;
@@ -313,7 +339,7 @@ MersenneTwisterRandomVariateGenerator::reload()
 
   // get rid of VS warning
   register int index = static_cast< int >(
-    M - MersenneTwisterRandomVariateGenerator::StateVectorLength );
+      M - MersenneTwisterRandomVariateGenerator::StateVectorLength );
 
   register IntegerType *p = state;
   register int          i;
@@ -331,57 +357,57 @@ MersenneTwisterRandomVariateGenerator::reload()
   left = MersenneTwisterRandomVariateGenerator::StateVectorLength, pNext = state;
 }
 
-  /*
+/*
 #define SVL 624
 inline void
 MersenneTwisterRandomVariateGenerator::SetSeed(
-  IntegerType *const bigSeed, const IntegerType seedLength)
+IntegerType *const bigSeed, const IntegerType seedLength)
 {
-  // Seed the generator with an array of IntegerType's
-  // There are 2^19937-1 possible initial states.  This function allows
-  // all of those to be accessed by providing at least 19937 bits (with a
-  // default seed length of StateVectorLength = 624 IntegerType's).
-  // Any bits above the lower 32
-  // in each element are discarded.
-  // Just call seed() if you want to get array from /dev/urandom
-  Initialize(19650218UL);
-  register IntegerType i = 1;
-  register IntegerType j = 0;
-  register int         k;
-  if ( StateVectorLength > seedLength )
+// Seed the generator with an array of IntegerType's
+// There are 2^19937-1 possible initial states.  This function allows
+// all of those to be accessed by providing at least 19937 bits (with a
+// default seed length of StateVectorLength = 624 IntegerType's).
+// Any bits above the lower 32
+// in each element are discarded.
+// Just call seed() if you want to get array from /dev/urandom
+Initialize(19650218UL);
+register IntegerType i = 1;
+register IntegerType j = 0;
+register int         k;
+if ( StateVectorLength > seedLength )
+  {
+  k = StateVectorLength;
+  }
+else
+  {
+  k = seedLength;
+  }
+for (; k; --k )
+  {
+  state[i] =
+    state[i] ^ ( ( state[i - 1] ^ ( state[i - 1] >> 30 ) ) * 1664525UL );
+  state[i] += ( bigSeed[j] & 0xffffffffUL ) + j;
+  state[i] &= 0xffffffffUL;
+  ++i;  ++j;
+  if ( i >= StateVectorLength ) { state[0] = state[StateVectorLength - 1];  i = 1; }
+  if ( j >= seedLength ) { j = 0; }
+  }
+for ( k = StateVectorLength - 1; k; --k )
+  {
+  state[i] =
+    state[i] ^ ( ( state[i - 1] ^ ( state[i - 1] >> 30 ) ) * 1566083941UL );
+  state[i] -= i;
+  state[i] &= 0xffffffffUL;
+  ++i;
+  if ( i >= SVL )
     {
-    k = StateVectorLength;
+    state[0] = state[StateVectorLength - 1];  i = 1;
     }
-  else
-    {
-    k = seedLength;
-    }
-  for (; k; --k )
-    {
-    state[i] =
-      state[i] ^ ( ( state[i - 1] ^ ( state[i - 1] >> 30 ) ) * 1664525UL );
-    state[i] += ( bigSeed[j] & 0xffffffffUL ) + j;
-    state[i] &= 0xffffffffUL;
-    ++i;  ++j;
-    if ( i >= StateVectorLength ) { state[0] = state[StateVectorLength - 1];  i = 1; }
-    if ( j >= seedLength ) { j = 0; }
-    }
-  for ( k = StateVectorLength - 1; k; --k )
-    {
-    state[i] =
-      state[i] ^ ( ( state[i - 1] ^ ( state[i - 1] >> 30 ) ) * 1566083941UL );
-    state[i] -= i;
-    state[i] &= 0xffffffffUL;
-    ++i;
-    if ( i >= SVL )
-      {
-      state[0] = state[StateVectorLength - 1];  i = 1;
-      }
-    }
-  state[0] = 0x80000000UL;  // MSB is 1, assuring non-zero initial array
-  reload();
+  }
+state[0] = 0x80000000UL;  // MSB is 1, assuring non-zero initial array
+reload();
 }
-  */
+*/
 
 inline void
 MersenneTwisterRandomVariateGenerator::Initialize()
@@ -509,7 +535,7 @@ MersenneTwisterRandomVariateGenerator::GetNormalVariate(
   // mean and variance by Box-Muller method
   double r = vcl_sqrt(-2.0 * vcl_log( 1.0 - GetVariateWithOpenRange() ) * variance);
   double phi = 2.0 * vnl_math::pi
-               * GetVariateWithOpenUpperRange();
+    * GetVariateWithOpenUpperRange();
 
   return mean + r *vcl_cos(phi);
 }

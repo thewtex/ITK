@@ -32,7 +32,8 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 RegionOfInterestImageFilter< TInputImage, TOutputImage >
 ::RegionOfInterestImageFilter()
-{}
+{
+}
 
 /**
  *
@@ -147,7 +148,7 @@ RegionOfInterestImageFilter< TInputImage, TOutputImage >
 
   // Get the input and output pointers
   const TInputImage *inputPtr  = this->GetInput();
-  TOutputImage      *outputPtr = this->GetOutput();
+  TOutputImage *     outputPtr = this->GetOutput();
 
   // support progress methods/callbacks
   ProgressReporter progress( this, threadId, 1 );
@@ -171,6 +172,7 @@ RegionOfInterestImageFilter< TInputImage, TOutputImage >
   progress.CompletedPixel();
 
 }
+
 } // end namespace itk
 
 #endif

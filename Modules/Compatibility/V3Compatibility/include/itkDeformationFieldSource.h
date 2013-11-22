@@ -23,7 +23,8 @@
 #include "itkImageRegionIteratorWithIndex.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkLandmarkDisplacementFieldSource.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkLandmarkDisplacementFieldSource.h in ITKv4"
 #endif
 
 namespace itk
@@ -51,7 +52,7 @@ namespace itk
  * \ingroup ITKV3Compatibility
  */
 template< typename TOutputImage >
-class DeformationFieldSource:
+class DeformationFieldSource :
   public ImageSource< TOutputImage >
 {
 public:
@@ -147,7 +148,9 @@ public:
 
 protected:
   DeformationFieldSource();
-  ~DeformationFieldSource() {}
+  ~DeformationFieldSource() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**

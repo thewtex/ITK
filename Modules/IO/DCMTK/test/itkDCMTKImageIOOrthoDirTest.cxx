@@ -25,7 +25,8 @@
 /** This test verifies that the direction cosines
  *  computed in itkDCMTKImageIO are orthogonal
  */
-int itkDCMTKImageIOOrthoDirTest(int ac, char* av[])
+int
+itkDCMTKImageIOOrthoDirTest(int ac, char* av[])
 {
 
   if(ac < 2)

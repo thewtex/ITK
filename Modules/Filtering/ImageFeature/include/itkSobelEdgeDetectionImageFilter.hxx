@@ -110,7 +110,7 @@ SobelEdgeDetectionImageFilter< TInputImage, TOutputImage >
 
   // Create the sobel operator
   SobelOperator< OutputPixelType, ImageDimension > opers[ImageDimension];
-  ZeroFluxNeumannBoundaryCondition< TInputImage > nbc;
+  ZeroFluxNeumannBoundaryCondition< TInputImage >  nbc;
 
   // Setup mini-pipelines along each axis.
   typename OpFilter::Pointer opFilter[ImageDimension];
@@ -152,6 +152,7 @@ SobelEdgeDetectionImageFilter< TInputImage, TOutputImage >
   // this is needed to get the appropriate regions passed back.
   this->GraftOutput( sqrtFilter->GetOutput() );
 }
+
 } // end namespace itk
 
 #endif

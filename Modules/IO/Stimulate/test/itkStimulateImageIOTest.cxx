@@ -23,10 +23,10 @@
 #include "itkImageFileReader.h"
 #include "itkStimulateImageIO.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkStimulateImageIOTest(int argc, char* argv[] )
+int
+itkStimulateImageIOTest(int argc, char* argv[] )
 {
   typedef itk::Image<float,2> FloatImageType;
 
@@ -58,7 +58,7 @@ int itkStimulateImageIOTest(int argc, char* argv[] )
   // Write out the image
   itk::ImageFileWriter<FloatImageType>::Pointer writer;
   writer = itk::ImageFileWriter<FloatImageType>::New();
-  writer->SetInput(random->GetOutput());
+  writer->SetInput(random->GetOutput() );
   writer->SetFileName(argv[1]);
   writer->SetImageIO(sprIO);
   writer->Write();
@@ -77,7 +77,7 @@ int itkStimulateImageIOTest(int argc, char* argv[] )
     reader->SetFileName(argv[1]);
     reader->Update();
 
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
     writer->SetFileName(argv[2]);
     writer->Write();
     }

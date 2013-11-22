@@ -19,7 +19,6 @@
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
 //
@@ -29,11 +28,11 @@
 class AnalyzeIODirectionHelper
 {
 public:
-  typedef  unsigned char                PixelType;
+  typedef  unsigned char PixelType;
 
-  typedef itk::Image< PixelType, 3 >    Image3DType;
+  typedef itk::Image< PixelType, 3 > Image3DType;
 
-  typedef Image3DType::DirectionType    Direction3DType;
+  typedef Image3DType::DirectionType Direction3DType;
 
 public:
   AnalyzeIODirectionHelper()
@@ -43,11 +42,13 @@ public:
     this->InitializeCoronalDirection();
   }
 
-  void Test()
+  void
+  Test()
   {
     std::cout << std::endl;
     std::cout << "--------------------------------" << std::endl;
     std::cout << "Testing Axial..." << std::endl;
+
     this->Test( this->m_AxialDirection, "Axial" );
 
     std::cout << "--------------------------------" << std::endl;
@@ -59,109 +60,116 @@ public:
     this->Test( this->m_CoronalDirection, "Coronal" );
   }
 
-  void Test( const Direction3DType & direction, const char * directionLabel )
+  void
+  Test( const Direction3DType & direction, const char * directionLabel )
   {
-  Image3DType::Pointer image3D = Image3DType::New();
+    Image3DType::Pointer image3D = Image3DType::New();
 
-  std::cout << "Direction = " << std::endl;
-  std::cout << direction << std::endl;
+    std::cout << "Direction = " << std::endl;
+    std::cout << direction << std::endl;
 
-  Image3DType::SizeType size3D;
-  size3D.Fill(50);
+    Image3DType::SizeType size3D;
 
-  Image3DType::RegionType region3D;
-  region3D.SetSize( size3D );
+    size3D.Fill(50);
 
-  image3D->SetRegions( region3D );
+    Image3DType::RegionType region3D;
+    region3D.SetSize( size3D );
 
-  image3D->Allocate();
-  image3D->FillBuffer( itk::NumericTraits< PixelType >::Zero );
+    image3D->SetRegions( region3D );
 
-  image3D->SetDirection( direction );
+    image3D->Allocate();
+    image3D->FillBuffer( itk::NumericTraits< PixelType >::Zero );
 
-  typedef itk::ImageFileWriter< Image3DType >    Writer3DType;
-  typedef itk::ImageFileReader< Image3DType >    Reader3DType;
+    image3D->SetDirection( direction );
 
-  Writer3DType::Pointer writer3D = Writer3DType::New();
-  writer3D->SetInput( image3D );
+    typedef itk::ImageFileWriter< Image3DType > Writer3DType;
+    typedef itk::ImageFileReader< Image3DType > Reader3DType;
 
-  std::string fileName = this->m_OutputDirectory;
-  fileName += "/AnalyzeIODirectionTest";
-  fileName += directionLabel;
-  fileName += ".hdr";
+    Writer3DType::Pointer writer3D = Writer3DType::New();
+    writer3D->SetInput( image3D );
 
-  writer3D->SetFileName( fileName );
+    std::string fileName = this->m_OutputDirectory;
+    fileName += "/AnalyzeIODirectionTest";
+    fileName += directionLabel;
+    fileName += ".hdr";
 
-  std::cout << "Writing 3D..." << std::endl;
-  std::cout << fileName << std::endl;
-  writer3D->Update();
+    writer3D->SetFileName( fileName );
 
-  Reader3DType::Pointer reader3D = Reader3DType::New();
+    std::cout << "Writing 3D..." << std::endl;
+    std::cout << fileName << std::endl;
+    writer3D->Update();
 
-  reader3D->SetFileName( fileName );
+    Reader3DType::Pointer reader3D = Reader3DType::New();
 
-  std::cout << "Reading 3D...";
-  reader3D->Update();
-  std::cout << "PASSED !" << std::endl;
-  std::cout << "Read 3D Direction = " << std::endl;
-  std::cout << reader3D->GetOutput()->GetDirection() << std::endl;
+    reader3D->SetFileName( fileName );
+
+    std::cout << "Reading 3D...";
+    reader3D->Update();
+    std::cout << "PASSED !" << std::endl;
+    std::cout << "Read 3D Direction = " << std::endl;
+    std::cout << reader3D->GetOutput()->GetDirection() << std::endl;
 
   }
 
-  void SetOutputDirectory( const char * directoryName )
+  void
+  SetOutputDirectory( const char * directoryName )
   {
-  this->m_OutputDirectory = directoryName;
+    this->m_OutputDirectory = directoryName;
   }
 
-  void InitializeCoronalDirection()
+  void
+  InitializeCoronalDirection()
   {
-  this->m_CoronalDirection[0][0] =  1.0;
-  this->m_CoronalDirection[0][1] =  0.0;
-  this->m_CoronalDirection[0][2] =  0.0;
-  this->m_CoronalDirection[1][0] =  0.0;
-  this->m_CoronalDirection[1][1] =  0.0;
-  this->m_CoronalDirection[1][2] = -1.0;
-  this->m_CoronalDirection[2][0] =  0.0;
-  this->m_CoronalDirection[2][1] =  1.0;
-  this->m_CoronalDirection[2][2] =  0.0;
+    this->m_CoronalDirection[0][0] =  1.0;
+    this->m_CoronalDirection[0][1] =  0.0;
+    this->m_CoronalDirection[0][2] =  0.0;
+    this->m_CoronalDirection[1][0] =  0.0;
+    this->m_CoronalDirection[1][1] =  0.0;
+    this->m_CoronalDirection[1][2] = -1.0;
+    this->m_CoronalDirection[2][0] =  0.0;
+    this->m_CoronalDirection[2][1] =  1.0;
+    this->m_CoronalDirection[2][2] =  0.0;
   }
 
-  void InitializeSagittalDirection()
+  void
+  InitializeSagittalDirection()
   {
-  this->m_SagittalDirection[0][0] =  0.0;
-  this->m_SagittalDirection[0][1] =  0.0;
-  this->m_SagittalDirection[0][2] =  1.0;
-  this->m_SagittalDirection[1][0] = -1.0;
-  this->m_SagittalDirection[1][1] =  0.0;
-  this->m_SagittalDirection[1][2] =  0.0;
-  this->m_SagittalDirection[2][0] =  0.0;
-  this->m_SagittalDirection[2][1] =  1.0;
-  this->m_SagittalDirection[2][2] =  0.0;
+    this->m_SagittalDirection[0][0] =  0.0;
+    this->m_SagittalDirection[0][1] =  0.0;
+    this->m_SagittalDirection[0][2] =  1.0;
+    this->m_SagittalDirection[1][0] = -1.0;
+    this->m_SagittalDirection[1][1] =  0.0;
+    this->m_SagittalDirection[1][2] =  0.0;
+    this->m_SagittalDirection[2][0] =  0.0;
+    this->m_SagittalDirection[2][1] =  1.0;
+    this->m_SagittalDirection[2][2] =  0.0;
 
   }
 
-  void InitializeAxialDirection()
+  void
+  InitializeAxialDirection()
   {
-  this->m_AxialDirection[0][0] =  1.0;
-  this->m_AxialDirection[0][1] =  0.0;
-  this->m_AxialDirection[0][2] =  0.0;
-  this->m_AxialDirection[1][0] =  0.0;
-  this->m_AxialDirection[1][1] = -1.0;
-  this->m_AxialDirection[1][2] =  0.0;
-  this->m_AxialDirection[2][0] =  0.0;
-  this->m_AxialDirection[2][1] =  0.0;
-  this->m_AxialDirection[2][2] =  1.0;
+    this->m_AxialDirection[0][0] =  1.0;
+    this->m_AxialDirection[0][1] =  0.0;
+    this->m_AxialDirection[0][2] =  0.0;
+    this->m_AxialDirection[1][0] =  0.0;
+    this->m_AxialDirection[1][1] = -1.0;
+    this->m_AxialDirection[1][2] =  0.0;
+    this->m_AxialDirection[2][0] =  0.0;
+    this->m_AxialDirection[2][1] =  0.0;
+    this->m_AxialDirection[2][2] =  1.0;
   }
 
 private:
-  std::string         m_OutputDirectory;
+  std::string m_OutputDirectory;
 
-  Direction3DType     m_AxialDirection;
-  Direction3DType     m_SagittalDirection;
-  Direction3DType     m_CoronalDirection;
+  Direction3DType m_AxialDirection;
+  Direction3DType m_SagittalDirection;
+  Direction3DType m_CoronalDirection;
 };
 
-int itkAnalyzeImageIODirectionsTest( int argc, char * argv [] )
+int
+itkAnalyzeImageIODirectionsTest( int argc, char * argv [] )
 {
   if( argc != 2 )
     {
@@ -169,7 +177,7 @@ int itkAnalyzeImageIODirectionsTest( int argc, char * argv [] )
     std::cerr << argv[0] << " outputDirectory " << std::endl;
     }
 
-  AnalyzeIODirectionHelper  testHelper;
+  AnalyzeIODirectionHelper testHelper;
 
   testHelper.SetOutputDirectory( argv[1] );
 
@@ -187,7 +195,6 @@ int itkAnalyzeImageIODirectionsTest( int argc, char * argv [] )
     std::cerr << "Caught non ITK exception" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test PASSED !" << std::endl;
   return EXIT_SUCCESS;

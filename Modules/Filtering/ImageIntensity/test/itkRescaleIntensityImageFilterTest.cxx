@@ -21,7 +21,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkRandomImageSource.h"
 
-int itkRescaleIntensityImageFilterTest(int, char* [] )
+int
+itkRescaleIntensityImageFilterTest(int, char* [] )
 {
   std::cout << "itkRescaleIntensityImageFilterTest Start" << std::endl;
 
@@ -35,16 +36,14 @@ int itkRescaleIntensityImageFilterTest(int, char* [] )
   region.SetIndex (index);
   region.SetSize (size);
 
-
   typedef itk::RescaleIntensityImageFilter<TestInputImage,TestOutputImage> FilterType;
   FilterType::Pointer filter = FilterType::New();
 
   // Now generate a real image
 
   typedef itk::RandomImageSource<TestInputImage> SourceType;
-  SourceType::Pointer source = SourceType::New();
-  TestInputImage::SizeValueType  randomSize[3] = {17, 8, 20};
-
+  SourceType::Pointer           source = SourceType::New();
+  TestInputImage::SizeValueType randomSize[3] = {17, 8, 20};
 
   // Set up source
   source->SetSize(randomSize);
@@ -54,8 +53,8 @@ int itkRescaleIntensityImageFilterTest(int, char* [] )
   source->SetMin( static_cast< TestInputImage::PixelType >( minValue ) );
   source->SetMax( static_cast< TestInputImage::PixelType >( maxValue ) );
 
-  filter->SetFunctor(filter->GetFunctor());
-  filter->SetInput(source->GetOutput());
+  filter->SetFunctor(filter->GetFunctor() );
+  filter->SetInput(source->GetOutput() );
 
   const double desiredMinimum = -1.0;
   const double desiredMaximum =  1.0;
@@ -65,7 +64,7 @@ int itkRescaleIntensityImageFilterTest(int, char* [] )
   try
     {
     filter->UpdateLargestPossibleRegion();
-    filter->SetFunctor(filter->GetFunctor());
+    filter->SetFunctor(filter->GetFunctor() );
     }
   catch (itk::ExceptionObject& e)
     {

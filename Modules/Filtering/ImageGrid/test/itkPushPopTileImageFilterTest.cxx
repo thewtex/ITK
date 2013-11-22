@@ -20,7 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageSeriesWriter.h"
 
-int itkPushPopTileImageFilterTest(int argc, char *argv[] )
+int
+itkPushPopTileImageFilterTest(int argc, char *argv[] )
 {
 
   typedef itk::RGBPixel<unsigned char> PixelType;
@@ -51,7 +52,7 @@ int itkPushPopTileImageFilterTest(int argc, char *argv[] )
   TilerType::Pointer tiler4 = TilerType::New();
   TilerType::Pointer tiler = TilerType::New();
 
-  unsigned char yellow[3] = {255, 255, 127};
+  unsigned char                yellow[3] = {255, 255, 127};
   itk::RGBPixel<unsigned char> fillPixel = yellow;
 
   tiler1->SetDefaultPixelValue(fillPixel);
@@ -69,10 +70,10 @@ int itkPushPopTileImageFilterTest(int argc, char *argv[] )
     ImageReaderType::Pointer reader = ImageReaderType::New();
     reader->SetFileName (argv[i]);
     reader->Update();
-    tiler1->SetInput(f,reader->GetOutput());
-    tiler2->SetInput(f,reader->GetOutput());
-    tiler3->SetInput(f,reader->GetOutput());
-    tiler4->SetInput(f++,reader->GetOutput());
+    tiler1->SetInput(f,reader->GetOutput() );
+    tiler2->SetInput(f,reader->GetOutput() );
+    tiler3->SetInput(f,reader->GetOutput() );
+    tiler4->SetInput(f++,reader->GetOutput() );
     }
 
   InputImageType::ConstPointer image;
@@ -92,10 +93,10 @@ int itkPushPopTileImageFilterTest(int argc, char *argv[] )
   tiler->SetDefaultPixelValue(fillPixel);
   tiler->SetLayout(layout);
 
-  tiler->PushBackInput(tiler1->GetOutput());
-  tiler->PushBackInput(tiler2->GetOutput());
-  tiler->PushBackInput(tiler3->GetOutput());
-  tiler->PushBackInput(tiler4->GetOutput());
+  tiler->PushBackInput(tiler1->GetOutput() );
+  tiler->PushBackInput(tiler2->GetOutput() );
+  tiler->PushBackInput(tiler3->GetOutput() );
+  tiler->PushBackInput(tiler4->GetOutput() );
 
   WriterType::Pointer writer = WriterType::New();
 
@@ -103,7 +104,7 @@ int itkPushPopTileImageFilterTest(int argc, char *argv[] )
 
   try
     {
-    writer->SetInput(tiler->GetOutput());
+    writer->SetInput(tiler->GetOutput() );
     writer->Update();
     }
   catch( itk::ExceptionObject & excp )

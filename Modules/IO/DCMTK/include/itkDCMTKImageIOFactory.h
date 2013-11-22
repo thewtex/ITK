@@ -27,7 +27,7 @@ namespace itk
  * \brief Create instances of DCMTKImageIO objects using an object factory.
  * \ingroup ITKIODCMTK
  */
-class DCMTKImageIOFactory:public ObjectFactoryBase
+class DCMTKImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -48,7 +48,8 @@ public:
   itkTypeMacro(DCMTKImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     DCMTKImageIOFactory::Pointer DCMTKFactory = DCMTKImageIOFactory::New();
 
@@ -58,9 +59,11 @@ public:
 protected:
   DCMTKImageIOFactory();
   ~DCMTKImageIOFactory();
+
 private:
   DCMTKImageIOFactory(const Self &); //purposely not implemented
-  void operator=(const Self &);    //purposely not implemented
+  void operator=(const Self &);      //purposely not implemented
+
 };
 } // end namespace itk
 

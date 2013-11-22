@@ -37,7 +37,7 @@ namespace itk
 {
 template< typename TInputImage, typename TProbabilityPrecisionType >
 BayesianClassifierInitializationImageFilter< TInputImage, TProbabilityPrecisionType >
-::BayesianClassifierInitializationImageFilter():
+::BayesianClassifierInitializationImageFilter() :
   m_UserSuppliesMembershipFunctions(false),
   m_NumberOfClasses(0)
 {
@@ -84,13 +84,13 @@ BayesianClassifierInitializationImageFilter< TInputImage,
   typedef ScalarImageKmeansImageFilter< InputImageType > KMeansFilterType;
   typedef typename KMeansFilterType::OutputImageType     KMeansOutputImageType;
   typedef ImageRegionConstIterator<
-    KMeansOutputImageType >                ConstKMeansIteratorType;
+      KMeansOutputImageType >                ConstKMeansIteratorType;
 
   typedef Array< double > CovarianceArrayType;
   typedef Array< double > ClassCountArrayType;
 
   typedef Statistics::GaussianMembershipFunction<
-    MeasurementVectorType >                        GaussianMembershipFunctionType;
+      MeasurementVectorType >                        GaussianMembershipFunctionType;
   typedef VectorContainer< unsigned short, typename
                            GaussianMembershipFunctionType::MeanVectorType * >          MeanEstimatorsContainerType;
   typedef VectorContainer< unsigned short, typename
@@ -314,6 +314,7 @@ BayesianClassifierInitializationImageFilter< TInputImage, TProbabilityPrecisionT
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NumberOfClasses: " << m_NumberOfClasses << std::endl;
   if ( m_MembershipFunctionContainer )
     {
@@ -329,6 +330,7 @@ BayesianClassifierInitializationImageFilter< TInputImage, TProbabilityPrecisionT
     os << indent << "Membership functions not provided" << std::endl;
     }
 }
+
 } // end namespace itk
 
 #endif

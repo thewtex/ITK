@@ -85,7 +85,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 
@@ -95,8 +94,8 @@
 #include "itkNormalizeImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 2 )
     {
@@ -112,10 +111,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char    InputPixelType;
-  typedef   float            OutputPixelType;
+  typedef   unsigned char InputPixelType;
+  typedef   float         OutputPixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -124,13 +122,11 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  3 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  3 > InputImageType;
+  typedef itk::Image< OutputPixelType, 3 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -140,20 +136,19 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::CastImageFilter<
-               InputImageType, OutputImageType >  CastFilterType;
+      InputImageType, OutputImageType >  CastFilterType;
 
   typedef itk::RescaleIntensityImageFilter<
-               InputImageType, OutputImageType >  RescaleFilterType;
+      InputImageType, OutputImageType >  RescaleFilterType;
 
   typedef itk::ShiftScaleImageFilter<
-               InputImageType, OutputImageType >  ShiftScaleFilterType;
+      InputImageType, OutputImageType >  ShiftScaleFilterType;
 
   typedef itk::NormalizeImageFilter<
-               InputImageType, OutputImageType >  NormalizeFilterType;
+      InputImageType, OutputImageType >  NormalizeFilterType;
   // Software Guide : EndCodeSnippet
 
   ReaderType::Pointer reader = ReaderType::New();
-
 
   //  Software Guide : BeginLatex
   //
@@ -171,7 +166,6 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   CastFilterType::Pointer       castFilter       = CastFilterType::New();
   RescaleFilterType::Pointer    rescaleFilter    = RescaleFilterType::New();
@@ -179,9 +173,7 @@ int main( int argc, char * argv[] )
   NormalizeFilterType::Pointer  normalizeFilter = NormalizeFilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -224,7 +216,6 @@ int main( int argc, char * argv[] )
   rescaleFilter->SetOutputMaximum( 250 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The ShiftScaleImageFilter requires a multiplication factor (scale) and a
@@ -243,7 +234,6 @@ int main( int argc, char * argv[] )
   shiftFilter->SetShift( 25 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally, the filters are executed by invoking the \code{Update()} method.
@@ -255,14 +245,12 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   castFilter->Update();
   shiftFilter->Update();
   rescaleFilter->Update();
   normalizeFilter->Update();
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

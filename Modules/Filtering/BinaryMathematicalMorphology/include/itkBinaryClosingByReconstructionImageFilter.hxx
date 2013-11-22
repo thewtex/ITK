@@ -47,7 +47,8 @@ BinaryClosingByReconstructionImageFilter<TInputImage, TKernel>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
+  InputImagePointer input = const_cast<InputImageType *>(this->GetInput() );
+
   if( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -75,10 +76,10 @@ BinaryClosingByReconstructionImageFilter<TInputImage, TKernel>
 
   /** set up erosion and dilation methods */
   typename BinaryDilateImageFilter<TInputImage, TInputImage, TKernel>::Pointer
-    dilate = BinaryDilateImageFilter<TInputImage, TInputImage, TKernel>::New();
+  dilate = BinaryDilateImageFilter<TInputImage, TInputImage, TKernel>::New();
 
   typename BinaryReconstructionByErosionImageFilter<OutputImageType>::Pointer
-    erode = BinaryReconstructionByErosionImageFilter<OutputImageType>::New();
+  erode = BinaryReconstructionByErosionImageFilter<OutputImageType>::New();
 
   // create the pipeline without input and output image
   dilate->ReleaseDataFlagOn();
@@ -95,7 +96,6 @@ BinaryClosingByReconstructionImageFilter<TInputImage, TKernel>
   erode->SetFullyConnected( m_FullyConnected );
   erode->SetMaskImage( this->GetInput() );
   erode->SetNumberOfThreads( this->GetNumberOfThreads() );
-
 
   /** set up the minipipeline */
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
@@ -116,9 +116,10 @@ BinaryClosingByReconstructionImageFilter<TInputImage, TKernel>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "ForegroundValue: " << static_cast<typename NumericTraits<InputPixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "ForegroundValue: " <<
+    static_cast<typename NumericTraits<InputPixelType>::PrintType>(m_ForegroundValue) << std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

@@ -27,7 +27,6 @@
 //
 // Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  In this example we use the \doxygen{BoxSpatialObject}, that is one of the
@@ -40,7 +39,6 @@
 //  Software Guide : BeginCodeSnippet
 #include "itkBoxSpatialObject.h"
 //  Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -83,27 +81,31 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef  itk::SmartPointer<Self>  Pointer;
+  typedef  CommandIterationUpdate  Self;
+  typedef  itk::Command            Superclass;
+  typedef  itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
-  typedef   itk::RegularStepGradientDescentOptimizer  OptimizerType;
-  typedef   const OptimizerType *                     OptimizerPointer;
+  typedef   itk::RegularStepGradientDescentOptimizer OptimizerType;
+  typedef   const OptimizerType *                    OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
+
     if( typeid( event ) != typeid( itk::IterationEvent ) )
       {
       return;
@@ -126,10 +128,12 @@ public:
     std::cout << optimizer->GetValue() << "   ";
     std::cout << gradientMagnitude << "   ";
     std::cout << optimizer->GetCurrentPosition() << std::endl;
-    }
+  }
+
 };
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -147,74 +151,65 @@ int main( int argc, char * argv [] )
 
   typedef itk::Image< MaskPixelType, Dimension > MaskImageType;
 
-
-  typedef itk::BoxSpatialObject< Dimension >    SpatialObjectType;
+  typedef itk::BoxSpatialObject< Dimension > SpatialObjectType;
 
   typedef itk::SpatialObjectToImageFilter<
-                              SpatialObjectType,
-                              MaskImageType
-                                >   SpatialObjectToImageFilterType;
+      SpatialObjectType,
+      MaskImageType
+      >   SpatialObjectToImageFilterType;
 
-  typedef itk::PointSet< float, Dimension >       FixedPointSetType;
-
+  typedef itk::PointSet< float, Dimension > FixedPointSetType;
 
   typedef itk::BinaryMaskToNarrowBandPointSetFilter<
-                                    MaskImageType,
-                                    FixedPointSetType
-                                            >  NarrowBandFilterType;
+      MaskImageType,
+      FixedPointSetType
+      >  NarrowBandFilterType;
 
-  typedef  signed short   PixelType;
+  typedef  signed short PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 
-  typedef  unsigned char       MaskPixelType;
+  typedef  unsigned char MaskPixelType;
 
-  typedef itk::Image< MaskPixelType, Dimension >  MaskImageType;
-
+  typedef itk::Image< MaskPixelType, Dimension > MaskImageType;
 
   typedef itk::Rigid2DTransform< double  > TransformType;
 
-  typedef TransformType::ParametersType          ParametersType;
+  typedef TransformType::ParametersType ParametersType;
 
-
-  typedef itk::RegularStepGradientDescentOptimizer    OptimizerType;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
 
   typedef itk::LinearInterpolateImageFunction<
-                                    ImageType,
-                                    double     > LinearInterpolatorType;
-
+      ImageType,
+      double     > LinearInterpolatorType;
 
   typedef itk::NormalizedCorrelationPointSetToImageMetric<
-                                    FixedPointSetType,
-                                    ImageType  >   MetricType;
+      FixedPointSetType,
+      ImageType  >   MetricType;
 
-
-  typedef OptimizerType::ScalesType       OptimizerScalesType;
-
+  typedef OptimizerType::ScalesType OptimizerScalesType;
 
   typedef itk::PointSetToImageRegistrationMethod<
-                                    FixedPointSetType,
-                                    ImageType  >   RegistrationType;
+      FixedPointSetType,
+      ImageType  >   RegistrationType;
 
+  typedef CommandIterationUpdate IterationObserverType;
 
-  typedef CommandIterationUpdate    IterationObserverType;
+  typedef itk::ImageFileReader< ImageType > ImageReaderType;
 
-  typedef itk::ImageFileReader< ImageType >      ImageReaderType;
-
-  SpatialObjectType::Pointer            spatialObject;
-  TransformType::Pointer                transform;
-  OptimizerType::Pointer                optimizer;
-  IterationObserverType::Pointer        iterationObserver;
-  LinearInterpolatorType::Pointer       linearInterpolator;
-  MetricType::Pointer                   metric;
-  RegistrationType::Pointer             registrationMethod;
-  ImageReaderType::Pointer              movingImageReader;
-  FixedPointSetType::Pointer            fixedPointSet;
-  ImageType::ConstPointer               movingImage;
+  SpatialObjectType::Pointer      spatialObject;
+  TransformType::Pointer          transform;
+  OptimizerType::Pointer          optimizer;
+  IterationObserverType::Pointer  iterationObserver;
+  LinearInterpolatorType::Pointer linearInterpolator;
+  MetricType::Pointer             metric;
+  RegistrationType::Pointer       registrationMethod;
+  ImageReaderType::Pointer        movingImageReader;
+  FixedPointSetType::Pointer      fixedPointSet;
+  ImageType::ConstPointer         movingImage;
 
   SpatialObjectToImageFilterType::Pointer rasterizationFilter;
   NarrowBandFilterType::Pointer           narrowBandPointSetFilter;
-
 
   metric              = MetricType::New();
   transform           = TransformType::New();
@@ -243,7 +238,6 @@ int main( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
   movingImage = movingImageReader->GetOutput();
 
   SpatialObjectType::SizeType boxSize;
@@ -263,12 +257,12 @@ int main( int argc, char * argv [] )
   spatialObject->SetSize( boxSize );
 
   ImageType::RegionType region =
-                movingImage->GetLargestPossibleRegion();
+    movingImage->GetLargestPossibleRegion();
 
-  ImageType::SizeType   imageSize = region.GetSize();
+  ImageType::SizeType imageSize = region.GetSize();
 
   ImageType::SpacingType spacing = movingImage->GetSpacing();
-  ImageType::PointType  origin;
+  ImageType::PointType   origin;
   origin[0] = ( boxSize[0] - imageSize[0] * spacing[0] ) / 2.0;
   origin[1] = ( boxSize[1] - imageSize[1] * spacing[1] ) / 2.0;
 
@@ -277,11 +271,10 @@ int main( int argc, char * argv [] )
   rasterizationFilter->SetSpacing( spacing );
   rasterizationFilter->SetOrigin( origin );
 
-
   narrowBandPointSetFilter->SetBandWidth( 5.0 );
 
   narrowBandPointSetFilter->SetInput(
-                    rasterizationFilter->GetOutput() );
+    rasterizationFilter->GetOutput() );
 
   narrowBandPointSetFilter->Update();
 
@@ -306,7 +299,6 @@ int main( int argc, char * argv [] )
   registrationMethod->SetMovingImage(   movingImage  );
   registrationMethod->SetFixedPointSet( fixedPointSet );
 
-
   optimizer->SetMaximumStepLength( 1.00 );
   optimizer->SetMinimumStepLength( 0.001 );
   optimizer->SetNumberOfIterations( 300 );
@@ -315,7 +307,7 @@ int main( int argc, char * argv [] )
   optimizer->MinimizeOn();
   optimizer->AddObserver( itk::IterationEvent(), iterationObserver );
 
-  TransformType::TranslationType  initialTranslation;
+  TransformType::TranslationType initialTranslation;
   initialTranslation[0] = 0.0;
   initialTranslation[1] = 0.0;
 
@@ -324,7 +316,6 @@ int main( int argc, char * argv [] )
     initialTranslation[0] = atof( argv[2] );
     initialTranslation[1] = atof( argv[3] );
     }
-
 
   TransformType::OutputPointType rotationCenter;
   rotationCenter[0] = boxSize[0] / 2.0;
@@ -335,7 +326,7 @@ int main( int argc, char * argv [] )
   transform->SetTranslation( initialTranslation );
 
   registrationMethod->SetInitialTransformParameters(
-                                  transform->GetParameters() );
+    transform->GetParameters() );
 
   OptimizerScalesType optimizerScales( transform->GetNumberOfParameters() );
 
@@ -363,15 +354,13 @@ int main( int argc, char * argv [] )
     }
 
   ParametersType transformParameters =
-         registrationMethod->GetLastTransformParameters();
-
+    registrationMethod->GetLastTransformParameters();
 
   TransformType::OutputPointType center = transform->GetCenter();
 
   std::cout << "Registration parameter = " << std::endl;
   std::cout << "Rotation center = " << center << std::endl;
   std::cout << "Parameters = " << transformParameters << std::endl;
-
 
   return EXIT_SUCCESS;
 }

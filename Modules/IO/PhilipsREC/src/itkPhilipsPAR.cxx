@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkPhilipsPAR.h"
 #include <fstream>
 #include <iostream>
@@ -98,7 +97,7 @@ struct image_info_defV3 {
   float trigger_time;
   float diffusion_b_factor;
   float image_flip_angle;
-};
+  };
 
 /*#=== IMAGE INFORMATION DEFINITION ============================================
 #The rest of this file contains ONE line per image, this line contains the
@@ -204,10 +203,11 @@ struct image_info_defV4 {
   float diffusion_rl;
   // Version 4.2 added ASL labels
   int labelTypeASL;
-};
+  };
 
-struct image_info_defV3 GetImageInformationDefinitionV3(std::string file,
-                                                        int lineNum, PhilipsPAR *philipsPARClass)
+struct image_info_defV3
+GetImageInformationDefinitionV3(std::string file,
+                                int lineNum, PhilipsPAR *philipsPARClass)
 {
   struct image_info_defV3 tempInfo;
   std::string             currentLine = "";
@@ -224,9 +224,9 @@ struct image_info_defV3 GetImageInformationDefinitionV3(std::string file,
        || ( currentLine == "\r\n" )
        || ( currentLine == "\r" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================" )
+            "=========================" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================\r" ) )
+            "=========================\r" ) )
     {
     tempInfo.problemreading = 1;
     return tempInfo;
@@ -255,8 +255,9 @@ struct image_info_defV3 GetImageInformationDefinitionV3(std::string file,
   return tempInfo;
 }
 
-struct image_info_defV4 GetImageInformationDefinitionV4(std::string file,
-                                                        int lineNum, PhilipsPAR *philipsPARClass)
+struct image_info_defV4
+GetImageInformationDefinitionV4(std::string file,
+                                int lineNum, PhilipsPAR *philipsPARClass)
 {
   struct image_info_defV4 tempInfo;
   std::string             currentLine = "";
@@ -273,9 +274,9 @@ struct image_info_defV4 GetImageInformationDefinitionV4(std::string file,
        || ( currentLine == "\r\n" )
        || ( currentLine == "\r" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================" )
+            "=========================" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================\r" ) )
+            "=========================\r" ) )
     {
     tempInfo.problemreading = 1;
     return tempInfo;
@@ -311,8 +312,9 @@ struct image_info_defV4 GetImageInformationDefinitionV4(std::string file,
   return tempInfo;
 }
 
-struct image_info_defV4 GetImageInformationDefinitionV41(std::string file,
-                                                         int lineNum, PhilipsPAR *philipsPARClass)
+struct image_info_defV4
+GetImageInformationDefinitionV41(std::string file,
+                                 int lineNum, PhilipsPAR *philipsPARClass)
 {
   struct image_info_defV4 tempInfo;
   std::string             currentLine = "";
@@ -329,9 +331,9 @@ struct image_info_defV4 GetImageInformationDefinitionV41(std::string file,
        || ( currentLine == "\r\n" )
        || ( currentLine == "\r" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================" )
+            "=========================" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================\r" ) )
+            "=========================\r" ) )
     {
     tempInfo.problemreading = 1;
     return tempInfo;
@@ -372,8 +374,9 @@ struct image_info_defV4 GetImageInformationDefinitionV41(std::string file,
   return tempInfo;
 }
 
-struct image_info_defV4 GetImageInformationDefinitionV42(std::string file,
-                                                         int lineNum, PhilipsPAR *philipsPARClass)
+struct image_info_defV4
+GetImageInformationDefinitionV42(std::string file,
+                                 int lineNum, PhilipsPAR *philipsPARClass)
 {
   struct image_info_defV4 tempInfo;
   std::string             currentLine = "";
@@ -390,9 +393,9 @@ struct image_info_defV4 GetImageInformationDefinitionV42(std::string file,
        || ( currentLine == "\r\n" )
        || ( currentLine == "\r" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================" )
+            "=========================" )
        || ( currentLine == "#=== END OF DATA DESCRIPTION FILE ======================"
-                           "=========================\r" ) )
+            "=========================\r" ) )
     {
     tempInfo.problemreading = 1;
     return tempInfo;
@@ -441,9 +444,11 @@ PhilipsPAR::PhilipsPAR()
 }
 
 PhilipsPAR::~PhilipsPAR()
-{}
+{
+}
 
-std::string PhilipsPAR::GetLineNumber(std::string file, int lineNum)
+std::string
+PhilipsPAR::GetLineNumber(std::string file, int lineNum)
 {
   std::string line = "";
   char        readFileBuffer[1024] = "";
@@ -486,15 +491,17 @@ std::string PhilipsPAR::GetLineNumber(std::string file, int lineNum)
   return line;
 }
 
-int PhilipsPAR::GetPARVersion(std::string parFile)
+int
+PhilipsPAR::GetPARVersion(std::string parFile)
 {
   //read version number of Philips research tools
   //Research tools are used to extract data from database; data formats differ
   //considerably between versions. Handles V3, V4, V4.1, and V4.2
-  int         ResToolsVersion = RESEARCH_IMAGE_EXPORT_TOOL_UNKNOWN;
+  int ResToolsVersion = RESEARCH_IMAGE_EXPORT_TOOL_UNKNOWN;
 
   // Character index 61 on line 8 should be 'V'.
   std::string currentLine = this->GetLineNumber(parFile, 8);
+
   if ( ( currentLine.length() >= 63 )
        && ( currentLine[61] == 'V' ) )
     {
@@ -530,7 +537,8 @@ int PhilipsPAR::GetPARVersion(std::string parFile)
   return ResToolsVersion;
 }
 
-std::string PhilipsPAR::GetGeneralInfoString(std::string file, int lineNum)
+std::string
+PhilipsPAR::GetGeneralInfoString(std::string file, int lineNum)
 {
   std::string            currentLine = "";
   std::string::size_type index;
@@ -553,7 +561,8 @@ std::string PhilipsPAR::GetGeneralInfoString(std::string file, int lineNum)
 #define UNDEFINED "Undefined"
 
 // Originally adapted from r2agui.m
-void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
+void
+PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
 {
   std::istringstream inString;
 
@@ -847,8 +856,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
               echoNumber = tempInfo1.echo;
               }
             // Get the trigger times
-            if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-              (cardiacPhase != tempInfo1.cardiac) )
+            if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                 (cardiacPhase != tempInfo1.cardiac) )
               {
               ++cardiacIndex;
               pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -913,8 +922,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
                 echoNumber = tempInfo1.echo;
                 }
               // Get the trigger times
-              if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-                (cardiacPhase != tempInfo1.cardiac) )
+              if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                   (cardiacPhase != tempInfo1.cardiac) )
                 {
                 ++cardiacIndex;
                 pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -943,8 +952,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
                     echoNumber = tempInfo1.echo;
                     }
                   // Get the trigger times
-                  if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-                    (cardiacPhase != tempInfo1.cardiac) )
+                  if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                       (cardiacPhase != tempInfo1.cardiac) )
                     {
                     ++cardiacIndex;
                     pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -1053,8 +1062,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
               echoNumber = tempInfo1.echo;
               }
             // Get the trigger times
-            if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-              (cardiacPhase != tempInfo1.cardiac) )
+            if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                 (cardiacPhase != tempInfo1.cardiac) )
               {
               ++cardiacIndex;
               pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -1395,8 +1404,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
               echoNumber = tempInfo1.echo;
               }
             // Get the trigger times
-            if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-              (cardiacPhase != tempInfo1.cardiac) )
+            if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                 (cardiacPhase != tempInfo1.cardiac) )
               {
               ++cardiacIndex;
               pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -1465,8 +1474,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
                 echoNumber = tempInfo1.echo;
                 }
               // Get the trigger times
-              if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-                (cardiacPhase != tempInfo1.cardiac) )
+              if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                   (cardiacPhase != tempInfo1.cardiac) )
                 {
                 ++cardiacIndex;
                 pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -1509,8 +1518,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
                     echoNumber = tempInfo1.echo;
                     }
                   // Get the trigger times
-                  if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-                    (cardiacPhase != tempInfo1.cardiac) )
+                  if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                       (cardiacPhase != tempInfo1.cardiac) )
                     {
                     ++cardiacIndex;
                     pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -1630,8 +1639,8 @@ void PhilipsPAR::ReadPAR(std::string parFile, struct par_parameter *pPar)
               echoNumber = tempInfo1.echo;
               }
             // Get the trigger times
-            if ( (cardiacIndex < (pPar->cardiac_phases-1)) &&
-              (cardiacPhase != tempInfo1.cardiac) )
+            if ( (cardiacIndex < (pPar->cardiac_phases-1) ) &&
+                 (cardiacPhase != tempInfo1.cardiac) )
               {
               ++cardiacIndex;
               pPar->trigger_times[cardiacIndex] = tempInfo1.trigger_time;
@@ -1931,7 +1940,8 @@ PhilipsPAR::GetImageTypesScanningSequence(std::string parFile)
         {
         PhilipsPAR::PARImageTypeScanSequence imageTypeAndSequence;
         int                                  lineIncrement = 89;
-        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] =
+                    { -1, -1, -1, -1, -1, -1, -1, -1 };
         tempInfo = GetImageInformationDefinitionV3(parFile, lineIncrement, this);
         while ( !tempInfo.problemreading && tempInfo.slice )
           {
@@ -1965,7 +1975,8 @@ PhilipsPAR::GetImageTypesScanningSequence(std::string parFile)
         {
         PhilipsPAR::PARImageTypeScanSequence imageTypeAndSequence;
         int                                  lineIncrement = 92;
-        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] =
+                    { -1, -1, -1, -1, -1, -1, -1, -1 };
         tempInfo = GetImageInformationDefinitionV4(parFile, lineIncrement, this);
         while ( !tempInfo.problemreading && tempInfo.slice )
           {
@@ -1999,7 +2010,8 @@ PhilipsPAR::GetImageTypesScanningSequence(std::string parFile)
         {
         PhilipsPAR::PARImageTypeScanSequence imageTypeAndSequence;
         int                                  lineIncrement = 99;
-        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] =
+                    { -1, -1, -1, -1, -1, -1, -1, -1 };
         tempInfo = GetImageInformationDefinitionV41(parFile, lineIncrement, this);
         while ( !tempInfo.problemreading && tempInfo.slice )
           {
@@ -2033,7 +2045,8 @@ PhilipsPAR::GetImageTypesScanningSequence(std::string parFile)
         {
         PhilipsPAR::PARImageTypeScanSequence imageTypeAndSequence;
         int                                  lineIncrement = 101;
-        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+        int                                  imageType[PAR_DEFAULT_IMAGE_TYPES_SIZE] =
+                    { -1, -1, -1, -1, -1, -1, -1, -1 };
         tempInfo = GetImageInformationDefinitionV42(parFile, lineIncrement, this);
         while ( !tempInfo.problemreading && tempInfo.slice )
           {
@@ -2063,8 +2076,9 @@ PhilipsPAR::GetImageTypesScanningSequence(std::string parFile)
   return recImageTypesScanSequence;
 }
 
-bool PhilipsPAR::GetRECRescaleValues(std::string parFile,
-                                     PhilipsPAR::PARRescaleValuesContainer *rescaleValues, int scan_sequence)
+bool
+PhilipsPAR::GetRECRescaleValues(std::string parFile,
+                                PhilipsPAR::PARRescaleValuesContainer *rescaleValues, int scan_sequence)
 {
   int ResToolsVersion;
 
@@ -2182,9 +2196,10 @@ bool PhilipsPAR::GetRECRescaleValues(std::string parFile,
   return true;
 }
 
-bool PhilipsPAR::GetDiffusionGradientOrientationAndBValues(std::string parFile,
-                                                           PhilipsPAR::PARDiffusionValuesContainer *gradientValues,
-                                                           PhilipsPAR::PARBValuesContainer *bValues)
+bool
+PhilipsPAR::GetDiffusionGradientOrientationAndBValues(std::string parFile,
+                                                      PhilipsPAR::PARDiffusionValuesContainer *gradientValues,
+                                                      PhilipsPAR::PARBValuesContainer *bValues)
 {
   gradientValues->resize(0); // Reset to zero size.
   bValues->resize(0);
@@ -2248,8 +2263,9 @@ bool PhilipsPAR::GetDiffusionGradientOrientationAndBValues(std::string parFile,
   return true;
 }
 
-bool PhilipsPAR::GetLabelTypesASL(std::string parFile,
-                                  PhilipsPAR::PARLabelTypesASLContainer *labelTypes)
+bool
+PhilipsPAR::GetLabelTypesASL(std::string parFile,
+                             PhilipsPAR::PARLabelTypesASLContainer *labelTypes)
 {
   labelTypes->resize(0); // Reset to zero size.
   struct par_parameter tempPar;
@@ -2299,8 +2315,10 @@ bool PhilipsPAR::GetLabelTypesASL(std::string parFile,
   return true;
 }
 
-void PhilipsPAR::PrintSelf(std::ostream & os, Indent indent) const
+void
+PhilipsPAR::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk

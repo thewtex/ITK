@@ -34,7 +34,7 @@ namespace itk
  */
 
 template< unsigned int TPointDimension = 3 >
-class VesselTubeSpatialObjectPoint:
+class VesselTubeSpatialObjectPoint :
   public TubeSpatialObjectPoint< TPointDimension >
 {
 public:
@@ -50,7 +50,8 @@ public:
   VesselTubeSpatialObjectPoint(void);
 
   /** Default destructor. */
-  virtual ~VesselTubeSpatialObjectPoint(void);
+  virtual
+  ~VesselTubeSpatialObjectPoint(void);
 
   /** Get Medialness */
   float GetMedialness(void) const;
@@ -122,6 +123,7 @@ protected:
 
   /** Print the object */
   void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end of namespace itk
 

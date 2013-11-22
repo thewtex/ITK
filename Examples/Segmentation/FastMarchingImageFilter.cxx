@@ -132,7 +132,6 @@
 #include "itkSigmoidImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  Of course, we will need the \doxygen{Image} class and the
@@ -143,7 +142,6 @@
 // Software Guide : BeginCodeSnippet
 #include "itkFastMarchingImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -157,7 +155,6 @@
 #include "itkBinaryThresholdImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  Reading and writing images will be done with the \doxygen{ImageFileReader}
@@ -170,13 +167,13 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  The \doxygen{RescaleIntensityImageFilter} is used to renormailize the
 //  output of filters before sending them to files.
 //
 #include "itkRescaleIntensityImageFilter.h"
 
-static void PrintCommandLineUsage( const int argc, const char * const argv[] )
+static void
+PrintCommandLineUsage( const int argc, const char * const argv[] )
 {
   std::cerr << "Missing Parameters " << std::endl;
   std::cerr << "Usage: " << argv[0];
@@ -190,7 +187,8 @@ static void PrintCommandLineUsage( const int argc, const char * const argv[] )
     }
 }
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc != 13 )
     {
@@ -207,11 +205,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -234,10 +231,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::BinaryThresholdImageFilter< InternalImageType,
-                        OutputImageType    >    ThresholdingFilterType;
+                                           OutputImageType    >    ThresholdingFilterType;
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -249,7 +245,7 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-  const InternalPixelType  timeThreshold = atof( argv[8] );
+  const InternalPixelType timeThreshold = atof( argv[8] );
 
   // Software Guide : BeginCodeSnippet
   thresholder->SetLowerThreshold(           0.0  );
@@ -258,7 +254,6 @@ int main( int argc, char *argv[] )
   thresholder->SetOutsideValue(  0  );
   thresholder->SetInsideValue(  255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -271,20 +266,18 @@ int main( int argc, char *argv[] )
   typedef  itk::ImageFileWriter<  OutputImageType  > WriterType;
   // Software Guide : EndCodeSnippet
 
-
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   //  The RescaleIntensityImageFilter type is declared below. This filter will
   //  renormalize image before sending them to writers.
   //
   typedef itk::RescaleIntensityImageFilter<
-                               InternalImageType,
-                               OutputImageType >   CastFilterType;
+      InternalImageType,
+      OutputImageType >   CastFilterType;
 
   //  Software Guide : BeginLatex
   //
@@ -295,10 +288,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef   itk::CurvatureAnisotropicDiffusionImageFilter<
-                               InternalImageType,
-                               InternalImageType >  SmoothingFilterType;
+      InternalImageType,
+      InternalImageType >  SmoothingFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -311,7 +303,6 @@ int main( int argc, char *argv[] )
   SmoothingFilterType::Pointer smoothing = SmoothingFilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The types of the
@@ -323,13 +314,12 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef   itk::GradientMagnitudeRecursiveGaussianImageFilter<
-                               InternalImageType,
-                               InternalImageType >  GradientFilterType;
+      InternalImageType,
+      InternalImageType >  GradientFilterType;
   typedef   itk::SigmoidImageFilter<
-                               InternalImageType,
-                               InternalImageType >  SigmoidFilterType;
+      InternalImageType,
+      InternalImageType >  SigmoidFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -339,10 +329,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  GradientFilterType::Pointer  gradientMagnitude = GradientFilterType::New();
-  SigmoidFilterType::Pointer sigmoid = SigmoidFilterType::New();
+  GradientFilterType::Pointer gradientMagnitude = GradientFilterType::New();
+  SigmoidFilterType::Pointer  sigmoid = SigmoidFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -361,7 +350,6 @@ int main( int argc, char *argv[] )
   sigmoid->SetOutputMaximum(  1.0  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We now declare the type of the FastMarchingImageFilter.
@@ -370,9 +358,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef  itk::FastMarchingImageFilter< InternalImageType,
-                              InternalImageType >    FastMarchingFilterType;
+                                         InternalImageType >    FastMarchingFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -382,10 +369,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  FastMarchingFilterType::Pointer  fastMarching
-                                              = FastMarchingFilterType::New();
+  FastMarchingFilterType::Pointer fastMarching
+    = FastMarchingFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -404,7 +390,6 @@ int main( int argc, char *argv[] )
   writer->SetInput( thresholder->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The CurvatureAnisotropicDiffusionImageFilter class requires a couple
@@ -421,7 +406,6 @@ int main( int argc, char *argv[] )
   smoothing->SetConductanceParameter( 9.0 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The GradientMagnitudeRecursiveGaussianImageFilter performs the
@@ -430,7 +414,10 @@ int main( int argc, char *argv[] )
   //  the range of influence of the image edges. This filter has been discussed
   //  in Section~\ref{sec:GradientMagnitudeRecursiveGaussianImageFilter}
   //
-  //  \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!SetSigma()}
+  //
+  //
+  //
+  // \index{itk::Gradient\-Magnitude\-Recursive\-Gaussian\-Image\-Filter!SetSigma()}
   //
   //  Software Guide : EndLatex
 
@@ -439,7 +426,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   gradientMagnitude->SetSigma(  sigma  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -473,12 +459,10 @@ int main( int argc, char *argv[] )
   const double alpha =  atof( argv[6] );
   const double beta  =  atof( argv[7] );
 
-
   // Software Guide : BeginCodeSnippet
   sigmoid->SetAlpha( alpha );
   sigmoid->SetBeta(  beta  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -512,17 +496,15 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   //  Software Guide : BeginCodeSnippet
-  typedef FastMarchingFilterType::NodeContainer           NodeContainer;
-  typedef FastMarchingFilterType::NodeType                NodeType;
+  typedef FastMarchingFilterType::NodeContainer NodeContainer;
+  typedef FastMarchingFilterType::NodeType      NodeType;
   NodeContainer::Pointer seeds = NodeContainer::New();
   //  Software Guide : EndCodeSnippet
 
-
-  InternalImageType::IndexType  seedPosition;
+  InternalImageType::IndexType seedPosition;
 
   seedPosition[0] = atoi( argv[3] );
   seedPosition[1] = atoi( argv[4] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -534,13 +516,12 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  NodeType node;
+  NodeType     node;
   const double seedValue = 0.0;
 
   node.SetValue( seedValue );
   node.SetIndex( seedPosition );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -553,7 +534,6 @@ int main( int argc, char *argv[] )
   seeds->Initialize();
   seeds->InsertElement( 0, node );
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -568,7 +548,6 @@ int main( int argc, char *argv[] )
   fastMarching->SetTrialPoints(  seeds  );
   // Software Guide : EndCodeSnippet
 
-
   //  Here we configure all the writers required to see the intermediate
   //  outputs of the pipeline. This is added here for providing better
   //  the necessary images needed when generating the ITKSoftwareGuide
@@ -580,7 +559,7 @@ int main( int argc, char *argv[] )
   try
     {
     CastFilterType::Pointer caster1 = CastFilterType::New();
-    WriterType::Pointer writer1 = WriterType::New();
+    WriterType::Pointer     writer1 = WriterType::New();
     caster1->SetInput( smoothing->GetOutput() );
     writer1->SetInput( caster1->GetOutput() );
     writer1->SetFileName(argv[10]);
@@ -598,7 +577,7 @@ int main( int argc, char *argv[] )
   try
     {
     CastFilterType::Pointer caster2 = CastFilterType::New();
-    WriterType::Pointer writer2 = WriterType::New();
+    WriterType::Pointer     writer2 = WriterType::New();
     caster2->SetInput( gradientMagnitude->GetOutput() );
     writer2->SetInput( caster2->GetOutput() );
     writer2->SetFileName(argv[11]);
@@ -616,7 +595,7 @@ int main( int argc, char *argv[] )
   try
     {
     CastFilterType::Pointer caster3 = CastFilterType::New();
-    WriterType::Pointer writer3 = WriterType::New();
+    WriterType::Pointer     writer3 = WriterType::New();
     caster3->SetInput( sigmoid->GetOutput() );
     writer3->SetInput( caster3->GetOutput() );
     writer3->SetFileName(argv[12]);
@@ -644,9 +623,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   fastMarching->SetOutputSize(
-           reader->GetOutput()->GetBufferedRegion().GetSize() );
+    reader->GetOutput()->GetBufferedRegion().GetSize() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -667,7 +645,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   fastMarching->SetStoppingValue(  stoppingTime  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -692,7 +669,7 @@ int main( int argc, char *argv[] )
   try
     {
     CastFilterType::Pointer caster4 = CastFilterType::New();
-    WriterType::Pointer writer4 = WriterType::New();
+    WriterType::Pointer     writer4 = WriterType::New();
     caster4->SetInput( fastMarching->GetOutput() );
     writer4->SetInput( caster4->GetOutput() );
     writer4->SetFileName("FastMarchingFilterOutput4.png");
@@ -706,7 +683,6 @@ int main( int argc, char *argv[] )
     std::cout << err << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // The following writer type is used to save the output of the
   // time-crossing map in a file with appropiate pixel representation. The
@@ -731,7 +707,6 @@ int main( int argc, char *argv[] )
   gradientWriter->SetFileName("FastMarchingFilterOutput2.mha");
   gradientWriter->Update();
 
-
   //  Software Guide : BeginLatex
   //
   //  Now let's run this example using the input image
@@ -744,11 +719,16 @@ int main( int argc, char *argv[] )
   //  \begin{center}
   //  \begin{tabular}{|l|c|c|c|c|c|c|p{2cm}|}
   //  \hline
-  //  Structure    & Seed Index & $\sigma$ & $\alpha$ & $\beta$ & Threshold & Output Image from left \\ \hline
-  //  Left Ventricle  & $(81,114)$ & 1.0 & -0.5 & 3.0  & 100 & First   \\  \hline
-  //  Right Ventricle & $(99,114)$ & 1.0 & -0.5 & 3.0  & 100 & Second  \\  \hline
-  //  White matter    & $(56, 92)$ & 1.0 & -0.3 & 2.0  & 200 & Third   \\  \hline
-  //  Gray matter     & $(40, 90)$ & 0.5 & -0.3 & 2.0  & 200 & Fourth  \\  \hline
+  //  Structure    & Seed Index & $\sigma$ & $\alpha$ & $\beta$ & Threshold &
+  // Output Image from left \\ \hline
+  //  Left Ventricle  & $(81,114)$ & 1.0 & -0.5 & 3.0  & 100 & First   \\
+  //  \hline
+  //  Right Ventricle & $(99,114)$ & 1.0 & -0.5 & 3.0  & 100 & Second  \\
+  //  \hline
+  //  White matter    & $(56, 92)$ & 1.0 & -0.3 & 2.0  & 200 & Third   \\
+  //  \hline
+  //  Gray matter     & $(40, 90)$ & 0.5 & -0.3 & 2.0  & 200 & Fourth  \\
+  //  \hline
   //  \end{tabular}
   //  \end{center}
   //  \itkcaption[FastMarching segmentation example parameters]{Parameters used
@@ -771,9 +751,11 @@ int main( int argc, char *argv[] )
   // \includegraphics[height=0.40\textheight]{FastMarchingFilterOutput1}
   // \includegraphics[height=0.40\textheight]{FastMarchingFilterOutput2}
   // \includegraphics[height=0.40\textheight]{FastMarchingFilterOutput3}
-  // \itkcaption[FastMarchingImageFilter intermediate output]{Images generated by
+  // \itkcaption[FastMarchingImageFilter intermediate output]{Images generated
+  // by
   // the segmentation process based on the FastMarchingImageFilter. From left
-  // to right and top to bottom: input image to be segmented, image smoothed with an
+  // to right and top to bottom: input image to be segmented, image smoothed
+  // with an
   // edge-preserving smoothing filter, gradient magnitude of the smoothed
   // image, sigmoid of the gradient magnitude. This last image, the sigmoid, is
   // used to compute the speed term for the front propagation }

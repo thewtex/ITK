@@ -52,7 +52,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class BinaryMorphologicalClosingImageFilter:
+class BinaryMorphologicalClosingImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -97,7 +97,9 @@ public:
 
 protected:
   BinaryMorphologicalClosingImageFilter();
-  ~BinaryMorphologicalClosingImageFilter() {}
+  ~BinaryMorphologicalClosingImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Single-threaded version of GenerateData.  This filter delegates
@@ -108,7 +110,8 @@ private:
   BinaryMorphologicalClosingImageFilter(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   InputPixelType m_ForegroundValue;
 

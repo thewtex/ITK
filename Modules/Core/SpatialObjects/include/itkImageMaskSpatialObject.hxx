@@ -36,7 +36,8 @@ ImageMaskSpatialObject< TDimension >
 template< unsigned int TDimension >
 ImageMaskSpatialObject< TDimension >
 ::~ImageMaskSpatialObject()
-{}
+{
+}
 
 /** Test whether a point is inside or outside the object
  *  For computational speed purposes, it is faster if the method does not
@@ -74,8 +75,9 @@ ImageMaskSpatialObject< TDimension >
 
   typedef typename InterpolatorType::OutputType InterpolatorOutputType;
   const bool insideMask = (
-    DefaultConvertPixelTraits<InterpolatorOutputType>::GetScalarValue(this->m_Interpolator->EvaluateAtContinuousIndex(index))
-    != NumericTraits<PixelType>::Zero);
+      DefaultConvertPixelTraits<InterpolatorOutputType>::GetScalarValue(this->m_Interpolator->EvaluateAtContinuousIndex(
+                                                                          index) )
+      != NumericTraits<PixelType>::Zero);
   return insideMask;
 }
 
@@ -256,6 +258,7 @@ ImageMaskSpatialObject< TDimension >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif //__ImageMaskSpatialObject_hxx

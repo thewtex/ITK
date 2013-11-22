@@ -66,14 +66,14 @@ namespace itk
  * \ingroup ITKFiniteDifference
  */
 template< typename TInputImage, typename TOutputImage >
-class DenseFiniteDifferenceImageFilter:
+class DenseFiniteDifferenceImageFilter :
   public FiniteDifferenceImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs */
   typedef DenseFiniteDifferenceImageFilter Self;
   typedef FiniteDifferenceImageFilter<
-    TInputImage, TOutputImage >                 Superclass;
+      TInputImage, TOutputImage >                 Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -85,7 +85,7 @@ public:
   typedef typename Superclass::InputImageType  InputImageType;
   typedef typename Superclass::OutputImageType OutputImageType;
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** Dimensionality of input and output data is assumed to be the same.
    * It is inherited from the superclass. */
@@ -116,8 +116,13 @@ public:
 
 protected:
   DenseFiniteDifferenceImageFilter()
-  { m_UpdateBuffer = UpdateBufferType::New(); }
-  ~DenseFiniteDifferenceImageFilter() {}
+  {
+    m_UpdateBuffer = UpdateBufferType::New();
+  }
+
+  ~DenseFiniteDifferenceImageFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** A simple method to copy the data from the input to the output.  ( Supports
@@ -132,8 +137,11 @@ protected:
 
   /** Method to allow subclasses to get direct access to the update
    * buffer */
-  virtual UpdateBufferType * GetUpdateBuffer()
-  { return m_UpdateBuffer; }
+  virtual UpdateBufferType *
+  GetUpdateBuffer()
+  {
+    return m_UpdateBuffer;
+  }
 
   /** This method populates an update buffer with changes for each pixel in the
    * output using the ThreadedCalculateChange() method and a multithreading
@@ -175,7 +183,7 @@ private:
     TimeStepType TimeStep;
     std::vector< TimeStepType > TimeStepList;
     std::vector< bool > ValidTimeStepList;
-  };
+    };
 
   /** This callback method uses ImageSource::SplitRequestedRegion to acquire an
    * output region that it passes to ThreadedApplyUpdate for processing. */

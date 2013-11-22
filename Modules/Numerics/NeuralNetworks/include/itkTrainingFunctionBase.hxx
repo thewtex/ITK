@@ -37,36 +37,39 @@ TrainingFunctionBase<TSample,TTargetVector,ScalarType>
 }
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-void TrainingFunctionBase<TSample,TTargetVector,ScalarType>
+void
+TrainingFunctionBase<TSample,TTargetVector,ScalarType>
 ::SetTrainingSamples(TSample* samples)
 {
   m_TrainingSamples = samples;
   std::cout << "Training functionSample Size=" << samples->Size() << std::endl;
   typename TSample::ConstIterator iter = samples->Begin();
-  while (iter != samples->End())
+  while (iter != samples->End() )
     {
     //m_InputSamples.push_back(defaultconverter(iter.GetMeasurementVector()));
-    m_InputSamples.push_back(iter.GetMeasurementVector());
+    m_InputSamples.push_back(iter.GetMeasurementVector() );
 
     ++iter;
     }
 }
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-void TrainingFunctionBase<TSample,TTargetVector,ScalarType>
+void
+TrainingFunctionBase<TSample,TTargetVector,ScalarType>
 ::SetTargetValues(TTargetVector* targets)
 {
   typename TTargetVector::ConstIterator iter = targets->Begin();
-  while (iter != targets->End())
+  while (iter != targets->End() )
     {
     //m_Targets.push_back(targetconverter(iter.GetMeasurementVector()));
-    m_Targets.push_back(iter.GetMeasurementVector());
+    m_Targets.push_back(iter.GetMeasurementVector() );
     ++iter;
     }
   std::cout << "Num of Sample Targets converted= " << m_Targets.size()
             << std::endl;
   this->Modified();
 }
+
 template<typename TSample, typename TTargetVector, typename ScalarType>
 void
 TrainingFunctionBase<TSample,TTargetVector,ScalarType>
@@ -85,13 +88,13 @@ TrainingFunctionBase<TSample,TTargetVector,ScalarType>
 }
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-void TrainingFunctionBase<TSample,TTargetVector,ScalarType>
+void
+TrainingFunctionBase<TSample,TTargetVector,ScalarType>
 ::SetPerformanceFunction(PerformanceFunctionType* f)
 {
   m_PerformanceFunction=f;
   this->Modified();
 }
-
 
 /** Print the object */
 template<typename TSample, typename TTargetVector, typename ScalarType>

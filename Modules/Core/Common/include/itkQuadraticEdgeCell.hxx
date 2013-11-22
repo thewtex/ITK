@@ -255,6 +255,7 @@ QuadraticEdgeCell< TCellInterface >
   weights[1] =     ( 2 * x - 1.0 ) * ( x     );
   weights[2] = 4 * ( 1.0 -   x ) * ( x     );
 }
+
 } // end namespace itk
 
 #endif

@@ -22,22 +22,23 @@
 
 // Convenience function to template over dimension and avoid code duplication.
 template< unsigned int ImageDimension>
-int itkSignedMaurerDistanceMapImageFilterTest( char * argv[] )
+int
+itkSignedMaurerDistanceMapImageFilterTest( char * argv[] )
 {
-  typedef unsigned char   InputPixelType;
-  typedef float           OutputPixelType;
+  typedef unsigned char InputPixelType;
+  typedef float         OutputPixelType;
 
-  typedef itk::Image<InputPixelType,  ImageDimension>  InputImageType;
-  typedef itk::Image<OutputPixelType, ImageDimension>  OutputImageType;
-  typedef itk::ImageFileReader<InputImageType>         ReaderType;
-  typedef itk::ImageFileWriter<OutputImageType>        WriterType;
+  typedef itk::Image<InputPixelType,  ImageDimension> InputImageType;
+  typedef itk::Image<OutputPixelType, ImageDimension> OutputImageType;
+  typedef itk::ImageFileReader<InputImageType>        ReaderType;
+  typedef itk::ImageFileWriter<OutputImageType>       WriterType;
 
   typename ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName(argv[1]);
   reader->Update();
 
   typedef itk::SignedMaurerDistanceMapImageFilter
-  <InputImageType, OutputImageType>  FilterType;
+    <InputImageType, OutputImageType>  FilterType;
 
   typename FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
@@ -56,38 +57,39 @@ int itkSignedMaurerDistanceMapImageFilterTest( char * argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkSignedMaurerDistanceMapImageFilterTest( int argc, char * argv[] )
+int
+itkSignedMaurerDistanceMapImageFilterTest( int argc, char * argv[] )
 {
   if( argc < 3 )
-  {
+    {
     std::cerr << "Usage: " << argv[0] << " InputImage OutputImage [ImageDimension]\n";
     return EXIT_FAILURE;
-  }
+    }
 
   // Default value for ImageDimension
   int ImageDimension = 3;
   if( argc == 4 )
-  {
+    {
     ImageDimension = atoi(argv[3]);
-  }
+    }
 
   int result;
   if( ImageDimension == 2 )
-  {
+    {
     result = itkSignedMaurerDistanceMapImageFilterTest<2>( argv );
-  }
+    }
   else if( ImageDimension == 3 )
-  {
+    {
     result = itkSignedMaurerDistanceMapImageFilterTest<3>( argv );
-  }
+    }
   else if( ImageDimension == 4 )
-  {
+    {
     result = itkSignedMaurerDistanceMapImageFilterTest<4>( argv );
-  }
+    }
   else
-  {
+    {
     result = EXIT_FAILURE;
-  }
+    }
 
   return result;
 }

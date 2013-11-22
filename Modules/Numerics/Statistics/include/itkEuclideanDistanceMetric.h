@@ -31,7 +31,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TVector >
-class EuclideanDistanceMetric:
+class EuclideanDistanceMetric :
   public DistanceMetric< TVector >
 {
 public:
@@ -66,8 +66,13 @@ public:
   double Evaluate(const ValueType & a, const ValueType & b) const;
 
 protected:
-  EuclideanDistanceMetric() {}
-  virtual ~EuclideanDistanceMetric() {}
+  EuclideanDistanceMetric() {
+  }
+
+  virtual
+  ~EuclideanDistanceMetric() {
+  }
+
 };  // end of class
 } // end of namespace Statistics
 } // end of namespace itk

@@ -19,7 +19,8 @@
 #include <fstream>
 #include "itkMesh.h"
 
-int itkMeshFstreamTest(int argc, char* argv[] )
+int
+itkMeshFstreamTest(int argc, char* argv[] )
 {
   if (argc < 2)
     {

@@ -64,7 +64,7 @@ namespace itk
  */
 
 template< typename T, unsigned int NVectorDimension = 3 >
-class CovariantVector:public FixedArray< T, NVectorDimension >
+class CovariantVector : public FixedArray< T, NVectorDimension >
 {
 public:
   /** Standard class typedefs. */
@@ -89,8 +89,11 @@ public:
   typedef FixedArray< T, NVectorDimension > BaseArray;
 
   /** Get the dimension (size) of the vector. */
-  static unsigned int GetCovariantVectorDimension()
-  { return NVectorDimension; }
+  static unsigned int
+  GetCovariantVectorDimension()
+  {
+    return NVectorDimension;
+  }
 
   /** Set a vnl_vector_ref referencing the same memory block. */
   void SetVnlVector(const vnl_vector< T > &);
@@ -103,32 +106,39 @@ public:
 
   /** Set a vnl_vector_ref referencing the same memory block.
    * \deprecated Use SetVnlVector() instead. */
-  itkLegacyMacro(void Set_vnl_vector(const vnl_vector< T > &));
+  itkLegacyMacro(void Set_vnl_vector(const vnl_vector< T > &) );
 
   /** Get a vnl_vector_ref referencing the same memory block.
    * \deprecated Use GetVnlVector() instead. */
-  itkLegacyMacro(vnl_vector_ref< T > Get_vnl_vector(void));
+  itkLegacyMacro(vnl_vector_ref< T > Get_vnl_vector(void) );
 
   /** Get a vnl_vector with a copy of the internal memory block.
    * \deprecated Use GetVnlVector() instead. */
   itkLegacyMacro(vnl_vector< T > Get_vnl_vector(void) const);
 
   /** Default constructor and copy constructors. */
-  CovariantVector():BaseArray() {}
+  CovariantVector() : BaseArray() {
+  }
+
   CovariantVector(const ValueType & r);
 
   /** Pass-through constructor for the Array base class. Implicit casting is
    * performed to initialize constructor from any another one of datatype. */
   template< typename TVectorValueType >
   CovariantVector(const CovariantVector< TVectorValueType,
-                                         NVectorDimension > & r):BaseArray(r) {}
-  CovariantVector(const ValueType r[Dimension]):BaseArray(r) {}
+                                         NVectorDimension > & r) : BaseArray(r) {
+  }
+
+  CovariantVector(const ValueType r[Dimension]) : BaseArray(r) {
+  }
 
   /** Assignment operator with implicit casting from another data type */
   template< typename Tt >
-  Self & operator=(const Tt & v)
+  Self &
+  operator=(const Tt & v)
   {
     BaseArray::operator=(v);
+
     return *this;
   }
 
@@ -139,7 +149,8 @@ public:
 
   /** Scalar operator*=.  Scales elements by a scalar. */
   template< typename Tt >
-  inline const Self & operator*=(const Tt & value)
+  inline const Self &
+  operator*=(const Tt & value)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
       {
@@ -150,7 +161,8 @@ public:
 
   /** Scalar operator/=.  Scales (divides) elements by a scalar. */
   template< typename Tt >
-  const Self & operator/=(const Tt & value)
+  const Self &
+  operator/=(const Tt & value)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
       {
@@ -187,7 +199,8 @@ public:
 
   /** Scalar operator*. Scale the elements of a vector by a scalar.
    * Return a new vector. */
-  inline Self operator*(const ValueType & val) const
+  inline Self
+  operator*(const ValueType & val) const
   {
     Self result;
 
@@ -201,7 +214,8 @@ public:
   /** Scalar operator/. Scale (divide) the elements of a vector by a scalar.
    * Return a new vector. */
   template< typename Tt >
-  inline Self operator/(const Tt & val) const
+  inline Self
+  operator/(const Tt & val) const
   {
     Self result;
 
@@ -216,7 +230,10 @@ public:
   RealValueType GetNorm(void) const;
 
   /** Returns the number of components in this vector type */
-  static unsigned int GetNumberOfComponents() { return NVectorDimension; }
+  static unsigned int
+  GetNumberOfComponents() {
+    return NVectorDimension;
+  }
 
   /** Divides the covariant vector componets by the norm */
   void Normalize(void);
@@ -227,13 +244,15 @@ public:
   /** Copy from another CovariantVector with a different representation type.
    *  Casting is done with C-Like rules  */
   template< typename TCoordRepB >
-  void CastFrom(const CovariantVector< TCoordRepB, NVectorDimension > & pa)
+  void
+  CastFrom(const CovariantVector< TCoordRepB, NVectorDimension > & pa)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
       {
       ( *this )[i] = static_cast< T >( pa[i] );
       }
   }
+
 };
 
 /** Premultiply Operator for product of a vector and a scalar.
@@ -267,6 +286,7 @@ ITKCommon_EXPORT void CrossProduct(CovariantVector< float, 3 > &,
 ITKCommon_EXPORT void CrossProduct(CovariantVector< int, 3 >,
                                    const Vector< int, 3 > &,
                                    const Vector< int, 3 > &);
+
 } // end namespace itk
 
 //

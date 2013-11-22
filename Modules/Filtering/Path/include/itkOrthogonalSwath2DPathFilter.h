@@ -48,7 +48,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TFourierSeriesPath, typename TSwathMeritImage >
-class OrthogonalSwath2DPathFilter:public
+class OrthogonalSwath2DPathFilter : public
   PathAndImageToPathFilter< TFourierSeriesPath, TSwathMeritImage,
                             OrthogonallyCorrected2DParametricPath >
 {
@@ -78,9 +78,9 @@ public:
   typedef typename OutputPathType::Pointer      OutputPathPointer;
   typedef typename OutputPathType::InputType    OutputPathInputType;
   typedef typename OutputPathType::OrthogonalCorrectionTableType
-  OrthogonalCorrectionTableType;
+    OrthogonalCorrectionTableType;
   typedef typename OutputPathType::OrthogonalCorrectionTablePointer
-  OrthogonalCorrectionTablePointer;
+    OrthogonalCorrectionTablePointer;
 
   typedef typename InputPathType::IndexType  IndexType;
   typedef typename InputPathType::OffsetType OffsetType;
@@ -88,7 +88,8 @@ public:
 
 protected:
   OrthogonalSwath2DPathFilter();
-  virtual ~OrthogonalSwath2DPathFilter();
+  virtual
+  ~OrthogonalSwath2DPathFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData(void);
@@ -116,25 +117,27 @@ private:
   // be
   // used on both the left and right hand of assignments for reads & writes, ex:
   // StepValue(1,1,1) = 2+MeritValue(0,0,3);
-  inline int & StepValue(int f, int l, int x)
+  inline int &
+  StepValue(int f, int l, int x)
   {
     int rows = m_SwathSize[1];
 
     return m_StepValues[( x * rows * rows ) + ( f * rows ) + ( l )];
   }
 
-  inline double & MeritValue(int f, int l, int x)
+  inline double &
+  MeritValue(int f, int l, int x)
   {
     int rows = m_SwathSize[1];
 
     return m_MeritValues[( x * rows * rows ) + ( f * rows ) + ( l )];
   }
 
-  int *   m_StepValues; // best y=error coordinate @ x of image for (0,F) ->
+  int * m_StepValues;   // best y=error coordinate @ x of image for (0,F) ->
                         // (x+1,L)
   double *m_MeritValues;
 
-  int *                            m_OptimumStepsValues;  // best step (e value)
+  int * m_OptimumStepsValues;                             // best step (e value)
                                                           // sequence for a
                                                           // closed path
   OrthogonalCorrectionTablePointer m_FinalOffsetValues;

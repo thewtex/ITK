@@ -57,14 +57,14 @@ namespace itk
  */
 template<typename TInternalComputationValueType>
 class QuasiNewtonOptimizerv4Template :
-  public         GradientDescentOptimizerv4Template<TInternalComputationValueType>
+  public GradientDescentOptimizerv4Template<TInternalComputationValueType>
 {
 public:
   /** Standard class typedefs. */
-  typedef QuasiNewtonOptimizerv4Template                                 Self;
-  typedef GradientDescentOptimizerv4Template<TInternalComputationValueType>    Superclass;
-  typedef SmartPointer< Self >                                           Pointer;
-  typedef SmartPointer< const Self >                                     ConstPointer;
+  typedef QuasiNewtonOptimizerv4Template                                    Self;
+  typedef GradientDescentOptimizerv4Template<TInternalComputationValueType> Superclass;
+  typedef SmartPointer< Self >                                              Pointer;
+  typedef SmartPointer< const Self >                                        ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -72,8 +72,9 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(QuasiNewtonOptimizerv4Template, Superclass);
 
-  /** It should be possible to derive the internal computation type from the class object. */
-  typedef TInternalComputationValueType          InternalComputationValueType;
+  /** It should be possible to derive the internal computation type from the
+    class object. */
+  typedef TInternalComputationValueType InternalComputationValueType;
 
   typedef typename Superclass::ParametersType    ParametersType;
   typedef typename Superclass::MeasureType       MeasureType;
@@ -187,7 +188,8 @@ protected:
   virtual void AdvanceOneStep(void);
 
   QuasiNewtonOptimizerv4Template();
-  virtual ~QuasiNewtonOptimizerv4Template();
+  virtual
+  ~QuasiNewtonOptimizerv4Template();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 

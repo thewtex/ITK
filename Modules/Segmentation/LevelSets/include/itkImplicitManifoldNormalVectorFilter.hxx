@@ -56,6 +56,7 @@ ImplicitManifoldNormalVectorFilter< TInputImage, TSparseOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "IsoLevelLow: " << m_IsoLevelLow << std::endl;
   os << indent << "IsoLevelHigh: " << m_IsoLevelHigh << std::endl;
   os << indent << "MaxIteration: " << m_MaxIteration << std::endl;
@@ -242,12 +243,13 @@ ImplicitManifoldNormalVectorFilter< TInputImage, TSparseOutputImage >
     while ( it != last )
       {
       nv = it->m_InputData * ( 1.0 + m_UnsharpMaskingWeight )
-           - it->m_Data * m_UnsharpMaskingWeight;
+        - it->m_Data * m_UnsharpMaskingWeight;
       it->m_Data = nv / ( m_MinVectorNorm + nv.GetNorm() );
       ++it;
       }
     }
 }
+
 } // end namespace itk
 
 #endif

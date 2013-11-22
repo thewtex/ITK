@@ -18,11 +18,12 @@
 
 #include "itkTimeVaryingVelocityFieldTransform.h"
 
-int itkTimeVaryingVelocityFieldTransformTest( int, char* [] )
+int
+itkTimeVaryingVelocityFieldTransformTest( int, char* [] )
 {
-  typedef itk::Vector<double, 3>      VectorType;
-  typedef itk::Image<VectorType, 3>   DisplacementFieldType;
-  typedef itk::Image<VectorType, 4>   TimeVaryingVelocityFieldType;
+  typedef itk::Vector<double, 3>    VectorType;
+  typedef itk::Image<VectorType, 3> DisplacementFieldType;
+  typedef itk::Image<VectorType, 4> TimeVaryingVelocityFieldType;
 
   TimeVaryingVelocityFieldType::PointType origin;
   origin.Fill( 0.0 );

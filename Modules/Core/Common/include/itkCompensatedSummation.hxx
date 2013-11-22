@@ -24,6 +24,7 @@ namespace itk
 {
 
 void ITKCommon_EXPORT CompensatedSummationAddElement( float& compensation, float& sum, const float& element );
+
 void ITKCommon_EXPORT CompensatedSummationAddElement( double& compensation, double& sum, const double& element );
 
 #ifndef __itkCompensatedSummation_cxx
@@ -38,7 +39,8 @@ void ITKCommon_EXPORT CompensatedSummationAddElement( double& compensation, doub
 #endif // not __itkCompensatedSummation_cxx
 template <typename TFloat>
 /** A helper for the CompensatedSummation class. */
-void CompensatedSummationAddElement( TFloat& compensation, TFloat& sum, const TFloat& element, int=0)
+void
+CompensatedSummationAddElement( TFloat& compensation, TFloat& sum, const TFloat& element, int=0)
 {
   typedef typename NumericTraits< TFloat >::AccumulateType AccumulateType;
   const AccumulateType compensatedInput = static_cast< AccumulateType >( element - compensation );
@@ -47,6 +49,7 @@ void CompensatedSummationAddElement( TFloat& compensation, TFloat& sum, const TF
   compensation = static_cast<TFloat>( (tempSum - sum) - compensatedInput);
   sum = static_cast<TFloat>( tempSum );
 }
+
 #ifndef __itkCompensatedSummation_cxx
 #ifdef __INTEL_COMPILER
 #pragma optimize("", on)
@@ -58,7 +61,7 @@ void CompensatedSummationAddElement( TFloat& compensation, TFloat& sum, const TF
 
 template < typename TFloat >
 CompensatedSummation< TFloat >
-::CompensatedSummation():
+::CompensatedSummation() :
   m_Sum( NumericTraits< AccumulateType >::Zero ),
   m_Compensation( NumericTraits< AccumulateType >::Zero )
 {
@@ -107,7 +110,7 @@ CompensatedSummation< TFloat > &
 CompensatedSummation< TFloat >
 ::operator-=( const FloatType & rhs )
 {
-  this->AddElement( - rhs );
+  this->AddElement( -rhs );
   return *this;
 }
 
@@ -155,9 +158,9 @@ template < typename TFloat >
 const typename CompensatedSummation< TFloat >::AccumulateType &
 CompensatedSummation< TFloat >
 ::GetSum() const
-{
+  {
   return this->m_Sum;
-}
+  }
 
 } // end namespace itk
 

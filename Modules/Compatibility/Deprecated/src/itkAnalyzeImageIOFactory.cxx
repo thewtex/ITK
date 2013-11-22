@@ -21,8 +21,10 @@
 
 namespace itk
 {
-void AnalyzeImageIOFactory::PrintSelf(std::ostream &, Indent) const
-{}
+void
+AnalyzeImageIOFactory::PrintSelf(std::ostream &, Indent) const
+{
+}
 
 AnalyzeImageIOFactory::AnalyzeImageIOFactory()
 {
@@ -34,7 +36,8 @@ AnalyzeImageIOFactory::AnalyzeImageIOFactory()
 }
 
 AnalyzeImageIOFactory::~AnalyzeImageIOFactory()
-{}
+{
+}
 
 const char *
 AnalyzeImageIOFactory::GetITKSourceVersion(void) const
@@ -47,4 +50,5 @@ AnalyzeImageIOFactory::GetDescription() const
 {
   return "Analyze ImageIO Factory, allows the loading of Analyze images into insight";
 }
+
 } // end namespace itk

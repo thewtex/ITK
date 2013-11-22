@@ -39,7 +39,7 @@ CenteredEuler3DTransform<TScalar>::CenteredEuler3DTransform(unsigned int paramet
 // Constructor with default arguments
 template <typename TScalar>
 CenteredEuler3DTransform<TScalar>::CenteredEuler3DTransform(const MatrixType & matrix,
-                                                                const OutputPointType & offset) :
+                                                            const OutputPointType & offset) :
   Superclass(matrix, offset)
 {
 }

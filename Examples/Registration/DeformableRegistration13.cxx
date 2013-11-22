@@ -57,7 +57,6 @@
 #include "itkCastImageFilter.h"
 #include "itkSquaredDifferenceImageFilter.h"
 
-
 //  The following section of code implements a Command observer
 //  used to monitor the evolution of the registration process.
 //
@@ -65,28 +64,32 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>   Pointer;
+  typedef  CommandIterationUpdate Self;
+  typedef  itk::Command           Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {
+  }
 
 public:
   typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   typedef   const OptimizerType *                  OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( !(itk::IterationEvent().CheckEvent( &event )) )
+
+    if( !(itk::IterationEvent().CheckEvent( &event ) ) )
       {
       return;
       }
@@ -94,11 +97,12 @@ public:
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << std::endl;
-    }
+  }
+
 };
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -113,12 +117,11 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  const    unsigned int    ImageDimension = 2;
-  typedef  unsigned char   PixelType;
+  const    unsigned int ImageDimension = 2;
+  typedef  unsigned char PixelType;
 
-  typedef itk::Image< PixelType, ImageDimension >  FixedImageType;
-  typedef itk::Image< PixelType, ImageDimension >  MovingImageType;
-
+  typedef itk::Image< PixelType, ImageDimension > FixedImageType;
+  typedef itk::Image< PixelType, ImageDimension > MovingImageType;
 
   //  Software Guide : BeginLatex
   //
@@ -139,38 +142,35 @@ int main( int argc, char *argv[] )
   typedef double CoordinateRepType;
 
   typedef itk::BSplineTransform<
-                            CoordinateRepType,
-                            SpaceDimension,
-                            SplineOrder >     TransformType;
+      CoordinateRepType,
+      SpaceDimension,
+      SplineOrder >     TransformType;
 
-  typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   // Software Guide : EndCodeSnippet
 
-
   typedef itk::MattesMutualInformationImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
 
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
-  MetricType::Pointer         metric        = MetricType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-
+  MetricType::Pointer       metric        = MetricType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetMetric(        metric        );
   registration->SetOptimizer(     optimizer     );
   registration->SetInterpolator(  interpolator  );
 
-
-  TransformType::Pointer  transform = TransformType::New();
+  TransformType::Pointer transform = TransformType::New();
   registration->SetTransform( transform );
 
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
@@ -197,16 +197,16 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
 
-  TransformType::PhysicalDimensionsType   fixedPhysicalDimensions;
-  TransformType::MeshSizeType             meshSize;
-  TransformType::OriginType               fixedOrigin;
+  TransformType::PhysicalDimensionsType fixedPhysicalDimensions;
+  TransformType::MeshSizeType           meshSize;
+  TransformType::OriginType             fixedOrigin;
 
   for( unsigned int i=0; i< SpaceDimension; i++ )
     {
     fixedOrigin[i] = fixedImage->GetOrigin()[i];
     fixedPhysicalDimensions[i] = fixedImage->GetSpacing()[i] *
       static_cast<double>(
-      fixedImage->GetLargestPossibleRegion().GetSize()[i] - 1 );
+        fixedImage->GetLargestPossibleRegion().GetSize()[i] - 1 );
     }
   meshSize.Fill( numberOfGridNodesInOneDimension - SplineOrder );
 
@@ -216,10 +216,10 @@ int main( int argc, char *argv[] )
   transform->SetTransformDomainMeshSize( meshSize );
   transform->SetTransformDomainDirection( fixedImage->GetDirection() );
 
-  typedef TransformType::ParametersType     ParametersType;
+  typedef TransformType::ParametersType ParametersType;
 
   const unsigned int numberOfParameters =
-               transform->GetNumberOfParameters();
+    transform->GetNumberOfParameters();
 
   ParametersType parameters( numberOfParameters );
 
@@ -229,7 +229,6 @@ int main( int argc, char *argv[] )
 
   registration->SetInitialTransformParameters( transform->GetParameters() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -270,15 +269,15 @@ int main( int argc, char *argv[] )
     {
     // Define whether to cache the BSpline weights and indexes corresponding to
     // each one of the samples used to compute the metric. Enabling caching will
-    // make the algorithm run faster but it will have a cost on the amount of memory
+    // make the algorithm run faster but it will have a cost on the amount of
+    // memory
     // that needs to be allocated. This option is only relevant when using the
     // BSplineTransform.
     metric->SetUseCachingOfBSplineWeights( atoi( argv[8] ) );
     }
 
-
   // Add a time probe
-  itk::TimeProbesCollectorBase chronometer;
+  itk::TimeProbesCollectorBase   chronometer;
   itk::MemoryProbesCollectorBase memorymeter;
 
   std::cout << std::endl << "Starting Registration" << std::endl;
@@ -305,8 +304,7 @@ int main( int argc, char *argv[] )
     }
 
   OptimizerType::ParametersType finalParameters =
-                    registration->GetLastTransformParameters();
-
+    registration->GetLastTransformParameters();
 
   // Report the time and memory taken by the registration
   chronometer.Report( std::cout );
@@ -314,10 +312,9 @@ int main( int argc, char *argv[] )
 
   transform->SetParameters( finalParameters );
 
-
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   ResampleFilterType::Pointer resample = ResampleFilterType::New();
 
@@ -335,27 +332,23 @@ int main( int argc, char *argv[] )
   // such as 100 or 128.
   resample->SetDefaultPixelValue( 0 );
 
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char OutputPixelType;
 
   typedef itk::Image< OutputPixelType, ImageDimension > OutputImageType;
 
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType > CastFilterType;
+      FixedImageType,
+      OutputImageType > CastFilterType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
-
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
 
-
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput()   );
-
 
   try
     {
@@ -369,15 +362,14 @@ int main( int argc, char *argv[] )
     }
 
   typedef itk::SquaredDifferenceImageFilter<
-                                  FixedImageType,
-                                  FixedImageType,
-                                  OutputImageType > DifferenceFilterType;
+      FixedImageType,
+      FixedImageType,
+      OutputImageType > DifferenceFilterType;
 
   DifferenceFilterType::Pointer difference = DifferenceFilterType::New();
 
   WriterType::Pointer writer2 = WriterType::New();
   writer2->SetInput( difference->GetOutput() );
-
 
   // Compute the difference image between the
   // fixed and resampled moving image.
@@ -397,7 +389,6 @@ int main( int argc, char *argv[] )
       return EXIT_FAILURE;
       }
     }
-
 
   // Compute the difference image between the
   // fixed and moving image before registration.
@@ -423,8 +414,8 @@ int main( int argc, char *argv[] )
   if( argc > 6 )
     {
 
-    typedef itk::Vector< float, ImageDimension >      VectorType;
-    typedef itk::Image< VectorType, ImageDimension >  DisplacementFieldType;
+    typedef itk::Vector< float, ImageDimension >     VectorType;
+    typedef itk::Image< VectorType, ImageDimension > DisplacementFieldType;
 
     DisplacementFieldType::Pointer field = DisplacementFieldType::New();
     field->SetRegions( fixedRegion );
@@ -438,13 +429,13 @@ int main( int argc, char *argv[] )
 
     fi.GoToBegin();
 
-    TransformType::InputPointType  fixedPoint;
-    TransformType::OutputPointType movingPoint;
+    TransformType::InputPointType    fixedPoint;
+    TransformType::OutputPointType   movingPoint;
     DisplacementFieldType::IndexType index;
 
     VectorType displacement;
 
-    while( ! fi.IsAtEnd() )
+    while( !fi.IsAtEnd() )
       {
       index = fi.GetIndex();
       field->TransformIndexToPhysicalPoint( index, fixedPoint );
@@ -454,7 +445,7 @@ int main( int argc, char *argv[] )
       ++fi;
       }
 
-    typedef itk::ImageFileWriter< DisplacementFieldType >  FieldWriterType;
+    typedef itk::ImageFileWriter< DisplacementFieldType > FieldWriterType;
     FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
 
     fieldWriter->SetInput( field );

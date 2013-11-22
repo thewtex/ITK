@@ -29,12 +29,14 @@
 /*
 */
 
-int itkShapeDetectionLevelSetImageFilterTest(int, char* [] )
+int
+itkShapeDetectionLevelSetImageFilterTest(int, char* [] )
 {
 
-  const   unsigned int    ImageDimension = 2;
-  typedef unsigned char   PixelType;
-  typedef float           InternalPixelType;
+  const   unsigned int ImageDimension = 2;
+
+  typedef unsigned char PixelType;
+  typedef float         InternalPixelType;
 
   typedef itk::Image<PixelType,ImageDimension>         ImageType;
   typedef itk::Image<InternalPixelType,ImageDimension> InternalImageType;
@@ -87,7 +89,7 @@ int itkShapeDetectionLevelSetImageFilterTest(int, char* [] )
     caster->SetInput( inputImage );
 
     typedef itk::GradientMagnitudeRecursiveGaussianImageFilter< InternalImageType,
-      InternalImageType > GradientImageType;
+                                                                InternalImageType > GradientImageType;
 
     GradientImageType::Pointer gradMagnitude = GradientImageType::New();
     gradMagnitude->SetInput( caster->GetOutput() );
@@ -114,7 +116,8 @@ int itkShapeDetectionLevelSetImageFilterTest(int, char* [] )
 
     NodeContainer::Pointer seeds = NodeContainer::New();
 
-    // Choose an initial contour that is wholly within the square to be segmented.
+    // Choose an initial contour that is wholly within the square to be
+    // segmented.
     InternalImageType::IndexType seedPosition;
     seedPosition[0] = 47;
     seedPosition[1] = 47;
@@ -134,7 +137,7 @@ int itkShapeDetectionLevelSetImageFilterTest(int, char* [] )
     * Set up and run the shape detection filter
     */
     typedef itk::ShapeDetectionLevelSetImageFilter<
-      InternalImageType, InternalImageType > ShapeDetectionFilterType;
+        InternalImageType, InternalImageType > ShapeDetectionFilterType;
 
     ShapeDetectionFilterType::Pointer shapeDetection = ShapeDetectionFilterType::New();
 
@@ -183,42 +186,41 @@ int itkShapeDetectionLevelSetImageFilterTest(int, char* [] )
     std::cout << "RMS change: " << shapeDetection->GetRMSChange() << std::endl;
     std::cout << "Overlap: " << overlap->GetSimilarityIndex() << std::endl;
 
-
     /**
     * Uncomment to write out image files.
     */
-  /*
-    typedef itk::ImageFileWriter< ImageType > WriterType;
-    WriterType::Pointer writer = WriterType::New();
+    /*
+      typedef itk::ImageFileWriter< ImageType > WriterType;
+      WriterType::Pointer writer = WriterType::New();
 
-    typedef itk::RescaleIntensityImageFilter< InternalImageType,
-      ImageType > RescaleFilterType;
-    RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
+      typedef itk::RescaleIntensityImageFilter< InternalImageType,
+        ImageType > RescaleFilterType;
+      RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
-    writer->SetFileName( "inputImage.png" );
-    writer->SetInput( inputImage );
-    writer->Update();
+      writer->SetFileName( "inputImage.png" );
+      writer->SetInput( inputImage );
+      writer->Update();
 
-    rescaler->SetInput( gradMagnitude->GetOutput() );
-    rescaler->SetOutputMinimum( 0 );
-    rescaler->SetOutputMaximum( 255 );
-    writer->SetFileName( "gradMagnitude.png" );
-    writer->SetInput( rescaler->GetOutput() );
-    writer->Update();
+      rescaler->SetInput( gradMagnitude->GetOutput() );
+      rescaler->SetOutputMinimum( 0 );
+      rescaler->SetOutputMaximum( 255 );
+      writer->SetFileName( "gradMagnitude.png" );
+      writer->SetInput( rescaler->GetOutput() );
+      writer->Update();
 
-    rescaler->SetInput( sigmoid->GetOutput() );
-    writer->SetFileName( "edgePotential.png" );
-    writer->Update();
+      rescaler->SetInput( sigmoid->GetOutput() );
+      writer->SetFileName( "edgePotential.png" );
+      writer->Update();
 
-    writer->SetInput( thresholder->GetOutput() );
-    writer->SetFileName( "outputLevelSet.png" );
-    writer->Update();
+      writer->SetInput( thresholder->GetOutput() );
+      writer->SetFileName( "outputLevelSet.png" );
+      writer->Update();
 
-    thresholder->SetInput( fastMarching->GetOutput() );
-    writer->SetInput( thresholder->GetOutput() );
-    writer->SetFileName( "initialLevelSet.png" );
-    writer->Update();
-*/
+      thresholder->SetInput( fastMarching->GetOutput() );
+      writer->SetInput( thresholder->GetOutput() );
+      writer->SetFileName( "initialLevelSet.png" );
+      writer->Update();
+  */
     // Check of overlap is above threshold
     if ( overlap->GetSimilarityIndex() > 0.90 )
       {

@@ -20,28 +20,27 @@
 #include "itkTensorFractionalAnisotropyImageFilter.h"
 #include "itkDiffusionTensor3D.h"
 
-
-int itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
+int
+itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>           myImageType;
+  typedef itk::Image<float, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
-
 
   // Define their size, and start index
   mySizeType size;
@@ -63,7 +62,7 @@ int itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
   inputImage->Allocate();
 
   // Declare Iterator type for the input image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -96,21 +95,19 @@ int itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
     }
 
   // Declare the type for the tensor pixel and tensor image.
-  typedef itk::DiffusionTensor3D< double >              myTensorPixelType;
-  typedef itk::Image< myTensorPixelType, myDimension >  myDTIImageType;
-  typedef myTensorPixelType::RealValueType              myRealValueType;
+  typedef itk::DiffusionTensor3D< double >             myTensorPixelType;
+  typedef itk::Image< myTensorPixelType, myDimension > myDTIImageType;
+  typedef myTensorPixelType::RealValueType             myRealValueType;
 
   // Declare the type for the image generator
   typedef itk::HessianRecursiveGaussianImageFilter<
-                                            myImageType,
-                                            myDTIImageType >  myFilterType;
+      myImageType,
+      myDTIImageType >  myFilterType;
 
   typedef itk::Image< myRealValueType, myDimension > myFaImageType;
 
-
   // Create a  Filter
   myFilterType::Pointer filter = myFilterType::New();
-
 
   // Connect the input images
   filter->SetInput( inputImage );
@@ -118,11 +115,10 @@ int itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
   // Select the value of Sigma
   filter->SetSigma( 2.5 );
 
-
   typedef itk::TensorFractionalAnisotropyImageFilter<
-                                                  myDTIImageType,
-                                                  myFaImageType
-                                                        > FAFilterType;
+      myDTIImageType,
+      myFaImageType
+      > FAFilterType;
 
   FAFilterType::Pointer fractionalAnisotropyFilter = FAFilterType::New();
 
@@ -130,7 +126,7 @@ int itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
 
   // Execute the filter
   fractionalAnisotropyFilter->Update();
-  fractionalAnisotropyFilter->SetFunctor(fractionalAnisotropyFilter->GetFunctor());
+  fractionalAnisotropyFilter->SetFunctor(fractionalAnisotropyFilter->GetFunctor() );
 
   // Get the Smart Pointer to the Filter Output
   // It is important to do it AFTER the filter is Updated
@@ -140,7 +136,7 @@ int itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
 
   // Declare Iterator type for the output image
   typedef itk::ImageRegionIteratorWithIndex<
-                                 myFaImageType>  myOutputIteratorType;
+      myFaImageType>  myOutputIteratorType;
 
   // Create an iterator for going through the output image
   myOutputIteratorType itg( outputImage,
@@ -154,7 +150,6 @@ int itkTensorFractionalAnisotropyImageFilterTest(int, char* [] )
     std::cout << itg.GetIndex() << " = " << itg.Get() << std::endl;
     ++itg;
     }
-
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;

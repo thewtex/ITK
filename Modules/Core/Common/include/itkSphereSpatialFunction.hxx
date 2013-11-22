@@ -34,7 +34,8 @@ SphereSpatialFunction< VImageDimension, TInput >
 template< unsigned int VImageDimension, typename TInput >
 SphereSpatialFunction< VImageDimension, TInput >
 ::~SphereSpatialFunction()
-{}
+{
+}
 
 template< unsigned int VImageDimension, typename TInput >
 typename SphereSpatialFunction< VImageDimension, TInput >::OutputType
@@ -68,6 +69,7 @@ SphereSpatialFunction< VImageDimension, TInput >
   Superclass::PrintSelf(os, indent);
 
   unsigned int i;
+
   os << indent << "Center: [";
   for ( i = 0; i < VImageDimension - 1; i++ )
     {
@@ -77,6 +79,7 @@ SphereSpatialFunction< VImageDimension, TInput >
 
   os << indent << "Radius: " << m_Radius << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -99,7 +99,7 @@ namespace itk
  */
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction,
           typename TIdCell = unsigned int >
-class MultiphaseDenseFiniteDifferenceImageFilter:
+class MultiphaseDenseFiniteDifferenceImageFilter :
   public MultiphaseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
                                                 TOutputImage, TFunction, TIdCell >
 {
@@ -190,7 +190,8 @@ protected:
     // this->m_UpdateCounter = 0;        // FIXME: Should this be a bool ?
   }
 
-  ~MultiphaseDenseFiniteDifferenceImageFilter() {}
+  ~MultiphaseDenseFiniteDifferenceImageFilter() {
+  }
 
   virtual void PrintSelf(std::ostream &, Indent indent) const;
 

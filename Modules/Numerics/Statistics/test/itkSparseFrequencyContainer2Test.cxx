@@ -18,24 +18,22 @@
 
 #include "itkSparseFrequencyContainer2.h"
 
-
-int itkSparseFrequencyContainer2Test(int, char* [] )
+int
+itkSparseFrequencyContainer2Test(int, char* [] )
 {
   std::cout << "SparseFrequencyContainer2 Test \n \n";
 
   typedef  itk::Statistics::SparseFrequencyContainer2
-                                            SparseFrequencyContainer2Type;
-
+    SparseFrequencyContainer2Type;
 
   SparseFrequencyContainer2Type::Pointer container =
-                                            SparseFrequencyContainer2Type::New();
+    SparseFrequencyContainer2Type::New();
 
-  typedef SparseFrequencyContainer2Type::AbsoluteFrequencyType  AbsoluteFrequencyType;
+  typedef SparseFrequencyContainer2Type::AbsoluteFrequencyType AbsoluteFrequencyType;
 
   const unsigned int numberOfBins = 1250;
 
   container->Initialize( numberOfBins );
-
 
   // Test the SetFrequency() / GetFrequency() methods
     {
@@ -80,7 +78,8 @@ int itkSparseFrequencyContainer2Test(int, char* [] )
   // Test the IncreaseFrequency() method
     {
     std::cout << "Testing IncreaseFrequency method...";
-    // Try not to depend on previous tests....So, we initialize the histogram again.
+    // Try not to depend on previous tests....So, we initialize the histogram
+    // again.
     for( unsigned int bin=0; bin < numberOfBins; bin++ )
       {
       // Compute any value as frequency just to test the SetFrequency() method
@@ -91,11 +90,11 @@ int itkSparseFrequencyContainer2Test(int, char* [] )
     // Now increment by a number (we use "bin", but any other will do it...)
     for( unsigned int bin=0; bin < numberOfBins; bin++ )
       {
-      // Compute any value as frequency just to test the IncreaseFrequency() method
+      // Compute any value as frequency just to test the IncreaseFrequency()
+      // method
       const AbsoluteFrequencyType frequency = static_cast<AbsoluteFrequencyType>( bin );
       container->IncreaseFrequency( bin, frequency );
       }
-
 
     // Test if the values can be read back
     for( unsigned int bin=0; bin < numberOfBins; bin++ )

@@ -46,7 +46,7 @@ namespace itk
  */
 
 template< typename TInputHistogram >
-class OtsuMultipleThresholdsCalculator:
+class OtsuMultipleThresholdsCalculator :
   public HistogramAlgorithmBase< TInputHistogram >
 {
 public:
@@ -94,7 +94,10 @@ public:
 
 protected:
   OtsuMultipleThresholdsCalculator();
-  virtual ~OtsuMultipleThresholdsCalculator() {}
+  virtual
+  ~OtsuMultipleThresholdsCalculator() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Increment the thresholds of one position */

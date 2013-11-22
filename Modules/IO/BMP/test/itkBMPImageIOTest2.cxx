@@ -19,10 +19,10 @@
 #include "itkImageFileWriter.h"
 #include <fstream>
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkBMPImageIOTest2( int ac, char* av[] )
+int
+itkBMPImageIOTest2( int ac, char* av[] )
 {
 
   if(ac < 3)
@@ -30,7 +30,6 @@ int itkBMPImageIOTest2( int ac, char* av[] )
     std::cerr << "Usage: " << av[0] << " Input Output\n";
     return EXIT_FAILURE;
     }
-
 
   // ATTENTION THIS IS THE PIXEL TYPE FOR
   // THE RESULTING IMAGE
@@ -43,8 +42,10 @@ int itkBMPImageIOTest2( int ac, char* av[] )
   reader->SetFileName(av[1]);
   reader->UpdateOutputInformation();
 
-  std::cout << "PixelType: " << reader->GetImageIO()->GetPixelTypeAsString(reader->GetImageIO()->GetPixelType()) << std::endl;
-  std::cout << "ComponentType: " << reader->GetImageIO()->GetComponentTypeAsString(reader->GetImageIO()->GetComponentType()) << std::endl;
+  std::cout << "PixelType: " << reader->GetImageIO()->GetPixelTypeAsString(reader->GetImageIO()->GetPixelType() ) <<
+    std::endl;
+  std::cout << "ComponentType: " << reader->GetImageIO()->GetComponentTypeAsString(
+    reader->GetImageIO()->GetComponentType() ) << std::endl;
   std::cout << "NumberOfComponents: " << reader->GetImageIO()->GetNumberOfComponents() << std::endl;
   try
     {

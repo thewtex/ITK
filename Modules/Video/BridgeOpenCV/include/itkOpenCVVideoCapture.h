@@ -58,7 +58,8 @@ public:
 
   /** Destructor that does nothing. The VideoStream will be freed by the source
    * that generated it. */
-  virtual ~OpenCVVideoCapture()
+  virtual
+  ~OpenCVVideoCapture()
   {
   }
 
@@ -68,14 +69,16 @@ public:
   /**-OPEN CLOSE FUNCTIONALITY-----------------------------------------------*/
 
   /** overload reading from file and camera just to throw exceptions */
-  virtual bool open(const std::string &)
+  virtual bool
+  open(const std::string &)
   {
     itkExceptionMacro("itk::OpenCVVideoCapture::open(filename) -> If you just want "
                       "to read from a file, use cv::VideoCapture since there is nothing to be "
                       "gained using itk's version.");
   }
 
-  virtual bool open(int)
+  virtual bool
+  open(int)
   {
     itkExceptionMacro("itk::OpenCVVideoCapture::open(device) -> If you just want "
                       "to read from a device, use cv::VideoCapture since there is nothing to be "
@@ -87,7 +90,8 @@ public:
   virtual bool open(VideoStreamType* videoStream);
 
   /** Check if the VideoStream is null */
-  virtual bool isOpened() const
+  virtual bool
+  isOpened() const
   {
     return m_VideoStream == 0;
   }

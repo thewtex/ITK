@@ -66,7 +66,7 @@ RegularStepGradientDescentBaseOptimizer
   if ( m_GradientMagnitudeTolerance < 0.0 )
     {
     itkExceptionMacro(<< "Gradient magnitude tolerance must be"
-                         "greater or equal 0.0. Current value is " << m_GradientMagnitudeTolerance);
+                      "greater or equal 0.0. Current value is " << m_GradientMagnitudeTolerance);
     }
 
   const unsigned int spaceDimension = m_CostFunction->GetNumberOfParameters();
@@ -158,8 +158,8 @@ RegularStepGradientDescentBaseOptimizer
 
   const unsigned int spaceDimension = m_CostFunction->GetNumberOfParameters();
 
-  DerivativeType transformedGradient(spaceDimension);
-  DerivativeType previousTransformedGradient(spaceDimension);
+  DerivativeType     transformedGradient(spaceDimension);
+  DerivativeType     previousTransformedGradient(spaceDimension);
   const ScalesType & scales = this->GetScales();
 
   if ( m_RelaxationFactor < 0.0 )
@@ -275,6 +275,7 @@ RegularStepGradientDescentBaseOptimizer
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "MaximumStepLength: "
      << m_MaximumStepLength << std::endl;
   os << indent << "MinimumStepLength: "
@@ -308,6 +309,7 @@ RegularStepGradientDescentBaseOptimizer
   os << indent << "Gradient: "
      << m_Gradient << std::endl;
 }
+
 } // end namespace itk
 
 #endif

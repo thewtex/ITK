@@ -23,16 +23,17 @@
 #include "itkXMLFileOutputWindow.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-
-int itkStreamingImageFilterTest2(int, char* [] )
+int
+itkStreamingImageFilterTest2(int, char* [] )
 {
 
-  const unsigned int numberOfStreamDivisions = 25;
+  const unsigned int                numberOfStreamDivisions = 25;
   itk::XMLFileOutputWindow::Pointer logger = itk::XMLFileOutputWindow::New();
+
   logger->SetInstance(logger);
 
   // typedefs to simplify the syntax
-  typedef itk::Image<short, 2>   ShortImage;
+  typedef itk::Image<short, 2> ShortImage;
 
   // Test the creation of an image with native type
   ShortImage::Pointer if2 = ShortImage::New();
@@ -88,7 +89,6 @@ int itkStreamingImageFilterTest2(int, char* [] )
             << ", "
             << streamer->GetOutput()->GetSpacing()[1] << std::endl;
 
-
   // check if the pipeline executed as expected
   if (monitor->GetNumberOfUpdates() != numberOfStreamDivisions ||
       monitor->GetOutputRequestedRegions().size() != numberOfStreamDivisions)
@@ -98,7 +98,6 @@ int itkStreamingImageFilterTest2(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   //
   // The rest of this code determines whether the shrink code produced
   // the image we expected.
@@ -107,7 +106,7 @@ int itkStreamingImageFilterTest2(int, char* [] )
   requestedRegion = streamer->GetOutput()->GetRequestedRegion();
 
   itk::ImageRegionIterator<ShortImage>
-    iterator2(streamer->GetOutput(), requestedRegion);
+  iterator2(streamer->GetOutput(), requestedRegion);
 
   // If size is not a multiple of the shrink factors, then adjust the
   // row/col indices
@@ -116,29 +115,33 @@ int itkStreamingImageFilterTest2(int, char* [] )
   if (region.GetSize()[1] % shrink->GetShrinkFactors()[1])
     {
     rowOffset = static_cast<short>(
-      region.GetSize()[1] / 2.0 -
-      ((region.GetSize()[1] / shrink->GetShrinkFactors()[1]) / 2.0 *
-       shrink->GetShrinkFactors()[1])
-      );
+        region.GetSize()[1] / 2.0 -
+        ( (region.GetSize()[1] / shrink->GetShrinkFactors()[1]) / 2.0 *
+          shrink->GetShrinkFactors()[1])
+        );
     }
   if (region.GetSize()[0] % shrink->GetShrinkFactors()[0])
     {
     colOffset = static_cast<short>(
-      region.GetSize()[0] / 2.0 -
-      ((region.GetSize()[0] / shrink->GetShrinkFactors()[0]) / 2.0 *
-       shrink->GetShrinkFactors()[0])
-      );
+        region.GetSize()[0] / 2.0 -
+        ( (region.GetSize()[0] / shrink->GetShrinkFactors()[0]) / 2.0 *
+          shrink->GetShrinkFactors()[0])
+        );
     }
 
   bool passed = true;
   for (; !iterator2.IsAtEnd(); ++iterator2)
     {
-    short col = itk::Math::RoundHalfIntegerUp<short>( static_cast<float> (shrink->GetShrinkFactors()[0] * iterator2.GetIndex()[0] +
-                                                                   (shrink->GetShrinkFactors()[0] ) / 2.0 ) );
+    short col =
+      itk::Math::RoundHalfIntegerUp<short>( static_cast<float> (shrink->GetShrinkFactors()[0] *
+                                                                iterator2.GetIndex()[0] +
+                                                                (shrink->GetShrinkFactors()[0] ) / 2.0 ) );
     col += colOffset;
 
-    short row =  itk::Math::RoundHalfIntegerUp<short>( static_cast<float> (shrink->GetShrinkFactors()[1] * iterator2.GetIndex()[1] +
-                                                                    (shrink->GetShrinkFactors()[1] ) / 2.0 ) );
+    short row =
+      itk::Math::RoundHalfIntegerUp<short>( static_cast<float> (shrink->GetShrinkFactors()[1] *
+                                                                iterator2.GetIndex()[1] +
+                                                                (shrink->GetShrinkFactors()[1] ) / 2.0 ) );
     row += rowOffset;
     short trueValue = col + region.GetSize()[0] * row;
 

@@ -47,7 +47,7 @@ namespace itk
 template< typename TInputImage, typename TOutputImage =
             LabelMap< LabelObject< typename TInputImage::PixelType,
                                    TInputImage::ImageDimension > > >
-class LabelImageToLabelMapFilter:
+class LabelImageToLabelMapFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -100,7 +100,9 @@ public:
 
 protected:
   LabelImageToLabelMapFilter();
-  ~LabelImageToLabelMapFilter() {}
+  ~LabelImageToLabelMapFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** LabelImageToLabelMapFilter needs the entire input be

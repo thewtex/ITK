@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = double >
-class VectorNearestNeighborInterpolateImageFunction:
+class VectorNearestNeighborInterpolateImageFunction :
   public VectorInterpolateImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -87,7 +87,8 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual OutputType EvaluateAtContinuousIndex(
+  virtual OutputType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & index) const
   {
     IndexType nindex;
@@ -97,16 +98,24 @@ public:
   }
 
 protected:
-  VectorNearestNeighborInterpolateImageFunction(){}
-  ~VectorNearestNeighborInterpolateImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  VectorNearestNeighborInterpolateImageFunction(){
+  }
+
+  ~VectorNearestNeighborInterpolateImageFunction(){
+  }
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   VectorNearestNeighborInterpolateImageFunction(const Self &); //purposely not
                                                                // implemented
   void operator=(const Self &);                                //purposely not
-                                                               // implemented
+
+  // implemented
 };
 } // end namespace itk
 

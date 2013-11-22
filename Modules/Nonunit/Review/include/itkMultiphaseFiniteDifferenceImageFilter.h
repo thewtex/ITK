@@ -162,7 +162,7 @@ template< typename TInputImage,
           typename TOutputImage,
           typename TFiniteDifferenceFunction = FiniteDifferenceFunction< TOutputImage >,
           typename TIdCell = unsigned int >
-class MultiphaseFiniteDifferenceImageFilter:
+class MultiphaseFiniteDifferenceImageFilter :
   public InPlaceImageFilter< TFeatureImage, TOutputImage >
 {
 public:
@@ -179,18 +179,18 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, TOutputImage::ImageDimension);
 
   /** Input and output image types. */
-  typedef TInputImage                               InputImageType;
-  typedef typename InputImageType::Pointer          InputImagePointer;
-  typedef typename InputImageType::PointType        InputPointType;
-  typedef typename InputPointType::CoordRepType     InputCoordRepType;
-  typedef typename InputImageType::IndexType        InputIndexType;
-  typedef typename InputIndexType::IndexValueType   InputIndexValueType;
-  typedef typename InputImageType::SizeType         InputSizeType;
-  typedef typename InputSizeType::SizeValueType     InputSizeValueType;
-  typedef typename InputImageType::RegionType       InputRegionType;
-  typedef typename InputImageType::PixelType        InputPixelType;
-  typedef typename InputImageType::SpacingType      InputSpacingType;
-  typedef typename InputImageType::OffsetValueType  InputOffsetValueType;
+  typedef TInputImage                              InputImageType;
+  typedef typename InputImageType::Pointer         InputImagePointer;
+  typedef typename InputImageType::PointType       InputPointType;
+  typedef typename InputPointType::CoordRepType    InputCoordRepType;
+  typedef typename InputImageType::IndexType       InputIndexType;
+  typedef typename InputIndexType::IndexValueType  InputIndexValueType;
+  typedef typename InputImageType::SizeType        InputSizeType;
+  typedef typename InputSizeType::SizeValueType    InputSizeValueType;
+  typedef typename InputImageType::RegionType      InputRegionType;
+  typedef typename InputImageType::PixelType       InputPixelType;
+  typedef typename InputImageType::SpacingType     InputSpacingType;
+  typedef typename InputImageType::OffsetValueType InputOffsetValueType;
 
   typedef TFeatureImage                          FeatureImageType;
   typedef typename FeatureImageType::Pointer     FeatureImagePointer;
@@ -222,7 +222,7 @@ public:
   typedef typename FiniteDifferenceFunctionType::RadiusType   RadiusType;
 
   typedef Vector< float, itkGetStaticConstMacro(ImageDimension) >
-  CentroidVectorType;
+    CentroidVectorType;
   typedef Statistics::ListSample< CentroidVectorType > SampleType;
   typedef Statistics::KdTreeGenerator< SampleType >    KdTreeGeneratorType;
   typedef typename KdTreeGeneratorType::Pointer        KdTreeGeneratorPointer;
@@ -233,7 +233,8 @@ public:
    * will be used by the filter to calculate updates at image pixels.
    * \param functionIndex Index of difference function to return.
    * \returns A FiniteDifferenceObject pointer. */
-  virtual const FiniteDifferenceFunctionPointer GetDifferenceFunction(
+  virtual const FiniteDifferenceFunctionPointer
+  GetDifferenceFunction(
     const IdCellType & functionIndex) const
   {
     if ( functionIndex < m_FunctionCount )
@@ -250,8 +251,9 @@ public:
    * will be used by the filter to calculate updates at image pixels.
    * \param functionIndex Index of difference function to set.
    * \param function Pointer to difference function to set. */
-  virtual void SetDifferenceFunction(const IdCellType & functionIndex,
-                                     FiniteDifferenceFunctionPointer function)
+  virtual void
+  SetDifferenceFunction(const IdCellType & functionIndex,
+                        FiniteDifferenceFunctionPointer function)
   {
     if ( functionIndex < m_FunctionCount )
       {
@@ -296,7 +298,8 @@ public:
   /** Get the number of elapsed iterations of the filter. */
   itkGetConstReferenceMacro(ElapsedIterations, unsigned int);
 
-  void SetLevelSet(const IdCellType & i, const InputImageType *levelSet)
+  void
+  SetLevelSet(const IdCellType & i, const InputImageType *levelSet)
   {
     m_LevelSet[i] = InputImageType::New();
     m_LevelSet[i]->SetRequestedRegion( levelSet->GetRequestedRegion() );
@@ -319,7 +322,8 @@ public:
       }
   }
 
-  InputImagePointer GetLevelSet(const IdCellType & i)
+  InputImagePointer
+  GetLevelSet(const IdCellType & i)
   {
     if ( i >= m_FunctionCount )
       {
@@ -332,17 +336,20 @@ public:
       }
   }
 
-  void SetLookup(VectorIdCellType lookup)
+  void
+  SetLookup(VectorIdCellType lookup)
   {
     this->m_Lookup = lookup;
   }
 
-  void SetKdTree(KdTreeType *kdtree)
+  void
+  SetKdTree(KdTreeType *kdtree)
   {
     this->m_KdTree = kdtree;
   }
 
-  void SetFunctionCount(const IdCellType & n)
+  void
+  SetFunctionCount(const IdCellType & n)
   {
     m_FunctionCount = n;
 
@@ -392,7 +399,8 @@ protected:
     this->InPlaceOff();
   }
 
-  ~MultiphaseFiniteDifferenceImageFilter(){}
+  ~MultiphaseFiniteDifferenceImageFilter(){
+  }
 
   IdCellType                       m_FunctionCount;
   std::vector< InputImagePointer > m_LevelSet;
@@ -464,7 +472,8 @@ protected:
    * Notice that ThreadedHalt is only called by the multithreaded filters, so you
    * still should implement Halt, just in case a non-threaded filter is used.
    */
-  virtual bool ThreadedHalt( void *itkNotUsed(threadInfo) )
+  virtual bool
+  ThreadedHalt( void *itkNotUsed(threadInfo) )
   {
     return this->Halt();
   }
@@ -474,7 +483,9 @@ protected:
    * initialization, i.e. in the SparseFieldLevelSetImageFilter, initialize
    * the list of layers.
    * */
-  virtual void Initialize() {}
+  virtual void
+  Initialize() {
+  }
 
   /** This method is optionally defined by a subclass and is called immediately
    * prior to each iterative CalculateChange-ApplyUpdate cycle.  It can be
@@ -482,7 +493,8 @@ protected:
    * gradient magnitude of the image in anisotropic diffusion functions), or
    * otherwise prepare for the next iteration.
    * */
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     for ( IdCellType i = 0; i < this->m_FunctionCount; i++ )
       {
@@ -507,7 +519,9 @@ protected:
 
   /** This method is called after the solution has been generated to allow
    * subclasses to apply some further processing to the output. */
-  virtual void PostProcessOutput() {}
+  virtual void
+  PostProcessOutput() {
+  }
 
 private:
   MultiphaseFiniteDifferenceImageFilter(const Self &);

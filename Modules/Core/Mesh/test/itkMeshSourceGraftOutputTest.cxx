@@ -24,7 +24,7 @@ namespace itk
 {
 template <typename TInputMesh, typename TOutputMesh, typename TTransform>
 class MeshSourceGraftOutputFilter :
-    public MeshToMeshFilter<TInputMesh,TOutputMesh>
+  public MeshToMeshFilter<TInputMesh,TOutputMesh>
 {
 public:
   /** Standard class typedefs. */
@@ -39,10 +39,10 @@ public:
   typedef typename OutputMeshType::Pointer OutputMeshPointer;
 
   /** Type for representing coordinates. */
-  typedef typename TInputMesh::CoordRepType  CoordRepType;
+  typedef typename TInputMesh::CoordRepType CoordRepType;
 
   /** Type of the transform. */
-  typedef TTransform  TransformType;
+  typedef TTransform TransformType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -56,7 +56,9 @@ public:
 
 protected:
   MeshSourceGraftOutputFilter();
-  ~MeshSourceGraftOutputFilter() {};
+  ~MeshSourceGraftOutputFilter() {
+  }
+
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Generate Requested Data */
@@ -66,8 +68,14 @@ protected:
   typename TransformType::Pointer   m_Transform;
 
 private:
-  MeshSourceGraftOutputFilter(const MeshSourceGraftOutputFilter&); //purposely not implemented
-  void operator=(const MeshSourceGraftOutputFilter&); //purposely not implemented
+  MeshSourceGraftOutputFilter(const MeshSourceGraftOutputFilter&); //purposely
+                                                                   // not
+                                                                   //
+                                                                   // implemented
+  void operator=(const MeshSourceGraftOutputFilter&);              //purposely
+
+  // not
+  // implemented
 
 };
 
@@ -90,18 +98,19 @@ MeshSourceGraftOutputFilter<TInputMesh,TOutputMesh,TTransform>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
+
   if (m_Transform)
     {
     os << indent << "Transform: " << m_Transform << std::endl;
     }
 }
 
-
 /**
  * This method causes the filter to generate its output.
  */
 template <typename TInputMesh, typename TOutputMesh, typename TTransform>
-void MeshSourceGraftOutputFilter<TInputMesh,TOutputMesh,TTransform>
+void
+MeshSourceGraftOutputFilter<TInputMesh,TOutputMesh,TTransform>
 ::GenerateData(void)
 {
   typedef typename TInputMesh::PointsContainer  InputPointsContainer;
@@ -111,7 +120,7 @@ void MeshSourceGraftOutputFilter<TInputMesh,TOutputMesh,TTransform>
   typedef typename TOutputMesh::PointsContainerPointer OutputPointsContainerPointer;
 
   const InputMeshType * inputMesh    =  this->GetInput();
-  OutputMeshPointer   outputMesh     =  this->GetOutput();
+  OutputMeshPointer     outputMesh     =  this->GetOutput();
 
   if( !inputMesh )
     {
@@ -125,10 +134,9 @@ void MeshSourceGraftOutputFilter<TInputMesh,TOutputMesh,TTransform>
 
   // Declare the type for the filter
   typedef itk::TransformMeshFilter<
-                                TInputMesh,
-                                TOutputMesh,
-                                TransformType  >       FilterType;
-
+      TInputMesh,
+      TOutputMesh,
+      TransformType  >       FilterType;
 
   // Create a Filter
   typename FilterType::Pointer filter = FilterType::New();
@@ -188,7 +196,8 @@ void MeshSourceGraftOutputFilter<TInputMesh,TOutputMesh,TTransform>
 
 } // end namespace itk
 
-int itkMeshSourceGraftOutputTest(int, char* [] )
+int
+itkMeshSourceGraftOutputTest(int, char* [] )
 {
   // Declare the mesh pixel type.
   // Those are the values associated
@@ -199,26 +208,27 @@ int itkMeshSourceGraftOutputTest(int, char* [] )
   // By default it is a 3D mesh using itk::Point<float,3>
   // on the vertices, and an itk::VectorContainter
   // as containter for points
-  typedef itk::Mesh<PixelType>  MeshType;
+  typedef itk::Mesh<PixelType> MeshType;
 
   // Declare the type for PointsContainer
-  typedef MeshType::PointsContainer     PointsContainerType;
+  typedef MeshType::PointsContainer PointsContainerType;
 
   // Declare the type for PointsContainerPointer
   typedef MeshType::PointsContainerPointer
-                                        PointsContainerPointer;
+    PointsContainerPointer;
   // Declare the type for Points
-  typedef MeshType::PointType           PointType;
+  typedef MeshType::PointType PointType;
 
   // Create an input Mesh
   MeshType::Pointer inputMesh  = MeshType::New();
 
   // Insert data on the Mesh
-  PointsContainerPointer  points = inputMesh->GetPoints();
+  PointsContainerPointer points = inputMesh->GetPoints();
 
   // Fill a cube with points , just to get some data
-  int n = 1;  // let's start with a few of them
-  PointsContainerType::ElementIdentifier  count = 0; // count them
+  int n = 1;                                        // let's start with a few of
+                                                    // them
+  PointsContainerType::ElementIdentifier count = 0; // count them
 
   for(int x= -n; x <= n; x++)
     {
@@ -244,27 +254,24 @@ int itkMeshSourceGraftOutputTest(int, char* [] )
   std::cout << "Input Mesh has " << inputMesh->GetNumberOfPoints();
   std::cout << "   points " << std::endl;
 
-
   // Declare the transform type
   typedef itk::AffineTransform<float,3> TransformType;
 
-
   // Declare the type for the filter
   typedef itk::MeshSourceGraftOutputFilter<
-                                MeshType,
-                                MeshType,
-                                TransformType  >       FilterType;
-
+      MeshType,
+      MeshType,
+      TransformType  >       FilterType;
 
   // Create a Filter
   FilterType::Pointer filter = FilterType::New();
 
   // Create an  Transform
   // (it doesn't use smart pointers)
-  TransformType::Pointer   affineTransform = TransformType::New();
+  TransformType::Pointer affineTransform = TransformType::New();
   affineTransform->Scale( 3.5 );
   TransformType::OffsetType::ValueType tInit[3] = {100,200,300};
-  TransformType::OffsetType   translation = tInit;
+  TransformType::OffsetType            translation = tInit;
   affineTransform->Translate( translation );
 
   // Connect the inputs
@@ -283,8 +290,7 @@ int itkMeshSourceGraftOutputTest(int, char* [] )
 
   // Get the the point container
   MeshType::PointsContainerPointer
-                  transformedPoints = outputMesh->GetPoints();
-
+    transformedPoints = outputMesh->GetPoints();
 
   PointsContainerType::ConstIterator it = transformedPoints->Begin();
   while( it != transformedPoints->End() )

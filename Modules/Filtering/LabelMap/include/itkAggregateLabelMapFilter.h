@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class AggregateLabelMapFilter:
+class AggregateLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -80,8 +80,11 @@ public:
 #endif
 
 protected:
-  AggregateLabelMapFilter() {}
-  ~AggregateLabelMapFilter() {}
+  AggregateLabelMapFilter() {
+  }
+
+  ~AggregateLabelMapFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -90,6 +93,7 @@ protected:
 private:
   AggregateLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 }; // end of class
 } // end namespace itk
 

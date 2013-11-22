@@ -71,8 +71,9 @@ public:
                              const ConstNeighborhoodIterator< TImage > & it,
                              const OperatorType & op) const;
 
-  OutputPixelType operator()(const ConstNeighborhoodIterator< TImage > & it,
-                             const OperatorType & op) const
+  OutputPixelType
+  operator()(const ConstNeighborhoodIterator< TImage > & it,
+             const OperatorType & op) const
   {
     return this->operator()(std::slice(0, it.Size(), 1), it, op);
   }
@@ -81,11 +82,13 @@ public:
                              const NeighborhoodType & N,
                              const OperatorType & op) const;
 
-  OutputPixelType operator()(const NeighborhoodType & N,
-                             const OperatorType & op) const
+  OutputPixelType
+  operator()(const NeighborhoodType & N,
+             const OperatorType & op) const
   {
     return this->operator()(std::slice(0, N.Size(), 1), N, op);
   }
+
 };
 } // end namespace itk
 

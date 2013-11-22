@@ -18,7 +18,6 @@
 #ifndef __itkContourSpatialObject_hxx
 #define __itkContourSpatialObject_hxx
 
-
 #include "itkContourSpatialObject.h"
 #include "itkNumericTraits.h"
 
@@ -45,27 +44,28 @@ ContourSpatialObject< TDimension >
 template< unsigned int TDimension >
 ContourSpatialObject< TDimension >
 ::~ContourSpatialObject()
-{}
+{
+}
 
 /** Get the list of control points */
 template< unsigned int TDimension >
 typename ContourSpatialObject< TDimension >::ControlPointListType &
 ContourSpatialObject< TDimension >
 ::GetControlPoints()
-{
+  {
   itkDebugMacro("Getting control Point list");
   return m_ControlPoints;
-}
+  }
 
 /** Get the list of control points */
 template< unsigned int TDimension >
 const typename ContourSpatialObject< TDimension >::ControlPointListType &
 ContourSpatialObject< TDimension >
 ::GetControlPoints() const
-{
+  {
   itkDebugMacro("Getting ContourPoint list");
   return m_ControlPoints;
-}
+  }
 
 /** Set the control points which are defining the contour */
 template< unsigned int TDimension >
@@ -91,20 +91,20 @@ template< unsigned int TDimension >
 typename ContourSpatialObject< TDimension >::InterpolatedPointListType &
 ContourSpatialObject< TDimension >
 ::GetInterpolatedPoints()
-{
+  {
   itkDebugMacro("Getting interpolated Point list");
   return m_InterpolatedPoints;
-}
+  }
 
 /** Get the list of interpolated points */
 template< unsigned int TDimension >
 const typename ContourSpatialObject< TDimension >::InterpolatedPointListType &
 ContourSpatialObject< TDimension >
 ::GetInterpolatedPoints() const
-{
+  {
   itkDebugMacro("Getting interpolated list");
   return m_InterpolatedPoints;
-}
+  }
 
 /** Set the interpolated points which are defining the contour */
 template< unsigned int TDimension >
@@ -183,7 +183,7 @@ ContourSpatialObject< TDimension >
       while ( itI != m_InterpolatedPoints.end() )
         {
         pt = this->GetIndexToWorldTransform()->TransformPoint(
-          ( *itI ).GetPosition() );
+            ( *itI ).GetPosition() );
         const_cast< BoundingBoxType * >( this->GetBounds() )->ConsiderPoint(pt);
         itI++;
         }
@@ -242,6 +242,7 @@ ContourSpatialObject< TDimension >
   value = this->GetDefaultOutsideValue(); // cannot be inside of a 1d contour
   return IsInside(point, 0, name);        // so will always return false
 }
+
 } // end namespace itk
 
 #endif

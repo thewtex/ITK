@@ -33,32 +33,34 @@
  */
 
 template< typename TMovingTransform >
-int itkAutoScaledGradientDescentRegistrationTestTemplated(
-                                            int numberOfIterations,
-                                            double shiftOfStep,
-                                            std::string scalesOption,
-                                            bool usePhysicalSpaceForShift,
-                                            bool estimateLearningRateOnce,
-                                            bool estimateLearningRateAtEachIteration,
-                                            bool estimateScales )
+int
+itkAutoScaledGradientDescentRegistrationTestTemplated(
+  int numberOfIterations,
+  double shiftOfStep,
+  std::string scalesOption,
+  bool usePhysicalSpaceForShift,
+  bool estimateLearningRateOnce,
+  bool estimateLearningRateAtEachIteration,
+  bool estimateScales )
 {
   const unsigned int Dimension = TMovingTransform::SpaceDimension;
+
   typedef double PixelType;
 
   // Fixed Image Type
-  typedef itk::Image<PixelType,Dimension>               FixedImageType;
+  typedef itk::Image<PixelType,Dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<PixelType,Dimension>               MovingImageType;
+  typedef itk::Image<PixelType,Dimension> MovingImageType;
 
   // Size Type
-  typedef typename MovingImageType::SizeType            SizeType;
+  typedef typename MovingImageType::SizeType SizeType;
 
   // ImageSource
   typedef typename itk::testhelper::ImageRegistrationMethodImageSource<
-                                  typename FixedImageType::PixelType,
-                                  typename MovingImageType::PixelType,
-                                  Dimension >         ImageSourceType;
+      typename FixedImageType::PixelType,
+      typename MovingImageType::PixelType,
+      Dimension >         ImageSourceType;
 
   typename FixedImageType::ConstPointer    fixedImage;
   typename MovingImageType::ConstPointer   movingImage;
@@ -96,7 +98,7 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
   // Assign images and transforms to the metric.
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
-  metric->SetVirtualDomainFromImage( const_cast<FixedImageType *>(fixedImage.GetPointer()) );
+  metric->SetVirtualDomainFromImage( const_cast<FixedImageType *>(fixedImage.GetPointer() ) );
 
   metric->SetFixedTransform( fixedTransform );
   metric->SetMovingTransform( movingTransform );
@@ -105,14 +107,14 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
   metric->Initialize();
 
   // Optimizer
-  typedef itk::GradientDescentOptimizerv4  OptimizerType;
+  typedef itk::GradientDescentOptimizerv4 OptimizerType;
   OptimizerType::Pointer optimizer = OptimizerType::New();
 
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
 
   // Instantiate an Observer to report the progress of the Optimization
-  typedef itk::CommandIterationUpdate< OptimizerType >  CommandIterationType;
+  typedef itk::CommandIterationUpdate< OptimizerType > CommandIterationType;
   CommandIterationType::Pointer iterationCommand = CommandIterationType::New();
   iterationCommand->SetOptimizer( optimizer.GetPointer() );
 
@@ -120,8 +122,8 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
   typename itk::OptimizerParameterScalesEstimator::Pointer scalesEstimator;
 
   typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType > PhysicalShiftScalesEstimatorType;
-  typedef itk::RegistrationParameterScalesFromIndexShift< MetricType > IndexShiftScalesEstimatorType;
-  typedef itk::RegistrationParameterScalesFromJacobian< MetricType > JacobianScalesEstimatorType;
+  typedef itk::RegistrationParameterScalesFromIndexShift< MetricType >    IndexShiftScalesEstimatorType;
+  typedef itk::RegistrationParameterScalesFromJacobian< MetricType >      JacobianScalesEstimatorType;
 
   if (scalesOption.compare("shift") == 0)
     {
@@ -153,7 +155,8 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
     }
 
   optimizer->SetScalesEstimator(scalesEstimator);
-  // If SetMaximumStepSizeInPhysicalUnits is not called, it will use voxel spacing.
+  // If SetMaximumStepSizeInPhysicalUnits is not called, it will use voxel
+  // spacing.
   optimizer->SetMaximumStepSizeInPhysicalUnits(shiftOfStep);
   optimizer->SetDoEstimateLearningRateOnce( estimateLearningRateOnce );
   optimizer->SetDoEstimateLearningRateAtEachIteration( estimateLearningRateAtEachIteration );
@@ -169,7 +172,7 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
   // close to the result of running this test with learning rate estimation
   // for only the first step.
   const OptimizerType::InternalComputationValueType fixedLearningRate = 0.01501010101010101;
-  if( ! estimateLearningRateOnce && ! estimateLearningRateAtEachIteration )
+  if( !estimateLearningRateOnce && !estimateLearningRateAtEachIteration )
     {
     optimizer->SetLearningRate( fixedLearningRate );
     }
@@ -179,7 +182,8 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
             << "Number of iterations: " << numberOfIterations << std::endl;
   std::cout << "GetDoEstimateScales: " << optimizer->GetDoEstimateScales() << std::endl;
   std::cout << "GetDoEstimateLearningRateOnce: " << optimizer->GetDoEstimateLearningRateOnce() << std::endl;
-  std::cout << "GetDoEstimateLearningRateAtEachIteration: " << optimizer->GetDoEstimateLearningRateAtEachIteration() << std::endl;
+  std::cout << "GetDoEstimateLearningRateAtEachIteration: " << optimizer->GetDoEstimateLearningRateAtEachIteration() <<
+    std::endl;
 
   try
     {
@@ -204,7 +208,7 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
             << "Final learning rate: " << optimizer->GetLearningRate()
             << std::endl;
 
-  if( ! estimateLearningRateOnce && ! estimateLearningRateAtEachIteration )
+  if( !estimateLearningRateOnce && !estimateLearningRateAtEachIteration )
     {
     if( optimizer->GetLearningRate() != fixedLearningRate )
       {
@@ -214,7 +218,7 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
     }
 
   // If scale estimation was disabled, make sure the scales didn't change
-  if( ! estimateScales )
+  if( !estimateScales )
     {
     OptimizerType::ScalesType postScales = optimizer->GetScales();
     for( itk::SizeValueType s=0; s < postScales.Size(); s++ )
@@ -275,7 +279,8 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(
     }
 }
 
-int itkAutoScaledGradientDescentRegistrationTest(int argc, char ** const argv)
+int
+itkAutoScaledGradientDescentRegistrationTest(int argc, char ** const argv)
 {
   if( argc > 6 )
     {
@@ -289,10 +294,10 @@ int itkAutoScaledGradientDescentRegistrationTest(int argc, char ** const argv)
     return EXIT_FAILURE;
     }
   unsigned int numberOfIterations = 30;
-  double shiftOfStep = 1.0;
-  bool estimateLearningRateOnce = true;
-  bool estimateLearningRateAtEachIteration = false;
-  bool estimateScales = true;
+  double       shiftOfStep = 1.0;
+  bool         estimateLearningRateOnce = true;
+  bool         estimateLearningRateAtEachIteration = false;
+  bool         estimateScales = true;
 
   if( argc >= 2 )
     {
@@ -320,15 +325,15 @@ int itkAutoScaledGradientDescentRegistrationTest(int argc, char ** const argv)
   std::cout << std::endl << "Optimizing translation transform with shift scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
   bool usePhysicalSpaceForShift = false;
-  int ret1 = itkAutoScaledGradientDescentRegistrationTestTemplated<TranslationTransformType>(
-    numberOfIterations, shiftOfStep, "shift", usePhysicalSpaceForShift,
-    estimateLearningRateOnce, estimateLearningRateAtEachIteration, estimateScales);
+  int  ret1 = itkAutoScaledGradientDescentRegistrationTestTemplated<TranslationTransformType>(
+      numberOfIterations, shiftOfStep, "shift", usePhysicalSpaceForShift,
+      estimateLearningRateOnce, estimateLearningRateAtEachIteration, estimateScales);
 
   std::cout << std::endl << "Optimizing translation transform with Jacobian scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
   int ret2 = itkAutoScaledGradientDescentRegistrationTestTemplated<TranslationTransformType>(
-    numberOfIterations, 0.0, "jacobian", usePhysicalSpaceForShift,
-    estimateLearningRateOnce, estimateLearningRateAtEachIteration, estimateScales);
+      numberOfIterations, 0.0, "jacobian", usePhysicalSpaceForShift,
+      estimateLearningRateOnce, estimateLearningRateAtEachIteration, estimateScales);
 
   if ( ret1 == EXIT_SUCCESS && ret2 == EXIT_SUCCESS )
     {

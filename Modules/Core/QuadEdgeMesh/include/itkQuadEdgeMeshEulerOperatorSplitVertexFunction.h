@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshEulerOperatorSplitVertexFunction:
+class QuadEdgeMeshEulerOperatorSplitVertexFunction :
   public QuadEdgeMeshFunctionBase< TMesh, TQEType * >
 {
 public:
@@ -62,7 +62,8 @@ public:
   /** Evaluate at the specified input position */
   virtual OutputType Evaluate(QEType *e, QEType *f);
 
-  PointIdentifier GetNewPointID()
+  PointIdentifier
+  GetNewPointID()
   {
     return ( this->m_NewPoint );
   }
@@ -73,13 +74,15 @@ protected:
     m_NewPoint = (PointIdentifier)0;
   }
 
-  ~QuadEdgeMeshEulerOperatorSplitVertexFunction(){}
+  ~QuadEdgeMeshEulerOperatorSplitVertexFunction(){
+  }
 
 private:
   QuadEdgeMeshEulerOperatorSplitVertexFunction(const Self &); //purposely not
                                                               // implemented
   void operator=(const Self &);                               //purposely not
-                                                              // implemented
+
+  // implemented
 
   PointIdentifier m_NewPoint; // stock newly created point ID for user.
 };

@@ -27,11 +27,13 @@ namespace itk
  */
 XMLFileOutputWindow
 ::XMLFileOutputWindow()
-{}
+{
+}
 
 XMLFileOutputWindow
 ::~XMLFileOutputWindow()
-{}
+{
+}
 
 void
 XMLFileOutputWindow
@@ -172,4 +174,5 @@ XMLFileOutputWindow
 {
   this->DisplayXML("Debug", text);
 }
+
 } // end namespace itk

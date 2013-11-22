@@ -42,6 +42,7 @@ GeodesicActiveContourLevelSetImageFilter< TInputImage, TFeatureImage, TOutputTyp
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "GeodesicActiveContourFunction: " << m_GeodesicActiveContourFunction.GetPointer();
 }
 
@@ -62,6 +63,7 @@ GeodesicActiveContourLevelSetImageFilter< TInputImage, TFeatureImage, TOutputTyp
   // Continue with Superclass implementation
   Superclass::GenerateData();
 }
+
 } // end namespace itk
 
 #endif

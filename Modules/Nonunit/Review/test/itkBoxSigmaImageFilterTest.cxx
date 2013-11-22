@@ -23,10 +23,11 @@
 #include "itkTextOutput.h"
 #include "itkFilterWatcher.h"
 
-int itkBoxSigmaImageFilterTest(int ac, char* av[] )
+int
+itkBoxSigmaImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 4)
     {
@@ -43,7 +44,7 @@ int itkBoxSigmaImageFilterTest(int ac, char* av[] )
   // Create a filter
   typedef itk::BoxSigmaImageFilter<ImageType,ImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher filterWatch(filter);
+  FilterWatcher       filterWatch(filter);
 
   typedef FilterType::RadiusType RadiusType;
 
@@ -77,7 +78,7 @@ int itkBoxSigmaImageFilterTest(int ac, char* av[] )
   try
     {
     int r = atoi( av[3] );
-    filter->SetInput(input->GetOutput());
+    filter->SetInput(input->GetOutput() );
     filter->SetRadius( r );
     filter->Update();
     }

@@ -24,12 +24,15 @@ GPUKernelManager::GPUKernelManager()
 {
   m_Manager = GPUContextManager::GetInstance();
 
-  if(m_Manager->GetNumberOfCommandQueues() > 0) m_CommandQueueId = 0;   // default
-                                                                  // command
-                                                                  // queue
+  if(m_Manager->GetNumberOfCommandQueues() > 0) m_CommandQueueId = 0;   //
+                                                                        //
+                                                                        // default
+  // command
+  // queue
 }
 
-bool GPUKernelManager::LoadProgramFromFile(const char* filename, const char* cPreamble)
+bool
+GPUKernelManager::LoadProgramFromFile(const char* filename, const char* cPreamble)
 {
   // locals
   FILE*  pFileStream = NULL;
@@ -133,7 +136,8 @@ bool GPUKernelManager::LoadProgramFromFile(const char* filename, const char* cPr
   return true;
 }
 
-bool GPUKernelManager::LoadProgramFromString(const char* cSource, const char* cPreamble)
+bool
+GPUKernelManager::LoadProgramFromString(const char* cSource, const char* cPreamble)
 {
   size_t szSourceLength;
   size_t szPreambleLength;
@@ -149,7 +153,6 @@ bool GPUKernelManager::LoadProgramFromString(const char* cSource, const char* cP
 
   memcpy(cSourceString + szPreambleLength, cSource, szSourceLength);
 
-
   cSourceString[szFinalLength] = '\0';
 
   //
@@ -159,7 +162,8 @@ bool GPUKernelManager::LoadProgramFromString(const char* cSource, const char* cP
   m_Program = clCreateProgramWithSource(
       m_Manager->GetCurrentContext(), 1, (const char **)&cSourceString, &szFinalLength, &errid);
   OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
-  // KMZ when is it safe to free the source string?  Seems like the program still keeps a reference to it, so deleting here is dangerous?
+  // KMZ when is it safe to free the source string?  Seems like the program
+  // still keeps a reference to it, so deleting here is dangerous?
 //   free(cSourceString);
 
   if(errid != CL_SUCCESS)
@@ -207,7 +211,8 @@ bool GPUKernelManager::LoadProgramFromString(const char* cSource, const char* cP
   return true;
 }
 
-int GPUKernelManager::CreateKernel(const char* kernelName)
+int
+GPUKernelManager::CreateKernel(const char* kernelName)
 {
   cl_int errid;
 
@@ -235,8 +240,9 @@ int GPUKernelManager::CreateKernel(const char* kernelName)
   return (int)m_KernelContainer.size()-1;
 }
 
-cl_int GPUKernelManager::GetKernelWorkGroupInfo(int kernelIdx,
-                                                cl_kernel_work_group_info paramName, void *value)
+cl_int
+GPUKernelManager::GetKernelWorkGroupInfo(int kernelIdx,
+                                         cl_kernel_work_group_info paramName, void *value)
 {
   size_t valueSize, valueSizeRet;
 
@@ -264,9 +270,10 @@ cl_int GPUKernelManager::GetKernelWorkGroupInfo(int kernelIdx,
   return errid;
 }
 
-cl_int GPUKernelManager::GetDeviceInfo(
-                     cl_kernel_work_group_info paramName,
-                     size_t argSize, void *argValue)
+cl_int
+GPUKernelManager::GetDeviceInfo(
+  cl_kernel_work_group_info paramName,
+  size_t argSize, void *argValue)
 {
   cl_int errid;
 
@@ -274,7 +281,7 @@ cl_int GPUKernelManager::GetDeviceInfo(
     {
     case CL_DEVICE_MAX_WORK_ITEM_SIZES:
       errid = clGetDeviceInfo(m_Manager->GetDeviceId(0),
-        CL_DEVICE_MAX_WORK_ITEM_SIZES, argSize, argValue, NULL);
+                              CL_DEVICE_MAX_WORK_ITEM_SIZES, argSize, argValue, NULL);
       break;
     default:
       itkGenericExceptionMacro (<< "Unknown type of device info");
@@ -285,7 +292,8 @@ cl_int GPUKernelManager::GetDeviceInfo(
   return errid;
 }
 
-bool GPUKernelManager::SetKernelArg(int kernelIdx, cl_uint argIdx, size_t argSize, const void* argVal)
+bool
+GPUKernelManager::SetKernelArg(int kernelIdx, cl_uint argIdx, size_t argSize, const void* argVal)
 {
   if(kernelIdx < 0 || kernelIdx >= (int)m_KernelContainer.size() ) return false;
 
@@ -300,7 +308,8 @@ bool GPUKernelManager::SetKernelArg(int kernelIdx, cl_uint argIdx, size_t argSiz
   return true;
 }
 
-bool GPUKernelManager::SetKernelArgWithImage(int kernelIdx, cl_uint argIdx, GPUDataManager::Pointer manager)
+bool
+GPUKernelManager::SetKernelArgWithImage(int kernelIdx, cl_uint argIdx, GPUDataManager::Pointer manager)
 {
   if(kernelIdx < 0 || kernelIdx >= (int)m_KernelContainer.size() ) return false;
 
@@ -316,7 +325,8 @@ bool GPUKernelManager::SetKernelArgWithImage(int kernelIdx, cl_uint argIdx, GPUD
 }
 
 // this function must be called right before GPU kernel is launched
-bool GPUKernelManager::CheckArgumentReady(int kernelIdx)
+bool
+GPUKernelManager::CheckArgumentReady(int kernelIdx)
 {
   int nArg = m_KernelArgumentReady[kernelIdx].size();
 
@@ -333,7 +343,8 @@ bool GPUKernelManager::CheckArgumentReady(int kernelIdx)
   return true;
 }
 
-void GPUKernelManager::ResetArguments(int kernelIdx)
+void
+GPUKernelManager::ResetArguments(int kernelIdx)
 {
   int nArg = m_KernelArgumentReady[kernelIdx].size();
 
@@ -344,7 +355,8 @@ void GPUKernelManager::ResetArguments(int kernelIdx)
     }
 }
 
-bool GPUKernelManager::LaunchKernel1D(int kernelIdx, size_t globalWorkSize, size_t itkNotUsed(localWorkSize))
+bool
+GPUKernelManager::LaunchKernel1D(int kernelIdx, size_t globalWorkSize, size_t itkNotUsed(localWorkSize) )
 {
   if(kernelIdx < 0 || kernelIdx >= (int)m_KernelContainer.size() ) return false;
 
@@ -357,7 +369,8 @@ bool GPUKernelManager::LaunchKernel1D(int kernelIdx, size_t globalWorkSize, size
   cl_int errid;
   // TODO should we allow the user to determine localWorkSize?
 //   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
-//                                    m_CommandQueueId), m_KernelContainer[kernelIdx], 1, NULL, &globalWorkSize,
+//                                    m_CommandQueueId),
+// m_KernelContainer[kernelIdx], 1, NULL, &globalWorkSize,
 //                                  &localWorkSize, 0, NULL, NULL);
   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
                                    m_CommandQueueId), m_KernelContainer[kernelIdx], 1, NULL, &globalWorkSize,
@@ -373,9 +386,10 @@ bool GPUKernelManager::LaunchKernel1D(int kernelIdx, size_t globalWorkSize, size
   return true;
 }
 
-bool GPUKernelManager::LaunchKernel2D(int kernelIdx,
-                                      size_t globalWorkSizeX, size_t globalWorkSizeY,
-                                      size_t itkNotUsed(localWorkSizeX),  size_t itkNotUsed(localWorkSizeY) )
+bool
+GPUKernelManager::LaunchKernel2D(int kernelIdx,
+                                 size_t globalWorkSizeX, size_t globalWorkSizeY,
+                                 size_t itkNotUsed(localWorkSizeX),  size_t itkNotUsed(localWorkSizeY) )
 {
   if(kernelIdx < 0 || kernelIdx >= (int)m_KernelContainer.size() ) return false;
 
@@ -396,7 +410,8 @@ bool GPUKernelManager::LaunchKernel2D(int kernelIdx,
   cl_int errid;
   // TODO should we allow the user to determine localWorkSize?
 //   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
-//                                    m_CommandQueueId), m_KernelContainer[kernelIdx], 2, NULL, gws,
+//                                    m_CommandQueueId),
+// m_KernelContainer[kernelIdx], 2, NULL, gws,
 //                                  lws, 0, NULL, NULL);
   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
                                    m_CommandQueueId), m_KernelContainer[kernelIdx], 2, NULL, gws, NULL, 0, NULL, NULL);
@@ -411,9 +426,11 @@ bool GPUKernelManager::LaunchKernel2D(int kernelIdx,
   return true;
 }
 
-bool GPUKernelManager::LaunchKernel3D(int kernelIdx,
-                                      size_t globalWorkSizeX, size_t globalWorkSizeY, size_t globalWorkSizeZ,
-                                      size_t itkNotUsed(localWorkSizeX),  size_t itkNotUsed(localWorkSizeY), size_t itkNotUsed(localWorkSizeZ) )
+bool
+GPUKernelManager::LaunchKernel3D(int kernelIdx,
+                                 size_t globalWorkSizeX, size_t globalWorkSizeY, size_t globalWorkSizeZ,
+                                 size_t itkNotUsed(localWorkSizeX),  size_t itkNotUsed(
+                                   localWorkSizeY), size_t itkNotUsed(localWorkSizeZ) )
 {
   if(kernelIdx < 0 || kernelIdx >= (int)m_KernelContainer.size() ) return false;
 
@@ -436,7 +453,8 @@ bool GPUKernelManager::LaunchKernel3D(int kernelIdx,
   cl_int errid;
   // TODO should we allow the user to determine localWorkSize?
 //   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
-//                                    m_CommandQueueId), m_KernelContainer[kernelIdx], 3, NULL, gws, lws, 0, NULL, NULL);
+//                                    m_CommandQueueId),
+// m_KernelContainer[kernelIdx], 3, NULL, gws, lws, 0, NULL, NULL);
   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
                                    m_CommandQueueId), m_KernelContainer[kernelIdx], 3, NULL, gws, NULL, 0, NULL, NULL);
   OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
@@ -450,7 +468,8 @@ bool GPUKernelManager::LaunchKernel3D(int kernelIdx,
   return true;
 }
 
-bool GPUKernelManager::LaunchKernel(int kernelIdx, int dim, size_t *globalWorkSize, size_t *localWorkSize)
+bool
+GPUKernelManager::LaunchKernel(int kernelIdx, int dim, size_t *globalWorkSize, size_t *localWorkSize)
 {
   if(kernelIdx < 0 || kernelIdx >= (int)m_KernelContainer.size() ) return false;
 
@@ -470,7 +489,7 @@ bool GPUKernelManager::LaunchKernel(int kernelIdx, int dim, size_t *globalWorkSi
   cl_int errid;
   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
                                    m_CommandQueueId), m_KernelContainer[kernelIdx], (cl_uint)dim, NULL, globalWorkSize,
-                                    localWorkSize, 0, NULL, NULL);
+                                 localWorkSize, 0, NULL, NULL);
   OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
 /*
@@ -482,8 +501,8 @@ OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
 std::cout << "Check point 2" << std::endl;
 */
-errid = clFinish(m_Manager->GetCommandQueue(m_CommandQueueId));
-OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
+  errid = clFinish(m_Manager->GetCommandQueue(m_CommandQueueId) );
+  OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 /*
 std::cout << "Wait for kernel execution ends" << std::endl;
 */
@@ -497,7 +516,8 @@ std::cout << "Wait for kernel execution ends" << std::endl;
   return true;
 }
 
-void GPUKernelManager::SetCurrentCommandQueue( int queueid )
+void
+GPUKernelManager::SetCurrentCommandQueue( int queueid )
 {
   if( queueid >= 0 && queueid < (int)m_Manager->GetNumberOfCommandQueues() )
     {
@@ -510,7 +530,8 @@ void GPUKernelManager::SetCurrentCommandQueue( int queueid )
     }
 }
 
-int GPUKernelManager::GetCurrentCommandQueueID()
+int
+GPUKernelManager::GetCurrentCommandQueueID()
 {
   return m_CommandQueueId;
 }

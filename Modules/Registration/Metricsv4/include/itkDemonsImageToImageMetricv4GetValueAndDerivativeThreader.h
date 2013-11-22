@@ -40,7 +40,8 @@ public:
   typedef SmartPointer< Self >                                                                         Pointer;
   typedef SmartPointer< const Self >                                                                   ConstPointer;
 
-  itkTypeMacro( DemonsImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreader );
+  itkTypeMacro( DemonsImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreader );
 
   itkNewMacro( Self );
 
@@ -64,7 +65,8 @@ public:
   typedef typename Superclass::ImageDimensionType           ImageDimensionType;
 
 protected:
-  DemonsImageToImageMetricv4GetValueAndDerivativeThreader() {}
+  DemonsImageToImageMetricv4GetValueAndDerivativeThreader() {
+  }
 
   /** Overload.
    *  Get pointer to metric object.
@@ -75,21 +77,31 @@ protected:
    *  the metric to the global integral of the metric/derivative.
    */
   virtual bool ProcessPoint(
-        const VirtualIndexType &          virtualIndex,
-        const VirtualPointType &          virtualPoint,
-        const FixedImagePointType &       mappedFixedPoint,
-        const FixedImagePixelType &       mappedFixedPixelValue,
-        const FixedImageGradientType &    mappedFixedImageGradient,
-        const MovingImagePointType &      mappedMovingPoint,
-        const MovingImagePixelType &      mappedMovingPixelValue,
-        const MovingImageGradientType &   mappedMovingImageGradient,
-        MeasureType &                     metricValueReturn,
-        DerivativeType &                  localDerivativeReturn,
-        const ThreadIdType                threadID ) const;
+    const VirtualIndexType &          virtualIndex,
+    const VirtualPointType &          virtualPoint,
+    const FixedImagePointType &       mappedFixedPoint,
+    const FixedImagePixelType &       mappedFixedPixelValue,
+    const FixedImageGradientType &    mappedFixedImageGradient,
+    const MovingImagePointType &      mappedMovingPoint,
+    const MovingImagePixelType &      mappedMovingPixelValue,
+    const MovingImageGradientType &   mappedMovingImageGradient,
+    MeasureType &                     metricValueReturn,
+    DerivativeType &                  localDerivativeReturn,
+    const ThreadIdType                threadID ) const;
 
 private:
-  DemonsImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  DemonsImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); //
+                                                                           //
+                                                                           // purposely
+                                                                           //
+                                                                           // not
+                                                                           //
+                                                                           // implemented
+  void operator=( const Self & );                                          //
+
+  // purposely
+  // not
+  // implemented
 
   /** Internal pointer to the Mattes metric object in use by this threader.
    *  This will avoid costly dynamic casting in tight loops. */

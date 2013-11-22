@@ -20,20 +20,23 @@
 #include "itkImageRegionIteratorWithIndex.h"
 
 template<unsigned int vecLength>
-int itkCentralDifferenceImageFunctionOnVectorSpeedTestRun(char* argv[] )
+int
+itkCentralDifferenceImageFunctionOnVectorSpeedTestRun(char* argv[] )
 {
-  int imageSize = atoi( argv[1] );
-  int reps = atoi( argv[2] );
+  int  imageSize = atoi( argv[1] );
+  int  reps = atoi( argv[2] );
   bool doEAI = atoi( argv[3] );
   bool doEACI = atoi( argv[4] );
   bool doE = atoi( argv[5] );
 
-  std::cout << "imageSize: " << imageSize << " reps: " << reps << " doEAI, doEACI, doE: " << doEAI << ", " << doEACI << ", " << doE << std::endl;
+  std::cout << "imageSize: " << imageSize << " reps: " << reps << " doEAI, doEACI, doE: " << doEAI << ", " << doEACI <<
+    ", " << doE << std::endl;
   std::cout << "vecLength: " << vecLength << std::endl;
 
-  const unsigned int                            ImageDimension = 2;
-  typedef itk::Vector<float,vecLength>          PixelType;
-  typedef itk::Image<PixelType,ImageDimension>  ImageType;
+  const unsigned int ImageDimension = 2;
+
+  typedef itk::Vector<float,vecLength>         PixelType;
+  typedef itk::Image<PixelType,ImageDimension> ImageType;
 
   typename ImageType::Pointer image = ImageType::New();
   typename ImageType::SizeType size;
@@ -62,11 +65,11 @@ int itkCentralDifferenceImageFunctionOnVectorSpeedTestRun(char* argv[] )
     }
 
   // set up central difference calculator
-  typedef float                             CoordRepType;
-  typedef itk::Matrix<double,vecLength,2>   DerivativeType;
+  typedef float                           CoordRepType;
+  typedef itk::Matrix<double,vecLength,2> DerivativeType;
 
-  typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType,DerivativeType>  FunctionType;
-  typedef typename FunctionType::OutputType                                           OutputType;
+  typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType,DerivativeType> FunctionType;
+  typedef typename FunctionType::OutputType                                          OutputType;
 
   typename FunctionType::Pointer function = FunctionType::New();
 
@@ -117,8 +120,8 @@ int itkCentralDifferenceImageFunctionOnVectorSpeedTestRun(char* argv[] )
   return EXIT_SUCCESS;
 }
 
-
-int itkCentralDifferenceImageFunctionOnVectorSpeedTest(int argc, char* argv[] )
+int
+itkCentralDifferenceImageFunctionOnVectorSpeedTest(int argc, char* argv[] )
 {
   if( argc != 7 )
     {

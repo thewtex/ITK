@@ -25,12 +25,14 @@ namespace itk
 template< typename TFunctionValue, unsigned int VImageDimension, typename TInput >
 SpatialFunction< TFunctionValue, VImageDimension, TInput >
 ::SpatialFunction()
-{}
+{
+}
 
 template< typename TFunctionValue, unsigned int VImageDimension, typename TInput >
 SpatialFunction< TFunctionValue, VImageDimension, TInput >
 ::~SpatialFunction()
-{}
+{
+}
 
 template< typename TFunctionValue, unsigned int VImageDimension, typename TInput >
 void
@@ -39,6 +41,7 @@ SpatialFunction< TFunctionValue, VImageDimension, TInput >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

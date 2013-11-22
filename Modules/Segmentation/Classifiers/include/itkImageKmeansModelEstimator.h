@@ -128,14 +128,14 @@ namespace itk
  */
 template< typename TInputImage,
           typename TMembershipFunction >
-class ImageKmeansModelEstimator:
+class ImageKmeansModelEstimator :
   public ImageModelEstimatorBase< TInputImage, TMembershipFunction >
 {
 public:
   /** Standard class typedefs. */
   typedef ImageKmeansModelEstimator Self;
   typedef ImageModelEstimatorBase< TInputImage, TMembershipFunction >
-  Superclass;
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -179,7 +179,10 @@ public:
   itkGetConstMacro(Codebook, CodebookMatrixOfDoubleType);
 
   /** Get the optimized codebook or the centroids of the clusters. */
-  CodebookMatrixOfDoubleType GetOutCodebook() { return m_Codebook; }
+  CodebookMatrixOfDoubleType
+  GetOutCodebook() {
+    return m_Codebook;
+  }
 
   /** Set the threshold parameter. */
   itkSetMacro(Threshold, double);
@@ -206,7 +209,10 @@ public:
   itkGetConstMacro(MaxSplitAttempts, int);
 
   /** Return the codebook/cluster centers. */
-  CodebookMatrixOfDoubleType GetKmeansResults(void) { return m_Centroid; }
+  CodebookMatrixOfDoubleType
+  GetKmeansResults(void) {
+    return m_Centroid;
+  }
 
 protected:
   ImageKmeansModelEstimator();

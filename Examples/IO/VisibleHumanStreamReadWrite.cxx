@@ -44,7 +44,8 @@
 // following is an example that reads the entire raw dataset and
 // generates that classic image:
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
   if ( argc < 3 )
     {
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
   typedef itk::Image<RGBPixelType, 2>  RGB2DImageType;
 
   // genderate the names of the decompressed Visible Male images
-  typedef itk::NumericSeriesFileNames    NameGeneratorType;
+  typedef itk::NumericSeriesFileNames NameGeneratorType;
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
   nameGenerator->SetSeriesFormat( visibleHumanPath+"a_vm%04d.raw" );
   nameGenerator->SetStartIndex( 1001 );
@@ -80,7 +81,6 @@ int main(int argc, char *argv[])
   rimageio->SetSpacing( 1, .33 );
   rimageio->SetHeaderSize(rimageio->GetImageSizeInPixels()*0);
 
-
 // create a ImageIO for the green channel
   ImageIOType::Pointer gimageio = ImageIOType::New();
   gimageio->SetDimensions( 0, 2048 );
@@ -88,7 +88,6 @@ int main(int argc, char *argv[])
   gimageio->SetSpacing( 0, .33 );
   gimageio->SetSpacing( 1, .33 );
   gimageio->SetHeaderSize(gimageio->GetImageSizeInPixels()*1);
-
 
 // create a ImageIO for the blue channel
   ImageIOType::Pointer bimageio = ImageIOType::New();
@@ -120,7 +119,8 @@ int main(int argc, char *argv[])
 
 // this filter is needed if square pixels are needed
 //   const int xyShrinkFactor = 3;
-//   typedef itk::ShrinkImageFilter<  RGB3DImageType, RGB3DImageType > ShrinkImageFilterType;
+//   typedef itk::ShrinkImageFilter<  RGB3DImageType, RGB3DImageType >
+// ShrinkImageFilterType;
 //   ShrinkImageFilterType::Pointer shrinker = ShrinkImageFilterType::New();
 //   shrinker->SetInput( composeRGB->GetOutput() );
 //   shrinker->SetShrinkFactors(  xyShrinkFactor );
@@ -134,7 +134,8 @@ int main(int argc, char *argv[])
   coronalSlice.SetSize( 1, 0 );
 
 // another interesting view
-//   RGB3DImageType::RegionType sagittalSlice = shrinker->GetOutput()->GetLargestPossibleRegion();
+//   RGB3DImageType::RegionType sagittalSlice =
+// shrinker->GetOutput()->GetLargestPossibleRegion();
 //   sagittalSlice.SetIndex( 0, 1024 );
 //   sagittalSlice.SetSize( 0, 0 );
 
@@ -148,7 +149,6 @@ int main(int argc, char *argv[])
   extract->SetInput( composeRGB->GetOutput() );
   extract->SetExtractionRegion(coronalSlice);
 
-
   typedef itk::ImageFileWriter< RGB2DImageType > ImageWriterType;
   ImageWriterType::Pointer writer = ImageWriterType::New();
   writer->SetFileName( outputImageFile );
@@ -159,7 +159,6 @@ int main(int argc, char *argv[])
   writer->SetInput( extract->GetOutput() );
 
   itk::SimpleFilterWatcher watcher1(writer, "stream writing");
-
 
   try
     {
@@ -195,7 +194,6 @@ int main(int argc, char *argv[])
 // output. This pipeline is so efficient because very little data is
 // actually processed at any one stage of the pipeline due to
 // streaming IO.
-
 
   return EXIT_SUCCESS;
 }

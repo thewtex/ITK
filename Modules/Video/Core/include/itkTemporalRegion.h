@@ -43,28 +43,32 @@ class TemporalRegion : public Region
 public:
 
   /** Standard class typedefs */
-  typedef TemporalRegion       Self;
-  typedef Region               Superclass;
+  typedef TemporalRegion Self;
+  typedef Region         Superclass;
 
   itkTypeMacro(TemporalRegion, Region);
 
   /** Typedef for frame offsets */
-  typedef ::itk::SizeValueType FrameOffsetType;
+  typedef::itk::SizeValueType FrameOffsetType;
 
   /** Get/Set RealStart */
   void SetRealStart(const RealTimeStamp s);
+
   RealTimeStamp GetRealStart() const;
 
   /** Get/Set RealDuration */
   void SetRealDuration(const RealTimeInterval d);
+
   RealTimeInterval GetRealDuration() const;
 
   /** Get/Set FrameStart */
   void SetFrameStart(const FrameOffsetType s);
+
   FrameOffsetType GetFrameStart() const;
 
   /** Get/Set FrameDuration */
   void SetFrameDuration(const FrameOffsetType d);
+
   FrameOffsetType GetFrameDuration() const;
 
   /** Return RegionType (SRUCTURED_REGION) */
@@ -74,7 +78,8 @@ public:
   TemporalRegion();
 
   /** Destructor */
-  virtual ~TemporalRegion();
+  virtual
+  ~TemporalRegion();
 
   /** Compare two temporal regions in Frame space */
   virtual bool IsEqualInFrames(const Self & region) const;

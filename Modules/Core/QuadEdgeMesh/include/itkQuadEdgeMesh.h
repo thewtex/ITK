@@ -110,7 +110,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int VDimension,
           typename TTraits = QuadEdgeMeshTraits< TPixel, VDimension, bool, bool > >
-class QuadEdgeMesh:public Mesh< TPixel, VDimension, TTraits >
+class QuadEdgeMesh : public Mesh< TPixel, VDimension, TTraits >
 {
 public:
   /** Input template parameters. */
@@ -144,18 +144,18 @@ public:
   typedef typename Superclass::PointsContainer        PointsContainer;
   typedef typename Superclass::PointsContainerPointer PointsContainerPointer;
   typedef CoordRepType                                CoordRepArrayType[
-    itkGetStaticConstMacro(PointDimension)];
+      itkGetStaticConstMacro(PointDimension)];
 
   // Point data section:
   typedef typename Superclass::PointDataContainer PointDataContainer;
   typedef typename Superclass::PointDataContainerPointer
-  PointDataContainerPointer;
+    PointDataContainerPointer;
   typedef typename Superclass::PointDataContainerIterator
-  PointDataContainerIterator;
+    PointDataContainerIterator;
   typedef typename Superclass::PointsContainerConstIterator
-  PointsContainerConstIterator;
+    PointsContainerConstIterator;
   typedef typename Superclass::PointsContainerIterator
-  PointsContainerIterator;
+    PointsContainerIterator;
 
   // Cell section:
   typedef typename Superclass::CellIdentifier        CellIdentifier;
@@ -168,43 +168,43 @@ public:
   typedef typename Superclass::CellsContainerPointer CellsContainerPointer;
 
   typedef typename Superclass::CellsContainerConstIterator
-  CellsContainerConstIterator;
+    CellsContainerConstIterator;
   typedef typename Superclass::CellsContainerIterator
-  CellsContainerIterator;
+    CellsContainerIterator;
 
   typedef typename Superclass::CellLinksContainer CellLinksContainer;
   typedef typename Superclass::CellLinksContainerPointer
-  CellLinksContainerPointer;
+    CellLinksContainerPointer;
   typedef typename Superclass::CellLinksContainerIterator
-  CellLinksContainerIterator;
+    CellLinksContainerIterator;
 
   // Cell data section:
   typedef typename Superclass::CellDataContainer CellDataContainer;
   typedef typename Superclass::CellDataContainerPointer
-  CellDataContainerPointer;
+    CellDataContainerPointer;
   typedef typename Superclass::CellDataContainerIterator
-  CellDataContainerIterator;
+    CellDataContainerIterator;
 
   // Point / Cell correspondance section:
   typedef typename Superclass::PointCellLinksContainer
-  PointCellLinksContainer;
+    PointCellLinksContainer;
   typedef typename Superclass::PointCellLinksContainerIterator
-  PointCellLinksContainerIterator;
+    PointCellLinksContainerIterator;
 
   // BoundaryAssignMents section:
   typedef typename Superclass::BoundaryAssignmentsContainer
-  BoundaryAssignmentsContainer;
+    BoundaryAssignmentsContainer;
   typedef typename Superclass::BoundaryAssignmentsContainerPointer
-  BoundaryAssignmentsContainerPointer;
+    BoundaryAssignmentsContainerPointer;
   typedef typename Superclass::BoundaryAssignmentsContainerVector
-  BoundaryAssignmentsContainerVector;
+    BoundaryAssignmentsContainerVector;
 
   // Miscellaneous section:
   typedef typename Superclass::BoundingBoxPointer BoundingBoxPointer;
   typedef typename Superclass::BoundingBoxType    BoundingBoxType;
   typedef typename Superclass::RegionType         RegionType;
   typedef typename Superclass::InterpolationWeightType
-  InterpolationWeightType;
+    InterpolationWeightType;
 
   /** Specific types for a quad-edge structure. */
   typedef typename Traits::PrimalDataType PrimalDataType;
@@ -251,7 +251,8 @@ public:
 public:
 
   // Multithreading framework: not tested yet.
-  virtual bool RequestedRegionIsOutsideOfTheBufferedRegion()
+  virtual bool
+  RequestedRegionIsOutsideOfTheBufferedRegion()
   {
     return ( false );
   }
@@ -261,12 +262,27 @@ public:
   /** another way of deleting all the cells */
   virtual void Clear();
 
-  CellsContainer * GetEdgeCells() { return m_EdgeCellsContainer; }
-  const CellsContainer * GetEdgeCells() const { return m_EdgeCellsContainer; }
-  void SetEdgeCells(CellsContainer *edgeCells)
-  { m_EdgeCellsContainer = edgeCells; }
-  void SetEdgeCell(CellIdentifier cellId, CellAutoPointer & cellPointer)
-  { m_EdgeCellsContainer->InsertElement( cellId, cellPointer.ReleaseOwnership() ); }
+  CellsContainer *
+  GetEdgeCells() {
+    return m_EdgeCellsContainer;
+  }
+
+  const CellsContainer *
+  GetEdgeCells() const {
+    return m_EdgeCellsContainer;
+  }
+
+  void
+  SetEdgeCells(CellsContainer *edgeCells)
+  {
+    m_EdgeCellsContainer = edgeCells;
+  }
+
+  void
+  SetEdgeCell(CellIdentifier cellId, CellAutoPointer & cellPointer)
+  {
+    m_EdgeCellsContainer->InsertElement( cellId, cellPointer.ReleaseOwnership() );
+  }
 
   /** Overloaded to avoid a bug in Mesh that prevents proper inheritance
    * Refer to
@@ -274,33 +290,42 @@ public:
    * and
    * http://public.kitware.com/pipermail/insight-users/2005-April/012613.html
    */
-  virtual void CopyInformation(const DataObject *data) { (void)data; }
+  virtual void
+  CopyInformation(const DataObject *data) {
+    (void)data;
+  }
+
   virtual void Graft(const DataObject *data);
 
   /** squeeze the point container to be able to write the file properly */
   void SqueezePointsIds();
 
   /** overloaded method for backward compatibility */
-  void BuildCellLinks() {}
+  void
+  BuildCellLinks() {
+  }
 
 #if !defined( CABLE_CONFIGURATION )
   /** overloaded method for backward compatibility */
-  void SetBoundaryAssignments(int dimension,
-                              BoundaryAssignmentsContainer *container)
+  void
+  SetBoundaryAssignments(int dimension,
+                         BoundaryAssignmentsContainer *container)
   {
     (void)dimension;
     (void)container;
   }
 
   /** overloaded method for backward compatibility */
-  BoundaryAssignmentsContainerPointer GetBoundaryAssignments(int dimension)
+  BoundaryAssignmentsContainerPointer
+  GetBoundaryAssignments(int dimension)
   {
     (void)dimension;
     return ( (BoundaryAssignmentsContainerPointer)0 );
   }
 
   /** overloaded method for backward compatibility */
-  const BoundaryAssignmentsContainerPointer GetBoundaryAssignments(
+  const BoundaryAssignmentsContainerPointer
+  GetBoundaryAssignments(
     int dimension) const
   {
     (void)dimension;
@@ -310,9 +335,10 @@ public:
 #endif
 
   /** overloaded method for backward compatibility */
-  void SetBoundaryAssignment(int dimension, CellIdentifier cellId,
-                             CellFeatureIdentifier featureId,
-                             CellIdentifier boundaryId)
+  void
+  SetBoundaryAssignment(int dimension, CellIdentifier cellId,
+                        CellFeatureIdentifier featureId,
+                        CellIdentifier boundaryId)
   {
     (void)dimension;
     (void)cellId;
@@ -321,9 +347,10 @@ public:
   }
 
   /** overloaded method for backward compatibility */
-  bool GetBoundaryAssignment(int dimension, CellIdentifier cellId,
-                             CellFeatureIdentifier featureId,
-                             CellIdentifier *boundaryId) const
+  bool
+  GetBoundaryAssignment(int dimension, CellIdentifier cellId,
+                        CellFeatureIdentifier featureId,
+                        CellIdentifier *boundaryId) const
   {
     (void)dimension;
     (void)cellId;
@@ -333,8 +360,9 @@ public:
   }
 
   /** overloaded method for backward compatibility */
-  bool RemoveBoundaryAssignment(int dimension, CellIdentifier cellId,
-                                CellFeatureIdentifier featureId)
+  bool
+  RemoveBoundaryAssignment(int dimension, CellIdentifier cellId,
+                           CellFeatureIdentifier featureId)
   {
     (void)dimension;
     (void)cellId;
@@ -343,9 +371,10 @@ public:
   }
 
   /** overloaded method for backward compatibility */
-  bool GetCellBoundaryFeature(int dimension, CellIdentifier cellId,
-                              CellFeatureIdentifier featureId,
-                              CellAutoPointer & cellAP) const
+  bool
+  GetCellBoundaryFeature(int dimension, CellIdentifier cellId,
+                         CellFeatureIdentifier featureId,
+                         CellAutoPointer & cellAP) const
   {
     (void)dimension;
     (void)cellId;
@@ -355,10 +384,11 @@ public:
   }
 
   /** overloaded method for backward compatibility */
-  CellIdentifier GetCellBoundaryFeatureNeighbors(int dimension,
-                                                CellIdentifier cellId,
-                                                CellFeatureIdentifier featureId,
-                                                std::set< CellIdentifier > *cellSet)
+  CellIdentifier
+  GetCellBoundaryFeatureNeighbors(int dimension,
+                                  CellIdentifier cellId,
+                                  CellFeatureIdentifier featureId,
+                                  std::set< CellIdentifier > *cellSet)
   {
     (void)dimension;
     (void)cellId;
@@ -368,17 +398,19 @@ public:
   }
 
   /** NOTE ALEX: this method do not use CellFeature and thus could be recoded */
-  CellIdentifier GetCellNeighbors(CellIdentifier itkNotUsed(cellId),
-                                 std::set< CellIdentifier > * itkNotUsed(cellSet))
+  CellIdentifier
+  GetCellNeighbors(CellIdentifier itkNotUsed(cellId),
+                   std::set< CellIdentifier > * itkNotUsed(cellSet) )
   {
     return NumericTraits<CellIdentifier>::Zero;
   }
 
   /** overloaded method for backward compatibility */
-  bool GetAssignedCellBoundaryIfOneExists(int dimension,
-                                          CellIdentifier cellId,
-                                          CellFeatureIdentifier featureId,
-                                          CellAutoPointer & cellAP) const
+  bool
+  GetAssignedCellBoundaryIfOneExists(int dimension,
+                                     CellIdentifier cellId,
+                                     CellFeatureIdentifier featureId,
+                                     CellAutoPointer & cellAP) const
   {
     (void)dimension;
     (void)cellId;
@@ -441,7 +473,8 @@ public:
   virtual void DeleteFace(FaceRefType faceToDelete);
 
   //
-  bool GetPoint(PointIdentifier pid, PointType *pt) const
+  bool
+  GetPoint(PointIdentifier pid, PointType *pt) const
   {
     return ( Superclass::GetPoint(pid, pt) );
   }
@@ -479,7 +512,8 @@ public:
 #endif
 
   // for reusability of a mesh in the MeshToMesh filter
-  void ClearFreePointAndCellIndexesLists()
+  void
+  ClearFreePointAndCellIndexesLists()
   {
     while ( !this->m_FreePointIndexes.empty() )
       {
@@ -491,13 +525,21 @@ public:
       }
   }
 
-  CellIdentifier GetNumberOfFaces() const { return ( m_NumberOfFaces ); }
-  CellIdentifier GetNumberOfEdges() const { return ( m_NumberOfEdges ); }
+  CellIdentifier
+  GetNumberOfFaces() const {
+    return ( m_NumberOfFaces );
+  }
+
+  CellIdentifier
+  GetNumberOfEdges() const {
+    return ( m_NumberOfEdges );
+  }
 
 protected:
   /** Constructor and Destructor. */
   QuadEdgeMesh();
-  virtual ~QuadEdgeMesh();
+  virtual
+  ~QuadEdgeMesh();
 
   /** Release the memory of each one of the cells independently. */
   virtual void ClearCellsContainer();

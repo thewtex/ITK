@@ -29,7 +29,7 @@ template< typename TImage >
 ImageLinearConstIteratorWithIndex< TImage >
 ::ImageLinearConstIteratorWithIndex(
   const ImageType *ptr,
-  const RegionType & region):
+  const RegionType & region) :
   ImageConstIteratorWithIndex< TImage >(ptr, region)
 {
   this->SetDirection(0);
@@ -81,6 +81,7 @@ ImageLinearConstIteratorWithIndex< TImage >
 
   this->m_PositionIndex[m_Direction] = this->m_EndIndex[m_Direction];
 }
+
 } // end namespace itk
 
 #endif

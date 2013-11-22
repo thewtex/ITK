@@ -18,7 +18,6 @@
 #ifndef _itkRegularExpressionSeriesFileNames_cxx
 #define _itkRegularExpressionSeriesFileNames_cxx
 
-
 #include <algorithm>
 
 #include "itksys/SystemTools.hxx"
@@ -27,20 +26,24 @@
 #include "itkRegularExpressionSeriesFileNames.h"
 
 struct lt_pair_numeric_string_string {
-  bool operator()(const std::pair< std::string, std::string > & s1,
-                  const std::pair< std::string, std::string > & s2) const
+  bool
+  operator()(const std::pair< std::string, std::string > & s1,
+             const std::pair< std::string, std::string > & s2) const
   {
     return atof( s1.second.c_str() ) < atof( s2.second.c_str() );
   }
-};
+
+  };
 
 struct lt_pair_alphabetic_string_string {
-  bool operator()(const std::pair< std::string, std::string > & s1,
-                  const std::pair< std::string, std::string > & s2) const
+  bool
+  operator()(const std::pair< std::string, std::string > & s1,
+             const std::pair< std::string, std::string > & s2) const
   {
     return s1.second < s2.second;
   }
-};
+
+  };
 
 namespace itk
 {
@@ -133,6 +136,7 @@ RegularExpressionSeriesFileNames
     os << indent << "Filenames[" << i << "]: " << m_FileNames[i] << std::endl;
     }
 }
+
 } //namespace ITK
 
 #endif

@@ -18,10 +18,12 @@
 #include "itkShapedNeighborhoodIterator.h"
 #include "itkBinaryBallStructuringElement.h"
 
-typedef itk::Image<int, 2>  LocalImageType;
-void CreateImagex(LocalImageType::Pointer& image)
+typedef itk::Image<int, 2> LocalImageType;
+void
+CreateImagex(LocalImageType::Pointer& image)
 {
   LocalImageType::IndexType start;
+
   start.Fill(0);
 
   LocalImageType::SizeType size;
@@ -34,7 +36,8 @@ void CreateImagex(LocalImageType::Pointer& image)
   image->FillBuffer(0);
 }
 
-int itkShapedIteratorFromStructuringElementTest(int, char*[])
+int
+itkShapedIteratorFromStructuringElementTest(int, char*[])
 {
   typedef itk::Image<int, 2>   ImageType;
   typedef ImageType::PixelType PixelType;
@@ -48,13 +51,13 @@ int itkShapedIteratorFromStructuringElementTest(int, char*[])
   elementRadius.Fill(2);
 
   StructuringElementType structuringElement;
-    structuringElement.SetRadius(elementRadius);
-    structuringElement.CreateStructuringElement();
+  structuringElement.SetRadius(elementRadius);
+  structuringElement.CreateStructuringElement();
 
   typedef itk::ShapedNeighborhoodIterator<ImageType> IteratorType;
   IteratorType siterator(structuringElement.GetRadius(),
                          image,
-                         image->GetLargestPossibleRegion());
+                         image->GetLargestPossibleRegion() );
 
   siterator.CreateActiveListFromNeighborhood(structuringElement);
   siterator.NeedToUseBoundaryConditionOff();
@@ -71,7 +74,7 @@ int itkShapedIteratorFromStructuringElementTest(int, char*[])
 
   // Now show the results
   typedef itk::ImageRegionConstIterator<ImageType> ImageIteratorType;
-  ImageIteratorType imit(image, image->GetLargestPossibleRegion());
+  ImageIteratorType imit(image, image->GetLargestPossibleRegion() );
   imit.GoToBegin();
   unsigned int col = 0;
   while( !imit.IsAtEnd() )
@@ -80,7 +83,7 @@ int itkShapedIteratorFromStructuringElementTest(int, char*[])
     ++imit;
     ++col;
     std::cout << value << " ";
-    if ((col % 10) == 0)
+    if ( (col % 10) == 0)
       {
       std::cout << std::endl;
       }
@@ -89,7 +92,7 @@ int itkShapedIteratorFromStructuringElementTest(int, char*[])
   // neighborhood
   IteratorType biterator(structuringElement.GetRadius(),
                          image,
-                         image->GetLargestPossibleRegion());
+                         image->GetLargestPossibleRegion() );
   elementRadius.Fill(3);
   structuringElement.SetRadius(elementRadius);
 

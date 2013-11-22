@@ -23,7 +23,8 @@
 #include "itkTestingMacros.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkConvertLabelMapFilterTest1(int argc, char * argv[])
+int
+itkConvertLabelMapFilterTest1(int argc, char * argv[])
 {
   if( argc != 3 )
     {
@@ -39,7 +40,6 @@ int itkConvertLabelMapFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
@@ -48,8 +48,8 @@ int itkConvertLabelMapFilterTest1(int argc, char * argv[])
   L2SType::Pointer l2s = L2SType::New();
   l2s->SetInput( reader->GetOutput() );
 
-  typedef itk::LabelObject< PixelType, dim >     LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType >       LabelMapType;
+  typedef itk::LabelObject< PixelType, dim > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType >   LabelMapType;
 
   typedef itk::ConvertLabelMapFilter< L2SType::OutputImageType, LabelMapType > CastType;
   CastType::Pointer cast = CastType::New();

@@ -160,7 +160,7 @@ MRIBiasEnergyFunction< TImage, TImageMask, TBiasField >
             {
             const double biasVal = m_BiasField->Evaluate(indexBias);
             const double imageVal = m_Image->GetPixel(curIndex);
-            total += ( *m_InternalEnergyFunction )( imageVal - biasVal );
+            total +=     ( *m_InternalEnergyFunction )( imageVal - biasVal );
             indexBias[0] = indexBias[0] + m_SamplingFactor[0];
             }
           indexBias[1] = indexBias[1] + m_SamplingFactor[1];
@@ -189,7 +189,7 @@ MRIBiasEnergyFunction< TImage, TImageMask, TBiasField >
               {
               const double biasVal = m_BiasField->Evaluate(indexBias);
               const double imageVal = m_Image->GetPixel(curIndex);
-              total += ( *m_InternalEnergyFunction )( imageVal - biasVal );
+              total +=     ( *m_InternalEnergyFunction )( imageVal - biasVal );
               }
             indexBias[0] = indexBias[0] + m_SamplingFactor[0];
             }
@@ -418,7 +418,8 @@ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage,  TMaskImage >
 template< typename TInputImage, typename TOutputImage, typename TMaskImage >
 MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
 ::~MRIBiasFieldCorrectionFilter()
-{}
+{
+}
 
 template< typename TInputImage, typename TOutputImage, typename TMaskImage >
 void
@@ -692,7 +693,7 @@ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
 
   int noOfBiasFieldCoefficients = bias.GetNumberOfCoefficients();
   typename EnergyFunctionType::ParametersType
-  initialPosition(noOfBiasFieldCoefficients);
+    initialPosition(noOfBiasFieldCoefficients);
   for ( int i = 0; i < noOfBiasFieldCoefficients; i++ )
     {
     initialPosition[i] = bias.GetCoefficients()[i];
@@ -798,7 +799,7 @@ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
 ::CorrectInterSliceIntensityInhomogeneity(InputImageRegionType region)
 {
   IndexValueType lastSlice = region.GetIndex()[m_SlicingDirection]
-                   + static_cast< IndexValueType >( region.GetSize()[m_SlicingDirection] );
+    + static_cast< IndexValueType >( region.GetSize()[m_SlicingDirection] );
   InputImageRegionType sliceRegion;
   InputImageIndexType  index = region.GetIndex();
   InputImageSizeType   size = region.GetSize();
@@ -934,8 +935,8 @@ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
       {
       m_TissueClassMeans[i] = vcl_exp(m_TissueClassMeans[i]) - 1.0;
       m_TissueClassSigmas[i] = vcl_exp(m_TissueClassSigmas[i])
-                               * ( 1.0 + m_TissueClassMeans[i] )
-                               - m_TissueClassMeans[i];
+        * ( 1.0 + m_TissueClassMeans[i] )
+        - m_TissueClassMeans[i];
       }
     m_OptimizerInitialRadius = vcl_exp(m_OptimizerInitialRadius) - 1.0;
     }
@@ -1133,7 +1134,7 @@ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
     {
     coordFirst2 = ( *iter ).GetIndex()[m_SlicingDirection];
     coordLast2 = coordFirst2
-                 + static_cast< IndexValueType >( ( *iter ).GetSize()[m_SlicingDirection] ) - 1;
+      + static_cast< IndexValueType >( ( *iter ).GetSize()[m_SlicingDirection] ) - 1;
 
     if ( coordFirst > coordFirst2 )
       {
@@ -1167,6 +1168,7 @@ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
     iter++;
     }
 }
+
 } // end namespace itk
 
 #endif

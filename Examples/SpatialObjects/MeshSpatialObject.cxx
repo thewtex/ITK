@@ -23,7 +23,8 @@
 //
 // \index{itk::MeshSpatialObject}
 //
-// A \doxygen{MeshSpatialObject} contains a pointer to an \doxygen{Mesh} but adds the
+// A \doxygen{MeshSpatialObject} contains a pointer to an \doxygen{Mesh} but
+// adds the
 // notion of spatial transformations and parent-child hierarchy.
 // This example shows how to create an \doxygen{MeshSpatialObject},
 // use it to form a binary image and how to write the mesh on disk.
@@ -40,7 +41,8 @@
 
 // Software Guide : EndCodeSnippet
 
-int main(int, char * [] )
+int
+main(int, char * [] )
 {
   // Software Guide : BeginLatex
   //
@@ -70,11 +72,11 @@ int main(int, char * [] )
   int i;
   for(i=0; i < 4; ++i)
     {
-    myMesh->SetPoint(i, PointType(testPointCoords[i]));
+    myMesh->SetPoint(i, PointType(testPointCoords[i]) );
     }
 
   myMesh->SetCellsAllocationMethod(
-      MeshType::CellsAllocatedDynamicallyCellByCell );
+    MeshType::CellsAllocatedDynamicallyCellByCell );
   CellAutoPointer testCell1;
   testCell1.TakeOwnership(  new TetraCellType );
   testCell1->SetPointIds(tetraPoints);
@@ -94,7 +96,7 @@ int main(int, char * [] )
   // Software Guide : BeginCodeSnippet
   typedef itk::MeshSpatialObject< MeshType > MeshSpatialObjectType;
   MeshSpatialObjectType::Pointer myMeshSpatialObject =
-                                        MeshSpatialObjectType::New();
+    MeshSpatialObjectType::New();
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -115,7 +117,8 @@ int main(int, char * [] )
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
-  // Like any other SpatialObjects. The \code{GetBoundingBox()}, \code{ValueAt()},
+  // Like any other SpatialObjects. The \code{GetBoundingBox()},
+  // \code{ValueAt()},
   // \code{IsInside()} functions can be used to access important information.
   // Software Guide : EndLatex
 
@@ -176,7 +179,7 @@ int main(int, char * [] )
   typedef itk::Image< unsigned char, 3 > ImageType;
   typedef itk::GroupSpatialObject< 3 >   GroupType;
   typedef itk::SpatialObjectToImageFilter< GroupType, ImageType >
-                                         SpatialObjectToImageFilterType;
+    SpatialObjectToImageFilterType;
   SpatialObjectToImageFilterType::Pointer imageFilter =
     SpatialObjectToImageFilterType::New();
   // Software Guide : EndCodeSnippet
@@ -202,7 +205,8 @@ int main(int, char * [] )
   //  Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
-  //  Then we can get the resulting binary image using the \code{GetOutput()} function.
+  //  Then we can get the resulting binary image using the \code{GetOutput()}
+  // function.
   //  Software Guide : EndLatex
   //  Software Guide : BeginCodeSnippet
   ImageType::Pointer myBinaryMeshImage = imageFilter->GetOutput();

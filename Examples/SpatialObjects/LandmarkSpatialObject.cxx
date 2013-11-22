@@ -30,7 +30,8 @@
 #include "itkLandmarkSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 //
@@ -40,9 +41,9 @@ int main( int , char *[] )
 //
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
-  typedef itk::LandmarkSpatialObject<3>  LandmarkType;
-  typedef LandmarkType::Pointer          LandmarkPointer;
-  typedef itk::SpatialObjectPoint<3>     LandmarkPointType;
+  typedef itk::LandmarkSpatialObject<3> LandmarkType;
+  typedef LandmarkType::Pointer         LandmarkPointer;
+  typedef itk::SpatialObjectPoint<3>    LandmarkPointType;
 
   LandmarkPointer landmark = LandmarkType::New();
 // Software Guide : EndCodeSnippet
@@ -97,8 +98,8 @@ int main( int , char *[] )
   std::cout << "Number of Points in the landmark: " << nPoints << std::endl;
 
   LandmarkType::PointListType::const_iterator it
-                                              = landmark->GetPoints().begin();
-  while(it != landmark->GetPoints().end())
+    = landmark->GetPoints().begin();
+  while(it != landmark->GetPoints().end() )
     {
     std::cout << "Position: " << (*it).GetPosition() << std::endl;
     std::cout << "Color: " << (*it).GetColor() << std::endl;

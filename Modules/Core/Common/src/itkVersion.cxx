@@ -30,10 +30,12 @@
 namespace itk
 {
 Version::Version()
-{}
+{
+}
 
 Version::~Version()
-{}
+{
+}
 
 const char *
 Version::GetITKVersion()
@@ -64,4 +66,5 @@ Version::GetITKSourceVersion()
 {
   return ITK_SOURCE_VERSION;
 }
+
 } // end namespace itk

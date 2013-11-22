@@ -43,17 +43,17 @@ public:
   /**-TYPEDEFS---------------------------------------------------------------*/
 
   /** Standard class typedefs */
-  typedef RingBuffer                    Self;
-  typedef Object                        Superclass;
-  typedef SmartPointer< Self >          Pointer;
-  typedef SmartPointer< const Self >    ConstPointer;
+  typedef RingBuffer                 Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Contained type */
   typedef TElement                      ElementType;
   typedef typename ElementType::Pointer ElementPointer;
 
-  typedef ::itk::SizeValueType          SizeValueType;
-  typedef ::itk::OffsetValueType        OffsetValueType;
+  typedef::itk::SizeValueType   SizeValueType;
+  typedef::itk::OffsetValueType OffsetValueType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -74,13 +74,15 @@ public:
 
   /** Convenience methods for moving Head +/- 1 */
   void MoveHeadForward();
+
   void MoveHeadBackward();
 
   /** Report whether or not the indicated buffer is full */
   bool BufferIsFull(OffsetValueType offset);
 
   /** Report the current position of Head (mostly used for testing) */
-  SizeValueType GetHeadIndex() {
+  SizeValueType
+  GetHeadIndex() {
     return this->m_HeadIndex;
   }
 
@@ -94,7 +96,8 @@ protected:
 
   /**-PROTECTED METHODS------------------------------------------------------*/
   RingBuffer();
-  virtual ~RingBuffer();
+  virtual
+  ~RingBuffer();
   void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Get the proper buffer index from an offset */
@@ -103,7 +106,7 @@ protected:
   /**-PROTECTED MEMBERS------------------------------------------------------*/
 
   /** Pointer to the current active buffer */
-  SizeValueType               m_HeadIndex;
+  SizeValueType m_HeadIndex;
 
   /** Vector of pointers to elements */
   std::vector<ElementPointer> m_PointerVector;

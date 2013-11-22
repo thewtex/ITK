@@ -35,7 +35,8 @@ LightProcessObject
  */
 LightProcessObject
 ::~LightProcessObject()
-{}
+{
+}
 
 /**
  * Update the progress of the process object. If a ProgressMethod exists,
@@ -93,4 +94,5 @@ LightProcessObject
   // Notify end event observers
   this->InvokeEvent( EndEvent() );
 }
+
 } // end namespace itk

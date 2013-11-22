@@ -222,6 +222,7 @@ ImportImageFilter< TPixel, VImageDimension >
     this->Modified();
     }
 }
+
 } // end namespace itk
 
 #endif

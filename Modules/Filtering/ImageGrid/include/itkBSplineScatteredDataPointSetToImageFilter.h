@@ -126,30 +126,30 @@ namespace itk
  */
 
 template< typename TInputPointSet, typename TOutputImage >
-class BSplineScatteredDataPointSetToImageFilter:
+class BSplineScatteredDataPointSetToImageFilter :
   public PointSetToImageFilter< TInputPointSet, TOutputImage >
 {
 public:
-  typedef BSplineScatteredDataPointSetToImageFilter             Self;
-  typedef PointSetToImageFilter<TInputPointSet, TOutputImage>   Superclass;
-  typedef SmartPointer<Self>                                    Pointer;
-  typedef SmartPointer<const Self>                              ConstPointer;
+  typedef BSplineScatteredDataPointSetToImageFilter           Self;
+  typedef PointSetToImageFilter<TInputPointSet, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                                  Pointer;
+  typedef SmartPointer<const Self>                            ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
 
   /** Extract dimension from the output image. */
   itkStaticConstMacro( ImageDimension, unsigned int,
-    TOutputImage::ImageDimension );
+                       TOutputImage::ImageDimension );
 
-  typedef TOutputImage                              ImageType;
-  typedef TInputPointSet                            PointSetType;
+  typedef TOutputImage   ImageType;
+  typedef TInputPointSet PointSetType;
 
   /** Image typedef support. */
-  typedef typename ImageType::PixelType             PixelType;
-  typedef typename ImageType::RegionType            RegionType;
-  typedef typename ImageType::SizeType              SizeType;
-  typedef typename ImageType::IndexType             IndexType;
+  typedef typename ImageType::PixelType  PixelType;
+  typedef typename ImageType::RegionType RegionType;
+  typedef typename ImageType::SizeType   SizeType;
+  typedef typename ImageType::IndexType  IndexType;
 
   /** PointSet typedef support. */
   typedef typename PointSetType::PointType          PointType;
@@ -158,27 +158,27 @@ public:
   typedef typename PointSetType::PointDataContainer PointDataContainerType;
 
   /** Other typedef */
-  typedef float                                     RealType;
-  typedef VectorContainer<unsigned, RealType>       WeightsContainerType;
+  typedef float                               RealType;
+  typedef VectorContainer<unsigned, RealType> WeightsContainerType;
 
   /** Image types */
   typedef Image<PointDataType,
-    itkGetStaticConstMacro( ImageDimension )>       PointDataImageType;
+                itkGetStaticConstMacro( ImageDimension )>       PointDataImageType;
   typedef Image<RealType,
-    itkGetStaticConstMacro( ImageDimension )>       RealImageType;
-  typedef typename RealImageType::Pointer           RealImagePointer;
-  typedef typename PointDataImageType::Pointer      PointDataImagePointer;
+                itkGetStaticConstMacro( ImageDimension )>       RealImageType;
+  typedef typename RealImageType::Pointer      RealImagePointer;
+  typedef typename PointDataImageType::Pointer PointDataImagePointer;
   typedef FixedArray<unsigned,
-    itkGetStaticConstMacro( ImageDimension )>       ArrayType;
+                     itkGetStaticConstMacro( ImageDimension )>       ArrayType;
 
   /**
    * Interpolation kernel type (default spline order = 3)
    */
-  typedef CoxDeBoorBSplineKernelFunction<3>         KernelType;
-  typedef BSplineKernelFunction<0>                  KernelOrder0Type;
-  typedef BSplineKernelFunction<1>                  KernelOrder1Type;
-  typedef BSplineKernelFunction<2>                  KernelOrder2Type;
-  typedef BSplineKernelFunction<3>                  KernelOrder3Type;
+  typedef CoxDeBoorBSplineKernelFunction<3> KernelType;
+  typedef BSplineKernelFunction<0>          KernelOrder0Type;
+  typedef BSplineKernelFunction<1>          KernelOrder1Type;
+  typedef BSplineKernelFunction<2>          KernelOrder2Type;
+  typedef BSplineKernelFunction<3>          KernelOrder3Type;
 
   // Helper functions
 
@@ -319,7 +319,8 @@ public:
 
 protected:
   BSplineScatteredDataPointSetToImageFilter();
-  virtual ~BSplineScatteredDataPointSetToImageFilter();
+  virtual
+  ~BSplineScatteredDataPointSetToImageFilter();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -371,7 +372,7 @@ private:
    * B-spline object quickly.
    */
   void CollapsePhiLattice( PointDataImageType *, PointDataImageType *,
-    const RealType, const unsigned int );
+                           const RealType, const unsigned int );
 
   /**
    * Set the grid parametric domain parameters such as the origin, size,
@@ -385,23 +386,23 @@ private:
    */
   IndexType NumberToIndex( const unsigned int, const SizeType );
 
-  bool                                         m_DoMultilevel;
-  bool                                         m_GenerateOutputImage;
-  bool                                         m_UsePointWeights;
-  unsigned int                                 m_MaximumNumberOfLevels;
-  unsigned int                                 m_CurrentLevel;
-  ArrayType                                    m_NumberOfControlPoints;
-  ArrayType                                    m_CurrentNumberOfControlPoints;
-  ArrayType                                    m_CloseDimension;
-  ArrayType                                    m_SplineOrder;
-  ArrayType                                    m_NumberOfLevels;
+  bool         m_DoMultilevel;
+  bool         m_GenerateOutputImage;
+  bool         m_UsePointWeights;
+  unsigned int m_MaximumNumberOfLevels;
+  unsigned int m_CurrentLevel;
+  ArrayType    m_NumberOfControlPoints;
+  ArrayType    m_CurrentNumberOfControlPoints;
+  ArrayType    m_CloseDimension;
+  ArrayType    m_SplineOrder;
+  ArrayType    m_NumberOfLevels;
 
   typename WeightsContainerType::Pointer       m_PointWeights;
 
   typename PointDataImageType::Pointer         m_PhiLattice;
   typename PointDataImageType::Pointer         m_PsiLattice;
 
-  vnl_matrix<RealType>     m_RefinedLatticeCoefficients[ImageDimension];
+  vnl_matrix<RealType> m_RefinedLatticeCoefficients[ImageDimension];
 
   typename PointDataContainerType::Pointer     m_InputPointData;
   typename PointDataContainerType::Pointer     m_OutputPointData;
@@ -413,11 +414,11 @@ private:
   typename KernelOrder2Type::Pointer           m_KernelOrder2;
   typename KernelOrder3Type::Pointer           m_KernelOrder3;
 
-  std::vector<RealImagePointer>                m_OmegaLatticePerThread;
-  std::vector<PointDataImagePointer>           m_DeltaLatticePerThread;
+  std::vector<RealImagePointer>      m_OmegaLatticePerThread;
+  std::vector<PointDataImagePointer> m_DeltaLatticePerThread;
 
-  RealType                                     m_BSplineEpsilon;
-  bool                                         m_IsFittingComplete;
+  RealType m_BSplineEpsilon;
+  bool     m_IsFittingComplete;
 };
 } // end namespace itk
 

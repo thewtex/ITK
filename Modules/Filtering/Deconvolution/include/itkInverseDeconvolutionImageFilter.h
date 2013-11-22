@@ -50,18 +50,19 @@ namespace itk
  * \ingroup ITKDeconvolution
  *
  */
-template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage, typename TInternalPrecision=double >
+template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage,
+          typename TInternalPrecision=double >
 class InverseDeconvolutionImageFilter :
   public FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 {
 public:
-  typedef InverseDeconvolutionImageFilter                 Self;
+  typedef InverseDeconvolutionImageFilter Self;
   typedef FFTConvolutionImageFilter< TInputImage,
                                      TKernelImage,
                                      TOutputImage,
                                      TInternalPrecision > Superclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -105,7 +106,8 @@ public:
 
 protected:
   InverseDeconvolutionImageFilter();
-  ~InverseDeconvolutionImageFilter() {}
+  ~InverseDeconvolutionImageFilter() {
+  }
 
   /** This filter uses a minipipeline to compute the output. */
   void GenerateData();
@@ -125,21 +127,31 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class InverseDeconvolutionFunctor
 {
 public:
-  InverseDeconvolutionFunctor() { m_KernelZeroMagnitudeThreshold = 0.0; }
-  ~InverseDeconvolutionFunctor() {}
+  InverseDeconvolutionFunctor() {
+    m_KernelZeroMagnitudeThreshold = 0.0;
+  }
 
-  bool operator!=( const InverseDeconvolutionFunctor & ) const
+  ~InverseDeconvolutionFunctor() {
+  }
+
+  bool
+  operator!=( const InverseDeconvolutionFunctor & ) const
   {
     return false;
   }
-  bool operator==( const InverseDeconvolutionFunctor & other) const
+
+  bool
+  operator==( const InverseDeconvolutionFunctor & other) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()(const TInput1 & I, const TInput2 & H) const
+
+  inline TOutput
+  operator()(const TInput1 & I, const TInput2 & H) const
   {
-    double absH = std::abs( H );
+    double  absH = std::abs( H );
     TOutput value = NumericTraits< TOutput >::ZeroValue();
+
     if ( absH >= m_KernelZeroMagnitudeThreshold )
       {
       value = static_cast< TOutput >( I / H );
@@ -149,17 +161,20 @@ public:
 
   /** Set/get the threshold value below which complex magnitudes are considered
    * to be zero. */
-  void SetKernelZeroMagnitudeThreshold(double mu)
+  void
+  SetKernelZeroMagnitudeThreshold(double mu)
   {
     m_KernelZeroMagnitudeThreshold = mu;
   }
-  double GetKernelZeroMagnitudeThreshold() const
+
+  double
+  GetKernelZeroMagnitudeThreshold() const
   {
     return m_KernelZeroMagnitudeThreshold;
   }
 
 private:
-   double m_KernelZeroMagnitudeThreshold;
+  double m_KernelZeroMagnitudeThreshold;
 };
 } //namespace Functor
 

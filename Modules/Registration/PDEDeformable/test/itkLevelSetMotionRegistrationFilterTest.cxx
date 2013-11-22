@@ -23,8 +23,7 @@
 #include "itkVectorCastImageFilter.h"
 #include "itkImageFileWriter.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 template<typename TRegistration>
@@ -32,9 +31,13 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(TRegistration* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
     if( ( m_Process->GetElapsedIterations() % 10 ) == 0 )
       {
       std::cout << "Progress: " << m_Process->GetProgress() << "  ";
@@ -45,8 +48,10 @@ public:
       }
     if ( m_Process->GetElapsedIterations() == 750 )
       {
-      m_Process->StopRegistration(); }
+      m_Process->StopRegistration();
       }
+  }
+
   typename TRegistration::Pointer m_Process;
 };
 }
@@ -55,11 +60,11 @@ public:
 template <typename TImage>
 void
 FillWithCircle(
-typename TImage::Pointer & image,
-double * center,
-double radius,
-typename TImage::PixelType foregnd,
-typename TImage::PixelType backgnd )
+  typename TImage::Pointer & image,
+  double * center,
+  double radius,
+  typename TImage::PixelType foregnd,
+  typename TImage::PixelType backgnd )
 {
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
@@ -76,7 +81,7 @@ typename TImage::PixelType backgnd )
     double distance = 0;
     for( unsigned int j = 0; j < TImage::ImageDimension; j++ )
       {
-      distance += vnl_math_sqr((double) index[j] - center[j]);
+      distance += vnl_math_sqr( (double) index[j] - center[j]);
       }
     if( distance <= r2 )
       {
@@ -99,13 +104,12 @@ typename TImage::PixelType backgnd )
   image->DisconnectPipeline();
 }
 
-
 // Template function to copy image regions
 template <typename TImage>
 void
 CopyImageBuffer(
-TImage *input,
-TImage *output )
+  TImage *input,
+  TImage *output )
 {
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator outIt( output, output->GetBufferedRegion() );
@@ -116,7 +120,8 @@ TImage *output )
 
 }
 
-int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
+int
+itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
 {
 
   typedef float PixelType;
@@ -125,17 +130,17 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
   typedef itk::Vector<float,ImageDimension>     VectorType;
   typedef itk::Image<VectorType,ImageDimension> FieldType;
   typedef itk::Image<VectorType::ValueType,ImageDimension>
-                                                FloatImageType;
-  typedef ImageType::IndexType                  IndexType;
-  typedef ImageType::SizeType                   SizeType;
-  typedef ImageType::RegionType                 RegionType;
+    FloatImageType;
+  typedef ImageType::IndexType  IndexType;
+  typedef ImageType::SizeType   SizeType;
+  typedef ImageType::RegionType RegionType;
 
   //--------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
   std::cout << std::endl;
 
   ImageType::SizeValueType sizeArray[ImageDimension] = { 128, 128 };
-  SizeType size;
+  SizeType                 size;
   size.SetSize( sizeArray );
 
   IndexType index;
@@ -161,8 +166,8 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
   initField->SetBufferedRegion( region );
   initField->Allocate();
 
-  double center[ImageDimension];
-  double radius;
+  double    center[ImageDimension];
+  double    radius;
   PixelType fgnd = 250;
   PixelType bgnd = 15;
 
@@ -244,7 +249,6 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
     InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
-
   warper->SetInput( moving );
   warper->SetDisplacementField( registrator->GetOutput() );
   warper->SetInterpolator( interpolator );
@@ -281,15 +285,14 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
     writer->Update();
     }
 
-
   // ---------------------------------------------------------
   std::cout << "Compare warped moving and fixed." << std::endl;
 
   // compare the warp and fixed images
   itk::ImageRegionIterator<ImageType> fixedIter( fixed,
-      fixed->GetBufferedRegion() );
+                                                 fixed->GetBufferedRegion() );
   itk::ImageRegionIterator<ImageType> warpedIter( warper->GetOutput(),
-      fixed->GetBufferedRegion() );
+                                                  fixed->GetBufferedRegion() );
 
   unsigned int numPixelsDifferent = 0;
   while( !fixedIter.IsAtEnd() )
@@ -370,7 +373,7 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
   try
     {
     fptr = dynamic_cast<FunctionType *>(
-      registrator->GetDifferenceFunction().GetPointer() );
+        registrator->GetDifferenceFunction().GetPointer() );
     fptr->SetMovingImageInterpolator( NULL );
     registrator->SetInput( initField );
     registrator->Update();
@@ -390,6 +393,5 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
 
   std::cout << "Test passed" << std::endl;
   return EXIT_SUCCESS;
-
 
 }

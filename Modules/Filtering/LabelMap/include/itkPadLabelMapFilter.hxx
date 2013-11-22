@@ -75,6 +75,7 @@ PadLabelMapFilter< TInputImage >
   os << indent << "UpperBoundaryPadSize: " << m_UpperBoundaryPadSize << std::endl;
   os << indent << "LowerBoundaryPadSize: " << m_LowerBoundaryPadSize << std::endl;
 }
+
 } // end namespace itk
 
 #endif

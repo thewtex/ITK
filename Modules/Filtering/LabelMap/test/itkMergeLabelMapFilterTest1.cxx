@@ -25,7 +25,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkMergeLabelMapFilterTest1( int argc, char * argv[] )
+int
+itkMergeLabelMapFilterTest1( int argc, char * argv[] )
 {
   if( argc != 8 )
     {
@@ -39,8 +40,8 @@ int itkMergeLabelMapFilterTest1( int argc, char * argv[] )
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::LabelObject< PixelType, dim >      LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType >        LabelMapType;
+  typedef itk::LabelObject< PixelType, dim > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType >   LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();

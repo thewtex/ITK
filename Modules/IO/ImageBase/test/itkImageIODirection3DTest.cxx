@@ -21,23 +21,24 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkImageIODirection3DTest( int ac, char * av[] )
+int
+itkImageIODirection3DTest( int ac, char * av[] )
 {
 
   if( ac < 11 )
     {
     std::cerr << "Usage: " << av[0]
-    << " InputImage  (9 direction cosines terms) "
-    << "[outputImage]"
-    << std::endl;
+              << " InputImage  (9 direction cosines terms) "
+              << "[outputImage]"
+              << std::endl;
     return EXIT_FAILURE;
     }
 
   const unsigned int Dimension = 3;
   typedef unsigned char PixelType;
 
-  typedef itk::Image<PixelType, Dimension>    ImageType;
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
+  typedef itk::Image<PixelType, Dimension>  ImageType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -79,10 +80,9 @@ int itkImageIODirection3DTest( int ac, char * av[] )
       }
     }
 
-
   if( ac > 11 )
     {
-    typedef itk::ImageFileWriter< ImageType >   WriterType;
+    typedef itk::ImageFileWriter< ImageType > WriterType;
     WriterType::Pointer writer = WriterType::New();
     writer->SetFileName( av[11] );
     writer->SetInput( reader->GetOutput() );
@@ -97,7 +97,6 @@ int itkImageIODirection3DTest( int ac, char * av[] )
       return EXIT_FAILURE;
       }
     }
-
 
   return EXIT_SUCCESS;
 }

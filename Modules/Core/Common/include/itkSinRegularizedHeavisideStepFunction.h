@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInput = float, typename TOutput = double >
-class SinRegularizedHeavisideStepFunction:
+class SinRegularizedHeavisideStepFunction :
   public RegularizedHeavisideStepFunction< TInput, TOutput >
 {
 public:
@@ -80,6 +80,7 @@ protected:
 private:
   SinRegularizedHeavisideStepFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 }
 

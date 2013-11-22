@@ -1,4 +1,4 @@
- /*=========================================================================
+/*=========================================================================
  *
  *  Copyright Insight Software Consortium
  *
@@ -21,38 +21,42 @@
 namespace itk
 {
 
-  /** \cond HIDE_META_PROGRAMMING */
-  /** borrowed from type_traits */
-  struct TrueType
+/** \cond HIDE_META_PROGRAMMING */
+/** borrowed from type_traits */
+struct TrueType
   {
-    typedef bool     ValueType;
-    typedef TrueType Type;
+  typedef bool     ValueType;
+  typedef TrueType Type;
 
-    static const ValueType Value = true;
-    operator ValueType() { return Value; }
+  static const ValueType Value = true;
+  operator ValueType() {
+    return Value;
+    }
   };
 
-  struct FalseType
+struct FalseType
   {
-    typedef bool      ValueType;
-    typedef FalseType Type;
-    static const ValueType Value = false;
-    operator ValueType() { return Value; }
+  typedef bool      ValueType;
+  typedef FalseType Type;
+  static const ValueType Value = false;
+  operator ValueType() {
+    return Value;
+    }
   };
 
-  template<typename, typename>
-  struct IsSame
-    : public FalseType
-  {
-  };
-
-  template<typename T>
-  struct IsSame<T, T>
-    : public TrueType
+template<typename, typename>
+struct IsSame
+  : public FalseType
   {
   };
 
-  /** \endcond */
+template<typename T>
+struct IsSame<T, T>
+  : public TrueType
+  {
+  };
+
+/** \endcond */
 
 } // end namespace itk
 

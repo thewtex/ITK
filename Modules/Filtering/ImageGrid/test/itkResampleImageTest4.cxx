@@ -22,25 +22,25 @@
 #include "itkResampleImageFilter.h"
 #include "itkTimeProbe.h"
 
-int itkResampleImageTest4(int argc, char * argv [] )
+int
+itkResampleImageTest4(int argc, char * argv [] )
 {
 
   const unsigned int NDimensions = 2;
 
-  typedef float                  PixelType;
+  typedef float PixelType;
 
-  typedef itk::Image<PixelType, NDimensions>  ImageType;
-  typedef ImageType::IndexType                ImageIndexType;
-  typedef ImageType::Pointer                  ImagePointerType;
-  typedef ImageType::RegionType               ImageRegionType;
-  typedef ImageType::SizeType                 ImageSizeType;
+  typedef itk::Image<PixelType, NDimensions> ImageType;
+  typedef ImageType::IndexType               ImageIndexType;
+  typedef ImageType::Pointer                 ImagePointerType;
+  typedef ImageType::RegionType              ImageRegionType;
+  typedef ImageType::SizeType                ImageSizeType;
 
-  typedef double                  CoordRepType;
+  typedef double CoordRepType;
 
-  typedef itk::AffineTransform<CoordRepType,NDimensions>   AffineTransformType;
+  typedef itk::AffineTransform<CoordRepType,NDimensions> AffineTransformType;
 
-  typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType>  InterpolatorType;
-
+  typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType> InterpolatorType;
 
   float scaling = 10.0;
   if (argc > 1)
@@ -50,16 +50,16 @@ int itkResampleImageTest4(int argc, char * argv [] )
 
   // Create and configure an image
   ImagePointerType image = ImageType::New();
-  ImageIndexType  index = {{0,  0}};
-  ImageSizeType   size  = {{64,64}};
-  ImageRegionType region;
+  ImageIndexType   index = {{0,  0}};
+  ImageSizeType    size  = {{64,64}};
+  ImageRegionType  region;
   region.SetSize ( size );
   region.SetIndex( index );
   image->SetLargestPossibleRegion( region );
   image->SetBufferedRegion( region );
   image->Allocate();
 
-  unsigned int newDims = static_cast<unsigned int>( 64*scaling );
+  unsigned int  newDims = static_cast<unsigned int>( 64*scaling );
   ImageSizeType osize = {{newDims, newDims}};
 
   ImageType::SpacingType spacing;
@@ -68,7 +68,7 @@ int itkResampleImageTest4(int argc, char * argv [] )
 
   // Fill image with a ramp
   itk::ImageRegionIteratorWithIndex<ImageType> iter(image, region);
-  PixelType value;
+  PixelType                                    value;
   for (iter.GoToBegin(); !iter.IsAtEnd(); ++iter)
     {
     index = iter.GetIndex();

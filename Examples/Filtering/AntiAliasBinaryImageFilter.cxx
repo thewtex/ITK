@@ -18,7 +18,8 @@
 
 //  Software Guide : BeginLatex
 //
-//  This example introduces the use of the \doxygen{AntiAliasBinaryImageFilter}. This
+//  This example introduces the use of the \doxygen{AntiAliasBinaryImageFilter}.
+// This
 //  filter expect a binary mask as input, and using Level Sets it smooths the
 //  image by keeping the edge of the structure within 1 pixel distance from the
 //  original location. It is usually desirable to run this filter before
@@ -28,12 +29,10 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkCastImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -43,13 +42,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkAntiAliasBinaryImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   if( argc < 3 )
     {
@@ -63,7 +61,7 @@ int main(int argc, char* argv[])
   const char * outputFilename1 = argv[2];
   const char * outputFilename2 = argv[3];
 
-  double maximumRMSError = 0.01;
+  double       maximumRMSError = 0.01;
   unsigned int numberOfIterations = 50;
 
   if( argc > 4 )
@@ -76,18 +74,17 @@ int main(int argc, char* argv[])
     numberOfIterations = atoi( argv[5] );
     }
 
+  typedef unsigned char CharPixelType;     //  IO
+  typedef double        RealPixelType;     //  Operations
+  const   unsigned int Dimension = 3;
 
-  typedef unsigned char    CharPixelType;  //  IO
-  typedef double           RealPixelType;  //  Operations
-  const   unsigned int     Dimension = 3;
+  typedef itk::Image<CharPixelType, Dimension> CharImageType;
+  typedef itk::Image<RealPixelType, Dimension> RealImageType;
 
-  typedef itk::Image<CharPixelType, Dimension>    CharImageType;
-  typedef itk::Image<RealPixelType, Dimension>    RealImageType;
+  typedef itk::ImageFileReader< CharImageType > ReaderType;
+  typedef itk::ImageFileWriter< CharImageType > WriterType;
 
-  typedef itk::ImageFileReader< CharImageType >  ReaderType;
-  typedef itk::ImageFileWriter< CharImageType >  WriterType;
-
-  typedef itk::ImageFileWriter< RealImageType >  RealWriterType;
+  typedef itk::ImageFileWriter< RealImageType > RealWriterType;
 
   //  Software Guide : BeginLatex
   //
@@ -101,20 +98,19 @@ int main(int argc, char* argv[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::CastImageFilter< CharImageType,
-          RealImageType> CastToRealFilterType;
+                                RealImageType> CastToRealFilterType;
   // Software Guide : EndCodeSnippet
 
   typedef itk::RescaleIntensityImageFilter<RealImageType, CharImageType > RescaleFilter;
 
-
   //  Software Guide : BeginLatex
   //
-  //  The \doxygen{AntiAliasBinaryImageFilter} is instantiated using the float image type.
+  //  The \doxygen{AntiAliasBinaryImageFilter} is instantiated using the float
+  // image type.
   //
   //  \index{itk::AntiAliasBinaryImageFilter|textbf}
   //
   //  Software Guide : EndLatex
-
 
   typedef itk::AntiAliasBinaryImageFilter<RealImageType, RealImageType> AntiAliasFilterType;
 
@@ -123,7 +119,7 @@ int main(int argc, char* argv[])
   ReaderType::Pointer reader = ReaderType::New();
 
   CastToRealFilterType::Pointer toReal = CastToRealFilterType::New();
-  RescaleFilter::Pointer rescale = RescaleFilter::New();
+  RescaleFilter::Pointer        rescale = RescaleFilter::New();
 
   //Setting the ITK pipeline filter
 
@@ -158,7 +154,6 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-
   WriterType::Pointer rescaledWriter = WriterType::New();
   rescale->SetInput( antiAliasFilter->GetOutput() );
   rescaledWriter->SetInput( rescale->GetOutput() );
@@ -174,7 +169,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
     }
   std::cout << "Completed in "
-    << antiAliasFilter->GetNumberOfIterations() << std::endl;
+            << antiAliasFilter->GetNumberOfIterations() << std::endl;
 
   // Software Guide : EndCodeSnippet
 

@@ -21,7 +21,6 @@
  *
  */
 
-
 #include "itkPoint.h"
 #include "itkVectorContainer.h"
 #include <iostream>
@@ -31,16 +30,18 @@
 //   Main code
 //
 //-------------------------
-int itkPointGeometryTest(int, char* [] )
+int
+itkPointGeometryTest(int, char* [] )
 {
 
 // Dimension & Type
-  const     unsigned int    N = 3;
-  typedef   double          ValueType;
+  const     unsigned int N = 3;
+
+  typedef   double ValueType;
 
 //  Vector & Point Classes
-  typedef    itk::Vector< ValueType, N >    VectorType;
-  typedef    itk::Point<  ValueType, N >    PointType;
+  typedef    itk::Vector< ValueType, N > VectorType;
+  typedef    itk::Point<  ValueType, N > PointType;
 
   VectorType va;
 
@@ -53,7 +54,7 @@ int itkPointGeometryTest(int, char* [] )
 
   // Tests for Point Type
 
-  PointType   pa;
+  PointType pa;
   pa[0] =  1.0;
   pa[1] =  5.0;
   pa[2] = 11.0;
@@ -61,15 +62,15 @@ int itkPointGeometryTest(int, char* [] )
   std::cout << "initial point pa = ";
   std::cout << pa << std::endl;
 
-  PointType   pb( pa );
+  PointType pb( pa );
   std::cout << "copy constructor pb(pa) = ";
   std::cout << pb << std::endl;
 
-  PointType   pc = pa;
+  PointType pc = pa;
   std::cout << "copy constructor pc=pa  = ";
   std::cout << pc << std::endl;
 
-  PointType   pd = pa + va;
+  PointType pd = pa + va;
   std::cout << "vector sum pd = pa + va = ";
   std::cout << pd << std::endl;
 
@@ -77,7 +78,7 @@ int itkPointGeometryTest(int, char* [] )
   std::cout << "vector sum pb = pd + va = ";
   std::cout << pb << std::endl;
 
-  VectorType  diff = pa - pb;
+  VectorType diff = pa - pb;
   std::cout << "diff = pa - pb = ";
   std::cout << diff << std::endl;
 
@@ -99,88 +100,84 @@ int itkPointGeometryTest(int, char* [] )
 
   vnl_vector_ref< ValueType > vnlVector = pa.GetVnlVector();
   std::cout << "vnl_vector = ";
-  {
-    for( unsigned int i=0; i<N; i++ )
     {
+    for( unsigned int i=0; i<N; i++ )
+      {
       std::cout << vnlVector[i] << ", ";
-    }
+      }
     std::cout << std::endl;
-  }
-
+    }
 
   // Test for CastFrom() method
-  {
-  std::cout << "Test for CastFrom() method... ";
-
-  const float tolerance = 1e-7;
-
-  //  Point Classes
-  typedef    itk::Point<  double, N >    DoublePointType;
-  typedef    itk::Point<  float , N >    FloatPointType;
-
-  DoublePointType dp;
-  dp[0] = 1.0;
-  dp[1] = 1.7;
-  dp[2] = 1.9;
-
-  FloatPointType fp;
-  fp[0] = 0.0;
-  fp[1] = 0.0;
-  fp[2] = 0.0;
-
-
-  fp.CastFrom( dp );  // Here is the call !
-
-  // Verification...
-  for(unsigned int i=0; i<N; i++)
     {
-    FloatPointType::ValueType val =
-        static_cast< FloatPointType::ValueType >( dp[i] );
-    if( vcl_fabs ( val - fp[i] ) > tolerance )
+    std::cout << "Test for CastFrom() method... ";
+
+    const float tolerance = 1e-7;
+
+    //  Point Classes
+    typedef    itk::Point<  double, N > DoublePointType;
+    typedef    itk::Point<  float , N > FloatPointType;
+
+    DoublePointType dp;
+    dp[0] = 1.0;
+    dp[1] = 1.7;
+    dp[2] = 1.9;
+
+    FloatPointType fp;
+    fp[0] = 0.0;
+    fp[1] = 0.0;
+    fp[2] = 0.0;
+
+    fp.CastFrom( dp ); // Here is the call !
+
+    // Verification...
+    for(unsigned int i=0; i<N; i++)
       {
+      FloatPointType::ValueType val =
+        static_cast< FloatPointType::ValueType >( dp[i] );
+      if( vcl_fabs ( val - fp[i] ) > tolerance )
+        {
         std::cout << "Failed at component " << i << std::endl;
         return EXIT_FAILURE;
+        }
       }
+
+    std::cout << " PASSED ! " << std::endl;
+
     }
 
-
-  std::cout << " PASSED ! " << std::endl;
-
-  }
-
   // Test the MeanPoint
-  {
-    PointType midpoint;
+    {
+    PointType            midpoint;
     PointType::ValueType aInit[3] = {2.0,4.0,7.0};
     PointType::ValueType bInit[3] = {6.0,2.0,9.0};
-    PointType A = aInit;
-    PointType B = bInit;
+    PointType            A = aInit;
+    PointType            B = bInit;
     midpoint.SetToMidPoint( A, B );
     std::cout << "Test for MidPoint " << std::endl;
     std::cout << "PA = " << A << std::endl;
     std::cout << "PB = " << B << std::endl;
     std::cout << "MidPoint = " << midpoint << std::endl;
     for(unsigned int i=0; i<N; i++ )
-    {
-      if( midpoint[i] != (A[i]+B[i])/2.0 )
       {
+      if( midpoint[i] != (A[i]+B[i])/2.0 )
+        {
         std::cerr << "Failure to compute MidPoint " << std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
     std::cout << "Test for MidPoint point PASSED" << std::endl;
-  }
-
+    }
 
   // Test the Barycentric combination
-  {
-    const double tolerance = 1e-10;
-    PointType combination;
+    {
+    const double         tolerance = 1e-10;
+    PointType            combination;
     PointType::ValueType aInit[3] = {2.0,4.0,7.0};
     PointType::ValueType bInit[3] = {6.0,2.0,9.0};
-    PointType A = aInit;
-    PointType B = bInit;
-    double alpha = 0.5;
+    PointType            A = aInit;
+    PointType            B = bInit;
+    double               alpha = 0.5;
     combination.SetToBarycentricCombination( A, B, alpha );
     std::cout << "Test for Barycentric combination" << std::endl;
     std::cout << "PA = " << A << std::endl;
@@ -188,29 +185,29 @@ int itkPointGeometryTest(int, char* [] )
     std::cout << "Alpha = " << alpha << std::endl;
     std::cout << "Combination = " << combination << std::endl;
     for(unsigned int i=0; i<N; i++ )
-    {
+      {
       const double value = (alpha*A[i]+(1.0-alpha)*B[i]);
       if( vcl_fabs(combination[i] - value ) > tolerance )
-      {
+        {
         std::cerr << "Failure to compute Barycentric combination" << std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
     std::cout << "Test for Barycentric combination PASSED" << std::endl;
-  }
+    }
 
   // Test the Barycentric combination
-  {
-    const double tolerance = 1e-10;
-    PointType combination;
+    {
+    const double         tolerance = 1e-10;
+    PointType            combination;
     PointType::ValueType aInit[3] = {12.0,  0.0,  0.0};
     PointType::ValueType bInit[3] = { 0.0,  0.0, 12.0};
     PointType::ValueType cInit[3] = { 0.0, 12.0,  0.0};
-    PointType A = aInit;
-    PointType B = bInit;
-    PointType C = cInit;
-    double alpha = 1.0/3.0;
-    double beta  = 1.0/3.0;
+    PointType            A = aInit;
+    PointType            B = bInit;
+    PointType            C = cInit;
+    double               alpha = 1.0/3.0;
+    double               beta  = 1.0/3.0;
     combination.SetToBarycentricCombination( A, B, C, alpha, beta );
     std::cout << "Test for Barycentric combination" << std::endl;
     std::cout << "PA = " << A << std::endl;
@@ -220,25 +217,25 @@ int itkPointGeometryTest(int, char* [] )
     std::cout << "Beta  = " << beta  << std::endl;
     std::cout << "Combination = " << combination << std::endl;
     for(unsigned int i=0; i<N; i++ )
-    {
+      {
       const double value = alpha*A[i]+beta*B[i]+(1.0-alpha-beta)*C[i];
       if( vcl_fabs( combination[i] - value ) > tolerance )
-      {
+        {
         std::cerr << "Failure to compute Barycentric combination" << std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
     std::cout << "Test for Barycentric combination PASSED" << std::endl;
-  }
+    }
 
- // Test the Barycentric combination for an array
-  {
-    const double tolerance = 1e-10;
-    PointType combination;
-    const unsigned int NP = 3;
-    PointType A[NP];
-    double     w[NP-1];
-    const double K = 12.0;
+  // Test the Barycentric combination for an array
+    {
+    const double         tolerance = 1e-10;
+    PointType            combination;
+    const unsigned int   NP = 3;
+    PointType            A[NP];
+    double               w[NP-1];
+    const double         K = 12.0;
     PointType::ValueType aInit0[3] = {   K,  0.0, 0.0};
     PointType::ValueType aInit1[3] = { 0.0,    K, 0.0};
     PointType::ValueType aInit2[3] = { 0.0,  0.0,   K};
@@ -250,38 +247,37 @@ int itkPointGeometryTest(int, char* [] )
     combination.SetToBarycentricCombination( A, w, N );
     std::cout << "Test for Barycentric combination of an array of Points" << std::endl;
     for(unsigned int i=0; i<N; i++ )
-    {
-      if( vcl_fabs( combination[i] - (K/3.0) ) > tolerance )
       {
+      if( vcl_fabs( combination[i] - (K/3.0) ) > tolerance )
+        {
         std::cerr << "Failure to compute Barycentric combination" << std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
     std::cout << "Test for Barycentric combination of an array of Points PASSED" << std::endl;
-  }
+    }
 
-
- // Test the Barycentric combination for an VectorContainer of Points
-  {
-    const double tolerance = 1e-10;
-    PointType combination;
+  // Test the Barycentric combination for an VectorContainer of Points
+    {
+    const double       tolerance = 1e-10;
+    PointType          combination;
     const unsigned int NP = 3;
-    typedef itk::VectorContainer<unsigned long,PointType>  VectorOfPoints;
+    typedef itk::VectorContainer<unsigned long,PointType> VectorOfPoints;
     VectorOfPoints::Pointer points = VectorOfPoints::New();
     points->Reserve(NP);
     const double K = 12.0;
 
     VectorOfPoints::Iterator point = points->Begin();
-    PointType::ValueType vInit0[3] = {   K,  0.0, 0.0};
-    PointType::ValueType vInit1[3] = { 0.0,    K, 0.0};
-    PointType::ValueType vInit2[3] = { 0.0,  0.0,   K};
+    PointType::ValueType     vInit0[3] = {   K,  0.0, 0.0};
+    PointType::ValueType     vInit1[3] = { 0.0,    K, 0.0};
+    PointType::ValueType     vInit2[3] = { 0.0,  0.0,   K};
     point->Value() =  vInit0;
     point++;
     point->Value() =  vInit1;
     point++;
     point->Value() =  vInit2;
 
-    double     w[NP-1];
+    double w[NP-1];
     w[0] = 1/3.0;
     w[1] = 1/3.0;
 
@@ -290,15 +286,15 @@ int itkPointGeometryTest(int, char* [] )
     combination = barycentreCalculator.Evaluate( points, w );
     std::cout << "Test for Barycentric combination of a VectorContainer of Points" << std::endl;
     for(unsigned int i=0; i<N; i++ )
-    {
-      if( vcl_fabs( combination[i] - (K/3.0) ) > tolerance )
       {
+      if( vcl_fabs( combination[i] - (K/3.0) ) > tolerance )
+        {
         std::cerr << "Failure to compute Barycentric combination" << std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
     std::cout << "Test for Barycentric combination of a VectorContainer of Points PASSED" << std::endl;
-  }
+    }
 
   return EXIT_SUCCESS;
 }

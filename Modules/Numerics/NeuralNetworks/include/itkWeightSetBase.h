@@ -47,7 +47,7 @@ public:
   typedef SmartPointer<const Self> ConstPointer;
   itkTypeMacro(WeightSetBase, LightProcessObject);
 
-  typedef MersenneTwisterRandomVariateGenerator  RandomVariateGeneratorType;
+  typedef MersenneTwisterRandomVariateGenerator RandomVariateGeneratorType;
 
   typedef typename TMeasurementVector::ValueType ValueType;
   typedef ValueType*                             ValuePointer;
@@ -58,22 +58,27 @@ public:
   ValueType RandomWeightValue(ValueType low, ValueType high);
 
   virtual void ForwardPropagate(ValuePointer inputlayeroutputvalues);
+
   virtual void BackwardPropagate(ValuePointer inputerror);
 
   void SetConnectivityMatrix(vnl_matrix < int>);
 
   void SetNumberOfInputNodes(unsigned int n);
+
   unsigned int GetNumberOfInputNodes() const;
 
   void SetNumberOfOutputNodes(unsigned int n);
+
   unsigned int GetNumberOfOutputNodes() const;
 
   void SetRange(ValueType Range);
 
   virtual ValuePointer GetOutputValues();
+
   virtual ValuePointer GetInputValues();
 
   ValuePointer GetTotalDeltaValues();
+
   ValuePointer GetTotalDeltaBValues();
 
   ValuePointer GetDeltaValues();
@@ -82,18 +87,28 @@ public:
   void SetDWValues(ValuePointer);
   void SetDBValues(ValuePointer);
   ValuePointer GetDeltaBValues();
+
   void SetDeltaBValues(ValuePointer);
   ValuePointer GetDWValues();
+
   ValuePointer GetPrevDWValues();
+
   ValuePointer GetPrevDBValues();
+
   ValuePointer GetPrev_m_2DWValues();
+
   ValuePointer GetPrevDeltaValues();
+
   ValuePointer GetPrev_m_2DeltaValues();
+
   ValuePointer GetPrevDeltaBValues();
+
   ValuePointer GetWeightValues();
+
   ValueConstPointer GetWeightValues() const;
 
   void SetWeightValues(ValuePointer weights);
+
   virtual void UpdateWeights(ValueType LearningRate);
 
   itkSetMacro( Momentum, ValueType );
@@ -129,10 +144,10 @@ protected:
 
   typename RandomVariateGeneratorType::Pointer m_RandomGenerator;
 
-  unsigned int              m_NumberOfInputNodes;
-  unsigned int              m_NumberOfOutputNodes;
-  vnl_matrix<ValueType>     m_OutputValues;
-  vnl_matrix<ValueType>     m_InputErrorValues;
+  unsigned int          m_NumberOfInputNodes;
+  unsigned int          m_NumberOfOutputNodes;
+  vnl_matrix<ValueType> m_OutputValues;
+  vnl_matrix<ValueType> m_InputErrorValues;
 
   // weight updates dw=lr * del *y
   // DW= current
@@ -164,7 +179,7 @@ protected:
   vnl_matrix<ValueType> m_InputLayerOutput;
   vnl_matrix<ValueType> m_WeightMatrix;  // composed of weights and a column
   // of biases
-  vnl_matrix<int>       m_ConnectivityMatrix;
+  vnl_matrix<int> m_ConnectivityMatrix;
 
   ValueType m_Momentum;
   ValueType m_Bias;
@@ -184,6 +199,5 @@ protected:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkWeightSetBase.hxx"
 #endif
-
 
 #endif

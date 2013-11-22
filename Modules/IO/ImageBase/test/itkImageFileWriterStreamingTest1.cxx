@@ -21,7 +21,8 @@
 #include "itkImageFileWriter.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-int itkImageFileWriterStreamingTest1(int argc, char* argv[])
+int
+itkImageFileWriterStreamingTest1(int argc, char* argv[])
 {
   if( argc < 3 )
     {
@@ -32,28 +33,25 @@ int itkImageFileWriterStreamingTest1(int argc, char* argv[])
   // We remove the output file
   if (argc == 3)
     {
-      itksys::SystemTools::RemoveFile( argv[2] );
+    itksys::SystemTools::RemoveFile( argv[2] );
     }
   else
     {
-      // copy this file to over write
-      itksys::SystemTools::CopyAFile(argv[3], argv[2]);
+    // copy this file to over write
+    itksys::SystemTools::CopyAFile(argv[3], argv[2]);
     }
 
-
   unsigned int numberOfDataPieces = 4;
-
 
   bool forceNoStreamingInput = false;
   if ( argc > 4 )
     {
-      if ( atoi( argv[4] ) == 1 )
-          forceNoStreamingInput = true;
+    if ( atoi( argv[4] ) == 1 )
+      forceNoStreamingInput = true;
     }
 
-
-  typedef unsigned char             PixelType;
-  typedef itk::Image<PixelType,3>   ImageType;
+  typedef unsigned char           PixelType;
+  typedef itk::Image<PixelType,3> ImageType;
 
   typedef itk::ImageFileReader<ImageType>   ReaderType;
   typedef itk::ImageFileWriter< ImageType > WriterType;
@@ -64,7 +62,7 @@ int itkImageFileWriterStreamingTest1(int argc, char* argv[])
 
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   MonitorFilter::Pointer monitor = MonitorFilter::New();
-  monitor->SetInput(reader->GetOutput());
+  monitor->SetInput(reader->GetOutput() );
 
   if ( forceNoStreamingInput )
     {
@@ -75,21 +73,19 @@ int itkImageFileWriterStreamingTest1(int argc, char* argv[])
   // Setup the writer
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
-  writer->SetInput(monitor->GetOutput());
+  writer->SetInput(monitor->GetOutput() );
   writer->SetNumberOfStreamDivisions(numberOfDataPieces);
-
 
   try
     {
-      writer->Update();
+    writer->Update();
     }
   catch( itk::ExceptionObject & err )
     {
-      std::cerr << "ExceptionObject caught !" << std::endl;
-      std::cerr << err << std::endl;
-      return EXIT_FAILURE;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
-
 
   bool passed = true;
   if( !forceNoStreamingInput )
@@ -106,7 +102,6 @@ int itkImageFileWriterStreamingTest1(int argc, char* argv[])
       passed = false;
       }
     }
-
 
   if( !passed )
     {

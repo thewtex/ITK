@@ -19,7 +19,8 @@
 #include "itkLevelSetDenseImage.h"
 #include "itkLevelSetDomainMapImageFilter.h"
 
-int itkMultiLevelSetDenseImageTest( int , char* [] )
+int
+itkMultiLevelSetDenseImageTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
 
@@ -31,7 +32,7 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
   typedef itk::Image< IdListType, Dimension >            IdListImageType;
   typedef itk::Image< short, Dimension >                 CacheImageType;
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
-                                                         DomainMapImageFilterType;
+    DomainMapImageFilterType;
   ImageType::IndexType index;
   index[0] = 0;
   index[1] = 0;
@@ -57,7 +58,7 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
   input2->FillBuffer( value );
 
   ImageType::IndexType idx;
-  IdListType list_ids;
+  IdListType           list_ids;
 
   IdListImageType::Pointer id_image = IdListImageType::New();
   id_image->SetRegions( region );
@@ -88,12 +89,12 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
     id_image->SetPixel( idx, list_ids );
 
     it1.Set( vcl_sqrt(
-             static_cast< float> ( ( idx[0] - 2 ) * ( idx[0] - 2 ) +
-                                   ( idx[1] - 2 ) * ( idx[1] - 2 ) ) ) );
+               static_cast< float> ( ( idx[0] - 2 ) * ( idx[0] - 2 ) +
+                                     ( idx[1] - 2 ) * ( idx[1] - 2 ) ) ) );
 
     it2.Set( vcl_sqrt(
-             static_cast< float> ( ( idx[0] - 5 ) * ( idx[0] - 5 ) +
-                                   ( idx[1] - 5 ) * ( idx[1] - 5 ) ) ) );
+               static_cast< float> ( ( idx[0] - 5 ) * ( idx[0] - 5 ) +
+                                     ( idx[1] - 5 ) * ( idx[1] - 5 ) ) ) );
     ++it1;
     ++it2;
     }
@@ -111,7 +112,7 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
   CacheImageType::Pointer output = filter->GetOutput();
 
   itk::ImageRegionConstIteratorWithIndex<CacheImageType >
-      it( output, output->GetLargestPossibleRegion() );
+  it( output, output->GetLargestPossibleRegion() );
 
   it.GoToBegin();
 
@@ -119,8 +120,8 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
   CacheImageType::PixelType out_id;
 
   typedef DomainMapImageFilterType::DomainMapType DomainMapType;
-  const DomainMapType domainMap  = filter->GetDomainMap();
-  DomainMapType::const_iterator mapIt;
+  const DomainMapType                 domainMap  = filter->GetDomainMap();
+  DomainMapType::const_iterator       mapIt;
   const DomainMapType::const_iterator mapEnd = domainMap.end();
   while( !it.IsAtEnd() )
     {
@@ -149,7 +150,7 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
       if( mapIt != mapEnd )
         {
         const IdListType * lout = mapIt->second.GetIdList();
-        std::cout << *(mapIt->second.GetRegion());
+        std::cout << *(mapIt->second.GetRegion() );
         if( lout->empty() )
           {
           return EXIT_FAILURE;
@@ -181,10 +182,10 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
 
   while( map_it != map_end )
     {
-    const IdListImageType::RegionType temp_region = *(map_it->second.GetRegion());
+    const IdListImageType::RegionType temp_region = *(map_it->second.GetRegion() );
 
     itk::ImageRegionConstIteratorWithIndex<IdListImageType >
-        temp_it( id_image, temp_region );
+    temp_it( id_image, temp_region );
     temp_it.GoToBegin();
 
     // Iterate through image regions with same list pixels

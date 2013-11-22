@@ -39,19 +39,24 @@ public:
   itkNewMacro(Self);
 
   /** Evaluate membership score */
-  double Evaluate(const TMeasurementVector & ) const
-    {
+  double
+  Evaluate(const TMeasurementVector & ) const
+  {
     double score;
-    score = 1;
-    return score;
-    }
 
-  double Evaluate(const TMeasurementVector &, const TMeasurementVector & ) const
-    {
-    double score;
     score = 1;
     return score;
-    }
+  }
+
+  double
+  Evaluate(const TMeasurementVector &, const TMeasurementVector & ) const
+  {
+    double score;
+
+    score = 1;
+    return score;
+  }
+
 };
 
 }
@@ -59,14 +64,14 @@ public:
 }
 
 //test DistanceMetric using resizable measurement vector type
-int itkDistanceMetricTest2(int, char* [] )
+int
+itkDistanceMetricTest2(int, char* [] )
 {
 
-  typedef itk::Array< float>  MeasurementVectorType;
-
+  typedef itk::Array< float> MeasurementVectorType;
 
   typedef itk::Statistics::DistanceMetricTest::MyDistanceMetric<
-    MeasurementVectorType >   DistanceMetricType;
+      MeasurementVectorType >   DistanceMetricType;
 
   typedef DistanceMetricType::MeasurementVectorSizeType MeasurementVectorSizeType;
 
@@ -86,7 +91,8 @@ int itkDistanceMetricTest2(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  //try re-setting the measurment vector size to the same value, no exceptins should be
+  //try re-setting the measurment vector size to the same value, no exceptins
+  // should be
   //thrown
   try
     {
@@ -99,12 +105,12 @@ int itkDistanceMetricTest2(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
-  //try setting an origin vector with a different size it should throw an exception
+  //try setting an origin vector with a different size it should throw an
+  // exception
   try
     {
     DistanceMetricType::OriginType origin;
-    MeasurementVectorSizeType newSize = 4;
+    MeasurementVectorSizeType      newSize = 4;
     origin.SetSize( newSize );
     distance->SetOrigin( origin );
 

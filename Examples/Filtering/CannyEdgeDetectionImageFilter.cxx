@@ -27,12 +27,10 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkCastImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -42,13 +40,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkCannyEdgeDetectionImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   if( argc < 3 )
     {
@@ -59,9 +56,9 @@ int main(int argc, char* argv[])
 
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-  float variance = 2.0;
-  float upperThreshold = 0.0;
-  float lowerThreshold = 0.0;
+  float        variance = 2.0;
+  float        upperThreshold = 0.0;
+  float        lowerThreshold = 0.0;
 
   if( argc > 3 )
     {
@@ -82,15 +79,15 @@ int main(int argc, char* argv[])
   std::cout << "UpperThreshold = " << upperThreshold << std::endl;
   std::cout << "LowerThreshold = " << lowerThreshold << std::endl;
 
-  typedef unsigned char    CharPixelType;  //  IO
-  typedef double           RealPixelType;  //  Operations
-  const   unsigned int     Dimension = 2;
+  typedef unsigned char CharPixelType;     //  IO
+  typedef double        RealPixelType;     //  Operations
+  const   unsigned int Dimension = 2;
 
-  typedef itk::Image<CharPixelType, Dimension>    CharImageType;
-  typedef itk::Image<RealPixelType, Dimension>    RealImageType;
+  typedef itk::Image<CharPixelType, Dimension> CharImageType;
+  typedef itk::Image<RealPixelType, Dimension> RealImageType;
 
-  typedef itk::ImageFileReader< CharImageType >  ReaderType;
-  typedef itk::ImageFileWriter< CharImageType >  WriterType;
+  typedef itk::ImageFileReader< CharImageType > ReaderType;
+  typedef itk::ImageFileWriter< CharImageType > WriterType;
 
   //  Software Guide : BeginLatex
   //
@@ -104,20 +101,19 @@ int main(int argc, char* argv[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::CastImageFilter< CharImageType, RealImageType>
-                                                         CastToRealFilterType;
+    CastToRealFilterType;
   // Software Guide : EndCodeSnippet
 
   typedef itk::RescaleIntensityImageFilter<RealImageType, CharImageType > RescaleFilter;
 
-
   //  Software Guide : BeginLatex
   //
-  //  The \doxygen{CannyEdgeDetectionImageFilter} is instantiated using the float image type.
+  //  The \doxygen{CannyEdgeDetectionImageFilter} is instantiated using the
+  // float image type.
   //
   //  \index{itk::CannyEdgeDetectionImageFilter|textbf}
   //
   //  Software Guide : EndLatex
-
 
   typedef itk::CannyEdgeDetectionImageFilter<RealImageType, RealImageType> CannyFilter;
 
@@ -127,7 +123,7 @@ int main(int argc, char* argv[])
   WriterType::Pointer writer = WriterType::New();
 
   CastToRealFilterType::Pointer toReal = CastToRealFilterType::New();
-  RescaleFilter::Pointer rescale = RescaleFilter::New();
+  RescaleFilter::Pointer        rescale = RescaleFilter::New();
 
   //Setting the ITK pipeline filter
 
@@ -160,7 +156,6 @@ int main(int argc, char* argv[])
     std::cout << err << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

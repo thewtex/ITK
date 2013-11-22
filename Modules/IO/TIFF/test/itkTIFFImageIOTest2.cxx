@@ -18,7 +18,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkTIFFImageIOTest2( int argc, char* argv[] )
+int
+itkTIFFImageIOTest2( int argc, char* argv[] )
 {
 
   if( argc < 2 )

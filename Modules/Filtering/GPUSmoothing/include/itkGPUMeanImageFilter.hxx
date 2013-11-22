@@ -93,12 +93,19 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUGenerateData()
   for(int i=0; i<ImageDim; i++)
     {
     globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             //
+                                                                                             //
                                                                                              // total
+                                                                                             //
+                                                                                             //
                                                                                              // #
+                                                                                             //
+                                                                                             //
                                                                                              // of
+                                                                                             //
+                                                                                             //
                                                                                              // threads
     }
-
 
   // arguments set up
   int argidx = 0;

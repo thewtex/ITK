@@ -24,7 +24,7 @@ namespace itk
 {
 template< typename TInput, typename TOutput, typename TCriterion >
 EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput,
-                                       TCriterion >::EdgeDecimationQuadEdgeMeshFilter():Superclass(),
+                                  TCriterion >::EdgeDecimationQuadEdgeMeshFilter() : Superclass(),
   m_Relocate(true), m_CheckOrientation(false)
 {
   m_JoinVertexFunction = OperatorType::New();
@@ -181,7 +181,7 @@ EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::DeleteElement(O
   if ( iEdge ) // this test can be removed
     {
     OutputQEType *temp = ( iEdge->GetOrigin() < iEdge->GetDestination() ) ?
-                         iEdge : iEdge->GetSym();
+      iEdge : iEdge->GetSym();
 
     QueueMapIterator map_it = m_QueueMapper.find(temp);
     if ( map_it != m_QueueMapper.end() )
@@ -301,7 +301,7 @@ template< typename TInput, typename TOutput, typename TCriterion >
 bool
 EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::ProcessWithoutAnyTopologicalGuarantee()
 {
-  OutputPointType   pt;
+  OutputPointType pt;
 
   OutputPointIdentifier id_org = m_Element->GetOrigin();
   OutputPointIdentifier id_dest = m_Element->GetDestination();
@@ -505,6 +505,7 @@ EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::NumberOfCommonV
   OutputQEType *e_it  = qe->GetOnext();
 
   std::list< OutputPointIdentifier > dir_list, sym_list, intersection_list;
+
   do
     {
     dir_list.push_back( e_it->GetDestination() );
@@ -595,5 +596,6 @@ EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::IsCriterionSati
     return this->m_Criterion->is_satisfied(this->GetOutput(), 0, m_Priority.second);
     }
 }
+
 }
 #endif

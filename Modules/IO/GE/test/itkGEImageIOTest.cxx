@@ -27,7 +27,6 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
 typedef itk::Image<signed short, 3>       ImageType;
@@ -35,9 +34,11 @@ typedef ImageType::Pointer                ImagePointer;
 typedef itk::ImageFileReader< ImageType > ImageReaderType;
 typedef itk::ImageFileWriter< ImageType > ImageWriterType;
 
-int itkGEImageIOFactoryTest(int ac, char * av[])
+int
+itkGEImageIOFactoryTest(int ac, char * av[])
 {
   static bool firstTime = true;
+
   if(firstTime)
     {
     itk::ObjectFactoryBase::RegisterFactory(itk::GEAdwImageIOFactory::New() );
@@ -52,7 +53,7 @@ int itkGEImageIOFactoryTest(int ac, char * av[])
     }
   char *filename = *++av;
 
-  ImagePointer input;
+  ImagePointer             input;
   ImageReaderType::Pointer imageReader = ImageReaderType::New();
 
   try
@@ -70,7 +71,8 @@ int itkGEImageIOFactoryTest(int ac, char * av[])
   return EXIT_SUCCESS;
 }
 
-int itkGEImageIOTest(int ac, char * av[])
+int
+itkGEImageIOTest(int ac, char * av[])
 {
   //
   // first argument is passing in the writable directory to do all testing
@@ -78,47 +80,47 @@ int itkGEImageIOTest(int ac, char * av[])
     char *testdir = *++av;
     --ac;
     itksys::SystemTools::ChangeDirectory(testdir);
-  }
+    }
 
-  if((ac != 5) && (ac != 4))
+  if( (ac != 5) && (ac != 4) )
     {
     return EXIT_FAILURE;
     }
-  std::string failmode(av[1]);
-  std::string filetype(av[2]);
-  std::string filename(av[3]);
-  bool Failmode = failmode == std::string("true");
+  std::string               failmode(av[1]);
+  std::string               filetype(av[2]);
+  std::string               filename(av[3]);
+  bool                      Failmode = failmode == std::string("true");
   itk::ImageIOBase::Pointer io;
   if(filetype == "GE4")
     {
-      io = itk::GE4ImageIO::New();
+    io = itk::GE4ImageIO::New();
     }
   else if(filetype == "GE5")
     {
-      io = itk::GE5ImageIO::New();
+    io = itk::GE5ImageIO::New();
     }
   else if(filetype == "GEAdw")
     {
-      io = itk::GEAdwImageIO::New();
+    io = itk::GEAdwImageIO::New();
     }
   else if(filetype == "Siemens")
     {
-      io = itk::SiemensVisionImageIO::New();
+    io = itk::SiemensVisionImageIO::New();
     }
   else
     {
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
-  ImagePointer input;
+  ImagePointer             input;
   ImageReaderType::Pointer imageReader = ImageReaderType::New();
 
   try
     {
-      imageReader->SetImageIO(io);
-      imageReader->SetFileName(filename.c_str());
-      imageReader->Update();
-      input = imageReader->GetOutput();
+    imageReader->SetImageIO(io);
+    imageReader->SetFileName(filename.c_str() );
+    imageReader->Update();
+    input = imageReader->GetOutput();
     }
   catch (itk::ExceptionObject &e)
     {
@@ -135,7 +137,7 @@ int itkGEImageIOTest(int ac, char * av[])
     return Failmode ? 1 : 0;
     }
 
-  if (failmode == std::string("true"))
+  if (failmode == std::string("true") )
     {
     ImageWriterType::Pointer writer = ImageWriterType::New();
     writer->SetInput( input );

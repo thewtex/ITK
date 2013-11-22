@@ -55,7 +55,7 @@ template<
   typename TDisplacementField,
   typename TOutputImage
   >
-class GridForwardWarpImageFilter:
+class GridForwardWarpImageFilter :
   public ImageToImageFilter< TDisplacementField, TOutputImage >
 {
 public:
@@ -116,7 +116,8 @@ public:
 
 protected:
   GridForwardWarpImageFilter();
-  ~GridForwardWarpImageFilter() {}
+  ~GridForwardWarpImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

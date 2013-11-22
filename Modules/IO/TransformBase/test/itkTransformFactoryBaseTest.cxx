@@ -21,7 +21,8 @@
 #include "itkVersion.h"
 #include "itkTransformFactoryBase.h"
 
-int itkTransformFactoryBaseTest (int, char*[])
+int
+itkTransformFactoryBaseTest(int, char*[])
 {
   // Call register default transforms
   itk::TransformFactoryBase::RegisterDefaultTransforms();
@@ -187,7 +188,6 @@ int itkTransformFactoryBaseTest (int, char*[])
   defaultTransforms.push_back("DisplacementFieldTransform_float_2_2");
   defaultTransforms.push_back("DisplacementFieldTransform_float_3_3");
 
-
   // check to make sure that all default transforms have been registered
   defaultTransforms.sort();
   // Print out the names of all the registered transforms
@@ -199,7 +199,7 @@ int itkTransformFactoryBaseTest (int, char*[])
        namesIt != names.end() && defaultsIt != defaultTransforms.end();
        ++namesIt, ++defaultsIt)
     {
-    if (strcmp((*namesIt).c_str(), (*defaultsIt).c_str()) != 0)
+    if (strcmp( (*namesIt).c_str(), (*defaultsIt).c_str() ) != 0)
       {
       std::cout << "[FAILED] " <<*namesIt<<"   "<< *defaultsIt << " not registered properly with defaults" << std::endl;
       return EXIT_FAILURE;
@@ -212,9 +212,9 @@ int itkTransformFactoryBaseTest (int, char*[])
 
   // test other methods
   itk::TransformFactoryBase::Pointer base = itk::TransformFactoryBase::New();
-  const char* itkVersion = base->GetITKSourceVersion();
-  const char* description = base->GetDescription();
-  const char* type = base->GetNameOfClass();
+  const char*                        itkVersion = base->GetITKSourceVersion();
+  const char*                        description = base->GetDescription();
+  const char*                        type = base->GetNameOfClass();
   if (strcmp(itkVersion, ITK_SOURCE_VERSION) != 0)
     {
     std::cout << "[FAILED] Did not report version correctly" << std::endl;

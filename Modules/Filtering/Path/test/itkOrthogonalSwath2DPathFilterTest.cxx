@@ -31,23 +31,23 @@
 
 #include "itkPathToImageFilter.h"
 
-
-int itkOrthogonalSwath2DPathFilterTest(int, char*[])
+int
+itkOrthogonalSwath2DPathFilterTest(int, char*[])
 {
-  typedef itk::Image<unsigned char, 2>                ImageType;
-  typedef itk::Image<double, 2>                       FloatImageType;
-  typedef itk::PolyLineParametricPath<2>              InPathType;
-  typedef itk::ChainCodePath<2>                       ChainPathType;
-  typedef itk::FourierSeriesPath<2>                   FSPathType;
+  typedef itk::Image<unsigned char, 2>   ImageType;
+  typedef itk::Image<double, 2>          FloatImageType;
+  typedef itk::PolyLineParametricPath<2> InPathType;
+  typedef itk::ChainCodePath<2>          ChainPathType;
+  typedef itk::FourierSeriesPath<2>      FSPathType;
 
-  typedef InPathType::VertexType                      VertexType;
-  typedef InPathType::OffsetType                      OffsetType;
-  typedef InPathType::InputType                       InPathInputType;
+  typedef InPathType::VertexType VertexType;
+  typedef InPathType::OffsetType OffsetType;
+  typedef InPathType::InputType  InPathInputType;
 
-  typedef ImageType::IndexType                        IndexType;
-  typedef ImageType::SizeType                         SizeType;
+  typedef ImageType::IndexType IndexType;
+  typedef ImageType::SizeType  SizeType;
 
-  typedef itk::OrthogonallyCorrected2DParametricPath  OutputPathType;
+  typedef itk::OrthogonallyCorrected2DParametricPath OutputPathType;
 
   // pre-process the image
   typedef itk::RescaleIntensityImageFilter<ImageType,FloatImageType>      CastFilterType;
@@ -60,17 +60,17 @@ int itkOrthogonalSwath2DPathFilterTest(int, char*[])
   typedef itk::ChainCodeToFourierSeriesPathFilter<ChainPathType,FSPathType> PathFilter2Type;
 
   // test the filter
-  typedef itk::OrthogonalSwath2DPathFilter<FSPathType,FloatImageType>       TestFilterType;
+  typedef itk::OrthogonalSwath2DPathFilter<FSPathType,FloatImageType> TestFilterType;
 
   // save the results
-  typedef itk::PathToImageFilter< FSPathType,     ImageType >         Output1FilterType;
-  typedef itk::PathToImageFilter< OutputPathType, ImageType >         Output2FilterType;
-  typedef itk::RescaleIntensityImageFilter<FloatImageType,ImageType>  Output3FilterType;
+  typedef itk::PathToImageFilter< FSPathType,     ImageType >        Output1FilterType;
+  typedef itk::PathToImageFilter< OutputPathType, ImageType >        Output2FilterType;
+  typedef itk::RescaleIntensityImageFilter<FloatImageType,ImageType> Output3FilterType;
 
   // Setup the path
   std::cout << "Making a square Path with v0 at (24,24) -> (24,104) -> (104,104) -> (104,24)" << std::endl;
   InPathType::Pointer inPath;
-  VertexType        v;
+  VertexType          v;
   inPath = InPathType::New();
   v.Fill(24);
   inPath->AddVertex(v);
@@ -91,13 +91,14 @@ int itkOrthogonalSwath2DPathFilterTest(int, char*[])
 
   // Setup the second path filter
   PathFilter2Type::Pointer pathFilter2 = PathFilter2Type::New();
-  pathFilter2->SetInput(pathFilter1->GetOutput());
-  pathFilter2->SetNumberOfHarmonics(7); // make a nice, round, path for the swath
+  pathFilter2->SetInput(pathFilter1->GetOutput() );
+  pathFilter2->SetNumberOfHarmonics(7); // make a nice, round, path for the
+                                        // swath
 
   // Setup the image
   std::cout << "Making a 64x64 black square centered in a 128x128 white image"<<std::endl;
-  ImageType::Pointer  inImage = ImageType::New();
-  IndexType start;
+  ImageType::Pointer inImage = ImageType::New();
+  IndexType          start;
   start[0]=0;
   start[1]=0;
   ImageType::SizeType size;
@@ -159,15 +160,15 @@ int itkOrthogonalSwath2DPathFilterTest(int, char*[])
   // Find the vertical gradient of the swath image
   MeritFilterType::Pointer meritFilter = MeritFilterType::New();
   meritFilter->SetInput( swathFilter->GetOutput() );
-  meritFilter->SetOrder( 1 ); // first partial derivative
+  meritFilter->SetOrder( 1 );     // first partial derivative
   meritFilter->SetDirection( 1 ); // d/dy
 
   // Setup the test filter
   std::cerr << "Creating the test filter" << std::endl;
   TestFilterType::Pointer testFilter = TestFilterType::New();
   std::cerr << "Setting up the test filter" << std::endl;
-  testFilter->SetPathInput(pathFilter2->GetOutput());
-  testFilter->SetImageInput(meritFilter->GetOutput());
+  testFilter->SetPathInput(pathFilter2->GetOutput() );
+  testFilter->SetImageInput(meritFilter->GetOutput() );
   OutputPathType::Pointer outPath = testFilter->GetOutput();
 
   // Setup the input & output path images
@@ -191,7 +192,6 @@ int itkOrthogonalSwath2DPathFilterTest(int, char*[])
   output3Filter->SetOutputMinimum(0);
   output3Filter->SetOutputMaximum(255);
   ImageType::Pointer swathMeritImage = output3Filter->GetOutput();
-
 
   // Testing PrintSelf
   std::cerr << testFilter << std::endl;

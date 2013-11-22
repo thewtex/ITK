@@ -54,7 +54,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT Version:public Object
+class ITKCommon_EXPORT Version : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -89,6 +89,7 @@ protected:
 private:
   Version(const Self &);        //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

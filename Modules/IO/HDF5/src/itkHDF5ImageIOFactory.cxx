@@ -21,8 +21,10 @@
 
 namespace itk
 {
-void HDF5ImageIOFactory::PrintSelf(std::ostream &, Indent) const
-{}
+void
+HDF5ImageIOFactory::PrintSelf(std::ostream &, Indent) const
+{
+}
 
 HDF5ImageIOFactory::HDF5ImageIOFactory()
 {
@@ -34,7 +36,8 @@ HDF5ImageIOFactory::HDF5ImageIOFactory()
 }
 
 HDF5ImageIOFactory::~HDF5ImageIOFactory()
-{}
+{
+}
 
 const char *
 HDF5ImageIOFactory::GetITKSourceVersion(void) const
@@ -53,9 +56,10 @@ HDF5ImageIOFactory::GetDescription() const
 
 static bool HDF5ImageIOFactoryHasBeenRegistered;
 
-void HDF5ImageIOFactoryRegister__Private(void)
+void
+HDF5ImageIOFactoryRegister__Private(void)
 {
-  if( ! HDF5ImageIOFactoryHasBeenRegistered )
+  if( !HDF5ImageIOFactoryHasBeenRegistered )
     {
     HDF5ImageIOFactoryHasBeenRegistered = true;
     HDF5ImageIOFactory::RegisterOneFactory();

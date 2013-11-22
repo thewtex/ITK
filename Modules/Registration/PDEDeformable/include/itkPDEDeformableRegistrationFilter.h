@@ -70,15 +70,15 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class PDEDeformableRegistrationFilter:
+class PDEDeformableRegistrationFilter :
   public DenseFiniteDifferenceImageFilter< TDisplacementField, TDisplacementField >
 {
 public:
   /** Standard class typedefs. */
-  typedef PDEDeformableRegistrationFilter                                          Self;
+  typedef PDEDeformableRegistrationFilter                                            Self;
   typedef DenseFiniteDifferenceImageFilter< TDisplacementField, TDisplacementField > Superclass;
-  typedef SmartPointer< Self >                                                     Pointer;
-  typedef SmartPointer< const Self >                                               ConstPointer;
+  typedef SmartPointer< Self >                                                       Pointer;
+  typedef SmartPointer< const Self >                                                 ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -102,8 +102,8 @@ public:
   typedef typename DisplacementFieldType::Pointer DisplacementFieldPointer;
 
 #ifdef ITKV3_COMPATIBILITY
-  typedef TDisplacementField                      DeformationFieldType;
-  typedef typename DeformationFieldType::Pointer  DeformationFieldPointer;
+  typedef TDisplacementField                     DeformationFieldType;
+  typedef typename DeformationFieldType::Pointer DeformationFieldPointer;
 #endif
 
   /** Types inherithed from the superclass */
@@ -111,7 +111,7 @@ public:
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** PDEDeformableRegistrationFilterFunction type. */
   typedef PDEDeformableRegistrationFunction< FixedImageType, MovingImageType,
@@ -134,24 +134,33 @@ public:
   const MovingImageType * GetMovingImage(void) const;
 
   /** Set initial displacement field. */
-  void SetInitialDisplacementField(const DisplacementFieldType *ptr)
-  { this->SetInput(ptr); }
+  void
+  SetInitialDisplacementField(const DisplacementFieldType *ptr)
+  {
+    this->SetInput(ptr);
+  }
 
   /** Get output displacement field. */
-  DisplacementFieldType * GetDisplacementField()
-  { return this->GetOutput(); }
+  DisplacementFieldType *
+  GetDisplacementField()
+  {
+    return this->GetOutput();
+  }
 
 #ifdef ITKV3_COMPATIBILITY
-  virtual void SetInitialDeformationField(DeformationFieldType *ptr)
+  virtual void
+  SetInitialDeformationField(DeformationFieldType *ptr)
   {
     this->SetInitialDisplacementField(ptr);
   }
 
   /** Get output deformation field. */
-  DeformationFieldType * GetDeformationField(void)
+  DeformationFieldType *
+  GetDeformationField(void)
   {
-    return static_cast<DeformationFieldType *> (this->GetDisplacementField());
+    return static_cast<DeformationFieldType *> (this->GetDisplacementField() );
   }
+
 #endif
 
   /** Get the number of valid inputs.  For PDEDeformableRegistration,
@@ -171,22 +180,30 @@ public:
   itkBooleanMacro(SmoothDisplacementField);
 
 #ifdef ITKV3_COMPATIBILITY
-  virtual void SetSmoothDeformationField(bool val)
+  virtual void
+  SetSmoothDeformationField(bool val)
   {
     SetSmoothDisplacementField(val);
   }
-  virtual bool GetSmoothDeformationField()
+
+  virtual bool
+  GetSmoothDeformationField()
   {
     return this->GetSmoothDisplacementField();
   }
-  virtual void SmoothDeformationFieldOn()
+
+  virtual void
+  SmoothDeformationFieldOn()
   {
     this->SmoothDisplacementFieldOn();
   }
-  virtual void SmoothDeformationFieldOff()
+
+  virtual void
+  SmoothDeformationFieldOff()
   {
     this->SmoothDisplacementFieldOff();
   }
+
 #endif
 
   typedef FixedArray< double, ImageDimension > StandardDeviationsType;
@@ -220,8 +237,11 @@ public:
   itkGetConstReferenceMacro(UpdateFieldStandardDeviations, StandardDeviationsType);
 
   /** Stop the registration after the current iteration. */
-  virtual void StopRegistration()
-  { m_StopRegistrationFlag = true; }
+  virtual void
+  StopRegistration()
+  {
+    m_StopRegistrationFlag = true;
+  }
 
   /** Set/Get the desired maximum error of the Guassian kernel approximate.
    * \sa GaussianOperator. */
@@ -235,12 +255,15 @@ public:
 
 protected:
   PDEDeformableRegistrationFilter();
-  ~PDEDeformableRegistrationFilter() {}
+  ~PDEDeformableRegistrationFilter() {
+  }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Supplies the halting criteria for this class of filters.  The
    * algorithm will stop after a user-specified number of iterations. */
-  virtual bool Halt()
+  virtual bool
+  Halt()
   {
     if ( m_StopRegistrationFlag )
       {
@@ -262,11 +285,14 @@ protected:
    * using a Guassian operator. The amount of smoothing can be specified
    * by setting the StandardDeviations. */
   virtual void SmoothDisplacementField();
+
 #ifdef ITKV3_COMPATIBILITY
-  virtual void SmoothDeformationField()
+  virtual void
+  SmoothDeformationField()
   {
     this->SmoothDisplacementField();
   }
+
 #endif
   /** Utility to smooth the UpdateBuffer using a Gaussian operator.
    * The amount of smoothing can be specified by setting the

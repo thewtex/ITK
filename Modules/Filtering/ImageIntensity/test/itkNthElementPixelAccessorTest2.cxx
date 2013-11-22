@@ -43,7 +43,8 @@
 //   Main code
 //
 //-------------------------
-int itkNthElementPixelAccessorTest2(int, char* []) {
+int
+itkNthElementPixelAccessorTest2(int, char* []) {
 
   // Typedefs for convenience
   const unsigned int Dimension = 2;

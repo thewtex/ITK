@@ -80,10 +80,10 @@ template< typename TInputImage, typename TEigenValueImage, typename TEigenVector
 typename EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >::EigenValueImageType *
 EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >
 ::GetMaxEigenValue(void)
-{
+  {
   return dynamic_cast< EigenValueImageType * >(
-           this->ProcessObject::GetOutput(0) );
-}
+    this->ProcessObject::GetOutput(0) );
+  }
 
 /**
  * Get the smallest eigenvalue considering the sign
@@ -92,10 +92,10 @@ template< typename TInputImage, typename TEigenValueImage, typename TEigenVector
 typename EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >::EigenValueImageType *
 EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >
 ::GetMinEigenValue(void)
-{
+  {
   return dynamic_cast< EigenValueImageType * >(
-           this->ProcessObject::GetOutput(1) );
-}
+    this->ProcessObject::GetOutput(1) );
+  }
 
 /**
  * Get the eigenvector corresponding to the largest eigenvalue (considering the sign)
@@ -104,9 +104,9 @@ template< typename TInputImage, typename TEigenValueImage, typename TEigenVector
 typename EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >::EigenVectorImageType *
 EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >
 ::GetMaxEigenVector(void)
-{
+  {
   EigenVectorImageType *eigenVector = dynamic_cast< EigenVectorImageType * >(
-    this->ProcessObject::GetOutput(2) );
+      this->ProcessObject::GetOutput(2) );
 
   if ( eigenVector )
     {
@@ -121,9 +121,9 @@ EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >
       << std::endl << "Type name is: "
       << typeid( *this->GetOutput(2) ).name() );
     return reinterpret_cast< EigenVectorImageType * >(
-             this->ProcessObject::GetOutput(2) );
+      this->ProcessObject::GetOutput(2) );
     }
-}
+  }
 
 /**
  *   Make Ouput
@@ -248,6 +248,7 @@ EigenAnalysis2DImageFilter< TInputImage, TEigenValueImage, TEigenVectorImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

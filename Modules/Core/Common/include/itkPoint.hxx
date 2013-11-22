@@ -33,6 +33,7 @@ Point< T, TPointDimension >
 ::operator=(const Self & r)
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -45,6 +46,7 @@ Point< T, TPointDimension >
 ::operator=(const ValueType r[TPointDimension])
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -358,6 +360,7 @@ Point< T, TPointDimension >
   return vnl_vector_ref< T >( TPointDimension,
                               const_cast< T * >( this->GetDataPointer() ) );
 }
+
 #endif
 
 } // end namespace itk

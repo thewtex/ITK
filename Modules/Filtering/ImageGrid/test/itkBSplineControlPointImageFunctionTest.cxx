@@ -17,29 +17,29 @@
  *=========================================================================*/
 #include "itkBSplineControlPointImageFunction.h"
 
-
-int itkBSplineControlPointImageFunctionTest( int, char * [] )
+int
+itkBSplineControlPointImageFunctionTest( int, char * [] )
 {
 
-
-//   We construct a B-spline parametric curve equal to f(u) = 0.5 * u^2 - 0.5 * u
+//   We construct a B-spline parametric curve equal to f(u) = 0.5 * u^2 - 0.5 *
+// u
 //   + 1/6.  This is done using a cubic order spline with controls points
 //   (1, 0, 0, 1)
 
   const unsigned int ParametricDimension = 1;
   const unsigned int DataDimension = 1;
 
-  typedef float                                         RealType;
-  typedef itk::Vector<RealType, DataDimension>          VectorType;
-  typedef itk::Image<VectorType, ParametricDimension>   VectorImageType;
+  typedef float                                       RealType;
+  typedef itk::Vector<RealType, DataDimension>        VectorType;
+  typedef itk::Image<VectorType, ParametricDimension> VectorImageType;
   typedef itk::PointSet
     <VectorImageType::PixelType, ParametricDimension>   PointSetType;
 
   VectorImageType::Pointer phiLattice = VectorImageType::New();
 
-  VectorImageType::SizeType size;
+  VectorImageType::SizeType    size;
   VectorImageType::SpacingType spacing;
-  VectorImageType::PointType origin;
+  VectorImageType::PointType   origin;
 
   size.Fill( 4 );
   spacing.Fill( 1.0 );
@@ -77,10 +77,10 @@ int itkBSplineControlPointImageFunctionTest( int, char * [] )
   bspliner->SetSplineOrder( 3 );
   bspliner->SetInputImage( phiLattice );
 
-  BSplinerType::PointType point;
+  BSplinerType::PointType    point;
   BSplinerType::GradientType gradient;
   BSplinerType::GradientType hessianComponent;
-  BSplinerType::OutputType data;
+  BSplinerType::OutputType   data;
 
   // f(0) = 1/6;
   // f'(u) = u - 0.5 so f'(0) should be -0.5.
@@ -93,7 +93,7 @@ int itkBSplineControlPointImageFunctionTest( int, char * [] )
     if( vnl_math_abs( data[0] - 0.166666666667 ) > 1e-5 )
       {
       std::cerr << "Evaluate1: data is further away from the expected value."
-        << std::endl;
+                << std::endl;
       return EXIT_FAILURE;
       }
 
@@ -101,7 +101,7 @@ int itkBSplineControlPointImageFunctionTest( int, char * [] )
     if( vnl_math_abs( gradient(0, 0) + 0.5 ) > 1e-5 )
       {
       std::cerr << "Evaluate1: gradient is further away from the expected value."
-        << std::endl;
+                << std::endl;
       return EXIT_FAILURE;
       }
 
@@ -110,7 +110,7 @@ int itkBSplineControlPointImageFunctionTest( int, char * [] )
     if( vnl_math_abs( hessianComponent(0, 0) - 1.0 ) > 1e-5 )
       {
       std::cerr << "Evaluate1: hessian is further away from the expected value."
-        << std::endl;
+                << std::endl;
       return EXIT_FAILURE;
       }
     }
@@ -130,7 +130,7 @@ int itkBSplineControlPointImageFunctionTest( int, char * [] )
     if( vnl_math_abs( data[0] - 0.05276717 ) > 1e-5 )
       {
       std::cerr << "Evaluate2: data is further away from the expected value."
-        << std::endl;
+                << std::endl;
       return EXIT_FAILURE;
       }
 
@@ -138,7 +138,7 @@ int itkBSplineControlPointImageFunctionTest( int, char * [] )
     if( vnl_math_abs( gradient(0, 0) + 0.149 ) > 1e-5 )
       {
       std::cerr << "Evaluate2: gradient is further away from the expected value."
-        << std::endl;
+                << std::endl;
       return EXIT_FAILURE;
       }
 
@@ -146,7 +146,7 @@ int itkBSplineControlPointImageFunctionTest( int, char * [] )
     if( vnl_math_abs( hessianComponent(0, 0) - 1.0 ) > 1e-5 )
       {
       std::cerr << "Evaluate2: hessian is further away from the expected value."
-        << std::endl;
+                << std::endl;
       return EXIT_FAILURE;
       }
     }

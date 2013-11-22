@@ -40,16 +40,18 @@ namespace itk
 {
 extern "C"
 {
-static void TagExtender(TIFF *tiff)
+static void
+TagExtender(TIFF *tiff)
 {
   static const TIFFFieldInfo xtiffFieldInfo[] = {
-          { TIF_CZ_LSMINFO, TIFF_VARIABLE, TIFF_VARIABLE, TIFF_BYTE,
-          FIELD_CUSTOM, 0, 1, const_cast< char * >( "LSM Private Tag" ) }
+                      { TIF_CZ_LSMINFO, TIFF_VARIABLE, TIFF_VARIABLE, TIFF_BYTE,
+                      FIELD_CUSTOM, 0, 1, const_cast< char * >( "LSM Private Tag" ) }
     };
 
   TIFFMergeFieldInfo( tiff, xtiffFieldInfo,
                       sizeof( xtiffFieldInfo ) / sizeof( xtiffFieldInfo[0] ) );
 }
+
 }
 
 typedef itksysFundamentalType_Int32  Int32_t;
@@ -89,7 +91,7 @@ typedef struct {
   UInt32_t u32OffsetBleachRoi;
   UInt32_t u32OffsetNextRecording;
   UInt32_t u32Reserved[TIF_CZ_LSMINFO_SIZE_RESERVED];
-} zeiss_info;
+  } zeiss_info;
 
 LSMImageIO::LSMImageIO()
 {
@@ -104,13 +106,15 @@ LSMImageIO::LSMImageIO()
 }
 
 LSMImageIO::~LSMImageIO()
-{}
+{
+}
 
 // This method will only test if the header looks like a
 // LSM image file.
-bool LSMImageIO::CanReadFile(const char *filename)
+bool
+LSMImageIO::CanReadFile(const char *filename)
 {
-  std::string   fname(filename);
+  std::string fname(filename);
 
   if ( fname == "" )
     {
@@ -157,12 +161,14 @@ bool LSMImageIO::CanReadFile(const char *filename)
   return true;
 }
 
-void LSMImageIO::Read(void *buffer)
+void
+LSMImageIO::Read(void *buffer)
 {
   this->TIFFImageIO::Read(buffer);
 }
 
-void LSMImageIO::ReadImageInformation()
+void
+LSMImageIO::ReadImageInformation()
 {
   // this really should be a compile time assert
   itkAssertInDebugAndIgnoreInReleaseMacro( sizeof( zeiss_info ) == TIF_CZ_LSMINFO_SIZE );
@@ -172,8 +178,8 @@ void LSMImageIO::ReadImageInformation()
   // Now is a good time to check what was read and replaced it with LSM
   // information
   unsigned int tif_cz_lsminfo_size;
-  void *praw = this->TIFFImageIO::ReadRawByteFromTag(TIF_CZ_LSMINFO, tif_cz_lsminfo_size);
-  zeiss_info *zi = reinterpret_cast< zeiss_info * >( praw );
+  void *       praw = this->TIFFImageIO::ReadRawByteFromTag(TIF_CZ_LSMINFO, tif_cz_lsminfo_size);
+  zeiss_info * zi = reinterpret_cast< zeiss_info * >( praw );
   if ( praw == NULL
        || tif_cz_lsminfo_size != TIF_CZ_LSMINFO_SIZE )
     {
@@ -193,7 +199,8 @@ void LSMImageIO::ReadImageInformation()
     }
 }
 
-bool LSMImageIO::CanWriteFile(const char *name)
+bool
+LSMImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -219,7 +226,8 @@ bool LSMImageIO::CanWriteFile(const char *name)
   return false;
 }
 
-void LSMImageIO::FillZeissStruct(char *cz)
+void
+LSMImageIO::FillZeissStruct(char *cz)
 {
   memset(cz, 0, TIF_CZ_LSMINFO_SIZE); // fill with 0
   zeiss_info *z = reinterpret_cast< zeiss_info * >( cz );
@@ -244,7 +252,8 @@ void LSMImageIO::FillZeissStruct(char *cz)
     }
 }
 
-void LSMImageIO::Write(const void *buffer)
+void
+LSMImageIO::Write(const void *buffer)
 {
   unsigned char *outPtr = (unsigned char *)buffer;
 
@@ -257,9 +266,9 @@ void LSMImageIO::Write(const void *buffer)
     pages = m_Dimensions[2];
     }
 
-  uint16_t    scomponents = this->GetNumberOfComponents();
-  float resolution = -1;
-  uint16_t    bps;
+  uint16_t scomponents = this->GetNumberOfComponents();
+  float    resolution = -1;
+  uint16_t bps;
 
   switch ( this->GetComponentType() )
     {
@@ -422,8 +431,10 @@ void LSMImageIO::Write(const void *buffer)
   TIFFClose(tif);
 }
 
-void LSMImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+LSMImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk

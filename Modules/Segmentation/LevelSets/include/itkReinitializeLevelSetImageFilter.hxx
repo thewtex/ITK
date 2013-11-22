@@ -68,6 +68,7 @@ ReinitializeLevelSetImageFilter< TLevelSet >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Level set value: " << m_LevelSetValue << std::endl;
   os << indent << "Narrowbanding: " << m_NarrowBanding << std::endl;
   os << indent << "Input narrow bandwidth: " << m_InputNarrowBandwidth;
@@ -373,6 +374,7 @@ ReinitializeLevelSetImageFilter< TLevelSet >
       }
     } // end for loop
 }
+
 } // namespace itk
 
 #endif

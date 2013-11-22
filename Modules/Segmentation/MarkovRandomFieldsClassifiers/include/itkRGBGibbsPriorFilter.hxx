@@ -31,7 +31,7 @@ namespace itk
 /* Set initial value of some parameters in the constructor */
 template< typename TInputImage, typename TClassifiedImage >
 RGBGibbsPriorFilter< TInputImage, TClassifiedImage >
-::RGBGibbsPriorFilter(void):
+::RGBGibbsPriorFilter(void) :
   m_InputImage(0),
   m_TrainingImage(0),
   m_LabelledImage(0),
@@ -363,7 +363,7 @@ RGBGibbsPriorFilter< TInputImage, TClassifiedImage >
 ::GibbsEnergy(unsigned int i, unsigned int k, unsigned int k1)
 {
   LabelledImageRegionIterator
-  labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
+    labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
 
   LabelType    f[8];
   int          j;
@@ -526,11 +526,11 @@ RGBGibbsPriorFilter< TInputImage, TClassifiedImage >
   /* Copy labelled result to the Output buffer and set the iterators of
     * the processed image.   */
   LabelledImageRegionIterator
-  labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
+    labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
 
   /* Set the iterators of the output image buffer. */
   LabelledImageRegionIterator
-  outImageIt( outputPtr, outputPtr->GetBufferedRegion() );
+    outImageIt( outputPtr, outputPtr->GetBufferedRegion() );
 
   while ( !outImageIt.IsAtEnd() )
     {
@@ -599,13 +599,14 @@ RGBGibbsPriorFilter< TInputImage, TClassifiedImage >
   /* Set the iterators and the pixel type definition for the classified image.
     */
   LabelledImageRegionIterator
-  labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
+    labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
 
   /* Variable to store the origin pixel vector value. */
   InputImagePixelType originPixelVec;
 
   /* Variable to store the modified pixel vector value. */
   InputImagePixelType changedPixelVec;
+
   changedPixelVec.Fill( NumericTraits< typename InputImagePixelType::ValueType >::ZeroValue() );
 
   /* Set a variable to store the offset index. */
@@ -684,7 +685,7 @@ RGBGibbsPriorFilter< TInputImage, TClassifiedImage >
   unsigned short *valid_region_counter = new unsigned short[size];
 
   LabelledImageRegionIterator
-  labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
+    labelledImageIt( m_LabelledImage, m_LabelledImage->GetBufferedRegion() );
 
   for ( unsigned int r = 0; r < size; r++ )
     {
@@ -851,6 +852,7 @@ RGBGibbsPriorFilter< TInputImage, TClassifiedImage >
     os << "ClassifierPtr: " << m_ClassifierPtr;
     }
 }
+
 } /* end namespace itk. */
 
 #endif

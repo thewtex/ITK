@@ -33,7 +33,7 @@ namespace itk
 template< typename TScalar,         // Data type for scalars (float or double)
           unsigned int NDimensions = 3 >
 // Number of dimensions
-class ThinPlateSplineKernelTransform:
+class ThinPlateSplineKernelTransform :
   public KernelTransform< TScalar, NDimensions >
 {
 public:
@@ -61,7 +61,8 @@ public:
   /** Dimension of the domain space. */
   itkStaticConstMacro(SpaceDimension, unsigned int, Superclass::SpaceDimension);
 
-  /** These (rather redundant) typedefs are needed because typedefs are not inherited */
+  /** These (rather redundant) typedefs are needed because typedefs are not
+    inherited */
   typedef typename Superclass::InputPointType            InputPointType;
   typedef typename Superclass::OutputPointType           OutputPointType;
   typedef typename Superclass::InputVectorType           InputVectorType;
@@ -71,10 +72,15 @@ public:
   typedef typename Superclass::PointsIterator            PointsIterator;
 
 protected:
-  ThinPlateSplineKernelTransform() {}
-  virtual ~ThinPlateSplineKernelTransform() {}
+  ThinPlateSplineKernelTransform() {
+  }
 
-  /** These (rather redundant) typedefs are needed because typedefs are not inherited. */
+  virtual
+  ~ThinPlateSplineKernelTransform() {
+  }
+
+  /** These (rather redundant) typedefs are needed because typedefs are not
+    inherited. */
   typedef typename Superclass::GMatrixType GMatrixType;
 
   /** Compute G(x)
@@ -95,6 +101,7 @@ protected:
 private:
   ThinPlateSplineKernelTransform(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // namespace itk
 

@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKCurvatureFlow
  */
 template< typename TImage >
-class BinaryMinMaxCurvatureFlowFunction:
+class BinaryMinMaxCurvatureFlowFunction :
   public MinMaxCurvatureFlowFunction< TImage >
 {
 public:
@@ -67,10 +67,17 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
   /** Set/Get the threshold value. */
-  void SetThreshold(const double thresh)
-  { m_Threshold = thresh; }
-  const double & GetThreshold() const
-  { return m_Threshold; }
+  void
+  SetThreshold(const double thresh)
+  {
+    m_Threshold = thresh;
+  }
+
+  const double &
+  GetThreshold() const
+  {
+    return m_Threshold;
+  }
 
   /** This method computes the solution update for each pixel that does not
    * lie on a the data set boundary. */
@@ -81,7 +88,8 @@ public:
 
 protected:
   BinaryMinMaxCurvatureFlowFunction();
-  ~BinaryMinMaxCurvatureFlowFunction() {}
+  ~BinaryMinMaxCurvatureFlowFunction() {
+  }
 
 private:
   BinaryMinMaxCurvatureFlowFunction(const Self &); //purposely not implemented

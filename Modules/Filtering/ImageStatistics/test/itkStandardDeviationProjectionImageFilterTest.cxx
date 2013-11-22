@@ -21,8 +21,8 @@
 
 #include "itkStandardDeviationProjectionImageFilter.h"
 
-
-int itkStandardDeviationProjectionImageFilterTest(int argc, char * argv[])
+int
+itkStandardDeviationProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
     {
@@ -42,7 +42,7 @@ int itkStandardDeviationProjectionImageFilterTest(int argc, char * argv[])
   reader->SetFileName( argv[1] );
 
   typedef itk::StandardDeviationProjectionImageFilter< ImageType, ImageType >
-                                                           FilterType;
+    FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
 

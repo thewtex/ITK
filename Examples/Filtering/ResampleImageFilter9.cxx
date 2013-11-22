@@ -30,7 +30,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -40,8 +39,8 @@
 #include "itkLinearInterpolateImageFunction.h"
 #include "itkRGBPixel.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -52,43 +51,43 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const unsigned int                          Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef unsigned char                       PixelComponentType;
   typedef itk::RGBPixel< PixelComponentType > PixelType;
 
-  typedef itk::Image< PixelType,  Dimension >   ImageType;
+  typedef itk::Image< PixelType,  Dimension > ImageType;
 
-
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writerNearest = WriterType::New(); // writer for nearest neighbor
-  WriterType::Pointer writerLinear = WriterType::New(); // writer for linear
+  WriterType::Pointer writerNearest = WriterType::New(); // writer for nearest
+                                                         // neighbor
+  WriterType::Pointer writerLinear = WriterType::New();  // writer for linear
 
   reader->SetFileName( argv[1] );
   writerNearest->SetFileName( argv[2] );
   writerLinear->SetFileName( argv[3] );
 
   typedef itk::VectorResampleImageFilter<
-                            ImageType, ImageType >  FilterType;
+      ImageType, ImageType >  FilterType;
 
   FilterType::Pointer nearestFilter = FilterType::New();
   FilterType::Pointer linearFilter = FilterType::New();
 
   //Interpolators
   typedef itk::VectorNearestNeighborInterpolateImageFunction<
-                       ImageType, double >  NearestInterpolatorType;
+      ImageType, double >  NearestInterpolatorType;
   NearestInterpolatorType::Pointer interpolatorNearest = NearestInterpolatorType::New();
 
   typedef itk::VectorLinearInterpolateImageFunction<
-                       ImageType, double >  LinearInterpolatorType;
+      ImageType, double >  LinearInterpolatorType;
   LinearInterpolatorType::Pointer interpolatorLinear = LinearInterpolatorType::New();
 
   nearestFilter->SetInterpolator( interpolatorNearest );
   linearFilter->SetInterpolator( interpolatorLinear );
 
-  typedef itk::IdentityTransform< double, Dimension >  TransformType;
+  typedef itk::IdentityTransform< double, Dimension > TransformType;
   TransformType::Pointer transform = TransformType::New();
 
   nearestFilter->SetTransform( transform );
@@ -101,7 +100,6 @@ int main( int argc, char * argv[] )
   linearFilter->SetDefaultPixelValue( defaultValue );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   ImageType::SpacingType spacing;
   spacing[0] = .35; // pixel spacing in millimeters along X
@@ -111,7 +109,6 @@ int main( int argc, char * argv[] )
   linearFilter->SetOutputSpacing( spacing );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   ImageType::PointType origin;
   origin[0] = 0.4;  // X space coordinate of origin
@@ -120,7 +117,6 @@ int main( int argc, char * argv[] )
   linearFilter->SetOutputOrigin( origin );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   ImageType::DirectionType direction;
   direction.SetIdentity();
@@ -128,8 +124,7 @@ int main( int argc, char * argv[] )
   linearFilter->SetOutputDirection( direction );
   // Software Guide : EndCodeSnippet
 
-
-  ImageType::SizeType   size;
+  ImageType::SizeType size;
 
   size[0] = 300;  // number of pixels along X
   size[1] = 300;  // number of pixels along Y
@@ -141,7 +136,6 @@ int main( int argc, char * argv[] )
   linearFilter->SetInput( reader->GetOutput() );
   writerNearest->SetInput( nearestFilter->GetOutput() );
   writerLinear->SetInput( linearFilter->GetOutput() );
-
 
   try
     {

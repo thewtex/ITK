@@ -36,7 +36,7 @@ namespace itk
 /** Constructor */
 template< typename ValueType, typename MeanType >
 ResourceProbe< ValueType, MeanType >
-::ResourceProbe(const std::string & type, const std::string & unit):
+::ResourceProbe(const std::string & type, const std::string & unit) :
   m_TypeString(type), m_UnitString(unit)
 {
   this->m_TotalValue      = NumericTraits< ValueType >::ZeroValue();
@@ -49,7 +49,8 @@ ResourceProbe< ValueType, MeanType >
 template< typename ValueType, typename MeanType >
 ResourceProbe< ValueType, MeanType >
 ::~ResourceProbe()
-{}
+{
+}
 
 /** Returns the type probed value */
 template< typename ValueType, typename MeanType >
@@ -135,6 +136,7 @@ ResourceProbe< ValueType, MeanType >
 
   return meanValue;
 }
+
 } // end namespace itk
 
 #endif

@@ -47,11 +47,10 @@
 #include "itkRescaleIntensityImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -60,7 +59,6 @@ int main( int argc, char ** argv )
     std::cerr << argv[0] << " inputImageFile  outputVectorImageFile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -75,20 +73,19 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float                 ComponentType;
-  const   unsigned int          Dimension = 2;
+  typedef float ComponentType;
+  const   unsigned int Dimension = 2;
 
   typedef itk::CovariantVector< ComponentType,
-                                    Dimension  >      InputPixelType;
+                                Dimension  >      InputPixelType;
 
-  typedef float                                       MagnitudePixelType;
-  typedef unsigned short                              OutputPixelType;
+  typedef float          MagnitudePixelType;
+  typedef unsigned short OutputPixelType;
 
-  typedef itk::Image< InputPixelType,      Dimension >    InputImageType;
-  typedef itk::Image< MagnitudePixelType,  Dimension >    MagnitudeImageType;
-  typedef itk::Image< OutputPixelType,     Dimension >    OutputImageType;
+  typedef itk::Image< InputPixelType,      Dimension > InputImageType;
+  typedef itk::Image< MagnitudePixelType,  Dimension > MagnitudeImageType;
+  typedef itk::Image< OutputPixelType,     Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -98,10 +95,9 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -117,12 +113,11 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VectorMagnitudeImageFilter<
-                                          InputImageType,
-                                          MagnitudeImageType    > FilterType;
+      InputImageType,
+      MagnitudeImageType    > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -136,12 +131,11 @@ int main( int argc, char ** argv )
 
   //  Software Guide : BeginCodeSnippet
   typedef itk::RescaleIntensityImageFilter<
-                                  MagnitudeImageType,
-                                  OutputImageType >      RescaleFilterType;
+      MagnitudeImageType,
+      OutputImageType >      RescaleFilterType;
 
-  RescaleFilterType::Pointer  rescaler = RescaleFilterType::New();
+  RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -161,7 +155,6 @@ int main( int argc, char ** argv )
   rescaler->SetOutputMaximum( itk::NumericTraits< OutputPixelType >::max() );
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Below, we create the reader and writer using the New() method and
@@ -179,12 +172,10 @@ int main( int argc, char ** argv )
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-
 
   //  Software Guide : BeginLatex
   //
@@ -203,7 +194,6 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Below we connect the reader, filter and writer to form the data
@@ -216,7 +206,6 @@ int main( int argc, char ** argv )
   rescaler->SetInput( filter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

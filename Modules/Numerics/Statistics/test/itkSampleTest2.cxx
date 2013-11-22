@@ -29,7 +29,7 @@ class MySample : public Sample< TMeasurementVector >
 {
 public:
   /** Standard class typedef. */
-  typedef MySample  Self;
+  typedef MySample Self;
 
   typedef Sample< TMeasurementVector > Superclass;
 
@@ -52,35 +52,41 @@ public:
   typedef typename Superclass::InstanceIdentifier InstanceIdentifier;
 
   /** Get the size of the sample (number of measurements) */
-  virtual InstanceIdentifier Size() const
-    {
+  virtual InstanceIdentifier
+  Size() const
+  {
     return m_Values.size();
-    }
+  }
 
   /** Remove all measurement vectors */
-  virtual void Clear()
-    {
+  virtual void
+  Clear()
+  {
     m_Values.clear();
-    }
+  }
 
   /** Get the measurement associated with a particular
    * InstanceIdentifier. */
-  virtual const MeasurementVectorType & GetMeasurementVector(InstanceIdentifier id) const
-    {
+  virtual const MeasurementVectorType &
+  GetMeasurementVector(InstanceIdentifier id) const
+  {
     return m_Values[id];
-    }
+  }
 
   /** Get the frequency of a measurement specified by instance
    * identifier. */
-  virtual AbsoluteFrequencyType GetFrequency(InstanceIdentifier id) const
-    {
+  virtual AbsoluteFrequencyType
+  GetFrequency(InstanceIdentifier id) const
+  {
     return m_Frequencies[id];
-    }
+  }
 
   /** Get the total frequency of the sample. */
-  virtual TotalAbsoluteFrequencyType GetTotalFrequency() const
-    {
+  virtual TotalAbsoluteFrequencyType
+  GetTotalFrequency() const
+  {
     TotalAbsoluteFrequencyType sum = NumericTraits< TotalAbsoluteFrequencyType >::Zero;
+
     typedef typename std::vector< AbsoluteFrequencyType >::const_iterator Iterator;
     Iterator itr = m_Frequencies.begin();
     while( itr != m_Frequencies.end() )
@@ -89,41 +95,45 @@ public:
       ++itr;
       }
     return sum;
-    }
+  }
 
-  void PrintSelf(std::ostream& os, Indent indent) const
-    {
+  void
+  PrintSelf(std::ostream& os, Indent indent) const
+  {
     Superclass::PrintSelf(os,indent);
+
     os << indent << m_Values.size() << std::endl;
     os << indent << m_Frequencies.size() << std::endl;
-    }
+  }
 
-  void AddMeasurementVector( const MeasurementVectorType & measure, AbsoluteFrequencyType frequency )
-    {
+  void
+  AddMeasurementVector( const MeasurementVectorType & measure, AbsoluteFrequencyType frequency )
+  {
     m_Values.push_back( measure );
     m_Frequencies.push_back( frequency );
-    }
+  }
 
 private:
 
-  std::vector< TMeasurementVector >  m_Values;
+  std::vector< TMeasurementVector > m_Values;
 
-  std::vector< AbsoluteFrequencyType >       m_Frequencies;
+  std::vector< AbsoluteFrequencyType > m_Frequencies;
 
 };
 
 }
 }
 }
-int itkSampleTest2(int, char* [] )
+int
+itkSampleTest2(int, char* [] )
 {
 
   const unsigned int MeasurementVectorSize = 17;
 
-  typedef itk::Array< float >  MeasurementVectorType;
+  typedef itk::Array< float > MeasurementVectorType;
 
   typedef itk::Statistics::SampleTest::MySample<
-    MeasurementVectorType >   SampleType;
+      MeasurementVectorType >   SampleType;
 
   SampleType::Pointer sample = SampleType::New();
 
@@ -132,7 +142,8 @@ int itkSampleTest2(int, char* [] )
 
   sample->Print(std::cout);
 
-  sample->SetMeasurementVectorSize( MeasurementVectorSize ); // for code coverage
+  sample->SetMeasurementVectorSize( MeasurementVectorSize ); // for code
+                                                             // coverage
 
   if( sample->GetMeasurementVectorSize() != MeasurementVectorSize )
     {
@@ -175,7 +186,6 @@ int itkSampleTest2(int, char* [] )
 
   std::cout << sample->GetTotalFrequency() << std::endl;
 
-
   try
     {
     sample->SetMeasurementVectorSize( MeasurementVectorSize + 5 );
@@ -186,7 +196,6 @@ int itkSampleTest2(int, char* [] )
     {
     std::cout << "Expected exception caught: " << excp << std::endl;
     }
-
 
   // If we call Clear(), now we should be able to change the
   // MeasurementVectorSize of the Sample:
@@ -201,7 +210,6 @@ int itkSampleTest2(int, char* [] )
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

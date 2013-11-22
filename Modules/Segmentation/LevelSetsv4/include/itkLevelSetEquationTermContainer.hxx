@@ -36,7 +36,8 @@ LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >
 template< typename TInputImage, typename TLevelSetContainer >
 LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >
 ::~LevelSetEquationTermContainer()
-{}
+{
+}
 
 // ----------------------------------------------------------------------------
 template< typename TInputImage, typename TLevelSetContainer >
@@ -86,7 +87,7 @@ LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >
 {
   if( iTerm )
     {
-    if( ! iTerm->GetInput() )
+    if( !iTerm->GetInput() )
       {
       if( m_Input.IsNotNull() )
         {
@@ -105,7 +106,7 @@ LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >
       }
     else
       {
-      if( ! iTerm->GetLevelSetContainer() )
+      if( !iTerm->GetLevelSetContainer() )
         {
         itkGenericExceptionMacro( <<"m_LevelSetContainer and iTerm->GetLevelSetContainer() are NULL" );
         }
@@ -142,7 +143,7 @@ LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >
 {
   if( iTerm )
     {
-    if( ! iTerm->GetInput() )
+    if( !iTerm->GetInput() )
       {
       if( m_Input.IsNotNull() )
         {
@@ -162,7 +163,7 @@ LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >
       }
     else
       {
-      if( ! iTerm->GetLevelSetContainer() )
+      if( !iTerm->GetLevelSetContainer() )
         {
         itkGenericExceptionMacro( <<"m_LevelSetContainer and iTerm->GetLevelSetContainer() are NULL" );
         }
@@ -199,7 +200,7 @@ template< typename TInputImage, typename TLevelSetContainer >
 typename LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >::TermType*
 LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >::
 GetTerm( const std::string& iName )
-{
+  {
   MapTermContainerIteratorType it = m_Container.find( iName );
 
   if( it == m_Container.end() )
@@ -208,14 +209,14 @@ GetTerm( const std::string& iName )
     }
 
   return it->second;
-}
+  }
 
 // ----------------------------------------------------------------------------
 template< typename TInputImage, typename TLevelSetContainer >
 typename LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >::TermType*
 LevelSetEquationTermContainer< TInputImage, TLevelSetContainer >::
-GetTerm( const TermIdType& iId )
-{
+GetTerm( const TermIdType &iId )
+  {
   MapTermContainerIteratorType it = m_Container.find( iId );
 
   if( it == m_Container.end() )
@@ -224,7 +225,7 @@ GetTerm( const TermIdType& iId )
     }
 
   return it->second;
-}
+  }
 
 // ----------------------------------------------------------------------------
 template< typename TInputImage, typename TLevelSetContainer >

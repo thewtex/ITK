@@ -20,7 +20,8 @@
 
 #include "itkInterpolateImageFilter.h"
 
-int itkInterpolateImageFilterTest(int, char* [] )
+int
+itkInterpolateImageFilterTest(int, char* [] )
 {
   enum { ImageDimension = 2 };
   typedef unsigned long                              InputPixelType;
@@ -42,9 +43,8 @@ int itkInterpolateImageFilterTest(int, char* [] )
   image2->SetRegions( size );
   image2->Allocate();
 
-
   itk::ImageRegionIteratorWithIndex<InputImageType> inIter2( image2,
-    image2->GetBufferedRegion() );
+                                                             image2->GetBufferedRegion() );
 
   unsigned long temp = 0;
   while( !inIter2.IsAtEnd() )
@@ -74,11 +74,11 @@ int itkInterpolateImageFilterTest(int, char* [] )
 
   // walk the output and check the results
   itk::ImageRegionIteratorWithIndex<InputImageType> inIter1( image1,
-    image1->GetBufferedRegion() );
+                                                             image1->GetBufferedRegion() );
   inIter2.GoToBegin();
 
   itk::ImageRegionIteratorWithIndex<OutputImageType> outIter( filter->GetOutput(),
-    filter->GetOutput()->GetBufferedRegion() );
+                                                              filter->GetOutput()->GetBufferedRegion() );
 
   temp = 50;
   while( !inIter1.IsAtEnd() )

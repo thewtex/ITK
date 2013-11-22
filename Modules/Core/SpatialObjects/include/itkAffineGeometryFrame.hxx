@@ -41,14 +41,16 @@ AffineGeometryFrame< TScalar, NDimensions >
 template< typename TScalar, unsigned int NDimensions >
 AffineGeometryFrame< TScalar, NDimensions >
 ::~AffineGeometryFrame()
-{}
+{
+}
 
 /** Initialize the transform */
 template< typename TScalar, unsigned int NDimensions >
-void AffineGeometryFrame< TScalar, NDimensions >
+void
+AffineGeometryFrame< TScalar, NDimensions >
 ::Initialize()
 {
-  TScalar  b[2 * NDimensions];
+  TScalar      b[2 * NDimensions];
   unsigned int i;
 
   for ( i = 0; i < 2 * NDimensions; ++i )
@@ -64,7 +66,8 @@ void AffineGeometryFrame< TScalar, NDimensions >
 
 /** Set the bounds */
 template< typename TScalar, unsigned int NDimensions >
-void AffineGeometryFrame< TScalar, NDimensions >
+void
+AffineGeometryFrame< TScalar, NDimensions >
 ::SetBounds(const BoundsArrayType & bounds)
 {
   SetBoundsArray(bounds, m_BoundingBox);
@@ -72,7 +75,8 @@ void AffineGeometryFrame< TScalar, NDimensions >
 
 /** Set the bounds array */
 template< typename TScalar, unsigned int NDimensions >
-void AffineGeometryFrame< TScalar, NDimensions >
+void
+AffineGeometryFrame< TScalar, NDimensions >
 ::SetBoundsArray(const BoundsArrayType & bounds, BoundingBoxPointer & boundingBox)
 {
   boundingBox = BoundingBoxType::New();
@@ -104,9 +108,10 @@ AffineGeometryFrame< TScalar, NDimensions >
 ::InternalClone() const
 {
   LightObject::Pointer loPtr = Superclass::InternalClone();
+
   typename Self::Pointer clone =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(clone.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(clone.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -173,6 +178,7 @@ AffineGeometryFrame< TScalar, NDimensions >
        << m_IndexToWorldTransform << std::endl;
     }
 }
+
 } //namespace
 
 #endif

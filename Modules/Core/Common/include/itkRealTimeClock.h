@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT RealTimeClock:public Object
+class ITKCommon_EXPORT RealTimeClock : public Object
 {
 public:
   typedef RealTimeClock              Self;
@@ -71,7 +71,8 @@ protected:
   RealTimeClock();
 
   /** destructor */
-  virtual ~RealTimeClock();
+  virtual
+  ~RealTimeClock();
 
   /** Print the object information in a stream. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -85,6 +86,7 @@ private:
   // modified time of the itk::Object.  That modified time is ambiguous with
   // the role of the RealTimeStamp.
   virtual const TimeStamp & GetTimeStamp() const;
+
 };
 } // end of namespace itk
 

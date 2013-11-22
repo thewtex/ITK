@@ -45,7 +45,7 @@ typedef QuaternionRigidTransform< double > TransformType;
 typedef TransformType::Pointer             TransformPointerType;
 }
 template< int VDimension >
-class QuaternionOrientationAdapter:
+class QuaternionOrientationAdapter :
   public OrientationAdapterBase< QuaternionOrientationAdapterClasses::TransformPointerType, VDimension >
 {
 public:
@@ -54,9 +54,9 @@ public:
 
   typedef OrientationAdapterBase< QuaternionOrientationAdapterClasses::TransformPointerType, VDimension > SuperClass;
   typedef QuaternionRigidTransform< double >
-  OrientationRootType;
+    OrientationRootType;
   typedef QuaternionOrientationAdapterClasses::TransformPointerType
-  OrientationType;
+    OrientationType;
 
   /** The dimension of the input image must be 3. */
   itkConceptMacro( DimensionShouldBe3,
@@ -66,7 +66,8 @@ public:
   typedef typename SuperClass::DirectionType DirectionType;
 
   /** convert from direction cosines. */
-  virtual OrientationType FromDirectionCosines(const DirectionType & Dir)
+  virtual OrientationType
+  FromDirectionCosines(const DirectionType & Dir)
   {
     OrientationType q = OrientationRootType::New();
 
@@ -75,10 +76,12 @@ public:
   }
 
   /** convert to direction cosines. */
-  virtual DirectionType ToDirectionCosines(const OrientationType & Or)
+  virtual DirectionType
+  ToDirectionCosines(const OrientationType & Or)
   {
     return Or->GetMatrix();
   }
+
 };
 } // namespace itk
 

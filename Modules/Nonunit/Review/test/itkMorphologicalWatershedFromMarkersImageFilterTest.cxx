@@ -23,13 +23,15 @@
 #include "itkMorphologicalWatershedFromMarkersImageFilter.h"
 #include "itkLabelOverlayImageFilter.h"
 
-int itkMorphologicalWatershedFromMarkersImageFilterTest(int argc, char * argv[])
+int
+itkMorphologicalWatershedFromMarkersImageFilterTest(int argc, char * argv[])
 {
   if( argc < 6 )
     {
     std::cerr << "Missing Parameters " << std::endl;
     std::cerr << "Usage: " << argv[0];
-    std::cerr << " InputImage MarkerImage OutputImage MarkWatershedLine FullyConnected [OvelayOutput [Alpha]]" << std::endl;
+    std::cerr << " InputImage MarkerImage OutputImage MarkWatershedLine FullyConnected [OvelayOutput [Alpha]]" <<
+      std::endl;
     return EXIT_FAILURE;
     }
   const int dim = 2;
@@ -51,25 +53,25 @@ int itkMorphologicalWatershedFromMarkersImageFilterTest(int argc, char * argv[])
   filter->SetMarkerImage( reader2->GetOutput() );
 
   // test default values
-  if ( filter->GetMarkWatershedLine( ) != true )
+  if ( filter->GetMarkWatershedLine() != true )
     {
     std::cerr << "Wrong default MarkWatershedLine." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( filter->GetFullyConnected( ) != false )
+  if ( filter->GetFullyConnected() != false )
     {
     std::cerr << "Wrong default FullyConnected." << std::endl;
     return EXIT_FAILURE;
     }
 
   filter->SetMarkWatershedLine( atoi( argv[4] ) );
-  if ( filter->GetMarkWatershedLine( ) != (bool)atoi(argv[4]) )
+  if ( filter->GetMarkWatershedLine() != (bool)atoi(argv[4]) )
     {
     std::cerr << "Set/Get MarkWatershedLine problem." << std::endl;
     return EXIT_FAILURE;
     }
   filter->SetFullyConnected( atoi( argv[5] ) );
-  if ( filter->GetFullyConnected( ) != (bool)atoi(argv[5]) )
+  if ( filter->GetFullyConnected() != (bool)atoi(argv[5]) )
     {
     std::cerr << "Set/Get FullyConnected problem." << std::endl;
     return EXIT_FAILURE;
@@ -95,8 +97,8 @@ int itkMorphologicalWatershedFromMarkersImageFilterTest(int argc, char * argv[])
 
   if( argc > 6 )
     {
-    typedef itk::RGBPixel<unsigned char>   RGBPixelType;
-    typedef itk::Image<RGBPixelType, dim>  RGBImageType;
+    typedef itk::RGBPixel<unsigned char>  RGBPixelType;
+    typedef itk::Image<RGBPixelType, dim> RGBImageType;
 
     typedef itk::LabelOverlayImageFilter<IType, IType, RGBImageType> OverlayType;
     OverlayType::Pointer overlay = OverlayType::New();
